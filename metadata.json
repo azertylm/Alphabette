@@ -1,0 +1,6 @@
+{
+  "name": "ALPHABETTE Hub",
+  "description": "Portail web central et écosystème d'applications éthiques, souveraines et sans publicité fondé par Valentin RICHAUD.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
