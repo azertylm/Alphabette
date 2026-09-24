@@ -56,13 +56,15 @@ export const UrlManagerModal: React.FC<UrlManagerModalProps> = ({
       id: `app-slot-${nextSlot}`,
       slotNumber: nextSlot,
       name: `APPLICATION ${nextSlot}`,
-      category: 'Vie quotidienne',
-      tagline: 'Nouvelle application de l’écosystème Alphabette',
+      pole: 'citoyen_proximite',
+      category: 'Citoyen & Proximité',
+      tagline: 'Nouvelle application de l’écosystème ALPHABETTE',
       description: 'Description de la solution citoyenne et éthique.',
       url: 'https://',
       isConfigured: false,
-      tags: ['Souverain', 'Alphabette'],
-      iconName: 'Layers'
+      tags: ['Souverain', 'ALPHABETTE'],
+      iconName: 'Layers',
+      pricingNote: '15 € TTC / an'
     };
     setEditableApps(prev => [...prev, newApp]);
   };

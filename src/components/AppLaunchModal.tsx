@@ -10,7 +10,9 @@ import {
   ArrowRight,
   Copy,
   Check,
-  AlertCircle
+  AlertCircle,
+  Building2,
+  HeartHandshake
 } from 'lucide-react';
 import { AppItem, UserProfile } from '../types';
 
@@ -39,16 +41,18 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
       setIsSimulatingSso(true);
       const timer = setTimeout(() => {
         setIsSimulatingSso(false);
-      }, 500);
+      }, 400);
       return () => clearTimeout(timer);
     }
   }, [isOpen, app]);
 
   if (!isOpen || !app) return null;
 
-  const isUnlockedByPass = user.subscriptionPlan === 'alphabette_pass';
+  const isProxilienFree = app.isPiloteFree;
+  const isUnlockedByPass = user.subscriptionPlan === 'alphabette_pass' && !app.isB2B;
+  const isUnlockedByB2B = user.subscriptionPlan === 'pro_b2b' && app.isB2B;
   const isUnlockedBySingle = user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id);
-  const isUnlocked = isUnlockedByPass || isUnlockedBySingle;
+  const isUnlocked = isProxilienFree || isUnlockedByPass || isUnlockedByB2B || isUnlockedBySingle;
 
   // Mock SSO JWT handoff token
   const ssoToken = `eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiSldUIn0.${btoa(JSON.stringify({
@@ -109,7 +113,11 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                     Accès Débloqué & Authentification SSO Confirmée
                   </p>
                   <p className="text-emerald-800 mt-0.5">
-                    Votre session <span className="font-semibold">{user.email}</span> est transmise automatiquement. Aucun mot de passe supplémentaire ne sera demandé.
+                    {app.isPiloteFree ? (
+                      <span>Accès pilote communal <strong>100% gratuit</strong> accordé pour La Grande-Motte.</span>
+                    ) : (
+                      <span>Votre session <strong className="font-semibold">{user.email}</strong> est transmise automatiquement. Aucun mot de passe supplémentaire n'est requis.</span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -138,29 +146,14 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                 </div>
               </div>
 
-              {/* Quick test in Sovereign AI Studio */}
-              <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between gap-3 text-xs text-slate-300">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Tester le moteur IA souverain pour {app.name}</span>
-                </div>
-                <a
-                  href="#ai-studio"
-                  onClick={onClose}
-                  className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[11px] font-bold shrink-0 transition-colors"
-                >
-                  Banc d'essai IA
-                </a>
-              </div>
-
               {/* Notice if URL is not yet customized */}
               {!app.isConfigured && (
                 <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold">Note pour Valentin RICHAUD :</span>
+                    <span className="font-semibold">Note d'exploitation :</span>
                     <p className="text-[11px] text-amber-800 mt-0.5">
-                      Ce slot utilise l'URL modèle. Vous pouvez renseigner votre lien de production réel à tout moment dans le <strong>Gestionnaire d'URLs</strong>.
+                      Ce slot utilise l'URL officielle ALPHABETTE. Vous pouvez ajuster le lien cible dans le <strong>Gestionnaire d'URLs</strong>.
                     </p>
                   </div>
                 </div>
@@ -186,7 +179,7 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
           ) : (
             <>
               {/* Application Locked View */}
-              <div className="text-center py-4">
+              <div className="text-center py-3">
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center mx-auto mb-3">
                   <Lock className="w-6 h-6" />
                 </div>
@@ -194,64 +187,105 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                   Cette application nécessite un abonnement
                 </h4>
                 <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                  Pour accéder à <strong className="text-slate-700">{app.name}</strong> sans publicité et de manière souveraine, choisissez l'une de nos deux formules transparentes :
+                  Pour accéder à <strong className="text-slate-700">{app.name}</strong> sans publicité et de manière souveraine, découvrez les formules officielles :
                 </p>
               </div>
 
-              {/* 2 Options */}
-              <div className="space-y-3">
-                {/* Option 1: Pass Alphabette (3€) */}
-                <div 
-                  onClick={() => {
-                    onSelectPass();
-                    onClose();
-                  }}
-                  className="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 transition-all cursor-pointer flex items-center justify-between"
-                >
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-emerald-950">Pass Alphabette Illimité</span>
-                      <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
-                        Recommandé
-                      </span>
+              {/* Options based on pole */}
+              {app.isB2B ? (
+                <div className="space-y-3">
+                  <div 
+                    onClick={() => {
+                      onSelectPass();
+                      onClose();
+                    }}
+                    className="p-4 rounded-2xl border-2 border-amber-500 bg-amber-50/50 hover:bg-amber-50 transition-all cursor-pointer flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-amber-700" />
+                        <span className="font-bold text-sm text-slate-900">Licence Professionnelle Solaire</span>
+                      </div>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        Accès illimité à {app.name} pour vos équipes d'installateurs & bureaux d'études.
+                      </p>
                     </div>
-                    <p className="text-xs text-emerald-800 mt-0.5">
-                      Débloque <strong>{app.name}</strong> + toutes les autres applications actuelles et futures.
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <span className="font-extrabold text-base text-emerald-950">3 €</span>
-                    <span className="text-xs text-slate-500">/mois</span>
+                    <div className="text-right shrink-0">
+                      <span className="font-extrabold text-base text-slate-900">49 €</span>
+                      <span className="text-xs text-slate-500"> HT / mois</span>
+                    </div>
                   </div>
                 </div>
+              ) : (
+                <div className="space-y-3">
+                  {/* Option 1: Le Paquet Pass ALPHABETTE (40€ / an pour TOUTES les applis) */}
+                  <div 
+                    onClick={() => {
+                      onSelectPass();
+                      onClose();
+                    }}
+                    className="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 transition-all cursor-pointer flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-sm text-emerald-950">Le Paquet Pass ALPHABETTE (Recommandé)</span>
+                        <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
+                          Toutes les applis
+                        </span>
+                      </div>
+                      <p className="text-xs text-emerald-800 mt-0.5">
+                        {app.isFranceServiceSuite ? (
+                          <span>Le paquet à 40 € pour <strong>TOUTES les applications</strong> : Service France (7 modules) + IADébat + Infos Perso + L'Œil de l'Atelier.</span>
+                        ) : (
+                          <span>Le paquet complet pour <strong>toutes les applications</strong> : {app.name} + Service France (7 modules) + autres applications citoyennes.</span>
+                        )}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="font-extrabold text-base text-emerald-950">40 €</span>
+                      <span className="text-xs text-slate-500"> TTC / an</span>
+                    </div>
+                  </div>
 
-                {/* Option 2: Single App (1€) */}
-                <div 
-                  onClick={() => {
-                    onSelectSingleApp(app.id);
-                    onClose();
-                  }}
-                  className="p-4 rounded-2xl border border-slate-200 hover:border-blue-400 bg-white hover:bg-blue-50/30 transition-all cursor-pointer flex items-center justify-between"
-                >
-                  <div>
-                    <span className="font-bold text-sm text-slate-900">Débloquer {app.name} uniquement</span>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Formule à la carte sans engagement pour une seule application.
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <span className="font-extrabold text-base text-slate-900">1 €</span>
-                    <span className="text-xs text-slate-500">/mois</span>
+                  {/* Option 2: Single App (15€ / an pour elle) */}
+                  <div 
+                    onClick={() => {
+                      onSelectSingleApp(app.id);
+                      onClose();
+                    }}
+                    className="p-4 rounded-2xl border border-slate-200 hover:border-blue-400 bg-white hover:bg-blue-50/30 transition-all cursor-pointer flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-sm text-slate-900">À l'unité : {app.name}</span>
+                        {app.isFranceServiceSuite && (
+                          <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded-full">
+                            15 € pour elle
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {app.isFranceServiceSuite ? (
+                          <span>Accès complet à Service France et ses 7 modules Zero-Knowledge pour 15 € / an seul, sans prélèvement mensuel.</span>
+                        ) : (
+                          <span>Abonnement annuel unique pour {app.name} seul, sans prélèvement mensuel.</span>
+                        )}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="font-extrabold text-base text-slate-900">15 €</span>
+                      <span className="text-xs text-slate-500"> TTC / an</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="pt-2 text-center">
                 <button
                   onClick={onClose}
                   className="text-xs text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
-                  Peut-être plus tard
+                  Fermer
                 </button>
               </div>
             </>

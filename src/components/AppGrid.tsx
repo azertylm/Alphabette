@@ -54,7 +54,9 @@ export const AppGrid: React.FC<AppGridProps> = ({
 
       // Access filter
       const isUnlocked = 
-        user.subscriptionPlan === 'alphabette_pass' || 
+        app.isPiloteFree ||
+        (user.subscriptionPlan === 'alphabette_pass' && !app.isB2B) || 
+        (user.subscriptionPlan === 'pro_b2b' && app.isB2B) ||
         (user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id));
 
       const matchesAccess = 
@@ -73,7 +75,9 @@ export const AppGrid: React.FC<AppGridProps> = ({
   };
 
   const unlockedCount = apps.filter(app => 
-    user.subscriptionPlan === 'alphabette_pass' || 
+    app.isPiloteFree ||
+    (user.subscriptionPlan === 'alphabette_pass' && !app.isB2B) || 
+    (user.subscriptionPlan === 'pro_b2b' && app.isB2B) ||
     (user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id))
   ).length;
 
@@ -85,13 +89,13 @@ export const AppGrid: React.FC<AppGridProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
             <Layers className="w-4 h-4" />
-            <span>Catalogue Central des Applications</span>
+            <span>Catalogue Officiel ALPHABETTE</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Les applications de l'écosystème
           </h2>
           <p className="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
-            {apps.length} applications configurées. Cliquez sur "Lancer l'app" pour vous connecter sans mot de passe grâce au SSO Alphabette.
+            {apps.length} applications de l'écosystème réparties en 3 pôles. Cliquez sur "Ouvrir l'application" pour accéder à vos outils avec le SSO sécurisé ALPHABETTE.
           </p>
         </div>
 

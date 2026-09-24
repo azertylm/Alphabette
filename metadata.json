@@ -1,6 +1,6 @@
 {
-  "name": "ALPHABETTE Hub",
-  "description": "Portail web central et écosystème d'applications éthiques, souveraines et sans publicité fondé par Valentin RICHAUD.",
+  "name": "ALPHABETTE SASU",
+  "description": "Écosystème officiel de solutions logicielles et d'IA souveraines fondé par Valentin RICHAUD à La Grande-Motte.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

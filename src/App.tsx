@@ -13,8 +13,8 @@ import { INITIAL_APPS } from './data/initialApps';
 import { AppItem, UserProfile, PlanType } from './types';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
-const STORAGE_KEY_APPS = 'alphabette_apps_v1';
-const STORAGE_KEY_USER = 'alphabette_user_v1';
+const STORAGE_KEY_APPS = 'alphabette_apps_v3';
+const STORAGE_KEY_USER = 'alphabette_user_v3';
 
 export default function App() {
   // 1. Applications state with localStorage persistence
@@ -47,10 +47,11 @@ export default function App() {
       role: 'superadmin',
       tenantId: 'tnt_alphabette_france',
       tenantName: 'ALPHABETTE Hub Central',
-      subscriptionPlan: 'alphabette_pass', // Default: Pass Complet active
-      unlockedAppIds: ['lidarsol', 'osolar', 'proxilien', 'infos-perso'],
+      subscriptionPlan: 'alphabette_pass', // Default: Pass ALPHABETTE actif
+      unlockedAppIds: ['iadebat', 'infos-perso', 'oeil-atelier', 'france-service', 'proxilien'],
       ssoSessionId: 'sso_live_89f3a1c2',
-      memberSince: '2024'
+      memberSince: '2024',
+      city: 'La Grande-Motte'
     };
   });
 
@@ -95,11 +96,13 @@ export default function App() {
     }));
 
     if (plan === 'alphabette_pass') {
-      showToast('🎉 Pass Alphabette activé (3 € / mois) ! Toutes les applications sont débloquées.');
+      showToast('🎉 Pass ALPHABETTE activé (40 € TTC / an) ! Toutes les applications citoyennes et la suite France Service sont débloquées.');
     } else if (plan === 'single_app') {
-      showToast('Formule à la carte activée (1 € / mois par application).');
+      showToast('Formule à l\'unité activée (15 € TTC / an par application sans prélèvement mensuel).');
+    } else if (plan === 'pro_b2b') {
+      showToast('Licence Pro B2B Solaire activée (49 € HT / mois).');
     } else {
-      showToast('Mode Découverte activé (0 € / mois).');
+      showToast('Phase pilote La Grande-Motte activée (100% gratuit).');
     }
   };
 
@@ -109,11 +112,11 @@ export default function App() {
     showToast('Liens et applications mis à jour avec succès !');
   };
 
-  // Handler: Reset to 10 initial apps
+  // Handler: Reset to initial apps
   const handleResetDefaultApps = () => {
-    if (confirm('Voulez-vous réinitialiser les 10 slots par défaut ?')) {
+    if (confirm('Voulez-vous réinitialiser le catalogue officiel ALPHABETTE ?')) {
       setApps(INITIAL_APPS);
-      showToast('Les 10 applications initiales ont été rétablies.');
+      showToast('Le catalogue officiel ALPHABETTE a été rétabli.');
     }
   };
 

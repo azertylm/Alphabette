@@ -21,7 +21,9 @@ import {
   Newspaper,
   Layers,
   Copy,
-  Check
+  Check,
+  Scale,
+  HeartHandshake
 } from 'lucide-react';
 import { 
   askAI, 
@@ -53,42 +55,58 @@ const APP_PRESETS: AppPreset[] = [
   {
     id: 'LIDARSOL',
     name: 'LIDARSOL',
-    category: 'Solaire & Cadastre',
+    category: 'B2B Solaire',
     icon: <Sun className="w-4 h-4 text-amber-500" />,
-    promptExample: 'Analyser la toiture d\'une longère de 120 m² orientée Sud-Sud-Est (30° inclinaison) à Valence : calcul du gisement solaire annuel en kWh et puissance crête optimale en kWc.',
-    systemHint: 'Modélisation géomatique LIDAR, gisement solaire et rentabilité photovoltaïque'
+    promptExample: 'Analyser la toiture d\'un hangar de 600 m² à partir des données LiDAR HD de l\'IGN : déterminer l\'inclinaison optimale, la détection des ombrages portés et la surface photovoltaïque utile.',
+    systemHint: 'Modélisation 3D LiDAR HD IGN, calcul du potentiel solaire de toiture et surface utile'
   },
   {
     id: 'OSOLAR',
     name: 'OSOLAR',
-    category: 'Énergie & Transition',
-    icon: <Zap className="w-4 h-4 text-emerald-500" />,
-    promptExample: 'Proposer un calendrier d\'asservissement intelligent pour une pompe à chaleur air-eau et recharge de VE avec une installation solaire de 6 kWc sans batterie physique.',
-    systemHint: 'Optimisation de flux d\'autoconsommation et effacement réseau'
+    category: 'B2B Solaire',
+    icon: <Zap className="w-4 h-4 text-amber-600" />,
+    promptExample: 'Chiffrage commercial et dimensionnement technico-financier d\'une installation photovoltaïque de 36 kWc en autoconsommation avec revente du surplus.',
+    systemHint: 'Dimensionnement photovoltaïque professionnel, chiffrage commercial et analyse de rentabilité'
   },
   {
     id: 'PROXILIEN',
     name: 'PROXILIEN',
-    category: 'Entraide & Social',
-    icon: <Users className="w-4 h-4 text-blue-500" />,
-    promptExample: 'Établir une charte de confiance et une proposition de jumelage solidaire entre un étudiant bénévole et une retraitée isolée pour de l\'aide aux démarches numériques.',
-    systemHint: 'Entraide intergénérationnelle, souveraineté et respect strict de la vie privée'
+    category: 'Citoyen & Proximité',
+    icon: <HeartHandshake className="w-4 h-4 text-rose-500" />,
+    promptExample: 'Phase pilote La Grande-Motte : organiser une entraide de voisinage pour le covoiturage solidaire et les démarches administratives locales.',
+    systemHint: 'Plateforme d\'entraide locale, communication de proximité et lien civique communal'
+  },
+  {
+    id: 'IADEBAT',
+    name: 'IADÉBAT',
+    category: 'Citoyen & Proximité',
+    icon: <Scale className="w-4 h-4 text-indigo-600" />,
+    promptExample: 'Présenter de façon strictement neutre et contradictoire les arguments pour et contre la tarification progressive de l\'eau potable dans les stations balnéaires.',
+    systemHint: 'Décryptage citoyen, neutralité absolue et argumentation contradictoire équilibrée'
   },
   {
     id: 'INFOS PERSO',
     name: 'INFOS PERSO',
-    category: 'Information Éthique',
-    icon: <Newspaper className="w-4 h-4 text-purple-500" />,
-    promptExample: 'Générer une synthèse dépolluée des 3 avancées majeures de la semaine dans la décarbonation industrielle en France, sans aucun titre racoleur.',
-    systemHint: 'Synthèse d\'actualité neutre, vérifiée et sans régie publicitaire'
+    category: 'Citoyen & Proximité',
+    icon: <Newspaper className="w-4 h-4 text-blue-600" />,
+    promptExample: 'Structurer une checklist sécurisée des pièces justificatives obligatoires pour une demande d\'aide au logement (CAF) et d\'aide à la rénovation énergétique.',
+    systemHint: 'Gestionnaire personnel sécurisé facilitant l\'accès aux démarches et renseignements de la vie courante'
   },
   {
-    id: 'ATELIER 3D',
-    name: "L'ŒIL DE L'ATELIER 3D",
-    category: 'Éco-Conception',
-    icon: <Layers className="w-4 h-4 text-teal-500" />,
-    promptExample: 'Concevoir une pièce de remplacement pour charnière de réfrigérateur en impression 3D : choix du matériau éco-responsable et stratégie de remplissage frugal.',
-    systemHint: 'Sobriété matière, réparabilité et modélisation durable'
+    id: 'OEIL_ATELIER',
+    name: "L'ŒIL DE L'ATELIER",
+    category: 'Citoyen & Proximité',
+    icon: <Layers className="w-4 h-4 text-amber-700" />,
+    promptExample: 'Créer une fiche de suivi photographique et de métré journalier pour un chantier de rénovation de plomberie et électricité chez un particulier.',
+    systemHint: 'Solution dédiée aux artisans pour le suivi, la documentation et la gestion simplifiée de leurs chantiers'
+  },
+  {
+    id: 'FRANCE_SERVICE',
+    name: 'FRANCE SERVICE',
+    category: 'Zero-Knowledge',
+    icon: <ShieldCheck className="w-4 h-4 text-emerald-600" />,
+    promptExample: 'Vérifier localement sur l\'appareil (Zero-Knowledge) les clauses d\'un bail locatif pour détecter les clauses abusives selon la loi ALUR (ClairContrat).',
+    systemHint: 'Suite pratique d\'utilité publique familiale 100% locale (Zero-Knowledge) regroupant 7 modules souverains'
   }
 ];
 

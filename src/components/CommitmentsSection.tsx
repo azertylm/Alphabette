@@ -31,20 +31,20 @@ export const CommitmentsSection: React.FC = () => {
         {/* 4 Pillars Detailed Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* Pillar 1: IA Souveraine */}
+          {/* Pillar 1: IA Souveraine & Architecture Zero-Knowledge */}
           <div className="p-7 rounded-2xl bg-slate-50 border border-slate-200/90 flex gap-4">
             <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
               <Cpu className="w-6 h-6" />
             </div>
             <div className="space-y-2">
               <h3 className="font-bold text-base text-slate-900">
-                IA Souveraine (Local + Mistral AI France)
+                Architecture Zero-Knowledge & IA Locale
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Les calculs d’intelligence artificielle sont prioritairement exécutés sur des machines locales haute performance. Pour les traitements complexes, nos requêtes sont relayées vers les modèles de <strong>Mistral AI hébergés en France</strong>, excluant tout transit hors d'Europe.
+                Les modules sensibles de la suite <strong>France Service</strong> fonctionnent selon le principe du <em>Zero-Knowledge</em> : l'ensemble des données et calculs s'exécutent directement sur votre terminal. Aucune information personnelle n'est envoyée ni stockée sur nos serveurs.
               </p>
               <div className="text-[11px] font-semibold text-blue-800 flex items-center gap-1.5 pt-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Aucune exploitation de vos requêtes pour l'entraînement d'IA tiers
+                <CheckCircle2 className="w-3.5 h-3.5" /> Aucune exploitation de vos données personnelles ni de vos contrats
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const CommitmentsSection: React.FC = () => {
                 Immunité totale contre les législations extraterritoriales (US Cloud Act / FISA). La société ALPHABETTE est de droit français et régie exclusivement par les cours de justice européennes.
               </p>
               <div className="text-[11px] font-semibold text-purple-800 flex items-center gap-1.5 pt-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Modèle financé par les usagers (1€ ou 3€) pour une neutralité garantie
+                <CheckCircle2 className="w-3.5 h-3.5" /> Modèle financé par les usagers (15 € ou 40 € / an) pour une indépendance totale sans publicité
               </div>
             </div>
           </div>

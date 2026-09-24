@@ -41,21 +41,33 @@ export const Header: React.FC<HeaderProps> = ({
     switch (user.subscriptionPlan) {
       case 'alphabette_pass':
         return {
-          label: 'Pass Alphabette (3€/m)',
-          classes: 'bg-emerald-500/15 text-emerald-700 border-emerald-300 ring-1 ring-emerald-400/20',
+          label: 'Pass ALPHABETTE (40€/an)',
+          classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300 ring-1 ring-emerald-400/20',
           dot: 'bg-emerald-500'
         };
       case 'single_app':
         return {
-          label: `À la carte (${user.unlockedAppIds.length} app · 1€/m)`,
-          classes: 'bg-blue-500/15 text-blue-700 border-blue-300 ring-1 ring-blue-400/20',
+          label: `À l'unité (${user.unlockedAppIds.length} app · 15€/an)`,
+          classes: 'bg-blue-500/15 text-blue-800 border-blue-300 ring-1 ring-blue-400/20',
           dot: 'bg-blue-500'
+        };
+      case 'pro_b2b':
+        return {
+          label: 'Licence B2B Solaire (49€ HT/mois)',
+          classes: 'bg-amber-500/15 text-amber-900 border-amber-300 ring-1 ring-amber-400/20',
+          dot: 'bg-amber-500'
+        };
+      case 'pilot_free':
+        return {
+          label: 'Pilote La Grande-Motte (100% Gratuit)',
+          classes: 'bg-teal-500/15 text-teal-800 border-teal-300 ring-1 ring-teal-400/20',
+          dot: 'bg-teal-500'
         };
       default:
         return {
-          label: 'Mode Découverte (0€)',
-          classes: 'bg-slate-200 text-slate-700 border-slate-300',
-          dot: 'bg-slate-400'
+          label: 'Pass ALPHABETTE (40€/an)',
+          classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300',
+          dot: 'bg-emerald-500'
         };
     }
   };
@@ -113,7 +125,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Tarifs (1€ / 3€)</span>
+              <span>Tarifs (15€ / 40€)</span>
             </button>
 
             <button 
@@ -201,13 +213,13 @@ export const Header: React.FC<HeaderProps> = ({
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>Pass Alphabette (3€/m)</span>
+                        <span>Pass ALPHABETTE (40 € TTC / an)</span>
                         {user.subscriptionPlan === 'alphabette_pass' && <Check className="w-3.5 h-3.5 text-emerald-600" />}
                       </button>
 
                       <button
                         onClick={() => {
-                          onChangeUserPlan('single_app', ['lidarsol', 'osolar']);
+                          onChangeUserPlan('single_app', ['iadebat']);
                           setIsUserMenuOpen(false);
                         }}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
@@ -216,23 +228,38 @@ export const Header: React.FC<HeaderProps> = ({
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>À la carte (1€/m - 2 apps débloquées)</span>
+                        <span>À l'unité (15 € TTC / an / app)</span>
                         {user.subscriptionPlan === 'single_app' && <Check className="w-3.5 h-3.5 text-blue-600" />}
                       </button>
 
                       <button
                         onClick={() => {
-                          onChangeUserPlan('free', []);
+                          onChangeUserPlan('pro_b2b');
                           setIsUserMenuOpen(false);
                         }}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                          user.subscriptionPlan === 'free'
-                            ? 'bg-slate-100 text-slate-900 font-semibold'
+                          user.subscriptionPlan === 'pro_b2b'
+                            ? 'bg-amber-50 text-amber-900 font-semibold'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>Gratuit / Découverte (0€)</span>
-                        {user.subscriptionPlan === 'free' && <Check className="w-3.5 h-3.5 text-slate-600" />}
+                        <span>Licence B2B Solaire (49 € HT / mois)</span>
+                        {user.subscriptionPlan === 'pro_b2b' && <Check className="w-3.5 h-3.5 text-amber-600" />}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onChangeUserPlan('pilot_free');
+                          setIsUserMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
+                          user.subscriptionPlan === 'pilot_free'
+                            ? 'bg-teal-50 text-teal-900 font-semibold'
+                            : 'hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <span>Pilote La Grande-Motte (Gratuit 1 an)</span>
+                        {user.subscriptionPlan === 'pilot_free' && <Check className="w-3.5 h-3.5 text-teal-600" />}
                       </button>
                     </div>
                   </div>
@@ -246,7 +273,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-700 hover:bg-slate-100 flex items-center gap-2"
                     >
                       <LinkIcon className="w-3.5 h-3.5 text-purple-600" />
-                      <span>Éditer les liens des 10 applications</span>
+                      <span>Configurer les URLs d'accès</span>
                     </button>
                     <button
                       onClick={() => {
@@ -256,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-700 hover:bg-slate-100 flex items-center gap-2"
                     >
                       <Database className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Architecture multi-tenant & BDD</span>
+                      <span>Architecture multi-tenant & SSO</span>
                     </button>
                   </div>
                 </div>
@@ -299,7 +326,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg text-emerald-800 font-semibold bg-emerald-50 hover:bg-emerald-100 flex items-center gap-2 text-sm"
             >
               <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>Moteur IA Souverain (Mistral/Local)</span>
+              <span>Zero-Knowledge & IA Locale</span>
             </a>
             <button 
               onClick={() => {
@@ -309,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm text-left"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Grille des Tarifs (1€ ou 3€)</span>
+              <span>Tarifs officiels (15€ / 40€)</span>
             </button>
             <button 
               onClick={() => {
