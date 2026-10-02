@@ -82,20 +82,20 @@ export const AppGrid: React.FC<AppGridProps> = ({
   ).length;
 
   return (
-    <section id="applications" className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="applications" className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
-            <Layers className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1">
+            <Layers className="w-4 h-4 text-emerald-700" />
             <span>Catalogue Officiel ALPHABETTE</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Les applications de l'écosystème
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
-            {apps.length} applications de l'écosystème réparties en 3 pôles. Cliquez sur "Ouvrir l'application" pour accéder à vos outils avec le SSO sécurisé ALPHABETTE.
+          <p className="text-sm text-slate-700 mt-1 max-w-2xl">
+            {apps.length} solutions réparties en 3 pôles d'excellence. Accédez à vos outils avec le Single Sign-On (SSO) ALPHABETTE.
           </p>
         </div>
 
@@ -218,18 +218,18 @@ export const AppGrid: React.FC<AppGridProps> = ({
           {/* Add Application Card trigger */}
           <div 
             onClick={onAddNewAppSlot}
-            className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-8 flex flex-col items-center justify-center text-center group cursor-pointer transition-all hover:bg-emerald-50/30 min-h-[280px]"
+            className="border-2 border-dashed border-slate-300 hover:border-emerald-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer transition-all hover:bg-emerald-50/40 min-h-[260px] bg-slate-50/60"
           >
-            <div className="w-12 h-12 rounded-xl bg-slate-100 group-hover:bg-emerald-100 text-slate-400 group-hover:text-emerald-700 flex items-center justify-center transition-colors mb-3">
+            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 group-hover:border-emerald-300 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-800 flex items-center justify-center transition-colors mb-3 shadow-xs">
               <PlusCircle className="w-6 h-6" />
             </div>
-            <h4 className="font-bold text-slate-800 text-base group-hover:text-emerald-800">
+            <h4 className="font-bold text-slate-900 text-base group-hover:text-emerald-900">
               Ajouter une application
             </h4>
-            <p className="text-xs text-slate-500 max-w-xs mt-1">
-              Créer le slot #{apps.length + 1} dans l'écosystème pour intégrer l'une des 42 futures solutions.
+            <p className="text-xs text-slate-700 max-w-xs mt-1">
+              Créer le slot #{apps.length + 1} dans l'écosystème pour intégrer une solution logicielle supplémentaire.
             </p>
-            <span className="mt-4 text-xs font-semibold text-emerald-700 group-hover:underline">
+            <span className="mt-3 text-xs font-bold text-emerald-800 group-hover:underline">
               + Configurer un nouveau slot
             </span>
           </div>

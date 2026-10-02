@@ -9,12 +9,14 @@ import { Footer } from './components/Footer';
 import { UrlManagerModal } from './components/UrlManagerModal';
 import { DatabaseArchitectureModal } from './components/DatabaseArchitectureModal';
 import { AppLaunchModal } from './components/AppLaunchModal';
+import { VipCodeModal } from './components/VipCodeModal';
+import { VipActivationSection } from './components/VipActivationSection';
 import { INITIAL_APPS } from './data/initialApps';
 import { AppItem, UserProfile, PlanType } from './types';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
-const STORAGE_KEY_APPS = 'alphabette_apps_v3';
-const STORAGE_KEY_USER = 'alphabette_user_v3';
+const STORAGE_KEY_APPS = 'alphabette_apps_v4';
+const STORAGE_KEY_USER = 'alphabette_user_v4';
 
 export default function App() {
   // 1. Applications state with localStorage persistence
@@ -22,7 +24,10 @@ export default function App() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_APPS);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 15) {
+          return parsed;
+        }
       }
     } catch (e) {
       console.warn('Erreur de lecture du cache local', e);
@@ -30,7 +35,7 @@ export default function App() {
     return INITIAL_APPS;
   });
 
-  // 2. User Profile state with SSO session and subscription
+  // 2. User Profile state with SSO session, 7-day trial and Mistral AI access
   const [user, setUser] = useState<UserProfile>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_USER);
@@ -41,25 +46,34 @@ export default function App() {
       console.warn('Erreur de lecture du profil utilisateur', e);
     }
     return {
-      id: 'usr_valentin_richaud_01',
-      name: 'Valentin RICHAUD',
-      email: 'valentin@alphabette.fr',
+      id: 'usr_alphabette_admin_01',
+      name: 'Direction ALPHABETTE',
+      email: 'direction@alphabette.fr',
       role: 'superadmin',
       tenantId: 'tnt_alphabette_france',
       tenantName: 'ALPHABETTE Hub Central',
-      subscriptionPlan: 'alphabette_pass', // Default: Pass ALPHABETTE actif
-      unlockedAppIds: ['iadebat', 'infos-perso', 'oeil-atelier', 'france-service', 'proxilien'],
+      subscriptionPlan: 'bouquet_integral', // Par défaut: Bouquet Intégral débloqué
+      unlockedAppIds: INITIAL_APPS.map(a => a.id),
       ssoSessionId: 'sso_live_89f3a1c2',
       memberSince: '2024',
-      city: 'La Grande-Motte'
+      city: 'La Grande-Motte',
+      trialDaysLeft: 7,
+      trialExpiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString()
     };
   });
 
   // 3. Modal visibility states
   const [isUrlManagerOpen, setIsUrlManagerOpen] = useState(false);
   const [isDbArchitectureOpen, setIsDbArchitectureOpen] = useState(false);
+  const [isVipModalOpen, setIsVipModalOpen] = useState(false);
+  const [vipModalTab, setVipModalTab] = useState<'activate' | 'generator'>('activate');
   const [launchingApp, setLaunchingApp] = useState<AppItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleOpenVipModal = (tab: 'activate' | 'generator' = 'activate') => {
+    setVipModalTab(tab);
+    setIsVipModalOpen(true);
+  };
 
   // Sync apps to localStorage
   useEffect(() => {
@@ -92,13 +106,21 @@ export default function App() {
       subscriptionPlan: plan,
       unlockedAppIds: unlockedAppIds !== undefined 
         ? unlockedAppIds 
-        : (plan === 'alphabette_pass' ? apps.map(a => a.id) : (plan === 'single_app' ? ['lidarsol'] : []))
+        : (['bouquet_integral', 'bouquet_byok', 'alphabette_pass'].includes(plan) 
+            ? apps.map(a => a.id) 
+            : (['single_byok', 'single_managed', 'single_app'].includes(plan) ? ['france-service'] : []))
     }));
 
-    if (plan === 'alphabette_pass') {
-      showToast('🎉 Pass ALPHABETTE activé (40 € TTC / an) ! Toutes les applications citoyennes et la suite France Service sont débloquées.');
-    } else if (plan === 'single_app') {
-      showToast('Formule à l\'unité activée (15 € TTC / an par application sans prélèvement mensuel).');
+    if (plan === 'bouquet_integral' || plan === 'alphabette_pass') {
+      showToast('🎉 Pass Bouquet Intégral activé (199 € / an) ! Les 15 applications et les clés Mistral sont incluses.');
+    } else if (plan === 'bouquet_byok') {
+      showToast('🎉 Pass Bouquet BYOK activé (99 € / an) ! Les 15 applications sont débloquées avec votre clé Mistral.');
+    } else if (plan === 'single_managed') {
+      showToast('Formule Confort activée (59 € / an · Clé Mistral gérée incluse).');
+    } else if (plan === 'single_byok' || plan === 'single_app') {
+      showToast('Formule BYOK activée (39 € / an · Clé Mistral client).');
+    } else if (plan === 'trial_7d') {
+      showToast('🎁 Période d’essai de 7 jours activée avec la clé Mistral Alphabette incluse !');
     } else if (plan === 'pro_b2b') {
       showToast('Licence Pro B2B Solaire activée (49 € HT / mois).');
     } else {
@@ -114,9 +136,9 @@ export default function App() {
 
   // Handler: Reset to initial apps
   const handleResetDefaultApps = () => {
-    if (confirm('Voulez-vous réinitialiser le catalogue officiel ALPHABETTE ?')) {
+    if (confirm('Voulez-vous réinitialiser le catalogue officiel des 15 applications ALPHABETTE ?')) {
       setApps(INITIAL_APPS);
-      showToast('Le catalogue officiel ALPHABETTE a été rétabli.');
+      showToast('Le catalogue officiel ALPHABETTE (15 applications) a été rétabli.');
     }
   };
 
@@ -133,6 +155,17 @@ export default function App() {
     }
   };
 
+  // Handler: VIP code successfully activated
+  const handleCodeSuccessfullyActivated = (plan: PlanType, durationMonths: number, note?: string) => {
+    setUser(prev => ({
+      ...prev,
+      subscriptionPlan: plan,
+      unlockedAppIds: apps.map(a => a.id),
+      vipGrantedUntil: new Date(Date.now() + durationMonths * 30 * 24 * 3600 * 1000).toISOString(),
+    }));
+    showToast(`🎉 Code VIP validé ! Bouquet Intégral offert pour ${durationMonths} mois (${note || 'Invité Privilège'}).`);
+  };
+
   const configuredCount = apps.filter(a => a.isConfigured).length;
 
   return (
@@ -146,13 +179,14 @@ export default function App() {
         </div>
       )}
 
-      {/* 1. Header with Alphabette Logo, SSO user and subscription badge */}
+      {/* 1. Header with Alphabette Logo, SSO user, Mistral AI badge and subscription status */}
       <Header
         user={user}
         onChangeUserPlan={handleChangePlan}
         onOpenUrlManager={() => setIsUrlManagerOpen(true)}
         onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
         onOpenPricing={handleScrollToPricing}
+        onOpenVipModal={() => handleOpenVipModal('activate')}
         configuredCount={configuredCount}
         totalAppsCount={apps.length}
       />
@@ -160,7 +194,7 @@ export default function App() {
       {/* Main Page Body */}
       <main className="flex-1">
         
-        {/* 2. Hero Section: Mission, commitments, key metrics & quick links */}
+        {/* 2. Hero Section: Mission, engagements Mistral AI, essai 7j & grille tarifaire */}
         <Hero
           onOpenPricing={handleScrollToPricing}
           onOpenUrlManager={() => setIsUrlManagerOpen(true)}
@@ -168,7 +202,7 @@ export default function App() {
           appsCount={apps.length}
         />
 
-        {/* 3. Dynamic App Grid: Category filters, search, responsive cards & SSO launch */}
+        {/* 3. Dynamic App Grid: Les 15 applications métiers avec descriptif, capture & accès direct */}
         <AppGrid
           apps={apps}
           user={user}
@@ -179,25 +213,33 @@ export default function App() {
           onOpenUrlManager={() => setIsUrlManagerOpen(true)}
         />
 
-        {/* 4. Atelier Moteur IA Souverain (Gemini -> Local -> Mistral Cloud) */}
+        {/* 4. Atelier Moteur IA Souverain (Mistral Cloud France / Local Metal Ollama) */}
         <SovereignAiStudio
           user={user}
           onOpenPricing={handleScrollToPricing}
         />
 
-        {/* 5. Interactive Pricing Table: Gratuit (0€) / À la carte (1€) / Pass Complet (3€) */}
+        {/* 5. Interactive Pricing Table: 39€ / 59€ (Unité) · 99€ / 199€ (Bouquet) avec API promo & activation VIP */}
         <PricingSection
           user={user}
           apps={apps}
           onSelectPlan={handleChangePlan}
+          onOpenVipModal={(tab) => handleOpenVipModal(tab || 'activate')}
         />
 
-        {/* 6. Commitments Section: Sovereign AI, Eco-hosting, Zero Ads, EU independence */}
+        {/* 6. Espace d'Activation de Code Privilège (Option 1 : Usage unique strict & anti-fuite) */}
+        <VipActivationSection
+          user={user}
+          onCodeSuccessfullyActivated={handleCodeSuccessfullyActivated}
+          onOpenAdminGenerator={() => handleOpenVipModal('generator')}
+        />
+
+        {/* 7. Commitments Section: Souveraineté Mistral AI, RGPD France, Zéro Entraînement Public */}
         <CommitmentsSection />
 
       </main>
 
-      {/* 6. Footer */}
+      {/* 8. Footer avec lien obligatoire vers http://alphabette.fr */}
       <Footer
         onOpenPricing={handleScrollToPricing}
         onOpenUrlManager={() => setIsUrlManagerOpen(true)}
@@ -206,7 +248,7 @@ export default function App() {
       />
 
       {/* Modals */}
-      {/* URL / Links Manager Modal for Valentin RICHAUD */}
+      {/* URL / Links Manager Modal */}
       <UrlManagerModal
         isOpen={isUrlManagerOpen}
         onClose={() => setIsUrlManagerOpen(false)}
@@ -227,8 +269,17 @@ export default function App() {
         onClose={() => setLaunchingApp(null)}
         app={launchingApp}
         user={user}
-        onSelectPass={() => handleChangePlan('alphabette_pass')}
-        onSelectSingleApp={(appId) => handleChangePlan('single_app', [appId])}
+        onSelectPass={() => handleChangePlan('bouquet_integral')}
+        onSelectSingleApp={(appId) => handleChangePlan('single_byok', [appId])}
+      />
+
+      {/* VIP Access Code Modal (Usage unique strict & Registre Admin) */}
+      <VipCodeModal
+        isOpen={isVipModalOpen}
+        onClose={() => setIsVipModalOpen(false)}
+        user={user}
+        initialTab={vipModalTab}
+        onCodeSuccessfullyActivated={handleCodeSuccessfullyActivated}
       />
 
     </div>

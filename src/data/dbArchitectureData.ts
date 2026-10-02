@@ -18,7 +18,7 @@ export const DB_TABLES: DBTableDef[] = [
     purpose: 'Gère les espaces clients ou collectifs (ex: foyer citoyen, collectivité, association, entreprise partenaire).',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'Identifiant unique du tenant' },
-      { name: 'slug', type: 'VARCHAR(64)', constraints: 'UNIQUE NOT NULL', description: 'Identifiant URL (ex: valentin-richaud, amap-provence)' },
+      { name: 'slug', type: 'VARCHAR(64)', constraints: 'UNIQUE NOT NULL', description: 'Identifiant URL (ex: direction-generale, amap-provence)' },
       { name: 'name', type: 'VARCHAR(255)', constraints: 'NOT NULL', description: 'Nom de l’organisation ou du foyer' },
       { name: 'tier_default', type: 'VARCHAR(32)', constraints: 'DEFAULT \'free\'', description: 'Plan par défaut (free, single_app, pass)' },
       { name: 'data_residency_region', type: 'VARCHAR(32)', constraints: 'DEFAULT \'eu-fr-paris\'', description: 'Localisation stricte des données (Paris / EU)' },
@@ -57,25 +57,25 @@ export const DB_TABLES: DBTableDef[] = [
   },
   {
     name: 'subscriptions',
-    purpose: 'Gestion centrale des abonnements : Pass Complet (3 €/m), À la carte (1 €/m) ou Gratuit.',
+    purpose: 'Gestion centrale des abonnements : Bouquet Complet (99€ BYOK / 199€ Intégral), À l\'unité (39€ BYOK / 59€ Confort) ou Essai 7j.',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'ID unique d’abonnement' },
       { name: 'tenant_id', type: 'UUID', constraints: 'NOT NULL REFERENCES tenants(id) ON DELETE CASCADE', description: 'Tenant facturé' },
       { name: 'user_id', type: 'UUID', constraints: 'NOT NULL REFERENCES users(id) ON DELETE CASCADE', description: 'Titulaire du compte payeur' },
-      { name: 'plan_type', type: 'VARCHAR(32)', constraints: 'NOT NULL', description: 'free, single_app, alphabette_pass' },
-      { name: 'monthly_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant en centimes (ex: 300 pour 3€, 100 par app)' },
+      { name: 'plan_type', type: 'VARCHAR(32)', constraints: 'NOT NULL', description: 'trial_7d, single_byok, single_managed, bouquet_byok, bouquet_integral' },
+      { name: 'annual_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant annuel en centimes (ex: 3900 pour 39€, 19900 pour 199€)' },
       { name: 'status', type: 'VARCHAR(32)', constraints: 'DEFAULT \'active\'', description: 'active, past_due, canceled, trialing' },
-      { name: 'current_period_end', type: 'TIMESTAMPTZ', constraints: 'NOT NULL', description: 'Échéance de renouvellement' },
-      { name: 'payment_provider', type: 'VARCHAR(32)', constraints: 'DEFAULT \'sepa_direct\'', description: 'SEPA européen ou passerelle souveraine' }
+      { name: 'current_period_end', type: 'TIMESTAMPTZ', constraints: 'NOT NULL', description: 'Échéance de renouvellement annuel' },
+      { name: 'payment_provider', type: 'VARCHAR(32)', constraints: 'DEFAULT \'stripe\'', description: 'Stripe ou passerelle souveraine' }
     ]
   },
   {
     name: 'subscription_single_apps',
-    purpose: 'Liaison pour le modèle à la carte (1 € / mois par application individuelle).',
+    purpose: 'Liaison pour le modèle à l\'unité (39 € / an BYOK ou 59 € / an Confort).',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'ID d’attribution' },
       { name: 'subscription_id', type: 'UUID', constraints: 'NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE', description: 'Abonnement parent' },
-      { name: 'application_id', type: 'UUID', constraints: 'NOT NULL REFERENCES applications(id)', description: 'Application débloquée à 1€' },
+      { name: 'application_id', type: 'UUID', constraints: 'NOT NULL REFERENCES applications(id)', description: 'Application débloquée' },
       { name: 'granted_at', type: 'TIMESTAMPTZ', constraints: 'DEFAULT NOW()', description: 'Date d’activation' }
     ]
   },
@@ -105,7 +105,7 @@ export const DB_TABLES: DBTableDef[] = [
 
 export const SQL_SCHEMA_SCRIPT = `-- =========================================================================
 -- ALPHABETTE ECOSYSTEM : SCHEMA MULTI-TENANT & SERVICE D'AUTH SSO
--- Société éditrice : ALPHABETTE (Fondée par Valentin RICHAUD)
+-- Société éditrice : ALPHABETTE SASU
 -- Standard : PostgreSQL 15+ avec Row Level Security (RLS) & Chiffrement
 -- =========================================================================
 

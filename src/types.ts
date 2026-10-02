@@ -8,7 +8,28 @@ export type AppCategory =
   | 'Citoyen & Proximité' 
   | 'France Service (Zero-Knowledge)';
 
-export type PlanType = 'pilot_free' | 'single_app' | 'alphabette_pass' | 'pro_b2b';
+/**
+ * Plans officiels ALPHABETTE SASU :
+ * - trial_7d : Essai 7 jours offerts (Clé Alphabette Mistral incluse)
+ * - single_byok : 39 € / an (Application individuelle avec sa propre clé Mistral)
+ * - single_managed : 59 € / an (Application individuelle clé en main avec Mistral inclus)
+ * - bouquet_byok : 99 € / an (Bouquet complet 15 apps avec sa propre clé Mistral)
+ * - bouquet_integral : 199 € / an (Bouquet complet 15 apps avec clés Mistral incluses)
+ * - pro_b2b : 49 € HT / mois (Pôle professionnel solaire)
+ * - pilot_free : 100% gratuit (ex: pilote La Grande-Motte)
+ * - Compatibilité rétroactive : alphabette_pass (= bouquet), single_app (= single)
+ */
+export type PlanType = 
+  | 'trial_7d'
+  | 'single_byok'
+  | 'single_managed'
+  | 'bouquet_byok'
+  | 'bouquet_integral'
+  | 'pilot_free'
+  | 'pro_b2b'
+  // Alias de compatibilité
+  | 'single_app'
+  | 'alphabette_pass';
 
 export interface FranceServiceModule {
   id: string;
@@ -34,7 +55,7 @@ export interface AppItem {
   pricingNote: string;
   isPopular?: boolean;
   isPiloteFree?: boolean; // e.g. Proxilien à La Grande-Motte
-  isB2B?: boolean; // e.g. LIDARSOL / OSOLAR (49 € HT / mois)
+  isB2B?: boolean; // e.g. LIDARSOL / OSOLAR
   isFranceServiceSuite?: boolean; // France Service bundle
   franceServiceModules?: FranceServiceModule[];
 }
@@ -51,11 +72,63 @@ export interface UserProfile {
   ssoSessionId: string;
   memberSince: string;
   city?: string; // e.g. "La Grande-Motte"
+  trialDaysLeft?: number;
+  trialExpiresAt?: string;
+  customMistralApiKey?: string; // Mode BYOK
+  vipCodeUsed?: string;
+  vipGrantedUntil?: string;
 }
 
-export interface OfficialPricingModel {
-  singleAppPricePerYear: number; // 15 € TTC / an
-  bundlePassPricePerYear: number; // 40 € TTC / an
-  b2bSolarPricePerMonth: number; // 49 € HT / mois
-  proxilienPilotGratuit: boolean; // 100% gratuit phase pilote La Grande-Motte
+/**
+ * Configuration commerciale centrale distribuée via /api/config.json
+ */
+export interface HubCommercialConfig {
+  hubUrl: string;
+  currency: string;
+  pricing: {
+    singleApp: {
+      byok: number;     // 39 € / an
+      managed: number;  // 59 € / an
+    };
+    bouquet: {
+      byok: number;     // 99 € / an
+      managed: number;  // 199 € / an (Pass Bouquet Intégral)
+    };
+  };
+  activePromotion?: {
+    isActive: boolean;
+    badgeLabel: string;
+    discountPercent: number; // ex: 20 pour -20%
+    expiresAt: string; // ISO date
+    description: string;
+    couponCode: string;
+  };
+  stripePaymentLinks: {
+    single_byok: string;
+    single_managed: string;
+    bouquet_byok: string;
+    bouquet_integral: string;
+  };
+  aiPolicy: {
+    provider: 'Mistral AI (Exclusif)';
+    headquarters: 'Paris, France';
+    gdprCompliant: true;
+    zeroPublicTraining: true;
+    trialDaysIncluded: 7;
+  };
+}
+
+/**
+ * Format des codes VIP / Amis à usage unique
+ */
+export interface VipAccessCode {
+  code: string; // ex: 'VIP-X89K2'
+  status: 'active' | 'consumed' | 'revoked';
+  durationMonths: number; // ex: 12 (1 an offert)
+  planGranted: 'bouquet_integral' | 'bouquet_byok';
+  recipientNote?: string; // ex: 'Partenaire Mairie La Grande-Motte'
+  createdAt: string;
+  expiresAt: string;
+  consumedAt?: string;
+  consumedByEmail?: string;
 }

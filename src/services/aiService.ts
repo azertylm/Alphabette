@@ -1,3 +1,5 @@
+import { HubCommercialConfig, VipAccessCode } from '../types';
+
 export type AIProviderId = 
   | 'gemini' 
   | 'hybrid_mistral' 
@@ -57,6 +59,7 @@ export interface AIConfigResponse {
     localUrl?: string;
     timeoutMs?: number;
     isMistralCloudConfigured?: boolean;
+    headquarters?: string;
   }[];
   localServerConfig: {
     endpoint: string;
@@ -120,4 +123,91 @@ export async function setAIProvider(provider: AIProviderId): Promise<boolean> {
     body: JSON.stringify({ provider }),
   });
   return response.ok;
+}
+
+/**
+ * Récupère la configuration commerciale officielle consommée par toutes les applications (/api/config.json)
+ */
+export async function getHubCommercialConfig(): Promise<HubCommercialConfig> {
+  const response = await fetch('/api/config.json');
+  if (!response.ok) {
+    throw new Error(`Impossible de charger la configuration commerciale (HTTP ${response.status})`);
+  }
+  return response.json();
+}
+
+/**
+ * Met à jour la configuration commerciale via le panneau d'administration central
+ */
+export async function updateHubCommercialConfig(updates: Partial<HubCommercialConfig>): Promise<HubCommercialConfig> {
+  const response = await fetch('/api/admin/config', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!response.ok) {
+    throw new Error(`Erreur lors de la mise à jour de la configuration commerciale`);
+  }
+  const data = await response.json();
+  return data.config;
+}
+
+/**
+ * Vérifie et consomme un code VIP / Ami à usage unique strict
+ */
+export async function verifyVipCode(code: string, userEmail?: string): Promise<{
+  valid: boolean;
+  message?: string;
+  error?: string;
+  grantedPlan?: string;
+  durationMonths?: number;
+  grantedUntil?: string;
+  recipientNote?: string;
+}> {
+  const response = await fetch('/api/verify-code', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, userEmail }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    return {
+      valid: false,
+      error: data.error || `Erreur d'activation (HTTP ${response.status})`,
+    };
+  }
+  return data;
+}
+
+/**
+ * Récupère la liste des codes d'accès VIP (administration)
+ */
+export async function getVipCodesList(): Promise<VipAccessCode[]> {
+  const response = await fetch('/api/admin/vip-codes');
+  if (!response.ok) {
+    throw new Error(`Erreur de lecture des codes VIP`);
+  }
+  const data = await response.json();
+  return data.codes || [];
+}
+
+/**
+ * Génère un nouveau code d'accès unique sécurisé
+ */
+export async function generateNewVipCode(params: {
+  recipientNote: string;
+  durationMonths: number;
+  planGranted: 'bouquet_integral' | 'bouquet_byok';
+}): Promise<VipAccessCode> {
+  const response = await fetch('/api/admin/generate-vip-code', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  if (!response.ok) {
+    throw new Error(`Erreur lors de la génération du code VIP`);
+  }
+  const data = await response.json();
+  return data.codeRecord;
 }

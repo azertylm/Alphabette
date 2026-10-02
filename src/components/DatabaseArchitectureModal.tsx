@@ -41,9 +41,9 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
   const sampleJwtPayload = {
     iss: "https://auth.alphabette.fr",
     sub: "usr_8f29e1c4-7d5a-4b9e",
-    tenant_id: "tnt_valentin_richaud",
-    email: "valentin@alphabette.fr",
-    name: "Valentin RICHAUD",
+    tenant_id: "tnt_alphabette_direction",
+    email: "direction@alphabette.fr",
+    name: "Direction ALPHABETTE",
     global_role: "superadmin",
     plan: "alphabette_pass",
     unlocked_apps: ["*"], // Wildcard for 3€ Pass
@@ -172,7 +172,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                       </div>
                       <h5 className="font-bold text-sm text-emerald-400">ALPHABETTE Central Hub</h5>
                       <p className="text-[11px] text-slate-300 mt-1">
-                        Service d'authentification centralisé (Auth SSO). Gère les tenants, comptes citoyens, abonnements (1€ ou 3€) et clés publiques.
+                        Service d'authentification centralisé (Auth SSO). Gère les tenants, comptes professionnels & citoyens, abonnements (39€/59€ à l'unité ou Bouquet 99€/199€) et clés publiques.
                       </p>
                     </div>
                     <div className="mt-3 py-1 px-2 rounded bg-slate-800 text-[10px] text-slate-400 font-mono">
@@ -231,7 +231,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                   </div>
                   <h5 className="font-bold text-slate-900 text-sm">Permissions Dynamiques par Application</h5>
                   <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                    Chaque utilisateur a un rôle global (superadmin, citoyen) et des permissions fines par application (ex: Valentin est <code>admin</code> sur Lidarsol et un membre de quartier est <code>contributeur</code> sur Proxilien).
+                    Chaque utilisateur a un rôle global (superadmin, citoyen) et des permissions fines par application (ex: l'administrateur est <code>admin</code> sur Lidarsol et un membre de quartier est <code>contributeur</code> sur Proxilien).
                   </p>
                 </div>
 
@@ -239,9 +239,9 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                   <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-2 font-bold text-xs">
                     03
                   </div>
-                  <h5 className="font-bold text-slate-900 text-sm">Modèle Économique Hybride (1€ vs 3€)</h5>
+                  <h5 className="font-bold text-slate-900 text-sm">Modèle Économique (39€/59€ vs 99€/199€)</h5>
                   <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                    Si <code>plan_type = 'alphabette_pass'</code>, l'accès est calculé comme débloqué pour toutes les applications actuelles et futures. Si <code>plan_type = 'single_app'</code>, la table <code>subscription_single_apps</code> filtre au cas par cas.
+                    Si <code>plan_type = 'bouquet_integral'</code> ou <code>'bouquet_byok'</code>, l'accès est calculé comme débloqué pour les 15 applications actuelles et futures. Si <code>plan_type = 'single_byok'</code> ou <code>'single_managed'</code>, la table <code>subscription_single_apps</code> filtre l'application sélectionnée.
                   </p>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="p-4 rounded-xl border border-purple-200 bg-purple-50/60">
                     <div className="text-xs font-bold text-purple-900 uppercase">Superadmin</div>
-                    <div className="text-sm font-extrabold text-slate-900 mt-1">Valentin RICHAUD</div>
+                    <div className="text-sm font-extrabold text-slate-900 mt-1">Direction ALPHABETTE</div>
                     <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
                       <li>• Gestion des 50+ applications</li>
                       <li>• Déploiement des clés SSO</li>
@@ -386,7 +386,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
               <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-xs text-emerald-950 space-y-2">
                 <div className="font-bold flex items-center gap-1.5 text-emerald-900">
                   <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                  <span>Avantage de l'architecture pour Valentin RICHAUD :</span>
+                  <span>Avantage de l'architecture pour l'écosystème ALPHABETTE :</span>
                 </div>
                 <p className="text-emerald-800 leading-relaxed">
                   Grâce au claim <code>plan: "alphabette_pass"</code> et <code>unlocked_apps: ["*"]</code>, vous n'avez pas besoin de mettre à jour 50 applications différentes quand un utilisateur s'abonne : chaque application sait instantanément si le Pass à 3€ est actif !
@@ -422,7 +422,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
         {/* Modal Footer */}
         <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Conçu pour la société ALPHABETTE · Valentin RICHAUD
+            Conçu pour la société ALPHABETTE SASU
           </div>
           <button
             onClick={onClose}

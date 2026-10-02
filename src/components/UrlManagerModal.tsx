@@ -114,7 +114,7 @@ export const UrlManagerModal: React.FC<UrlManagerModalProps> = ({
           <Sparkles className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
           <div className="text-xs text-purple-900 space-y-1">
             <p className="font-semibold">
-              Espace de configuration des liens (Valentin RICHAUD) :
+              Espace de configuration des adresses des applications (ALPHABETTE Hub) :
             </p>
             <p className="text-purple-700 leading-relaxed">
               Vous pouvez coller vos adresses web réelles (ex: <code>https://mon-domaine-lidarsol.fr</code>). Dès que vous enregistrez, les boutons "Lancer l'app" du Hub redirigeront vos utilisateurs directement vers vos services avec la transmission de session SSO.

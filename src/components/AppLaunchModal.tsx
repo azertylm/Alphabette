@@ -218,7 +218,7 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {/* Option 1: Le Paquet Pass ALPHABETTE (40€ / an pour TOUTES les applis) */}
+                  {/* Option 1: Le Bouquet Alphabette (99€ BYOK ou 199€ Intégral pour les 15 applications) */}
                   <div 
                     onClick={() => {
                       onSelectPass();
@@ -228,26 +228,22 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-emerald-950">Le Paquet Pass ALPHABETTE (Recommandé)</span>
+                        <span className="font-bold text-sm text-emerald-950">Le Bouquet Alphabette (Recommandé)</span>
                         <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
-                          Toutes les applis
+                          Les 15 applis
                         </span>
                       </div>
                       <p className="text-xs text-emerald-800 mt-0.5">
-                        {app.isFranceServiceSuite ? (
-                          <span>Le paquet à 40 € pour <strong>TOUTES les applications</strong> : Service France (7 modules) + IADébat + Infos Perso + L'Œil de l'Atelier.</span>
-                        ) : (
-                          <span>Le paquet complet pour <strong>toutes les applications</strong> : {app.name} + Service France (7 modules) + autres applications citoyennes.</span>
-                        )}
+                        Débloquez <strong>l'intégralité des 15 applications</strong> avec le Bouquet complet : {app.name} + Service France + toutes les briques professionnelles et citoyennes.
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-extrabold text-base text-emerald-950">40 €</span>
-                      <span className="text-xs text-slate-500"> TTC / an</span>
+                      <span className="font-extrabold text-base text-emerald-950">99 € / 199 €</span>
+                      <span className="text-xs text-slate-500"> / an</span>
                     </div>
                   </div>
 
-                  {/* Option 2: Single App (15€ / an pour elle) */}
+                  {/* Option 2: Single App (39€ BYOK ou 59€ Managé) */}
                   <div 
                     onClick={() => {
                       onSelectSingleApp(app.id);
@@ -257,24 +253,18 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-sm text-slate-900">À l'unité : {app.name}</span>
-                        {app.isFranceServiceSuite && (
-                          <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded-full">
-                            15 € pour elle
-                          </span>
-                        )}
+                        <span className="font-bold text-sm text-slate-900">Application Individuelle : {app.name}</span>
+                        <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded-full">
+                          BYOK ou Géré
+                        </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        {app.isFranceServiceSuite ? (
-                          <span>Accès complet à Service France et ses 7 modules Zero-Knowledge pour 15 € / an seul, sans prélèvement mensuel.</span>
-                        ) : (
-                          <span>Abonnement annuel unique pour {app.name} seul, sans prélèvement mensuel.</span>
-                        )}
+                        Formule BYOK à <strong>39 € / an</strong> (clé Mistral personnelle) ou Formule Confort à <strong>59 € / an</strong> (Mistral inclus).
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-extrabold text-base text-slate-900">15 €</span>
-                      <span className="text-xs text-slate-500"> TTC / an</span>
+                      <span className="font-extrabold text-base text-slate-900">39 € / 59 €</span>
+                      <span className="text-xs text-slate-500"> / an</span>
                     </div>
                   </div>
                 </div>
