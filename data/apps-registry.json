@@ -3,6 +3,17 @@
   "updatedAt": "2026-10-17T00:00:00.000Z",
   "apps": [
     {
+      "id": "goat-chevre-the-king",
+      "name": "Goat Chèvre The King",
+      "slug": "goat",
+      "icon": "Crown",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "/goat",
+      "createdAt": "2026-10-17T00:00:00.000Z",
+      "updatedAt": "2026-10-17T00:00:00.000Z"
+    },
+    {
       "id": "lidarsol",
       "name": "LIDARSOL",
       "slug": "lidarsol",
