@@ -6,6 +6,9 @@ import { fetchPlayers } from './playersClient';
 import { usePyramidState } from './usePyramidState';
 import { PyramidBoard } from './PyramidBoard';
 import { ReserveDrawer } from './ReserveDrawer';
+import { DuelExpress } from './DuelExpress';
+import { ControversyGauge } from './ControversyGauge';
+import { visibleSlotIds } from './pyramidModel';
 
 /**
  * @file PyramidStage.tsx
@@ -54,6 +57,16 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
   const pool: GoatPlayer[] = useMemo(() => payload?.players ?? [], [payload]);
 
   const playersById = useMemo(() => new Map(pool.map((player) => [player.id, player])), [pool]);
+
+  /** Places réellement visibles (l'étage Expert masqué n'entre pas dans le score). */
+  const visibleAssignments = useMemo(() => {
+    const allowed = new Set(visibleSlotIds(api.state.expertMode));
+    const result: Record<string, string> = {};
+    for (const [slot, playerId] of Object.entries(api.state.assignments)) {
+      if (allowed.has(slot)) result[slot] = playerId;
+    }
+    return result;
+  }, [api.state.assignments, api.state.expertMode]);
 
   // Effectifs par univers pour l'en-tête (football et NBA).
   useEffect(() => {
@@ -116,6 +129,17 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
         placedIds={api.placedIds}
         onSelectPlayer={handleReserveSelect}
         onToggleHotTake={toggleHotTake}
+      />
+
+      {/* Mini-jeu : 10 duels rapides, vainqueurs pré-placés au sommet */}
+      <DuelExpress api={api} pool={pool} />
+
+      {/* Jauge de controverse : verdict quand la pyramide est complète */}
+      <ControversyGauge
+        assignments={visibleAssignments}
+        players={pool}
+        isComplete={api.isComplete}
+        isHotTakeSet={Boolean(api.state.hotTake)}
       />
     </section>
   );
