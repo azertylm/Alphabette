@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { sovereignAIRouter } from "./server/ai/router";
 import { AIProviderId, AIRequestOptions } from "./server/ai/types";
 import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
+import { createGoatPlayersRouter } from "./server/goatPlayers";
 
 dotenv.config();
 
@@ -125,6 +126,9 @@ async function startServer() {
 
   // Protégé : console /admin (mot de passe ADMIN_PASSWORD, session par cookie signé)
   app.use("/api/admin", createAdminRouter());
+
+  // Public : base de joueurs de Goat Chèvre The King (data/players.json)
+  app.use("/api/goat", createGoatPlayersRouter());
 
   /**
    * 1. GET /api/config.json

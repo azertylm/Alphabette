@@ -16,6 +16,7 @@ import { SportId, SportSwitcher, getSport, readStoredSport, storeSport } from '.
 
 export const GoatApp: React.FC = () => {
   const [sport, setSport] = useState<SportId>(readStoredSport);
+  const [counts, setCounts] = useState<Partial<Record<SportId, number>>>({});
 
   useEffect(() => {
     storeSport(sport);
@@ -29,12 +30,12 @@ export const GoatApp: React.FC = () => {
       <main className="flex-1">
         {/* Sélecteur d'univers au sommet */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-5">
-          <SportSwitcher value={sport} onChange={setSport} />
+          <SportSwitcher value={sport} onChange={setSport} counts={counts} />
         </div>
 
         {/* Espace central : pyramide + réserve */}
         <div className="pt-6">
-          <PyramidStage sport={sport} />
+          <PyramidStage sport={sport} onCountsReady={setCounts} />
         </div>
 
         {/* Note de sécurité / rappel écosystème */}

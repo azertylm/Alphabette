@@ -1,117 +1,122 @@
-import React from 'react';
-import { Crown, Layers3, Trophy, Users } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { SportId } from './sports';
+import { GoatPlayer, PlayersPayload } from './types';
+import { fetchPlayers } from './playersClient';
+import { usePyramidState } from './usePyramidState';
+import { PyramidBoard } from './PyramidBoard';
+import { ReserveDrawer } from './ReserveDrawer';
 
 /**
  * @file PyramidStage.tsx
- * Espace central de Goat Chèvre The King.
- *
- * Il accueille la pyramide interactive (étages 1-2-4-8 + mode Expert 16)
- * ainsi que le tiroir de réserve des joueurs, filtré par univers sportif.
+ * Espace central de Goat Chèvre The King :
+ *  - chargement de la base des joueurs de l'univers sélectionné
+ *  - pyramide interactive (étages 1-2-4-8 + mode Expert 16)
+ *  - réserve des joueurs (recherche + filtre par époque)
  */
-
-export interface PyramidTierDefinition {
-  level: number;
-  places: number;
-  label: string;
-  expert?: boolean;
-}
-
-export const PYRAMID_TIERS: PyramidTierDefinition[] = [
-  { level: 1, places: 1, label: 'Le GOAT Ultime' },
-  { level: 2, places: 2, label: 'Étage 2 — Les intouchables' },
-  { level: 3, places: 4, label: 'Étage 3 — Les demi-dieux' },
-  { level: 4, places: 8, label: 'Étage 4 — Le panthéon' },
-  { level: 5, places: 16, label: 'Étage 5 — Mode Expert', expert: true },
-];
 
 interface PyramidStageProps {
   sport: SportId;
+  /** Remonte les effectifs par univers pour l'affichage du sélecteur. */
+  onCountsReady?: (counts: Partial<Record<SportId, number>>) => void;
 }
 
-/**
- * Emplacement réservé de la pyramide et de la réserve des joueurs.
- * Les composants interactifs (glisser-déposer, duels express, mode chaos) viennent s'y brancher.
- */
-export const PyramidStage: React.FC<PyramidStageProps> = ({ sport }) => {
-  const tiers = PYRAMID_TIERS.filter((tier) => !tier.expert);
+export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady }) => {
+  const [payload, setPayload] = useState<PlayersPayload | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+
+  const api = usePyramidState(sport);
+  const { toggleHotTake } = api;
+
+  const load = useCallback(
+    async (force = false) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await fetchPlayers(sport, force);
+        setPayload(data);
+      } catch (err: any) {
+        setError(err?.message || 'Base de joueurs indisponible.');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [sport],
+  );
+
+  useEffect(() => {
+    setSelectedPlayerId(null);
+    load();
+  }, [load]);
+
+  const pool: GoatPlayer[] = useMemo(() => payload?.players ?? [], [payload]);
+
+  const playersById = useMemo(() => new Map(pool.map((player) => [player.id, player])), [pool]);
+
+  // Effectifs par univers pour l'en-tête (football et NBA).
+  useEffect(() => {
+    if (!payload?.counts) return;
+    onCountsReady?.({
+      football: payload.counts.football ?? 0,
+      nba: payload.counts.nba ?? 0,
+    });
+  }, [payload, onCountsReady]);
+
+  /** Clic dans la réserve : sélectionne (ou désélectionne) le joueur à placer. */
+  const handleReserveSelect = (playerId: string) => {
+    setSelectedPlayerId((current) => (current === playerId ? null : playerId));
+  };
+
+  if (isLoading) {
+    return (
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-10 flex flex-col items-center gap-3 text-slate-400">
+          <Loader2 className="w-6 h-6 animate-spin text-amber-400" />
+          <p className="text-sm">Chargement des légendes {sport === 'football' ? 'du football' : 'de la NBA'}…</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
+        <div className="rounded-3xl border border-red-500/40 bg-red-500/5 p-6 text-center space-y-3">
+          <AlertCircle className="w-6 h-6 text-red-400 mx-auto" />
+          <p className="text-sm font-semibold text-red-300">Base de joueurs indisponible</p>
+          <p className="text-xs text-red-200/80 max-w-xl mx-auto">{error}</p>
+          <button
+            onClick={() => load(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 text-xs font-bold transition-colors cursor-pointer"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Réessayer
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-label="Espace central : pyramide et réserve" className="max-w-6xl mx-auto px-4 sm:px-6 pb-10 space-y-8">
+      <PyramidBoard
+        api={api}
+        pool={pool}
+        playersById={playersById}
+        selectedPlayerId={selectedPlayerId}
+        onSelectPlayer={setSelectedPlayerId}
+      />
 
-      {/* Pyramide */}
-      <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-          <h2 className="inline-flex items-center gap-2 text-sm font-black text-white uppercase tracking-widest">
-            <Layers3 className="w-4 h-4 text-amber-400" />
-            La Pyramide GOAT
-          </h2>
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
-            <Trophy className="w-3.5 h-3.5 text-amber-400" />
-            15 places · univers {sport === 'football' ? 'Football' : 'NBA'}
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          {tiers.map((tier) => (
-            <div key={tier.level} className="space-y-1.5">
-              <p className="text-center text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                {tier.level === 1 ? (
-                  <span className="inline-flex items-center gap-1 text-amber-400">
-                    <Crown className="w-3 h-3" />
-                    {tier.label}
-                  </span>
-                ) : (
-                  tier.label
-                )}
-              </p>
-              <div
-                className="grid gap-1.5 sm:gap-2 mx-auto"
-                style={{ gridTemplateColumns: `repeat(${tier.places}, minmax(0, 1fr))`, maxWidth: `${tier.places * 9}rem` }}
-              >
-                {Array.from({ length: tier.places }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-xl border border-dashed border-slate-700 bg-slate-950/60 flex flex-col items-center justify-center text-center ${
-                      tier.level === 1 ? 'h-24 sm:h-28' : tier.level === 2 ? 'h-20 sm:h-24' : 'h-16 sm:h-20'
-                    }`}
-                  >
-                    <span className="text-[10px] font-bold text-slate-600">Place libre</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-5 text-center text-xs text-slate-500">
-          L'espace central accueillera la pyramide interactive (recherche, glisser-déposer, mode chaos).
-        </p>
-      </div>
-
-      {/* Tiroir de réserve */}
-      <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="inline-flex items-center gap-2 text-sm font-black text-white uppercase tracking-widest">
-            <Users className="w-4 h-4 text-emerald-400" />
-            Réserve des joueurs
-          </h2>
-          <span className="text-[11px] font-semibold text-slate-400">Recherche rapide + filtre par époque</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <div className="sm:col-span-2 h-11 rounded-xl bg-slate-950/70 border border-slate-800" />
-          <div className="h-11 rounded-xl bg-slate-950/70 border border-slate-800" />
-        </div>
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <div key={index} className="h-24 rounded-xl border border-slate-800 bg-slate-950/50" />
-          ))}
-        </div>
-        <p className="mt-4 text-center text-xs text-slate-500">
-          Le tiroir affichera les joueurs de l'univers sélectionné avec photo, nom et années d'activité.
-        </p>
-      </div>
-
+      <ReserveDrawer
+        players={pool}
+        selectedPlayerId={selectedPlayerId}
+        hotTakeId={api.state.hotTake}
+        placedIds={api.placedIds}
+        onSelectPlayer={handleReserveSelect}
+        onToggleHotTake={toggleHotTake}
+      />
     </section>
   );
 };
