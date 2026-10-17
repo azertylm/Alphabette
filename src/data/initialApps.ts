@@ -59,6 +59,17 @@ export const FRANCE_SERVICE_MODULES: FranceServiceModule[] = [
   }
 ];
 
+/**
+ * Applications retirées de la vitrine.
+ *
+ * OSOLAR part et PROXILIEN est en sommeil : ils seront réintégrés plus tard
+ * depuis un autre hébergeur (voir docs/ecosysteme-alphabette.md). Ils restent
+ * conservés dans le catalogue ci-dessous et dans data/apps-registry.json
+ * (statut « brouillon ») — il suffit de retirer leur identifiant de cette liste
+ * pour les réafficher aussitôt.
+ */
+export const RETIRED_APP_IDS: string[] = ['osolar', 'proxilien'];
+
 export const INITIAL_APPS: AppItem[] = [
   // 1. PÔLE PROFESSIONNEL ÉNERGIE & CARTOGRAPHIE (B2B Solaire)
   {

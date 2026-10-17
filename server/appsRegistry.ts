@@ -21,6 +21,12 @@ export interface RegistryApp {
   status: AppStatus;
   badge: AppBadge;
   url?: string;
+  /**
+   * Sous-domaine dédié de l'application, sans le domaine racine.
+   * Exemple : « goatchevretheking » → https://goatchevretheking.alphabette.fr
+   * Une même application reste joignable par son chemin interne (/goat).
+   */
+  subdomain?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -65,7 +71,8 @@ function isBadge(value: unknown): value is AppBadge {
 export function readRegistry(): RegistryFile {
   try {
     const raw = fs.readFileSync(REGISTRY_PATH, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<RegistryFile>;
+    // Un éditeur Windows peut ajouter un BOM : on le retire avant de parser.
+    const parsed = JSON.parse(raw.replace(/^\uFEFF/, "")) as Partial<RegistryFile>;
     const apps = Array.isArray(parsed.apps) ? parsed.apps.filter((a) => a && a.id && a.name) : [];
     return {
       version: typeof parsed.version === "number" ? parsed.version : 1,
@@ -118,6 +125,7 @@ export interface CreateAppInput {
   status?: unknown;
   badge?: unknown;
   url?: unknown;
+  subdomain?: unknown;
 }
 
 export interface UpdateAppInput extends CreateAppInput {}
@@ -136,6 +144,21 @@ function sanitizeUrl(value: unknown): string | undefined {
   if (url.startsWith("/")) return url;
   if (/^https?:\/\/[^\s]+$/i.test(url)) return url;
   throw new RegistryError("L'URL doit être une adresse http(s) ou un chemin interne (ex: /goat).", 400);
+}
+
+/** Un sous-domaine valide : minuscules, chiffres et tirets (ex. « goatchevretheking »). */
+const SUBDOMAIN_PATTERN = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
+
+function sanitizeSubdomain(value: unknown): string | undefined {
+  if (typeof value !== "string" || !value.trim()) return undefined;
+  const subdomain = value.trim().toLowerCase().replace(/\.alphabette\.(fr|eu)$/, "");
+  if (!SUBDOMAIN_PATTERN.test(subdomain)) {
+    throw new RegistryError(
+      "Sous-domaine invalide : minuscules, chiffres et tirets uniquement (ex. goatchevretheking).",
+      400,
+    );
+  }
+  return subdomain;
 }
 
 function buildUniqueId(registry: RegistryFile, base: string): string {
@@ -176,6 +199,7 @@ export function createApp(input: CreateAppInput): RegistryApp {
     status: isStatus(input.status) ? input.status : "brouillon",
     badge: isBadge(input.badge) && input.badge ? input.badge : null,
     url: sanitizeUrl(input.url),
+    subdomain: sanitizeSubdomain(input.subdomain),
     createdAt: now,
     updatedAt: now,
   };
@@ -228,6 +252,11 @@ export function updateApp(id: string, input: UpdateAppInput): RegistryApp {
 
   if (input.url !== undefined) {
     next.url = sanitizeUrl(input.url);
+  }
+
+  if (input.subdomain !== undefined) {
+    next.subdomain =
+      input.subdomain === null || input.subdomain === "" ? undefined : sanitizeSubdomain(input.subdomain);
   }
 
   next.updatedAt = new Date().toISOString();

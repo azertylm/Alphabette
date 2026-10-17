@@ -149,6 +149,8 @@ export interface RegistryApp {
   status: RegistryAppStatus;
   badge: RegistryAppBadge;
   url?: string;
+  /** Sous-domaine dédié (ex. « goatchevretheking » → goatchevretheking.alphabette.fr). */
+  subdomain?: string;
   createdAt: string;
   updatedAt: string;
 }

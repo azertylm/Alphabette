@@ -65,6 +65,7 @@ export interface RegistryAppInput {
   status?: RegistryAppStatus;
   badge?: RegistryAppBadge;
   url?: string;
+  subdomain?: string;
 }
 
 export async function createRegistryApp(input: RegistryAppInput): Promise<RegistryApp> {

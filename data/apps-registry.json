@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T17:31:44.108Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
-      "name": "Goat Chèvre The King",
+      "name": "Goat ChÃ¨vre The King",
       "slug": "goat",
       "icon": "Crown",
       "status": "actif",
       "badge": "Nouveau",
       "url": "/goat",
+      "subdomain": "goatchevretheking",
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-10-17T00:00:00.000Z"
     },
@@ -20,7 +21,7 @@
       "icon": "SunMedium",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://lidarsol.alphabette.fr",
+      "url": "https://lidarsol.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-10-17T00:00:00.000Z"
     },
@@ -29,7 +30,7 @@
       "name": "OSOLAR",
       "slug": "osolar",
       "icon": "Zap",
-      "status": "actif",
+      "status": "brouillon",
       "badge": "Populaire",
       "url": "https://osolar.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
@@ -40,7 +41,7 @@
       "name": "PROXILIEN",
       "slug": "proxilien",
       "icon": "HeartHandshake",
-      "status": "actif",
+      "status": "brouillon",
       "badge": "Populaire",
       "url": "https://proxilien.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
@@ -48,7 +49,7 @@
     },
     {
       "id": "iadebat",
-      "name": "IADÉBAT",
+      "name": "IADÃ‰BAT",
       "slug": "iadebat",
       "icon": "Scale",
       "status": "actif",
@@ -70,7 +71,7 @@
     },
     {
       "id": "oeil-atelier",
-      "name": "L'ŒIL DE L'ATELIER",
+      "name": "L'Å’IL DE L'ATELIER",
       "slug": "oeil-atelier",
       "icon": "Hammer",
       "status": "actif",
@@ -103,7 +104,7 @@
     },
     {
       "id": "eco-diag",
-      "name": "ÉCO-DIAG HABITAT",
+      "name": "Ã‰CO-DIAG HABITAT",
       "slug": "eco-diag",
       "icon": "Leaf",
       "status": "actif",
@@ -158,7 +159,7 @@
     },
     {
       "id": "agri-meteo-locale",
-      "name": "AGRI-MÉTÉO LOCALE",
+      "name": "AGRI-MÃ‰TÃ‰O LOCALE",
       "slug": "agri-meteo-locale",
       "icon": "CloudSun",
       "status": "actif",
@@ -169,7 +170,7 @@
     },
     {
       "id": "memoire-commune",
-      "name": "MÉMOIRE COMMUNE",
+      "name": "MÃ‰MOIRE COMMUNE",
       "slug": "memoire-commune",
       "icon": "Bookmark",
       "status": "actif",

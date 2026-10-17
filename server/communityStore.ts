@@ -93,7 +93,8 @@ const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 function readJsonFile<T>(filePath: string, fallback: T): T {
   try {
     const raw = fs.readFileSync(filePath, "utf-8");
-    const parsed = JSON.parse(raw);
+    // Un éditeur Windows peut ajouter un BOM : on le retire avant de parser.
+    const parsed = JSON.parse(raw.replace(/^\uFEFF/, ""));
     return (parsed ?? fallback) as T;
   } catch (err: any) {
     if (err?.code !== "ENOENT") {

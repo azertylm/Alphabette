@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { AppGrid } from './components/AppGrid';
@@ -12,7 +12,7 @@ import { DatabaseArchitectureModal } from './components/DatabaseArchitectureModa
 import { AppLaunchModal } from './components/AppLaunchModal';
 import { VipCodeModal } from './components/VipCodeModal';
 import { VipActivationSection } from './components/VipActivationSection';
-import { INITIAL_APPS } from './data/initialApps';
+import { INITIAL_APPS, RETIRED_APP_IDS } from './data/initialApps';
 import { AppItem, UserProfile, PlanType } from './types';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
@@ -35,6 +35,16 @@ export default function App() {
     }
     return INITIAL_APPS;
   });
+
+  /**
+   * Applications réellement montrées au public.
+   * Le filtre est appliqué à l'affichage (et non dans les données) car le cache
+   * local des visiteurs peut encore contenir les anciennes applications retirées.
+   */
+  const visibleApps = useMemo(
+    () => apps.filter((app) => !RETIRED_APP_IDS.includes(app.id)),
+    [apps],
+  );
 
   // 2. User Profile state with SSO session, 7-day trial and Mistral AI access
   const [user, setUser] = useState<UserProfile>(() => {
@@ -189,7 +199,7 @@ export default function App() {
         onOpenPricing={handleScrollToPricing}
         onOpenVipModal={() => handleOpenVipModal('activate')}
         configuredCount={configuredCount}
-        totalAppsCount={apps.length}
+        totalAppsCount={visibleApps.length}
       />
 
       {/* Main Page Body */}
@@ -200,12 +210,12 @@ export default function App() {
           onOpenPricing={handleScrollToPricing}
           onOpenUrlManager={() => setIsUrlManagerOpen(true)}
           onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
-          appsCount={apps.length}
+          appsCount={visibleApps.length}
         />
 
         {/* 3. Dynamic App Grid: Les 15 applications métiers avec descriptif, capture & accès direct */}
         <AppGrid
-          apps={apps}
+          apps={visibleApps}
           user={user}
           onLaunch={(app) => setLaunchingApp(app)}
           onEditUrl={() => setIsUrlManagerOpen(true)}
@@ -226,7 +236,7 @@ export default function App() {
         {/* 5. Interactive Pricing Table: 39€ / 59€ (Unité) · 99€ / 199€ (Bouquet) avec API promo & activation VIP */}
         <PricingSection
           user={user}
-          apps={apps}
+          apps={visibleApps}
           onSelectPlan={handleChangePlan}
           onOpenVipModal={(tab) => handleOpenVipModal(tab || 'activate')}
         />
@@ -248,7 +258,7 @@ export default function App() {
         onOpenPricing={handleScrollToPricing}
         onOpenUrlManager={() => setIsUrlManagerOpen(true)}
         onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
-        appsCount={apps.length}
+        appsCount={visibleApps.length}
       />
 
       {/* Modals */}

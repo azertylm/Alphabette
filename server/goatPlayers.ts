@@ -25,7 +25,8 @@ function readPlayersFile(): unknown {
     return cache.payload;
   }
 
-  const payload = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  // Un éditeur Windows peut ajouter un BOM : on le retire avant de parser.
+  const payload = JSON.parse(fs.readFileSync(filePath, "utf-8").replace(/^\uFEFF/, ""));
   cache = { mtimeMs: stat.mtimeMs, payload };
   return payload;
 }
