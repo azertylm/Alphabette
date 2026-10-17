@@ -3,6 +3,8 @@ import { GoatPlayer } from './types';
 import { buildFallbackAvatar } from './fallbackAvatar';
 import { ControversyResult } from './controversy';
 import { PYRAMID_TIERS, visibleSlotIds } from './pyramidModel';
+import { computePhotoDrawRect, getPhotoFrame } from './photoFrames';
+import { playerPhotoUrl } from './images';
 
 /**
  * @file shareImage.ts
@@ -39,12 +41,13 @@ const FONT_STACK = "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif";
 /** Charge une image en mode CORS ; retourne null si indisponible (photo cassée ou bloquée). */
 async function loadPhoto(url: string): Promise<HTMLImageElement | null> {
   if (!url) return null;
+  const source = playerPhotoUrl(url);
   return new Promise((resolve) => {
     const image = new Image();
     image.crossOrigin = 'anonymous';
     image.onload = () => resolve(image);
     image.onerror = () => resolve(null);
-    image.src = url;
+    image.src = source;
   });
 }
 
@@ -209,19 +212,24 @@ export async function renderShareImage(options: ShareImageOptions): Promise<Blob
         // Photo cadrée en haut (visage)
         const photo = photos.get(player.id);
         if (photo) {
+          const boxX = x + 2;
+          const boxY = cardY + 2;
+          const boxWidth = scaledCardWidth - 4;
+          const boxHeight = scaledPhotoHeight - 2;
           ctx.save();
-          roundedRect(ctx, x + 2, cardY + 2, scaledCardWidth - 4, scaledPhotoHeight - 2, 12 * scale);
+          roundedRect(ctx, boxX, boxY, boxWidth, boxHeight, 12 * scale);
           ctx.clip();
-          const ratio = Math.max((scaledCardWidth - 4) / photo.width, (scaledPhotoHeight - 2) / photo.height);
-          const drawWidth = photo.width * ratio;
-          const drawHeight = photo.height * ratio;
-          ctx.drawImage(
-            photo,
-            x + 2 + (scaledCardWidth - 4 - drawWidth) / 2,
-            cardY + 2,
-            drawWidth,
-            drawHeight,
+          // Même cadrage que dans l'application (image entière par défaut).
+          const rect = computePhotoDrawRect(
+            photo.width,
+            photo.height,
+            boxX,
+            boxY,
+            boxWidth,
+            boxHeight,
+            getPhotoFrame(player.id),
           );
+          ctx.drawImage(photo, rect.dx, rect.dy, rect.dw, rect.dh);
           ctx.restore();
         }
 

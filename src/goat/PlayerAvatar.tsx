@@ -1,35 +1,40 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { GoatPlayer } from './types';
 import { buildFallbackAvatar } from './fallbackAvatar';
+import { frameImageStyle, usePhotoFrame } from './photoFrames';
+import { playerPhotoUrl } from './images';
 
 /**
  * @file PlayerAvatar.tsx
- * Photo officielle du joueur (vignette Wikimedia 300 px) avec repli automatique
- * sur un avatar SVG silhouetté + initiales si l'image est cassée ou indisponible.
+ * Photo du joueur (vignette Wikimedia) affichée **en entier** par défaut,
+ * avec repli automatique sur un avatar SVG + initiales si l'image est indisponible.
+ * Le cadrage personnalisé du joueur (déplacement / zoom) est appliqué automatiquement.
  */
 
 interface PlayerAvatarProps {
   player: GoatPlayer;
   className?: string;
-  /** Position du cadrage : « top » privilégie les visages. */
-  focus?: 'top' | 'center';
 }
 
-export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({ player, className = '', focus = 'top' }) => {
+export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({ player, className = '' }) => {
   const fallback = useMemo(() => buildFallbackAvatar(player.name), [player.name]);
-  const [src, setSrc] = useState(player.image || fallback);
+  const frame = usePhotoFrame(player.id);
+  const photoUrl = useMemo(() => playerPhotoUrl(player.image), [player.image]);
+  const [src, setSrc] = useState(photoUrl || fallback);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
-    player.image ? 'loading' : 'error',
+    photoUrl ? 'loading' : 'error',
   );
 
   useEffect(() => {
-    setSrc(player.image || fallback);
-    setStatus(player.image ? 'loading' : 'error');
-  }, [player.image, fallback]);
+    setSrc(photoUrl || fallback);
+    setStatus(photoUrl ? 'loading' : 'error');
+  }, [photoUrl, fallback]);
 
   return (
-    <div className={`relative overflow-hidden bg-slate-800 ${className}`}>
-      {status === 'loading' && <div className="absolute inset-0 bg-slate-700 animate-pulse" aria-hidden="true" />}
+    <div
+      className={`relative overflow-hidden bg-gradient-to-b from-slate-800/80 to-slate-950 ${className}`}
+    >
+      {status === 'loading' && <div className="absolute inset-0 bg-slate-800 animate-pulse" aria-hidden="true" />}
       <img
         src={src}
         alt={player.name}
@@ -45,7 +50,8 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({ player, className = 
             setStatus('error');
           }
         }}
-        className={`w-full h-full object-cover ${focus === 'top' ? 'object-top' : 'object-center'} transition-opacity duration-300 ${
+        style={frameImageStyle(status === 'error' ? null : frame)}
+        className={`w-full h-full transition-opacity duration-300 ${
           status === 'ready' ? 'opacity-100' : 'opacity-0'
         }`}
       />

@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Cache des photos de joueurs téléchargées depuis Wikimedia
+data/cache/

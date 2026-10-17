@@ -1,11 +1,14 @@
-import React from 'react';
-import { Flame, GripVertical, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { Crop, Flame, GripVertical, X } from 'lucide-react';
 import { GoatPlayer } from './types';
 import { PlayerAvatar } from './PlayerAvatar';
+import { PhotoFrameEditor } from './PhotoFrameEditor';
+import { hasCustomFrame } from './photoFrames';
 
 /**
  * @file PlayerCard.tsx
- * Carte joueur : photo officielle cadrée, nom lisible et années d'activité juste en dessous.
+ * Carte joueur : photo affichée en entier (ou cadrage personnalisé), nom lisible
+ * et années d'activité juste en dessous.
  * Utilisée dans la pyramide (variant « slot ») et dans la réserve (variant « reserve »).
  */
 
@@ -33,14 +36,19 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   compactTier = 3,
 }) => {
   const isSlot = variant === 'slot';
+  const [isFrameEditorOpen, setIsFrameEditorOpen] = useState(false);
+  const isFramed = hasCustomFrame(player.id);
 
-  const photoHeight = isSlot
+  // Photo entière par défaut. En case de pyramide, on garde des hauteurs compactes
+  // (l'image reste complète, simplement plus petite) ; en réserve, un format portrait
+  // 4/5 met les visages bien mieux en valeur.
+  const photoClassName = isSlot
     ? compactTier === 1
-      ? 'h-16 sm:h-20'
+      ? 'w-full h-28 sm:h-32'
       : compactTier === 2
-        ? 'h-14 sm:h-16'
-        : 'h-12 sm:h-14'
-    : 'h-24 sm:h-28';
+        ? 'w-full h-24 sm:h-28'
+        : 'w-full h-20 sm:h-24'
+    : 'w-full aspect-[4/5]';
 
   const nameSize = isSlot ? (compactTier === 1 ? 'text-[11px] sm:text-xs' : 'text-[10px] sm:text-[11px]') : 'text-xs';
   const yearSize = isSlot ? 'text-[9px] sm:text-[10px]' : 'text-[10px]';
@@ -62,7 +70,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       } bg-slate-900 ${isDragging ? 'opacity-40' : ''}`}
       title={`${player.name} — ${player.career}`}
     >
-      <PlayerAvatar player={player} className={`w-full ${photoHeight}`} />
+      <PlayerAvatar player={player} className={photoClassName} />
 
       {isHotTake && (
         <span className="absolute top-1 left-1 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-orange-500 text-white text-[9px] font-black shadow">
@@ -110,6 +118,33 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         >
           <X className="w-3.5 h-3.5" />
         </button>
+      )}
+
+      {/* Ajuster le cadrage de la photo (déplacer / zoomer) */}
+      {player.image && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            setIsFrameEditorOpen(true);
+          }}
+          title={
+            isFramed
+              ? 'Photo cadrée par toi — modifier le cadrage'
+              : 'Décaler / zoomer la photo (cadrage personnalisé)'
+          }
+          className={`absolute bottom-1 left-1 w-6 h-6 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+            isFramed
+              ? 'bg-amber-400 text-slate-950'
+              : 'bg-slate-950/85 text-slate-300 hover:text-amber-300 opacity-0 group-hover:opacity-100 focus:opacity-100'
+          }`}
+        >
+          <Crop className="w-3.5 h-3.5" />
+        </button>
+      )}
+
+      {isFrameEditorOpen && (
+        <PhotoFrameEditor player={player} onClose={() => setIsFrameEditorOpen(false)} />
       )}
     </div>
   );

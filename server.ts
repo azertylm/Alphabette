@@ -6,6 +6,7 @@ import { sovereignAIRouter } from "./server/ai/router";
 import { AIProviderId, AIRequestOptions } from "./server/ai/types";
 import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
 import { createGoatPlayersRouter } from "./server/goatPlayers";
+import { createGoatPhotosRouter } from "./server/goatPhotos";
 
 dotenv.config();
 
@@ -129,6 +130,9 @@ async function startServer() {
 
   // Public : base de joueurs de Goat Chèvre The King (data/players.json)
   app.use("/api/goat", createGoatPlayersRouter());
+
+  // Public : proxy des photos (Wikimedia) pour que le canvas reste exploitable
+  app.use("/api/goat", createGoatPhotosRouter());
 
   /**
    * 1. GET /api/config.json
