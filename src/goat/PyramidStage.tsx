@@ -8,7 +8,10 @@ import { PyramidBoard } from './PyramidBoard';
 import { ReserveDrawer } from './ReserveDrawer';
 import { DuelExpress } from './DuelExpress';
 import { ControversyGauge } from './ControversyGauge';
+import { SharePanel } from './SharePanel';
 import { visibleSlotIds } from './pyramidModel';
+import { computeControversy } from './controversy';
+import { getSport } from './sports';
 
 /**
  * @file PyramidStage.tsx
@@ -67,6 +70,12 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
     }
     return result;
   }, [api.state.assignments, api.state.expertMode]);
+
+  /** Jauge de controverse (utilisée pour l'affichage et pour l'image de partage). */
+  const controversy = useMemo(
+    () => computeControversy(visibleAssignments, pool),
+    [visibleAssignments, pool],
+  );
 
   // Effectifs par univers pour l'en-tête (football et NBA).
   useEffect(() => {
@@ -140,6 +149,16 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
         players={pool}
         isComplete={api.isComplete}
         isHotTakeSet={Boolean(api.state.hotTake)}
+      />
+
+      {/* Partage viral : image HD + QR code vers alphabette.fr/goat */}
+      <SharePanel
+        assignments={visibleAssignments}
+        players={pool}
+        hotTakeId={api.state.hotTake}
+        controversy={controversy}
+        sportLabel={getSport(sport).label}
+        expertMode={api.state.expertMode}
       />
     </section>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AlertCircle, ExternalLink } from 'lucide-react';
 import { GoatHeader } from './GoatHeader';
+import { AlphabetteGateway } from './AlphabetteGateway';
 import { PyramidStage } from './PyramidStage';
 import { SportId, SportSwitcher, getSport, readStoredSport, storeSport } from './sports';
 
@@ -53,6 +54,9 @@ export const GoatApp: React.FC = () => {
           </p>
         </div>
       </main>
+
+      {/* Passerelle vers l'écosystème alphabette.fr */}
+      <AlphabetteGateway />
     </div>
   );
 };
