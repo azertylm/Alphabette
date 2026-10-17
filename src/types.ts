@@ -132,3 +132,29 @@ export interface VipAccessCode {
   consumedAt?: string;
   consumedByEmail?: string;
 }
+
+/**
+ * Registre central des applications (data/apps-registry.json)
+ * Source de vérité consommée par la vitrine et la console /admin.
+ */
+export type RegistryAppStatus = 'actif' | 'brouillon' | 'maintenance';
+
+export type RegistryAppBadge = 'Nouveau' | 'Populaire' | null;
+
+export interface RegistryApp {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  status: RegistryAppStatus;
+  badge: RegistryAppBadge;
+  url?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RegistrySnapshot {
+  version: number;
+  updatedAt: string;
+  apps: RegistryApp[];
+}

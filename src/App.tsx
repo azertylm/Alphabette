@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { AppGrid } from './components/AppGrid';
+import { AppsRegistrySection } from './components/AppsRegistrySection';
 import { PricingSection } from './components/PricingSection';
 import { SovereignAiStudio } from './components/SovereignAiStudio';
 import { CommitmentsSection } from './components/CommitmentsSection';
@@ -212,6 +213,9 @@ export default function App() {
           onAddNewAppSlot={handleAddNewAppSlot}
           onOpenUrlManager={() => setIsUrlManagerOpen(true)}
         />
+
+        {/* 3 bis. Nos Applications : registre central synchronisé (statut « actif ») */}
+        <AppsRegistrySection />
 
         {/* 4. Atelier Moteur IA Souverain (Mistral Cloud France / Local Metal Ollama) */}
         <SovereignAiStudio

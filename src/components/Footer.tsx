@@ -155,6 +155,14 @@ export const Footer: React.FC<FooterProps> = ({
             <span className="hover:text-slate-400 cursor-pointer">Technologie Mistral AI</span>
             <span>•</span>
             <span className="hover:text-slate-400 cursor-pointer">100% Conforme RGPD</span>
+            <span>•</span>
+            <a
+              href="/admin"
+              title="Console d'administration du registre"
+              className="text-slate-700 hover:text-emerald-500 transition-colors"
+            >
+              Console
+            </a>
           </div>
         </div>
 

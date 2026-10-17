@@ -4,6 +4,7 @@ import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import { sovereignAIRouter } from "./server/ai/router";
 import { AIProviderId, AIRequestOptions } from "./server/ai/types";
+import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
 
 dotenv.config();
 
@@ -116,6 +117,14 @@ async function startServer() {
       time: new Date().toISOString(),
     });
   });
+
+  // --- REGISTRE DES APPLICATIONS & CONSOLE D'ADMINISTRATION ---
+
+  // Public : applications publiées (statut « actif ») pour la vitrine alphabette.fr
+  app.use("/api/apps", createPublicAppsRouter());
+
+  // Protégé : console /admin (mot de passe ADMIN_PASSWORD, session par cookie signé)
+  app.use("/api/admin", createAdminRouter());
 
   /**
    * 1. GET /api/config.json
