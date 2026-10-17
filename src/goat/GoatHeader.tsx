@@ -1,15 +1,18 @@
 import React from 'react';
-import { Crown, ExternalLink, Home, ShieldCheck, Trophy } from 'lucide-react';
+import { Crown, ExternalLink, Home, ShieldCheck, Trophy, Users } from 'lucide-react';
 import { CrownGoatMascot } from './CrownGoatMascot';
+import { useCommunitySession } from '../community/communitySession';
 
 /**
  * @file GoatHeader.tsx
  * En-tête dynamique de Goat Chèvre The King :
  * identité de marque (chèvre couronnée) + bandeau « propulsé par alphabette.fr »
- * avec lien de retour fluide vers le hub principal.
+ * avec liens vers le hub principal et la galerie de la communauté.
  */
 
 export const GoatHeader: React.FC = () => {
+  const { user } = useCommunitySession();
+
   return (
     <header className="relative border-b border-amber-500/20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       {/* Bandeau propulsé par alphabette.fr */}
@@ -24,14 +27,23 @@ export const GoatHeader: React.FC = () => {
               </a>
             </span>
           </p>
-          <a
-            href="/"
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-bold text-white transition-colors"
-          >
-            <Home className="w-3 h-3" />
-            <span>Retour au hub alphabette.fr</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <a
+              href="/goat/communaute"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/30 text-[11px] font-bold text-amber-200 transition-colors"
+            >
+              <Users className="w-3 h-3" />
+              <span>Communauté</span>
+            </a>
+            <a
+              href="/"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-bold text-white transition-colors"
+            >
+              <Home className="w-3 h-3" />
+              <span>Retour au hub alphabette.fr</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
 
@@ -56,9 +68,15 @@ export const GoatHeader: React.FC = () => {
             Football international &amp; Basketball NBA : construis ta pyramide des plus grands joueurs de tous les
             temps, du GOAT ultime jusqu'à l'étage des 8.
           </p>
-          <p className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-300/90">
-            <Trophy className="w-3.5 h-3.5" />
-            Gratuit, sans compte, 100&nbsp;% dans ton navigateur
+          <p className="mt-2 inline-flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1 text-[11px] font-semibold text-amber-300/90">
+            <span className="inline-flex items-center gap-1.5">
+              <Trophy className="w-3.5 h-3.5" />
+              Gratuit, sans compte pour jouer
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-slate-400">
+              <Users className="w-3.5 h-3.5" />
+              {user ? `compte : ${user.username}` : 'un compte pour publier ta pyramide'}
+            </span>
           </p>
         </div>
       </div>

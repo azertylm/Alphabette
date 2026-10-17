@@ -9,6 +9,7 @@ import { ReserveDrawer } from './ReserveDrawer';
 import { DuelExpress } from './DuelExpress';
 import { ControversyGauge } from './ControversyGauge';
 import { SharePanel } from './SharePanel';
+import { CommunityPublish } from '../community/CommunityPublish';
 import { visibleSlotIds } from './pyramidModel';
 import { computeControversy } from './controversy';
 import { getSport } from './sports';
@@ -153,6 +154,16 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
 
       {/* Partage viral : image HD + QR code vers alphabette.fr/goat */}
       <SharePanel
+        assignments={visibleAssignments}
+        players={pool}
+        hotTakeId={api.state.hotTake}
+        controversy={controversy}
+        sportLabel={getSport(sport).label}
+        expertMode={api.state.expertMode}
+      />
+
+      {/* Communauté : publier sa pyramide et explorer celles des autres */}
+      <CommunityPublish
         assignments={visibleAssignments}
         players={pool}
         hotTakeId={api.state.hotTake}

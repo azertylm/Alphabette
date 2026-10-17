@@ -7,6 +7,7 @@ import { AIProviderId, AIRequestOptions } from "./server/ai/types";
 import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
 import { createGoatPlayersRouter } from "./server/goatPlayers";
 import { createGoatPhotosRouter } from "./server/goatPhotos";
+import { createCommunityRouter, ensureCommunityStorage } from "./server/communityRoutes";
 
 dotenv.config();
 
@@ -104,6 +105,10 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
 
 async function startServer() {
   const app = express();
+
+  // --- COMMUNAUTÉ (avant le parser JSON global : les images publiées pèsent plusieurs Mo) ---
+  ensureCommunityStorage();
+  app.use("/api/community", createCommunityRouter());
 
   // Middleware JSON
   app.use(express.json());

@@ -22,6 +22,7 @@ import {
   updateRegistryApp,
 } from '../services/registryService';
 import { REGISTRY_ICON_NAMES, RegistryIcon } from '../components/RegistryIcon';
+import { AdminCommunity } from './AdminCommunity';
 
 /**
  * @file AdminDashboard.tsx
@@ -478,6 +479,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
           </section>
 
         </div>
+
+        {/* Modération de la communauté (pyramides partagées + comptes) */}
+        <AdminCommunity />
       </main>
     </div>
   );
