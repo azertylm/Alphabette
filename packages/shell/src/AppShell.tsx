@@ -136,6 +136,7 @@ export function AppShell({
       url: app.subdomain ? `https://${app.subdomain}.alphabette.fr` : undefined,
       icon: typeof app.icon === 'string' ? app.icon : undefined,
       status: 'actif',
+      gratuit: app.gratuit === true,
     };
     return [courante, ...appsHub];
   }, [appsHub, app.key, app.name, app.subdomain, app.icon]);
@@ -164,7 +165,11 @@ export function AppShell({
    */
   const compteurAuto = useMemo(() => {
     const enLigne = apps.filter((entree) => entree.url && (!entree.status || entree.status === 'actif'));
-    return { unlocked: enLigne.length, total: apps.length };
+    return {
+      unlocked: enLigne.length,
+      total: apps.length,
+      gratuites: apps.filter((entree) => entree.gratuit).length,
+    };
   }, [apps]);
   const counterFinal = app.counter ?? (registreSource === 'hub' || app.gratuit ? compteurAuto : undefined);
 

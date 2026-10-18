@@ -64,6 +64,12 @@ export interface AlphaAppConfig {
     total: number;
     /** Jours d'essai restants (0 ou absent = pas d'essai). */
     trialDaysLeft?: number;
+    /**
+     * Nombre d'applications **gratuites** de l'écosystème, calculé par la base
+     * depuis le registre du hub. Sert à ne jamais laisser croire que tout est
+     * gratuit : « gratuit (7 sur 15) ».
+     */
+    gratuites?: number;
   };
   /** État de la clé d'API affiché dans l'en-tête. */
   apiKeyState?: ShellStatus;

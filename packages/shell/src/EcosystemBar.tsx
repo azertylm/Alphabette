@@ -103,13 +103,25 @@ export function EcosystemBar({
             type="button"
             className="ab-counter"
             onClick={onOpenSites}
-            title="Voir les applications de l'écosystème"
+            title={
+              app.gratuit
+                ? `${app.name} est gratuite. ${
+                    typeof counter.gratuites === 'number'
+                      ? `${counter.gratuites} des ${counter.total} applications de l'écosystème ${
+                          counter.gratuites > 1 ? 'sont gratuites' : 'est gratuite'
+                        }`
+                      : `L'écosystème compte ${counter.total} applications`
+                  } — voir la liste.`
+                : "Voir les applications de l'écosystème"
+            }
           >
             <span>{app.gratuit ? 'gratuit' : `${counter.unlocked}/${counter.total}`}</span>
             {app.gratuit ? (
-              <span className="ab-counter__trial">
-                ({counter.total} application{counter.total > 1 ? 's' : ''})
-              </span>
+              typeof counter.gratuites === 'number' ? (
+                <span className="ab-counter__trial">
+                  ({counter.gratuites} sur {counter.total})
+                </span>
+              ) : null
             ) : (
               typeof counter.trialDaysLeft === 'number' &&
               counter.trialDaysLeft > 0 && (

@@ -227,6 +227,7 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
 function PanneauGratuit({ app, config, apps, hubUrl, ouvrir, basculer }: PanneauProps) {
   const base = hubUrl.replace(/\/$/, '');
   const total = apps.length || app.counter?.total || 16;
+  const gratuites = apps.filter((entree) => entree.gratuit).length;
   return (
     <>
       <div className="ab-panneau">
@@ -256,12 +257,21 @@ function PanneauGratuit({ app, config, apps, hubUrl, ouvrir, basculer }: Panneau
       <div className="ab-panneau">
         <h4>Et les autres applications ?</h4>
         <p>
-          Elles se débloquent avec le Pass : <strong>{euros(config.perAppPerYear)} / an</strong> pour une application,{' '}
+          {gratuites > 0 && (
+            <>
+              <strong>{gratuites}</strong> application{gratuites > 1 ? 's' : ''} de l’écosystème{' '}
+              {gratuites > 1 ? 'sont gratuites' : 'est gratuite'} — tu peux les ouvrir sans rien payer. Les autres se
+              débloquent avec le Pass :{' '}
+            </>
+          )}
+          {gratuites === 0 && <>Les autres applications se débloquent avec le Pass : </>}
+          <strong>{euros(config.perAppPerYear)} / an</strong> pour une application,{' '}
           <strong>{euros(config.ecosystemPerYear)} / an</strong> pour tout l’écosystème. C’est ce qui finance, entre
           autres, les applications gratuites comme celle-ci.
         </p>
         <p className="ab-note">
-          Les prix viennent du hub (<code>/api/config.json</code>) : ils se mettent à jour tout seuls.
+          Les prix viennent du hub (<code>/api/config.json</code>) et les applications gratuites du registre
+          (<code>/api/apps</code>) : les deux se mettent à jour tout seuls.
         </p>
       </div>
     </>
@@ -348,6 +358,10 @@ function PanneauPass(props: PanneauProps) {
 
 function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: PanneauProps) {
   const total = app.counter?.total ?? apps.length;
+  const gratuites = apps.filter((entree) => entree.gratuit).length;
+  // Les applications gratuites d'abord : ce sont celles que l'on peut ouvrir
+  // tout de suite. Le tri est stable, l'ordre du registre est conservé ensuite.
+  const liste = [...apps].sort((a, b) => Number(Boolean(b.gratuit)) - Number(Boolean(a.gratuit)));
   return (
     <>
       <div className="ab-panneau">
@@ -356,7 +370,14 @@ function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: Panne
           {app.gratuit ? (
             <>
               <strong>{app.name}</strong> est <strong>gratuite</strong> : rien à débloquer ici. Voici les {total}{' '}
-              application{total > 1 ? 's' : ''} de l’écosystème — c’est là que le Pass, lui, sert.
+              application{total > 1 ? 's' : ''} de l’écosystème
+              {gratuites > 0 && (
+                <>
+                  , dont <strong>{gratuites} gratuite{gratuites > 1 ? 's' : ''}</strong> (signalée
+                  {gratuites > 1 ? 's' : ''} « Gratuit » ci-dessous)
+                </>
+              )}{' '}
+              — c’est là que le Pass, lui, sert.
             </>
           ) : app.counter ? (
             <>
@@ -364,6 +385,7 @@ function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: Panne
               {typeof app.counter.trialDaysLeft === 'number' && app.counter.trialDaysLeft > 0 && (
                 <> · essai : {app.counter.trialDaysLeft} jour(s) restant(s)</>
               )}
+              {gratuites > 0 && <> · {gratuites} gratuite{gratuites > 1 ? 's' : ''}</>}
               .
             </>
           ) : (
@@ -373,7 +395,7 @@ function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: Panne
       </div>
 
       <ul className="ab-liste">
-        {apps.map((entree) => (
+        {liste.map((entree) => (
           <LigneApp key={entree.key} app={entree} courant={entree.key === app.key} />
         ))}
       </ul>
