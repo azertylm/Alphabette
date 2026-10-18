@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-17T17:31:44.108Z",
+  "updatedAt": "2026-10-18T09:41:35.949Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -178,6 +178,18 @@
       "url": "https://memoirecommune.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-10-17T00:00:00.000Z"
+    },
+    {
+      "id": "revolution",
+      "name": "RÉVOLUTION",
+      "slug": "revolution",
+      "icon": "Rocket",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://revolution.alphabette.fr",
+      "subdomain": "revolution",
+      "createdAt": "2026-10-18T09:41:35.949Z",
+      "updatedAt": "2026-10-18T09:41:35.949Z"
     }
   ]
 }
