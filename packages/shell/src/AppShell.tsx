@@ -168,9 +168,12 @@ export function AppShell({
     return {
       unlocked: enLigne.length,
       total: apps.length,
-      gratuites: apps.filter((entree) => entree.gratuit).length,
+      // Le compte des applications gratuites n'a de sens que si c'est bien le
+      // registre du hub qui a répondu : sinon la base n'affiche que « gratuit »,
+      // sans avancer un chiffre faux.
+      gratuites: registreSource === 'hub' ? apps.filter((entree) => entree.gratuit).length : undefined,
     };
-  }, [apps]);
+  }, [apps, registreSource]);
   const counterFinal = app.counter ?? (registreSource === 'hub' || app.gratuit ? compteurAuto : undefined);
 
   /** Contenu sur mesure déclaré par l'application, sinon panneau par défaut. */

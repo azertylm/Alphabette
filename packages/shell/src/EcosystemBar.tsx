@@ -110,7 +110,7 @@ export function EcosystemBar({
                       ? `${counter.gratuites} des ${counter.total} applications de l'écosystème ${
                           counter.gratuites > 1 ? 'sont gratuites' : 'est gratuite'
                         }`
-                      : `L'écosystème compte ${counter.total} applications`
+                      : `Aucun prix, aucun essai, aucune carte bancaire`
                   } — voir la liste.`
                 : "Voir les applications de l'écosystème"
             }
