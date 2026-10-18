@@ -60,6 +60,16 @@ TLS wildcard couvre l'ensemble des applications, présentes et futures.
 
 Voir `.env.example`.
 
+## Dépôts
+
+- **`goatchevretheking.alphabette.fr`** — dépôt principal : tout le code de l'écosystème
+- **`Alphabette`** — miroir tenu à jour automatiquement (même historique)
+
+Le hub **alphabette.fr** et toutes les applications vivent dans le **même code** :
+un seul serveur sert chaque application sur son sous-domaine. Un nouveau projet
+n'a donc pas besoin d'un nouveau dépôt — seulement d'un dossier et d'une entrée
+dans la carte des applications (`src/appRoutes.ts`).
+
 ## Licence
 
 Apache License 2.0 — voir [LICENSE](LICENSE).
