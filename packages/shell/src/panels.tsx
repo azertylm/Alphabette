@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import type { EcosystemApp } from './apps';
 import type { AlphaAppConfig, ShellStatus } from './config';
-import { IconCheck, IconExternal, IconShield, IconSparkles, IconStar } from './icons';
-import type { ShellConfig } from './pricing';
+import { IconCheck, IconCopy, IconExternal, IconHeart, IconShield, IconSparkles, IconStar } from './icons';
+import type { ShellConfig, ShellDonation } from './pricing';
 
 /**
  * Les cinq panneaux que la base sait ouvrir par-dessus le contenu.
@@ -31,6 +32,17 @@ export function infosPanneau(
   app: AlphaAppConfig,
 ): { titre: string; sousTitre: string; icone: ReactNode } {
   const base = SHELL_PANELS[id];
+  // L'espace dons porte le nom de l'application : c'est elle que l'on soutient,
+  // et c'est l'écosystème qui en profite.
+  if (id === 'dons') {
+    // Élision correcte quel que soit le nom (« de Révolution », « d’Info Perso »).
+    const de = /^[aeiouyàâäéèêëîïôöùûü]/i.test(app.name) ? `d’${app.name}` : `de ${app.name}`;
+    return {
+      ...base,
+      titre: 'Espace dons & soutien financier',
+      sousTitre: `Soutenir le développement ${de} et de l’écosystème souverain alphabette`,
+    };
+  }
   if (!app.gratuit) return base;
   if (id === 'pass') {
     return { ...base, icone: '🎁', titre: `${app.name} est gratuite`, sousTitre: 'Aucun prix, aucun essai, aucune carte bancaire' };
@@ -426,7 +438,316 @@ function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: Panne
   );
 }
 
-function PanneauDons({ app, hubUrl, ouvrir }: PanneauProps) {
+/** Repli de copie pour les navigateurs sans API presse-papiers (ou en http). */
+async function copierTexte(texte: string): Promise<boolean> {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(texte);
+      return true;
+    }
+  } catch {
+    // Contexte non sécurisé ou permission refusée : on tente le repli.
+  }
+  try {
+    const zone = document.createElement('textarea');
+    zone.value = texte;
+    zone.setAttribute('readonly', '');
+    zone.style.position = 'fixed';
+    zone.style.top = '-1000px';
+    document.body.appendChild(zone);
+    zone.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(zone);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+/** Une valeur copiable : intitulé, valeur, bouton « Copier » avec confirmation. */
+function LigneCopier({ libelle, valeur }: { libelle: string; valeur: string }) {
+  const [ok, setOk] = useState(false);
+  return (
+    <div className="ab-copier-ligne">
+      <span className="ab-copier-ligne__libelle">{libelle}</span>
+      <code>{valeur}</code>
+      <button
+        type="button"
+        className={`ab-copier${ok ? ' ab-copier--ok' : ''}`}
+        title={`Copier ${libelle}`}
+        onClick={async () => {
+          const succes = await copierTexte(valeur);
+          setOk(succes);
+          if (succes) window.setTimeout(() => setOk(false), 1800);
+        }}
+      >
+        {ok ? (
+          <>
+            <IconCheck width={12} height={12} /> Copié
+          </>
+        ) : (
+          <>
+            <IconCopy width={12} height={12} /> Copier
+          </>
+        )}
+      </button>
+    </div>
+  );
+}
+
+/** Contreparties affichées si le hub n'en publie pas. */
+const CONTREPARTIES_DEFAUT = [
+  'Accès illimité et garanti à vie aux fonctionnalités actuelles et futures de l’écosystème.',
+  'Zéro abonnement récurrent : aucune reconduction tacite, aucun frais dissimulé.',
+  'Badge exclusif « Fondateur Pionnier », affiché dans ton profil.',
+  'Priorité sur les développements et vote consultatif sur les prochaines fonctionnalités.',
+];
+
+/**
+ * Espace dons complet, alimenté par le hub (`/api/config.json` → `donation`) :
+ * RIB copiable pour un virement direct (0 % de frais) et offre « Membre
+ * fondateur ». Aucun paiement en ligne, aucune donnée bancaire saisie ici.
+ */
+function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: ShellDonation }) {
+  const hub = hubUrl.replace(/\/$/, '');
+  const minimum = don.montantMinimum ?? 30;
+  const montants = don.montants?.length ? don.montants : [minimum, minimum * 2, minimum * 3];
+  const [montant, setMontant] = useState(montants[1] ?? montants[0]);
+  const [libre, setLibre] = useState('');
+  const [pseudo, setPseudo] = useState('');
+  const [copie, setCopie] = useState(false);
+
+  const libreNombre = Number(libre.replace(',', '.'));
+  const montantEffectif =
+    libre.trim() && Number.isFinite(libreNombre) && libreNombre > 0 ? Math.round(libreNombre) : montant;
+
+  const max = don.placeMax ?? 500;
+  const prises = Math.min(Math.max(don.placesAttribuees ?? 0, 0), max);
+  const restantes = Math.max(max - prises, 0);
+  const pourcent = max > 0 ? Math.round((prises / max) * 100) : 0;
+  const objet = don.objetVirement ?? 'DON ALPHABETTE';
+
+  const recapitulatif = [
+    `Don à l’écosystème alphabette — ${montantEffectif} €`,
+    don.titulaire && `Titulaire : ${don.titulaire}`,
+    don.banque && `Banque : ${don.banque}`,
+    don.iban && `IBAN : ${don.iban}`,
+    don.bic && `BIC : ${don.bic}`,
+    `Objet du virement : ${objet}`,
+    pseudo.trim() && `Membre fondateur : ${pseudo.trim()}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const mailto = don.contact
+    ? `mailto:${don.contact}?subject=${encodeURIComponent(`Don alphabette — ${montantEffectif} €`)}&body=${encodeURIComponent(
+        `Bonjour,\n\nJe viens de faire un don de ${montantEffectif} € à l’écosystème alphabette par virement SEPA.\n${
+          pseudo.trim() ? `Pseudo de membre fondateur : ${pseudo.trim()}\n` : ''
+        }Objet du virement : ${objet}\n\nMerci d’enregistrer ma place de fondateur.\n`,
+      )}`
+    : null;
+
+  return (
+    <>
+      {don.exemple && (
+        <p className="ab-note ab-note--warn">
+          <IconShield width={13} height={13} /> Coordonnées d’exemple publiées par le hub : remplace-les par les
+          vraies dans <code>data/donation.json</code> avant de communiquer cet espace.
+        </p>
+      )}
+
+      <div className="ab-dons">
+        {/* ---------- Volet 1 : coordonnées bancaires ---------- */}
+        <div className="ab-don-carte">
+          <h4>Relevé d’identité bancaire (RIB)</h4>
+          <p className="ab-note">
+            Virement direct de compte à compte : <strong>0 % de frais</strong>, aucun intermédiaire, rien de prélevé
+            sur ton don.
+          </p>
+
+          {(don.banque || don.titulaire) && (
+            <div className="ab-rib">
+              <div className="ab-rib__champ">
+                <span>Banque · titulaire du compte</span>
+                <span className="ab-rib__valeur">{[don.banque, don.titulaire].filter(Boolean).join(' — ')}</span>
+              </div>
+              <div className="ab-rib__grille">
+                {(
+                  [
+                    ['Code banque', don.codeBanque],
+                    ['Code guichet', don.codeGuichet],
+                    ['Numéro de compte', don.numeroCompte],
+                    ['Clé RIB', don.cleRib],
+                  ] as const
+                )
+                  .filter(([, valeur]) => Boolean(valeur))
+                  .map(([libelle, valeur]) => (
+                    <div className="ab-rib__champ" key={libelle}>
+                      <span>{libelle}</span>
+                      <span className="ab-rib__valeur">{valeur}</span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {don.iban && <LigneCopier libelle="IBAN" valeur={don.iban} />}
+          {don.bic && <LigneCopier libelle="BIC" valeur={don.bic} />}
+
+          <p className="ab-note">
+            <IconCheck width={13} height={13} /> Virement SEPA instantané supporté — réception en quelques secondes.
+          </p>
+
+          <div className="ab-actions-ligne">
+            <button
+              type="button"
+              className="ab-btn ab-btn--don ab-btn--lg"
+              onClick={async () => {
+                const succes = await copierTexte(recapitulatif);
+                setCopie(succes);
+                if (succes) window.setTimeout(() => setCopie(false), 1800);
+              }}
+            >
+              {copie ? (
+                <>
+                  <IconCheck width={14} height={14} /> Récapitulatif copié
+                </>
+              ) : (
+                <>
+                  <IconCopy width={14} height={14} /> Partager / copier tout
+                </>
+              )}
+            </button>
+          </div>
+
+          <h4 className="ab-don-carte__titre-suivant">Comment faire un virement ?</h4>
+          <ol className="ab-etapes">
+            <li>Ouvre ton application bancaire et choisis « Faire un virement ».</li>
+            <li>
+              Colle l’<strong>IBAN</strong> ci-dessus : le titulaire <strong>{don.titulaire ?? 'destinataire'}</strong>{' '}
+              s’affiche automatiquement.
+            </li>
+            <li>
+              Saisis le montant et mets <strong>{objet}</strong> en objet
+              {pseudo.trim() ? `, avec « ${pseudo.trim()} » en référence` : ''}.
+            </li>
+            <li>Valide : avec le SEPA instantané, l’argent arrive en quelques secondes.</li>
+          </ol>
+        </div>
+
+        {/* ---------- Volet 2 : offre Membre fondateur ---------- */}
+        <div className="ab-don-carte ab-don-carte--vedette">
+          <span className="ab-etiquette ab-etiquette--pass">
+            Offre officielle Membre fondateur · {max} places max
+          </span>
+          <h4>Pass Fondateur — licence perpétuelle</h4>
+          <p className="ab-note">Accès garanti à vie • Zéro récurrence • Places limitées</p>
+
+          <div className="ab-jauges">
+            <div
+              className="ab-jauges__barre"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={max}
+              aria-valuenow={prises}
+              aria-label="Places de membre fondateur attribuées"
+            >
+              <div className="ab-jauges__remplie" style={{ width: `${pourcent}%` }} />
+            </div>
+            <span className="ab-note">
+              Places pionniers attribuées : <strong>{prises}</strong> / {max} — rareté : <strong>{restantes}</strong>{' '}
+              places restantes · prochain pionnier <strong>#{prises + 1}</strong>.
+            </span>
+          </div>
+
+          <h4 className="ab-don-carte__titre-suivant">Montant de ta contribution (dès {minimum} €)</h4>
+          <div className="ab-montants" role="group" aria-label="Montant du don">
+            {montants.map((valeur) => (
+              <button
+                key={valeur}
+                type="button"
+                className={`ab-montant${!libre.trim() && montant === valeur ? ' ab-montant--actif' : ''}`}
+                onClick={() => {
+                  setMontant(valeur);
+                  setLibre('');
+                }}
+              >
+                {valeur} €
+              </button>
+            ))}
+          </div>
+
+          <label className="ab-champ">
+            Autre montant (libre dès {minimum} €)
+            <input
+              type="number"
+              inputMode="numeric"
+              min={minimum}
+              step={1}
+              value={libre}
+              onChange={(evenement) => setLibre(evenement.target.value)}
+              placeholder={`${minimum} € minimum`}
+            />
+          </label>
+
+          <h4 className="ab-don-carte__titre-suivant">Contreparties incluses à vie</h4>
+          <ul>
+            {(don.contreparties?.length ? don.contreparties : CONTREPARTIES_DEFAUT).map((contrepartie, index) => (
+              <li key={index}>{contrepartie}</li>
+            ))}
+          </ul>
+
+          <label className="ab-champ">
+            Nom ou pseudo du membre fondateur (optionnel)
+            <input
+              type="text"
+              value={pseudo}
+              maxLength={60}
+              onChange={(evenement) => setPseudo(evenement.target.value)}
+              placeholder="Ton pseudo"
+            />
+          </label>
+
+          <div className="ab-actions-ligne">
+            {mailto && (
+              <a className="ab-btn ab-btn--pass ab-btn--lg" href={mailto}>
+                <IconHeart width={14} height={14} /> J’ai fait mon virement de {montantEffectif} €
+              </a>
+            )}
+            <button
+              type="button"
+              className="ab-btn ab-btn--ghost ab-btn--lg"
+              onClick={() => copierTexte(recapitulatif)}
+            >
+              <IconCopy width={14} height={14} /> Copier le récapitulatif
+            </button>
+          </div>
+
+          <p className="ab-note">
+            Aucun paiement en ligne et aucune donnée bancaire saisie ici : le virement se fait depuis ta banque, puis
+            tu préviens Alphabette pour recevoir ton badge <strong>Fondateur Pionnier</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div className="ab-actions-ligne">
+        <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('sites')}>
+          🧭 Les applications
+        </button>
+        <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => ouvrir(hub)}>
+          alphabette.fr <IconExternal width={14} height={14} />
+        </button>
+      </div>
+
+      <p className="ab-note">
+        Coordonnées publiées par le hub (<code>data/donation.json</code>, relayé dans <code>/api/config.json</code>) :
+        une seule modification met à jour toutes les applications.
+      </p>
+    </>
+  );
+}
+
+function PanneauDonsSimple({ app, hubUrl, ouvrir }: PanneauProps) {
   const don = app.donUrl ?? `${hubUrl.replace(/\/$/, '')}/don`;
   return (
     <>
@@ -457,6 +778,15 @@ function PanneauDons({ app, hubUrl, ouvrir }: PanneauProps) {
       </p>
     </>
   );
+}
+
+/**
+ * Panneau « dons » : espace complet dès que le hub publie ses coordonnées
+ * bancaires, version simple sinon (hub injoignable ou non configuré).
+ */
+function PanneauDons(props: PanneauProps) {
+  const don = props.config.donation;
+  return don ? <EspaceDons {...props} don={don} /> : <PanneauDonsSimple {...props} />;
 }
 
 /** Rend le panneau demandé. */

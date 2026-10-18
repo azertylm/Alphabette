@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
@@ -9,6 +10,27 @@ import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes"
 dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3000;
+
+/**
+ * Espace dons : coordonnées bancaires (RIB/IBAN/BIC) et offre « Membre
+ * fondateur ». Source unique de vérité : data/donation.json, lu à chaque
+ * requête — modifier le fichier met à jour toutes les applications, sans
+ * redémarrage ni redéploiement.
+ */
+const DONATION_PATH = path.join(process.cwd(), "data", "donation.json");
+
+function lireDonation(): Record<string, unknown> | undefined {
+  try {
+    const raw = fs.readFileSync(DONATION_PATH, "utf-8").replace(/^\uFEFF/, "");
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : undefined;
+  } catch (err: any) {
+    if (err?.code !== "ENOENT") {
+      console.error("[DONATION] Lecture impossible:", err?.message);
+    }
+    return undefined;
+  }
+}
 
 // Configuration commerciale centrale en mémoire (mise à jour instantanée sans redémarrage)
 let commercialConfig = {
@@ -131,7 +153,9 @@ async function startServer() {
     // Entête CORS pour permettre la consommation fluide par toutes les sous-applications *.alphabette.fr
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Cache-Control", "public, max-age=60");
-    res.json(commercialConfig);
+    // Le bloc « donation » vient de data/donation.json (RIB + offre fondateur) :
+    // la base commune en fait l'espace dons de chaque application.
+    res.json({ ...commercialConfig, donation: lireDonation() });
   });
 
   /**

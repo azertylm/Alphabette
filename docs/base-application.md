@@ -118,6 +118,43 @@ import { useShell } from '@alphabette/shell';
 const { theme, toggleTheme, density, cycleDensity, isFullscreen, toggleFullscreen, openPayment } = useShell();
 ```
 
+### Espace dons & soutien financier
+
+Le bouton **♥ DON** (barre écosystème et en-tête d'application) ouvre l'espace
+dons. Dès que le hub publie ses coordonnées bancaires, la base affiche l'espace
+complet : **RIB copiable** (banque, titulaire, code banque/guichet/compte/clé,
+IBAN, BIC), la marche à suivre pour un virement SEPA instantané, l'offre
+**Membre fondateur** (places limitées, montants suggérés, contreparties à vie,
+pseudo) et un récapitulatif copiable. Aucun paiement en ligne, aucune donnée
+bancaire saisie dans l'application : le virement se fait depuis la banque de
+l'utilisateur, puis un courriel prévient le hub. Le titre du panneau reprend le
+nom de l'application (« Soutenir le développement de Révolution… »).
+
+La **source de vérité** est le fichier `data/donation.json` du hub, relayé par
+`GET /api/config.json` dans le bloc `donation` :
+
+```json
+{
+  "banque": "Crédit Agricole Toulouse 31",
+  "titulaire": "ALPHABETTE SASU",
+  "iban": "FR76 …",
+  "bic": "CRCAMRPXXX",
+  "contact": "direction@alphabette.fr",
+  "objetVirement": "DON ALPHABETTE",
+  "placeMax": 500,
+  "placesAttribuees": 84,
+  "montantMinimum": 30,
+  "montants": [30, 50, 100],
+  "exemple": true
+}
+```
+
+Modifier ce fichier met à jour **toutes** les applications sans redéploiement.
+Tant que `"exemple": true` est présent, la base signale en clair que les
+coordonnées sont des exemples : à retirer dès que le vrai RIB est en place. Si le
+hub est injoignable ou ne publie rien, le panneau retombe sur la version simple
+(un lien de dons et une explication).
+
 ---
 
 ## 5. Faire évoluer la base

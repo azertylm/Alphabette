@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-18T16:00:00.000Z",
+  "exemple": true,
+  "banque": "Crédit Agricole Toulouse 31",
+  "titulaire": "ALPHABETTE SASU",
+  "codeBanque": "12517",
+  "codeGuichet": "00001",
+  "numeroCompte": "12345678901",
+  "cleRib": "92",
+  "iban": "FR76 1251 7000 0112 3456 7890 192",
+  "bic": "CRCAMRPXXX",
+  "contact": "direction@alphabette.fr",
+  "objetVirement": "DON ALPHABETTE",
+  "placeMax": 500,
+  "placesAttribuees": 84,
+  "montantMinimum": 30,
+  "montants": [30, 50, 100],
+  "contreparties": [
+    "Accès illimité et garanti à vie à toutes les fonctionnalités actuelles et futures de l'écosystème.",
+    "Zéro abonnement récurrent : aucune reconduction tacite, aucun frais dissimulé.",
+    "Badge exclusif « Fondateur Pionnier », affiché dans ton profil.",
+    "Priorité sur les développements et vote consultatif sur les prochaines fonctionnalités."
+  ]
+}

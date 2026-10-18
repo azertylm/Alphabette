@@ -586,6 +586,171 @@ html[data-ab-theme='nuit'] .ab-shell {
 .ab-etiquette--accent { background: color-mix(in oklab, var(--ab-accent) 20%, transparent); color: var(--ab-accent); }
 .ab-etiquette--pass { background: color-mix(in oklab, var(--ab-pass) 30%, transparent); color: #6b4a00; }
 
+/* ===================== Espace dons (RIB + fondateur) ===================== */
+
+.ab-dons {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .ab-dons { grid-template-columns: 1fr 1fr; }
+}
+
+.ab-don-carte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border: 1px solid var(--ab-border);
+  border-radius: 0.9rem;
+  background: var(--ab-surface);
+}
+.ab-don-carte--vedette {
+  border-color: var(--ab-don);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ab-don) 40%, transparent);
+}
+.ab-don-carte h4 {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ab-muted);
+}
+.ab-don-carte__titre-suivant { margin-top: 0.3rem !important; }
+.ab-don-carte ul {
+  margin: 0;
+  padding-left: 1.05rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.ab-rib {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px dashed var(--ab-border);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--ab-bg) 70%, var(--ab-surface));
+}
+.ab-rib__grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem 0.6rem;
+}
+@media (min-width: 520px) {
+  .ab-rib__grille { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.ab-rib__champ { display: flex; flex-direction: column; min-width: 0; }
+.ab-rib__champ > span:first-child {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ab-muted);
+}
+.ab-rib__valeur {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.ab-copier-ligne { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+.ab-copier-ligne__libelle {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ab-muted);
+  min-width: 2.6rem;
+}
+.ab-copier-ligne code {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.ab-copier {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--ab-border);
+  background: var(--ab-chip);
+  color: var(--ab-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.ab-copier:hover { background: var(--ab-chip-hover); }
+.ab-copier--ok { border-color: var(--ab-ok); color: var(--ab-ok); }
+
+.ab-jauges { display: flex; flex-direction: column; gap: 0.35rem; }
+.ab-jauges__barre {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--ab-chip);
+  overflow: hidden;
+}
+.ab-jauges__remplie {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ab-don), var(--ab-pass));
+  transition: width 0.4s ease;
+}
+
+.ab-montants { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ab-montant {
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--ab-border);
+  background: var(--ab-surface);
+  color: var(--ab-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.ab-montant:hover { background: var(--ab-chip); }
+.ab-montant--actif {
+  border-color: var(--ab-don);
+  background: color-mix(in oklab, var(--ab-don) 16%, var(--ab-surface));
+}
+
+.ab-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ab-muted);
+}
+.ab-champ input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--ab-border);
+  background: var(--ab-bg);
+  color: var(--ab-ink);
+  font: inherit;
+  font-size: 0.85rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ab-etapes { margin: 0; padding-left: 1.15rem; font-size: 0.8rem; line-height: 1.5; }
+.ab-etapes li { margin-bottom: 0.25rem; }
+
+.ab-note--warn {
+  color: var(--ab-warn);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
 /* ============================ Responsive ================================= */
 
 @media (max-width: 760px) {

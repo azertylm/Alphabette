@@ -60,6 +60,16 @@ L'IA des applications est **Mistral AI (hébergée en France)**, en BYOK (clé
 utilisateur) ou en clé managée Alphabette, avec repli local. Aucune donnée
 utilisateur n'est utilisée pour l'entraînement.
 
+## Règle nº 6 — L'espace dons est publié par le hub
+
+Le bouton **♥ DON** ouvre, dans chaque application, l'espace dons de la base
+commune : RIB copiable, marche à suivre d'un virement SEPA instantané et offre
+« Membre fondateur » (places limitées, contreparties à vie). La **source de
+vérité est `data/donation.json`** du hub, relayée par `/api/config.json` ; on ne
+code jamais un IBAN en dur dans une application. Aucun paiement en ligne : le
+virement se fait depuis la banque de l'utilisateur. Tant que `"exemple": true`
+figure dans ce fichier, les coordonnées sont des exemples et la base l'affiche.
+
 ---
 
 ## Plan du dépôt

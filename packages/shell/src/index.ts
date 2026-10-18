@@ -54,6 +54,7 @@ export {
   hasEnvHubUrl,
   type ShellConfig,
   type ShellPromotion,
+  type ShellDonation,
 } from './pricing';
 export { DEFAULT_SITES, DEFAULT_SITES_VISIBLE } from './sites';
 export {

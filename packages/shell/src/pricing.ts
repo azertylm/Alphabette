@@ -82,6 +82,42 @@ export interface ShellPromotion {
   expiresAt?: string;
 }
 
+/**
+ * Espace dons publié par le hub (`data/donation.json`, relayé dans
+ * `/api/config.json`) : coordonnées bancaires pour un virement direct (0 % de
+ * frais) et offre « Membre fondateur » à places limitées.
+ */
+export interface ShellDonation {
+  /** Banque affichée (ex. « Crédit Agricole Toulouse 31 »). */
+  banque?: string;
+  /** Titulaire du compte. */
+  titulaire?: string;
+  codeBanque?: string;
+  codeGuichet?: string;
+  numeroCompte?: string;
+  cleRib?: string;
+  /** IBAN complet (copiable). */
+  iban?: string;
+  /** BIC / SWIFT (copiable). */
+  bic?: string;
+  /** Adresse e-mail à prévenir après le virement. */
+  contact?: string;
+  /** Libellé à mettre en objet du virement. */
+  objetVirement?: string;
+  /** Nombre de places de membre fondateur, au total et déjà attribuées. */
+  placeMax?: number;
+  placesAttribuees?: number;
+  montantMinimum?: number;
+  montants?: number[];
+  /** Ce que le don ouvre, à vie. */
+  contreparties?: string[];
+  /**
+   * Vrai tant que les coordonnées bancaires sont des exemples : la base
+   * l'affiche alors en clair plutôt que de laisser croire à un vrai RIB.
+   */
+  exemple?: boolean;
+}
+
 export interface ShellConfig {
   currency: string;
   perAppPerYear: number;
@@ -91,6 +127,8 @@ export interface ShellConfig {
   paymentLinks: { perApp: string; ecosystem: string };
   /** Promotion en cours publiée par le hub (facultative). */
   promotion?: ShellPromotion;
+  /** Espace dons (RIB + membre fondateur) publié par le hub (facultatif). */
+  donation?: ShellDonation;
 }
 
 /** Configuration de secours, utilisée si le hub est injoignable. */
@@ -113,6 +151,55 @@ interface HubCommercialConfig {
   };
   activePromotion?: ShellPromotion;
   stripePaymentLinks?: Record<string, string>;
+  donation?: ShellDonation;
+}
+
+/** Nettoie une chaîne venue du registre (BOM, espaces parasites). */
+function texte(v: unknown): string | undefined {
+  if (typeof v !== 'string') return undefined;
+  const t = v.replace(/^\uFEFF/, '').trim();
+  return t.length ? t : undefined;
+}
+
+/** Nettoie une liste de textes. */
+function textes(v: unknown): string[] | undefined {
+  if (!Array.isArray(v)) return undefined;
+  const liste = v.map((x) => texte(x)).filter((x): x is string => Boolean(x));
+  return liste.length ? liste : undefined;
+}
+
+/**
+ * Normalise le bloc « donation » du hub. Seules les valeurs réellement
+ * renseignées sont conservées : sans RIB ni IBAN publié, la base retombe sur
+ * l'espace dons simple.
+ */
+function lireDonation(brut: unknown): ShellDonation | undefined {
+  if (!brut || typeof brut !== 'object') return undefined;
+  const d = brut as Record<string, unknown>;
+  const nombre = (v: unknown): number | undefined =>
+    typeof v === 'number' && Number.isFinite(v) ? v : undefined;
+  const donation: ShellDonation = {
+    banque: texte(d.banque),
+    titulaire: texte(d.titulaire),
+    codeBanque: texte(d.codeBanque),
+    codeGuichet: texte(d.codeGuichet),
+    numeroCompte: texte(d.numeroCompte),
+    cleRib: texte(d.cleRib),
+    iban: texte(d.iban),
+    bic: texte(d.bic),
+    contact: texte(d.contact),
+    objetVirement: texte(d.objetVirement),
+    placeMax: nombre(d.placeMax),
+    placesAttribuees: nombre(d.placesAttribuees),
+    montantMinimum: nombre(d.montantMinimum),
+    montants: Array.isArray(d.montants)
+      ? d.montants.filter((m): m is number => typeof m === 'number' && m > 0)
+      : undefined,
+    contreparties: textes(d.contreparties),
+    exemple: d.exemple === true,
+  };
+  if (!donation.iban && !donation.titulaire) return undefined;
+  return donation;
 }
 
 /**
@@ -156,6 +243,7 @@ export async function loadShellConfig(hubUrl: string = HUB_URL): Promise<ShellCo
               expiresAt: promotion.expiresAt,
             }
           : undefined,
+      donation: lireDonation(data.donation),
     };
   } catch {
     return FALLBACK_CONFIG;
