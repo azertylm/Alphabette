@@ -687,6 +687,10 @@ html[data-ab-theme='nuit'] .ab-shell {
 }
 .ab-copier:hover { background: var(--ab-chip-hover); }
 .ab-copier--ok { border-color: var(--ab-ok); color: var(--ab-ok); }
+.ab-copier--manuel { border-color: var(--ab-warn); color: var(--ab-warn); }
+
+.ab-rib-copiable { display: flex; flex-direction: column; gap: 0.45rem; }
+.ab-rib-copiable ::selection { background: color-mix(in oklab, var(--ab-don) 35%, transparent); }
 
 .ab-jauges { display: flex; flex-direction: column; gap: 0.35rem; }
 .ab-jauges__barre {

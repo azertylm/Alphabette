@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { EcosystemApp } from './apps';
 import type { AlphaAppConfig, ShellStatus } from './config';
 import { IconCheck, IconCopy, IconExternal, IconHeart, IconShield, IconSparkles, IconStar } from './icons';
@@ -464,27 +464,42 @@ async function copierTexte(texte: string): Promise<boolean> {
   }
 }
 
+/** Sélectionne le contenu d'un élément : repli quand la copie est refusée. */
+function selectionner(element: HTMLElement | null): void {
+  if (!element || typeof window === 'undefined' || !window.getSelection) return;
+  const selection = window.getSelection();
+  if (!selection) return;
+  const plage = document.createRange();
+  plage.selectNodeContents(element);
+  selection.removeAllRanges();
+  selection.addRange(plage);
+}
+
 /** Une valeur copiable : intitulé, valeur, bouton « Copier » avec confirmation. */
 function LigneCopier({ libelle, valeur }: { libelle: string; valeur: string }) {
-  const [ok, setOk] = useState(false);
+  const [etat, setEtat] = useState<'pret' | 'copie' | 'manuel'>('pret');
+  const code = useRef<HTMLElement>(null);
   return (
     <div className="ab-copier-ligne">
       <span className="ab-copier-ligne__libelle">{libelle}</span>
-      <code>{valeur}</code>
+      <code ref={code}>{valeur}</code>
       <button
         type="button"
-        className={`ab-copier${ok ? ' ab-copier--ok' : ''}`}
+        className={`ab-copier${etat === 'copie' ? ' ab-copier--ok' : ''}${etat === 'manuel' ? ' ab-copier--manuel' : ''}`}
         title={`Copier ${libelle}`}
         onClick={async () => {
           const succes = await copierTexte(valeur);
-          setOk(succes);
-          if (succes) window.setTimeout(() => setOk(false), 1800);
+          if (!succes) selectionner(code.current);
+          setEtat(succes ? 'copie' : 'manuel');
+          window.setTimeout(() => setEtat('pret'), 2600);
         }}
       >
-        {ok ? (
+        {etat === 'copie' ? (
           <>
             <IconCheck width={12} height={12} /> Copié
           </>
+        ) : etat === 'manuel' ? (
+          <>Ctrl + C</>
         ) : (
           <>
             <IconCopy width={12} height={12} /> Copier
@@ -515,7 +530,8 @@ function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: She
   const [montant, setMontant] = useState(montants[1] ?? montants[0]);
   const [libre, setLibre] = useState('');
   const [pseudo, setPseudo] = useState('');
-  const [copie, setCopie] = useState(false);
+  const [copie, setCopie] = useState<'pret' | 'ok' | 'manuel'>('pret');
+  const rib = useRef<HTMLDivElement>(null);
 
   const libreNombre = Number(libre.replace(',', '.'));
   const montantEffectif =
@@ -565,34 +581,36 @@ function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: She
             sur ton don.
           </p>
 
-          {(don.banque || don.titulaire) && (
-            <div className="ab-rib">
-              <div className="ab-rib__champ">
-                <span>Banque · titulaire du compte</span>
-                <span className="ab-rib__valeur">{[don.banque, don.titulaire].filter(Boolean).join(' — ')}</span>
+          <div className="ab-rib-copiable" ref={rib}>
+            {(don.banque || don.titulaire) && (
+              <div className="ab-rib">
+                <div className="ab-rib__champ">
+                  <span>Banque · titulaire du compte</span>
+                  <span className="ab-rib__valeur">{[don.banque, don.titulaire].filter(Boolean).join(' — ')}</span>
+                </div>
+                <div className="ab-rib__grille">
+                  {(
+                    [
+                      ['Code banque', don.codeBanque],
+                      ['Code guichet', don.codeGuichet],
+                      ['Numéro de compte', don.numeroCompte],
+                      ['Clé RIB', don.cleRib],
+                    ] as const
+                  )
+                    .filter(([, valeur]) => Boolean(valeur))
+                    .map(([libelle, valeur]) => (
+                      <div className="ab-rib__champ" key={libelle}>
+                        <span>{libelle}</span>
+                        <span className="ab-rib__valeur">{valeur}</span>
+                      </div>
+                    ))}
+                </div>
               </div>
-              <div className="ab-rib__grille">
-                {(
-                  [
-                    ['Code banque', don.codeBanque],
-                    ['Code guichet', don.codeGuichet],
-                    ['Numéro de compte', don.numeroCompte],
-                    ['Clé RIB', don.cleRib],
-                  ] as const
-                )
-                  .filter(([, valeur]) => Boolean(valeur))
-                  .map(([libelle, valeur]) => (
-                    <div className="ab-rib__champ" key={libelle}>
-                      <span>{libelle}</span>
-                      <span className="ab-rib__valeur">{valeur}</span>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
+            )}
 
-          {don.iban && <LigneCopier libelle="IBAN" valeur={don.iban} />}
-          {don.bic && <LigneCopier libelle="BIC" valeur={don.bic} />}
+            {don.iban && <LigneCopier libelle="IBAN" valeur={don.iban} />}
+            {don.bic && <LigneCopier libelle="BIC" valeur={don.bic} />}
+          </div>
 
           <p className="ab-note">
             <IconCheck width={13} height={13} /> Virement SEPA instantané supporté — réception en quelques secondes.
@@ -604,13 +622,18 @@ function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: She
               className="ab-btn ab-btn--don ab-btn--lg"
               onClick={async () => {
                 const succes = await copierTexte(recapitulatif);
-                setCopie(succes);
-                if (succes) window.setTimeout(() => setCopie(false), 1800);
+                if (!succes) selectionner(rib.current);
+                setCopie(succes ? 'ok' : 'manuel');
+                window.setTimeout(() => setCopie('pret'), 2600);
               }}
             >
-              {copie ? (
+              {copie === 'ok' ? (
                 <>
                   <IconCheck width={14} height={14} /> Récapitulatif copié
+                </>
+              ) : copie === 'manuel' ? (
+                <>
+                  <IconCopy width={14} height={14} /> Sélectionné — appuie sur Ctrl+C
                 </>
               ) : (
                 <>
