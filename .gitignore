@@ -6,8 +6,3 @@ coverage/
 *.log
 .env*
 !.env.example
-
-# Données générées à l'exécution (comptes et pyramides de la communauté)
-data/community/
-# Cache des photos de joueurs téléchargées depuis Wikimedia
-data/cache/

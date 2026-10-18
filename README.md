@@ -1,28 +1,24 @@
-# ALPHABETTE — écosystème d'applications
+# ALPHABETTE — la vitrine de l'écosystème
 
-Regroupe les applications d'**alphabette.fr**, dont **Goat Chèvre The King**.
+Le site **alphabette.fr** : il présente les applications de l'écosystème et renvoie
+vers chacune d'elles, hébergée sur son propre sous-domaine.
 
-> Elisez votre goat votre chèvre ou votre Roi.
+> **1 projet = 1 dépôt GitHub = 1 sous-domaine**
 
-## 🐐 Goat Chèvre The King
+## Les applications
 
-Le classement GOAT le plus sérieux (et le moins sérieux) du web : constituez votre
-pyramide de légendes du **football international** ou de la **NBA**, faites des
-**duels express**, découvrez votre **score de non-conformisme**, et partagez votre
-pyramide en image prête pour Instagram (Story 9:16 ou carré) avec QR code.
+Le registre central fait foi : **`data/apps-registry.json`**. Il se pilote en 1 clic
+depuis la console `/admin` (activer, masquer, badge « Nouveau » / « Populaire »), et
+la section « Nos Applications » de la vitrine s'y synchronise automatiquement.
 
-- Adresse : **https://goatchevretheking.alphabette.fr** (également `/goat`)
-- 400 joueurs (200 football / 200 NBA) issus de Wikidata, photos libres
-- Pyramide 1 / 2 / 4 / 8 (+ étage 5 de 16 en mode expert), mode chaos, Hot Take
-- Galerie communautaire : comptes, publication, votes — `/goat/communaute`
+| Application | Adresse | Dépôt |
+|---|---|---|
+| Goat Chèvre The King | <https://goatchevretheking.alphabette.fr> | `azertylm/goatchevretheking.alphabette.fr` |
+| Lidarsol | <https://lidarsol.fr> | — |
+| IADÉBAT, INFOS PERSO, SERVICE FRANCE… | voir `/admin` | — |
 
-## Applications
-
-Le registre central fait foi : **`data/apps-registry.json`**.
-Chaque application se pilote en 1 clic depuis la console `/admin`
-(activer, masquer, badge « Nouveau » / « Populaire »).
-
-Pour ajouter une application, voir **`docs/ecosysteme-alphabette.md`**.
+Chaque application vit dans **son propre dépôt** : ce dépôt-ci ne contient que la
+vitrine, le registre et la console d'administration.
 
 ## Démarrer en local
 
@@ -30,25 +26,42 @@ Pour ajouter une application, voir **`docs/ecosysteme-alphabette.md`**.
 bun install
 
 $env:ADMIN_PASSWORD='mot-de-passe-admin'
-$env:COMMUNITY_SESSION_SECRET='secret-de-session-communaute'
 bun run dev
 ```
 
 → <http://localhost:3000>
 
-Aperçu d'un sous-domaine sans toucher au DNS : <http://localhost:3000/?app=goat>
+## Ajouter une application
 
-## Architecture
+1. **Créer le projet** dans son propre dépôt (application autonome : son serveur,
+   son API, son build) ;
+2. **Enregistrer l'application** depuis `/admin` : nom, slug, icône, URL
+   (`https://monapp.alphabette.fr`), sous-domaine et statut ;
+3. **Configurer le DNS** une seule fois pour toutes les applications
+   (enregistrement `*` + certificat TLS wildcard) — voir
+   [`docs/ecosysteme-alphabette.md`](docs/ecosysteme-alphabette.md).
 
-Un seul serveur sert toutes les applications, chacune sur son **sous-domaine**
-(`app.alphabette.fr`) **et** par son chemin (`alphabette.fr/app`). Un certificat
-TLS wildcard couvre l'ensemble des applications, présentes et futures.
+L'application apparaît alors automatiquement dans la section « Nos Applications ».
 
-- `src/appRoutes.ts` — carte des applications (sous-domaines et chemins)
-- `src/main.tsx` — routage + chargement à la demande (code splitting)
-- `server.ts` — serveur Express/Vite (API + pages)
-- `data/apps-registry.json` — registre des applications
-- `docs/ecosysteme-alphabette.md` — domaines, DNS, certificat, ajout d'une app
+## Console d'administration
+
+`/admin` (protégée par `ADMIN_PASSWORD`) permet de :
+
+- lister toutes les applications et basculer leur statut en 1 clic
+  (actif / brouillon / maintenance) ;
+- créer une application et lui attribuer son sous-domaine ;
+- modérer les classements publiés par la communauté.
+
+## Structure
+
+```
+src/App.tsx          la vitrine
+src/components/      sections de la vitrine (Hero, catalogue, registre, tarifs…)
+src/admin/           console d'administration
+server/              API du registre, de la console et de la configuration
+data/apps-registry.json   registre des applications
+docs/                documentation de l'écosystème
+```
 
 ## Variables d'environnement
 
@@ -56,19 +69,9 @@ TLS wildcard couvre l'ensemble des applications, présentes et futures.
 |---|---|
 | `ADMIN_PASSWORD` | accès à la console `/admin` (obligatoire en production) |
 | `ADMIN_SESSION_SECRET` | signature des sessions admin (recommandé) |
-| `COMMUNITY_SESSION_SECRET` | signature des sessions communauté (obligatoire pour que les comptes survivent à un redémarrage) |
+| `AI_API_KEY` / `MISTRAL_API_KEY` | moteur IA souverain de l'atelier |
 
 Voir `.env.example`.
-
-## Dépôts
-
-- **`goatchevretheking.alphabette.fr`** — dépôt principal : tout le code de l'écosystème
-- **`Alphabette`** — miroir tenu à jour automatiquement (même historique)
-
-Le hub **alphabette.fr** et toutes les applications vivent dans le **même code** :
-un seul serveur sert chaque application sur son sous-domaine. Un nouveau projet
-n'a donc pas besoin d'un nouveau dépôt — seulement d'un dossier et d'une entrée
-dans la carte des applications (`src/appRoutes.ts`).
 
 ## Licence
 

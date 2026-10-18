@@ -5,9 +5,6 @@ import dotenv from "dotenv";
 import { sovereignAIRouter } from "./server/ai/router";
 import { AIProviderId, AIRequestOptions } from "./server/ai/types";
 import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
-import { createGoatPlayersRouter } from "./server/goatPlayers";
-import { createGoatPhotosRouter } from "./server/goatPhotos";
-import { createCommunityRouter, ensureCommunityStorage } from "./server/communityRoutes";
 
 dotenv.config();
 
@@ -106,10 +103,6 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
 async function startServer() {
   const app = express();
 
-  // --- COMMUNAUTÉ (avant le parser JSON global : les images publiées pèsent plusieurs Mo) ---
-  ensureCommunityStorage();
-  app.use("/api/community", createCommunityRouter());
-
   // Middleware JSON
   app.use(express.json());
 
@@ -133,11 +126,8 @@ async function startServer() {
   // Protégé : console /admin (mot de passe ADMIN_PASSWORD, session par cookie signé)
   app.use("/api/admin", createAdminRouter());
 
-  // Public : base de joueurs de Goat Chèvre The King (data/players.json)
-  app.use("/api/goat", createGoatPlayersRouter());
-
-  // Public : proxy des photos (Wikimedia) pour que le canvas reste exploitable
-  app.use("/api/goat", createGoatPhotosRouter());
+  // (Les API des applications — joueurs, photos, communauté — vivent désormais
+  //  dans le dépôt de chaque application, sur son propre sous-domaine.)
 
   /**
    * 1. GET /api/config.json
@@ -391,6 +381,23 @@ async function startServer() {
       });
     }
   });
+
+  /**
+   * Continuité : une application partie sur son propre sous-domaine conserve ses
+   * anciennes adresses (alphabette.fr/goat → goatchevretheking.alphabette.fr).
+   * Utile pour les liens déjà partagés et les anciens QR codes.
+   */
+  if (process.env.NODE_ENV === "production") {
+    const APP_REDIRECTS: Record<string, string> = {
+      "/goat": "https://goatchevretheking.alphabette.fr",
+    };
+
+    for (const [from, to] of Object.entries(APP_REDIRECTS)) {
+      app.get([from, `${from}/*`], (req: Request, res: Response) => {
+        res.redirect(301, `${to}${req.path.slice(from.length)}`);
+      });
+    }
+  }
 
   // --- VITE MIDDLEWARE SETUP ---
   if (process.env.NODE_ENV !== "production") {
