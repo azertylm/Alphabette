@@ -57,7 +57,7 @@ export const VipActivationSection: React.FC<VipActivationSectionProps> = ({
           grantedUntil: res.grantedUntil || new Date().toISOString(),
           recipientNote: res.recipientNote,
         });
-        onCodeSuccessfullyActivated('bouquet_integral', res.durationMonths || 12, res.recipientNote);
+        onCodeSuccessfullyActivated('ecosystem', res.durationMonths || 12, res.recipientNote);
       } else {
         setErrorMsg(res.error || 'Code invalide ou déjà consommé.');
       }
@@ -88,7 +88,7 @@ export const VipActivationSection: React.FC<VipActivationSectionProps> = ({
           </h2>
 
           <p className="mt-2 text-sm text-slate-300">
-            Vous avez reçu un code d'accès offert partenaire ou presse ? Activez-le ci-dessous pour débloquer immédiatement l'intégralité du <strong className="text-emerald-400">Bouquet Alphabette</strong> (15 applications).
+            Vous avez reçu un code d'accès offert partenaire ou presse ? Activez-le ci-dessous pour débloquer immédiatement l'intégralité de <strong className="text-emerald-400">l'écosystème Alphabette</strong> (toutes les applications).
           </p>
         </div>
 

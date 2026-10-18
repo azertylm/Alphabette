@@ -48,9 +48,14 @@ export function createPublicAppsRouter(): Router {
   /**
    * GET /api/apps
    * Applications publiées (statut « actif ») consommées par la section « Nos Applications ».
+   *
+   * Lecture publique : la base commune des applications (@alphabette/shell) la
+   * lit depuis chaque sous-domaine pour alimenter le panneau « Les applications
+   * de l'écosystème ». D'où l'en-tête CORS, volontairement ouvert en lecture.
    */
   router.get("/", (_req: Request, res: Response) => {
     res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.json({ apps: listApps("actif") });
   });
 

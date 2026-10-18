@@ -15,6 +15,7 @@ import {
   HeartHandshake
 } from 'lucide-react';
 import { AppItem, UserProfile } from '../types';
+import { PRICES, isAppPlan, isEcosystemPlan } from '../plans';
 
 interface AppLaunchModalProps {
   isOpen: boolean;
@@ -49,9 +50,9 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
   if (!isOpen || !app) return null;
 
   const isProxilienFree = app.isPiloteFree;
-  const isUnlockedByPass = user.subscriptionPlan === 'alphabette_pass' && !app.isB2B;
+  const isUnlockedByPass = isEcosystemPlan(user.subscriptionPlan) && !app.isB2B;
   const isUnlockedByB2B = user.subscriptionPlan === 'pro_b2b' && app.isB2B;
-  const isUnlockedBySingle = user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id);
+  const isUnlockedBySingle = isAppPlan(user.subscriptionPlan) && user.unlockedAppIds.includes(app.id);
   const isUnlocked = isProxilienFree || isUnlockedByPass || isUnlockedByB2B || isUnlockedBySingle;
 
   // Mock SSO JWT handoff token
@@ -218,7 +219,7 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {/* Option 1: Le Bouquet Alphabette (99€ BYOK ou 199€ Intégral pour les 15 applications) */}
+                  {/* Option 1 : l'écosystème complet (40 € / an pour toutes les applications) */}
                   <div 
                     onClick={() => {
                       onSelectPass();
@@ -228,22 +229,22 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-emerald-950">Le Bouquet Alphabette (Recommandé)</span>
+                        <span className="font-bold text-sm text-emerald-950">L'Écosystème complet (Recommandé)</span>
                         <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
-                          Les 15 applis
+                          Toutes les applis
                         </span>
                       </div>
                       <p className="text-xs text-emerald-800 mt-0.5">
-                        Débloquez <strong>l'intégralité des 15 applications</strong> avec le Bouquet complet : {app.name} + Service France + toutes les briques professionnelles et citoyennes.
+                        Débloquez <strong>l'intégralité des applications</strong> avec l'abonnement annuel : {app.name} + Service France + toutes les briques professionnelles et citoyennes.
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-extrabold text-base text-emerald-950">99 € / 199 €</span>
+                      <span className="font-extrabold text-base text-emerald-950">{PRICES.ecosystem} €</span>
                       <span className="text-xs text-slate-500"> / an</span>
                     </div>
                   </div>
 
-                  {/* Option 2: Single App (39€ BYOK ou 59€ Managé) */}
+                  {/* Option 2 : une application au choix (15 € / an) */}
                   <div 
                     onClick={() => {
                       onSelectSingleApp(app.id);
@@ -253,17 +254,17 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-sm text-slate-900">Application Individuelle : {app.name}</span>
+                        <span className="font-bold text-sm text-slate-900">Une application : {app.name}</span>
                         <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded-full">
-                          BYOK ou Géré
+                          À l'unité
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        Formule BYOK à <strong>39 € / an</strong> (clé Mistral personnelle) ou Formule Confort à <strong>59 € / an</strong> (Mistral inclus).
+                        Accès complet à cette application pendant un an, clé Mistral Alphabette incluse, sans engagement.
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-extrabold text-base text-slate-900">39 € / 59 €</span>
+                      <span className="font-extrabold text-base text-slate-900">{PRICES.perApp} €</span>
                       <span className="text-xs text-slate-500"> / an</span>
                     </div>
                   </div>

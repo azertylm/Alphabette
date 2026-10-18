@@ -198,7 +198,7 @@ export async function getVipCodesList(): Promise<VipAccessCode[]> {
 export async function generateNewVipCode(params: {
   recipientNote: string;
   durationMonths: number;
-  planGranted: 'bouquet_integral' | 'bouquet_byok';
+  planGranted: 'ecosystem' | 'app';
 }): Promise<VipAccessCode> {
   const response = await fetch('/api/admin/generate-vip-code', {
     method: 'POST',

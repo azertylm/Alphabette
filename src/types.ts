@@ -10,26 +10,31 @@ export type AppCategory =
 
 /**
  * Plans officiels ALPHABETTE SASU :
- * - trial_7d : Essai 7 jours offerts (Clé Alphabette Mistral incluse)
- * - single_byok : 39 € / an (Application individuelle avec sa propre clé Mistral)
- * - single_managed : 59 € / an (Application individuelle clé en main avec Mistral inclus)
- * - bouquet_byok : 99 € / an (Bouquet complet 15 apps avec sa propre clé Mistral)
- * - bouquet_integral : 199 € / an (Bouquet complet 15 apps avec clés Mistral incluses)
- * - pro_b2b : 49 € HT / mois (Pôle professionnel solaire)
- * - pilot_free : 100% gratuit (ex: pilote La Grande-Motte)
- * - Compatibilité rétroactive : alphabette_pass (= bouquet), single_app (= single)
+ * - trial_7d  : Essai 7 jours offerts (clé Mistral Alphabette incluse)
+ * - app       : 15 € / an — une application au choix
+ * - ecosystem : 40 € / an — l'écosystème complet
+ * - pro_b2b   : 49 € HT / mois (pôle professionnel solaire)
+ * - pilot_free: 100 % gratuit (ex. pilote La Grande-Motte)
+ *
+ * Les identifiants historiques (single_byok, single_managed, bouquet_byok,
+ * bouquet_integral, alphabette_pass, single_app) restent acceptés : les profils
+ * déjà enregistrés chez les visiteurs continuent de fonctionner. Ils ne sont
+ * plus jamais proposés. Correspondance centralisée dans `planTier()`
+ * (`src/plans.ts`).
  */
 export type PlanType = 
   | 'trial_7d'
-  | 'single_byok'
-  | 'single_managed'
-  | 'bouquet_byok'
-  | 'bouquet_integral'
+  | 'app'
+  | 'ecosystem'
   | 'pilot_free'
   | 'pro_b2b'
-  // Alias de compatibilité
+  // Alias historiques (acceptés, jamais proposés)
   | 'single_app'
-  | 'alphabette_pass';
+  | 'single_byok'
+  | 'single_managed'
+  | 'alphabette_pass'
+  | 'bouquet_byok'
+  | 'bouquet_integral';
 
 export interface FranceServiceModule {
   id: string;
@@ -86,14 +91,9 @@ export interface HubCommercialConfig {
   hubUrl: string;
   currency: string;
   pricing: {
-    singleApp: {
-      byok: number;     // 39 € / an
-      managed: number;  // 59 € / an
-    };
-    bouquet: {
-      byok: number;     // 99 € / an
-      managed: number;  // 199 € / an (Pass Bouquet Intégral)
-    };
+    perApp: number;    // 15 € / application / an
+    ecosystem: number; // 40 € / écosystème complet / an
+    trialDays: number; // 7 jours offerts
   };
   activePromotion?: {
     isActive: boolean;
@@ -104,10 +104,8 @@ export interface HubCommercialConfig {
     couponCode: string;
   };
   stripePaymentLinks: {
-    single_byok: string;
-    single_managed: string;
-    bouquet_byok: string;
-    bouquet_integral: string;
+    perApp: string;
+    ecosystem: string;
   };
   aiPolicy: {
     provider: 'Mistral AI (Exclusif)';
@@ -125,7 +123,7 @@ export interface VipAccessCode {
   code: string; // ex: 'VIP-X89K2'
   status: 'active' | 'consumed' | 'revoked';
   durationMonths: number; // ex: 12 (1 an offert)
-  planGranted: 'bouquet_integral' | 'bouquet_byok';
+  planGranted: 'ecosystem' | 'app';
   recipientNote?: string; // ex: 'Partenaire Mairie La Grande-Motte'
   createdAt: string;
   expiresAt: string;

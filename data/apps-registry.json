@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T09:41:35.949Z",
+  "updatedAt": "2026-10-18T12:33:32.951Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
-      "name": "Goat ChÃ¨vre The King",
+      "name": "Goat Chèvre The King",
       "slug": "goat",
       "icon": "Crown",
       "status": "actif",
@@ -49,7 +49,7 @@
     },
     {
       "id": "iadebat",
-      "name": "IADÃ‰BAT",
+      "name": "IADÉBAT",
       "slug": "iadebat",
       "icon": "Scale",
       "status": "actif",
@@ -71,7 +71,7 @@
     },
     {
       "id": "oeil-atelier",
-      "name": "L'Å’IL DE L'ATELIER",
+      "name": "L'ŒIL DE L'ATELIER",
       "slug": "oeil-atelier",
       "icon": "Hammer",
       "status": "actif",
@@ -104,7 +104,7 @@
     },
     {
       "id": "eco-diag",
-      "name": "Ã‰CO-DIAG HABITAT",
+      "name": "ÉCO-DIAG HABITAT",
       "slug": "eco-diag",
       "icon": "Leaf",
       "status": "actif",
@@ -159,7 +159,7 @@
     },
     {
       "id": "agri-meteo-locale",
-      "name": "AGRI-MÃ‰TÃ‰O LOCALE",
+      "name": "AGRI-MÉTÉO LOCALE",
       "slug": "agri-meteo-locale",
       "icon": "CloudSun",
       "status": "actif",
@@ -170,7 +170,7 @@
     },
     {
       "id": "memoire-commune",
-      "name": "MÃ‰MOIRE COMMUNE",
+      "name": "MÉMOIRE COMMUNE",
       "slug": "memoire-commune",
       "icon": "Bookmark",
       "status": "actif",
@@ -190,6 +190,17 @@
       "subdomain": "revolution",
       "createdAt": "2026-10-18T09:41:35.949Z",
       "updatedAt": "2026-10-18T09:41:35.949Z"
+    },
+    {
+      "id": "test-barre",
+      "name": "TEST BARRE",
+      "slug": "test-barre",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://testbarre.alphabette.fr",
+      "subdomain": "testbarre",
+      "createdAt": "2026-10-18T12:33:32.951Z",
+      "updatedAt": "2026-10-18T12:33:32.951Z"
     }
   ]
 }

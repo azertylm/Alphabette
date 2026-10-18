@@ -4,23 +4,18 @@ import {
   Sparkles, 
   ShieldCheck, 
   ArrowRight, 
-  Zap, 
   HeartHandshake,
   Info,
-  Lock,
   Building2,
-  CreditCard,
   Key,
   Flame,
-  Clock,
   Gift,
-  ExternalLink,
   Tag,
   Sliders,
-  CheckCircle2,
-  AlertCircle
+  CheckCircle2
 } from 'lucide-react';
 import { AppItem, PlanType, UserProfile, HubCommercialConfig } from '../types';
+import { PRICES } from '../plans';
 import { getHubCommercialConfig, updateHubCommercialConfig } from '../services/aiService';
 
 interface PricingSectionProps {
@@ -45,10 +40,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
   const [adminDiscount, setAdminDiscount] = useState<number>(15);
   const [adminBadgeText, setAdminBadgeText] = useState<string>("Offre Lancement Écosystème");
   const [adminPromoActive, setAdminPromoActive] = useState<boolean>(true);
-  const [adminSingleByok, setAdminSingleByok] = useState<number>(39);
-  const [adminSingleManaged, setAdminSingleManaged] = useState<number>(59);
-  const [adminBouquetByok, setAdminBouquetByok] = useState<number>(99);
-  const [adminBouquetManaged, setAdminBouquetManaged] = useState<number>(199);
+  const [adminPerApp, setAdminPerApp] = useState<number>(PRICES.perApp);
+  const [adminEcosystem, setAdminEcosystem] = useState<number>(PRICES.ecosystem);
   const [isUpdatingConfig, setIsUpdatingConfig] = useState(false);
   const [adminSuccessMsg, setAdminSuccessMsg] = useState<string | null>(null);
 
@@ -58,10 +51,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       .then((cfg) => {
         setConfig(cfg);
         if (cfg.pricing) {
-          setAdminSingleByok(cfg.pricing.singleApp.byok);
-          setAdminSingleManaged(cfg.pricing.singleApp.managed);
-          setAdminBouquetByok(cfg.pricing.bouquet.byok);
-          setAdminBouquetManaged(cfg.pricing.bouquet.managed);
+          setAdminPerApp(cfg.pricing.perApp ?? PRICES.perApp);
+          setAdminEcosystem(cfg.pricing.ecosystem ?? PRICES.ecosystem);
         }
         if (cfg.activePromotion) {
           setAdminDiscount(cfg.activePromotion.discountPercent);
@@ -77,26 +68,21 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     try {
       const updated = await updateHubCommercialConfig({
         pricing: {
-          singleApp: {
-            byok: Number(adminSingleByok),
-            managed: Number(adminSingleManaged),
-          },
-          bouquet: {
-            byok: Number(adminBouquetByok),
-            managed: Number(adminBouquetManaged),
-          },
+          perApp: Number(adminPerApp),
+          ecosystem: Number(adminEcosystem),
+          trialDays: PRICES.trialDays,
         },
         activePromotion: {
           isActive: adminPromoActive,
           badgeLabel: adminBadgeText,
           discountPercent: Number(adminDiscount),
           expiresAt: new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString(),
-          description: `-${adminDiscount}% immédiats sur le Pass Bouquet Intégral avec le code SOUVERAIN${adminDiscount}`,
+          description: `-${adminDiscount}% immédiats sur l'Écosystème complet avec le code SOUVERAIN${adminDiscount}`,
           couponCode: `SOUVERAIN${adminDiscount}`,
         }
       });
       setConfig(updated);
-      setAdminSuccessMsg("Configuration commerciale et tarifs mis à jour instantanément pour les 15 applications !");
+      setAdminSuccessMsg("Configuration commerciale et tarifs mis à jour instantanément pour toutes les applications !");
       setTimeout(() => setAdminSuccessMsg(null), 3500);
     } catch (e) {
       alert("Erreur lors de la mise à jour de la configuration.");
@@ -105,11 +91,14 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     }
   };
 
+  const perApp = config?.pricing.perApp ?? PRICES.perApp;
+  const ecosystem = config?.pricing.ecosystem ?? PRICES.ecosystem;
+  const trialDays = config?.pricing.trialDays ?? PRICES.trialDays;
+
   const discountPercent = config?.activePromotion?.isActive ? config.activePromotion.discountPercent : 0;
-  const bouquetIntegralOriginal = config?.pricing.bouquet.managed ?? 199;
-  const bouquetIntegralDiscounted = discountPercent > 0 
-    ? Math.round(bouquetIntegralOriginal * (1 - discountPercent / 100)) 
-    : bouquetIntegralOriginal;
+  const ecosystemDiscounted = discountPercent > 0
+    ? Math.round(ecosystem * (1 - discountPercent / 100))
+    : ecosystem;
 
   return (
     <section id="tarifs" className="py-12 sm:py-16 bg-white border-t border-slate-200">
@@ -139,10 +128,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             <div className="flex items-center gap-2 shrink-0">
               <button
-                onClick={() => onSelectPlan('bouquet_integral')}
+                onClick={() => onSelectPlan('ecosystem')}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-xs transition-transform hover:scale-102 cursor-pointer flex items-center gap-1.5"
               >
-                <span>Activer l'offre ({bouquetIntegralDiscounted} € / an)</span>
+                <span>Activer l'offre ({ecosystemDiscounted} € / an)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -160,32 +149,35 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-700 leading-relaxed">
             Chaque application de la suite fonctionne en totale conformité RGPD, hébergée en France/Europe.
-            Bénéficiez de <strong className="text-slate-900 font-bold">7 jours d'essai offerts</strong> pour toute nouvelle inscription, puis choisissez entre votre propre clé (BYOK) ou la formule managée clé en main.
+            Bénéficiez de <strong className="text-slate-900 font-bold">{trialDays} jours d'essai offerts</strong> sur toute nouvelle inscription,
+            puis <strong className="text-slate-900 font-bold">{perApp} € par an</strong> pour une application ou{' '}
+            <strong className="text-slate-900 font-bold">{ecosystem} € par an</strong> pour l'écosystème complet.
           </p>
         </div>
 
-        {/* GRILLE TARIFAIRE OFFICIELLE EN 2 BLOCS : APPLICATION INDIVIDUELLE & LE BOUQUET ALPHABETTE */}
+        {/* GRILLE TARIFAIRE OFFICIELLE EN 2 BLOCS : UNE APPLICATION & L'ÉCOSYSTÈME */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-10">
           
           {/* =========================================================================
-              BLOC 1 : APPLICATION INDIVIDUELLE (39 € BYOK ou 59 € Confort)
+              BLOC 1 : UNE APPLICATION AU CHOIX (15 € / an)
              ========================================================================= */}
           <div className="bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-8 flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
                 <span className="text-xs font-extrabold uppercase tracking-wider text-blue-900 bg-blue-100 px-3 py-1 rounded-full">
-                  Application Individuelle
+                  Une Application
                 </span>
                 <span className="text-xs text-slate-500 font-medium">
-                  Au choix parmi les 15 briques
+                  Au choix dans le catalogue
                 </span>
               </div>
 
               <h3 className="text-2xl font-black text-slate-900">
-                1 Application au Choix
+                Une application au choix
               </h3>
               <p className="text-xs text-slate-600 mt-1 min-h-[32px] leading-relaxed">
-                Accédez à l'application métier de votre choix (ex: Service France, LIDARSOL, IADébat, etc.) en gérant votre clé ou clé en main.
+                Accédez à l'application métier de votre choix (ex. Service France, LIDARSOL, IADébat, INFOS PERSO…)
+                avec la clé Mistral Alphabette incluse.
               </p>
 
               {/* Sélecteur d'application */}
@@ -206,66 +198,40 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </select>
               </div>
 
-              {/* Les 2 Formules de l'Application Individuelle */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
-                
-                {/* Formule BYOK : 39 € / an */}
-                <div className={`p-4 rounded-2xl border transition-all ${
-                  user.subscriptionPlan === 'single_byok'
-                    ? 'bg-blue-50/80 border-blue-600 ring-2 ring-blue-500/20 shadow-xs'
-                    : 'bg-white border-slate-200 hover:border-slate-300'
-                }`}>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-extrabold text-blue-950">Formule BYOK</span>
+              {/* Prix unique */}
+              <div className="my-5 p-5 rounded-2xl border border-slate-200 bg-white">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="font-extrabold text-blue-950 flex items-center gap-1.5">
                     <Key className="w-3.5 h-3.5 text-blue-700" />
-                  </div>
-                  <div className="flex items-baseline gap-1 my-2">
-                    <span className="text-3xl font-extrabold text-blue-900">39 €</span>
-                    <span className="text-xs font-semibold text-slate-600">/ an</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-snug">
-                    Accès illimité aux fonctionnalités de l'application, l'utilisateur gère sa propre clé API Mistral.
-                  </p>
-                  <button
-                    onClick={() => onSelectPlan('single_byok', [selectedUnitAppId])}
-                    className="mt-4 w-full py-2 px-3 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white transition-colors cursor-pointer"
-                  >
-                    Choisir à 39 € / an
-                  </button>
+                    Abonnement annuel
+                  </span>
+                  <span className="text-[11px] font-semibold text-slate-500">
+                    Sans engagement
+                  </span>
                 </div>
-
-                {/* Formule Confort : 59 € / an */}
-                <div className={`p-4 rounded-2xl border transition-all ${
-                  user.subscriptionPlan === 'single_managed'
-                    ? 'bg-blue-50/80 border-blue-600 ring-2 ring-blue-500/20 shadow-xs'
-                    : 'bg-white border-slate-200 hover:border-slate-300'
-                }`}>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-extrabold text-blue-950">Formule Confort</span>
-                    <Sparkles className="w-3.5 h-3.5 text-blue-700" />
-                  </div>
-                  <div className="flex items-baseline gap-1 my-2">
-                    <span className="text-3xl font-extrabold text-blue-900">59 €</span>
-                    <span className="text-xs font-semibold text-slate-600">/ an</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-snug">
-                    Accès complet clé en main, consommation d'IA Mistral managée par nos soins (après les 7 jours d'essai).
-                  </p>
-                  <button
-                    onClick={() => onSelectPlan('single_managed', [selectedUnitAppId])}
-                    className="mt-4 w-full py-2 px-3 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors cursor-pointer"
-                  >
-                    Choisir à 59 € / an
-                  </button>
+                <div className="flex items-baseline gap-1 my-2">
+                  <span className="text-3xl font-extrabold text-blue-900">{perApp} €</span>
+                  <span className="text-xs font-semibold text-slate-600">/ an</span>
                 </div>
-
+                <p className="text-[11px] text-slate-600 leading-snug">
+                  Accès illimité aux fonctionnalités de l'application choisie, clé d'API Mistral Alphabette
+                  gérée et incluse. Vous pouvez aussi brancher votre propre clé (BYOK) depuis les réglages.
+                </p>
+                <button
+                  onClick={() => onSelectPlan('app', [selectedUnitAppId])}
+                  className="mt-4 w-full py-2.5 px-3 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white transition-colors cursor-pointer"
+                >
+                  Choisir à {perApp} € / an
+                </button>
               </div>
 
-              {/* Cross-selling callout obligatoire vers le Bouquet */}
+              {/* Cross-selling callout vers l'écosystème */}
               <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
                 <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                 <div className="leading-snug">
-                  <strong>Opportunité économique majeure :</strong> Pour seulement 99 € / an (BYOK) ou 199 € / an (Intégral), débloquez <strong>TOUTES les 15 applications</strong> de l'écosystème avec le Bouquet complet !
+                  <strong>Opportunité économique majeure :</strong> pour seulement {ecosystem} € / an,
+                  débloquez <strong>toutes les applications</strong> de l'écosystème — présentes et futures — avec
+                  l'abonnement Écosystème !
                 </div>
               </div>
             </div>
@@ -278,18 +244,18 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
 
           {/* =========================================================================
-              BLOC 2 : LE BOUQUET ALPHABETTE (99 € BYOK ou 199 € Intégral - RECOMMANDÉ)
+              BLOC 2 : L'ÉCOSYSTÈME COMPLET (40 € / an — RECOMMANDÉ)
              ========================================================================= */}
           <div className="relative bg-slate-900 text-white rounded-3xl border-2 border-emerald-500 p-6 sm:p-8 flex flex-col justify-between shadow-xl shadow-slate-900/10">
             {/* Top Recommended Tag */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 font-black text-xs px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
-              Formule Recommandée · Accès Intégral 15 Apps
+              Formule Recommandée · Accès Écosystème Complet
             </div>
 
             <div>
               <div className="flex items-center justify-between gap-2 mb-4 mt-1">
                 <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
-                  Le Bouquet Alphabette
+                  L'Écosystème Alphabette
                 </span>
                 <span className="text-xs text-emerald-300 font-bold">
                   Accès à TOUTES les applications
@@ -297,85 +263,58 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
 
               <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                Suite Logicielle Complète (15 Apps)
+                L'écosystème complet
               </h3>
               <p className="text-xs text-slate-300 mt-1 min-h-[32px] leading-relaxed">
-                Une tour de contrôle unifiée pour votre foyer ou votre entreprise. Synergie native des données et compte SSO centralisé.
+                Une tour de contrôle unifiée pour votre foyer ou votre entreprise. Synergie native des données et
+                compte SSO centralisé.
               </p>
 
-              {/* Les 2 Formules du Bouquet Alphabette */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
-                
-                {/* Pass Bouquet BYOK : 99 € / an */}
-                <div className={`p-4 rounded-2xl border transition-all ${
-                  user.subscriptionPlan === 'bouquet_byok'
-                    ? 'bg-emerald-950/60 border-emerald-400 ring-2 ring-emerald-500/20'
-                    : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
-                }`}>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-extrabold text-emerald-400">Pass Bouquet BYOK</span>
-                    <Key className="w-3.5 h-3.5 text-emerald-400" />
-                  </div>
-                  <div className="flex items-baseline gap-1 my-2">
-                    <span className="text-3xl font-extrabold text-white">99 €</span>
-                    <span className="text-xs font-semibold text-slate-400">/ an</span>
-                  </div>
-                  <p className="text-[11px] text-slate-300 leading-snug">
-                    Accès illimité à l'intégralité de la suite logicielle Alphabette avec sa propre clé API Mistral.
-                  </p>
-                  <button
-                    onClick={() => onSelectPlan('bouquet_byok')}
-                    className="mt-4 w-full py-2.5 px-3 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white transition-colors cursor-pointer border border-slate-700"
-                  >
-                    Choisir BYOK (99 € / an)
-                  </button>
-                </div>
-
-                {/* Pass Bouquet Intégral : 199 € / an (ou prix remisé si promo active) */}
-                <div className={`relative p-4 rounded-2xl border transition-all ${
-                  user.subscriptionPlan === 'bouquet_integral' || user.subscriptionPlan === 'alphabette_pass'
-                    ? 'bg-emerald-950 border-emerald-400 ring-2 ring-emerald-500/40 shadow-md'
-                    : 'bg-emerald-950/30 border-emerald-500/50 hover:border-emerald-400'
-                }`}>
-                  {discountPercent > 0 && (
-                    <span className="absolute -top-2.5 right-3 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white shadow-xs">
-                      -{discountPercent}% Promo
-                    </span>
-                  )}
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-extrabold text-emerald-300">Bouquet Intégral</span>
+              {/* Prix unique (avec promotion éventuelle) */}
+              <div className="relative p-5 rounded-2xl border bg-emerald-950/30 border-emerald-500/50 hover:border-emerald-400 transition-all my-5">
+                {discountPercent > 0 && (
+                  <span className="absolute -top-2.5 right-3 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white shadow-xs">
+                    -{discountPercent}% Promo
+                  </span>
+                )}
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="font-extrabold text-emerald-300 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  </div>
-                  <div className="flex items-baseline gap-1.5 my-2">
-                    <span className="text-3xl font-black text-emerald-400">{bouquetIntegralDiscounted} €</span>
-                    {discountPercent > 0 && (
-                      <span className="text-xs line-through text-slate-500">{bouquetIntegralOriginal} €</span>
-                    )}
-                    <span className="text-xs font-semibold text-slate-300">/ an</span>
-                  </div>
-                  <p className="text-[11px] text-slate-200 leading-snug">
-                    Accès illimité à l'intégralité de la suite logicielle avec les clés d'API Mistral gérées et incluses.
-                  </p>
-                  <button
-                    onClick={() => onSelectPlan('bouquet_integral')}
-                    className="mt-4 w-full py-2.5 px-3 rounded-lg text-xs font-black bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-colors cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
-                  >
-                    <span>Prendre l'Intégral ({bouquetIntegralDiscounted} € / an)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                    Abonnement annuel
+                  </span>
+                  <span className="text-[11px] font-semibold text-slate-400">
+                    Sans engagement
+                  </span>
                 </div>
-
+                <div className="flex items-baseline gap-1.5 my-2">
+                  <span className="text-3xl font-black text-emerald-400">{ecosystemDiscounted} €</span>
+                  {discountPercent > 0 && (
+                    <span className="text-xs line-through text-slate-500">{ecosystem} €</span>
+                  )}
+                  <span className="text-xs font-semibold text-slate-300">/ an</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Accès illimité à l'intégralité de l'écosystème, clés d'API Mistral gérées et incluses.
+                  Toute nouvelle application rejoignant la suite est incluse sans surcoût.
+                </p>
+                <button
+                  onClick={() => onSelectPlan('ecosystem')}
+                  className="mt-4 w-full py-2.5 px-3 rounded-lg text-xs font-black bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-colors cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  <span>Prendre l'Écosystème ({ecosystemDiscounted} € / an)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* Avantages du Bouquet */}
+              {/* Avantages de l'écosystème */}
               <ul className="space-y-2 text-xs text-slate-300 my-4">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Les 15 applications métiers débloquées simultanément</span>
+                  <span>Toutes les applications métiers débloquées simultanément</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Suite Service France 7 modules Zero-Knowledge incluse</span>
+                  <span>Suite Service France Zero-Knowledge incluse</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -389,11 +328,40 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             </div>
 
             <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-              <span>Économie de plus de 65% par rapport à l'unité</span>
+              <span>Les futures applications incluses sans surcoût</span>
               <span className="text-emerald-400 font-semibold">Hub http://alphabette.fr</span>
             </div>
           </div>
 
+        </div>
+
+        {/* Offres spécifiques : pôle professionnel & pilote communal */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+              <Building2 className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-900 text-sm">Licence Professionnelle Solaire (B2B)</h4>
+              <p className="text-xs text-slate-700 mt-1 leading-relaxed">
+                Pour les installateurs et bureaux d'études : <strong>49 € HT / mois</strong> par organisation,
+                avec accès illimité au pôle solaire (LIDARSOL, OSOLAR…).
+              </p>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-teal-50 border border-teal-200 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+              <HeartHandshake className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-900 text-sm">Pilote communal (offert)</h4>
+              <p className="text-xs text-slate-700 mt-1 leading-relaxed">
+                Certaines applications sont offertes la première année dans le cadre d'un pilote
+                (ex. PROXILIEN à La Grande-Motte). <strong>100 % gratuit</strong>, sans carte bancaire.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Espace Code Privilège VIP / Ami & Bouton d'Administration Commerciale */}
@@ -415,7 +383,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 Vous disposez d'un Code Privilège / VIP offert ?
               </h4>
               <p className="text-xs text-slate-600 mt-1 max-w-xl leading-relaxed">
-                Activez votre code d'accès unique (ex. <code>VIP-X89K2</code>) pour débloquer immédiatement 1 an d'accès gratuit au Bouquet complet sans carte bancaire.
+                Activez votre code d'accès unique (ex. <code>VIP-X89K2</code>) pour débloquer immédiatement 1 an d'accès gratuit à l'écosystème complet sans carte bancaire.
               </p>
             </div>
           </div>
@@ -451,7 +419,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </span>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                Consommé en temps réel par les 15 applications
+                Consommé en temps réel par toutes les applications
               </span>
             </div>
 
@@ -465,14 +433,14 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             <div className="space-y-4">
               <div>
                 <span className="font-bold text-slate-300 block mb-2">1. Tarifs Officiels Annuels de Base (€ / an) :</span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-slate-400 block mb-1">App BYOK</label>
+                    <label className="text-slate-400 block mb-1">Une application au choix</label>
                     <div className="relative">
                       <input
                         type="number"
-                        value={adminSingleByok}
-                        onChange={(e) => setAdminSingleByok(Number(e.target.value))}
+                        value={adminPerApp}
+                        onChange={(e) => setAdminPerApp(Number(e.target.value))}
                         className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono"
                       />
                       <span className="absolute right-2 top-2 text-slate-500">€/an</span>
@@ -480,44 +448,22 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-slate-400 block mb-1">App Confort (Mistral)</label>
+                    <label className="text-slate-400 block mb-1">Écosystème complet</label>
                     <div className="relative">
                       <input
                         type="number"
-                        value={adminSingleManaged}
-                        onChange={(e) => setAdminSingleManaged(Number(e.target.value))}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono"
-                      />
-                      <span className="absolute right-2 top-2 text-slate-500">€/an</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-slate-400 block mb-1">Pass Bouquet BYOK</label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={adminBouquetByok}
-                        onChange={(e) => setAdminBouquetByok(Number(e.target.value))}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono"
-                      />
-                      <span className="absolute right-2 top-2 text-slate-500">€/an</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-slate-400 block mb-1">Bouquet Intégral</label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={adminBouquetManaged}
-                        onChange={(e) => setAdminBouquetManaged(Number(e.target.value))}
+                        value={adminEcosystem}
+                        onChange={(e) => setAdminEcosystem(Number(e.target.value))}
                         className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono font-bold text-emerald-400"
                       />
                       <span className="absolute right-2 top-2 text-slate-500">€/an</span>
                     </div>
                   </div>
                 </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  <Tag className="w-3 h-3 inline mr-1" />
+                  Essai de {trialDays} jours offerts · publié sur <code>GET /api/config.json</code>
+                </p>
               </div>
 
               <div>
@@ -581,7 +527,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 disabled={isUpdatingConfig}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl cursor-pointer disabled:opacity-50"
               >
-                {isUpdatingConfig ? 'Diffusion en cours...' : 'Diffuser la mise à jour aux 15 applications'}
+                {isUpdatingConfig ? 'Diffusion en cours...' : 'Diffuser la mise à jour aux applications'}
               </button>
             </div>
           </div>

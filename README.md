@@ -33,8 +33,10 @@ bun run dev
 
 ## Ajouter une application
 
-1. **Créer le projet** dans son propre dépôt (application autonome : son serveur,
-   son API, son build) ;
+1. **Créer le projet** avec la base commune :
+   `bun run new:app <slug> "Nom" "Sous-titre" --accent "#2563eb"` → dépôt autonome
+   où l'en-tête de l'écosystème est déjà câblé — voir
+   [`docs/base-application.md`](docs/base-application.md) ;
 2. **Enregistrer l'application** depuis `/admin` : nom, slug, icône, URL
    (`https://monapp.alphabette.fr`), sous-domaine et statut ;
 3. **Configurer le DNS** une seule fois pour toutes les applications
@@ -55,6 +57,9 @@ L'application apparaît alors automatiquement dans la section « Nos Application
 ## Structure
 
 ```
+packages/shell/      LA BASE COMMUNE (@alphabette/shell) : barres, thème, densité
+templates/app/       modèle d'application autonome (utilisé par le générateur)
+scripts/create-app.ts   générateur « bun run new:app »
 src/App.tsx          la vitrine
 src/components/      sections de la vitrine (Hero, catalogue, registre, tarifs…)
 src/admin/           console d'administration

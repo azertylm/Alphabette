@@ -8,35 +8,28 @@ import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes"
 
 dotenv.config();
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // Configuration commerciale centrale en mémoire (mise à jour instantanée sans redémarrage)
 let commercialConfig = {
-  hubUrl: "http://alphabette.fr",
+  hubUrl: "https://alphabette.fr",
   currency: "EUR",
   pricing: {
-    singleApp: {
-      byok: 39,      // 39 € / an
-      managed: 59,   // 59 € / an (Clé Mistral incluse)
-    },
-    bouquet: {
-      byok: 99,      // 99 € / an (Pass Bouquet BYOK)
-      managed: 199,  // 199 € / an (Pass Bouquet Intégral avec Mistral inclus)
-    },
+    perApp: 15,      // 15 € / application / an
+    ecosystem: 40,   // 40 € / écosystème complet / an
+    trialDays: 7,    // 7 jours d'essai offerts
   },
   activePromotion: {
     isActive: true,
     badgeLabel: "Offre Lancement Écosystème",
     discountPercent: 15,
     expiresAt: new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString(), // 14 jours
-    description: "-15% immédiats sur le Pass Bouquet Intégral avec le code SOUVERAIN15",
+    description: "-15% immédiats sur l'Écosystème complet avec le code SOUVERAIN15",
     couponCode: "SOUVERAIN15",
   },
   stripePaymentLinks: {
-    single_byok: "https://buy.stripe.com/alphabette_single_byok_39",
-    single_managed: "https://buy.stripe.com/alphabette_single_managed_59",
-    bouquet_byok: "https://buy.stripe.com/alphabette_bouquet_byok_99",
-    bouquet_integral: "https://buy.stripe.com/alphabette_bouquet_integral_199",
+    perApp: "https://buy.stripe.com/alphabette_app_15",
+    ecosystem: "https://buy.stripe.com/alphabette_ecosystem_40",
   },
   aiPolicy: {
     provider: "Mistral AI (Exclusif)",
@@ -53,7 +46,7 @@ interface VipCodeRecord {
   code: string;
   status: "active" | "consumed" | "revoked";
   durationMonths: number;
-  planGranted: "bouquet_integral" | "bouquet_byok";
+  planGranted: "ecosystem" | "app";
   recipientNote: string;
   createdAt: string;
   expiresAt: string;
@@ -68,7 +61,7 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
       code: "VIP-X89K2",
       status: "active",
       durationMonths: 12,
-      planGranted: "bouquet_integral",
+      planGranted: "ecosystem",
       recipientNote: "Partenaire Ville de La Grande-Motte",
       createdAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 180 * 24 * 3600 * 1000).toISOString(),
@@ -80,7 +73,7 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
       code: "VIP-MISTRAL75",
       status: "active",
       durationMonths: 12,
-      planGranted: "bouquet_integral",
+      planGranted: "ecosystem",
       recipientNote: "Bêta-testeur Écosystème Mistral AI",
       createdAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 90 * 24 * 3600 * 1000).toISOString(),
@@ -92,7 +85,7 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
       code: "VIP-PRESSE26",
       status: "active",
       durationMonths: 6,
-      planGranted: "bouquet_integral",
+      planGranted: "ecosystem",
       recipientNote: "Accréditation Presse & Médias Tech",
       createdAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
@@ -239,7 +232,7 @@ async function startServer() {
     res.json({
       valid: true,
       success: true,
-      message: `Code VIP activé avec succès ! Vous bénéficiez de ${vipRecord.durationMonths} mois d'accès offert au Bouquet Complet ALPHABETTE.`,
+      message: `Code VIP activé avec succès ! Vous bénéficiez de ${vipRecord.durationMonths} mois d'accès offert à l'écosystème ALPHABETTE.`,
       grantedPlan: vipRecord.planGranted,
       durationMonths: vipRecord.durationMonths,
       grantedUntil: grantedUntil.toISOString(),
@@ -257,7 +250,7 @@ async function startServer() {
    * Générateur de nouveaux codes d'accès uniques
    */
   app.post("/api/admin/generate-vip-code", (req: Request, res: Response) => {
-    const { recipientNote = "Invité Privilège", durationMonths = 12, planGranted = "bouquet_integral" } = req.body;
+    const { recipientNote = "Invité Privilège", durationMonths = 12, planGranted = "ecosystem" } = req.body;
     
     // Génère un code aléatoire sécurisé du type VIP-XXXXX
     const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
@@ -267,7 +260,10 @@ async function startServer() {
       code: newCode,
       status: "active",
       durationMonths: Number(durationMonths) || 12,
-      planGranted: planGranted === "bouquet_byok" ? "bouquet_byok" : "bouquet_integral",
+      planGranted:
+        planGranted === "app" || planGranted === "single_app" || planGranted === "single_byok"
+          ? "app"
+          : "ecosystem",
       recipientNote,
       createdAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 180 * 24 * 3600 * 1000).toISOString(),

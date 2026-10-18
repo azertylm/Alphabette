@@ -78,6 +78,7 @@ import {
   EncryptedProjectPackage
 } from '../services/autonomousProjectExporter';
 import { UserProfile } from '../types';
+import { PRICES, isAppPlan, isEcosystemPlan } from '../plans';
 
 interface SovereignAiStudioProps {
   user: UserProfile;
@@ -614,8 +615,8 @@ Tous les exports de projet sont chiffrés côté client avec SubtleCrypto en AES
 
   // Check access: Is this app unlocked for the user?
   const isAppUnlocked = 
-    user.subscriptionPlan === 'alphabette_pass' ||
-    (user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(selectedPreset.id.toLowerCase()));
+    isEcosystemPlan(user.subscriptionPlan) ||
+    (isAppPlan(user.subscriptionPlan) && user.unlockedAppIds.includes(selectedPreset.id.toLowerCase()));
 
   return (
     <section id="ai-studio" className="py-12 bg-slate-900 text-slate-100 border-t border-b border-slate-800 relative overflow-hidden">
@@ -949,17 +950,17 @@ Tous les exports de projet sont chiffrés côté client avec SubtleCrypto en AES
               <div className="bg-slate-950/70 border border-slate-800/90 rounded-2xl p-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${
-                    user.subscriptionPlan === 'alphabette_pass'
+                    isEcosystemPlan(user.subscriptionPlan)
                       ? 'bg-emerald-500 text-slate-950'
-                      : user.subscriptionPlan === 'single_app'
+                      : isAppPlan(user.subscriptionPlan)
                       ? 'bg-blue-500 text-white'
                       : 'bg-slate-800 text-slate-400'
                   }`}>
-                    {user.subscriptionPlan === 'alphabette_pass' ? '3€' : user.subscriptionPlan === 'single_app' ? '1€' : '0€'}
+                    {isEcosystemPlan(user.subscriptionPlan) ? '∞' : isAppPlan(user.subscriptionPlan) ? '1' : '0'}
                   </div>
                   <div>
                     <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <span>Formule {user.subscriptionPlan === 'alphabette_pass' ? 'Pass Alphabette' : user.subscriptionPlan === 'single_app' ? 'À la carte' : 'Découverte'}</span>
+                      <span>Formule {isEcosystemPlan(user.subscriptionPlan) ? 'Écosystème' : isAppPlan(user.subscriptionPlan) ? 'Une application' : 'Découverte'}</span>
                       {isAppUnlocked ? (
                         <span className="text-[10px] text-emerald-400 flex items-center gap-0.5 font-medium">
                           <CheckCircle2 className="w-3 h-3" /> Débloqué
@@ -973,7 +974,7 @@ Tous les exports de projet sont chiffrés côté client avec SubtleCrypto en AES
                     <div className="text-[11px] text-slate-400">
                       {isAppUnlocked
                         ? `Traitement illimité pour ${selectedPreset.name}`
-                        : '1 € / mois pour cette app seule, ou 3 € / mois pour toute la suite'}
+                        : `${PRICES.perApp} € / an pour cette application seule, ou ${PRICES.ecosystem} € / an pour tout l'écosystème`}
                     </div>
                   </div>
                 </div>

@@ -14,6 +14,7 @@ import { VipCodeModal } from './components/VipCodeModal';
 import { VipActivationSection } from './components/VipActivationSection';
 import { INITIAL_APPS, RETIRED_APP_IDS } from './data/initialApps';
 import { AppItem, UserProfile, PlanType } from './types';
+import { isAppPlan, isEcosystemPlan, isTrialPlan, planToast } from './plans';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
 const STORAGE_KEY_APPS = 'alphabette_apps_v4';
@@ -63,7 +64,7 @@ export default function App() {
       role: 'superadmin',
       tenantId: 'tnt_alphabette_france',
       tenantName: 'ALPHABETTE Hub Central',
-      subscriptionPlan: 'bouquet_integral', // Par défaut: Bouquet Intégral débloqué
+      subscriptionPlan: 'ecosystem', // Par défaut : l'écosystème complet débloqué
       unlockedAppIds: INITIAL_APPS.map(a => a.id),
       ssoSessionId: 'sso_live_89f3a1c2',
       memberSince: '2024',
@@ -115,28 +116,14 @@ export default function App() {
     setUser(prev => ({
       ...prev,
       subscriptionPlan: plan,
-      unlockedAppIds: unlockedAppIds !== undefined 
-        ? unlockedAppIds 
-        : (['bouquet_integral', 'bouquet_byok', 'alphabette_pass'].includes(plan) 
-            ? apps.map(a => a.id) 
-            : (['single_byok', 'single_managed', 'single_app'].includes(plan) ? ['france-service'] : []))
+      unlockedAppIds: unlockedAppIds !== undefined
+        ? unlockedAppIds
+        : (isEcosystemPlan(plan) || isTrialPlan(plan)
+            ? apps.map(a => a.id)
+            : (isAppPlan(plan) ? ['france-service'] : []))
     }));
 
-    if (plan === 'bouquet_integral' || plan === 'alphabette_pass') {
-      showToast('🎉 Pass Bouquet Intégral activé (199 € / an) ! Les 15 applications et les clés Mistral sont incluses.');
-    } else if (plan === 'bouquet_byok') {
-      showToast('🎉 Pass Bouquet BYOK activé (99 € / an) ! Les 15 applications sont débloquées avec votre clé Mistral.');
-    } else if (plan === 'single_managed') {
-      showToast('Formule Confort activée (59 € / an · Clé Mistral gérée incluse).');
-    } else if (plan === 'single_byok' || plan === 'single_app') {
-      showToast('Formule BYOK activée (39 € / an · Clé Mistral client).');
-    } else if (plan === 'trial_7d') {
-      showToast('🎁 Période d’essai de 7 jours activée avec la clé Mistral Alphabette incluse !');
-    } else if (plan === 'pro_b2b') {
-      showToast('Licence Pro B2B Solaire activée (49 € HT / mois).');
-    } else {
-      showToast('Phase pilote La Grande-Motte activée (100% gratuit).');
-    }
+    showToast(planToast(plan));
   };
 
   // Handler: Save Apps from URL Manager
@@ -174,7 +161,7 @@ export default function App() {
       unlockedAppIds: apps.map(a => a.id),
       vipGrantedUntil: new Date(Date.now() + durationMonths * 30 * 24 * 3600 * 1000).toISOString(),
     }));
-    showToast(`🎉 Code VIP validé ! Bouquet Intégral offert pour ${durationMonths} mois (${note || 'Invité Privilège'}).`);
+    showToast(`🎉 Code VIP validé ! Écosystème complet offert pour ${durationMonths} mois (${note || 'Invité Privilège'}).`);
   };
 
   const configuredCount = apps.filter(a => a.isConfigured).length;
@@ -233,7 +220,7 @@ export default function App() {
           onOpenPricing={handleScrollToPricing}
         />
 
-        {/* 5. Interactive Pricing Table: 39€ / 59€ (Unité) · 99€ / 199€ (Bouquet) avec API promo & activation VIP */}
+        {/* 5. Interactive Pricing Table : 15 € (une application) · 40 € (écosystème) avec API promo & activation VIP */}
         <PricingSection
           user={user}
           apps={visibleApps}
@@ -283,8 +270,8 @@ export default function App() {
         onClose={() => setLaunchingApp(null)}
         app={launchingApp}
         user={user}
-        onSelectPass={() => handleChangePlan('bouquet_integral')}
-        onSelectSingleApp={(appId) => handleChangePlan('single_byok', [appId])}
+        onSelectPass={() => handleChangePlan('ecosystem')}
+        onSelectSingleApp={(appId) => handleChangePlan('app', [appId])}
       />
 
       {/* VIP Access Code Modal (Usage unique strict & Registre Admin) */}

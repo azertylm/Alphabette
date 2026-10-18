@@ -55,9 +55,9 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-medium">
             <span className="text-emerald-700 font-bold">🎁 7 jours d'essai offerts</span>
             <span>·</span>
-            <span>Application individuelle : <strong className="text-blue-800 font-bold">39 € / an</strong> (BYOK) ou <strong className="text-blue-800 font-bold">59 € / an</strong> (Gérée)</span>
+            <span>Application au choix : <strong className="text-blue-800 font-bold">15 € / an</strong></span>
             <span>·</span>
-            <span>Le Bouquet complet : <strong className="text-emerald-800 font-bold">99 € / an</strong> (BYOK) ou <strong className="text-emerald-800 font-bold">199 € / an</strong> (Intégral)</span>
+            <span>Écosystème complet : <strong className="text-emerald-800 font-bold">40 € / an</strong></span>
           </div>
 
           {/* Action CTAs */}
@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm shadow-xs transition-all cursor-pointer"
             >
               <CreditCard className="w-4 h-4 text-emerald-400" />
-              <span>Grille tarifaire (39€ / 59€ · 99€ / 199€)</span>
+              <span>Grille tarifaire (15 € · 40 €)</span>
             </button>
 
             <button
@@ -116,10 +116,10 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div className="flex items-center gap-2 mb-1">
               <CreditCard className="w-4 h-4 text-emerald-700 shrink-0" />
-              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Essai 7j & Mode BYOK</h3>
+              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Essai 7j & Prix unique</h3>
             </div>
             <p className="text-xs text-slate-600 leading-snug">
-              7 jours offerts clés en main, puis apportez votre clé Mistral (39€/99€) ou optez pour le confort managé (59€/199€).
+              7 jours offerts clés en main, puis 15 € / an pour une application ou 40 € / an pour tout l'écosystème. Sans engagement, zéro publicité.
             </p>
           </div>
 

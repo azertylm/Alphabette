@@ -15,6 +15,7 @@ import {
   Gift
 } from 'lucide-react';
 import { UserProfile, PlanType } from '../types';
+import { isAppPlan, isEcosystemPlan, planBadge as planBadgeOf } from '../plans';
 
 interface HeaderProps {
   user: UserProfile;
@@ -40,62 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const getPlanBadge = () => {
-    switch (user.subscriptionPlan) {
-      case 'trial_7d':
-        return {
-          label: 'Essai 7 Jours Offerts (Mistral Inclus)',
-          classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300 ring-1 ring-emerald-400/20',
-          dot: 'bg-emerald-500'
-        };
-      case 'bouquet_integral':
-      case 'alphabette_pass':
-        return {
-          label: 'Bouquet Intégral (199€/an · 15 Apps)',
-          classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300 ring-1 ring-emerald-400/20',
-          dot: 'bg-emerald-500'
-        };
-      case 'bouquet_byok':
-        return {
-          label: 'Bouquet BYOK (99€/an · Clé Client)',
-          classes: 'bg-purple-500/15 text-purple-800 border-purple-300 ring-1 ring-purple-400/20',
-          dot: 'bg-purple-500'
-        };
-      case 'single_managed':
-        return {
-          label: 'App Confort (59€/an · Mistral Inclus)',
-          classes: 'bg-blue-500/15 text-blue-800 border-blue-300 ring-1 ring-blue-400/20',
-          dot: 'bg-blue-500'
-        };
-      case 'single_byok':
-      case 'single_app':
-        return {
-          label: 'App BYOK (39€/an · Clé Client)',
-          classes: 'bg-blue-500/15 text-blue-800 border-blue-300 ring-1 ring-blue-400/20',
-          dot: 'bg-blue-500'
-        };
-      case 'pro_b2b':
-        return {
-          label: 'Licence B2B Solaire (49€ HT/mois)',
-          classes: 'bg-amber-500/15 text-amber-900 border-amber-300 ring-1 ring-amber-400/20',
-          dot: 'bg-amber-500'
-        };
-      case 'pilot_free':
-        return {
-          label: 'Pilote La Grande-Motte (100% Gratuit)',
-          classes: 'bg-teal-500/15 text-teal-800 border-teal-300 ring-1 ring-teal-400/20',
-          dot: 'bg-teal-500'
-        };
-      default:
-        return {
-          label: 'Bouquet Intégral (199€/an)',
-          classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300',
-          dot: 'bg-emerald-500'
-        };
-    }
-  };
-
-  const planBadge = getPlanBadge();
+  const planBadge = planBadgeOf(user.subscriptionPlan, totalAppsCount);
 
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all shadow-xs">
@@ -148,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Tarifs (39€/59€ · 99€/199€)</span>
+              <span>Tarifs (15 € · 40 €)</span>
             </button>
 
             {onOpenVipModal && (
@@ -237,62 +183,32 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className="space-y-1">
                       <button
                         onClick={() => {
-                          onChangeUserPlan('bouquet_integral');
+                          onChangeUserPlan('ecosystem');
                           setIsUserMenuOpen(false);
                         }}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                          user.subscriptionPlan === 'bouquet_integral' || user.subscriptionPlan === 'alphabette_pass'
+                          isEcosystemPlan(user.subscriptionPlan)
                             ? 'bg-emerald-50 text-emerald-900 font-semibold'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>Pass Bouquet Intégral (199 € / an · Mistral inclus)</span>
-                        {(user.subscriptionPlan === 'bouquet_integral' || user.subscriptionPlan === 'alphabette_pass') && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                        <span>Écosystème complet (40 € / an · toutes les apps)</span>
+                        {isEcosystemPlan(user.subscriptionPlan) && <Check className="w-3.5 h-3.5 text-emerald-600" />}
                       </button>
 
                       <button
                         onClick={() => {
-                          onChangeUserPlan('bouquet_byok');
+                          onChangeUserPlan('app', ['france-service']);
                           setIsUserMenuOpen(false);
                         }}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                          user.subscriptionPlan === 'bouquet_byok'
-                            ? 'bg-purple-50 text-purple-900 font-semibold'
-                            : 'hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <span>Pass Bouquet BYOK (99 € / an · Clé Client)</span>
-                        {user.subscriptionPlan === 'bouquet_byok' && <Check className="w-3.5 h-3.5 text-purple-600" />}
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          onChangeUserPlan('single_managed', ['france-service']);
-                          setIsUserMenuOpen(false);
-                        }}
-                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                          user.subscriptionPlan === 'single_managed'
+                          isAppPlan(user.subscriptionPlan)
                             ? 'bg-blue-50 text-blue-900 font-semibold'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>App Confort (59 € / an · Mistral inclus)</span>
-                        {user.subscriptionPlan === 'single_managed' && <Check className="w-3.5 h-3.5 text-blue-600" />}
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          onChangeUserPlan('single_byok', ['france-service']);
-                          setIsUserMenuOpen(false);
-                        }}
-                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                          user.subscriptionPlan === 'single_byok' || user.subscriptionPlan === 'single_app'
-                            ? 'bg-blue-50 text-blue-900 font-semibold'
-                            : 'hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <span>App BYOK (39 € / an · Clé Client)</span>
-                        {(user.subscriptionPlan === 'single_byok' || user.subscriptionPlan === 'single_app') && <Check className="w-3.5 h-3.5 text-blue-600" />}
+                        <span>Application au choix (15 € / an)</span>
+                        {isAppPlan(user.subscriptionPlan) && <Check className="w-3.5 h-3.5 text-blue-600" />}
                       </button>
 
                       <button
@@ -308,6 +224,36 @@ export const Header: React.FC<HeaderProps> = ({
                       >
                         <span>Essai 7 jours offerts (Clé Alphabette)</span>
                         {user.subscriptionPlan === 'trial_7d' && <Check className="w-3.5 h-3.5 text-teal-600" />}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onChangeUserPlan('pro_b2b');
+                          setIsUserMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
+                          user.subscriptionPlan === 'pro_b2b'
+                            ? 'bg-amber-50 text-amber-900 font-semibold'
+                            : 'hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <span>Licence B2B Solaire (49 € HT / mois)</span>
+                        {user.subscriptionPlan === 'pro_b2b' && <Check className="w-3.5 h-3.5 text-amber-600" />}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onChangeUserPlan('pilot_free');
+                          setIsUserMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-colors ${
+                          user.subscriptionPlan === 'pilot_free'
+                            ? 'bg-teal-50 text-teal-900 font-semibold'
+                            : 'hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <span>Pilote La Grande-Motte (100 % gratuit)</span>
+                        {user.subscriptionPlan === 'pilot_free' && <Check className="w-3.5 h-3.5 text-teal-600" />}
                       </button>
                     </div>
                   </div>
@@ -384,7 +330,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm text-left"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Tarifs (39€/59€ · 99€/199€)</span>
+              <span>Tarifs (15 € · 40 €)</span>
             </button>
             {onOpenVipModal && (
               <button 

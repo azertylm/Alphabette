@@ -20,7 +20,7 @@ export const DB_TABLES: DBTableDef[] = [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'Identifiant unique du tenant' },
       { name: 'slug', type: 'VARCHAR(64)', constraints: 'UNIQUE NOT NULL', description: 'Identifiant URL (ex: direction-generale, amap-provence)' },
       { name: 'name', type: 'VARCHAR(255)', constraints: 'NOT NULL', description: 'Nom de l’organisation ou du foyer' },
-      { name: 'tier_default', type: 'VARCHAR(32)', constraints: 'DEFAULT \'free\'', description: 'Plan par défaut (free, single_app, pass)' },
+      { name: 'tier_default', type: 'VARCHAR(32)', constraints: 'DEFAULT \'free\'', description: 'Plan par défaut (free, app, ecosystem)' },
       { name: 'data_residency_region', type: 'VARCHAR(32)', constraints: 'DEFAULT \'eu-fr-paris\'', description: 'Localisation stricte des données (Paris / EU)' },
       { name: 'created_at', type: 'TIMESTAMPTZ', constraints: 'DEFAULT NOW()', description: 'Horodatage de création' },
       { name: 'updated_at', type: 'TIMESTAMPTZ', constraints: 'DEFAULT NOW()', description: 'Dernière mise à jour' }
@@ -57,13 +57,13 @@ export const DB_TABLES: DBTableDef[] = [
   },
   {
     name: 'subscriptions',
-    purpose: 'Gestion centrale des abonnements : Bouquet Complet (99€ BYOK / 199€ Intégral), À l\'unité (39€ BYOK / 59€ Confort) ou Essai 7j.',
+    purpose: 'Gestion centrale des abonnements : Écosystème complet (40 € / an), Une application (15 € / an) ou Essai 7 j.',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'ID unique d’abonnement' },
       { name: 'tenant_id', type: 'UUID', constraints: 'NOT NULL REFERENCES tenants(id) ON DELETE CASCADE', description: 'Tenant facturé' },
       { name: 'user_id', type: 'UUID', constraints: 'NOT NULL REFERENCES users(id) ON DELETE CASCADE', description: 'Titulaire du compte payeur' },
-      { name: 'plan_type', type: 'VARCHAR(32)', constraints: 'NOT NULL', description: 'trial_7d, single_byok, single_managed, bouquet_byok, bouquet_integral' },
-      { name: 'annual_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant annuel en centimes (ex: 3900 pour 39€, 19900 pour 199€)' },
+      { name: 'plan_type', type: 'VARCHAR(32)', constraints: 'NOT NULL', description: 'trial_7d, app, ecosystem' },
+      { name: 'annual_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant annuel en centimes (ex : 1500 pour 15 €, 4000 pour 40 €)' },
       { name: 'status', type: 'VARCHAR(32)', constraints: 'DEFAULT \'active\'', description: 'active, past_due, canceled, trialing' },
       { name: 'current_period_end', type: 'TIMESTAMPTZ', constraints: 'NOT NULL', description: 'Échéance de renouvellement annuel' },
       { name: 'payment_provider', type: 'VARCHAR(32)', constraints: 'DEFAULT \'stripe\'', description: 'Stripe ou passerelle souveraine' }
@@ -71,7 +71,7 @@ export const DB_TABLES: DBTableDef[] = [
   },
   {
     name: 'subscription_single_apps',
-    purpose: 'Liaison pour le modèle à l\'unité (39 € / an BYOK ou 59 € / an Confort).',
+    purpose: 'Liaison pour le modèle à l\'unité (15 € / an pour une application au choix).',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'ID d’attribution' },
       { name: 'subscription_id', type: 'UUID', constraints: 'NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE', description: 'Abonnement parent' },
@@ -151,13 +151,13 @@ CREATE TABLE IF NOT EXISTS applications (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. ABONNEMENTS (1€/mois par app ou 3€/mois Pass Alphabette)
+-- 4. ABONNEMENTS (15 €/an pour une application ou 40 €/an pour l'écosystème)
 CREATE TABLE IF NOT EXISTS subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    plan_type VARCHAR(32) NOT NULL, -- 'free', 'single_app', 'alphabette_pass'
-    monthly_price_cents INTEGER NOT NULL, -- 0, 100, 300
+    plan_type VARCHAR(32) NOT NULL, -- 'trial_7d', 'app', 'ecosystem'
+    annual_price_cents INTEGER NOT NULL, -- 0, 1500, 4000
     status VARCHAR(32) DEFAULT 'active', -- 'active', 'past_due', 'canceled'
     current_period_end TIMESTAMPTZ NOT NULL,
     payment_provider VARCHAR(32) DEFAULT 'sepa_direct',
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 CREATE INDEX idx_subscriptions_user ON subscriptions(user_id);
 CREATE INDEX idx_subscriptions_tenant ON subscriptions(tenant_id);
 
--- 5. LIAISON APPS POUR L'OFFRE 1€/MOIS A LA CARTE
+-- 5. LIAISON APPS POUR L'OFFRE 15 €/AN A LA CARTE
 CREATE TABLE IF NOT EXISTS subscription_single_apps (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
@@ -206,8 +206,8 @@ SELECT
     a.id AS app_id,
     a.slug AS app_slug,
     CASE 
-        WHEN s.plan_type = 'alphabette_pass' AND s.status = 'active' THEN TRUE
-        WHEN s.plan_type = 'single_app' AND s.status = 'active' AND ssa.application_id IS NOT NULL THEN TRUE
+        WHEN s.plan_type = 'ecosystem' AND s.status = 'active' THEN TRUE
+        WHEN s.plan_type = 'app' AND s.status = 'active' AND ssa.application_id IS NOT NULL THEN TRUE
         ELSE FALSE
     END AS is_unlocked,
     COALESCE(uap.role, 'member') AS app_role,

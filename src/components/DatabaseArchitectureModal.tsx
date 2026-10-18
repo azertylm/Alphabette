@@ -45,8 +45,8 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
     email: "direction@alphabette.fr",
     name: "Direction ALPHABETTE",
     global_role: "superadmin",
-    plan: "alphabette_pass",
-    unlocked_apps: ["*"], // Wildcard for 3€ Pass
+    plan: "ecosystem",
+    unlocked_apps: ["*"], // Wildcard : l'écosystème complet ouvre toutes les applications
     app_target: "lidarsol",
     app_role: "admin",
     scopes: ["profile", "sso:launch", "export:highres"],
@@ -73,7 +73,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                 </span>
               </div>
               <p className="text-xs text-slate-300 mt-0.5">
-                Architecture centralisée pour 50+ applications avec isolation légère, gestion des 1€ / 3€ et rôles dynamiques.
+                Architecture centralisée pour 50+ applications avec isolation légère, gestion des 15 € / 40 € et rôles dynamiques.
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                       </div>
                       <h5 className="font-bold text-sm text-emerald-400">ALPHABETTE Central Hub</h5>
                       <p className="text-[11px] text-slate-300 mt-1">
-                        Service d'authentification centralisé (Auth SSO). Gère les tenants, comptes professionnels & citoyens, abonnements (39€/59€ à l'unité ou Bouquet 99€/199€) et clés publiques.
+                        Service d'authentification centralisé (Auth SSO). Gère les tenants, comptes professionnels & citoyens, abonnements (15 € pour une application ou écosystème 40 € / an) et clés publiques.
                       </p>
                     </div>
                     <div className="mt-3 py-1 px-2 rounded bg-slate-800 text-[10px] text-slate-400 font-mono">
@@ -239,9 +239,9 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                   <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-2 font-bold text-xs">
                     03
                   </div>
-                  <h5 className="font-bold text-slate-900 text-sm">Modèle Économique (39€/59€ vs 99€/199€)</h5>
+                  <h5 className="font-bold text-slate-900 text-sm">Modèle Économique (15 € vs 40 € / an)</h5>
                   <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                    Si <code>plan_type = 'bouquet_integral'</code> ou <code>'bouquet_byok'</code>, l'accès est calculé comme débloqué pour les 15 applications actuelles et futures. Si <code>plan_type = 'single_byok'</code> ou <code>'single_managed'</code>, la table <code>subscription_single_apps</code> filtre l'application sélectionnée.
+                    Si <code>plan_type = 'ecosystem'</code>, l'accès est calculé comme débloqué pour toutes les applications actuelles et futures. Si <code>plan_type = 'app'</code>, la table <code>subscription_single_apps</code> filtre l'application sélectionnée.
                   </p>
                 </div>
               </div>
@@ -320,7 +320,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                     <div className="text-sm font-extrabold text-slate-900 mt-1">Gestionnaire d'Espace</div>
                     <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
                       <li>• Gestion des comptes du foyer/collectivité</li>
-                      <li>• Choix des formules (1€ ou 3€)</li>
+                      <li>• Choix des formules (15 € ou 40 € / an)</li>
                       <li>• Facturation SEPA et TVA</li>
                       <li>• Attribution des droits internes</li>
                     </ul>
@@ -389,7 +389,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
                   <span>Avantage de l'architecture pour l'écosystème ALPHABETTE :</span>
                 </div>
                 <p className="text-emerald-800 leading-relaxed">
-                  Grâce au claim <code>plan: "alphabette_pass"</code> et <code>unlocked_apps: ["*"]</code>, vous n'avez pas besoin de mettre à jour 50 applications différentes quand un utilisateur s'abonne : chaque application sait instantanément si le Pass à 3€ est actif !
+                  Grâce au claim <code>plan: "ecosystem"</code> et <code>unlocked_apps: ["*"]</code>, vous n'avez pas besoin de mettre à jour chaque application quand un utilisateur s'abonne : chaque application sait instantanément si l'Écosystème à 40 € / an est actif !
                 </p>
               </div>
             </div>

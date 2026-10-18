@@ -11,6 +11,7 @@ import {
   Lock
 } from 'lucide-react';
 import { AppItem, UserProfile, AppCategory } from '../types';
+import { isAppPlan, isEcosystemPlan } from '../plans';
 import { CATEGORIES } from '../data/initialApps';
 import { AppCard } from './AppCard';
 
@@ -55,9 +56,9 @@ export const AppGrid: React.FC<AppGridProps> = ({
       // Access filter
       const isUnlocked = 
         app.isPiloteFree ||
-        (user.subscriptionPlan === 'alphabette_pass' && !app.isB2B) || 
+        (isEcosystemPlan(user.subscriptionPlan) && !app.isB2B) || 
         (user.subscriptionPlan === 'pro_b2b' && app.isB2B) ||
-        (user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id));
+        (isAppPlan(user.subscriptionPlan) && user.unlockedAppIds.includes(app.id));
 
       const matchesAccess = 
         accessFilter === 'all' ||
@@ -76,9 +77,9 @@ export const AppGrid: React.FC<AppGridProps> = ({
 
   const unlockedCount = apps.filter(app => 
     app.isPiloteFree ||
-    (user.subscriptionPlan === 'alphabette_pass' && !app.isB2B) || 
+    (isEcosystemPlan(user.subscriptionPlan) && !app.isB2B) || 
     (user.subscriptionPlan === 'pro_b2b' && app.isB2B) ||
-    (user.subscriptionPlan === 'single_app' && user.unlockedAppIds.includes(app.id))
+    (isAppPlan(user.subscriptionPlan) && user.unlockedAppIds.includes(app.id))
   ).length;
 
   return (
@@ -263,7 +264,7 @@ export const AppGrid: React.FC<AppGridProps> = ({
           <div>
             <h4 className="text-sm font-bold text-emerald-950">Architecture extensible jusqu'à 50+ applications</h4>
             <p className="text-xs text-emerald-800">
-              Chaque nouvelle application s'ajoute automatiquement au catalogue et au Pass Alphabette (3€/m) sans surcoût pour les abonnés.
+              Chaque nouvelle application s'ajoute automatiquement au catalogue et à l'écosystème (40 €/an) sans surcoût pour les abonnés.
             </p>
           </div>
         </div>

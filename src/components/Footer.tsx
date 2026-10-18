@@ -108,7 +108,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <button onClick={onOpenPricing} className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer">
                   <CreditCard className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Tarifs : 39€/59€ (Unité) · 99€/199€ (Bouquet)</span>
+                  <span>Tarifs : 15 € (application) · 40 € (écosystème)</span>
                 </button>
               </li>
               <li>
@@ -132,13 +132,10 @@ export const Footer: React.FC<FooterProps> = ({
               Grille Tarifaire Annuelle
             </h4>
             <ul className="space-y-1.5 text-slate-400 text-xs">
-              <li className="font-semibold text-slate-300 pt-1">Application Individuelle :</li>
-              <li className="pl-2">• Formule BYOK (Clé client) : <strong>39 € / an</strong></li>
-              <li className="pl-2">• Formule Confort (Clé gérée) : <strong>59 € / an</strong></li>
-              <li className="font-semibold text-slate-300 pt-1">Le Bouquet Complet (15 Apps) :</li>
-              <li className="pl-2 text-emerald-400">• Pass Bouquet BYOK : <strong>99 € / an</strong></li>
-              <li className="pl-2 text-emerald-400">• Pass Bouquet Intégral : <strong>199 € / an</strong></li>
-              <li className="text-[11px] text-slate-500 pt-1">Essai 7 jours offerts sur toute inscription</li>
+              <li className="font-semibold text-slate-300 pt-1">Tarif unique :</li>
+              <li className="pl-2">• Une application au choix : <strong>15 € / an</strong></li>
+              <li className="pl-2 text-emerald-400">• L'écosystème complet : <strong>40 € / an</strong></li>
+              <li className="text-[11px] text-slate-500 pt-1">Essai 7 jours offerts sur toute inscription · sans engagement</li>
             </ul>
           </div>
 

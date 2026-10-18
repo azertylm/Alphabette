@@ -69,17 +69,17 @@ export const CommitmentsSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Pillar 3: Architecture Triple Niveau & Mode BYOK */}
+          {/* Pillar 3: Essai 7 jours puis prix unique */}
           <div className="p-7 rounded-2xl bg-slate-50 border border-slate-200/90 flex gap-4">
             <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
               <Cpu className="w-6 h-6" />
             </div>
             <div className="space-y-2">
               <h3 className="font-bold text-base text-slate-900">
-                3 Niveaux d'Accès : Essai 7j, BYOK & Managé
+                Essai 7 jours, puis un prix unique
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Profitez de 7 jours d'essai offerts, puis apportez votre propre clé API Mistral pour consommer votre quota à prix coûtant (formule BYOK), ou laissez ALPHABETTE gérer l'infrastructure de A à Z (formule Confort).
+                Profitez de 7 jours d'essai offerts, puis 15 € par an pour une application au choix ou 40 € par an pour l'écosystème complet — clés d'API Mistral gérées et incluses. Vous pouvez aussi brancher votre propre clé (BYOK).
               </p>
               <div className="text-[11px] font-semibold text-purple-800 flex items-center gap-1.5 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Support natif du développement local sous Mac (Metal / Ollama)
@@ -87,7 +87,7 @@ export const CommitmentsSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Pillar 4: Économie Solidaire & Bouquet Transparent */}
+          {/* Pillar 4: Économie Solidaire & Prix Transparent */}
           <div className="p-7 rounded-2xl bg-slate-50 border border-slate-200/90 flex gap-4">
             <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
               <Sparkles className="w-6 h-6" />
@@ -97,7 +97,7 @@ export const CommitmentsSection: React.FC = () => {
                 Grille Tarifaire Frugale & Sans Engagement
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                39 € ou 59 € par an pour une application, ou 99 € et 199 € pour débloquer l'ensemble des 15 applications avec le Bouquet complet. Un prix fixe annuel, zéro commission cachée, zéro publicité.
+                15 € par an pour une application, ou 40 € par an pour débloquer l'ensemble de l'écosystème. Un prix fixe annuel, zéro commission cachée, zéro publicité.
               </p>
               <div className="text-[11px] font-semibold text-amber-800 flex items-center gap-1.5 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Pilotage centralisé en temps réel depuis le hub http://alphabette.fr

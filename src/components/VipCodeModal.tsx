@@ -46,7 +46,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
   // Admin Generator State
   const [recipientNote, setRecipientNote] = useState('');
   const [durationMonths, setDurationMonths] = useState<number>(12);
-  const [planGranted, setPlanGranted] = useState<'bouquet_integral' | 'bouquet_byok'>('bouquet_integral');
+  const [planGranted, setPlanGranted] = useState<'ecosystem' | 'app'>('ecosystem');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCodeResult, setGeneratedCodeResult] = useState<VipAccessCode | null>(null);
   const [vipCodesList, setVipCodesList] = useState<VipAccessCode[]>([]);
@@ -98,7 +98,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
         });
 
         // Mettre à jour l'abonnement du profil
-        onCodeSuccessfullyActivated('bouquet_integral', res.durationMonths || 12, res.recipientNote);
+        onCodeSuccessfullyActivated('ecosystem', res.durationMonths || 12, res.recipientNote);
       } else {
         setErrorMsg(res.error || 'Code invalide ou déjà consommé.');
       }
@@ -219,7 +219,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
                   <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 space-y-1.5">
                     <div className="flex justify-between">
                       <span className="text-slate-500">Plan accordé :</span>
-                      <strong className="text-emerald-700 font-bold">Pass Bouquet Intégral (15 Apps)</strong>
+                      <strong className="text-emerald-700 font-bold">Écosystème complet</strong>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Durée offerte :</span>
@@ -363,8 +363,8 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
                       onChange={(e) => setPlanGranted(e.target.value as any)}
                       className="w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-900"
                     >
-                      <option value="bouquet_integral">Pass Bouquet Intégral (199€/an)</option>
-                      <option value="bouquet_byok">Pass Bouquet BYOK (99€/an)</option>
+                      <option value="ecosystem">Écosystème complet (40 €/an)</option>
+                      <option value="app">Une application au choix (15 €/an)</option>
                     </select>
                   </div>
                 </div>

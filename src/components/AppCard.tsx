@@ -31,6 +31,7 @@ import {
   FileText
 } from 'lucide-react';
 import { AppItem, UserProfile } from '../types';
+import { PRICES, isAppPlan, isEcosystemPlan, isTrialPlan } from '../plans';
 
 interface AppCardProps {
   app: AppItem;
@@ -51,18 +52,9 @@ export const AppCard: React.FC<AppCardProps> = ({
 
   // Determine if application is unlocked for current user
   const isProxilienFree = app.isPiloteFree;
-  const isUnlockedByPass = (
-    user.subscriptionPlan === 'bouquet_integral' || 
-    user.subscriptionPlan === 'bouquet_byok' || 
-    user.subscriptionPlan === 'alphabette_pass' ||
-    user.subscriptionPlan === 'trial_7d'
-  );
+  const isUnlockedByPass = isEcosystemPlan(user.subscriptionPlan) || isTrialPlan(user.subscriptionPlan);
   const isUnlockedByB2B = user.subscriptionPlan === 'pro_b2b' && app.isB2B;
-  const isUnlockedBySingle = (
-    user.subscriptionPlan === 'single_byok' || 
-    user.subscriptionPlan === 'single_managed' || 
-    user.subscriptionPlan === 'single_app'
-  ) && user.unlockedAppIds.includes(app.id);
+  const isUnlockedBySingle = isAppPlan(user.subscriptionPlan) && user.unlockedAppIds.includes(app.id);
   const isUnlocked = isProxilienFree || isUnlockedByPass || isUnlockedByB2B || isUnlockedBySingle;
 
   // Render proper icon
@@ -139,10 +131,10 @@ export const AppCard: React.FC<AppCardProps> = ({
                 {isProxilienFree 
                   ? 'Gratuit Pilote' 
                   : isUnlockedByPass 
-                    ? 'Pass 40 € Actif' 
+                    ? `Écosystème ${PRICES.ecosystem} € Actif` 
                     : isUnlockedByB2B 
                       ? 'Licence B2B' 
-                      : 'À l\'unité (15€)'}
+                      : `À l'unité (${PRICES.perApp} €)`}
               </span>
             </span>
           ) : (
@@ -286,7 +278,7 @@ export const AppCard: React.FC<AppCardProps> = ({
             <span>
               {app.isB2B 
                 ? 'Licence B2B (49 € HT/mois)' 
-                : 'Débloquer (Dès 39 € ou Bouquet 99 €)'}
+                : `Débloquer (${PRICES.perApp} € ou écosystème ${PRICES.ecosystem} €)`}
             </span>
           </button>
         )}
