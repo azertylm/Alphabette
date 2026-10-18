@@ -95,6 +95,22 @@ export const APP: AlphaAppConfig = {
 };
 ```
 
+**Application gratuite.** Une application peut se déclarer gratuite,
+définitivement :
+
+```ts
+gratuit: true,
+```
+
+La base n'affiche alors, pour elle, ni prix, ni essai, ni bouton de paiement :
+la barre écosystème écrit « gratuit (N applications) », le bouton « Pass » devient
+« 🧭 L'écosystème » et le panneau correspondant explique la gratuité. **Les liens
+vers le hub restent en place** (alphabette.fr, les applications, les dons) : c'est
+l'écosystème qui finance une application gratuite. Côté hub, la même marque se
+pose dans la console `/admin` (case « Gratuit ») et dans
+`data/apps-registry.json` (`"gratuit": true`) : la vitrine et la base des
+applications l'affichent alors comme un badge « Gratuit ».
+
 Depuis n'importe quel composant, la base expose son état :
 
 ```tsx
@@ -112,9 +128,13 @@ applications lors de la mise à jour du paquet `@alphabette/shell`.
 
 Deux canaux de distribution :
 
-1. **Paquet privé** publié (registre privé / GitHub Packages) : les applications
-   font `bun update` pour recevoir la nouvelle version.
-2. **En local** pendant la transition : `bun link` depuis `packages/shell`.
+1. **Embarquée** (le canal actuel) : `bun run new:app` copie la dernière version
+   de la base dans `src/shell/` de l'application — autonome, sans liaison locale.
+   Pour actualiser une application existante : `bun run sync:shell <chemin-app>`
+   depuis le dépôt du hub. `src/shell/.shell-version` mémorise la version.
+2. **Paquet publié** (quand l'écosystème grandit) : paquet `@alphabette/shell`
+   publié sur npm ou GitHub Packages, les font `bun update` pour recevoir la
+   nouvelle version.
 
 **Application de référence** : *Goat Chèvre The King*
 (`goatchevretheking.alphabette.fr`) est la première application branchée sur la

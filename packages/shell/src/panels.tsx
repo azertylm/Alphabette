@@ -20,6 +20,27 @@ export const SHELL_PANELS: Record<ShellPanelId, { titre: string; sousTitre: stri
   dons: { titre: 'Soutenir alphabette.fr', sousTitre: 'Sans publicité, sans revente de données', icone: '♥' },
 };
 
+/**
+ * Titre d'un panneau, adapté au cas d'une application **gratuite** : on ne peut
+ * pas annoncer « Débloquer les applications » à quelqu'un qui n'a rien à
+ * débloquer. Les liens vers le hub, eux, restent — c'est là que vit le reste de
+ * l'écosystème.
+ */
+export function infosPanneau(
+  id: ShellPanelId,
+  app: AlphaAppConfig,
+): { titre: string; sousTitre: string; icone: ReactNode } {
+  const base = SHELL_PANELS[id];
+  if (!app.gratuit) return base;
+  if (id === 'pass') {
+    return { ...base, icone: '🎁', titre: `${app.name} est gratuite`, sousTitre: 'Aucun prix, aucun essai, aucune carte bancaire' };
+  }
+  if (id === 'compte') {
+    return { ...base, sousTitre: `Gratuite pour toujours — un compte reste utile` };
+  }
+  return base;
+}
+
 export interface PanneauProps {
   app: AlphaAppConfig;
   config: ShellConfig;
@@ -54,6 +75,8 @@ function LigneApp({ app, courant }: { app: EcosystemApp; courant: boolean }) {
       </span>
       {courant ? (
         <span className="ab-etiquette ab-etiquette--accent">Tu es ici</span>
+      ) : app.gratuit ? (
+        <span className="ab-etiquette ab-etiquette--accent">Gratuit</span>
       ) : app.status && app.status !== 'actif' ? (
         <span className="ab-etiquette">{app.status}</span>
       ) : null}
@@ -99,9 +122,14 @@ function PanneauCompte({ app, hubUrl, apps, ouvrir, basculer }: PanneauProps) {
       </div>
 
       <div className="ab-panneau">
-        <h4>Ce que ton compte débloque</h4>
+        <h4>{app.gratuit ? 'Ce que ton compte apporte' : 'Ce que ton compte débloque'}</h4>
         <p>
-          {app.counter ? (
+          {app.gratuit ? (
+            <>
+              <strong>{app.name}</strong> est <strong>gratuite</strong> : il n’y a rien à débloquer. Le compte sert à
+              retrouver tes données sur tous tes appareils et à gérer les autres applications de l’écosystème.
+            </>
+          ) : app.counter ? (
             <>
               <strong>{app.counter.unlocked}</strong> application(s) débloquée(s) sur{' '}
               <strong>{app.counter.total}</strong>.
@@ -123,7 +151,7 @@ function PanneauCompte({ app, hubUrl, apps, ouvrir, basculer }: PanneauProps) {
           Voir les {totalApplications} application{totalApplications > 1 ? 's' : ''}
         </button>
         <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('pass')}>
-          ⭐ Le Pass
+          {app.gratuit ? '🎁 Application gratuite' : '⭐ Le Pass'}
         </button>
       </div>
 
@@ -159,8 +187,10 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
           main sur tes quotas et ta facturation.
         </p>
         <p>
-          <IconSparkles width={13} height={13} /> <strong>Clé managée Alphabette</strong> : incluse pendant les{' '}
-          {config.trialDays} jours d’essai et avec le Pass. Rien à configurer.
+          <IconSparkles width={13} height={13} /> <strong>Clé managée Alphabette</strong> :{' '}
+          {app.gratuit
+            ? 'hébergée par l’écosystème, rien à configurer.'
+            : `incluse pendant les ${config.trialDays} jours d’essai et avec le Pass. Rien à configurer.`}
         </p>
       </div>
 
@@ -177,7 +207,7 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
           Gérer mes clés <IconExternal width={14} height={14} />
         </button>
         <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('pass')}>
-          ⭐ Incluse dans le Pass
+          {app.gratuit ? '🧭 L’écosystème' : '⭐ Incluse dans le Pass'}
         </button>
       </div>
 
@@ -189,7 +219,58 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
   );
 }
 
-function PanneauPass({ app, config, ouvrir, basculer }: PanneauProps) {
+/**
+ * Panneau « Pass » d’une application **gratuite** : aucun prix, aucune
+ * promotion, aucun bouton de paiement pour elle. On explique la gratuité, et on
+ * garde les liens vers le hub — c’est l’écosystème qui finance l’application.
+ */
+function PanneauGratuit({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
+  const base = hubUrl.replace(/\/$/, '');
+  const total = app.counter?.total ?? 16;
+  return (
+    <>
+      <div className="ab-panneau">
+        <h4>🎁 Gratuite, pour toujours</h4>
+        <p>
+          <strong>{app.name}</strong> est une application gratuite de l’écosystème alphabette : aucun prix, aucun essai
+          qui se transforme en abonnement, aucune carte bancaire, aucune publicité.
+        </p>
+        <p className="ab-note">
+          Elle vit sur les dons et sur ce que financent les autres applications. Rien ne t’est demandé pour l’utiliser,
+          ni aujourd’hui ni plus tard.
+        </p>
+      </div>
+
+      <div className="ab-actions-ligne">
+        <button type="button" className="ab-btn ab-btn--accent ab-btn--lg" onClick={() => ouvrir(base)}>
+          🧭 alphabette.fr <IconExternal width={14} height={14} />
+        </button>
+        <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('sites')}>
+          Voir les {total} application{total > 1 ? 's' : ''}
+        </button>
+        <button type="button" className="ab-btn ab-btn--don ab-btn--lg" onClick={() => basculer('dons')}>
+          ♥ Faire un don
+        </button>
+      </div>
+
+      <div className="ab-panneau">
+        <h4>Et les autres applications ?</h4>
+        <p>
+          Elles se débloquent avec le Pass : <strong>{euros(config.perAppPerYear)} / an</strong> pour une application,{' '}
+          <strong>{euros(config.ecosystemPerYear)} / an</strong> pour tout l’écosystème. C’est ce qui finance, entre
+          autres, les applications gratuites comme celle-ci.
+        </p>
+        <p className="ab-note">
+          Les prix viennent du hub (<code>/api/config.json</code>) : ils se mettent à jour tout seuls.
+        </p>
+      </div>
+    </>
+  );
+}
+
+function PanneauPass(props: PanneauProps) {
+  if (props.app.gratuit) return <PanneauGratuit {...props} />;
+  const { app, config, ouvrir, basculer } = props;
   const promo = config.promotion;
   return (
     <>
@@ -265,14 +346,19 @@ function PanneauPass({ app, config, ouvrir, basculer }: PanneauProps) {
   );
 }
 
-function PanneauSites({ app, apps, registreOk, basculer }: PanneauProps) {
+function PanneauSites({ app, apps, registreOk, hubUrl, ouvrir, basculer }: PanneauProps) {
   const total = app.counter?.total ?? apps.length;
   return (
     <>
       <div className="ab-panneau">
-        <h4>Compteur</h4>
+        <h4>{app.gratuit ? 'Ton accès' : 'Compteur'}</h4>
         <p>
-          {app.counter ? (
+          {app.gratuit ? (
+            <>
+              <strong>{app.name}</strong> est <strong>gratuite</strong> : rien à débloquer ici. Voici les {total}{' '}
+              application{total > 1 ? 's' : ''} de l’écosystème — c’est là que le Pass, lui, sert.
+            </>
+          ) : app.counter ? (
             <>
               <strong>{app.counter.unlocked}</strong> / <strong>{app.counter.total}</strong> applications débloquées
               {typeof app.counter.trialDaysLeft === 'number' && app.counter.trialDaysLeft > 0 && (
@@ -300,9 +386,19 @@ function PanneauSites({ app, apps, registreOk, basculer }: PanneauProps) {
       )}
 
       <div className="ab-actions-ligne">
-        <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('pass')}>
-          ⭐ Débloquer avec le Pass
-        </button>
+        {app.gratuit ? (
+          <button
+            type="button"
+            className="ab-btn ab-btn--accent ab-btn--lg"
+            onClick={() => ouvrir(hubUrl.replace(/\/$/, ''))}
+          >
+            🧭 Ouvrir alphabette.fr <IconExternal width={14} height={14} />
+          </button>
+        ) : (
+          <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('pass')}>
+            ⭐ Débloquer avec le Pass
+          </button>
+        )}
       </div>
     </>
   );

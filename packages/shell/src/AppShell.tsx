@@ -4,7 +4,7 @@ import { EcosystemBar } from './EcosystemBar';
 import { loadEcosystemRegistry, synchroniserSites, type EcosystemApp, type RegistreApps } from './apps';
 import type { AlphaAppConfig, AlphaSite, ShellPanelId } from './config';
 import { useDensity, useFullscreen, useTheme, type ShellDensity, type ShellTheme } from './hooks';
-import { PanneauShell, SHELL_PANELS } from './panels';
+import { PanneauShell, infosPanneau } from './panels';
 import { ShellOverlay } from './ShellOverlay';
 import {
   FALLBACK_CONFIG,
@@ -158,13 +158,15 @@ export function AppShell({
    * Compteur calculé tout seul depuis le registre (X applications en ligne /
    * Y au total) : les applications n'ont plus de chiffre périmé à maintenir à
    * la main. Une valeur passée par app.counter reste prioritaire.
+   *
+   * Une application **gratuite** affiche ce compteur même si le hub ne répond
+   * pas : elle doit pouvoir dire « gratuit » en toutes circonstances.
    */
   const compteurAuto = useMemo(() => {
-    if (registreSource !== 'hub') return undefined;
     const enLigne = apps.filter((entree) => entree.url && (!entree.status || entree.status === 'actif'));
     return { unlocked: enLigne.length, total: apps.length };
-  }, [apps, registreSource]);
-  const counterFinal = app.counter ?? compteurAuto;
+  }, [apps]);
+  const counterFinal = app.counter ?? (registreSource === 'hub' || app.gratuit ? compteurAuto : undefined);
 
   /** Contenu sur mesure déclaré par l'application, sinon panneau par défaut. */
   const contenuPanneau = useMemo(() => {
@@ -281,9 +283,9 @@ export function AppShell({
 
         {panel && (
           <ShellOverlay
-            titre={SHELL_PANELS[panel].titre}
-            sousTitre={SHELL_PANELS[panel].sousTitre}
-            icone={SHELL_PANELS[panel].icone}
+            titre={infosPanneau(panel, app).titre}
+            sousTitre={infosPanneau(panel, app).sousTitre}
+            icone={infosPanneau(panel, app).icone}
             onClose={closePanel}
           >
             {contenuPanneau}

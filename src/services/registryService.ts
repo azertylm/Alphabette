@@ -66,6 +66,8 @@ export interface RegistryAppInput {
   badge?: RegistryAppBadge;
   url?: string;
   subdomain?: string;
+  /** Application gratuite, définitivement : aucun prix, aucun essai. */
+  gratuit?: boolean;
 }
 
 export async function createRegistryApp(input: RegistryAppInput): Promise<RegistryApp> {

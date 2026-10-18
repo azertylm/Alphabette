@@ -20,6 +20,8 @@ export interface EcosystemApp {
   badge?: string | null;
   /** Statut du registre : actif, brouillon, maintenance. */
   status?: string;
+  /** Application gratuite, publiée ainsi par le hub. */
+  gratuit?: boolean;
 }
 
 /**
@@ -83,6 +85,7 @@ interface ReponseHub {
     url?: string;
     badge?: string | null;
     status?: string;
+    gratuit?: boolean;
   }>;
 }
 
@@ -124,6 +127,7 @@ export async function loadEcosystemRegistry(hubUrl: string): Promise<RegistreApp
         url: app.url,
         badge: app.badge ? reparerTexte(app.badge) : null,
         status: app.status,
+        gratuit: app.gratuit === true,
       }));
     if (!apps.length) throw new Error('registre vide');
     return { apps, source: 'hub' };

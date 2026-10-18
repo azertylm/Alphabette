@@ -118,7 +118,14 @@ export const AppsRegistrySection: React.FC = () => {
                       <p className="text-[11px] text-slate-500 truncate">/{app.slug}</p>
                     </div>
                   </div>
-                  {app.badge && <BadgeChip badge={app.badge} />}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {app.gratuit && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide">
+                        Gratuit
+                      </span>
+                    )}
+                    {app.badge && <BadgeChip badge={app.badge} />}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/80 mt-auto">

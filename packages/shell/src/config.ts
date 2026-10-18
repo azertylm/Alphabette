@@ -49,6 +49,15 @@ export interface AlphaAppConfig {
   accountUrl?: string;
   /** Gestion des clés d'API (Mistral BYOK / clé managée). */
   apiKeysUrl?: string;
+  /**
+   * Application **définitivement gratuite**.
+   *
+   * La base n'affiche alors, pour cette application, ni prix, ni essai, ni
+   * bouton de paiement : à la place, un lien vers le hub. Les autres
+   * applications de l'écosystème gardent leur Pass, et la base continue d'y
+   * renvoyer — c'est ce qui finance les applications gratuites.
+   */
+  gratuit?: boolean;
   /** Compteur affiché dans la barre écosystème (applications débloquées / total). */
   counter?: {
     unlocked: number;

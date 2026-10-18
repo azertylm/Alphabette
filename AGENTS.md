@@ -48,6 +48,12 @@ une application.
 Ces montants remplacent les anciennes formules. La source de vérité est le hub
 (`/api/config.json`) ; la base les récupère automatiquement.
 
+Une application peut être déclarée **gratuite, définitivement** (`gratuit: true`
+dans son `alphabette.app.ts`, case « Gratuit » dans la console `/admin`, champ
+`gratuit` du registre). La base n'affiche alors pour elle ni prix, ni essai, ni
+paiement — mais **les liens vers le hub restent en place** : c'est l'écosystème
+qui finance les applications gratuites.
+
 ## Règle nº 5 — IA souveraine
 
 L'IA des applications est **Mistral AI (hébergée en France)**, en BYOK (clé

@@ -149,6 +149,8 @@ export interface RegistryApp {
   url?: string;
   /** Sous-domaine dédié (ex. « goatchevretheking » → goatchevretheking.alphabette.fr). */
   subdomain?: string;
+  /** Application gratuite, définitivement : aucun prix, aucun essai. */
+  gratuit?: boolean;
   createdAt: string;
   updatedAt: string;
 }

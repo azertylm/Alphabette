@@ -105,24 +105,42 @@ export function EcosystemBar({
             onClick={onOpenSites}
             title="Voir les applications de l'écosystème"
           >
-            <span>
-              {counter.unlocked}/{counter.total}
-            </span>
-            {typeof counter.trialDaysLeft === 'number' && counter.trialDaysLeft > 0 && (
-              <span className="ab-counter__trial">({counter.trialDaysLeft} essai)</span>
+            <span>{app.gratuit ? 'gratuit' : `${counter.unlocked}/${counter.total}`}</span>
+            {app.gratuit ? (
+              <span className="ab-counter__trial">
+                ({counter.total} application{counter.total > 1 ? 's' : ''})
+              </span>
+            ) : (
+              typeof counter.trialDaysLeft === 'number' &&
+              counter.trialDaysLeft > 0 && (
+                <span className="ab-counter__trial">({counter.trialDaysLeft} essai)</span>
+              )
             )}
           </button>
         )}
 
-        <button
-          type="button"
-          className="ab-btn ab-btn--pass"
-          onClick={onOpenPayment}
-          title={`Écosystème complet : ${config.ecosystemPerYear} € / an — voir l'offre`}
-        >
-          <IconStar width={14} height={14} />
-          <span>Pass {config.ecosystemPerYear} €/an</span>
-        </button>
+        {app.gratuit ? (
+          // Application gratuite : aucun prix affiché, mais la porte vers le hub
+          // reste là — c'est l'écosystème qui finance l'application.
+          <button
+            type="button"
+            className="ab-btn"
+            onClick={onOpenPayment}
+            title="Cette application est gratuite — découvrir l'écosystème alphabette.fr"
+          >
+            <span>🧭 L'écosystème</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="ab-btn ab-btn--pass"
+            onClick={onOpenPayment}
+            title={`Écosystème complet : ${config.ecosystemPerYear} € / an — voir l'offre`}
+          >
+            <IconStar width={14} height={14} />
+            <span>Pass {config.ecosystemPerYear} €/an</span>
+          </button>
+        )}
       </div>
     </div>
   );

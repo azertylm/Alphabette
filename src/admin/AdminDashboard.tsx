@@ -55,6 +55,7 @@ const emptyForm = {
   badge: '' as '' | Exclude<RegistryAppBadge, null>,
   url: '',
   subdomain: '',
+  gratuit: false,
 };
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onLogout }) => {
@@ -163,6 +164,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
         badge: form.badge === '' ? null : form.badge,
         url: form.url,
         subdomain: form.subdomain,
+        gratuit: form.gratuit,
       });
       setApps((prev) => [...prev, created].sort((a, b) => a.name.localeCompare(b.name, 'fr')));
       setForm({ ...emptyForm });
@@ -303,6 +305,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
                             {app.badge}
                           </span>
                         )}
+                        {app.gratuit && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide">
+                            Gratuit
+                          </span>
+                        )}
                       </div>
                       <p className="text-[11px] text-slate-500 mt-0.5 truncate">
                         {app.subdomain ? `${app.subdomain}.alphabette.fr` : `/${app.slug}`}
@@ -312,6 +319,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
+                    <label
+                      className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-700 cursor-pointer"
+                      title="Application gratuite, définitivement : aucun prix, aucun essai, aucun bouton de paiement"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={Boolean(app.gratuit)}
+                        disabled={busyId === app.id}
+                        onChange={(event) => handlePatch(app, { gratuit: event.target.checked })}
+                        className="accent-emerald-600 cursor-pointer"
+                      />
+                      <span>Gratuit</span>
+                    </label>
+
                     <select
                       value={app.status}
                       disabled={busyId === app.id}
@@ -473,6 +494,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
                   {form.subdomain.trim()
                     ? `Adresse publique : ${form.subdomain.trim().toLowerCase()}.alphabette.fr`
                     : 'Laisse vide pour ne servir l’application que par son chemin interne.'}
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.gratuit}
+                  onChange={(event) => setForm({ ...form, gratuit: event.target.checked })}
+                  className="accent-emerald-600 cursor-pointer"
+                />
+                <span className="text-[11px] font-bold text-slate-600">
+                  Application gratuite (aucun prix, aucun essai, aucun bouton de paiement)
                 </span>
               </label>
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T12:33:32.951Z",
+  "updatedAt": "2026-10-18T09:41:35.949Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -190,17 +190,6 @@
       "subdomain": "revolution",
       "createdAt": "2026-10-18T09:41:35.949Z",
       "updatedAt": "2026-10-18T09:41:35.949Z"
-    },
-    {
-      "id": "test-barre",
-      "name": "TEST BARRE",
-      "slug": "test-barre",
-      "icon": "Sparkles",
-      "status": "brouillon",
-      "url": "https://testbarre.alphabette.fr",
-      "subdomain": "testbarre",
-      "createdAt": "2026-10-18T12:33:32.951Z",
-      "updatedAt": "2026-10-18T12:33:32.951Z"
     }
   ]
 }

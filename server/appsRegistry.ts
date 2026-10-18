@@ -27,6 +27,12 @@ export interface RegistryApp {
    * Une même application reste joignable par son chemin interne (/goat).
    */
   subdomain?: string;
+  /**
+   * Application **gratuite, définitivement**. Le hub la publie telle quelle :
+   * la base commune n'affiche alors ni prix, ni essai, ni bouton de paiement,
+   * et la vitrine la marque « Gratuit ».
+   */
+  gratuit?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -126,6 +132,7 @@ export interface CreateAppInput {
   badge?: unknown;
   url?: unknown;
   subdomain?: unknown;
+  gratuit?: unknown;
 }
 
 export interface UpdateAppInput extends CreateAppInput {}
@@ -200,6 +207,8 @@ export function createApp(input: CreateAppInput): RegistryApp {
     badge: isBadge(input.badge) && input.badge ? input.badge : null,
     url: sanitizeUrl(input.url),
     subdomain: sanitizeSubdomain(input.subdomain),
+    // `undefined` = application payante : le champ disparaît du JSON.
+    gratuit: input.gratuit === true || input.gratuit === "true" ? true : undefined,
     createdAt: now,
     updatedAt: now,
   };
@@ -257,6 +266,14 @@ export function updateApp(id: string, input: UpdateAppInput): RegistryApp {
   if (input.subdomain !== undefined) {
     next.subdomain =
       input.subdomain === null || input.subdomain === "" ? undefined : sanitizeSubdomain(input.subdomain);
+  }
+
+  if (input.gratuit !== undefined) {
+    if (typeof input.gratuit !== "boolean" && input.gratuit !== "true" && input.gratuit !== "false") {
+      throw new RegistryError("Le champ « gratuit » doit être vrai ou faux.", 400);
+    }
+    // Faux = on retire le champ : le JSON reste propre.
+    next.gratuit = input.gratuit === true || input.gratuit === "true" ? true : undefined;
   }
 
   next.updatedAt = new Date().toISOString();

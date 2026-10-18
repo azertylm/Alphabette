@@ -14,7 +14,7 @@ export { AppShell, type AppShellProps } from './AppShell';
 export { EcosystemBar } from './EcosystemBar';
 export { AppHeader } from './AppHeader';
 export { ShellOverlay } from './ShellOverlay';
-export { PanneauShell, SHELL_PANELS } from './panels';
+export { PanneauShell, SHELL_PANELS, infosPanneau } from './panels';
 export {
   loadEcosystemApps,
   loadEcosystemRegistry,
