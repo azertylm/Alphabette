@@ -1,0 +1,21 @@
+{
+  "name": "@alphabette/shell",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Base commune de toutes les applications de l'écosystème alphabette.fr : barre écosystème, en-tête d'application, thème jour/nuit, densité, plein écran.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./style.css": "./src/shell.css"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

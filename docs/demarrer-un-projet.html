@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Démarrer un nouveau projet — ALPHABETTE</title>
+    <style>
+      :root {
+        --nuit: #0a1226;
+        --nuit2: #101c3a;
+        --or: #f5b301;
+        --texte: #e2e8f0;
+        --gris: #94a3b8;
+        --bord: #22304f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--nuit);
+        color: var(--texte);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+      .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+      .marque {
+        display: flex; align-items: center; gap: .6rem;
+        font-weight: 800; letter-spacing: .18em; font-size: .78rem; color: var(--gris);
+        text-transform: uppercase; margin-bottom: .4rem;
+      }
+      .marque span { color: var(--or); font-size: 1.1rem; }
+      h1 { font-size: 1.9rem; margin: 0 0 .3rem; }
+      .sous { color: var(--gris); margin: 0 0 2rem; }
+      .etape {
+        border: 1px solid var(--bord); border-left: 3px solid var(--or);
+        background: var(--nuit2); border-radius: 12px;
+        padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+      }
+      .etape h2 { font-size: 1.02rem; margin: 0 0 .55rem; display: flex; align-items: center; gap: .6rem; }
+      .num {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 1.6rem; height: 1.6rem; border-radius: 999px;
+        background: var(--or); color: var(--nuit); font-size: .85rem; font-weight: 900;
+        flex: 0 0 auto;
+      }
+      pre {
+        background: #060d1d; border: 1px solid var(--bord); border-radius: 10px;
+        padding: .8rem .9rem; overflow-x: auto; margin: .5rem 0 .3rem;
+        font-family: "Cascadia Code", Consolas, monospace; font-size: .82rem; color: #cbd5e1;
+      }
+      code { font-family: "Cascadia Code", Consolas, monospace; }
+      p code, li code { background: #182444; padding: .08rem .35rem; border-radius: 5px; font-size: .85em; }
+      ul { margin: .4rem 0 .2rem; padding-left: 1.3rem; }
+      li { margin-bottom: .3rem; }
+      .astuce { color: var(--gris); font-size: .84rem; margin: .35rem 0 0; }
+      .brief-tete {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1rem; flex-wrap: wrap; margin: 2.4rem 0 .7rem;
+      }
+      .brief-tete h2 { font-size: 1.15rem; margin: 0; }
+      button {
+        font: inherit; font-weight: 800; cursor: pointer;
+        background: var(--or); color: var(--nuit); border: 0;
+        padding: .6rem 1.1rem; border-radius: 10px;
+      }
+      button:hover { filter: brightness(1.08); }
+      button.fait { background: #16a34a; color: #fff; }
+      #brief {
+        background: #060d1d; border: 1px solid var(--bord); border-radius: 12px;
+        padding: 1.1rem; white-space: pre-wrap; word-break: break-word;
+        font-size: .84rem; color: #dbe4f0; margin: 0;
+      }
+      .note {
+        margin-top: 1.6rem; padding: .9rem 1.1rem; border-radius: 12px;
+        background: rgba(245, 179, 1, .07); border: 1px solid rgba(245, 179, 1, .3);
+        font-size: .87rem;
+      }
+      .note strong { color: var(--or); }
+      .rien { color: var(--gris); font-size: .8rem; text-align: center; margin-top: 3rem; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="marque"><span>◉</span> ALPHABETTE — écosystème</div>
+      <h1>Démarrer un nouveau projet</h1>
+      <p class="sous">Toujours la même chose, dans cet ordre. Deux minutes.</p>
+
+      <div class="etape">
+        <h2><span class="num">1</span> Générer l'application</h2>
+        <p>Terminal ouvert dans le dossier de la vitrine (<code>Projet par défaut</code>) :</p>
+        <pre>bun run new:app &lt;slug&gt; "Nom de l'app" "Le sous-titre en une phrase" --accent "#2563eb"</pre>
+        <p class="astuce">
+          → crée un dossier <strong>juste à côté</strong> (<code>..\&lt;slug&gt;</code>) : projet
+          autonome, dépôt git initialisé, et le <strong>bandeau déjà câblé</strong>.
+        </p>
+      </div>
+
+      <div class="etape">
+        <h2><span class="num">2</span> La lancer</h2>
+        <pre>cd "..\&lt;slug&gt;"
+bun install
+bun run dev</pre>
+      </div>
+
+      <div class="etape">
+        <h2><span class="num">3</span> Lui donner son adresse (au dernier moment)</h2>
+        <ul>
+          <li>Créer le dépôt GitHub <code>&lt;slug&gt;.alphabette.fr</code> et y pousser le dossier.</li>
+          <li>Enregistrer l'application dans la vitrine : <code>bun run dev</code> dans le dossier
+            de la vitrine, puis <code>http://localhost:3000/admin</code> → nom, slug, icône,
+            URL <code>https://&lt;sub&gt;.alphabette.fr</code>, sous-domaine, statut
+            <strong>actif</strong>.</li>
+          <li>Elle apparaît aussitôt dans « Nos Applications » sur alphabette.fr.</li>
+        </ul>
+        <p class="astuce">
+          Aucun réglage DNS à refaire : le <code>*</code> (wildcard) et le certificat
+          wildcard couvrent toutes les applications, présentes et futures.
+        </p>
+      </div>
+
+      <div class="brief-tete">
+        <h2><span class="num">4</span> Le brief à coller au début de chaque session IA</h2>
+        <button id="copier" onclick="copier()">📋 Copier le brief</button>
+      </div>
+      <pre id="brief">Nouveau projet : &lt;NOM DE L'APPLICATION&gt; (slug : &lt;slug&gt;)
+
+Règles de l'écosystème ALPHABETTE — à respecter sans exception :
+1. Un projet = un dépôt GitHub = un sous-domaine : &lt;sub&gt;.alphabette.fr
+2. L'application part de la base commune @alphabette/shell, générée par
+   `bun run new:app`. Ne jamais recoder les barres du haut à la main.
+3. Toute couleur d'interface dérive de `accent` dans src/alphabette.app.ts.
+4. Tarifs : 15 € / application / an · 40 € / écosystème / an · 7 jours d'essai.
+   Source de vérité : /api/config.json du hub.
+5. IA souveraine : Mistral AI (France), BYOK ou clé managée, repli local.
+   Aucune donnée utilisateur ne sert à l'entraînement.
+6. La vitrine alphabette.fr ne contient AUCUNE application : elle liste et pointe.
+
+Ce que doit faire l'application :
+&lt;3 à 5 lignes décrivant l'idée, pour qui, et ce qui la rend utile&gt;
+
+Documentation de référence : docs/recapitulatif-projet.md (dépôt de la vitrine)</pre>
+
+      <div class="note">
+        <strong>À ne jamais oublier :</strong> un projet = un dépôt, un sous-domaine, et
+        le bandeau vient de la base commune — on ne le recode pas.
+      </div>
+
+      <p class="rien">ALPHABETTE · 15 €/app/an · 40 €/écosystème/an · 7 jours d'essai</p>
+    </div>
+
+    <script>
+      function copier() {
+        var texte = document.getElementById('brief').textContent;
+        var bouton = document.getElementById('copier');
+
+        function confirmer() {
+          bouton.textContent = '✅ Brief copié !';
+          bouton.classList.add('fait');
+          setTimeout(function () {
+            bouton.textContent = '📋 Copier le brief';
+            bouton.classList.remove('fait');
+          }, 2200);
+        }
+
+        // 1er essai : API presse-papiers (nécessite un contexte sécurisé).
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texte).then(confirmer, repli);
+        } else {
+          repli();
+        }
+
+        // Repli : sélection + copie classique (fonctionne en file://).
+        function repli() {
+          var zone = document.createElement('textarea');
+          zone.value = texte;
+          zone.setAttribute('readonly', '');
+          zone.style.position = 'fixed';
+          zone.style.opacity = '0';
+          document.body.appendChild(zone);
+          zone.select();
+          try {
+            document.execCommand('copy');
+            confirmer();
+          } catch (e) {
+            bouton.textContent = '⚠️ Sélectionne le texte à la main';
+          }
+          document.body.removeChild(zone);
+        }
+      }
+    </script>
+  </body>
+</html>

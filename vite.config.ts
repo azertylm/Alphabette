@@ -11,6 +11,11 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    // La base commune est un morceau de source TypeScript du dépôt (workspace) :
+    // on laisse Vite la compiler comme du code du projet, sans la pré-bundler.
+    optimizeDeps: {
+      exclude: ['@alphabette/shell'],
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
