@@ -224,9 +224,9 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
  * promotion, aucun bouton de paiement pour elle. On explique la gratuité, et on
  * garde les liens vers le hub — c’est l’écosystème qui finance l’application.
  */
-function PanneauGratuit({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
+function PanneauGratuit({ app, config, apps, hubUrl, ouvrir, basculer }: PanneauProps) {
   const base = hubUrl.replace(/\/$/, '');
-  const total = app.counter?.total ?? 16;
+  const total = apps.length || app.counter?.total || 16;
   return (
     <>
       <div className="ab-panneau">
