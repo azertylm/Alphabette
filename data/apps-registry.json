@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T15:19:26.190Z",
+  "updatedAt": "2026-10-18T15:34:30.506Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -12,7 +12,8 @@
       "url": "https://goatchevretheking.alphabette.fr",
       "subdomain": "goatchevretheking",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-10-17T00:00:00.000Z"
+      "updatedAt": "2026-10-17T00:00:00.000Z",
+      "gratuit": true
     },
     {
       "id": "lidarsol",
