@@ -255,10 +255,11 @@ dépôts indépendants · base commune + gabarit + générateur (rendu vérifié
 **À faire ensuite, dans l'ordre :**
 
 1. **Committer les deux lots** : la base commune dans le hub, le bandeau dans le Goat.
-2. **Distribuer `@alphabette/shell`** : le Goat le consomme en
-   `link:@alphabette/shell`, donc un dépôt fraîchement cloné ne s'installe pas sans le
-   lien. Trancher : paquet privé publié (GitHub Packages) ou base embarquée dans le
-   gabarit.
+2. **Distribuer `@alphabette/shell`** : tranché — la base est **embarquée**. Le
+   générateur copie `packages/shell/src` dans `src/shell/` de chaque application
+   (alias Vite + `paths` TypeScript, plus de `link:`), et `bun run sync:shell
+   <chemin-app>` met à jour une application existante. Le paquet publié sur npm
+   reste une option ultérieure.
 3. **Supprimer le doublon de la page d'accueil** : le catalogue historique et la
    section « Nos Applications » issue du registre affichent les applications deux fois.
 4. Retirer `OSOLAR` / `PROXILIEN` des presets de démonstration de l'atelier IA.
