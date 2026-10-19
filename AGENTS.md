@@ -100,3 +100,12 @@ d'écran de l'application ou de la page concernée, déposée avec l'outil
 qu'on ne voit pas n'est pas un rendu terminé.
 
 Aperçu de la base commune : <http://localhost:3000/base>
+
+## Règle nº 8 — Synchro GitHub systématique
+
+À chaque fin de tâche (et a fortiori de session), committer puis pousser
+automatiquement chaque projet modifié dans son dépôt GitHub dédié
+(règle nº 2) — au fur et à mesure du travail, sans attendre un ordre.
+Le hub et les applications vivent dans des dépôts distincts : toujours
+pousser chaque dossier dans LE bon dépôt. Ne jamais considérer une
+livraison terminée tant qu'elle n'est pas sur GitHub.
