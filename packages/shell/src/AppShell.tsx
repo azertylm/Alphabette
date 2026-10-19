@@ -294,6 +294,7 @@ export function AppShell({
             titre={infosPanneau(panel, app).titre}
             sousTitre={infosPanneau(panel, app).sousTitre}
             icone={infosPanneau(panel, app).icone}
+            classe={panel === 'dons' ? 'ab-sheet--large' : undefined}
             onClose={closePanel}
           >
             {contenuPanneau}

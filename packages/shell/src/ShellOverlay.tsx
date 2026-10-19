@@ -6,6 +6,8 @@ interface ShellOverlayProps {
   sousTitre?: string;
   /** Pictogramme affiché à gauche du titre. */
   icone?: ReactNode;
+  /** Classe supplémentaire sur la feuille (ex. « ab-sheet--large »). */
+  classe?: string;
   onClose: () => void;
   children: ReactNode;
 }
@@ -15,7 +17,7 @@ interface ShellOverlayProps {
  * dons). Sur téléphone elle monte du bas, ailleurs elle se centre ; on la ferme
  * au clic sur le fond, avec Échap ou avec la croix.
  */
-export function ShellOverlay({ titre, sousTitre, icone, onClose, children }: ShellOverlayProps) {
+export function ShellOverlay({ titre, sousTitre, icone, classe, onClose, children }: ShellOverlayProps) {
   const feuille = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export function ShellOverlay({ titre, sousTitre, icone, onClose, children }: She
       }}
     >
       <div
-        className="ab-sheet"
+        className={`ab-sheet${classe ? ` ${classe}` : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={titre}

@@ -91,4 +91,12 @@ bun run lint    # types
 bun run build   # build vitrine + serveur
 ```
 
+## Règle nº 7 — Toujours joindre un aperçu
+
+À **chaque** livraison (nouvelle fonctionnalité, correctif visible, changement de
+style), joindre un **aperçu visuel** de ce qui vient d'être fait : capture
+d'écran de l'application ou de la page concernée, déposée avec l'outil
+`browser.preview` (volet de revue) — et non une simple description. Un rendu
+qu'on ne voit pas n'est pas un rendu terminé.
+
 Aperçu de la base commune : <http://localhost:3000/base>

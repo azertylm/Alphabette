@@ -547,6 +547,7 @@ function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: She
     `Don à l’écosystème alphabette — ${montantEffectif} €`,
     don.titulaire && `Titulaire : ${don.titulaire}`,
     don.banque && `Banque : ${don.banque}`,
+    don.domiciliation && `Domiciliation : ${don.domiciliation}`,
     don.iban && `IBAN : ${don.iban}`,
     don.bic && `BIC : ${don.bic}`,
     `Objet du virement : ${objet}`,
@@ -605,6 +606,12 @@ function EspaceDons({ hubUrl, ouvrir, basculer, don }: PanneauProps & { don: She
                       </div>
                     ))}
                 </div>
+                {don.domiciliation && (
+                  <div className="ab-rib__champ">
+                    <span>Domiciliation</span>
+                    <span className="ab-rib__valeur">{don.domiciliation}</span>
+                  </div>
+                )}
               </div>
             )}
 

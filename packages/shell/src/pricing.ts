@@ -88,10 +88,12 @@ export interface ShellPromotion {
  * frais) et offre « Membre fondateur » à places limitées.
  */
 export interface ShellDonation {
-  /** Banque affichée (ex. « Crédit Agricole Toulouse 31 »). */
+  /** Banque affichée (ex. « Société Générale »). */
   banque?: string;
   /** Titulaire du compte. */
   titulaire?: string;
+  /** Agence / domiciliation du compte. */
+  domiciliation?: string;
   codeBanque?: string;
   codeGuichet?: string;
   numeroCompte?: string;
@@ -181,6 +183,7 @@ function lireDonation(brut: unknown): ShellDonation | undefined {
   const donation: ShellDonation = {
     banque: texte(d.banque),
     titulaire: texte(d.titulaire),
+    domiciliation: texte(d.domiciliation),
     codeBanque: texte(d.codeBanque),
     codeGuichet: texte(d.codeGuichet),
     numeroCompte: texte(d.numeroCompte),
