@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T15:34:30.506Z",
+  "updatedAt": "2026-10-19T11:34:35.505Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -203,6 +203,29 @@
       "subdomain": "testbarre",
       "createdAt": "2026-10-18T12:33:32.951Z",
       "updatedAt": "2026-10-18T12:33:32.951Z"
+    },
+    {
+      "id": "bonplansenior",
+      "name": "SENIOR BON PLAN",
+      "slug": "bonplansenior",
+      "icon": "Lightbulb",
+      "status": "brouillon",
+      "url": "https://www.bonplansenior.alphabette.fr",
+      "subdomain": "bonplansenior",
+      "createdAt": "2026-10-19T11:25:14.881Z",
+      "updatedAt": "2026-10-19T11:25:14.881Z",
+      "gratuit": true
+    },
+    {
+      "id": "frigoplacard",
+      "name": "FRIGO-PLACARD",
+      "slug": "frigoplacard",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://frigoplacard.alphabette.fr",
+      "subdomain": "frigoplacard",
+      "createdAt": "2026-10-19T11:34:35.505Z",
+      "updatedAt": "2026-10-19T11:34:35.505Z"
     }
   ]
 }
