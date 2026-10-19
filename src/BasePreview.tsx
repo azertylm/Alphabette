@@ -67,6 +67,22 @@ export function BasePreview() {
             {a.label}
           </button>
         ))}
+        <a
+          href="/la-barre-explication.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            marginLeft: 'auto',
+            color: '#93c5fd',
+            textDecoration: 'none',
+            border: '1px solid #334155',
+            borderRadius: 999,
+            padding: '0.25rem 0.8rem',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          📘 La barre expliquée
+        </a>
       </div>
 
       <AppShell app={{ ...demoApp, accent }}>

@@ -117,6 +117,37 @@ function embarquerShell(destination: string) {
   return version;
 }
 
+/** Dépose le briefing écosystème (version la plus récente du hub) à la racine. */
+function deposerBriefing(destination: string) {
+  const source = path.join(REPO_ROOT, 'docs', 'BRIEFING-ALPHABETTE.md');
+  if (!fs.existsSync(source)) return;
+  fs.copyFileSync(source, path.join(destination, 'BRIEFING-ALPHABETTE.md'));
+
+  // AGENTS.md est lu automatiquement par les assistants IA (OpenCode) : il
+  // oriente vers le briefing AVANT tout code — aucune session ne peut repartir
+  // à côté.
+  const agents = path.join(destination, 'AGENTS.md');
+  if (!fs.existsSync(agents)) {
+    fs.writeFileSync(
+      agents,
+      [
+        '# AGENTS.md — Application de l’écosystème ALPHABETTE',
+        '',
+        '**AVANT d’écrire la moindre ligne de code : lis `BRIEFING-ALPHABETTE.md`** à la',
+        'racine de ce dépôt — il contient les règles des barres du haut (écosystème +',
+        'application), les tarifs, les pièges connus et le rituel de livraison.',
+        '',
+        '- L’identité du site se règle UNIQUEMENT dans `src/alphabette.app.ts` ;',
+        '- `src/shell/` est la base commune générée : ne pas recoder, ne pas dupliquer ;',
+        '- avant de rendre le travail : `bun run lint` + `bun run build`, et joindre un',
+        '  aperçu réel (rendu ou capture) — un rendu qu’on ne voit pas n’est pas terminé.',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+  }
+}
+
 /** Inscription automatique au registre central (statut « brouillon »). */
 function inscrireAuRegistre(args: Args, subdomain: string) {
   try {
@@ -178,6 +209,10 @@ function main() {
   // La base commune est embarquée dans l'application : elle part avec les
   // barres du haut prêtes à l'emploi, pas besoin de `bun link`.
   const shellVersion = embarquerShell(args.dir);
+
+  // Le briefing écosystème embarque les règles des barres : toute IA qui
+  // ouvre le projet les lit en premier.
+  deposerBriefing(args.dir);
 
   // Inscription immédiate au registre central (statut « brouillon ») : la
   // nouvelle application apparaît sur la vitrine GLM et dans la barre

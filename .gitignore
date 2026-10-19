@@ -6,3 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Chaque application vit dans son depot GitHub independant (regle no 2)
+/bonplan-alphabette.fr/
+/frigoplacard-alphabette.fr/
+/*.alphabette.fr/
