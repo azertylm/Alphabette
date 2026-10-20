@@ -226,6 +226,19 @@
       "subdomain": "frigoplacard",
       "createdAt": "2026-10-19T11:34:35.505Z",
       "updatedAt": "2026-10-19T11:34:35.505Z"
+    },
+    {
+      "id": "bonplan",
+      "name": "BON PLAN",
+      "slug": "bonplan",
+      "icon": "Lightbulb",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://azertylm.github.io/bonplan-alphabette.fr/",
+      "subdomain": "bonplan",
+      "createdAt": "2026-10-20T08:55:00.000Z",
+      "updatedAt": "2026-10-20T08:55:00.000Z",
+      "gratuit": true
     }
   ]
 }
