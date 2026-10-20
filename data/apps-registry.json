@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-19T11:34:35.505Z",
+  "updatedAt": "2026-10-20T10:13:53.850Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -239,6 +239,17 @@
       "createdAt": "2026-10-20T08:55:00.000Z",
       "updatedAt": "2026-10-20T08:55:00.000Z",
       "gratuit": true
+    },
+    {
+      "id": "echo",
+      "name": "ÉCHO",
+      "slug": "echo",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://echo.alphabette.fr",
+      "subdomain": "echo",
+      "createdAt": "2026-10-20T10:13:53.850Z",
+      "updatedAt": "2026-10-20T10:13:53.850Z"
     }
   ]
 }
