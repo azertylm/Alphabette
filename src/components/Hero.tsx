@@ -11,7 +11,8 @@ import {
   CreditCard, 
   CheckCircle2,
   Sparkles,
-  Lock
+  Lock,
+  Lightbulb
 } from 'lucide-react';
 
 interface HeroProps {
@@ -87,6 +88,17 @@ export const Hero: React.FC<HeroProps> = ({
               <KeyRound className="w-3.5 h-3.5 text-slate-600" />
               <span>Gérer les URLs</span>
             </button>
+
+            <a
+              href="/50-idees-logiciels-decouverte.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-semibold text-xs sm:text-sm transition-all border border-amber-300"
+              title="50 idées de logiciels — choisissez celles qui vous parlent, le prompt se construit tout seul"
+            >
+              <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+              <span>50 idées à explorer</span>
+            </a>
           </div>
         </div>
 

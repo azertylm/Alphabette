@@ -10,7 +10,8 @@ import {
   CreditCard,
   MapPin,
   ExternalLink,
-  Sparkles
+  Sparkles,
+  Lightbulb
 } from 'lucide-react';
 
 interface FooterProps {
@@ -99,6 +100,18 @@ export const Footer: React.FC<FooterProps> = ({
               Navigation Hub
             </h4>
             <ul className="space-y-2">
+              <li>
+                <a
+                  href="/50-idees-logiciels-decouverte.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  title="50 idées de logiciels — construire son prompt de projet"
+                >
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                  <span>50 idées de logiciels</span>
+                </a>
+              </li>
               <li>
                 <a href="#applications" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-emerald-500" />
