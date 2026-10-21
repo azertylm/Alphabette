@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T10:13:53.850Z",
+  "updatedAt": "2026-10-21T15:45:42.673Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -250,6 +250,28 @@
       "subdomain": "echo",
       "createdAt": "2026-10-20T10:13:53.850Z",
       "updatedAt": "2026-10-20T10:13:53.850Z"
+    },
+    {
+      "id": "devine",
+      "name": "DEVINE",
+      "slug": "devine",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://devine.alphabette.fr",
+      "subdomain": "devine",
+      "createdAt": "2026-10-20T10:43:32.710Z",
+      "updatedAt": "2026-10-20T10:43:32.710Z"
+    },
+    {
+      "id": "accord",
+      "name": "ACCORD",
+      "slug": "accord",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://accord.alphabette.fr",
+      "subdomain": "accord",
+      "createdAt": "2026-10-21T15:45:42.673Z",
+      "updatedAt": "2026-10-21T15:45:42.673Z"
     }
   ]
 }
