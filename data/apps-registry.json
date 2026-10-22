@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-22T08:36:42.482Z",
+  "updatedAt": "2026-10-22T10:35:38.742Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -305,6 +305,28 @@
       "subdomain": "promptmagic",
       "createdAt": "2026-10-22T08:36:42.482Z",
       "updatedAt": "2026-10-22T08:36:42.482Z"
+    },
+    {
+      "id": "sante-citoyenne",
+      "name": "SANTÉ CITOYENNE",
+      "slug": "sante-citoyenne",
+      "icon": "HeartPulse",
+      "status": "brouillon",
+      "url": "https://santecitoyenne.alphabette.fr",
+      "subdomain": "santecitoyenne",
+      "createdAt": "2026-10-22T09:52:39.373Z",
+      "updatedAt": "2026-10-22T09:52:39.373Z"
+    },
+    {
+      "id": "sillage",
+      "name": "SILLAGE",
+      "slug": "sillage",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://sillage.alphabette.fr",
+      "subdomain": "sillage",
+      "createdAt": "2026-10-22T10:23:14.331Z",
+      "updatedAt": "2026-10-22T10:23:14.331Z"
     }
   ]
 }
