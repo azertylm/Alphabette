@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T15:45:42.673Z",
+  "updatedAt": "2026-10-22T08:36:42.482Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -272,6 +272,39 @@
       "subdomain": "accord",
       "createdAt": "2026-10-21T15:45:42.673Z",
       "updatedAt": "2026-10-21T15:45:42.673Z"
+    },
+    {
+      "id": "ecobatisseur",
+      "name": "ÉCOBÂTISSEUR SOL",
+      "slug": "ecobatisseur",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://ecobatisseur.alphabette.fr",
+      "subdomain": "ecobatisseur",
+      "createdAt": "2026-10-22T08:08:36.614Z",
+      "updatedAt": "2026-10-22T08:08:36.614Z"
+    },
+    {
+      "id": "lsf-atelier",
+      "name": "LSF ATELIER",
+      "slug": "lsf-atelier",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://lsfatelier.alphabette.fr",
+      "subdomain": "lsfatelier",
+      "createdAt": "2026-10-22T08:32:03.195Z",
+      "updatedAt": "2026-10-22T08:32:03.195Z"
+    },
+    {
+      "id": "promptmagic",
+      "name": "PROMPT MAGIC",
+      "slug": "promptmagic",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://promptmagic.alphabette.fr",
+      "subdomain": "promptmagic",
+      "createdAt": "2026-10-22T08:36:42.482Z",
+      "updatedAt": "2026-10-22T08:36:42.482Z"
     }
   ]
 }
