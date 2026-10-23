@@ -1,211 +1,1018 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark" data-scale="normal">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LA BARRE DU HAUT — expliquée (écosystème ALPHABETTE)</title>
+<title>ALPHABETTE Shell v0.4.0 — Socle Unifié & Documentation</title>
 <style>
-  :root{ --accent:#2563eb; --rouge:#e11d48; --encre:#e6ecf7; --sourds:#b9c4da; --fond:#0a1226; --carte:#101b36; }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--fond);color:var(--encre);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;line-height:1.6}
-  .page{max-width:960px;margin:0 auto;padding:2rem 1.2rem 4rem}
-  h1{font-size:1.9rem;margin:.2rem 0 .3rem}
-  h2{font-size:1.35rem;margin:2.4rem 0 .6rem;padding-top:1.2rem;border-top:1px solid #1d2c52}
-  h2 .num{color:var(--sourds);font-weight:400;margin-right:.5rem}
-  .chapo{color:var(--sourds);font-size:1.05rem;max-width:52ch}
-  .etiquette{display:inline-block;background:#ffffff14;border-radius:999px;padding:.1rem .6rem;font-size:.75rem;color:var(--sourds)}
+  /* ==================== VARIABLES & THÈMES ==================== */
+  :root {
+    --accent: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.35);
+    --rouge: #e11d48;
+    --rouge-hover: #be123c;
+    --vert: #10b981;
+    --ambre: #f59e0b;
+    --fond: #070d19;
+    --fond-2: #0b1528;
+    --carte: #101c35;
+    --bordure: #1e2ec233;
+    --bordure-claire: rgba(255, 255, 255, 0.12);
+    --encre: #f1f5f9;
+    --sourds: #94a3b8;
+    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    --font-scale: 1;
+  }
 
-  /* ==== Répliques des barres ==== */
-  .barre1,.barre2{display:flex;align-items:center;gap:.6rem;border-radius:.6rem;padding:.45rem .8rem;font-size:.78rem;white-space:nowrap;overflow:hidden;position:relative}
-  .barre1{background:linear-gradient(90deg,color-mix(in oklab,var(--accent) 32%,#0a1226),#0c1730);color:var(--encre)}
-  .barre2{background:#0b1528;border:1px solid #1d2c52;border-top:none;border-radius:0 0 .6rem .6rem}
-  .cadre{margin:1.1rem 0 0}
-  .marque{display:inline-flex;align-items:center;gap:.35rem;font-weight:800;letter-spacing:.04em}
-  .marque .rond{width:1.15rem;height:1.15rem;border-radius:999px;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
-  .btn{display:inline-flex;align-items:center;gap:.3rem;border-radius:999px;padding:.18rem .6rem;background:#ffffff14;border:1px solid #ffffff2a}
-  .btn.don{background:var(--rouge);border-color:transparent;font-weight:700}
-  .site{color:var(--sourds);padding:.2rem .5rem;border-radius:999px}
-  .site.active{background:var(--accent);color:#fff;font-weight:600}
-  .site.off{color:#ffffff66}
-  .compteur{border-radius:999px;padding:.18rem .55rem;background:#ffffff1f;font-variant-numeric:tabular-nums}
-  .compteur .essai{color:#fca5a5;font-weight:600}
-  .droite{margin-left:auto;display:flex;gap:.4rem;align-items:center}
-  .identity{display:flex;gap:.55rem;align-items:center}
-  .identity .nom{font-weight:800}
-  .identity .soustitre{display:block;font-size:.62rem;letter-spacing:.08em;color:var(--sourds);text-transform:uppercase}
-  .pastille{width:.45rem;height:.45rem;border-radius:999px;background:#34d399;display:inline-block}
-  .pastille.rouge{background:#f87171}
-  .mini{width:1.9rem;min-width:1.9rem;height:1.9rem;border-radius:.4rem;background:#ffffff1f;display:inline-flex;align-items:center;justify-content:center;font-size:.85rem}
+  /* Thème Jour (activé par le bouton Jour/Nuit) */
+  html[data-theme="light"] {
+    --fond: #f8fafc;
+    --fond-2: #ffffff;
+    --carte: #f1f5f9;
+    --bordure-claire: rgba(15, 23, 42, 0.12);
+    --encre: #0f172a;
+    --sourds: #475569;
+    --shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.15);
+  }
 
-  /* ==== Annotations ==== */
-  .nem{display:inline-flex;width:1.25rem;height:1.25rem;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;font-size:.75rem;align-items:center;justify-content:center;margin-right:.35rem;vertical-align:middle}
-  .grille{display:grid;grid-template-columns:1fr;gap:.7rem;margin-top:1rem}
-  @media(min-width:700px){.grille{grid-template-columns:1fr 1fr}}
-  .carte{background:var(--carte);border:1px solid #1d2c52;border-radius:.7rem;padding:.9rem 1rem}
-  .carte b.titre{display:block;margin-bottom:.25rem}
-  .carte p{margin:0;color:var(--sourds);font-size:.95rem}
-  .avant{border-left:3px solid var(--rouge);border-radius:.4rem;padding:.8rem 1rem;background:#1a0e1a55;margin:.5rem 0}
-  .avant b{color:#fda4af}
-  .apres{border-left:3px solid #34d399;border-radius:.4rem;padding:.8rem 1rem;background:#0e1b1455;margin:.5rem 0}
-  .apres b{color:#6ee7b7}
-  code{background:#ffffff12;border-radius:.3rem;padding:.05rem .35rem;font-family:ui-monospace,Consolas,monospace;font-size:.88em}
-  .or{background:linear-gradient(180deg,#101b36,#0c1730);border:1px solid var(--accent);border-radius:.8rem;padding:1rem 1.2rem;margin:1rem 0}
-  .or ol{margin:.4rem 0 0;padding-left:1.2rem}
-  .or li{margin:.35rem 0}
-  dialoglike{display:block}
-  .lexique{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;font-size:.95rem;margin-top:.8rem}
-  .lexique dt{font-weight:700;color:#fff}
-  .lexique dd{margin:0;color:var(--sourds)}
+  /* Échelles de taille (bouton BIG) */
+  html[data-scale="compact"] { --font-scale: 0.9; }
+  html[data-scale="normal"]  { --font-scale: 1; }
+  html[data-scale="large"]   { --font-scale: 1.12; }
+
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    background: var(--fond);
+    color: var(--encre);
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: calc(1rem * var(--font-scale));
+    line-height: 1.6;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  /* ==================== SHELL ALPHABETTE (STICKY TOP) ==================== */
+  .alphabette-shell {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+  }
+
+  body.immersion-mode .alphabette-shell {
+    display: none;
+  }
+
+  /* Bouton de sortie du mode immersion */
+  .exit-immersion {
+    display: none;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 2000;
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+  body.immersion-mode .exit-immersion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* ---- BARRE 1 : ÉCOSYSTÈME ---- */
+  .barre1 {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 28%, #060b16), #091224);
+    color: #f8fafc;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .barre1::-webkit-scrollbar { display: none; }
+
+  .marque {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+    border-radius: 999px;
+    transition: transform 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+  }
+  .marque:hover { background: rgba(255,255,255,0.08); }
+  .marque .rond {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+
+  .nav-sites {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.2rem;
+  }
+
+  .site {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #cbd5e1;
+    padding: 0.24rem 0.65rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    background: transparent;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+  .site:hover:not(.active):not(.off) {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  .site.active {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px var(--accent-glow);
+    cursor: default;
+  }
+  .site.off {
+    color: rgba(255, 255, 255, 0.35);
+    cursor: not-allowed;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+  }
+  .badge-bientot {
+    font-size: 0.62rem;
+    background: rgba(255,255,255,0.08);
+    padding: 0.05rem 0.35rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ---- BARRE 2 : APPLICATION ---- */
+  .barre2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    background: var(--fond-2);
+    border-bottom: 1px solid var(--bordure-claire);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .barre2::-webkit-scrollbar { display: none; }
+
+  .droite {
+    margin-left: auto;
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Boutons interactifs des barres */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.26rem 0.7rem;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--bordure-claire);
+    color: var(--encre);
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .barre1 .btn {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+    background: rgba(37, 99, 235, 0.15);
+  }
+  .btn:active { transform: translateY(0); }
+
+  .btn.don {
+    background: var(--rouge);
+    border-color: transparent;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
+  }
+  .btn.don:hover {
+    background: var(--rouge-hover);
+    border-color: #fda4af;
+  }
+
+  .btn.pass-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #090d16;
+    border: none;
+    font-weight: 800;
+  }
+  .btn.pass-btn:hover { filter: brightness(1.1); }
+
+  .compteur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.24rem 0.65rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .compteur:hover { background: rgba(255, 255, 255, 0.22); }
+  .compteur .essai { color: #fde047; font-weight: 700; }
+
+  .mini {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 0.45rem;
+    background: rgba(148, 163, 184, 0.14);
+    border: 1px solid var(--bordure-claire);
+    color: var(--encre);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mini:hover { border-color: var(--accent); background: rgba(37, 99, 235, 0.15); }
+
+  .identity {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .identity .logo-app {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    border: 1px solid var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+  .identity .nom { font-weight: 800; font-size: 0.92rem; }
+  .identity .soustitre {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--sourds);
+    text-transform: uppercase;
+  }
+
+  .pastille {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 999px;
+    background: var(--vert);
+    display: inline-block;
+    box-shadow: 0 0 6px var(--vert);
+  }
+  .pastille.warn { background: var(--ambre); box-shadow: 0 0 6px var(--ambre); }
+  .pastille.rouge { background: var(--rouge); box-shadow: 0 0 6px var(--rouge); }
+
+  /* ==================== MODALES (PANNEAUX D'ACTION) ==================== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 7, 18, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.open { display: flex; animation: fadeIn 0.18s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-card {
+    background: var(--fond-2);
+    border: 1px solid var(--bordure-claire);
+    border-top: 3px solid var(--accent);
+    border-radius: 0.9rem;
+    max-width: 540px;
+    width: 100%;
+    padding: 1.4rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    color: var(--encre);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-card.don-theme { border-top-color: var(--rouge); }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .modal-header h3 { margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+  .close-btn {
+    background: transparent;
+    border: 1px solid var(--bordure-claire);
+    color: var(--sourds);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .close-btn:hover { color: var(--encre); border-color: var(--encre); }
+
+  /* Style spécifique RIB / Dons */
+  .rib-box {
+    background: var(--carte);
+    border: 1px solid var(--bordure-claire);
+    border-radius: 0.65rem;
+    padding: 0.9rem;
+    margin: 0.75rem 0;
+  }
+  .rib-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px dashed var(--bordure-claire);
+    font-size: 0.85rem;
+  }
+  .rib-row:last-child { border-bottom: none; }
+  .rib-label { color: var(--sourds); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .rib-val { font-family: ui-monospace, Consolas, monospace; font-weight: 700; color: var(--encre); word-break: break-all; }
+  
+  .copy-btn {
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--encre);
+    border-radius: 0.4rem;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--accent); color: #fff; }
+  .copy-btn.copied { background: var(--vert); border-color: var(--vert); color: #fff; }
+
+  /* Tiroir Menu Latéral (Bouton ☰) */
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: var(--fond-2);
+    border-right: 1px solid var(--bordure-claire);
+    z-index: 3500;
+    padding: 1.2rem;
+    transition: left 0.25s ease;
+    box-shadow: var(--shadow);
+  }
+  .drawer.open { left: 0; }
+
+  /* Formulaire Clé API */
+  .input-group { margin: 0.8rem 0; }
+  .input-group label { display: block; font-size: 0.8rem; color: var(--sourds); margin-bottom: 0.3rem; }
+  .input-group input, .input-group select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.45rem;
+    border: 1px solid var(--bordure-claire);
+    background: var(--carte);
+    color: var(--encre);
+    font-family: inherit;
+  }
+
+  /* ==================== CONTENU DE LA PAGE D'EXPLICATION ==================== */
+  .page { max-width: 980px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+  h1 { font-size: 1.9rem; margin: 0.2rem 0 0.4rem; }
+  h2 { font-size: 1.35rem; margin: 2.2rem 0 0.7rem; padding-top: 1.2rem; border-top: 1px solid var(--bordure-claire); }
+  h2 .num { color: var(--accent); font-weight: 800; margin-right: 0.4rem; }
+  .chapo { color: var(--sourds); font-size: 1.05rem; max-width: 65ch; }
+  .etiquette {
+    display: inline-block;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.15rem 0.65rem;
+    font-size: 0.75rem;
+    color: var(--encre);
+    margin-right: 0.4rem;
+  }
+  .grille { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1rem; }
+  @media(min-width: 700px) { .grille { grid-template-columns: 1fr 1fr; } }
+  .carte { background: var(--carte); border: 1px solid var(--bordure-claire); border-radius: 0.7rem; padding: 1rem; }
+  .carte b.titre { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.35rem; }
+  .carte p { margin: 0; color: var(--sourds); font-size: 0.92rem; }
+  .nem {
+    display: inline-flex; width: 1.35rem; height: 1.35rem; border-radius: 999px;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.75rem;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  code {
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.4rem;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 0.86em;
+  }
+  .or {
+    background: var(--carte);
+    border-left: 4px solid var(--accent);
+    border-radius: 0.6rem;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+  }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <h1>La barre du haut, expliquée simplement</h1>
-  <p class="chapo">C'est le cœur de chaque application ALPHABETTE. Un seul document à lire — après, tu sauras
-  ce qu'est chaque bouton, ce qu'on a corrigé, et où tout vit dans ton code.</p>
-  <p><span class="etiquette">version 0.3.0 de la base</span> <span class="etiquette">valable pour toutes tes applications</span></p>
+<!-- BOUTON DE SECOURS MODE IMMERSION -->
+<button class="exit-immersion" onclick="Shell.toggleFullscreen()">✕ Quitter l'immersion (Échap)</button>
 
-  <!-- ============================ VISUEL RÉPLIQUÉ ============================ -->
-  <h2><span class="num">1.</span>À quoi ça ressemble</h2>
-  <p>Deux barres collées l'une sur l'autre. Elles apparaissent sur <strong>toutes</strong> tes applications, toujours pareilles.</p>
+<!-- ============================ SHELL ALPHABETTE (BARRE 1 + BARRE 2) ============================ -->
+<header class="alphabette-shell" id="alphabette-shell">
+  
+  <!-- BARRE 1 : ÉCOSYSTÈME -->
+  <nav class="barre1" aria-label="Navigation Écosystème Alphabette">
+    <a class="marque" href="https://alphabette.fr" title="Retour au Hub central alphabette.fr">
+      <span class="rond">α</span>ALPHABETTE
+    </a>
 
-  <div class="cadre">
-    <div class="barre1">
-      <span class="marque"><span class="rond">α</span>ALPHABETTE</span>
-      <span class="btn don">♥ DON</span>
-      <span class="site">📍 Proxilien</span>
-      <span class="site off">⚖️ IA Débat</span>
-      <span class="site">📰 Info Perso</span>
-      <span class="site active">🔨 Œil de l'Atelier</span>
-      <span class="droite">
-        <span class="compteur">3/16 <span class="essai">(7 essai)</span></span>
-        <span class="btn">⭐ Pass 40 €/an</span>
-      </span>
+    <button class="btn don" onclick="Shell.openModal('modal-don')" title="Soutenir l'écosystème par un don SEPA">
+      ♥ DON
+    </button>
+
+    <div class="nav-sites" id="shell-sites-list">
+      <!-- Généré dynamiquement par ALPHABETTE_CONFIG -->
     </div>
-    <div class="barre2">
-      <span class="mini">☰</span>
-      <span class="identity">
-        <span class="mini">📰</span>
-        <span><span class="nom">Info Perso</span><span class="soustitre">Votre curation intelligente hautement personnalisée</span></span>
-      </span>
-      <span class="droite">
-        <span class="btn don">♥ DON</span>
-        <span class="btn">👤 Mon Compte <span class="pastille"></span></span>
-        <span class="btn">BIG ▂▄▆</span>
-        <span class="btn">🔑 Clé API : Prêt <span class="pastille"></span></span>
-        <span class="btn">⛶ Plein Écran</span>
-        <span class="btn">☀ Jour</span>
-      </span>
+
+    <div class="droite">
+      <button class="compteur" onclick="Shell.openModal('modal-registre')" title="Voir les applications de l'écosystème">
+        <span id="shell-counter-text">3/16</span>
+        <span class="essai" id="shell-trial-text">(7j essai)</span>
+      </button>
+      <button class="btn pass-btn" onclick="Shell.openModal('modal-pass')">
+        ⭐ Pass 40 €/an
+      </button>
+    </div>
+  </nav>
+
+  <!-- BARRE 2 : APPLICATION COURANTE & OUTILS UTILISATEUR -->
+  <div class="barre2">
+    <button class="mini" onclick="Shell.toggleDrawer()" title="Ouvrir le menu de l'application">☰</button>
+
+    <div class="identity">
+      <span class="logo-app" id="app-icon">📰</span>
+      <div>
+        <span class="nom" id="app-name">Info Perso</span>
+        <span class="soustitre" id="app-subtitle">Votre curation intelligente hautement personnalisée</span>
+      </div>
+    </div>
+
+    <div class="droite">
+      <button class="btn don" onclick="Shell.openModal('modal-don')">♥ DON</button>
+      
+      <button class="btn" onclick="Shell.openModal('modal-compte')">
+        👤 Mon Compte <span class="pastille" id="account-dot"></span>
+      </button>
+
+      <button class="btn" id="btn-scale" onclick="Shell.cycleScale()" title="Changer la taille du texte (Compact / Normal / Grand)">
+        BIG ▂▄▆
+      </button>
+
+      <button class="btn" onclick="Shell.openModal('modal-api')">
+        🔑 Clé API : <span id="api-status-label">Prêt</span> <span class="pastille" id="api-dot"></span>
+      </button>
+
+      <button class="btn" onclick="Shell.toggleFullscreen()" title="Basculer en plein écran ou mode immersion">
+        ⛶ Plein Écran
+      </button>
+
+      <button class="btn" id="btn-theme" onclick="Shell.toggleTheme()" title="Basculer entre le mode Jour et Nuit">
+        ☀️ Jour
+      </button>
     </div>
   </div>
-  <p style="color:var(--sourds);font-size:.9rem;margin-top:.6rem">↑ Ci-dessus : la barre 1 (écosystème) et la barre 2 (application). Les couleurs changent d'un site à l'autre — la structure, jamais.</p>
+</header>
 
-  <!-- ============================ BARRE 1 ============================ -->
-  <h2><span class="num">2.</span>La barre 1 — « écosystème » : elle relie tes applications entre elles</h2>
+<!-- ============================ TIROIR LATÉRAL (BOUTON ☰) ============================ -->
+<aside class="drawer" id="app-drawer">
+  <div class="modal-header">
+    <h3><span id="drawer-icon">📰</span> <span id="drawer-title">Menu</span></h3>
+    <button class="close-btn" onclick="Shell.toggleDrawer()">✕</button>
+  </div>
+  <p style="color:var(--sourds);font-size:0.85rem;">Sections de l'application courante :</p>
+  <div id="drawer-links" style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.8rem;">
+    <!-- Injecté par ALPHABETTE_CONFIG -->
+  </div>
+</aside>
 
+<!-- ============================ MODALES INTERACTIVES ============================ -->
+
+<!-- 1. MODALE DON (RIB VALENTIN RICHAUD INTÉGRÉ) -->
+<div class="modal-backdrop" id="modal-don" onclick="Shell.backdropClose(event, 'modal-don')">
+  <div class="modal-card don-theme">
+    <div class="modal-header">
+      <h3>♥ Soutenir l'écosystème ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-don')">✕</button>
+    </div>
+    <p style="margin:0 0 0.8rem;color:var(--sourds);font-size:0.9rem;">
+      ALPHABETTE est développé de manière indépendante. Vos dons par virement SEPA financent directement les serveurs, l'inférence IA et la création des nouvelles applications.
+    </p>
+
+    <div class="rib-box">
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Titulaire du compte</div>
+          <div class="rib-val" id="rib-titulaire">M. VALENTIN RICHAUD</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('M. VALENTIN RICHAUD', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">IBAN (Virement SEPA)</div>
+          <div class="rib-val" id="rib-iban">FR76 3000 3016 1400 0523 8186 132</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('FR7630003016140005238186132', this)">Copier l'IBAN</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">BIC / Adresse SWIFT</div>
+          <div class="rib-val">SOGEFRPP</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('SOGEFRPP', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Code RIB (Banque · Guichet · Compte · Clé)</div>
+          <div class="rib-val">30003 01614 00052381861 32</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('30003 01614 00052381861 32', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Domiciliation</div>
+          <div class="rib-val">AV DU PORT — 34280 LA GRANDE MOTTE</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyAllRib(this)">Tout copier</button>
+      </div>
+    </div>
+
+    <p style="margin:0.6rem 0 0;font-size:0.78rem;color:var(--sourds);text-align:center;">
+      💡 Indiquez votre adresse e-mail en motif de virement pour activer votre badge <strong>Membre Fondateur</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- 2. MODALE REGISTRE DES APPLICATIONS (COMPTEUR) -->
+<div class="modal-backdrop" id="modal-registre" onclick="Shell.backdropClose(event, 'modal-registre')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>🗂️ Registre des applications ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-registre')">✕</button>
+    </div>
+    <p style="margin:0 0 0.8rem;color:var(--sourds);font-size:0.88rem;">
+      État en temps réel synchronisé depuis le Hub. Les applications en brouillon sont grisées pour éviter tout lien cassé :
+    </p>
+    <div id="modal-apps-grid" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+  </div>
+</div>
+
+<!-- 3. MODALE PASS 40 €/AN -->
+<div class="modal-backdrop" id="modal-pass" onclick="Shell.backdropClose(event, 'modal-pass')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>⭐ Pass Écosystème ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-pass')">✕</button>
+    </div>
+    <div class="rib-box">
+      <p style="margin:0 0 0.5rem;font-weight:700;font-size:1.05rem;">Un seul abonnement pour toutes les applications</p>
+      <ul style="margin:0;padding-left:1.2rem;color:var(--sourds);font-size:0.9rem;">
+        <li><strong>Pass Intégral : 40 € / an</strong> (accès illimité aux 16 applications + nouveautés).</li>
+        <li><strong>App à l'unité : 15 € / an</strong> pour une seule application.</li>
+        <li><strong>Essai gratuit : 7 jours</strong> complets sans engagement.</li>
+      </ul>
+    </div>
+    <div style="display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1rem;">
+      <button class="btn" onclick="Shell.closeModal('modal-pass');Shell.openModal('modal-don')">Payer par virement SEPA</button>
+      <a class="btn pass-btn" href="https://alphabette.fr/pass" style="text-decoration:none;">S'abonner sur le Hub →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 4. MODALE MON COMPTE -->
+<div class="modal-backdrop" id="modal-compte" onclick="Shell.backdropClose(event, 'modal-compte')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>👤 Mon Compte ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-compte')">✕</button>
+    </div>
+    <div class="rib-box">
+      <div class="rib-row">
+        <span class="rib-label">Statut Session</span>
+        <span class="rib-val" style="color:var(--vert);">● Connecté (Essai 7 jours actif)</span>
+      </div>
+      <div class="rib-row">
+        <span class="rib-label">Application active</span>
+        <span class="rib-val" id="account-app-name">Info Perso</span>
+      </div>
+      <div class="rib-row">
+        <span class="rib-label">Licence</span>
+        <span class="rib-val">Pass Découverte — Écosystème</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:1rem;">
+      <button class="btn" onclick="Shell.openModal('modal-pass')">Gérer mon Pass</button>
+      <a class="btn" href="https://alphabette.fr/login" style="text-decoration:none;">Portail Hub →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MODALE CLÉ API (BYOK OU MANAGÉE) -->
+<div class="modal-backdrop" id="modal-api" onclick="Shell.backdropClose(event, 'modal-api')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>🔑 Configuration Clé IA (Mistral / DeepSeek / GLM)</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-api')">✕</button>
+    </div>
+    <p style="margin:0;color:var(--sourds);font-size:0.88rem;">
+      Utilisez la clé managée incluse dans votre Pass ALPHABETTE ou branchez votre propre clé API (BYOK) sauvegardée localement dans votre navigateur.
+    </p>
+    <div class="input-group">
+      <label for="api-provider">Fournisseur IA par défaut</label>
+      <select id="api-provider">
+        <option value="managed">Clé Managée ALPHABETTE (Mistral France — Incluse)</option>
+        <option value="mistral">BYOK — Mistral AI</option>
+        <option value="deepseek">BYOK — DeepSeek</option>
+        <option value="glm">BYOK — GLM 5.3 / Zhipu</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="api-key-input">Clé API personnelle (optionnel si Clé Managée)</label>
+      <input type="password" id="api-key-input" placeholder="sk-..." autocomplete="off">
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem;">
+      <button class="btn" onclick="Shell.saveApiConfig()" style="background:var(--accent);color:#fff;">Enregistrer & Activer</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================ DOCUMENTATION INTERACTIVE ============================ -->
+<main class="page">
+
+  <h1>La barre du haut, interactive et prête pour OpenCode</h1>
+  <p class="chapo">
+    Clique sur <strong>n'importe quel bouton</strong> de la double barre tout en haut de cette page : tout est désormais fonctionnel. Tu peux injecter ce code tel quel au démarrage de chaque nouveau projet dans OpenCode.
+  </p>
+  <p>
+    <span class="etiquette">version 0.4.0 interactive</span>
+    <span class="etiquette">RIB Valentin Richaud intégré</span>
+    <span class="etiquette">Prêt pour DeepSeek & GLM 5.3</span>
+  </p>
+
+  <h2><span class="num">1.</span>La barre 1 — « Écosystème » : tous les boutons sont câblés</h2>
   <div class="grille">
-    <div class="carte"><b class="titre"><span class="nem">1</span>◉ ALPHABETTE</b>
-      <p>Le logo. Un clic renvoie au hub (<code>alphabette.fr</code>), la vitrine qui liste toutes tes applications.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">2</span>♥ DON</b>
-      <p>Ouvre l'espace dons : RIB copiable, virement SEPA, offre « Membre fondateur ». Les coordonnées ne sont
-      jamais écrites dans une application : elles viennent du hub. Tu changes le RIB au hub → il change partout.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">3</span>Les sites (Proxilien, IA Débat…)</b>
-      <p>Les 5 sites mis en avant, d'une application à l'autre. <strong>C'est ici qu'on a tout corrigé</strong> :
-      le clic reste dans le même onglet, le site où tu es déja n'est plus un lien, et une app « brouillon »
-      s'affiche grise « bientôt en ligne » au lieu de t'envoyer sur une page d'erreur.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">4</span>Le compteur ( 3/16 · 7 essai)</b>
-      <p>Combien d'applications en ligne sur combien au total, plus les jours d'essai s'il y en a.
-      <strong>Il se met à jour tout seul</strong> à partir du registre du hub — tu ne le code jamais à la main
-      (c'était la source de ton « 0/20 » périmé). Un clic dessus ouvre la liste complète des applications.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">5</span>⭐ Pass 40 €/an</b>
-      <p>Le bouton business. Ouvre l'offre : 15 € par application par an, 40 € pour tout l'écosystème,
-      7 jours d'essai. Tarifs et liens de paiement viennent du hub — jamais codés en dur.</p></div>
+    <div class="carte">
+      <b class="titre"><span class="nem">1</span>α ALPHABETTE</b>
+      <p>Renvoie vers le hub central (<code>alphabette.fr</code>) dans le même onglet pour ne jamais perdre l'utilisateur.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">2</span>♥ DON (RIB Valentin Richaud)</b>
+      <p>Ouvre la modale de don SEPA avec ton IBAN (<code>FR76 3000...</code>), ton BIC (<code>SOGEFRPP</code>), le code RIB et la domiciliation à La Grande-Motte, copiables en 1 clic.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">3</span>Navigation inter-sites intelligente</b>
+      <p>L'application active est surlignée avec la couleur <code>--accent</code>. Les applications en chantier (« brouillon ») affichent un badge <em>Bientôt</em> non cliquable au lieu d'une erreur 404.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">4</span>Compteur dynamique + Pass 40 €/an</b>
+      <p>Le compteur se calcule automatiquement depuis la liste des sites et ouvre le registre complet au clic. Le bouton Pass ouvre le détail de l'offre.</p>
+    </div>
   </div>
 
-  <!-- ============================ BARRE 2 ============================ -->
-  <h2><span class="num">3.</span>La barre 2 — « application » : l'identité du site + les réglages de l'utilisateur</h2>
-
+  <h2><span class="num">2.</span>La barre 2 — « Application » : réglages persistants</h2>
   <div class="grille">
-    <div class="carte"><b class="titre"><span class="nem">A</span>☰ + Nom + sous-titre</b>
-      <p>Le menu (si l'app en a un) et l'identité : nom, sous-titre, couleur. Tout cela se règle à un seul endroit,
-      le fichier <code>src/alphabette.app.ts</code> — jamais ailleurs.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">B</span>♥ DON · 👤 Mon Compte</b>
-      <p>Chacun ouvre un vrai panneau. Mon Compte montre l'état (pastille verte) et explique le Pass. Impossible
-      de tomber dans le vide.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">C</span>BIG ▂▄▆</b>
-      <p>La taille d'affichage (compact / normal / grand). Mémorisée d'une visite à l'autre, appliquée à toute la page.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">D</span>🔑 Clé API : Prêt</b>
-      <p>L'état de la clé IA (Mistral, France) : verte quand la clé est prête. Ouvre le panneau clés : soit
-      l'utilisateur branche sa propre clé (BYOK), soit la clé managée Alphabette est incluse.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">E</span>⛶ Plein Écran</b>
-      <p>Vrai plein écran. Si le navigateur refuse, la base passe en « mode immersion » : les barres se cachent
-      et un bouton ✕ permet de réapparaître. Toujours une issue.</p></div>
-
-    <div class="carte"><b class="titre"><span class="nem">F</span>☀ Jour / 🌙 Nuit</b>
-      <p>Bascule le thème de TOUTE la page (pas seulement les barres), mémorisé. Le contenu de l'application
-      suit automatiquement s'il utilise les couleurs de la base.</p></div>
+    <div class="carte">
+      <b class="titre"><span class="nem">A</span>☰ Tiroir + Identité dynamique</b>
+      <p>Le bouton <code>☰</code> ouvre un vrai menu latéral. L'icône, le titre, le sous-titre et la couleur d'accent se pilotent uniquement via l'objet <code>ALPHABETTE_CONFIG</code>.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">B</span>BIG ▂▄▆ (Taille d'affichage)</b>
+      <p>Bascule en direct entre <em>Compact</em> (90%), <em>Normal</em> (100%) et <em>Grand</em> (112%) sur toute l'application, et sauvegarde le choix dans <code>localStorage</code>.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">C</span>🔑 Clé API (Mistral / DeepSeek / GLM)</b>
+      <p>Ouvre le sélecteur IA : clé managée Alphabette par défaut (pastille verte) ou clé personnelle BYOK accessible dans ton code via <code>Shell.getApiConfig()</code>.</p>
+    </div>
+    <div class="carte">
+      <b class="titre"><span class="nem">D</span>⛶ Plein Écran & ☀️ Jour / 🌙 Nuit</b>
+      <p>Active le plein écran natif (ou le mode immersion qui masque les barres si le navigateur bloque l'API). Le bouton Jour/Nuit bascule instantanément toutes les variables CSS.</p>
+    </div>
   </div>
 
-  <!-- ============================ AVANT / APRÈS ============================ -->
-  <h2><span class="num">4.</span>Ce qui a changé — pourquoi tes clics fonctionnent enfin</h2>
-
-  <div class="avant"><b>Avant</b> — chaque projet avait sa copie de la barre, un peu différente. Les clics
-  s'ouvraient dans de nouveaux onglets, certaines URLs menaient nulle part (« ça ne fonctionne pas très bien
-  sur mes projets »), le compteur mentait, et corriger une barre signifiait repartir dans chaque projet.</div>
-
-  <div class="apres"><b>Après</b> — <strong>une seule barre</strong>, dans une seule base, qui se synchronise au
-  registre du hub à l'ouverture de chaque site. Une correction = une fois. Nouvelles et anciennes applications
-  récupèrent tout avec une seule commande. Même un site jamais déployé est géré proprement, grisée « bientôt
-  en ligne », au lieu d'un lien cassé.</div>
-
-  <!-- ============================ OÙ ÇA VIT ============================ -->
-  <h2><span class="num">5.</span>Où ça vit dans le code</h2>
-  <div class="carte">
-    <p style="color:var(--encre)">
-      <code>packages/shell/</code> (dépôt du hub, « Projet par défaut ») → <strong>la source</strong>. C'est ici
-      qu'on améliore la barre une fois pour toutes.<br><br>
-      <code>src/shell/</code> (dans chaque application) → <strong>la copie embarquée</strong>, installée par le
-      générateur, tenue à jour par <code>bun run sync:shell &lt;chemin-app&gt;</code>. <strong>On ne la recode
-      jamais à la main.</strong><br><br>
-      <code>src/alphabette.app.ts</code> (dans chaque application) → <strong>l'identité du site</strong> :
-      nom, sous-titre, couleur d'identité (accent), liens. C'est le seul fichier qu'on personnalise par application.
+  <h2><span class="num">3.</span>Comment l'utiliser dans OpenCode dès le début d'une app</h2>
+  <div class="or">
+    <b>Comment personnaliser une nouvelle application en 10 secondes :</b>
+    <p style="margin:0.4rem 0 0;color:var(--sourds);font-size:0.92rem;">
+      Dans le script ci-dessous, modifie uniquement les 5 lignes de <code>currentApp</code> dans <code>ALPHABETTE_CONFIG</code> (par exemple : nom <code>"Proxilien"</code>, icône <code>"📍"</code>, couleur <code>"#10b981"</code>). Les deux barres, les modales, le thème et ton RIB suivront automatiquement sans jamais toucher au reste du HTML.
     </p>
   </div>
 
-  <div class="or">
-    <b>Les 3 règles d'or</b>
-    <ol>
-      <li><strong>On ne recode jamais les barres.</strong> Correctif = dépôt du hub, puis <code>sync:shell</code> vers chaque application.</li>
-      <li><strong>L'identité vit uniquement dans <code>alphabette.app.ts</code>.</strong> Toute couleur dérive de <code>accent</code>.</li>
-      <li><strong>Les chiffres et coordonnées ne se copient pas en dur</strong> (tarifs, IBAN, compteur, liste des apps) : tout vient du hub et se met à jour tout seul.</li>
-    </ol>
-  </div>
+</main>
 
-  <!-- ============================ LEXIQUE ============================ -->
-  <h2><span class="num">6.</span>Mini-lexique</h2>
-  <dl class="lexique">
-    <dt>Hub</dt><dd>alphabette.fr — la vitrine + le serveur central. Il publie les tarifs, le RIB et la liste des applications.</dd>
-    <dt>Registre</dt><dd>La liste officielle de tes applications, gérée par la console <code>/admin</code> du hub. La barre la lit en direct.</dd>
-    <dt>Application</dt><dd>Un dépôt GitHub + un sous-domaine (ex. <code>infosperso.alphabette.fr</code>), enveloppée par les deux barres.</dd>
-    <dt>Statut « brouillon »</dt><dd>Application déclarée mais pas encore en ligne : la barre la montre grisée, sans lien cassé.</dd>
-    <dt>BYOK</dt><dd>« Bring Your Own Key » : l'utilisateur branche sa propre clé Mistral AI. Sinon, la clé managée est incluse.</dd>
-    <dt>Pass</dt><dd>L'abonnement écosystème : 40 €/an pour tout, contre 15 €/an pour une seule application. Essai 7 jours.</dd>
-  </dl>
+<!-- ============================ MOTEUR JAVASCRIPT DU SHELL ============================ -->
+<script>
+/**
+ * 1. CONFIGURATION UNIQUE DE L'APPLICATION ET DU REGISTRE
+ * C'est le seul bloc à modifier (ou à hydrater depuis alphabette.fr/api/registry)
+ * quand tu démarres une nouvelle application dans OpenCode.
+ */
+const ALPHABETTE_CONFIG = {
+  currentApp: {
+    id: "infoperso",
+    name: "Info Perso",
+    subtitle: "Votre curation intelligente hautement personnalisée",
+    icon: "📰",
+    accent: "#2563eb", // Change cette couleur (ex: #10b981, #8b5cf6) : toute la barre s'adapte !
+    menuLinks: [
+      { label: "Tableau de bord", href: "#dashboard" },
+      { label: "Mes flux & sources", href: "#sources" },
+      { label: "Synthèse IA du jour", href: "#synthese" },
+      { label: "Paramètres de curation", href: "#settings" }
+    ]
+  },
+  ecosystem: {
+    totalPlanned: 16,
+    trialDays: 7,
+    sites: [
+      { id: "proxilien", name: "Proxilien", icon: "📍", url: "https://proxilien.alphabette.fr", status: "online" },
+      { id: "iadebat", name: "IA Débat", icon: "⚖️", url: "https://iadebat.alphabette.fr", status: "draft" },
+      { id: "infoperso", name: "Info Perso", icon: "📰", url: "https://infoperso.alphabette.fr", status: "online" },
+      { id: "oeilatelier", name: "Œil de l'Atelier", icon: "🔨", url: "https://oeil.alphabette.fr", status: "online" },
+      { id: "lidarsol", name: "Lidarsol", icon: "🛰️", url: "https://lidarsol.alphabette.fr", status: "draft" }
+    ]
+  }
+};
 
-  <p style="color:var(--sourds);font-size:.9rem;margin-top:2.5rem;border-top:1px solid #1d2c52;padding-top:1rem">
-    Fichier d'explication — écosystème ALPHABETTE. La base technique correspondante vit dans le dépôt du hub
-    (<code>packages/shell</code>, version 0.3.0). En cas de doute : ouvrir <code>http://localhost:3000/base</code> avec le hub démarré.
-  </p>
+/**
+ * 2. CONTRÔLEUR DU SHELL ALPHABETTE
+ */
+const Shell = {
+  init() {
+    const { currentApp, ecosystem } = ALPHABETTE_CONFIG;
 
-</div>
+    // Appliquer la couleur d'identité et les textes de l'application
+    document.documentElement.style.setProperty('--accent', currentApp.accent);
+    document.getElementById('app-icon').textContent = currentApp.icon;
+    document.getElementById('app-name').textContent = currentApp.name;
+    document.getElementById('app-subtitle').textContent = currentApp.subtitle;
+    document.getElementById('account-app-name').textContent = currentApp.name;
+    document.getElementById('drawer-icon').textContent = currentApp.icon;
+    document.getElementById('drawer-title').textContent = currentApp.name;
+
+    // Générer les liens du tiroir latéral
+    const drawerLinks = document.getElementById('drawer-links');
+    drawerLinks.innerHTML = currentApp.menuLinks.map(link =>
+      `<a href="${link.href}" class="btn" style="justify-content:flex-start;padding:0.5rem 0.8rem;text-decoration:none;" onclick="Shell.toggleDrawer()">${link.label}</a>`
+    ).join('');
+
+    // Générer les boutons des sites dans la Barre 1 + Modale Registre
+    const navList = document.getElementById('shell-sites-list');
+    const modalGrid = document.getElementById('modal-apps-grid');
+    let onlineCount = 0;
+
+    navList.innerHTML = '';
+    modalGrid.innerHTML = '';
+
+    ecosystem.sites.forEach(site => {
+      const isCurrent = site.id === currentApp.id;
+      const isOnline = site.status === 'online';
+      if (isOnline) onlineCount++;
+
+      // Bouton dans la Barre 1
+      if (isCurrent) {
+        navList.innerHTML += `<span class="site active" aria-current="page">${site.icon} ${site.name}</span>`;
+      } else if (isOnline) {
+        navList.innerHTML += `<a class="site" href="${site.url}">${site.icon} ${site.name}</a>`;
+      } else {
+        navList.innerHTML += `<span class="site off" title="Bientôt en ligne">${site.icon} ${site.name} <span class="badge-bientot">Bientôt</span></span>`;
+      }
+
+      // Ligne dans la modale Registre
+      modalGrid.innerHTML += `
+        <div class="rib-row" style="background:var(--carte);padding:0.6rem 0.8rem;border-radius:0.5rem;border:1px solid var(--bordure-claire);">
+          <div>
+            <strong>${site.icon} ${site.name}</strong>
+            ${isCurrent ? '<span class="etiquette" style="margin-left:0.4rem;">Application actuelle</span>' : ''}
+          </div>
+          ${isOnline
+            ? `<a href="${site.url}" class="copy-btn" style="text-decoration:none;">Ouvrir →</a>`
+            : `<span style="color:var(--sourds);font-size:0.78rem;">🚧 Brouillon (Bientôt)</span>`
+          }
+        </div>
+      `;
+    });
+
+    // Mettre à jour le compteur automatiquement
+    document.getElementById('shell-counter-text').textContent = `${onlineCount}/${ecosystem.totalPlanned}`;
+    document.getElementById('shell-trial-text').textContent = `(${ecosystem.trialDays}j essai)`;
+
+    // Restaurer les préférences utilisateur (Thème, Taille, API)
+    const savedTheme = localStorage.getItem('alphabette_theme') || 'dark';
+    this.applyTheme(savedTheme);
+
+    const savedScale = localStorage.getItem('alphabette_scale') || 'normal';
+    this.applyScale(savedScale);
+
+    this.loadApiConfig();
+
+    // Écouteur touche Échap pour fermer modales ou mode immersion
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+        document.getElementById('app-drawer').classList.remove('open');
+        document.body.classList.remove('immersion-mode');
+      }
+    });
+  },
+
+  // Gestion des modales
+  openModal(id) {
+    document.getElementById(id).classList.add('open');
+  },
+  closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  },
+  backdropClose(event, id) {
+    if (event.target.id === id) this.closeModal(id);
+  },
+
+  // Tiroir latéral (☰)
+  toggleDrawer() {
+    document.getElementById('app-drawer').classList.toggle('open');
+  },
+
+  // Copie Presse-papier (RIB / IBAN)
+  copyText(text, btnElement) {
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btnElement.textContent;
+      btnElement.textContent = '✓ Copié !';
+      btnElement.classList.add('copied');
+      setTimeout(() => {
+        btnElement.textContent = original;
+        btnElement.classList.remove('copied');
+      }, 1800);
+    });
+  },
+  copyAllRib(btnElement) {
+    const fullRib = `Titulaire : M. VALENTIN RICHAUD\nIBAN : FR76 3000 3016 1400 0523 8186 132\nBIC : SOGEFRPP\nRIB : 30003 01614 00052381861 32\nDomiciliation : AV DU PORT, 34280 LA GRANDE MOTTE`;
+    this.copyText(fullRib, btnElement);
+  },
+
+  // Bascule Thème Jour / Nuit
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    this.applyTheme(next);
+  },
+  applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('alphabette_theme', theme);
+    const btn = document.getElementById('btn-theme');
+    btn.textContent = theme === 'dark' ? '☀️ Jour' : '🌙 Nuit';
+  },
+
+  // Bascule Taille BIG (Compact -> Normal -> Grand)
+  cycleScale() {
+    const scales = ['compact', 'normal', 'large'];
+    const current = document.documentElement.getAttribute('data-scale') || 'normal';
+    const next = scales[(scales.indexOf(current) + 1) % scales.length];
+    this.applyScale(next);
+  },
+  applyScale(scale) {
+    document.documentElement.setAttribute('data-scale', scale);
+    localStorage.setItem('alphabette_scale', scale);
+    const labels = { compact: 'BIG ▂__', normal: 'BIG ▂▄_', large: 'BIG ▂▄▆' };
+    document.getElementById('btn-scale').textContent = labels[scale] || 'BIG ▂▄▆';
+  },
+
+  // Plein écran + Mode Immersion de secours
+  toggleFullscreen() {
+    if (document.body.classList.contains('immersion-mode')) {
+      document.body.classList.remove('immersion-mode');
+      return;
+    }
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {
+        // Si le navigateur bloque le plein écran natif, on active le mode immersion
+        document.body.classList.add('immersion-mode');
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  },
+
+  // Gestion Clé API (accessible par tes applications)
+  saveApiConfig() {
+    const provider = document.getElementById('api-provider').value;
+    const key = document.getElementById('api-key-input').value.trim();
+    localStorage.setItem('alphabette_api_provider', provider);
+    localStorage.setItem('alphabette_api_key', key);
+    this.loadApiConfig();
+    this.closeModal('modal-api');
+  },
+  loadApiConfig() {
+    const provider = localStorage.getItem('alphabette_api_provider') || 'managed';
+    const key = localStorage.getItem('alphabette_api_key') || '';
+    document.getElementById('api-provider').value = provider;
+    document.getElementById('api-key-input').value = key;
+
+    const label = document.getElementById('api-status-label');
+    const dot = document.getElementById('api-dot');
+
+    if (provider === 'managed') {
+      label.textContent = 'Prêt (Hub)';
+      dot.className = 'pastille';
+    } else if (key.length > 5) {
+      label.textContent = `Prêt (${provider.toUpperCase()})`;
+      dot.className = 'pastille';
+    } else {
+      label.textContent = 'Clé requise';
+      dot.className = 'pastille warn';
+    }
+  },
+  getApiConfig() {
+    return {
+      provider: localStorage.getItem('alphabette_api_provider') || 'managed',
+      apiKey: localStorage.getItem('alphabette_api_key') || null
+    };
+  }
+};
+
+// Initialisation dès le chargement du DOM
+document.addEventListener('DOMContentLoaded', () => Shell.init());
+</script>
 </body>
 </html>
