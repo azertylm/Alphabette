@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-22T10:35:38.742Z",
+  "updatedAt": "2026-10-23T10:45:00.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -274,15 +274,15 @@
       "updatedAt": "2026-10-21T15:45:42.673Z"
     },
     {
-      "id": "ecobatisseur",
-      "name": "ÉCOBÂTISSEUR SOL",
-      "slug": "ecobatisseur",
+      "id": "ecobatisol",
+      "name": "ÉCOBÂTISOL",
+      "slug": "ecobatisol",
       "icon": "Sparkles",
       "status": "brouillon",
-      "url": "https://ecobatisseur.alphabette.fr",
-      "subdomain": "ecobatisseur",
+      "url": "https://ecobatisol.alphabette.fr",
+      "subdomain": "ecobatisol",
       "createdAt": "2026-10-22T08:08:36.614Z",
-      "updatedAt": "2026-10-22T08:08:36.614Z"
+      "updatedAt": "2026-10-23T10:45:00.000Z"
     },
     {
       "id": "lsf-atelier",
