@@ -1,0 +1,14 @@
+[Unit]
+Description=Hub alphabette.fr
+After=network.target
+
+[Service]
+User=alphabette
+WorkingDirectory=/opt/alphabette
+EnvironmentFile=/opt/alphabette/.env
+ExecStart=/usr/bin/node dist/server.cjs
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+# Caddy obtient et renouvelle seul les certificats HTTPS de chaque domaine.
+# Un domaine ne doit être ajouté ici qu'une fois son DNS pointé sur ce VPS.
+# Le hub choisit l'application à servir selon le nom de domaine (registre : champ « domains »).
+
+alphabette.fr, www.alphabette.fr, alphabette.eu, www.alphabette.eu {
+	encode gzip
+	reverse_proxy localhost:3000
+}
+
+# Phase 2 — décommenter quand l'appli est hébergée dans le hub ET le DNS pointé ici :
+# lidarsol.fr, www.lidarsol.fr, lidarsol.eu, www.lidarsol.eu,
+# proxilien.fr, www.proxilien.fr, proxilien.eu, www.proxilien.eu {
+# 	encode gzip
+# 	reverse_proxy localhost:3000
+# }
