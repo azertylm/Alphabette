@@ -68,6 +68,8 @@ export interface RegistryAppInput {
   subdomain?: string;
   /** Application gratuite, définitivement : aucun prix, aucun essai. */
   gratuit?: boolean;
+  /** Domaines dédiés, séparés par des virgules ou en tableau. */
+  domains?: string[] | string;
 }
 
 export async function createRegistryApp(input: RegistryAppInput): Promise<RegistryApp> {

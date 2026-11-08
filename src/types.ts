@@ -151,6 +151,12 @@ export interface RegistryApp {
   subdomain?: string;
   /** Application gratuite, définitivement : aucun prix, aucun essai. */
   gratuit?: boolean;
+  /** Domaines dédiés (ex. lidarsol.fr, lidarsol.eu) servant /apps/<slug>/ à la racine. */
+  domains?: string[];
+  /** Console /admin uniquement : nombre de visites de /apps/<slug>/. */
+  visits?: number;
+  /** Console /admin uniquement : fichiers présents dans apps/<slug>/ du hub. */
+  hosted?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { sovereignAIRouter } from "./server/ai/router";
 import { AIProviderId, AIRequestOptions } from "./server/ai/types";
 import { createAdminRouter, createPublicAppsRouter } from "./server/adminRoutes";
+import { createAppsHostingRouter, dedicatedDomainMiddleware } from "./server/appsHosting";
 
 dotenv.config();
 
@@ -118,6 +119,9 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
 async function startServer() {
   const app = express();
 
+  // Domaines dédiés (lidarsol.fr, lidarsol.eu…) : servent leur appli à la racine.
+  app.use(dedicatedDomainMiddleware);
+
   // Middleware JSON
   app.use(express.json());
 
@@ -137,6 +141,9 @@ async function startServer() {
 
   // Public : applications publiées (statut « actif ») pour la vitrine alphabette.fr
   app.use("/api/apps", createPublicAppsRouter());
+
+  // Applications hébergées dans le hub : /apps et /apps/<slug>/ (dossier apps/<slug>/)
+  app.use("/apps", createAppsHostingRouter());
 
   // Protégé : console /admin (mot de passe ADMIN_PASSWORD, session par cookie signé)
   app.use("/api/admin", createAdminRouter());

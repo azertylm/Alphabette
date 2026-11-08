@@ -14,7 +14,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "new:app": "tsx scripts/create-app.ts",
-    "sync:shell": "tsx scripts/sync-shell.ts"
+    "sync:shell": "tsx scripts/sync-shell.ts",
+    "import:app": "tsx scripts/import-app.ts"
   },
   "dependencies": {
     "@alphabette/shell": "workspace:*",

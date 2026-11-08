@@ -18,6 +18,7 @@ import {
   requireAdmin,
   sessionCookieOptions,
 } from "./adminAuth";
+import { getVisits, isDeployed } from "./appsHosting";
 
 /**
  * @file adminRoutes.ts
@@ -56,7 +57,9 @@ export function createPublicAppsRouter(): Router {
   router.get("/", (_req: Request, res: Response) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.json({ apps: listApps("actif") });
+    // Une appli hébergée dans le hub (apps/<slug>/) s'ouvre à /apps/<slug>/.
+    const apps = listApps("actif").map((a) => (isDeployed(a.slug) ? { ...a, url: `/apps/${a.slug}/`, hosted: true } : a));
+    res.json({ apps });
   });
 
   return router;
@@ -94,7 +97,11 @@ export function createAdminRouter(): Router {
 
   router.get("/apps", requireAdmin, (_req: Request, res: Response) => {
     res.setHeader("Cache-Control", "no-store");
-    res.json({ apps: listApps(), registry: readRegistry() });
+    // Chaque appli est enrichie de son compteur de visites et de l'état
+    // « hébergée dans le hub » (dossier apps/<slug>/ présent).
+    const visits = getVisits();
+    const apps = listApps().map((a) => ({ ...a, visits: visits[a.slug] || 0, hosted: isDeployed(a.slug) }));
+    res.json({ apps, registry: readRegistry() });
   });
 
   router.get("/options", requireAdmin, (_req: Request, res: Response) => {

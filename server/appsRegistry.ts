@@ -33,6 +33,12 @@ export interface RegistryApp {
    * et la vitrine la marque « Gratuit ».
    */
   gratuit?: boolean;
+  /**
+   * Noms de domaine dédiés (ex. « lidarsol.fr », « lidarsol.eu »). Une requête
+   * arrivant sur l'un d'eux sert directement /apps/<slug>/ à la racine : même
+   * code, aucune duplication. « www. » est accepté automatiquement.
+   */
+  domains?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -133,6 +139,7 @@ export interface CreateAppInput {
   url?: unknown;
   subdomain?: unknown;
   gratuit?: unknown;
+  domains?: unknown;
 }
 
 export interface UpdateAppInput extends CreateAppInput {}
@@ -166,6 +173,35 @@ function sanitizeSubdomain(value: unknown): string | undefined {
     );
   }
   return subdomain;
+}
+
+const DOMAIN_PATTERN = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/;
+
+/** Accepte un tableau ou une chaîne « a.fr, a.eu » ; retire schéma, www. et chemin. */
+function sanitizeDomains(value: unknown): string[] | undefined {
+  if (value === null || value === undefined || value === "") return undefined;
+  const raw = Array.isArray(value) ? value : String(value).split(/[\s,;]+/);
+  const domains = new Set<string>();
+  for (const item of raw) {
+    if (typeof item !== "string" || !item.trim()) continue;
+    const domain = item
+      .trim()
+      .toLowerCase()
+      .replace(/^https?:\/\//, "")
+      .replace(/\/.*$/, "")
+      .replace(/^www\./, "");
+    if (!DOMAIN_PATTERN.test(domain)) {
+      throw new RegistryError(`Nom de domaine invalide : « ${item} » (ex. lidarsol.fr).`, 400);
+    }
+    domains.add(domain);
+  }
+  return domains.size ? [...domains] : undefined;
+}
+
+/** L'application servie pour un nom d'hôte donné (domaine dédié), s'il y en a une. */
+export function findAppByHost(hostname: string): RegistryApp | undefined {
+  const host = hostname.toLowerCase().replace(/^www\./, "");
+  return readRegistry().apps.find((a) => a.domains?.includes(host));
 }
 
 function buildUniqueId(registry: RegistryFile, base: string): string {
@@ -209,6 +245,7 @@ export function createApp(input: CreateAppInput): RegistryApp {
     subdomain: sanitizeSubdomain(input.subdomain),
     // `undefined` = application payante : le champ disparaît du JSON.
     gratuit: input.gratuit === true || input.gratuit === "true" ? true : undefined,
+    domains: sanitizeDomains(input.domains),
     createdAt: now,
     updatedAt: now,
   };
@@ -274,6 +311,10 @@ export function updateApp(id: string, input: UpdateAppInput): RegistryApp {
     }
     // Faux = on retire le champ : le JSON reste propre.
     next.gratuit = input.gratuit === true || input.gratuit === "true" ? true : undefined;
+  }
+
+  if (input.domains !== undefined) {
+    next.domains = sanitizeDomains(input.domains);
   }
 
   next.updatedAt = new Date().toISOString();

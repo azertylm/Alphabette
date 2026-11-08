@@ -55,6 +55,7 @@ const emptyForm = {
   badge: '' as '' | Exclude<RegistryAppBadge, null>,
   url: '',
   subdomain: '',
+  domains: '',
   gratuit: false,
 };
 
@@ -109,6 +110,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
         app.name.toLowerCase().includes(query) ||
         app.slug.toLowerCase().includes(query) ||
         (app.subdomain || '').toLowerCase().includes(query) ||
+        (app.domains || []).join(' ').includes(query) ||
         (app.url || '').toLowerCase().includes(query);
       return matchesStatus && matchesSearch;
     });
@@ -120,7 +122,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
     setError(null);
     try {
       const updated = await toggleApp(app.id);
-      setApps((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
+      setApps((prev) => prev.map((item) => (item.id === updated.id ? { ...item, ...updated } : item)));
       notify(
         updated.status === 'actif'
           ? `« ${updated.name} » est maintenant en ligne sur alphabette.fr`
@@ -139,7 +141,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
     setError(null);
     try {
       const updated = await updateRegistryApp(app.id, patch);
-      setApps((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
+      setApps((prev) => prev.map((item) => (item.id === updated.id ? { ...item, ...updated } : item)));
       notify(`« ${updated.name} » mise à jour`);
     } catch (err: any) {
       setError(err?.message || 'Mise à jour impossible.');
@@ -164,6 +166,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
         badge: form.badge === '' ? null : form.badge,
         url: form.url,
         subdomain: form.subdomain,
+        domains: form.domains,
         gratuit: form.gratuit,
       });
       setApps((prev) => [...prev, created].sort((a, b) => a.name.localeCompare(b.name, 'fr')));
@@ -312,8 +315,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
                         )}
                       </div>
                       <p className="text-[11px] text-slate-500 mt-0.5 truncate">
-                        {app.subdomain ? `${app.subdomain}.alphabette.fr` : `/${app.slug}`}
-                        {app.url && app.url !== `/${app.slug}` ? ` · ${app.url}` : ''}
+                        {app.hosted ? (
+                          <a href={`/apps/${app.slug}/`} target="_blank" rel="noreferrer" className="text-emerald-700 font-semibold hover:underline">
+                            /apps/{app.slug}/
+                          </a>
+                        ) : app.subdomain ? (
+                          `${app.subdomain}.alphabette.fr`
+                        ) : (
+                          `/${app.slug}`
+                        )}
+                        {!app.hosted && app.url && app.url !== `/${app.slug}` ? ` · ${app.url}` : ''}
+                        {app.domains?.length ? ` · ${app.domains.join(', ')}` : ''}
+                        {` · ${app.visits ?? 0} visite${(app.visits ?? 0) > 1 ? 's' : ''}`}
                       </p>
                     </div>
                   </div>
@@ -494,6 +507,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialApps, onL
                   {form.subdomain.trim()
                     ? `Adresse publique : ${form.subdomain.trim().toLowerCase()}.alphabette.fr`
                     : 'Laisse vide pour ne servir l’application que par son chemin interne.'}
+                </span>
+              </label>
+
+              <label className="block">
+                <span className="text-[11px] font-bold text-slate-600">Domaines dédiés (optionnel)</span>
+                <input
+                  value={form.domains}
+                  onChange={(event) => setForm({ ...form, domains: event.target.value })}
+                  placeholder="lidarsol.fr, lidarsol.eu"
+                  className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                />
+                <span className="mt-1 block text-[11px] text-slate-500">
+                  Chaque domaine sert l'application à la racine (même code que /apps/&lt;slug&gt;/).
                 </span>
               </label>
 
