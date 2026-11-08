@@ -24,6 +24,12 @@ bun run new:app <slug> "Nom" "Sous-titre" [--accent "#hex"] [--dir <chemin>]
 
 Le générateur produit un dépôt autonome où le `<AppShell>` est **déjà câblé**.
 
+> **Mise à jour nov. 2026 (voir `docs/CONTEXTE_ALPHABETTE.md`)** : phase 1, les
+> applications sont **hébergées dans le hub** à `alphabette.fr/apps/<slug>/`
+> (dossier `apps/<slug>/`, voir `AJOUTER_UNE_APP.md`). Le code source reste dans
+> le dépôt de chaque application ; phase 2, chaque appli reçoit ses domaines
+> `.fr`/`.eu` (champ `domains` du registre, routage par nom d'hôte).
+
 ## Règle nº 2 — Une application = un dépôt, un sous-domaine
 
 - Chaque application vit dans **son propre dépôt GitHub** et sur **son propre
