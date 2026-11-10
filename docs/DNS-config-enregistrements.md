@@ -57,3 +57,18 @@ Notes :
   avec `enablement: true` activent Pages automatiquement à chaque push.
 - Le registre central (`data/apps-registry.json`) est à jour
   (« Senior Bon Plan », « FRIGO-PLACARD » en brouillon, gratuit pour les deux).
+
+## Audit du 2026-11-10
+
+Vérification de toutes les adresses du registre (résolution DNS publique + test HTTPS) :
+
+- `alphabette.fr` → `146.59.209.152` répond, mais sert une **installation Joomla
+  par défaut** (page « Home » + formulaire de connexion), pas le hub de ce dépôt.
+- **Tous** les sous-domaines `*.alphabette.fr` du registre sont en **NXDOMAIN**
+  (aucun enregistrement DNS créé dans la zone OVH).
+- `lidarsol.fr` et `proxilien.fr` → `213.186.33.5` (page d'attente OVH), HTTPS en échec.
+- Seule adresse réellement en ligne : `https://azertylm.github.io/bonplan-alphabette.fr/`.
+
+Conséquence : les 15 applications marquées `actif` sans être joignables sont
+repassées en `brouillon`. Seul **BON PLAN** reste `actif`. Repasser une
+application en `actif` uniquement quand son URL répond.
