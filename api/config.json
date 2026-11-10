@@ -7,16 +7,16 @@
     "trialDays": 7
   },
   "activePromotion": {
-    "isActive": true,
+    "isActive": false,
     "badgeLabel": "Offre Lancement Écosystème",
     "discountPercent": 15,
-    "expiresAt": "2026-11-24T22:57:30.956Z",
+    "expiresAt": "2026-11-24T23:04:37.762Z",
     "description": "-15% immédiats sur l'Écosystème complet avec le code SOUVERAIN15",
     "couponCode": "SOUVERAIN15"
   },
   "stripePaymentLinks": {
-    "perApp": "https://buy.stripe.com/alphabette_app_15",
-    "ecosystem": "https://buy.stripe.com/alphabette_ecosystem_40"
+    "perApp": "",
+    "ecosystem": ""
   },
   "aiPolicy": {
     "provider": "Mistral AI (Exclusif)",
@@ -25,7 +25,7 @@
     "zeroPublicTraining": true,
     "trialDaysIncluded": 7
   },
-  "updatedAt": "2026-11-10T22:57:30.956Z",
+  "updatedAt": "2026-11-10T23:04:37.762Z",
   "donation": {
     "version": 1,
     "updatedAt": "2026-10-19T09:00:00.000Z",
