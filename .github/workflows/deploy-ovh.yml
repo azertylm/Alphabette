@@ -1,0 +1,37 @@
+# Construit la version statique du hub et la publie sur la branche `ovh-deploy`.
+# L'hébergement OVH (alphabette.fr) est branché sur cette branche : il se met à
+# jour tout seul après chaque push sur `main`.
+name: Publier alphabette.fr
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-ovh
+  cancel-in-progress: true
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run build:static
+      - name: Pousser dist-static sur la branche ovh-deploy
+        run: |
+          cd dist-static
+          git init -q -b ovh-deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publication du hub — ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ovh-deploy
