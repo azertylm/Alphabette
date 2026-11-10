@@ -24,6 +24,12 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **StudioInfo** : `alphabette.fr/studioinfo/`. Modèle Gemini à jour, recherche web avec sources pour les modules d'actualité, utilisable sur téléphone.
 - Les trois sont en `actif` dans le registre (badge Nouveau). **Elles n'ont pas la double barre Alphabette ni le bouton BIG** (pages HTML simples) : à convertir avec la base commune si elles restent.
 
+## Double barre des pages HTML simples (10/11, nuit)
+- `public/assets/alphabette-barre.js` : une ligne `<script src="/assets/alphabette-barre.js" data-cle data-nom data-sous-titre data-accent>` juste après `<body>` pose les deux barres (ALPHABETTE · DON · applis · Pass, puis nom · BIG · Plein écran). BIG agrandit toute la page (×1, ×1,25, ×1,5) et le choix est gardé. Applis, tarif et RIB viennent de `/api/apps` et `/api/config.json`.
+- Posée sur Alphabette Info, Kurate, StudioInfo et Promo Hub.
+- **Wikicom** (reçu le 10/11) : non publié. L'annuaire renvoie vers des sites de piratage (jeux crackés, streaming et téléchargements illégaux, torrents). À republier seulement en version légale si Valentin le souhaite.
+- **Refonte de l'accueil** : trois maquettes proposées à Valentin (A « Kiosque clair », B « De quoi avez-vous besoin ? », C « Éditorial »), choix en attente. Demandes fermes : double barre, BIG, textes plus gros, haut de page plus simple.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
