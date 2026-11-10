@@ -42,7 +42,8 @@ let commercialConfig = {
     trialDays: 7,    // 7 jours d'essai offerts
   },
   activePromotion: {
-    isActive: true,
+    // Aucune promotion en cours : ne l'activer qu'avec une vraie date de fin et un vrai code.
+    isActive: false,
     badgeLabel: "Offre Lancement Écosystème",
     discountPercent: 15,
     expiresAt: new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString(), // 14 jours
@@ -50,8 +51,9 @@ let commercialConfig = {
     couponCode: "SOUVERAIN15",
   },
   stripePaymentLinks: {
-    perApp: "https://buy.stripe.com/alphabette_app_15",
-    ecosystem: "https://buy.stripe.com/alphabette_ecosystem_40",
+    // À remplir avec les vrais liens Stripe quand le paiement en ligne ouvrira.
+    perApp: "",
+    ecosystem: "",
   },
   aiPolicy: {
     provider: "Mistral AI (Exclusif)",

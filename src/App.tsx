@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { AppShell, type AlphaAppConfig } from '@alphabette/shell';
 import '@alphabette/shell/style.css';
 import { Accueil } from './components/Accueil';
+import { BasAccueil } from './components/BasAccueil';
 import { AppGrid } from './components/AppGrid';
 import { PricingSection } from './components/PricingSection';
 import { SovereignAiStudio } from './components/SovereignAiStudio';
@@ -206,12 +207,14 @@ export default function App() {
 
   // Nombre d'applications réellement en ligne (registre central).
   const [nbEnLigne, setNbEnLigne] = useState<number | null>(null);
+  const [nbGratuites, setNbGratuites] = useState(0);
   // Applications payantes réellement en ligne, proposées à l'achat « une application ».
   const [appsAchetables, setAppsAchetables] = useState<AppItem[] | null>(null);
   useEffect(() => {
     fetchPublicApps()
       .then((liste) => {
         setNbEnLigne(liste.length);
+        setNbGratuites(liste.filter((app) => app.gratuit).length);
         setAppsAchetables(
           liste
             .filter((app) => !app.gratuit)
@@ -242,6 +245,12 @@ export default function App() {
         {/* 2. Phrase d'accroche, recherche et tuiles des applications (registre central) */}
         <Accueil appsCount={nbApps} />
 
+        {/* 3. Tarifs, engagements, soutien et pied de page : courts, sans rien de simulé */}
+        <BasAccueil gratuites={nbGratuites} />
+
+        {/* Anciennes sections de démonstration (atelier IA, tarifs simulés, codes VIP) :
+            réservées à l'administration (?admin), absentes de la vitrine publique. */}
+        {MODE_ADMIN && (
         <div className="sections-claires">
         {/* 3 bis. Ancien catalogue de démonstration : réservé à l'administration (?admin) */}
         {MODE_ADMIN && <AppGrid
@@ -280,8 +289,11 @@ export default function App() {
         <CommitmentsSection />
 
         </div>
+        )}
       </main>
 
+      {MODE_ADMIN && (
+      <>
       {/* 8. Footer avec lien obligatoire vers https://alphabette.fr */}
       <div className="sections-claires">
       <Footer
@@ -291,6 +303,8 @@ export default function App() {
         appsCount={nbApps}
       />
       </div>
+      </>
+      )}
       </AppShell>
 
       {/* Modals */}

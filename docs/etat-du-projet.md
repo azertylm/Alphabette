@@ -41,6 +41,13 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - Ont leur propre bouton BIG (non modifié) : Info Perso, IA Débat, ProxiLien, BON PLAN.
 - **N'ont ni double barre commune ni BIG : Service France et L'Œil de l'Atelier.** À équiper avec la base commune (AppShell).
 
+## 11/11 (suite) : barres partout, bas de l'accueil, panneau Pass honnête (base 0.3.4)
+- **Service France et L'Œil de l'Atelier** enveloppées dans la base commune (`AppShell` dans `src/main.tsx`, alias Vite, copie `src/shell`) : double barre + BIG. Le bouton Jour / Nuit de la barre y est masqué (elles ont leur propre thème). L'Œil : `@types/react` ajoutés, deux erreurs de type corrigées.
+- **Bas de l'accueil refait** (`src/components/BasAccueil.tsx`) : tarifs (gratuit · 15 € · 40 € TTC, « paiement en ligne pas encore ouvert »), engagements, don, pied de page court. L'atelier IA, la grille tarifaire simulée, les codes VIP et l'ancien pied de page ne s'affichent plus qu'avec `?admin`.
+- **Panneau Pass de la base commune** : plus de bouton vers les faux liens Stripe (`…/alphabette_app_15`). Sans vrai lien publié par le hub (`server.ts` → `stripePaymentLinks`, vides aujourd'hui), il affiche « paiement pas encore ouvert » + don. Promesses retirées : clé IA Mistral incluse, sauvegardes, résiliation en un clic, « le plus choisi ». Promotion « SOUVERAIN15 » désactivée (elle se renouvelait toute seule tous les 14 jours).
+- Base 0.3.4 synchronisée, construite et poussée dans les 9 applications qui l'utilisent.
+- **Pour ouvrir le paiement** : créer deux liens de paiement Stripe et les mettre dans `stripePaymentLinks` de `server.ts` ; les boutons réapparaissent partout à la publication suivante.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).

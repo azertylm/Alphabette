@@ -94,3 +94,38 @@ html[data-ab-theme='nuit'] .accueil {
 html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180deg); }
 /* En grande taille, un élément trop large de ces sections ne doit pas faire défiler toute la page de côté. */
 .sections-claires { overflow-x: clip; }
+
+/* ----- Bas de l'accueil : tarifs, engagements, soutien, pied de page ----- */
+.accueil--bas { padding-top: 0.5rem; }
+.accueil__bloc { max-width: 72rem; margin: 0 auto; padding: 2rem 1.125rem 0; scroll-margin-top: 1rem; }
+.accueil__sous-titre { font-size: 1.75rem; line-height: 1.15; font-weight: 900; letter-spacing: -0.01em; margin-bottom: 1rem; }
+.accueil__prix { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+.accueil__carte {
+  display: flex; flex-direction: column; gap: 0.25rem; background: var(--acc-carte);
+  border: 1px solid var(--acc-trait); border-radius: 1.25rem; padding: 1.125rem; box-shadow: 0 2px 0 var(--acc-trait);
+}
+.accueil__carte strong { font-size: 1.6rem; font-weight: 900; line-height: 1.1; color: var(--acc); }
+.accueil__carte span { font-size: 1.125rem; color: var(--acc-doux); }
+.accueil__carte--vedette { border: 2px solid var(--acc); }
+.accueil__note { font-size: 1.05rem; color: var(--acc-doux); margin-top: 0.9rem; max-width: 46rem; }
+.accueil__liste { display: grid; gap: 0.75rem; max-width: 46rem; }
+.accueil__liste li { font-size: 1.15rem; line-height: 1.45; color: var(--acc-doux); padding-left: 1.6rem; position: relative; }
+.accueil__liste li::before { content: '✓'; position: absolute; left: 0; color: var(--acc); font-weight: 900; }
+.accueil__liste strong { color: var(--acc-encre); }
+.accueil__soutien .accueil__phrase { margin-top: 0; }
+.accueil__bouton-don {
+  margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: #e11d5b; color: #fff;
+  font-size: 1.25rem; font-weight: 800; border-radius: 999px; padding: 0.85rem 1.6rem; cursor: pointer;
+}
+.accueil__bouton-don:hover { background: #be184d; }
+.accueil__bouton-don:focus-visible { outline: 3px solid var(--acc-encre); outline-offset: 3px; }
+.accueil__pied {
+  max-width: 72rem; margin: 2.5rem auto 0; padding: 1.25rem 1.125rem 0; border-top: 1px solid var(--acc-trait);
+  font-size: 1rem; color: var(--acc-doux); display: grid; gap: 0.4rem;
+}
+.accueil__pied a { color: var(--acc); font-weight: 700; text-decoration: underline; }
+.accueil__pied .accueil__discret { margin-left: 1rem; font-weight: 400; color: var(--acc-doux); opacity: 0.75; }
+@media (min-width: 48rem) {
+  .accueil__prix { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .accueil__sous-titre { font-size: 2.25rem; }
+}
