@@ -7,6 +7,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Republication régulière : rafraîchit les données figées (actualités d'Info Perso…)
+  schedule:
+    - cron: '17 5-21/3 * * *'
 
 permissions:
   contents: write

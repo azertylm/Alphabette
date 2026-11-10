@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T10:00:00.000Z",
+  "updatedAt": "2026-11-10T13:30:00.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -42,44 +42,44 @@
       "name": "PROXILIEN",
       "slug": "proxilien",
       "icon": "HeartHandshake",
-      "status": "brouillon",
+      "status": "actif",
       "badge": "Populaire",
-      "url": "https://proxilien.alphabette.fr",
+      "url": "https://alphabette.fr/apps/proxilien/",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-10-17T00:00:00.000Z"
+      "updatedAt": "2026-11-10T13:30:00.000Z"
     },
     {
       "id": "iadebat",
       "name": "IADÉBAT",
       "slug": "iadebat",
       "icon": "Scale",
-      "status": "brouillon",
+      "status": "actif",
       "badge": "Populaire",
-      "url": "https://iadebat.alphabette.fr",
+      "url": "https://alphabette.fr/apps/iadebat/",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T09:00:00.000Z"
+      "updatedAt": "2026-11-10T13:30:00.000Z"
     },
     {
       "id": "infos-perso",
       "name": "INFOS PERSO",
       "slug": "infos-perso",
       "icon": "Newspaper",
-      "status": "brouillon",
+      "status": "actif",
       "badge": "Populaire",
-      "url": "https://infosperso.alphabette.fr",
+      "url": "https://alphabette.fr/apps/infosperso/",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T09:00:00.000Z"
+      "updatedAt": "2026-11-10T13:30:00.000Z"
     },
     {
       "id": "oeil-atelier",
       "name": "L'ŒIL DE L'ATELIER",
       "slug": "oeil-atelier",
       "icon": "Hammer",
-      "status": "brouillon",
+      "status": "actif",
       "badge": "Populaire",
-      "url": "https://atelier.alphabette.fr",
+      "url": "https://alphabette.fr/apps/atelier/",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T09:00:00.000Z"
+      "updatedAt": "2026-11-10T13:30:00.000Z"
     },
     {
       "id": "france-service",

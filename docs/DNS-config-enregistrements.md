@@ -88,5 +88,6 @@ application en `actif` uniquement quand son URL répond.
   applications suivantes peuvent vivre sans sous-domaine, sur `/apps/<clé>/`.
 - L'ancien Joomla est toujours dans le dossier `www/` (plus servi) ; à supprimer
   depuis l'espace client OVH.
-- En attente d'un hébergement Node : Info Perso, IA Débat, L'Œil de l'Atelier,
-  Proxilien, Lidarsol (dépôt privé).
+- Info Perso, IA Débat, L'Œil de l'Atelier et ProxiLien : publiés sans serveur
+  (`build:static` de chaque dépôt, clé IA de l'utilisateur). Reste en attente :
+  Lidarsol (dépôt privé, nom de domaine lidarsol.fr).

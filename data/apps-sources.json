@@ -33,7 +33,18 @@
     },
     "franceservice": {
       "repo": "azertylm/Service-france"
+    },
+    "infosperso": {
+      "repo": "azertylm/Info-perso-2"
+    },
+    "iadebat": {
+      "repo": "azertylm/Il-y-a-des-bas-"
+    },
+    "atelier": {
+      "repo": "azertylm/L-oeil-de-l-atelier"
+    },
+    "proxilien": {
+      "repo": "azertylm/Proxilien"
     }
-  },
-  "_en_attente": "Applications qui ont besoin d'un serveur Node (API /api/...) et ne peuvent pas tourner sur l'offre Perso : infosperso (Info-perso-2), iadebat (Il-y-a-des-bas-), atelier (L-oeil-de-l-atelier), proxilien (Proxilien)."
+  }
 }

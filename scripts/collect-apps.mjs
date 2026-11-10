@@ -7,7 +7,8 @@
  * (multisite OVH pointant sur alphabette/apps/<clé>).
  *
  * Source : data/apps-sources.json  →  { "apps": { "<clé>": { "repo": "owner/nom", "branch"?: "main", "dir"?: "dist" } } }
- *  - dépôt avec package.json : installé puis construit (vite build --base=./), on publie `dir` (dist par défaut) ;
+ *  - dépôt avec package.json : installé puis construit — `bun run build:static` s'il existe,
+ *    sinon `vite build --base=./` — on publie `dir` (dist par défaut) ;
  *  - dépôt sans package.json (HTML simple) : publié tel quel.
  * Une application en échec n'empêche pas la publication des autres.
  */
@@ -40,7 +41,10 @@ for (const [cle, src] of Object.entries(apps)) {
     let aPublier = depot;
     if (await existe(path.join(depot, 'package.json'))) {
       run('bun', ['install'], depot);
-      run('bunx', ['vite', 'build', '--base=./'], depot);
+      const { scripts = {} } = JSON.parse(await readFile(path.join(depot, 'package.json'), 'utf8'));
+      // Une appli qui fournit « build:static » sait se construire sans serveur (API figée, clé utilisateur).
+      if (scripts['build:static']) run('bun', ['run', 'build:static'], depot);
+      else run('bunx', ['vite', 'build', '--base=./'], depot);
       aPublier = path.join(depot, src.dir ?? 'dist');
     }
     if (!(await existe(path.join(aPublier, 'index.html')))) throw new Error('index.html introuvable');
