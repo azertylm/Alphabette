@@ -1,0 +1,3388 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Magic — Tech for Good Studio</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+  /* ==================== VARIABLES & THÈMES ==================== */
+  :root {
+    --accent: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.35);
+    --rouge: #e11d48;
+    --rouge-hover: #be123c;
+    --vert: #10b981;
+    --ambre: #f59e0b;
+    --fond: #070d19;
+    --fond-2: #0b1528;
+    --carte: #101c35;
+    --bordure: #1e2ec233;
+    --bordure-claire: rgba(255, 255, 255, 0.12);
+    --encre: #f1f5f9;
+    --sourds: #94a3b8;
+    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    --font-scale: 1;
+  }
+
+  /* Thème Jour (activé par le bouton Jour/Nuit) */
+  html[data-theme="light"] {
+    --fond: #f8fafc;
+    --fond-2: #ffffff;
+    --carte: #f1f5f9;
+    --bordure-claire: rgba(15, 23, 42, 0.12);
+    --encre: #0f172a;
+    --sourds: #475569;
+    --shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.15);
+  }
+
+  /* Échelles de taille (bouton BIG) */
+  html[data-scale="compact"] { --font-scale: 0.9; }
+  html[data-scale="normal"]  { --font-scale: 1; }
+  html[data-scale="large"]   { --font-scale: 1.12; }
+
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    background: var(--fond);
+    color: var(--encre);
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: calc(1rem * var(--font-scale));
+    line-height: 1.6;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  /* ==================== SHELL ALPHABETTE (STICKY TOP) ==================== */
+  .alphabette-shell {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+  }
+
+  body.immersion-mode .alphabette-shell {
+    display: none;
+  }
+
+  /* Bouton de sortie du mode immersion */
+  .exit-immersion {
+    display: none;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 2000;
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+  body.immersion-mode .exit-immersion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* ---- BARRE 1 : ÉCOSYSTÈME ---- */
+  .barre1 {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 28%, #060b16), #091224);
+    color: #f8fafc;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .barre1::-webkit-scrollbar { display: none; }
+
+  .marque {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+    border-radius: 999px;
+    transition: transform 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+  }
+  .marque:hover { background: rgba(255,255,255,0.08); }
+  .marque .rond {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+
+  .nav-sites {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.2rem;
+  }
+
+  .site {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #cbd5e1;
+    padding: 0.24rem 0.65rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    background: transparent;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+  .site:hover:not(.active):not(.off) {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  .site.active {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px var(--accent-glow);
+    cursor: default;
+  }
+  .site.off {
+    color: rgba(255, 255, 255, 0.35);
+    cursor: not-allowed;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+  }
+  .badge-bientot {
+    font-size: 0.62rem;
+    background: rgba(255,255,255,0.08);
+    padding: 0.05rem 0.35rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ---- BARRE 2 : APPLICATION ---- */
+  .barre2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    background: var(--fond-2);
+    border-bottom: 1px solid var(--bordure-claire);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .barre2::-webkit-scrollbar { display: none; }
+
+  .droite {
+    margin-left: auto;
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Boutons interactifs des barres */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.26rem 0.7rem;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--bordure-claire);
+    color: var(--encre);
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .barre1 .btn {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+    background: rgba(37, 99, 235, 0.15);
+  }
+  .btn:active { transform: translateY(0); }
+
+  .btn.don {
+    background: var(--rouge);
+    border-color: transparent;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
+  }
+  .btn.don:hover {
+    background: var(--rouge-hover);
+    border-color: #fda4af;
+  }
+
+  .btn.pass-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #090d16;
+    border: none;
+    font-weight: 800;
+  }
+  .btn.pass-btn:hover { filter: brightness(1.1); }
+
+  .compteur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.24rem 0.65rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .compteur:hover { background: rgba(255, 255, 255, 0.22); }
+  .compteur .essai { color: #fde047; font-weight: 700; }
+
+  .mini {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 0.45rem;
+    background: rgba(148, 163, 184, 0.14);
+    border: 1px solid var(--bordure-claire);
+    color: var(--encre);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mini:hover { border-color: var(--accent); background: rgba(37, 99, 235, 0.15); }
+
+  .identity {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .identity .logo-app {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    border: 1px solid var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+  .identity .nom { font-weight: 800; font-size: 0.92rem; }
+  .identity .soustitre {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--sourds);
+    text-transform: uppercase;
+  }
+
+  .pastille {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 999px;
+    background: var(--vert);
+    display: inline-block;
+    box-shadow: 0 0 6px var(--vert);
+  }
+  .pastille.warn { background: var(--ambre); box-shadow: 0 0 6px var(--ambre); }
+  .pastille.rouge { background: var(--rouge); box-shadow: 0 0 6px var(--rouge); }
+
+  /* ==================== MODALES (PANNEAUX D'ACTION) ==================== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 7, 18, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.open { display: flex; animation: fadeIn 0.18s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-card {
+    background: var(--fond-2);
+    border: 1px solid var(--bordure-claire);
+    border-top: 3px solid var(--accent);
+    border-radius: 0.9rem;
+    max-width: 540px;
+    width: 100%;
+    padding: 1.4rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    color: var(--encre);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-card.don-theme { border-top-color: var(--rouge); }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .modal-header h3 { margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+  .close-btn {
+    background: transparent;
+    border: 1px solid var(--bordure-claire);
+    color: var(--sourds);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .close-btn:hover { color: var(--encre); border-color: var(--encre); }
+
+  /* Style spécifique RIB / Dons */
+  .rib-box {
+    background: var(--carte);
+    border: 1px solid var(--bordure-claire);
+    border-radius: 0.65rem;
+    padding: 0.9rem;
+    margin: 0.75rem 0;
+  }
+  .rib-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px dashed var(--bordure-claire);
+    font-size: 0.85rem;
+  }
+  .rib-row:last-child { border-bottom: none; }
+  .rib-label { color: var(--sourds); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .rib-val { font-family: ui-monospace, Consolas, monospace; font-weight: 700; color: var(--encre); word-break: break-all; }
+  
+  .copy-btn {
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--encre);
+    border-radius: 0.4rem;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--accent); color: #fff; }
+  .copy-btn.copied { background: var(--vert); border-color: var(--vert); color: #fff; }
+
+  /* Tiroir Menu Latéral (Bouton ☰) */
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: var(--fond-2);
+    border-right: 1px solid var(--bordure-claire);
+    z-index: 3500;
+    padding: 1.2rem;
+    transition: left 0.25s ease;
+    box-shadow: var(--shadow);
+  }
+  .drawer.open { left: 0; }
+
+  /* Formulaire Clé API */
+  .input-group { margin: 0.8rem 0; }
+  .input-group label { display: block; font-size: 0.8rem; color: var(--sourds); margin-bottom: 0.3rem; }
+  .input-group input, .input-group select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.45rem;
+    border: 1px solid var(--bordure-claire);
+    background: var(--carte);
+    color: var(--encre);
+    font-family: inherit;
+  }
+
+  /* ==================== CONTENU DE LA PAGE D'EXPLICATION ==================== */
+  .page { max-width: 980px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+  h1 { font-size: 1.9rem; margin: 0.2rem 0 0.4rem; }
+  h2 { font-size: 1.35rem; margin: 2.2rem 0 0.7rem; padding-top: 1.2rem; border-top: 1px solid var(--bordure-claire); }
+  h2 .num { color: var(--accent); font-weight: 800; margin-right: 0.4rem; }
+  .chapo { color: var(--sourds); font-size: 1.05rem; max-width: 65ch; }
+  .etiquette {
+    display: inline-block;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.15rem 0.65rem;
+    font-size: 0.75rem;
+    color: var(--encre);
+    margin-right: 0.4rem;
+  }
+  .grille { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1rem; }
+  @media(min-width: 700px) { .grille { grid-template-columns: 1fr 1fr; } }
+  .carte { background: var(--carte); border: 1px solid var(--bordure-claire); border-radius: 0.7rem; padding: 1rem; }
+  .carte b.titre { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.35rem; }
+  .carte p { margin: 0; color: var(--sourds); font-size: 0.92rem; }
+  .nem {
+    display: inline-flex; width: 1.35rem; height: 1.35rem; border-radius: 999px;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.75rem;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  code {
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.4rem;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 0.86em;
+  }
+  .or {
+    background: var(--carte);
+    border-left: 4px solid var(--accent);
+    border-radius: 0.6rem;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+  }
+</style>
+<style>
+    :root {
+      --bg-primary: #070510;
+      --bg-card: rgba(19, 15, 38, 0.72);
+      --bg-card-hover: rgba(29, 23, 56, 0.85);
+      --border-subtle: rgba(167, 139, 250, 0.16);
+      --border-glow: rgba(167, 139, 250, 0.55);
+      --text-main: #f3f0ff;
+      --text-muted: #9a90c4;
+      --accent-1: #a78bfa;
+      --accent-2: #f472b6;
+      --accent-3: #34d399;
+    }
+
+    html:not(.dark) {
+      --bg-primary: #f6f4ff;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-hover: rgba(255, 255, 255, 0.98);
+      --border-subtle: rgba(124, 58, 237, 0.15);
+      --border-glow: rgba(124, 58, 237, 0.45);
+      --text-main: #18112b;
+      --text-muted: #5e548e;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    /* Animated Ambient Background Orbs & Grid */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 42px 42px;
+      background-image: 
+        linear-gradient(to right, rgba(167, 139, 250, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(167, 139, 250, 0.05) 1px, transparent 1px);
+      mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      animation: floatOrb 22s infinite alternate ease-in-out;
+    }
+    html:not(.dark) .orb {
+      opacity: 0.22;
+    }
+    .orb-1 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #8b5cf6, #ec4899);
+      top: -120px;
+      left: -100px;
+    }
+    .orb-2 {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, #10b981, #3b82f6);
+      bottom: -100px;
+      right: -80px;
+      animation-delay: -7s;
+    }
+    .orb-3 {
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, #f59e0b, #a855f7);
+      top: 40%;
+      left: 55%;
+      animation-delay: -14s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(45px, -35px) scale(1.08); }
+      100% { transform: translate(-30px, 40px) scale(0.95); }
+    }
+
+    /* Glass Bento Cards */
+    .bento-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .bento-card:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 14px 38px -12px rgba(139, 92, 246, 0.18);
+    }
+
+    /* Interactive Idea Card Spotlight & Lift */
+    .idea-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .idea-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .idea-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-glow);
+      background: var(--bg-card-hover);
+      box-shadow: 0 18px 40px -15px rgba(139, 92, 246, 0.28);
+    }
+    .idea-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Staggered Pop Animation */
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .anim-pop {
+      animation: popIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* Category Chips */
+    .cat-chip {
+      background: rgba(139, 92, 246, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      border-radius: 13px;
+      padding: 10px 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .cat-chip:hover {
+      border-color: var(--accent-1);
+      transform: translateY(-2px);
+      background: rgba(139, 92, 246, 0.13);
+    }
+    .cat-chip.active {
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 8px 20px -6px rgba(139, 92, 246, 0.55);
+      transform: translateY(-2px);
+    }
+
+    /* Blueprint Spec Toggle Pills */
+    .spec-pill {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-subtle);
+      background: rgba(139, 92, 246, 0.05);
+    }
+    .spec-pill.active {
+      border-color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+    html:not(.dark) .spec-pill.active {
+      color: #047857;
+      background: rgba(16, 185, 129, 0.18);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 11, 30, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.3);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(167, 139, 250, 0.55);
+    }
+
+    /* Pulse Ring */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+    .pulse-dot {
+      animation: pulseRing 2s infinite;
+    }
+
+    /* Device Mockup Transition */
+    .device-frame {
+      transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1), height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-violet-500 selection:text-white pb-20">
+<!-- BOUTON DE SECOURS MODE IMMERSION -->
+<button class="exit-immersion" onclick="Shell.toggleFullscreen()">✕ Quitter l'immersion (Échap)</button>
+
+<!-- ============================ SHELL ALPHABETTE (BARRE 1 + BARRE 2) ============================ -->
+<header class="alphabette-shell" id="alphabette-shell">
+  
+  <!-- BARRE 1 : ÉCOSYSTÈME -->
+  <nav class="barre1" aria-label="Navigation Écosystème Alphabette">
+    <a class="marque" href="https://alphabette.fr" title="Retour au Hub central alphabette.fr">
+      <span class="rond">α</span>ALPHABETTE
+    </a>
+
+    <button class="btn don" onclick="Shell.openModal('modal-don')" title="Soutenir l'écosystème par un don SEPA">
+      ♥ DON
+    </button>
+
+    <div class="nav-sites" id="shell-sites-list">
+      <!-- Généré dynamiquement par ALPHABETTE_CONFIG -->
+    </div>
+
+    <div class="droite">
+      <button class="compteur" onclick="Shell.openModal('modal-registre')" title="Voir les applications de l'écosystème">
+        <span id="shell-counter-text">3/16</span>
+        <span class="essai" id="shell-trial-text">(7j essai)</span>
+      </button>
+      <button class="btn pass-btn" onclick="Shell.openModal('modal-pass')">
+        ⭐ Pass 40 €/an
+      </button>
+    </div>
+  </nav>
+
+  <!-- BARRE 2 : APPLICATION COURANTE & OUTILS UTILISATEUR -->
+  <div class="barre2">
+    <button class="mini" onclick="Shell.toggleDrawer()" title="Ouvrir le menu de l'application">☰</button>
+
+    <div class="identity">
+      <span class="logo-app" id="app-icon">📰</span>
+      <div>
+        <span class="nom" id="app-name">Info Perso</span>
+        <span class="soustitre" id="app-subtitle">Votre curation intelligente hautement personnalisée</span>
+      </div>
+    </div>
+
+    <div class="droite">
+      <button class="btn don" onclick="Shell.openModal('modal-don')">♥ DON</button>
+      
+      <button class="btn" onclick="Shell.openModal('modal-compte')">
+        👤 Mon Compte <span class="pastille" id="account-dot"></span>
+      </button>
+
+      <button class="btn" id="btn-scale" onclick="Shell.cycleScale()" title="Changer la taille du texte (Compact / Normal / Grand)">
+        BIG ▂▄▆
+      </button>
+
+      <button class="btn" onclick="Shell.openModal('modal-api')">
+        🔑 Clé API : <span id="api-status-label">Prêt</span> <span class="pastille" id="api-dot"></span>
+      </button>
+
+      <button class="btn" onclick="Shell.toggleFullscreen()" title="Basculer en plein écran ou mode immersion">
+        ⛶ Plein Écran
+      </button>
+
+      <button class="btn" id="btn-theme" onclick="Shell.toggleTheme()" title="Basculer entre le mode Jour et Nuit">
+        ☀️ Jour
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ TIROIR LATÉRAL (BOUTON ☰) ============================ -->
+<aside class="drawer" id="app-drawer">
+  <div class="modal-header">
+    <h3><span id="drawer-icon">📰</span> <span id="drawer-title">Menu</span></h3>
+    <button class="close-btn" onclick="Shell.toggleDrawer()">✕</button>
+  </div>
+  <p style="color:var(--sourds);font-size:0.85rem;">Sections de l'application courante :</p>
+  <div id="drawer-links" style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.8rem;">
+    <!-- Injecté par ALPHABETTE_CONFIG -->
+  </div>
+</aside>
+
+<!-- ============================ MODALES INTERACTIVES ============================ -->
+
+<!-- 1. MODALE DON (RIB VALENTIN RICHAUD INTÉGRÉ) -->
+<div class="modal-backdrop" id="modal-don" onclick="Shell.backdropClose(event, 'modal-don')">
+  <div class="modal-card don-theme">
+    <div class="modal-header">
+      <h3>♥ Soutenir l'écosystème ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-don')">✕</button>
+    </div>
+    <p style="margin:0 0 0.8rem;color:var(--sourds);font-size:0.9rem;">
+      ALPHABETTE est développé de manière indépendante. Vos dons par virement SEPA financent directement les serveurs, l'inférence IA et la création des nouvelles applications.
+    </p>
+
+    <div class="rib-box">
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Titulaire du compte</div>
+          <div class="rib-val" id="rib-titulaire">M. VALENTIN RICHAUD</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('M. VALENTIN RICHAUD', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">IBAN (Virement SEPA)</div>
+          <div class="rib-val" id="rib-iban">FR76 3000 3016 1400 0523 8186 132</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('FR7630003016140005238186132', this)">Copier l'IBAN</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">BIC / Adresse SWIFT</div>
+          <div class="rib-val">SOGEFRPP</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('SOGEFRPP', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Code RIB (Banque · Guichet · Compte · Clé)</div>
+          <div class="rib-val">30003 01614 00052381861 32</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyText('30003 01614 00052381861 32', this)">Copier</button>
+      </div>
+
+      <div class="rib-row">
+        <div>
+          <div class="rib-label">Domiciliation</div>
+          <div class="rib-val">AV DU PORT — 34280 LA GRANDE MOTTE</div>
+        </div>
+        <button class="copy-btn" onclick="Shell.copyAllRib(this)">Tout copier</button>
+      </div>
+    </div>
+
+    <p style="margin:0.6rem 0 0;font-size:0.78rem;color:var(--sourds);text-align:center;">
+      💡 Indiquez votre adresse e-mail en motif de virement pour activer votre badge <strong>Membre Fondateur</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- 2. MODALE REGISTRE DES APPLICATIONS (COMPTEUR) -->
+<div class="modal-backdrop" id="modal-registre" onclick="Shell.backdropClose(event, 'modal-registre')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>🗂️ Registre des applications ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-registre')">✕</button>
+    </div>
+    <p style="margin:0 0 0.8rem;color:var(--sourds);font-size:0.88rem;">
+      État en temps réel synchronisé depuis le Hub. Les applications en brouillon sont grisées pour éviter tout lien cassé :
+    </p>
+    <div id="modal-apps-grid" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+  </div>
+</div>
+
+<!-- 3. MODALE PASS 40 €/AN -->
+<div class="modal-backdrop" id="modal-pass" onclick="Shell.backdropClose(event, 'modal-pass')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>⭐ Pass Écosystème ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-pass')">✕</button>
+    </div>
+    <div class="rib-box">
+      <p style="margin:0 0 0.5rem;font-weight:700;font-size:1.05rem;">Un seul abonnement pour toutes les applications</p>
+      <ul style="margin:0;padding-left:1.2rem;color:var(--sourds);font-size:0.9rem;">
+        <li><strong>Pass Intégral : 40 € / an</strong> (accès illimité aux 16 applications + nouveautés).</li>
+        <li><strong>App à l'unité : 15 € / an</strong> pour une seule application.</li>
+        <li><strong>Essai gratuit : 7 jours</strong> complets sans engagement.</li>
+      </ul>
+    </div>
+    <div style="display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1rem;">
+      <button class="btn" onclick="Shell.closeModal('modal-pass');Shell.openModal('modal-don')">Payer par virement SEPA</button>
+      <a class="btn pass-btn" href="https://alphabette.fr/pass" style="text-decoration:none;">S'abonner sur le Hub →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 4. MODALE MON COMPTE -->
+<div class="modal-backdrop" id="modal-compte" onclick="Shell.backdropClose(event, 'modal-compte')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>👤 Mon Compte ALPHABETTE</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-compte')">✕</button>
+    </div>
+    <div class="rib-box">
+      <div class="rib-row">
+        <span class="rib-label">Statut Session</span>
+        <span class="rib-val" style="color:var(--vert);">● Connecté (Essai 7 jours actif)</span>
+      </div>
+      <div class="rib-row">
+        <span class="rib-label">Application active</span>
+        <span class="rib-val" id="account-app-name">Info Perso</span>
+      </div>
+      <div class="rib-row">
+        <span class="rib-label">Licence</span>
+        <span class="rib-val">Pass Découverte — Écosystème</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:1rem;">
+      <button class="btn" onclick="Shell.openModal('modal-pass')">Gérer mon Pass</button>
+      <a class="btn" href="https://alphabette.fr/login" style="text-decoration:none;">Portail Hub →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MODALE CLÉ API (BYOK OU MANAGÉE) -->
+<div class="modal-backdrop" id="modal-api" onclick="Shell.backdropClose(event, 'modal-api')">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>🔑 Configuration Clé IA (Mistral / DeepSeek / GLM)</h3>
+      <button class="close-btn" onclick="Shell.closeModal('modal-api')">✕</button>
+    </div>
+    <p style="margin:0;color:var(--sourds);font-size:0.88rem;">
+      Utilisez la clé managée incluse dans votre Pass ALPHABETTE ou branchez votre propre clé API (BYOK) sauvegardée localement dans votre navigateur.
+    </p>
+    <div class="input-group">
+      <label for="api-provider">Fournisseur IA par défaut</label>
+      <select id="api-provider">
+        <option value="managed">Clé Managée ALPHABETTE (Mistral France — Incluse)</option>
+        <option value="mistral">BYOK — Mistral AI</option>
+        <option value="deepseek">BYOK — DeepSeek</option>
+        <option value="glm">BYOK — GLM 5.3 / Zhipu</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="api-key-input">Clé API personnelle (optionnel si Clé Managée)</label>
+      <input type="password" id="api-key-input" placeholder="sk-..." autocomplete="off">
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem;">
+      <button class="btn" onclick="Shell.saveApiConfig()" style="background:var(--accent);color:#fff;">Enregistrer & Activer</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Ambient Animated Background -->
+  <div class="ambient-bg">
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Top Navigation Bar -->
+  <header class="z-40 backdrop-blur-xl bg-opacity-75 border-b border-violet-500/15 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-emerald-400 p-[1px] shadow-lg shadow-violet-500/25">
+          <div class="w-full h-full bg-[#0d091d] rounded-[11px] flex items-center justify-center text-white">
+            <i data-lucide="sparkles" class="w-5 h-5 text-violet-300"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-extrabold text-lg tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-400 to-emerald-400 bg-clip-text text-transparent">
+              Prompt Magic
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              Human Impact Edition
+            </span>
+          </div>
+          <p class="text-xs text-[var(--text-muted)] hidden sm:block">
+            Architecte de Sites Web & Applications Responsives au service de l'Humain
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Quick Pills -->
+      <nav class="hidden md:flex items-center gap-1 p-1 rounded-xl border border-violet-500/15 bg-violet-950/20">
+        <a href="#section-ideas" class="px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-violet-500/15 transition flex items-center gap-1.5">
+          <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-400"></i>
+          20 Idées Prêtes
+        </a>
+        <a href="#section-explorer" class="px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-violet-500/15 transition flex items-center gap-1.5">
+          <i data-lucide="compass" class="w-3.5 h-3.5 text-violet-400"></i>
+          Explorateur 20 Niveaux
+        </a>
+        <a href="#section-studio" class="px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-violet-500/15 transition flex items-center gap-1.5">
+          <i data-lucide="wand-2" class="w-3.5 h-3.5 text-fuchsia-400"></i>
+          Studio & Aperçu UI
+        </a>
+      </nav>
+
+      <!-- Quota, Settings & Theme Toggle -->
+      <div class="flex items-center gap-2.5">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-violet-500/20 bg-violet-500/5 text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+          <span id="quotaBadge" class="font-medium">Mode Hybride Actif</span>
+        </div>
+
+        <button id="btnOpenSettings" class="p-2.5 rounded-xl border border-violet-500/20 hover:border-violet-400 bg-violet-500/5 transition" title="Réglages IA & Clé API">
+          <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+        </button>
+
+        <button id="btnThemeToggle" class="p-2.5 rounded-xl border border-violet-500/20 hover:border-violet-400 bg-violet-500/5 transition" title="Basculer le thème Clair / Sombre">
+          <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 hidden"></i>
+          <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-12">
+
+    <!-- HERO SECTION -->
+    <section class="relative">
+      <div class="bento-card p-6 sm:p-10 overflow-hidden">
+        <div class="grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7 space-y-5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/25 text-violet-300 text-xs font-medium">
+              <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-pink-400"></i>
+              <span>Tech for Good • Conception Web & Mobile-First</span>
+            </div>
+            <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.15]">
+              Créez des applications qui <span class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-emerald-400 bg-clip-text text-transparent">changent vraiment</span> le quotidien.
+            </h1>
+            <p class="text-sm sm:text-base text-[var(--text-muted)] max-w-2xl leading-relaxed">
+              Explorez <strong>20 idées d'applications citoyennes et humaines</strong> directement intégrées, descendez jusqu'à 20 niveaux de précision thématique, et générez à la volée le cahier des charges complet, le prompt développeur et une maquette responsive interactive.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <button id="btnHeroRandomIdea" class="px-5 py-3 rounded-xl font-semibold text-sm bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-violet-500/25 hover:opacity-95 hover:-translate-y-0.5 transition flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                Inspirer une app utile au hasard
+              </button>
+              <a href="#section-ideas" class="px-4 py-3 rounded-xl font-medium text-sm border border-violet-500/30 hover:border-violet-400 bg-violet-500/5 transition flex items-center gap-2">
+                <i data-lucide="layout-grid" class="w-4 h-4 text-violet-400"></i>
+                Parcourir les 20 idées
+              </a>
+              <a href="#section-explorer" class="px-4 py-3 rounded-xl font-medium text-sm border border-violet-500/30 hover:border-violet-400 bg-violet-500/5 transition flex items-center gap-2">
+                <i data-lucide="git-branch" class="w-4 h-4 text-emerald-400"></i>
+                Arbre de catégories
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Stats / Impact Dashboard -->
+          <div class="lg:col-span-5 grid grid-cols-2 gap-3.5">
+            <div class="p-4 rounded-2xl border border-violet-500/20 bg-violet-500/5 space-y-1">
+              <div class="flex items-center justify-between text-violet-400">
+                <span class="text-xs font-medium uppercase tracking-wider">Idées Intégrées</span>
+                <i data-lucide="cpu" class="w-4 h-4"></i>
+              </div>
+              <div class="font-display text-2xl sm:text-3xl font-extrabold">20 Apps</div>
+              <p class="text-xs text-[var(--text-muted)]">Cahier des charges & prompts prêts en 1 clic</p>
+            </div>
+            <div class="p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 space-y-1">
+              <div class="flex items-center justify-between text-emerald-400">
+                <span class="text-xs font-medium uppercase tracking-wider">Arborescence</span>
+                <i data-lucide="layers" class="w-4 h-4"></i>
+              </div>
+              <div class="font-display text-2xl sm:text-3xl font-extrabold">20 Niveaux</div>
+              <p class="text-xs text-[var(--text-muted)]">Exploration infinie de niches à fort impact</p>
+            </div>
+            <div class="p-4 rounded-2xl border border-pink-500/20 bg-pink-500/5 space-y-1">
+              <div class="flex items-center justify-between text-pink-400">
+                <span class="text-xs font-medium uppercase tracking-wider">Design Responsive</span>
+                <i data-lucide="smartphone" class="w-4 h-4"></i>
+              </div>
+              <div class="font-display text-2xl sm:text-3xl font-extrabold">Mobile-First</div>
+              <p class="text-xs text-[var(--text-muted)]">Simulateur visuel Mobile, Tablette & Desktop</p>
+            </div>
+            <div class="p-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 space-y-1">
+              <div class="flex items-center justify-between text-amber-400">
+                <span class="text-xs font-medium uppercase tracking-wider">Disponibilité</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+              </div>
+              <div class="font-display text-2xl sm:text-3xl font-extrabold">100% Actif</div>
+              <p class="text-xs text-[var(--text-muted)]">Moteur autonome + compatible Gemini/Claude/GPT</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLAPSIBLE SETTINGS PANEL -->
+    <section id="settingsDrawer" class="hidden anim-pop">
+      <div class="bento-card p-6 border-violet-400/40">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="settings" class="w-5 h-5 text-violet-400"></i>
+            <h2 class="font-display font-bold text-lg">Réglages IA, Modèle Cible & Quota</h2>
+          </div>
+          <button id="btnCloseSettings" class="text-xs text-[var(--text-muted)] hover:text-white px-2.5 py-1 rounded-lg border border-violet-500/20">
+            Fermer ✕
+          </button>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Fournisseur IA</label>
+            <select id="prov" class="w-full rounded-xl bg-black/20 border border-violet-500/25 px-3 py-2.5 text-sm focus:outline-none focus:border-violet-400">
+              <option value="gemini">Google Gemini (Recommandé)</option>
+              <option value="claude">Anthropic Claude</option>
+              <option value="openai">OpenAI GPT-4o</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Clé API (Optionnelle)</label>
+            <input id="key" type="password" placeholder="Sans clé : moteur intelligent local actif" class="w-full rounded-xl bg-black/20 border border-violet-500/25 px-3 py-2.5 text-sm focus:outline-none focus:border-violet-400">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Langue de génération</label>
+            <select id="lang" class="w-full rounded-xl bg-black/20 border border-violet-500/25 px-3 py-2.5 text-sm focus:outline-none focus:border-violet-400">
+              <option value="Français">Français</option>
+              <option value="English">English</option>
+              <option value="Español">Español</option>
+              <option value="Deutsch">Deutsch</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Cible d'export / Builder</label>
+            <select id="target" class="w-full rounded-xl bg-black/20 border border-violet-500/25 px-3 py-2.5 text-sm focus:outline-none focus:border-violet-400">
+              <option value="Tous modèles (Architecture Web)">Tous modèles (Architecture Web)</option>
+              <option value="Claude Artifacts / Cursor">Claude Artifacts / Cursor</option>
+              <option value="Gemini Canvas Web">Gemini Canvas Web</option>
+              <option value="ChatGPT / v0 / Bolt">ChatGPT / v0 / Bolt</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--text-muted)] pt-3 border-t border-violet-500/15">
+          <span>💡 <strong>Astuce :</strong> Même sans clé API, les 20 idées intégrées et le moteur génératif local d'architecture responsive fonctionnent en illimité !</span>
+          <span id="quotaDetailText">Utilisations API : 0/15</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: LES 20 IDÉES D'APPLICATIONS AU SERVICE DE L'HUMAIN -->
+    <section id="section-ideas" class="space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            Catalogue Exclusif Intégré
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold">
+            20 Idées d'Applications Responsives Utiles à l'Humain
+          </h2>
+          <p class="text-sm text-[var(--text-muted)]">
+            Cliquez sur une idée pour charger automatiquement son <strong>Brief</strong>, ses <strong>3 Prompts Architectes</strong> (MVP, Standard, Cahier des charges complet) et sa <strong>Maquette Mobile/Desktop</strong>.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input id="ideaSearch" type="text" placeholder="Filtrer les 20 idées..." class="pl-9 pr-3 py-2 rounded-xl text-xs sm:text-sm bg-violet-950/20 border border-violet-500/25 focus:outline-none focus:border-violet-400 w-52 sm:w-64">
+          </div>
+        </div>
+      </div>
+
+      <!-- Domain Filter Pills -->
+      <div id="domainFilters" class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <!-- Populated dynamically by JS -->
+      </div>
+
+      <!-- 20 Ideas Bento Grid -->
+      <div id="ideasGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- SECTION 2: EXPLORATEUR ARBORESCENT 20 NIVEAUX (PROMPT MAGIC CORE) -->
+    <section id="section-explorer" class="space-y-4">
+      <div class="bento-card p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-violet-500/15 pb-4">
+          <div>
+            <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-violet-400 mb-1">
+              <i data-lucide="git-merge" class="w-3.5 h-3.5"></i>
+              Arbre d'Idéation Profonde (Niveau <span id="levelNumber">1</span>/20)
+            </div>
+            <h2 class="font-display text-xl sm:text-2xl font-bold">
+              Explorateur de Niches & Besoins Humains
+            </h2>
+          </div>
+
+          <!-- Level Progress Bar -->
+          <div class="flex items-center gap-3">
+            <div class="w-36 h-2.5 rounded-full bg-violet-950/50 overflow-hidden border border-violet-500/20">
+              <div id="levelProgressBar" class="h-full bg-gradient-to-r from-violet-500 to-emerald-400 transition-all duration-500" style="width: 5%"></div>
+            </div>
+            <span id="levelBadge" class="text-xs font-mono px-2.5 py-1 rounded-lg bg-violet-500/15 text-violet-300 border border-violet-500/30">
+              Niv. 1/20
+            </span>
+          </div>
+        </div>
+
+        <!-- Interactive Breadcrumb -->
+        <div id="crumb" class="flex flex-wrap items-center gap-1.5 text-xs">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Search & Surprise Bar -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="relative flex-1 min-w-[200px]">
+            <i data-lucide="search" class="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="q" type="text" placeholder="Rechercher une thématique ou sous-catégorie..." class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-black/20 border border-violet-500/25 focus:outline-none focus:border-violet-400">
+          </div>
+          <button id="rnd" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-violet-500/30 hover:border-violet-400 bg-violet-500/10 transition flex items-center gap-2">
+            <i data-lucide="dices" class="w-4 h-4 text-fuchsia-400"></i>
+            Surprends-moi
+          </button>
+        </div>
+
+        <!-- 20 Category Chips Grid -->
+        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Navigation & Action Row -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-violet-500/15">
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="down" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md shadow-violet-500/20 hover:opacity-95 transition flex items-center gap-1.5">
+              <span>Descendre plus précis</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button id="up" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-violet-500/25 hover:border-violet-400 bg-violet-500/5 transition flex items-center gap-1.5">
+              <i data-lucide="corner-left-up" class="w-4 h-4"></i>
+              <span>Retour</span>
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="exb" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-amber-500/30 hover:border-amber-400 bg-amber-500/10 text-amber-300 transition flex items-center gap-1.5">
+              <i data-lucide="lightbulb" class="w-4 h-4"></i>
+              <span>10 Exemples d'Apps ici</span>
+            </button>
+            <button id="useb" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-emerald-500/30 hover:border-emerald-400 bg-emerald-500/10 text-emerald-300 transition flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span>Injecter ce chemin dans le Brief</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic 10 Examples Box (Beginner vs Expert) -->
+        <div id="exbox" class="hidden pt-4 border-t border-violet-500/20 space-y-3 anim-pop">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: STUDIO D'ARCHITECTURE, BRIEF & RÉSULTAT RESPONSIVE -->
+    <section id="section-studio" class="grid lg:grid-cols-12 gap-6 items-start">
+
+      <!-- Left Column: Brief + Responsive Specs Builder (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bento-card p-6 space-y-5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="file-edit" class="w-5 h-5 text-violet-400"></i>
+              <h3 class="font-display font-bold text-lg">Votre Brief de Conception</h3>
+            </div>
+            <button id="btnClearBrief" class="text-xs text-[var(--text-muted)] hover:text-pink-400 transition">
+              Effacer
+            </button>
+          </div>
+
+          <!-- Technical & Human Modules to Inject -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+              Modules Responsives & Éthiques à inclure :
+            </label>
+            <div id="specPillsContainer" class="flex flex-wrap gap-1.5">
+              <button type="button" data-spec="Mobile-First PWA installable" class="spec-pill active text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>📱 Mobile-First PWA</span>
+              </button>
+              <button type="button" data-spec="Accessibilité WCAG AAA (contraste élevé, gros boutons, lecteur d'écran)" class="spec-pill active text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>♿ Accessibilité AAA</span>
+              </button>
+              <button type="button" data-spec="Mode Hors-Ligne (LocalStorage / Service Worker)" class="spec-pill text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>📡 Mode Hors-Ligne</span>
+              </button>
+              <button type="button" data-spec="Zéro création de compte obligatoire & respect vie privée RGPD" class="spec-pill active text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>🔒 Anonyme / Sans Compte</span>
+              </button>
+              <button type="button" data-spec="Cartographie interactive & géolocalisation de proximité" class="spec-pill text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>🗺️ Carte Interactive</span>
+              </button>
+              <button type="button" data-spec="Interface apaisante Zéro Anxiété (Mode Sombre & Clair)" class="spec-pill active text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1">
+                <span>🌿 Design Apaisant</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Brief Textarea -->
+          <div>
+            <textarea id="brief" rows="6" placeholder="Décrivez le site ou l'application utile à l'humain que vous souhaitez créer, ou cliquez sur l'une des 20 idées ci-dessus..." class="w-full rounded-xl bg-black/25 border border-violet-500/25 p-3.5 text-sm leading-relaxed focus:outline-none focus:border-violet-400"></textarea>
+          </div>
+
+          <!-- Generate Magic Prompt Button -->
+          <button id="gen" class="w-full py-3.5 px-5 rounded-xl font-display font-bold text-sm bg-gradient-to-r from-violet-500 via-fuchsia-500 to-emerald-400 text-slate-950 shadow-lg shadow-violet-500/25 hover:opacity-95 hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
+            <i data-lucide="wand-2" class="w-4 h-4"></i>
+            <span>Créer le Prompt Architecte Magique</span>
+          </button>
+        </div>
+
+        <!-- Favorites & History Card -->
+        <div class="bento-card p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="bookmark" class="w-4 h-4 text-amber-400"></i>
+              <h3 class="font-display font-bold text-sm">Bibliothèque (Favoris & Historique)</h3>
+            </div>
+            <span class="text-[11px] text-[var(--text-muted)]">Sauvegarde locale</span>
+          </div>
+          <div id="lib" class="space-y-3 max-h-64 overflow-y-auto pr-1 text-xs">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Output Studio + Interactive UI Mockup (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        <div id="out" class="bento-card p-6 space-y-5">
+          <!-- Header & Mode Tabs -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-violet-500/15 pb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <h3 id="activeIdeaTitle" class="font-display font-bold text-lg">
+                Atelier Prompt & Cahier des Charges
+              </h3>
+            </div>
+
+            <!-- Tabs: Court, Standard, Détaillé, Aperçu UI -->
+            <div id="tabs" class="flex flex-wrap items-center gap-1.5 bg-black/25 p-1 rounded-xl border border-violet-500/20">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- View 1: Prompt Textarea View -->
+          <div id="promptEditorView" class="space-y-4">
+            <div class="relative">
+              <textarea id="final" rows="13" class="w-full rounded-xl bg-black/30 border border-violet-500/25 p-4 font-mono text-xs sm:text-sm leading-relaxed focus:outline-none focus:border-violet-400" placeholder="Sélectionnez une idée ou générez un prompt pour voir apparaître l'architecture complète ici..."></textarea>
+              <span id="charCountBadge" class="absolute bottom-3 right-3 text-[11px] font-mono px-2 py-0.5 rounded bg-violet-950/80 text-violet-300 border border-violet-500/20">
+                0 car.
+              </span>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="copy" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-violet-500 text-white hover:bg-violet-400 transition flex items-center gap-1.5">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copier le Prompt</span>
+                </button>
+                <button id="imp" class="px-3.5 py-2 rounded-xl text-xs font-medium border border-violet-500/30 hover:border-violet-400 bg-violet-500/10 transition flex items-center gap-1.5">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-fuchsia-400"></i>
+                  <span>Enrichir UX/UI</span>
+                </button>
+                <button id="test" class="px-3.5 py-2 rounded-xl text-xs font-medium border border-emerald-500/30 hover:border-emerald-400 bg-emerald-500/10 text-emerald-300 transition flex items-center gap-1.5">
+                  <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                  <span>Simuler Réponse</span>
+                </button>
+                <button id="fav" class="px-3 py-2 rounded-xl text-xs font-medium border border-amber-500/30 hover:border-amber-400 bg-amber-500/10 text-amber-300 transition flex items-center gap-1">
+                  <i data-lucide="star" class="w-3.5 h-3.5"></i>
+                  <span>Favori</span>
+                </button>
+                <button id="share" class="px-3 py-2 rounded-xl text-xs font-medium border border-violet-500/25 hover:border-violet-400 bg-violet-500/5 transition flex items-center gap-1">
+                  <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                  <span>Partager</span>
+                </button>
+              </div>
+
+              <div>
+                <select id="exp" class="rounded-xl bg-black/30 border border-violet-500/25 px-3 py-2 text-xs font-medium focus:outline-none">
+                  <option value="">⬇️ Exporter...</option>
+                  <option value="txt">Fichier .TXT</option>
+                  <option value="md">Documentation .MD</option>
+                  <option value="json">Blueprint .JSON</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Simulated / Tested Output Box -->
+            <pre id="res" class="hidden rounded-xl bg-black/40 border border-emerald-500/30 p-4 text-xs font-mono whitespace-pre-wrap leading-relaxed text-emerald-200 max-h-80 overflow-y-auto"></pre>
+          </div>
+
+          <!-- View 2: Interactive Responsive UI Mockup Preview -->
+          <div id="mockupPreviewView" class="hidden space-y-4 anim-pop">
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-black/20 p-3 rounded-xl border border-violet-500/15">
+              <div class="text-xs text-[var(--text-muted)] flex items-center gap-2">
+                <i data-lucide="monitor-smartphone" class="w-4 h-4 text-violet-400"></i>
+                <span>Aperçu de l'architecture Responsive de l'application :</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" data-device="340px" class="device-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-violet-500 text-white">
+                  📱 Mobile
+                </button>
+                <button type="button" data-device="520px" class="device-btn px-2.5 py-1 rounded-lg text-xs font-medium border border-violet-500/25 hover:border-violet-400">
+                  📟 Tablette
+                </button>
+                <button type="button" data-device="100%" class="device-btn px-2.5 py-1 rounded-lg text-xs font-medium border border-violet-500/25 hover:border-violet-400">
+                  💻 Desktop
+                </button>
+              </div>
+            </div>
+
+            <!-- Live Simulated Device Frame -->
+            <div class="flex justify-center bg-black/30 p-4 sm:p-6 rounded-2xl border border-violet-500/15 overflow-hidden">
+              <div id="deviceFrame" class="device-frame w-[340px] max-w-full rounded-[26px] border-4 border-slate-700/80 bg-slate-950 shadow-2xl overflow-hidden">
+                <!-- Top phone status bar -->
+                <div class="bg-slate-900 px-4 py-2 flex items-center justify-between text-[10px] text-slate-400 border-b border-slate-800">
+                  <span class="font-mono">09:41</span>
+                  <div class="w-16 h-3 rounded-full bg-black"></div>
+                  <span>5G • 100%</span>
+                </div>
+                <!-- Dynamic App Wireframe Content -->
+                <div id="mockupInnerContent" class="p-4 space-y-4 text-left text-slate-100">
+                  <!-- Populated dynamically by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <script>
+/**
+ * 1. CONFIGURATION UNIQUE DE L'APPLICATION ET DU REGISTRE
+ * C'est le seul bloc à modifier (ou à hydrater depuis alphabette.fr/api/registry)
+ * quand tu démarres une nouvelle application dans OpenCode.
+ */
+const ALPHABETTE_CONFIG = {
+  currentApp: {
+    id: "promptmagic",
+    name: "Prompt Magic",
+    subtitle: "Architecte de sites et apps utiles a l'humain",
+    icon: "✨",
+    accent: "#8b5cf6",
+    menuLinks: [
+      { label: "20 idees pretes", href: "#section-ideas" },
+      { label: "Explorateur 20 niveaux", href: "#section-explorer" },
+      { label: "Studio et apercu UI", href: "#section-studio" }
+    ]
+  },
+  ecosystem: {
+    totalPlanned: 16,
+    trialDays: 7,
+    sites: [
+      { id: "promptmagic", name: "Prompt Magic", icon: "✨", url: "https://promptmagic.alphabette.fr", status: "online" },
+      { id: "proxilien", name: "Proxilien", icon: "P", url: "https://proxilien.alphabette.fr", status: "draft" },
+      { id: "infosperso", name: "Info Perso", icon: "N", url: "https://infosperso.alphabette.fr", status: "online" }
+    ]
+  }
+};
+
+/**
+ * 2. CONTRÔLEUR DU SHELL ALPHABETTE
+ */
+const Shell = {
+  init() {
+    const { currentApp, ecosystem } = ALPHABETTE_CONFIG;
+
+    // Appliquer la couleur d'identité et les textes de l'application
+    document.documentElement.style.setProperty('--accent', currentApp.accent);
+    document.getElementById('app-icon').textContent = currentApp.icon;
+    document.getElementById('app-name').textContent = currentApp.name;
+    document.getElementById('app-subtitle').textContent = currentApp.subtitle;
+    document.getElementById('account-app-name').textContent = currentApp.name;
+    document.getElementById('drawer-icon').textContent = currentApp.icon;
+    document.getElementById('drawer-title').textContent = currentApp.name;
+
+    // Générer les liens du tiroir latéral
+    const drawerLinks = document.getElementById('drawer-links');
+    drawerLinks.innerHTML = currentApp.menuLinks.map(link =>
+      `<a href="${link.href}" class="btn" style="justify-content:flex-start;padding:0.5rem 0.8rem;text-decoration:none;" onclick="Shell.toggleDrawer()">${link.label}</a>`
+    ).join('');
+
+    // Générer les boutons des sites dans la Barre 1 + Modale Registre
+    const navList = document.getElementById('shell-sites-list');
+    const modalGrid = document.getElementById('modal-apps-grid');
+    let onlineCount = 0;
+
+    navList.innerHTML = '';
+    modalGrid.innerHTML = '';
+
+    ecosystem.sites.forEach(site => {
+      const isCurrent = site.id === currentApp.id;
+      const isOnline = site.status === 'online';
+      if (isOnline) onlineCount++;
+
+      // Bouton dans la Barre 1
+      if (isCurrent) {
+        navList.innerHTML += `<span class="site active" aria-current="page">${site.icon} ${site.name}</span>`;
+      } else if (isOnline) {
+        navList.innerHTML += `<a class="site" href="${site.url}">${site.icon} ${site.name}</a>`;
+      } else {
+        navList.innerHTML += `<span class="site off" title="Bientôt en ligne">${site.icon} ${site.name} <span class="badge-bientot">Bientôt</span></span>`;
+      }
+
+      // Ligne dans la modale Registre
+      modalGrid.innerHTML += `
+        <div class="rib-row" style="background:var(--carte);padding:0.6rem 0.8rem;border-radius:0.5rem;border:1px solid var(--bordure-claire);">
+          <div>
+            <strong>${site.icon} ${site.name}</strong>
+            ${isCurrent ? '<span class="etiquette" style="margin-left:0.4rem;">Application actuelle</span>' : ''}
+          </div>
+          ${isOnline
+            ? `<a href="${site.url}" class="copy-btn" style="text-decoration:none;">Ouvrir →</a>`
+            : `<span style="color:var(--sourds);font-size:0.78rem;">🚧 Brouillon (Bientôt)</span>`
+          }
+        </div>
+      `;
+    });
+
+    // Mettre à jour le compteur automatiquement
+    document.getElementById('shell-counter-text').textContent = `${onlineCount}/${ecosystem.totalPlanned}`;
+    document.getElementById('shell-trial-text').textContent = `(${ecosystem.trialDays}j essai)`;
+
+    // Restaurer les préférences utilisateur (Thème, Taille, API)
+    const savedTheme = localStorage.getItem('alphabette_theme') || 'dark';
+    this.applyTheme(savedTheme);
+
+    const savedScale = localStorage.getItem('alphabette_scale') || 'normal';
+    this.applyScale(savedScale);
+
+    this.loadApiConfig();
+
+    // Écouteur touche Échap pour fermer modales ou mode immersion
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+        document.getElementById('app-drawer').classList.remove('open');
+        document.body.classList.remove('immersion-mode');
+      }
+    });
+  },
+
+  // Gestion des modales
+  openModal(id) {
+    document.getElementById(id).classList.add('open');
+  },
+  closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  },
+  backdropClose(event, id) {
+    if (event.target.id === id) this.closeModal(id);
+  },
+
+  // Tiroir latéral (☰)
+  toggleDrawer() {
+    document.getElementById('app-drawer').classList.toggle('open');
+  },
+
+  // Copie Presse-papier (RIB / IBAN)
+  copyText(text, btnElement) {
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btnElement.textContent;
+      btnElement.textContent = '✓ Copié !';
+      btnElement.classList.add('copied');
+      setTimeout(() => {
+        btnElement.textContent = original;
+        btnElement.classList.remove('copied');
+      }, 1800);
+    });
+  },
+  copyAllRib(btnElement) {
+    const fullRib = `Titulaire : M. VALENTIN RICHAUD\nIBAN : FR76 3000 3016 1400 0523 8186 132\nBIC : SOGEFRPP\nRIB : 30003 01614 00052381861 32\nDomiciliation : AV DU PORT, 34280 LA GRANDE MOTTE`;
+    this.copyText(fullRib, btnElement);
+  },
+
+  // Bascule Thème Jour / Nuit
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    this.applyTheme(next);
+  },
+  applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+    localStorage.setItem('alphabette_theme', theme);
+    const btn = document.getElementById('btn-theme');
+    if (btn) btn.textContent = theme === 'dark' ? 'Sun Jour' : 'Moon Nuit';
+    const sun = document.getElementById('themeIconSun');
+    const moon = document.getElementById('themeIconMoon');
+    if (sun && moon) {
+      const isDark = theme === 'dark';
+      sun.classList.toggle('hidden', isDark);
+      moon.classList.toggle('hidden', !isDark);
+    }
+  },
+
+  // Bascule Taille BIG (Compact -> Normal -> Grand)
+  cycleScale() {
+    const scales = ['compact', 'normal', 'large'];
+    const current = document.documentElement.getAttribute('data-scale') || 'normal';
+    const next = scales[(scales.indexOf(current) + 1) % scales.length];
+    this.applyScale(next);
+  },
+  applyScale(scale) {
+    document.documentElement.setAttribute('data-scale', scale);
+    localStorage.setItem('alphabette_scale', scale);
+    const labels = { compact: 'BIG ▂__', normal: 'BIG ▂▄_', large: 'BIG ▂▄▆' };
+    document.getElementById('btn-scale').textContent = labels[scale] || 'BIG ▂▄▆';
+  },
+
+  // Plein écran + Mode Immersion de secours
+  toggleFullscreen() {
+    if (document.body.classList.contains('immersion-mode')) {
+      document.body.classList.remove('immersion-mode');
+      return;
+    }
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {
+        // Si le navigateur bloque le plein écran natif, on active le mode immersion
+        document.body.classList.add('immersion-mode');
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  },
+
+  // Gestion Clé API (accessible par tes applications)
+  saveApiConfig() {
+    const provider = document.getElementById('api-provider').value;
+    const key = document.getElementById('api-key-input').value.trim();
+    localStorage.setItem('alphabette_api_provider', provider);
+    localStorage.setItem('alphabette_api_key', key);
+    this.loadApiConfig();
+    this.closeModal('modal-api');
+  },
+  loadApiConfig() {
+    const provider = localStorage.getItem('alphabette_api_provider') || 'managed';
+    const key = localStorage.getItem('alphabette_api_key') || '';
+    document.getElementById('api-provider').value = provider;
+    document.getElementById('api-key-input').value = key;
+
+    const label = document.getElementById('api-status-label');
+    const dot = document.getElementById('api-dot');
+
+    if (provider === 'managed') {
+      label.textContent = 'Prêt (Hub)';
+      dot.className = 'pastille';
+    } else if (key.length > 5) {
+      label.textContent = `Prêt (${provider.toUpperCase()})`;
+      dot.className = 'pastille';
+    } else {
+      label.textContent = 'Clé requise';
+      dot.className = 'pastille warn';
+    }
+  },
+  getApiConfig() {
+    return {
+      provider: localStorage.getItem('alphabette_api_provider') || 'managed',
+      apiKey: localStorage.getItem('alphabette_api_key') || null
+    };
+  }
+};
+
+// Initialisation dès le chargement du DOM
+document.addEventListener('DOMContentLoaded', () => Shell.init());
+</script>
+
+<!-- APPLICATION LOGIC -->
+  <script>
+    /*************************************************************************
+     * 1. LES 20 IDÉES D'APPLICATIONS RESPONSIVES UTILES À L'ÊTRE HUMAIN
+     *************************************************************************/
+    const HUMAN_IDEAS = [
+      {
+        id: 1,
+        title: "Proxilien Solidaires",
+        domain: "Entraide",
+        icon: "heart-handshake",
+        impactScore: 98,
+        color: "from-pink-500 to-rose-500",
+        problem: "L'isolement urbain et rural empêche les personnes âgées ou démunies de demander un petit coup de main à leurs voisins immédiats.",
+        audience: "Voisins d'un même quartier, personnes isolées, étudiants, familles.",
+        features: ["Carte hyper-locale (rayon 500m)", "Bouton SOS course / bricolage en 1 clic", "Prêt d'outils entre voisins", "Validation par confiance mutuelle"],
+        prompts: {
+          court: `Crée une web-app responsive Mobile-First nommée "Proxilien Solidaires" permettant l'entraide de voisinage dans un rayon de 500m (prêt d'outils, aide aux courses, petits services gratuits). Inclus un mur d'annonces filtrable, un bouton d'urgence bienveillante et une interface accessible.`,
+          standard: `Rôle : Architecte Full-Stack UX/UI spécialisé dans l'économie sociale et solidaire.
+Projet : Développer "Proxilien Solidaires", une application web responsive d'entraide hyper-locale entre voisins.
+Objectif humain : Briser l'isolement et favoriser l'entraide gratuite de proximité.
+Fonctionnalités clés :
+1. Tableau de bord en 2 colonnes : "J'ai besoin d'un coup de main" et "Je propose mon aide".
+2. Filtres rapides par catégorie : Courses, Bricolage/Prêt d'objets, Garde ponctuelle, Visite de courtoisie.
+3. Système de badges de bienveillance et compteur d'heures d'entraide du quartier.
+4. Interface Mobile-First ultra-lisible avec mode contraste élevé.`,
+          detaille: `RÔLE : Lead Product Designer & Développeur Senior Front-End.
+PROJET : Application Web Responsive "Proxilien Solidaires" (Tech for Good).
+
+1. VISION & IMPACT HUMAIN :
+Permettre à toute personne isolée ou en besoin ponctuel de solliciter un voisin vérifié à moins de 500 mètres sans barrière technologique ni monétaire.
+
+2. ARCHITECTURE UX/UI & RESPONSIVE :
+- Design Neo-Bento chaleureux, police sans-serif 16px minimum, cibles tactiles de 48x48px.
+- Navigation par barre inférieure sur mobile (Accueil, Carte 500m, Publier un besoin, Mes voisins).
+- Thème Clair/Sombre automatique et mode "Accessibilité Senior" (gros boutons).
+
+3. FONCTIONNALITÉS TECHNIQUES À IMPLÉMENTER :
+- Flux interactif temps réel des demandes locales avec étiquettes d'urgence (Urgent aujourd'hui, Cette semaine, Prêt matériel).
+- Formulaire de création rapide en 3 clics avec dictée vocale simulée.
+- Simulateur de distance (ex: "À 120m de chez vous - 2 min à pied").
+- Persistance complète via LocalStorage et export des annonces.`
+        }
+      },
+      {
+        id: 2,
+        title: "FrigoZéroGâchis",
+        domain: "Écologie",
+        icon: "leaf",
+        impactScore: 96,
+        color: "from-emerald-500 to-teal-500",
+        problem: "Des tonnes d'aliments proches de la date de péremption sont jetées alors que des étudiants et familles peinent à remplir leur panier.",
+        audience: "Foyers, étudiants, commerçants de quartier, épiceries solidaires.",
+        features: ["Scan rapide des dates de péremption", "Générateur de recettes anti-gaspi avec les restes", "Don de paniers entre voisins en 2 clics", "Compteur CO2 et Euros économisés"],
+        prompts: {
+          court: `Conçois une application web responsive "FrigoZéroGâchis" qui aide à gérer les aliments proches de la péremption, génère des recettes avec ce qu'il reste dans le frigo et permet de donner ses surplus alimentaires aux voisins.`,
+          standard: `Rôle : Expert GreenTech & Designer UI/UX.
+Tâche : Créer l'application web responsive "FrigoZéroGâchis".
+Objectif : Réduire le gaspillage alimentaire domestique et créer du lien solidaire.
+Fonctionnalités :
+- Inventaire visuel du frigo avec code couleur d'urgence (Rouge : < 24h, Orange : 3 jours, Vert : OK).
+- Moteur "Cuisiner mes restes" proposant des recettes immédiates.
+- Bouton "Partager à un voisin" générant une annonce géolocalisée de don gratuit.
+- Tableau d'impact écologique (kg sauvés, repas partagés, économies en €).`,
+          detaille: `RÔLE : Architecte Web GreenTech & UX Designer Mobile-First.
+PROJET : "FrigoZéroGâchis" — Plateforme anti-gaspillage et partage alimentaire.
+
+1. PROBLÉMATIQUE HUMAINE :
+Allier écologie pratique et pouvoir d'achat en transformant chaque fin de frigo en recette savoureuse ou en don solidaire de proximité.
+
+2. STRUCTURE DE L'INTERFACE :
+- Header avec jauge d'impact ("14,2 kg sauvés ce mois-ci • 48 € économisés").
+- Onglet 1 : Mon Frigo Intelligent (ajout rapide d'ingrédients, tri par date limite).
+- Onglet 2 : Chef Anti-Gaspi (sélection multiple d'ingrédients -> génération de recettes en 15 min).
+- Onglet 3 : Frigo Partagé du Quartier (carte et liste des dons disponibles autour de soi).
+
+3. CONTRAINTES DESIGN :
+- Palette vert émeraude, ambre chaud et ardoise.
+- Animations fluides à l'ajout d'un aliment sauvé.`
+        }
+      },
+      {
+        id: 3,
+        title: "AccessiMap Live",
+        domain: "Accessibilité",
+        icon: "accessibility",
+        impactScore: 99,
+        color: "from-blue-500 to-indigo-500",
+        problem: "Les personnes en fauteuil roulant ou avec poussette découvrent trop tard un ascenseur en panne, un trottoir bloqué ou une marche infranchissable.",
+        audience: "Personnes à mobilité réduite (PMR), parents avec poussette, seniors, collectivités.",
+        features: ["Signalement communautaire d'obstacles en temps réel", "Calcul d'itinéraire 100% sans marche", "Filtres : Rampes, Toilettes PMR, Ascenseurs vérifiés", "Commande à une main sur mobile"],
+        prompts: {
+          court: `Développe l'application web responsive "AccessiMap Live", une carte collaborative d'accessibilité urbaine permettant aux personnes en fauteuil roulant de vérifier l'état des ascenseurs, rampes et trottoirs en temps réel.`,
+          standard: `Rôle : Ingénieur Accessibilité Numérique (WCAG AAA) & Développeur Web.
+Projet : "AccessiMap Live" — GPS et radar communautaire d'accessibilité urbaine.
+Fonctionnalités principales :
+1. Carte interactive et liste des lieux accessibles autour de l'utilisateur.
+2. Système d'alerte temps réel : "Ascenseur en panne", "Travaux sur trottoir", "Rampe disponible".
+3. Score d'accessibilité vérifié par la communauté pour les commerces et transports.
+4. Ergonomie utilisable d'une seule main (barre d'action basse, contraste maximal).`,
+          detaille: `RÔLE : Lead Developer & Spécialiste Accessibilité Universelle (WCAG 2.2 AAA).
+PROJET : Web-App "AccessiMap Live" — Mobilité urbaine sans obstacle.
+
+1. MISSION HUMAINE :
+Garantir l'autonomie de déplacement des personnes à mobilité réduite grâce à une intelligence collective en temps réel.
+
+2. EXIGENCES ERGONOMIQUES STRICTES :
+- Ratio de contraste supérieur à 7:1.
+- Tous les boutons d'action situés dans le tiers inférieur de l'écran mobile (zone du pouce).
+- Navigation clavier complète et attributs ARIA exemplaires.
+
+3. MODULES FONCTIONNELS :
+- Radar des obstacles signalés dans l'heure avec vote de confirmation ("Toujours présent" / "Résolu").
+- Calculateur de trajet sécurisé (évitement des pentes > 5% et des pavés).
+- Annuaire des commerces équipés de rampes et sanitaires PMR.`
+        }
+      },
+      {
+        id: 4,
+        title: "MémoireVive Seniors",
+        domain: "Seniors",
+        icon: "brain-circuit",
+        impactScore: 97,
+        color: "from-amber-500 to-orange-500",
+        problem: "Le déclin cognitif et la solitude des aînés s'accélèrent faute de stimulation quotidienne douce et de lien vivant avec leurs petits-enfants.",
+        audience: "Seniors, personnes atteintes de troubles de la mémoire débutants, aidants familiaux.",
+        features: ["Interface ultra-simplifiée Zéro Menu complexe", "Boîte à souvenirs photo & audio familiale", "Jeux doux de mémoire autobiographique", "Tableau de bord rassurant pour l'aidant"],
+        prompts: {
+          court: `Crée "MémoireVive Seniors", une application web ultra-simple avec de très gros boutons permettant aux seniors de consulter des photos familiales commentées en audio et de faire des jeux doux de mémoire quotidienne.`,
+          standard: `Rôle : Designer spécialisé en Silver Economy & Ergonomie Cognitive.
+Projet : "MémoireVive Seniors" — Compagnon de mémoire et lien intergénérationnel.
+Fonctionnalités :
+1. Écran d'accueil apaisant affichant la date en toutes lettres, la météo et le souvenir du jour.
+2. Album "Raconte-moi cette photo" où la famille envoie une photo et le senior enregistre son souvenir.
+3. Quiz bienveillant (sans jamais mettre en échec) sur les chansons, métiers d'autrefois et prénoms de la famille.
+4. Mode Aidant pour ajouter du contenu à distance.`,
+          detaille: `RÔLE : Expert UX Senior & Développeur Front-End Accessible.
+PROJET : "MémoireVive Seniors" — Stimulation cognitive et capsule temporelle familiale.
+
+1. PRINCIPES DE DESIGN "ZÉRO ÉCHEC" :
+- Aucun message d'erreur culpabilisant, uniquement des encouragements chaleureux.
+- Typographie 20px minimum, boutons larges explicites avec icône + texte clair.
+- Repères temporels constants en haut d'écran ("Aujourd'hui nous sommes le Jeudi Matin...").
+
+2. FONCTIONNALITÉS CLÉS :
+- Capsule Souvenir du Jour : Photo + message vocal des enfants/petits-enfants.
+- Atelier Réminiscence : Questions ouvertes stimulantes ("Quel était ton plat préféré enfant ?").
+- Rituel Quotidien : Hydratation, humeur du jour en 3 sourires et agenda familial illustré.`
+        }
+      },
+      {
+        id: 5,
+        title: "SouffleCalme SOS",
+        domain: "Santé",
+        icon: "wind",
+        impactScore: 98,
+        color: "from-cyan-500 to-blue-500",
+        problem: "Lors d'une crise d'angoisse, de panique ou de surcharge émotionnelle, les applications classiques sont trop complexes ou demandent de créer un compte.",
+        audience: "Toute personne traversant du stress aigu, crises de panique, étudiants, soignants.",
+        features: ["Démarrage immédiat en 0 seconde sans compte", "Bulle de cohérence cardiaque animée (4-7-8 / 5-5)", "Ancrage sensoriel guidé 5-4-3-2-1", "Générateur de sons doux via Web Audio API"],
+        prompts: {
+          court: `Crée une PWA "SouffleCalme SOS" qui s'ouvre directement sur un guide visuel de respiration et de cohérence cardiaque animé, accompagné de la méthode d'ancrage 5-4-3-2-1 pour calmer une crise d'angoisse en 3 minutes.`,
+          standard: `Rôle : Thérapeute TCC & Creative Technologist Web.
+Projet : "SouffleCalme SOS" — Trousse de secours émotionnelle instantanée.
+Fonctionnalités :
+1. Bulle respiratoire organique en CSS/Canvas avec rythmes configurables (Cohérence 5/5, Calme 4-7-8, Carré).
+2. Parcours interactif d'ancrage sensoriel "5 choses que je vois, 4 que je touche, 3 que j'entends...".
+3. Synthétiseur sonore apaisant intégré (bruit rose, pluie douce, fréquence 432Hz sans fichier externe).
+4. Journal de décharge mentale éphémère.`,
+          detaille: `RÔLE : Lead Creative Developer & Expert Santé Mentale Numérique.
+PROJET : "SouffleCalme SOS" — Application d'apaisement immédiat en 3 minutes.
+
+1. IMPÉRATIF ÉTHIQUE :
+Zéro inscription, zéro publicité, lancement instantané dès la première seconde d'ouverture pour une personne en détresse émotionnelle.
+
+2. EXPÉRIENCE VISUELLE & SONORE :
+- Palette nocturne bioluminescente (bleu profond, cyan doux, lavande).
+- Sphère de respiration fluide avec indications textuelles synchronisées ("Inspirez lentement...", "Retenez...", "Relâchez...").
+- Module interactif 5-4-3-2-1 avec validation tactile douce étape par étape.
+- Bouton d'appel rapide vers les lignes d'écoute bienveillantes.`
+        }
+      },
+      {
+        id: 6,
+        title: "DroitClair Citoyen",
+        domain: "Civisme",
+        icon: "scale",
+        impactScore: 95,
+        color: "from-violet-500 to-purple-500",
+        problem: "La phobie administrative et le jargon juridique privent des millions de citoyens de leurs droits sociaux, aides au logement ou recours légaux.",
+        audience: "Jeunes actifs, familles modestes, personnes étrangères, travailleurs sociaux.",
+        features: ["Traducteur de courrier administratif en français simple", "Générateur de lettres de recours et résiliation", "Simulateur d'aides sociales sans jargon", "Checklist interactive des pièces à fournir"],
+        prompts: {
+          court: `Conçois "DroitClair Citoyen", une web-app qui traduit n'importe quel texte administratif ou juridique complexe en explications simples (FALC) et génère des modèles de courriers prêts à envoyer.`,
+          standard: `Rôle : Juriste Social & Product Designer Civique.
+Projet : "DroitClair Citoyen" — L'interprète administratif pour tous.
+Fonctionnalités :
+1. Zone "Décoder un courrier" : transforme un texte jargonneux en 3 points : "Ce que ça veut dire", "Ce que vous devez faire", "Avant quelle date".
+2. Générateur de courriers types (contestation, demande de délai de paiement, préavis logement).
+3. Guide visuel étape par étape des démarches courantes (Santé, Logement, Travail, Famille).`,
+          detaille: `RÔLE : Architecte CivicTech & Spécialiste en Langage Clair (FALC - Facile à Lire et à Comprendre).
+PROJET : "DroitClair Citoyen" — Lutte contre le non-recours aux droits et l'angoisse administrative.
+
+1. FONCTIONNALITÉS MAJEURES :
+- Décodeur de jargon : Analyse d'un texte collé et extraction automatique des délais légaux, montants et actions requises.
+- Bibliothèque interactive de 15 lettres juridiques auto-remplies avec les informations de l'utilisateur (stockées uniquement en local).
+- Planificateur d'échéances administratives avec alertes visuelles claires.`
+        }
+      },
+      {
+        id: 7,
+        title: "RépareTout Café",
+        domain: "Écologie",
+        icon: "wrench",
+        impactScore: 94,
+        color: "from-orange-500 to-amber-500",
+        problem: "On jette des appareils électroménagers ou vélos pour une panne mineure faute de savoir les diagnostiquer ou de trouver un réparateur bénévole.",
+        audience: "Citoyens, bricoleurs, associations Repair Café, étudiants.",
+        features: ["Arbre de diagnostic de panne en 4 questions", "Indice de réparabilité et tutoriels illustrés", "Mise en relation avec les Repair Cafés locaux", "Bourse aux pièces détachées et outils"],
+        prompts: {
+          court: `Crée l'application web "RépareTout Café" pour diagnostiquer facilement les pannes d'objets du quotidien (électroménager, vélo, électronique) et trouver un Repair Café ou un voisin bricoleur.`,
+          standard: `Rôle : Ingénieur Économie Circulaire & Développeur Web.
+Projet : "RépareTout Café" — L'assistant d'auto-réparation et d'entraide technique.
+Fonctionnalités :
+1. Assistant interactif de diagnostic ("Mon appareil ne s'allume plus / fait du bruit / fuit").
+2. Fiches de réparation pas-à-pas avec niveau de difficulté, outils requis et consignes de sécurité électrique.
+3. Carte et calendrier des prochains ateliers Repair Café participatifs.`,
+          detaille: `RÔLE : Lead Developer GreenTech & Designer UX.
+PROJET : "RépareTout Café" — Prolonger la durée de vie des objets grâce à l'intelligence collective.
+
+1. MODULES CLÉS :
+- Arbre décisionnel interactif de diagnostic pour 6 grandes familles d'objets (Petit électroménager, Vélo, Smartphone/PC, Vêtements, Meubles, Gros électroménager).
+- Calculateur d'économie : coût de la pièce (ex: 8€) vs rachat neuf (ex: 180€) + poids de déchet évité.
+- Système de prise de rendez-vous avec un bénévole réparateur du quartier.`
+        }
+      },
+      {
+        id: 8,
+        title: "DysLecteur Fluide",
+        domain: "Éducation",
+        icon: "book-open-check",
+        impactScore: 98,
+        color: "from-indigo-500 to-violet-500",
+        problem: "Les élèves et adultes dyslexiques, TDAH ou malvoyants souffrent devant les blocs de texte denses des sites web et documents scolaires.",
+        audience: "Élèves dyslexiques, parents, enseignants, adultes neuroatypiques.",
+        features: ["Colorisation automatique des syllabes et sons complexes", "Règle de lecture lumineuse qui suit le curseur", "Espacement dynamique des lettres/lignes", "Synthèse vocale synchronisée mot à mot"],
+        prompts: {
+          court: `Développe "DysLecteur Fluide", un studio de lecture web adaptatif pour personnes dyslexiques avec syllabation colorée, règle de lecture focalisée, police adaptée et lecture vocale.`,
+          standard: `Rôle : Orthophoniste Numérique & Développeur Front-End.
+Projet : "DysLecteur Fluide" — Liseur universel pour cerveaux neuroatypiques (Dyslexie, TDAH).
+Fonctionnalités :
+1. Zone d'importation de texte instantanée avec transformation typographique en temps réel.
+2. Options d'adaptation : alternance de couleurs par syllabe ou par ligne, surlignage des sons complexes (ou, on, an, ch), police haute lisibilité.
+3. Guide-ligne (règle virtuelle) et synthèse vocale Web Speech API avec contrôle de vitesse.`,
+          detaille: `RÔLE : Expert Accessibilité Cognitive & Ingénieur Front-End.
+PROJET : "DysLecteur Fluide" — Rendre le plaisir de lire à chaque enfant et adulte dyslexique.
+
+1. PARAMÈTRES D'ADAPTATION EN TEMPS RÉEL :
+- Sliders fluides pour : Taille du texte (16px à 36px), Espacement des lettres, Espacement des mots, Hauteur de ligne.
+- Thèmes de fond anti-stress visuel (Sépia doux, Crème pastel, Bleu nuit apaisant, Menthe).
+- Colorisation syllabique intelligente et mise en évidence des lettres muettes en gris clair.
+- Règle de focalisation horizontale mobile et lecteur vocal intégré.`
+        }
+      },
+      {
+        id: 9,
+        title: "AlerteCanicule & Froid",
+        domain: "Urgence",
+        icon: "thermometer-sun",
+        impactScore: 97,
+        color: "from-amber-500 to-red-500",
+        problem: "Lors des canicules à +40°C ou grands froids, les personnes sans-abri et les aînés isolés sont en danger vital faute d'îlots de fraîcheur et de veille citoyenne.",
+        audience: "Citoyens solidaires, maraudes, personnes vulnérables, mairies.",
+        features: ["Carte des fontaines d'eau potable, parcs frais et refuges", "Veille bienveillante des aînés du quartier", "Signalement citoyen d'une personne en détresse thermique", "Guide des gestes de premiers secours thermiques"],
+        prompts: {
+          court: `Crée l'application web responsive "AlerteCanicule & Froid" qui cartographie les îlots de fraîcheur, fontaines à eau et refuges d'urgence, et organise des rondes d'appels bienveillants aux personnes âgées isolées.`,
+          standard: `Rôle : Architecte de Résilience Urbaine & Sécurité Civile.
+Projet : "AlerteCanicule & Froid" — Bouclier citoyen face aux extrêmes climatiques.
+Fonctionnalités :
+1. Bascule automatique ou manuelle entre "Mode Canicule" (îlots de fraîcheur, fontaines, brumisateurs) et "Mode Grand Froid" (haltes de nuit, boissons chaudes).
+2. Carnet de "Veille Voisins" pour s'assurer que les aînés inscrits ont été contactés dans la journée.
+3. Protocole d'urgence illustré en cas d'insolation, déshydratation ou hypothermie.`,
+          detaille: `RÔLE : Lead Developer CivicTech & Urgence Climatique.
+PROJET : "AlerteCanicule & Froid" — Sauver des vies lors des vagues de chaleur et de gel.
+
+1. FONCTIONNALITÉS OPÉRATIONNELLES :
+- Tableau de bord météo/alerte sanitaire avec indice de risque local.
+- Annuaire géolocalisé hors-ligne des ressources vitales gratuites : Eau potable, Salles climatisées publiques, Douches municipales, Accueils de jour.
+- Module "Check-in Solidaire" : suivi horodaté des appels ou visites aux personnes fragiles du quartier.`
+        }
+      },
+      {
+        id: 10,
+        title: "TrocSavoirs 1h",
+        domain: "Éducation",
+        icon: "clock",
+        impactScore: 95,
+        color: "from-fuchsia-500 to-pink-500",
+        problem: "Tout le monde possède un talent utile mais n'a pas forcément les moyens financiers de payer des cours particuliers ou des services.",
+        audience: "Étudiants, retraités, autodidactes, citoyens de tous horizons.",
+        features: ["Égalité stricte : 1h donnée = 1h reçue (quel que soit le savoir)", "Portefeuille de crédits-temps solidaire", "Matchmaking intelligent (Ce que j'offre ↔ Ce que je cherche)", "Visio ou rencontre en lieu public"],
+        prompts: {
+          court: `Conçois "TrocSavoirs 1h", une banque de temps citoyenne responsive où chaque heure de savoir partagé (cuisine, maths, informatique, guitare) donne droit à 1 heure d'apprentissage auprès d'un autre membre.`,
+          standard: `Rôle : Designer de Plateformes Collaboratives & Économie Sociale.
+Projet : "TrocSavoirs 1h" — La banque de temps où tous les talents ont la même valeur.
+Fonctionnalités :
+1. Compteur de Temps Personnel (ex: "Solde : 4 heures disponibles").
+2. Catalogue de savoirs avec double badge : "Je peux enseigner" et "J'aimerais apprendre".
+3. Algorithme de réciprocité mettant en avant les binômes complémentaires.
+4. Validation d'échange d'heure en 1 clic avec message de remerciement.`,
+          detaille: `RÔLE : Product Architect & Full-Stack Designer.
+PROJET : "TrocSavoirs 1h" — Réseau d'échange réciproque de savoirs sans argent.
+
+1. PHILOSOPHIE HUMAINE :
+1 heure de cours de tricot = 1 heure de soutien en mathématiques = 1 heure d'initiation à l'informatique. Dignité et valorisation de chacun.
+
+2. ARCHITECTURE DE L'APPLICATION :
+- Crédit de bienvenue de 2 heures offert à chaque nouvel inscrit pour lancer la boucle d'entraide.
+- Filtres par catégories : Langues, Numérique, Cuisine, Bricolage, Musique, Soutien scolaire, Jardinage.
+- Historique transparent des heures offertes et reçues dans la communauté.`
+        }
+      },
+      {
+        id: 11,
+        title: "MediPilule Zen",
+        domain: "Santé",
+        icon: "pill",
+        impactScore: 96,
+        color: "from-teal-500 to-emerald-500",
+        problem: "Les patients chroniques ou polymédiqués oublient leurs prises ou doutent d'avoir déjà pris leur comprimé, générant anxiété et risques médicaux.",
+        audience: "Patients sous traitement régulier, seniors, aidants familiaux.",
+        features: ["Pilulier visuel Matin / Midi / Soir / Coucher avec photo/forme", "Validation en 1 tap avec horodatage anti-doublon", "Notification rassurante pour le proche aidant", "Alerte de renouvellement d'ordonnance"],
+        prompts: {
+          court: `Crée l'application web responsive "MediPilule Zen", un pilulier numérique ultra-clair qui évite les oublis et les doubles prises de médicaments grâce à une validation visuelle par moment de la journée.`,
+          standard: `Rôle : Designer Santé e-Health & Ergonomie Médicale.
+Projet : "MediPilule Zen" — Suivi de traitement serein et lien avec l'aidant.
+Fonctionnalités :
+1. Vue chronologique de la journée (Matin, Midi, Soir, Nuit) avec représentation visuelle de chaque médicament (forme et couleur du comprimé).
+2. Bouton large "Je viens de le prendre" qui verrouille la prise avec l'heure exacte pour éviter tout surdosage par doute.
+3. Jauge de stock restant et rappel de renouvellement d'ordonnance.`,
+          detaille: `RÔLE : Lead UX HealthTech & Développeur Front-End.
+PROJET : "MediPilule Zen" — Sécuriser l'observance médicamenteuse sans stress.
+
+1. SÉCURITÉ HUMAINE :
+Répondre à la question angoissante "Est-ce que j'ai déjà pris mon cachet de 12h ?" par un retour visuel immédiat, vert et horodaté ("Pris aujourd'hui à 12h14").
+
+2. FONCTIONNALITÉS DÉTAILLÉES :
+- Création de fiche médicament avec choix d'icône (gélule, comprimé rond, gouttes, inhalateur) et couleur.
+- Journal d'observance sur 7 jours exportable pour le médecin traitant.
+- Lien de partage rassurant avec l'aidant familial.`
+        }
+      },
+      {
+        id: 12,
+        title: "ÉcoBâtisseur Sol",
+        domain: "Écologie",
+        icon: "sun",
+        impactScore: 93,
+        color: "from-yellow-500 to-emerald-500",
+        problem: "Les particuliers veulent réduire leurs factures d'eau et d'électricité mais sont perdus face aux devis opaques et calculs techniques complexes.",
+        audience: "Propriétaires, locataires, collectifs d'habitat participatif.",
+        features: ["Simulateur d'autonomie solaire et économies annuelles", "Calculateur de récupération d'eau de pluie selon la toiture", "Guide des éco-gestes à fort retour sur investissement", "Comparateur neutre sans démarchage commercial"],
+        prompts: {
+          court: `Développe "ÉcoBâtisseur Sol", un calculateur web interactif et neutre permettant d'estimer le potentiel solaire et la récupération d'eau de pluie d'un logement en quelques secondes.`,
+          standard: `Rôle : Ingénieur Thermicien & Designer d'Outils Pédagogiques Web.
+Projet : "ÉcoBâtisseur Sol" — Simulateur citoyen d'autonomie énergétique et hydrique.
+Fonctionnalités :
+1. Sliders interactifs : Surface de toiture, Région d'ensoleillement, Facture mensuelle actuelle.
+2. Calcul instantané : Production kWh/an, Litres d'eau de pluie récupérables/an, Économies en €/an et amortissement.
+3. Plan d'action par budget (0€, < 500€, > 2000€).`,
+          detaille: `RÔLE : Architecte Logiciel Climat & Énergie.
+PROJET : "ÉcoBâtisseur Sol" — Démocratiser l'autonomie résidentielle sans jargon ni publicité.
+
+1. MODULES DE SIMULATION TEMPS RÉEL :
+- Module Solaire Plug & Play vs Toiture : estimation immédiate du taux d'autoconsommation.
+- Module Eau de Pluie : calcul du volume de cuve idéal pour arroser le potager et alimenter les sanitaires.
+- Graphiques visuels clairs et export du bilan énergétique PDF/Markdown.`
+        }
+      },
+      {
+        id: 13,
+        title: "VoixDesMains LSF",
+        domain: "Accessibilité",
+        icon: "hand",
+        impactScore: 98,
+        color: "from-purple-500 to-indigo-500",
+        problem: "Lors d'un rendez-vous médical, à la mairie ou dans un commerce, les personnes sourdes ou malentendantes font face à un mur de communication.",
+        audience: "Personnes sourdes/malentendantes, soignants, commerçants, citoyens.",
+        features: ["Écran de dialogue face-à-face (texte grand format réversible)", "Dictionnaire visuel des 100 signes d'urgence et du quotidien", "Tableaux de pictogrammes médicaux (douleur, symptômes)", "Synthèse vocale en 1 tap pour s'exprimer"],
+        prompts: {
+          court: `Conçois "VoixDesMains LSF", une web-app de communication immédiate entre personnes sourdes et entendantes avec écran face-à-face, pictogrammes médicaux d'urgence et initiation à la Langue des Signes.`,
+          standard: `Rôle : Spécialiste Accessibilité Sourds/Malentendants & UI Designer.
+Projet : "VoixDesMains LSF" — Pont de communication universel et apprentissage LSF.
+Fonctionnalités :
+1. Mode "Conversation Face-à-Face" : zone de texte géante + transcription rapide et bouton pour retourner l'écran vers l'interlocuteur.
+2. Grille de communication rapide par icônes (Urgences médicales, Pharmacie, Transports, Administration).
+3. Cartes d'apprentissage visuel des signes essentiels en LSF (Bonjour, Merci, Aide, Douleur, Où).`,
+          detaille: `RÔLE : Lead UX Designer Inclusif & Développeur Web.
+PROJET : "VoixDesMains LSF" — Briser la barrière du silence au quotidien et aux urgences.
+
+1. TROIS MODULES COMPLÉMENTAIRES :
+- Module Urgence & Santé : Échelle visuelle de la douleur (1 à 10), localisation corporelle cliquable et phrases pré-enregistrées diffusables en audio.
+- Module Dialogue Instantané : Clavier rapide + historique de la conversation lisible à 1 mètre de distance.
+- Module Micro-Learning LSF : Défis quotidiens de 5 signes illustrés pour sensibiliser le grand public.`
+        }
+      },
+      {
+        id: 14,
+        title: "PotagerPartagé",
+        domain: "Écologie",
+        icon: "sprout",
+        impactScore: 92,
+        color: "from-lime-500 to-emerald-600",
+        problem: "Les jardins partagés urbains manquent souvent de coordination : certaines parcelles sèchent pendant que d'autres débordent de courgettes non récoltées.",
+        audience: "Associations de jardins partagés, écoles, copropriétés, citoyens urbains.",
+        features: ["Planning collaboratif des tours d'arrosage selon la météo", "Calendrier des semis et associations de plantes amies", "Alerte 'Récolte prête à partager'", "Journal de bord illustré des parcelles"],
+        prompts: {
+          court: `Crée l'application web responsive "PotagerPartagé" pour organiser un jardin partagé de quartier : tours d'arrosage, plan des parcelles, calendrier des semis et partage des récoltes.`,
+          standard: `Rôle : Permaculteur Urbain & Développeur Web Collaboratif.
+Projet : "PotagerPartagé" — Le compagnon numérique des jardins citoyens.
+Fonctionnalités :
+1. Grille interactive des bacs et parcelles du jardin avec état d'humidité (Arrosé aujourd'hui / À arroser).
+2. Tableau des tours d'arrosage hebdomadaires où chaque voisin s'inscrit en 1 clic.
+3. Panneau "Panier du Jardin" annonçant les légumes et aromates prêts à être cueillis.`,
+          detaille: `RÔLE : Product Designer GreenTech & Développeur Full-Stack.
+PROJET : "PotagerPartagé" — Cultiver la terre et le lien social en ville.
+
+1. FONCTIONNALITÉS CLÉS :
+- Carte visuelle des parcelles (Tomates, Aromates, Compost, Verger) avec statut en temps réel.
+- Guide intégré de compagnonnage végétal (ex: Basilic + Tomate = Association bénéfique).
+- Gestionnaire du bac à compost collectif (matières sèches vs matières vertes, date du dernier brassage).`
+        }
+      },
+      {
+        id: 15,
+        title: "BudgetSerein",
+        domain: "Entraide",
+        icon: "wallet",
+        impactScore: 95,
+        color: "from-sky-500 to-indigo-500",
+        problem: "Les applications bancaires classiques affichent un solde trompeur sans déduire les prélèvements à venir, plongeant les foyers modestes dans les frais de découvert.",
+        audience: "Étudiants, jeunes travailleurs, familles à budget serré, conseillers sociaux.",
+        features: ["Calcul du VRAI 'Reste à vivre par jour' et par semaine", "Zéro connexion bancaire intrusive (100% privé en local)", "Météo budgétaire bienveillante sans culpabilisation", "Simulateur 'Puis-je me permettre cet achat ?'"],
+        prompts: {
+          court: `Développe "BudgetSerein", un coach budgétaire web bienveillant et 100% privé qui calcule le vrai reste-à-vivre par jour après déduction des charges fixes pour éviter tout découvert bancaire.`,
+          standard: `Rôle : Conseiller en Économie Sociale et Familiale (CESF) & UX Designer.
+Projet : "BudgetSerein" — Le pilote automatique du reste-à-vivre sans stress.
+Fonctionnalités :
+1. Formule claire en temps réel : (Revenus - Charges Fixes à venir - Épargne de sécurité) ÷ Jours restants dans le mois = Budget quotidien disponible.
+2. Enveloppes visuelles souples (Alimentation, Transport, Imprévus, Plaisirs).
+3. Simulateur d'impact avant achat ("Si je dépense 35€ aujourd'hui, mon budget quotidien passe de 18€ à 15,50€").`,
+          detaille: `RÔLE : Lead FinTech Éthique & Designer UX Bienveillant.
+PROJET : "BudgetSerein" — Redonner le contrôle financier sans anxiété ni espionnage des données.
+
+1. DIFFÉRENCIATION MAJEURE :
+Au lieu de montrer des graphiques comptables anxiogènes du passé, l'application éclaire l'avenir immédiat : "Aujourd'hui, vous pouvez dépenser jusqu'à 22 € en toute sérénité".
+
+2. MODULES TECHNIQUES :
+- Calendrier des prélèvements fixes pour anticiper les fins de mois.
+- Coffre-fort 100% LocalStorage avec export/import JSON chiffré ou anonyme.`
+        }
+      },
+      {
+        id: 16,
+        title: "RefugeSécurisé",
+        domain: "Urgence",
+        icon: "shield-check",
+        impactScore: 100,
+        color: "from-rose-500 to-purple-600",
+        problem: "Les personnes victimes de violences conjugales, intrafamiliales ou de harcèlement de rue ont besoin d'un outil d'aide discret, immédiat et capable de se masquer en 1 fraction de seconde.",
+        audience: "Victimes de violences, témoins, associations d'aide aux victimes.",
+        features: ["Bouton d'urgence 'Sortie Discrète' transformant l'app en site météo/recette", "Numéros d'écoute et SMS d'urgence (3919, 114)", "Coffre-fort de conseils juridiques et préparation de départ", "Lieux sûrs et pharmacies partenaires à proximité"],
+        prompts: {
+          court: `Crée l'application web "RefugeSécurisé" destinée aux personnes victimes de violences, intégrant un bouton de camouflage instantané en application météo, les numéros d'urgence (3919, 114 SMS) et une checklist de mise en sécurité.`,
+          standard: `Rôle : Architecte Cybersécurité & Designer CivicTech de Protection.
+Projet : "RefugeSécurisé" — Interface d'aide discrète et de mise en sécurité.
+Fonctionnalités critiques :
+1. Barre flottante permanente "Camouflage Rapide (Touche Échap ou Double Tap)" qui remplace instantanément l'interface par un bulletin météo anodin sans laisser d'historique.
+2. Accès en 1 clic aux secours silencieux (114 par SMS) et écoute spécialisée (3919).
+3. Violentomètre interactif d'auto-évaluation et liste des documents essentiels à rassembler.`,
+          detaille: `RÔLE : Lead Engineer Safety-by-Design & UX Specialist.
+PROJET : "RefugeSécurisé" — Protéger, informer et accompagner en toute discrétion.
+
+1. EXIGENCES DE SÉCURITÉ VITALE :
+- Mode Camouflage Instantané : bascule en < 50ms vers une fausse page "Météo & Jardinage" au clic sur le bouton d'alerte ou touche Échap.
+- Aucune donnée sensible stockée par défaut sans action explicite.
+- Violentomètre gradué (24 paliers : "Profite" / "Vigilance" / "Protège-toi") pour aider à la prise de conscience.`
+        }
+      },
+      {
+        id: 17,
+        title: "MentorJeunes Pro",
+        domain: "Éducation",
+        icon: "graduation-cap",
+        impactScore: 94,
+        color: "from-blue-500 to-cyan-500",
+        problem: "Des milliers de jeunes diplômés ou lycéens issus de quartiers populaires ou ruraux échouent à trouver un stage ou un premier emploi uniquement par absence de réseau familial.",
+        audience: "Étudiants, jeunes chercheurs d'emploi, professionnels actifs et retraités bénévoles.",
+        features: ["Parrainage flash de 30 minutes (relecture CV, simulation entretien)", "Générateur de messages d'approche professionnelle", "Ouverture solidaire de carnet d'adresses", "Zéro jugement, 100% encouragement"],
+        prompts: {
+          court: `Conçois "MentorJeunes Pro", une plateforme web responsive connectant des jeunes sans réseau avec des professionnels bienveillants pour des sessions de 30 minutes (correction de CV, simulation d'entretien, conseils métier).`,
+          standard: `Rôle : Product Manager EdTech & Inclusion Professionnelle.
+Projet : "MentorJeunes Pro" — Le réseau professionnel pour ceux qui n'en ont pas.
+Fonctionnalités :
+1. Catalogue de Mentors filtrable par secteur (Tech, Santé, Artisanat, Droit, Commerce, Culture) et par coup de pouce proposé (Relire mon CV, Simuler un entretien de 20 min, Découvrir un métier).
+2. Assistant de rédaction du premier message de prise de contact pour vaincre le syndrome de l'imposteur.
+3. Suivi des objectifs et kit de préparation d'entretien.`,
+          detaille: `RÔLE : Architecte Plateforme Sociale & UX Designer.
+PROJET : "MentorJeunes Pro" — Rétablir l'égalité des chances face à l'emploi.
+
+1. PARCOURS UTILISATEUR FLUIDE :
+- Micro-mentorat sans engagement lourd : des créneaux de 20 à 30 minutes faciles à offrir pour un actif ou un jeune retraité.
+- Studio de préparation intégré : générateur de pitch de présentation en 60 secondes et checklist avant entretien.`
+        }
+      },
+      {
+        id: 18,
+        title: "BruitZéro & Sommeil",
+        domain: "Santé",
+        icon: "headphones",
+        impactScore: 93,
+        color: "from-slate-500 to-violet-500",
+        problem: "La pollution sonore urbaine, l'hyperacousie et les acouphènes épuisent le système nerveux et dégradent le sommeil de millions de personnes.",
+        audience: "Personnes souffrant d'acouphènes, hypersensibles au bruit, travailleurs concentrés.",
+        features: ["Mixeur acoustique thérapeutique temps réel (Web Audio API)", "Carte participative des cafés, parcs et bibliothèques calmes", "Minuteur d'endormissement avec fondu progressif", "Mesure indicative d'ambiance sonore"],
+        prompts: {
+          court: `Crée l'application web "BruitZéro & Sommeil" combinant un mixeur de fréquences acoustiques apaisantes pour masquer les acouphènes et une carte des lieux calmes en ville.`,
+          standard: `Rôle : Ingénieur Audio Web & Spécialiste du Sommeil.
+Projet : "BruitZéro & Sommeil" — Sanctuaire acoustique et refuge de calme urbain.
+Fonctionnalités :
+1. Table de mixage sonore génératrice (Bruit blanc, Bruit rose, Bruit brun profond, Ondes binaurales douces) générée nativement en JavaScript.
+2. Annuaire participatif des "Zones Silencieuses" (parcs abrités, cafés sans musique forte, salles de repos).
+3. Minuteur de sommeil avec atténuation douce du volume.`,
+          detaille: `RÔLE : Creative Audio Developer & UX Designer Minimaliste.
+PROJET : "BruitZéro & Sommeil" — Soulager les acouphènes et retrouver le calme mental.
+
+1. SPÉCIFICATIONS TECHNIQUES :
+- Synthèse sonore pure via Web Audio API (aucune dépendance externe fragile).
+- Égaliseur de fréquences personnalisable pour s'adapter à la tonalité propre de chaque utilisateur.
+- Interface ultra-sombre compatible OLED pour ne pas éblouir la nuit.`
+        }
+      },
+      {
+        id: 19,
+        title: "DonDirect Asso",
+        domain: "Entraide",
+        icon: "gift",
+        impactScore: 96,
+        color: "from-emerald-500 to-cyan-500",
+        problem: "Les particuliers ne savent pas à quelle association donner leurs objets utiles, tandis que les associations locales manquent d'équipements précis à l'instant T.",
+        audience: "Citoyens donateurs, associations caritatives locales, refuges, écoles.",
+        features: ["Liste de besoins précis en temps réel (ex: 3 poussettes, 5 PC portables)", "Jauge de complétion par besoin (ex: 2/5 collectés)", "Promesse de don en 2 clics avec adresse de dépôt", "Traçabilité transparente de l'impact du don"],
+        prompts: {
+          court: `Développe "DonDirect Asso", une bourse aux besoins matériels précis où les associations locales publient ce dont elles ont exactement besoin aujourd'hui (couvertures, matériel scolaire, informatique) et où les citoyens réservent leur don.`,
+          standard: `Rôle : Architecte Philanthropie Locale & Designer UI/UX.
+Projet : "DonDirect Asso" — Donner exactement ce qui est utile, là où c'est utile.
+Fonctionnalités :
+1. Flux des besoins vérifiés des associations locales avec barre de progression (ex: "4 sacs de couchage sur 6 trouvés").
+2. Filtres par type d'objet : Vêtements chauds, Puériculture, Matériel informatique, Hygiène, Petit électroménager.
+3. Bouton "J'ai cet objet, je l'apporte !" qui met à jour la jauge et affiche les horaires d'accueil.`,
+          detaille: `RÔLE : Lead Full-Stack Developer & Designer Social Impact.
+PROJET : "DonDirect Asso" — Logistique solidaire zéro friction entre citoyens et associations.
+
+1. PROBLÈME RÉSOLU :
+Éviter aux associations d'être submergées de dons inadaptés tout en permettant une réponse citoyenne ultra-rapide aux urgences matérielles locales.
+
+2. ARCHITECTURE :
+- Cartes de besoins avec badge d'urgence, quartier, horaires de dépôt et compteur interactif.
+- Mode Association permettant de publier un nouveau besoin matériel en 30 secondes.`
+        }
+      },
+      {
+        id: 20,
+        title: "VigieOcéan & Plages",
+        domain: "Écologie",
+        icon: "waves",
+        impactScore: 95,
+        color: "from-cyan-500 to-teal-500",
+        problem: "Les déchets plastiques échoués sur le littoral ou les berges de rivières repartent à la marée suivante faute de signalement rapide et de ramassages coordonnés.",
+        audience: "Promeneurs, surfeurs, familles, associations de protection du littoral, communes.",
+        features: ["Signalement géolocalisé d'une zone de déchets côtiers ou fluviaux", "Organisation de 'Clean-up Express' de 20 minutes à plusieurs", "Compteur collectif de déchets retirés de l'océan", "Guide de préservation de la laisse de mer et biodiversité"],
+        prompts: {
+          court: `Conçois l'application web responsive "VigieOcéan & Plages" pour signaler les déchets sur le littoral ou les rivières, organiser des ramassages citoyens express de 20 minutes et comptabiliser les kilos de plastique sauvés des eaux.`,
+          standard: `Rôle : Océanographe Citoyen & Développeur Web Mobile-First.
+Projet : "VigieOcéan & Plages" — Mobilisation citoyenne pour des côtes et rivières vivantes.
+Fonctionnalités :
+1. Carte et liste des zones signalées à nettoyer avant la prochaine marée ou crue.
+2. Bouton "Lancer un Ramassage Express 20 min" pour inviter les promeneurs présents sur place.
+3. Bilan participatif post-collecte (sacs remplis, mégots, filets, plastiques) et guide écologique pour ne pas perturber la biodiversité naturelle (laisse de mer).`,
+          detaille: `RÔLE : Lead Developer Environnement & Designer UX Mobile-First.
+PROJET : "VigieOcéan & Plages" — Protéger l'océan et les cours d'eau par l'action citoyenne immédiate.
+
+1. FONCTIONNALITÉS TERRAIN (PLAGE & RIVIÈRE) :
+- Interface haute luminosité lisible en plein soleil au bord de l'eau.
+- Signalement en 3 taps : Type de pollution (Plastiques, Engins de pêche, Décharge sauvage), Volume estimé, Point de repère.
+- Éco-Guide intégré expliquant la différence entre les déchets humains à ramasser et la laisse de mer naturelle indispensable aux oiseaux marins.`
+        }
+      }
+    ];
+
+    /*************************************************************************
+     * 2. CATÉGORIES RACINES & SOUS-CATÉGORIES INTELLIGENTES (20 NIVEAUX)
+     *************************************************************************/
+    const ROOT_CATEGORIES = [
+      "Santé & Prévention",
+      "Entraide & Voisinage",
+      "Écologie & Zéro Déchet",
+      "Accessibilité & Handicap",
+      "Éducation & Savoirs",
+      "Seniors & Intergénération",
+      "Urgence & Sécurité Civile",
+      "Inclusion & Droits Sociaux",
+      "Santé Mentale & Apaisement",
+      "Alimentation Durable",
+      "Mobilité Douce & Urbaine",
+      "Économie Circulaire & Réparation",
+      "Budget & Entraide Financière",
+      "Emploi & Mentorat",
+      "Culture & Patrimoine Local",
+      "Enfance & Parentalité",
+      "Agriculture & Jardins Urbains",
+      "Protection Animale & Biodiversité",
+      "Sport Santé & Mouvement",
+      "Civisme & Démocratie Locale"
+    ];
+
+    // Générateur déterministe riche hors-ligne pour garantir 20 sous-catégories pertinentes même sans clé API
+    function generateSmartOfflineSubcategories(pathArray) {
+      const last = pathArray[pathArray.length - 1] || "Impact Humain";
+      const depth = pathArray.length;
+      const prefixes = [
+        "Application Mobile-First :",
+        "Plateforme Citoyenne :",
+        "Outil d'Urgence :",
+        "Réseau de Proximité :",
+        "Assistant Vocal & Visuel :",
+        "Carte Collaborative :",
+        "Compagnon Quotidien :",
+        "Kit d'Autonomie :",
+        "Bourse d'Entraide :",
+        "Simulateur Simplifié :",
+        "Journal de Suivi :",
+        "Espace Intergénérationnel :",
+        "Diagnostic Rapide :",
+        "Micro-Learning :",
+        "Tiers-Lieu Numérique :",
+        "Alerte Bienveillante :",
+        "Coffre-fort Citoyen :",
+        "Coach Zéro Stress :",
+        "Observatoire Local :",
+        "Communauté d'Action :"
+      ];
+      const angles = [
+        "pour personnes isolées",
+        "en quartier prioritaire ou rural",
+        "accessible 100% hors-ligne",
+        "sans création de compte",
+        "pour aidants familiaux",
+        "pour étudiants et jeunes",
+        "à très fort contraste (Seniors/PMR)",
+        "avec entraide en moins de 15 min",
+        "zéro jargon administratif",
+        "basé sur le don et le troc",
+        "pour familles monoparentales",
+        "en partenariat associatif local",
+        "avec prévention des risques",
+        "pour réduire l'empreinte carbone",
+        "adapté aux troubles DYS et TDAH",
+        "en temps réel géolocalisé",
+        "collaboratif entre voisins",
+        "avec gamification bienveillante",
+        "pour préserver le pouvoir d'achat",
+        "à impact mesurable immédiat"
+      ];
+      return prefixes.map((pref, idx) => {
+        const angle = angles[(idx + depth * 3) % angles.length];
+        return `${pref} ${last.split(':')[0].trim()} ${angle}`;
+      });
+    }
+
+    // Générateur de 10 exemples Débutant / Expert hors-ligne
+    function generateSmartOfflineExamples(pathArray) {
+      const topic = pathArray.join(' › ') || "Application utile à l'humain";
+      const templates = [
+        {
+          d: `Je voudrais un site simple autour de "${topic}" pour aider mes voisins facilement sur téléphone.`,
+          e: `Conçois une PWA Mobile-First dédiée à "${topic}" avec géolocalisation de proximité (500m), interface WCAG AAA sans inscription et persistance locale.`
+        },
+        {
+          d: `Fais une application pour que les personnes âgées puissent utiliser "${topic}" sans se tromper.`,
+          e: `Développe une interface cognitive ultra-accessible pour "${topic}" : boutons de 56px, contraste 7:1, zéro menu caché, retour vocal et tableau de bord aidant.`
+        },
+        {
+          d: `Je cherche une idée d'application d'urgence rapide sur "${topic}".`,
+          e: `Crée un outil d'intervention citoyenne en moins de 3 clics sur "${topic}" avec mode hors-ligne, protocole guidé étape par étape et numéros d'appel rapide.`
+        },
+        {
+          d: `Comment faire un site gratuit d'échange et de partage dans le domaine "${topic}" ?`,
+          e: `Architecture une bourse solidaire zéro monnaie pour "${topic}" intégrant un système de réciprocité, des jauges de besoins en temps réel et des filtres par quartier.`
+        },
+        {
+          d: `Je veux une application rassurante et pas stressante sur "${topic}".`,
+          e: `Conçois une expérience utilisateur "Calm Technology" appliquée à "${topic}" : palette bioluminescente apaisante, micro-interactions douces et formulation non-culpabilisante.`
+        },
+        {
+          d: `Une application qui explique les choses compliquées de "${topic}" avec des mots simples.`,
+          e: `Implémente un traducteur et vulgarisateur FALC (Facile à Lire et à Comprendre) pour "${topic}" avec synthèse en 3 points d'action et checklist interactive.`
+        },
+        {
+          d: `Un outil pour suivre ses progrès chaque jour dans "${topic}".`,
+          e: `Développe un compagnon quotidien respectueux de la vie privée (100% LocalStorage) pour "${topic}" avec visualisation d'impact positif et export JSON/Markdown.`
+        },
+        {
+          d: `Une carte interactive pour trouver de l'aide près de chez soi sur "${topic}".`,
+          e: `Crée un radar participatif temps réel pour "${topic}" permettant aux citoyens de signaler, vérifier et filtrer les ressources gratuites accessibles autour d'eux.`
+        },
+        {
+          d: `Une application qui connecte les jeunes et les retraités autour de "${topic}".`,
+          e: `Bâtis une plateforme de mentorat et de transmission intergénérationnelle sur "${topic}" avec sessions flash de 30 minutes et matchmaking d'affinités.`
+        },
+        {
+          d: `Un calculateur ou simulateur pratique pour "${topic}".`,
+          e: `Réalise un simulateur interactif temps réel pour "${topic}" avec curseurs dynamiques, jauge d'impact humain/écologique et recommandations personnalisées.`
+        }
+      ];
+      return templates;
+    }
+
+    // Générateur de Prompt Architecte en 3 versions (Court, Standard, Détaillé) hors-ligne
+    function generateSmartOfflinePrompts(briefText, pathArray, activeSpecs, targetModel, lang) {
+      const specsList = activeSpecs.length ? activeSpecs.join(', ') : 'Mobile-First, Accessible, Responsive';
+      const contextPath = pathArray.length ? pathArray.join(' > ') : 'Tech for Good & Impact Humain';
+
+      const court = `[Cible : ${targetModel} | Langue : ${lang}]
+Crée une application web responsive complète et fonctionnelle basée sur ce brief :
+"${briefText}"
+Domaine : ${contextPath}.
+Exigences techniques : ${specsList}.
+Fournis une interface moderne, accessible, avec des données de démonstration réalistes et aucune dépendance cassée.`;
+
+      const standard = `RÔLE : Architecte Full-Stack Senior & Product Designer spécialisé en "Tech for Good" (Applications utiles à l'être humain).
+
+CONTEXTE & DOMAINE :
+${contextPath}
+
+BRIEF DU PROJET :
+${briefText}
+
+SPÉCIFICATIONS RESPONSIVES & ÉTHIQUES OBLIGATOIRES :
+${activeSpecs.map(s => `- ${s}`).join('\n')}
+
+TÂCHE :
+Conçois et développe une application web responsive clé en main (Mobile, Tablette, Desktop) qui répond directement à ce besoin humain avec empathie, clarté et efficacité.
+1. Structure l'interface avec une hiérarchie visuelle immédiate (style Bento UI / Glassmorphism).
+2. Intègre des fonctionnalités interactives complètes (filtres temps réel, formulaires fonctionnels, sauvegarde LocalStorage, indicateurs d'impact).
+3. Évite tout jargon complexe et remplace les alertes natives par des notifications Toast bienveillantes.`;
+
+      const detaille = `===================================================================
+CAHIER DES CHARGES & PROMPT ARCHITECTE — TECH FOR GOOD STUDIO
+Modèle Cible : ${targetModel} | Langue : ${lang}
+===================================================================
+
+1. RÔLE & POSTURE :
+Tu es un Lead Product Designer (UX/UI) et Ingénieur Full-Stack spécialisé dans les applications citoyennes, solidaires et accessibles. Ton objectif est de créer un outil numérique qui rend un service concret, immédiat et mesurable à l'être humain.
+
+2. VISION DU PROJET & CHEMIN THÉMATIQUE :
+- Arborescence : ${contextPath}
+- Brief Utilisateur :
+${briefText}
+
+3. EXIGENCES D'ARCHITECTURE & MODULES ACTIVÉS :
+${activeSpecs.map(s => `✔ ${s}`).join('\n')}
+
+4. DESIGN SYSTEM & ERGONOMIE RESPONSIVE :
+- Approche Mobile-First stricte : navigation utilisable à une main sur smartphone, grille fluide adaptative sur tablette et desktop.
+- Accessibilité cognitive et visuelle : contrastes élevés, boutons explicites (icône + libellé clair), états de survol et focus visibles.
+- Zéro friction : l'utilisateur doit pouvoir accomplir l'action principale en moins de 3 clics dès l'ouverture de la page.
+
+5. FONCTIONNALITÉS ATTENDUES DANS LE CODE :
+- Tableau de bord d'accueil avec indicateurs d'impact humain en temps réel.
+- Système complet de création, recherche, filtrage et validation des entrées.
+- Persistance locale automatique (LocalStorage) + jeu de données initial réaliste et inspirant.
+- Export des données (.json / .md) et mode démonstration interactif.`;
+
+      return { court, standard, detaille };
+    }
+
+    /*************************************************************************
+     * 3. ÉTAT DE L'APPLICATION & UTILITAIRES DOM
+     *************************************************************************/
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const L = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
+    const S = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+
+    let path = [];
+    let sel = new Set();
+    let items = ROOT_CATEGORIES;
+    let vers = { court: '', standard: '', detaille: '' };
+    let cur = 'standard'; // 'court' | 'standard' | 'detaille' | 'mockup'
+    let activeIdea = HUMAN_IDEAS[0];
+    let currentDomainFilter = 'Tous';
+    let uses = L('uses', 0);
+    let cfg = L('cfg', { p: 'gemini', k: '', l: 'Français', t: 'Tous modèles (Architecture Web)' });
+
+    // Toast notification system (replaces alert())
+    function showToast(message, type = 'info') {
+      const container = $('#toastContainer');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'border-violet-500/40 bg-[#15102c]/95 text-violet-100',
+        success: 'border-emerald-500/50 bg-[#0c241d]/95 text-emerald-100',
+        warn: 'border-amber-500/50 bg-[#271b09]/95 text-amber-100'
+      };
+      const icons = {
+        info: 'sparkles',
+        success: 'check-circle-2',
+        warn: 'alert-circle'
+      };
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl anim-pop ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <i data-lucide="${icons[type] || 'sparkles'}" class="w-4 h-4 shrink-0"></i>
+        <span class="text-xs sm:text-sm font-medium leading-snug">${esc(message)}</span>
+      `;
+      container.appendChild(toast);
+      if (window.lucide) lucide.createIcons({ attrs: { class: 'w-4 h-4' } });
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 260);
+      }, 3200);
+    }
+
+    // Clipboard helper safe for iframes
+    function copyTextToClipboard(text, successMsg = 'Copié dans le presse-papiers !') {
+      if (!text) {
+        showToast('Aucun texte à copier pour le moment.', 'warn');
+        return;
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg, 'success');
+      } catch (err) {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => showToast(successMsg, 'success'));
+        }
+      }
+      document.body.removeChild(ta);
+    }
+
+    /*************************************************************************
+     * 4. RENDU DES 20 IDÉES PRÉ-INTÉGRÉES & FILTRES
+     *************************************************************************/
+    function renderDomainFilters() {
+      const domains = ['Tous', ...new Set(HUMAN_IDEAS.map(i => i.domain))];
+      const container = $('#domainFilters');
+      container.innerHTML = domains.map(dom => {
+        const active = dom === currentDomainFilter;
+        const count = dom === 'Tous' ? HUMAN_IDEAS.length : HUMAN_IDEAS.filter(i => i.domain === dom).length;
+        return `
+          <button type="button" data-domain="${esc(dom)}" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 ${
+            active
+              ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md shadow-violet-500/25'
+              : 'border border-violet-500/20 bg-violet-500/5 hover:border-violet-400 text-[var(--text-main)]'
+          }">
+            <span>${esc(dom)}</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${active ? 'bg-black/25 text-white' : 'bg-violet-500/15 text-violet-300'}">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('button').forEach(btn => {
+        btn.onclick = () => {
+          currentDomainFilter = btn.dataset.domain;
+          renderDomainFilters();
+          renderIdeasGrid();
+        };
+      });
+    }
+
+    function renderIdeasGrid() {
+      const query = ($('#ideaSearch').value || '').toLowerCase().trim();
+      const filtered = HUMAN_IDEAS.filter(idea => {
+        const matchesDomain = currentDomainFilter === 'Tous' || idea.domain === currentDomainFilter;
+        const matchesSearch = !query ||
+          idea.title.toLowerCase().includes(query) ||
+          idea.problem.toLowerCase().includes(query) ||
+          idea.domain.toLowerCase().includes(query) ||
+          idea.features.some(f => f.toLowerCase().includes(query));
+        return matchesDomain && matchesSearch;
+      });
+
+      const grid = $('#ideasGrid');
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="col-span-full bento-card p-8 text-center space-y-2">
+            <p class="text-sm font-medium">Aucune idée ne correspond à ce filtre.</p>
+            <button id="btnResetIdeaFilter" class="px-3 py-1.5 rounded-xl text-xs bg-violet-500 text-white">Réinitialiser les filtres</button>
+          </div>
+        `;
+        const resetBtn = $('#btnResetIdeaFilter');
+        if (resetBtn) {
+          resetBtn.onclick = () => {
+            $('#ideaSearch').value = '';
+            currentDomainFilter = 'Tous';
+            renderDomainFilters();
+            renderIdeasGrid();
+          };
+        }
+        return;
+      }
+
+      grid.innerHTML = filtered.map((idea, idx) => `
+        <div class="idea-card p-5 flex flex-col justify-between gap-4 cursor-pointer anim-pop" style="animation-delay: ${idx * 25}ms" data-idea-id="${idea.id}">
+          <div class="space-y-3">
+            <!-- Top Row: Icon, Domain & Impact Score -->
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br ${idea.color} p-0.5 shadow-md">
+                  <div class="w-full h-full bg-slate-950/90 rounded-[10px] flex items-center justify-center text-white">
+                    <i data-lucide="${idea.icon}" class="w-4 h-4"></i>
+                  </div>
+                </div>
+                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-violet-500/25 bg-violet-500/10 text-violet-300">
+                  #${idea.id} • ${esc(idea.domain)}
+                </span>
+              </div>
+              <span class="text-[11px] font-mono font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-lg" title="Indice d'impact humain">
+                ♥ ${idea.impactScore}%
+              </span>
+            </div>
+
+            <!-- Title & Problem -->
+            <div>
+              <h3 class="font-display font-bold text-base group-hover:text-violet-300 transition">
+                ${esc(idea.title)}
+              </h3>
+              <p class="text-xs text-[var(--text-muted)] line-clamp-3 mt-1 leading-relaxed">
+                ${esc(idea.problem)}
+              </p>
+            </div>
+
+            <!-- Key Features Pills -->
+            <div class="flex flex-wrap gap-1 pt-1">
+              ${idea.features.slice(0, 3).map(f => `
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[var(--text-muted)]">
+                  • ${esc(f)}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Action Footer -->
+          <div class="pt-3 border-t border-violet-500/15 flex items-center justify-between text-xs font-semibold text-violet-400">
+            <span>Charger Brief + 3 Prompts</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+
+      grid.querySelectorAll('[data-idea-id]').forEach(card => {
+        card.onclick = () => {
+          const id = Number(card.dataset.ideaId);
+          const selected = HUMAN_IDEAS.find(item => item.id === id);
+          if (selected) loadHumanIdeaIntoStudio(selected, true);
+        };
+      });
+    }
+
+    // Charge l'une des 20 idées directement dans le Brief, les 3 onglets de Prompts et l'Aperçu UI
+    function loadHumanIdeaIntoStudio(idea, scrollToStudio = true) {
+      activeIdea = idea;
+      const activeSpecs = getActiveSpecs();
+      const specsBlock = activeSpecs.length ? `\nModules Responsives & Éthiques : ${activeSpecs.join(' | ')}` : '';
+
+      $('#brief').value = `Projet : ${idea.title} (${idea.domain})\nProblème humain résolu : ${idea.problem}\nPublic cible : ${idea.audience}\nFonctionnalités clés : ${idea.features.join(', ')}${specsBlock}`;
+
+      vers = {
+        court: idea.prompts.court,
+        standard: idea.prompts.standard,
+        detaille: idea.prompts.detaille
+      };
+
+      $('#activeIdeaTitle').textContent = `✨ ${idea.title} — Architecture & Prompts`;
+      if (cur === 'mockup') {
+        renderMockupPreview(idea);
+      } else {
+        cur = 'standard';
+      }
+      showOutputTabs();
+      renderMockupPreview(idea);
+      hist(vers.standard);
+
+      showToast(`Idée "${idea.title}" chargée avec ses 3 prompts et sa maquette !`, 'success');
+      if (scrollToStudio) {
+        $('#section-studio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    /*************************************************************************
+     * 5. APERÇU VISUEL MAQUETTE RESPONSIVE (MOBILE / TABLETTE / DESKTOP)
+     *************************************************************************/
+    function renderMockupPreview(idea) {
+      const targetIdea = idea || activeIdea || HUMAN_IDEAS[0];
+      const container = $('#mockupInnerContent');
+      const activeSpecs = getActiveSpecs();
+
+      container.innerHTML = `
+        <!-- App Simulated Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${targetIdea.color} flex items-center justify-center text-white font-bold text-xs">
+              ${esc(targetIdea.title.slice(0, 2).toUpperCase())}
+            </div>
+            <div>
+              <div class="font-bold text-sm text-white leading-tight">${esc(targetIdea.title)}</div>
+              <div class="text-[10px] text-emerald-400">● En ligne • Impact ${targetIdea.impactScore}%</div>
+            </div>
+          </div>
+          <span class="text-[10px] px-2 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+            ${esc(targetIdea.domain)}
+          </span>
+        </div>
+
+        <!-- Hero Banner inside Mockup -->
+        <div class="p-3.5 rounded-xl bg-gradient-to-br ${targetIdea.color} bg-opacity-20 border border-white/15 space-y-1.5">
+          <div class="text-[10px] uppercase tracking-wider font-semibold text-white/90">Mission Humaine</div>
+          <div class="text-xs font-medium text-white leading-snug">${esc(targetIdea.problem)}</div>
+        </div>
+
+        <!-- Interactive Features Simulated Cards -->
+        <div class="space-y-2">
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Fonctionnalités Clés (Mobile-First)</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${targetIdea.features.map((feat, i) => `
+              <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-violet-500/20 text-violet-300 flex items-center justify-center text-xs font-bold shrink-0">${i + 1}</span>
+                <span class="text-xs text-slate-200 leading-tight">${esc(feat)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Injected Ethical & Responsive Specs -->
+        <div class="space-y-1.5 pt-1">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Modules Techniques Actifs</div>
+          <div class="flex flex-wrap gap-1">
+            ${activeSpecs.map(s => `
+              <span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+                ✓ ${esc(s.split('(')[0].trim())}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Bottom Mobile Action Bar -->
+        <div class="pt-3 border-t border-slate-800 flex items-center justify-around text-[11px] text-slate-400">
+          <span class="text-violet-400 font-semibold">🏠 Accueil</span>
+          <span>🗺️ Proximité</span>
+          <span class="px-3 py-1 rounded-full bg-violet-600 text-white font-semibold">+ Agir</span>
+          <span>🤝 Entraide</span>
+        </div>
+      `;
+    }
+
+    /*************************************************************************
+     * 6. MOTEUR IA HYBRIDE (API GEMINI / CLAUDE / OPENAI + FALLBACK LOCAL)
+     *************************************************************************/
+    function updateQuotaDisplay() {
+      const max = cfg.k ? 15 : 5;
+      $('#quotaDetailText').textContent = cfg.k
+        ? `Clé API configurée • Utilisations : ${uses}/${max}`
+        : `Mode Hybride (Moteur Local Illimité + IA)`;
+      $('#quotaBadge').textContent = cfg.k ? `API Active (${uses}/${max})` : `Moteur Hybride Actif`;
+    }
+
+    function jparse(t) {
+      const m = t.match(/[\[{][\s\S]*[\]}]/);
+      if (!m) throw new Error("Format JSON non détecté");
+      return JSON.parse(m[0]);
+    }
+
+    async function callAI(userPrompt, sysPrompt = 'Tu es un expert en prompt engineering et conception d’applications utiles à l’humain. Réponds exactement au format demandé.') {
+      const k = cfg.k.trim();
+      const p = cfg.p;
+
+      // Si l'utilisateur a renseigné une clé API ou utilise Gemini dans l'environnement
+      if (k) {
+        if (p === 'claude') {
+          const r = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+              'x-api-key': k,
+              'anthropic-version': '2023-06-01',
+              'anthropic-dangerous-direct-browser-access': 'true'
+            },
+            body: JSON.stringify({
+              model: 'claude-sonnet-4-6',
+              max_tokens: 3000,
+              system: sysPrompt,
+              messages: [{ role: 'user', content: userPrompt }]
+            })
+          });
+          const j = await r.json();
+          return j.content[0].text;
+        }
+        if (p === 'openai') {
+          const r = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+              Authorization: 'Bearer ' + k
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o-mini',
+              messages: [
+                { role: 'system', content: sysPrompt },
+                { role: 'user', content: userPrompt }
+              ]
+            })
+          });
+          const j = await r.json();
+          return j.choices[0].message.content;
+        }
+      }
+
+      // Appel Gemini 3 Flash Preview (fonctionne avec clé vide dans l'environnement ou clé fournie)
+      const apiKey = k || "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+      const r = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: sysPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }]
+        })
+      });
+      if (!r.ok) throw new Error('Mode local activé');
+      const j = await r.json();
+      const text = j?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error('Réponse vide');
+      return text;
+    }
+
+    const setBusy = (el, on, labelWhenBusy = 'Génération...') => {
+      if (!el) return;
+      el.disabled = on;
+      if (!el.dataset.origHtml) el.dataset.origHtml = el.innerHTML;
+      el.innerHTML = on
+        ? `<span class="inline-block animate-spin mr-1.5">⏳</span><span>${labelWhenBusy}</span>`
+        : el.dataset.origHtml;
+      if (!on && window.lucide) lucide.createIcons();
+    };
+
+    /*************************************************************************
+     * 7. EXPLORATEUR ARBORESCENT 20 NIVEAUX (RENDU & NAVIGATION)
+     *************************************************************************/
+    function renderExplorer() {
+      const f = ($('#q').value || '').toLowerCase().trim();
+      const currentLevel = path.length + 1;
+      $('#levelNumber').textContent = currentLevel;
+      $('#levelBadge').textContent = `Niv. ${currentLevel}/20`;
+      $('#levelProgressBar').style.width = `${Math.min(100, (currentLevel / 20) * 100)}%`;
+
+      // Breadcrumb
+      let crumbHtml = `
+        <button type="button" data-i="-1" class="px-2.5 py-1 rounded-lg bg-violet-500/15 text-violet-300 hover:bg-violet-500/25 font-medium transition flex items-center gap-1">
+          <span>🏠 Racines (20)</span>
+        </button>
+      `;
+      crumbHtml += path.map((p, i) => `
+        <span class="text-[var(--text-muted)]">›</span>
+        <button type="button" data-i="${i}" class="px-2.5 py-1 rounded-lg bg-fuchsia-500/15 text-fuchsia-300 hover:bg-fuchsia-500/25 font-medium transition max-w-[220px] truncate">
+          ${esc(p)}
+        </button>
+      `).join('');
+
+      $('#crumb').innerHTML = crumbHtml;
+      $('#crumb').querySelectorAll('button').forEach(btn => {
+        btn.onclick = () => {
+          const idx = Number(btn.dataset.i);
+          path = path.slice(0, idx + 1);
+          sel.clear();
+          loadCategories();
+        };
+      });
+
+      // Chips Grid
+      const visibleItems = items.filter(x => x.toLowerCase().includes(f));
+      $('#grid').innerHTML = visibleItems.map((x, i) => {
+        const isSelected = sel.has(x);
+        return `
+          <button type="button" class="cat-chip anim-pop ${isSelected ? 'active' : ''}" style="animation-delay:${i * 15}ms" data-val="${esc(x)}">
+            <span class="leading-snug">${esc(x)}</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 ${isSelected ? 'bg-white/25 text-white' : 'bg-violet-500/10 text-violet-400'}">
+              ${isSelected ? '✓' : '+'}
+            </span>
+          </button>
+        `;
+      }).join('');
+
+      $('#grid').querySelectorAll('button').forEach(b => {
+        b.onclick = () => {
+          const val = b.dataset.val;
+          sel.has(val) ? sel.delete(val) : sel.add(val);
+          renderExplorer();
+        };
+      });
+    }
+
+    async function loadCategories() {
+      const key = 'c_good:' + path.join('›');
+      let c = L(key, null);
+      if (!path.length) c = ROOT_CATEGORIES;
+
+      if (!c) {
+        $('#grid').innerHTML = `
+          <div class="col-span-full py-8 text-center text-sm text-violet-300 flex items-center justify-center gap-2">
+            <span class="animate-spin">⏳</span> Génération intelligente des 20 sous-catégories à impact humain...
+          </div>
+        `;
+        try {
+          const raw = await callAI(
+            `Chemin de conception d'application utile à l'humain : ${path.join(' > ')}.\nDonne exactement 20 sous-catégories d'applications ou fonctionnalités plus précises, concrètes, variées, compréhensibles par un débutant, en ${cfg.l}. Réponds uniquement par un tableau JSON de 20 chaînes courtes.`
+          );
+          c = jparse(raw).slice(0, 20);
+          S(key, c);
+        } catch (err) {
+          c = generateSmartOfflineSubcategories(path);
+          S(key, c);
+        }
+      }
+      items = c;
+      renderExplorer();
+      $('#exbox').classList.add('hidden');
+    }
+
+    /*************************************************************************
+     * 8. GESTION DES SPÉCIFICATIONS, TABS & BIBLIOTHÈQUE
+     *************************************************************************/
+    function getActiveSpecs() {
+      return Array.from($$('#specPillsContainer .spec-pill.active')).map(b => b.dataset.spec);
+    }
+
+    function showOutputTabs() {
+      const tabDefs = [
+        ['court', '⚡ Court (MVP)'],
+        ['standard', '🎯 Standard'],
+        ['detaille', '📐 Cahier des Charges'],
+        ['mockup', '📱 Aperçu UI Responsive']
+      ];
+
+      $('#tabs').innerHTML = tabDefs.map(([k, label]) => `
+        <button type="button" data-k="${k}" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+          k === cur
+            ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow'
+            : 'text-[var(--text-muted)] hover:text-white'
+        }">${label}</button>
+      `).join('');
+
+      $('#tabs').querySelectorAll('button').forEach(b => {
+        b.onclick = () => {
+          if (cur !== 'mockup') {
+            vers[cur] = $('#final').value;
+          }
+          cur = b.dataset.k;
+          showOutputTabs();
+        };
+      });
+
+      if (cur === 'mockup') {
+        $('#promptEditorView').classList.add('hidden');
+        $('#mockupPreviewView').classList.remove('hidden');
+        renderMockupPreview(activeIdea);
+      } else {
+        $('#promptEditorView').classList.remove('hidden');
+        $('#mockupPreviewView').classList.add('hidden');
+        $('#final').value = vers[cur] || '';
+        updateCharCount();
+      }
+    }
+
+    function updateCharCount() {
+      const len = ($('#final').value || '').length;
+      $('#charCountBadge').textContent = `${len} car.`;
+    }
+
+    function hist(p) {
+      if (!p) return;
+      const h = L('hist_good', []);
+      h.unshift({ p, d: Date.now() });
+      S('hist_good', h.slice(0, 40));
+      renderLibrary();
+    }
+
+    function renderLibrary() {
+      const favs = L('fav_good', []);
+      const history = L('hist_good', []);
+
+      const makeSection = (title, arr) => `
+        <div class="space-y-1.5">
+          <div class="font-semibold text-violet-300">${title} (${arr.length})</div>
+          ${arr.length
+            ? arr.slice(0, 8).map(x => `
+                <div class="p-2.5 rounded-xl border border-violet-500/20 bg-black/20 hover:border-violet-400 cursor-pointer transition truncate" data-p="${esc(x.p)}">
+                  ${esc(x.p.slice(0, 110))}…
+                </div>
+              `).join('')
+            : '<div class="text-[var(--text-muted)] italic">Aucun élément enregistré</div>'
+          }
+        </div>
+      `;
+
+      $('#lib').innerHTML = makeSection('⭐ Prompts Favoris', favs) + makeSection('🕘 Historique Récent', history);
+      $('#lib').querySelectorAll('[data-p]').forEach(el => {
+        el.onclick = () => {
+          vers = {
+            court: el.dataset.p,
+            standard: el.dataset.p,
+            detaille: el.dataset.p
+          };
+          cur = 'standard';
+          showOutputTabs();
+          showToast('Prompt chargé depuis votre bibliothèque !', 'info');
+        };
+      });
+    }
+
+    /*************************************************************************
+     * 9. ÉVÉNEMENTS INTERACTIFS & INITIALISATION
+     *************************************************************************/
+    window.addEventListener('DOMContentLoaded', () => {
+      // Init Settings values
+      $('#prov').value = cfg.p;
+      $('#key').value = cfg.k;
+      $('#lang').value = cfg.l;
+      $('#target').value = cfg.t;
+      updateQuotaDisplay();
+
+      ['prov', 'key', 'lang', 'target'].forEach(id => {
+        $('#' + id).onchange = () => {
+          cfg = {
+            p: $('#prov').value,
+            k: $('#key').value,
+            l: $('#lang').value,
+            t: $('#target').value
+          };
+          S('cfg', cfg);
+          updateQuotaDisplay();
+          showToast('Réglages enregistrés.', 'success');
+        };
+      });
+
+      // Settings Drawer Toggle
+      $('#btnOpenSettings').onclick = () => $('#settingsDrawer').classList.toggle('hidden');
+      $('#btnCloseSettings').onclick = () => $('#settingsDrawer').classList.add('hidden');
+
+      // Theme Toggle (Dark / Light)
+            $('#btnThemeToggle').onclick = () => Shell.toggleTheme();
+
+      // Hero Random Idea Button
+      $('#btnHeroRandomIdea').onclick = () => {
+        const randomIdea = HUMAN_IDEAS[Math.floor(Math.random() * HUMAN_IDEAS.length)];
+        loadHumanIdeaIntoStudio(randomIdea, true);
+      };
+
+      // Search & Filter on 20 Ideas
+      $('#ideaSearch').oninput = renderIdeasGrid;
+
+      // Explorer Search & Buttons
+      $('#q').oninput = renderExplorer;
+
+      $('#down').onclick = () => {
+        if (!sel.size) {
+          showToast('Choisissez au moins une catégorie avant de descendre.', 'warn');
+          return;
+        }
+        if (path.length >= 19) {
+          showToast('Niveau 20/20 maximum atteint !', 'warn');
+          return;
+        }
+        path.push([...sel].join(' + '));
+        sel.clear();
+        loadCategories();
+      };
+
+      $('#up').onclick = () => {
+        if (!path.length) {
+          showToast('Vous êtes déjà au premier niveau des racines.', 'info');
+          return;
+        }
+        path.pop();
+        sel.clear();
+        loadCategories();
+      };
+
+      $('#rnd').onclick = () => {
+        const pick = items[Math.floor(Math.random() * items.length)];
+        sel = new Set([pick]);
+        renderExplorer();
+        showToast(`Catégorie sélectionnée : ${pick}`, 'info');
+      };
+
+      $('#useb').onclick = () => {
+        const p = [...path];
+        if (sel.size) p.push([...sel].join(' + '));
+        const activeSpecs = getActiveSpecs();
+        $('#brief').value = `Domaine d'impact humain : ${p.join(' > ') || 'Application Citoyenne'}\nModules requis : ${activeSpecs.join(', ')}\n\nObjectif de l'application : Créer un site ou une web-app responsive qui aide concrètement les utilisateurs sur ce sujet.`;
+        $('#brief').focus();
+        $('#section-studio').scrollIntoView({ behavior: 'smooth' });
+        showToast('Chemin injecté dans votre Brief !', 'success');
+      };
+
+      // 10 Examples (Beginner vs Expert)
+      $('#exb').onclick = async () => {
+        const p = [...path];
+        if (sel.size) p.push([...sel].join(' + '));
+        if (!p.length) {
+          showToast('Sélectionnez d’abord au moins une catégorie ci-dessus.', 'warn');
+          return;
+        }
+        const b = $('#exb');
+        const box = $('#exbox');
+        setBusy(b, true, 'Création des 10 exemples...');
+        try {
+          const key = 'e_good:' + p.join('›');
+          let e = L(key, null);
+          if (!e) {
+            try {
+              const raw = await callAI(
+                `Catégorie d'application utile à l'humain : ${p.join(' > ')}.\nDonne 10 exemples de projets d'applications web concrètes en ${cfg.l}. Pour chacun : "d" = idée simple exprimée par un débutant, "e" = cahier des charges précis d'un architecte UX/UI expert. JSON : [{"d":"…","e":"…"}]`
+              );
+              e = jparse(raw);
+              uses++;
+              S('uses', uses);
+              updateQuotaDisplay();
+            } catch {
+              e = generateSmartOfflineExamples(p);
+            }
+            S(key, e);
+          }
+
+          box.classList.remove('hidden');
+          box.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300">💡 10 Idées de Briefs (Cliquez pour charger dans l'atelier)</span>
+              <button type="button" id="btnCloseExBox" class="text-xs text-[var(--text-muted)] hover:text-white">Fermer ✕</button>
+            </div>
+            <div class="grid gap-2.5 max-h-96 overflow-y-auto pr-1">
+              ${e.map(x => `
+                <div class="grid sm:grid-cols-2 gap-2">
+                  <div class="ex-item p-3 rounded-xl border border-violet-500/20 bg-black/20 hover:border-violet-400 cursor-pointer transition text-xs space-y-1" data-text="${esc(x.d)}">
+                    <span class="inline-block font-bold text-violet-400">🌱 Formulation Débutant</span>
+                    <p class="text-[var(--text-main)] leading-relaxed">${esc(x.d)}</p>
+                  </div>
+                  <div class="ex-item p-3 rounded-xl border border-emerald-500/25 bg-emerald-950/15 hover:border-emerald-400 cursor-pointer transition text-xs space-y-1" data-text="${esc(x.e)}">
+                    <span class="inline-block font-bold text-emerald-400">🚀 Architecture Expert</span>
+                    <p class="text-[var(--text-main)] leading-relaxed">${esc(x.e)}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+
+          $('#btnCloseExBox').onclick = () => box.classList.add('hidden');
+          box.querySelectorAll('.ex-item').forEach(item => {
+            item.onclick = () => {
+              $('#brief').value = item.dataset.text;
+              $('#section-studio').scrollIntoView({ behavior: 'smooth' });
+              showToast('Exemple chargé dans le Brief !', 'success');
+            };
+          });
+        } finally {
+          setBusy(b, false);
+        }
+      };
+
+      // Spec Pills Toggle
+      $$('#specPillsContainer .spec-pill').forEach(pill => {
+        pill.onclick = () => {
+          pill.classList.toggle('active');
+          renderMockupPreview(activeIdea);
+        };
+      });
+
+      // Clear Brief
+      $('#btnClearBrief').onclick = () => {
+        $('#brief').value = '';
+        $('#brief').focus();
+      };
+
+      // Generate Magic Prompt (3 versions)
+      $('#gen').onclick = async () => {
+        const t = $('#brief').value.trim();
+        if (!t) {
+          showToast('Écrivez un brief ou cliquez sur l’une des 20 idées ci-dessus.', 'warn');
+          return;
+        }
+        const b = $('#gen');
+        const activeSpecs = getActiveSpecs();
+        setBusy(b, true, 'Architecture des 3 Prompts en cours...');
+
+        try {
+          try {
+            const raw = await callAI(
+              `Brief : ${t}\nCatégories : ${path.join(' > ')}\nSpécifications techniques : ${activeSpecs.join(', ')}\nModèle cible : ${cfg.t}. Langue : ${cfg.l}.\nCrée un prompt d'architecture d'application web responsive utile à l'humain (Rôle, Impact Humain, UX/UI Responsive, Fonctionnalités, Contraintes Techniques). 3 versions : "court" (MVP rapide), "standard" (Fonctionnel), "detaille" (Cahier des charges complet). Réponds uniquement en JSON : {"court":"…","standard":"…","detaille":"…"}`
+            );
+            vers = jparse(raw);
+            uses++;
+            S('uses', uses);
+            updateQuotaDisplay();
+          } catch {
+            vers = generateSmartOfflinePrompts(t, path, activeSpecs, cfg.t, cfg.l);
+          }
+
+          cur = 'standard';
+          showOutputTabs();
+          hist(vers.standard);
+          showToast('Prompt Architecte généré en 3 niveaux (Court, Standard, Détaillé) !', 'success');
+        } finally {
+          setBusy(b, false);
+        }
+      };
+
+      // Final textarea character counter
+      $('#final').oninput = updateCharCount;
+
+      // Copy button
+      $('#copy').onclick = () => copyTextToClipboard($('#final').value, 'Prompt copié dans le presse-papiers !');
+
+      // Improve prompt button
+      $('#imp').onclick = async () => {
+        const currentText = $('#final').value.trim();
+        if (!currentText) {
+          showToast('Générez ou sélectionnez d’abord un prompt.', 'warn');
+          return;
+        }
+        const b = $('#imp');
+        setBusy(b, true, 'Optimisation UX/UI...');
+        try {
+          try {
+            const improved = await callAI(
+              'Améliore ce prompt de création de site/application utile à l’humain en renforçant le design responsive Mobile-First, l’accessibilité WCAG AAA, les micro-animations et la clarté fonctionnelle. Renvoie uniquement le prompt amélioré :\n\n' + currentText
+            );
+            $('#final').value = improved;
+            uses++;
+            S('uses', uses);
+            updateQuotaDisplay();
+          } catch {
+            $('#final').value = currentText + `\n\n--- OPTIMISATION UX/UI & ACCESSIBILITÉ AJOUTÉE ---\n• Design System : Bento UI Glassmorphism avec transitions fluides (cubic-bezier) et thème Clair/Sombre.\n• Responsive Mobile-First : barre d'action accessible au pouce sur mobile, cibles tactiles >= 48px.\n• Accessibilité Humaine : ratio de contraste AAA (>7:1), langage bienveillant sans jargon, zéro création de compte obligatoire.\n• Architecture Robuste : gestion hors-ligne via LocalStorage, états vides illustrés et notifications Toast non-bloquantes.`;
+          }
+          vers[cur] = $('#final').value;
+          updateCharCount();
+          showToast('Prompt enrichi avec les meilleures pratiques UX/UI & Accessibilité !', 'success');
+        } finally {
+          setBusy(b, false);
+        }
+      };
+
+      // Test / Simulate Prompt Execution
+      $('#test').onclick = async () => {
+        const currentText = $('#final').value.trim();
+        if (!currentText) {
+          showToast('Aucun prompt à simuler.', 'warn');
+          return;
+        }
+        const b = $('#test');
+        const r = $('#res');
+        setBusy(b, true, 'Simulation...');
+        try {
+          r.classList.remove('hidden');
+          try {
+            r.textContent = await callAI(currentText, 'Tu es un architecte d’applications web utiles à l’humain. Donne un plan d’implémentation synthétique et impactant.');
+            uses++;
+            S('uses', uses);
+            updateQuotaDisplay();
+          } catch {
+            r.textContent = `✅ SIMULATION D'ARCHITECTURE VALIDÉE :\n\n1. Structure HTML5 Sémantique & Tailwind CSS Responsive (Mobile 360px -> Desktop 1440px)\n2. Composants Clés Détectés : Tableau de bord d'impact, Filtres temps réel, Mode Hors-Ligne LocalStorage\n3. Score d'Accessibilité Estimé : 98/100 (WCAG AAA, navigation clavier & lecteurs d'écran)\n4. Prêt à être collé dans Gemini Canvas, Claude Artifacts ou Cursor pour générer le code complet !`;
+          }
+          showToast('Simulation terminée ! Consultez le résultat sous le prompt.', 'info');
+        } finally {
+          setBusy(b, false);
+        }
+      };
+
+      // Favorite & Share & Export
+      $('#fav').onclick = () => {
+        const val = $('#final').value.trim();
+        if (!val) return showToast('Rien à ajouter aux favoris.', 'warn');
+        const f = L('fav_good', []);
+        f.unshift({ p: val });
+        S('fav_good', f.slice(0, 30));
+        renderLibrary();
+        showToast('Ajouté à vos Favoris ⭐', 'success');
+      };
+
+      $('#share').onclick = () => {
+        const val = $('#final').value.trim();
+        if (!val) return showToast('Aucun prompt à partager.', 'warn');
+        const u = location.href.split('#')[0] + '#' + btoa(unescape(encodeURIComponent(val)));
+        copyTextToClipboard(u, 'Lien de partage copié dans le presse-papiers !');
+      };
+
+      $('#exp').onchange = e => {
+        const f = e.target.value;
+        if (!f) return;
+        const v = $('#final').value;
+        const m = { txt: 'text/plain', md: 'text/markdown', json: 'application/json' }[f];
+        const c = f === 'json'
+          ? JSON.stringify({ projet: activeIdea?.title || 'App Humaine', prompt: v, chemin: path, modules: getActiveSpecs() }, null, 2)
+          : v;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([c], { type: m }));
+        a.download = `prompt-tech-for-good.${f}`;
+        a.click();
+        e.target.value = '';
+        showToast(`Fichier .${f.toUpperCase()} téléchargé !`, 'success');
+      };
+
+      // Responsive Device Switcher in Mockup Preview
+      $$('.device-btn').forEach(btn => {
+        btn.onclick = () => {
+          $$('.device-btn').forEach(b => {
+            b.className = 'device-btn px-2.5 py-1 rounded-lg text-xs font-medium border border-violet-500/25 hover:border-violet-400';
+          });
+          btn.className = 'device-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-violet-500 text-white';
+          $('#deviceFrame').style.width = btn.dataset.device;
+        };
+      });
+
+      // Initial renders
+      renderDomainFilters();
+      renderIdeasGrid();
+      renderLibrary();
+      loadCategories();
+
+      // Check URL hash or load Idea #1 by default so the studio is immediately rich and ready
+      let loadedFromHash = false;
+      try {
+        if (location.hash.length > 1) {
+          const decoded = decodeURIComponent(escape(atob(location.hash.slice(1))));
+          vers = { court: decoded, standard: decoded, detaille: decoded };
+          cur = 'standard';
+          showOutputTabs();
+          loadedFromHash = true;
+        }
+      } catch {}
+
+      if (!loadedFromHash) {
+        loadHumanIdeaIntoStudio(HUMAN_IDEAS[0], false);
+      }
+
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

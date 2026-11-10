@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>50 idées — des logiciels qui devinent au lieu de demander · ALPHABETTE</title>
+    <style>
+      :root {
+        --nuit: #0a1226;
+        --nuit2: #101c3a;
+        --nuit3: #0c1730;
+        --or: #f5b301;
+        --texte: #e2e8f0;
+        --gris: #94a3b8;
+        --bord: #22304f;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(900px 420px at 15% -10%, rgba(245, 179, 1, .09), transparent 60%),
+          var(--nuit);
+        color: var(--texte);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        line-height: 1.6;
+        padding-bottom: 5rem;
+      }
+      .page { max-width: 1040px; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+      .marque {
+        display: flex; align-items: center; gap: .6rem;
+        font-weight: 800; letter-spacing: .18em; font-size: .76rem; color: var(--gris);
+        text-transform: uppercase; margin-bottom: .5rem;
+      }
+      .marque span { color: var(--or); font-size: 1.1rem; }
+      h1 { font-size: clamp(1.6rem, 4vw, 2.15rem); margin: 0 0 .5rem; line-height: 1.25; }
+      h1 em { color: var(--or); font-style: normal; }
+      .sous { color: var(--gris); margin: 0 0 1.4rem; max-width: 62ch; }
+      .principe {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: .7rem; margin: 0 0 2rem;
+      }
+      .principe div {
+        border: 1px solid var(--bord); background: var(--nuit2);
+        border-radius: 12px; padding: .75rem .9rem; font-size: .85rem; color: #cbd5e1;
+      }
+      .principe strong { color: var(--or); display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+
+      .groupe { margin-bottom: 2.6rem; scroll-margin-top: 4.5rem; }
+      .groupe-tete { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; margin-bottom: .15rem; }
+      .groupe-tete h2 { font-size: 1.12rem; margin: 0; }
+      .badge-g {
+        font-size: .72rem; font-weight: 900; letter-spacing: .1em;
+        color: var(--nuit); background: var(--or); border-radius: 999px;
+        padding: .16rem .55rem;
+      }
+      .groupe-desc { color: var(--gris); font-size: .88rem; margin: 0 0 .9rem; }
+      .tout {
+        margin-left: auto; background: none; border: 1px solid var(--bord); color: var(--gris);
+        font: inherit; font-size: .74rem; font-weight: 700; padding: .22rem .6rem;
+        border-radius: 999px; cursor: pointer;
+      }
+      .tout:hover { border-color: var(--or); color: var(--or); }
+
+      .cartes { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: .7rem; }
+      .carte {
+        position: relative; display: block; text-align: left; width: 100%;
+        background: var(--nuit3); border: 1px solid var(--bord); border-radius: 14px;
+        padding: .85rem .95rem .8rem 2.6rem; color: inherit; font: inherit;
+        cursor: pointer; transition: border-color .15s, background .15s, transform .15s;
+      }
+      .carte:hover { border-color: #3a4d78; background: #101c38; }
+      .carte:focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }
+      .carte .case {
+        position: absolute; left: .85rem; top: .95rem;
+        width: 1.15rem; height: 1.15rem; border-radius: 6px;
+        border: 1.5px solid #3c4d74; display: grid; place-items: center;
+        font-size: .7rem; font-weight: 900; color: var(--nuit);
+      }
+      .carte .num {
+        position: absolute; right: .8rem; top: .9rem;
+        font-size: .68rem; font-weight: 800; color: #4b5f8a; letter-spacing: .05em;
+      }
+      .carte .titre { font-weight: 800; font-size: .94rem; display: block; margin-bottom: .12rem; }
+      .carte .question { display: block; color: #a9b8d4; font-size: .82rem; font-style: italic; }
+      .carte .chips { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .55rem; }
+      .carte .chips span {
+        font-size: .68rem; color: #8fa3c6; background: #16233f; border: 1px solid #223050;
+        border-radius: 999px; padding: .1rem .45rem; font-style: normal;
+      }
+      .carte[aria-checked="true"] {
+        border-color: var(--or); background: #1a2440;
+        box-shadow: 0 0 0 1px rgba(245, 179, 1, .35), 0 8px 24px -18px var(--or);
+      }
+      .carte[aria-checked="true"] .case { background: var(--or); border-color: var(--or); }
+      .carte[aria-checked="true"] .num { color: var(--or); }
+
+      .barre {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+        background: rgba(10, 18, 38, .93); backdrop-filter: blur(10px);
+        border-top: 1px solid var(--bord);
+        padding: .7rem 1.25rem; display: none; align-items: center; gap: .9rem; justify-content: center;
+        flex-wrap: wrap;
+      }
+      .barre.visible { display: flex; }
+      .barre .compte { font-size: .85rem; color: var(--gris); }
+      .barre .compte b { color: var(--or); font-size: 1rem; }
+      .bouton {
+        font: inherit; font-weight: 800; cursor: pointer;
+        background: var(--or); color: var(--nuit); border: 0;
+        padding: .55rem 1.05rem; border-radius: 10px;
+      }
+      .bouton:hover { filter: brightness(1.08); }
+      .bouton.ghost { background: none; color: var(--gris); border: 1px solid var(--bord); }
+      .bouton.ghost:hover { color: var(--texte); border-color: #3a4d78; }
+      .bouton.fait { background: #16a34a; color: #fff; }
+
+      dialog {
+        border: 1px solid var(--bord); background: var(--nuit2); color: var(--texte);
+        border-radius: 16px; padding: 0; width: min(760px, calc(100vw - 2rem)); max-height: 86vh;
+      }
+      dialog::backdrop { background: rgba(3, 7, 18, .72); }
+      .dlg-tete {
+        display: flex; align-items: center; gap: .8rem; justify-content: space-between;
+        padding: .9rem 1.1rem; border-bottom: 1px solid var(--bord); position: sticky; top: 0;
+        background: var(--nuit2); border-radius: 16px 16px 0 0;
+      }
+      .dlg-tete h3 { margin: 0; font-size: .98rem; }
+      #prompt {
+        margin: 0; padding: 1.1rem; white-space: pre-wrap; word-break: break-word;
+        font-family: "Cascadia Code", Consolas, monospace; font-size: .8rem;
+        color: #dbe4f0; max-height: 56vh; overflow: auto;
+      }
+      .dlg-pied { display: flex; gap: .6rem; justify-content: flex-end; padding: .8rem 1.1rem; border-top: 1px solid var(--bord); }
+      .rien { color: var(--gris); font-size: .8rem; text-align: center; margin-top: 2.5rem; }
+      .rien a { color: var(--or); }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="marque"><span>◉</span> ALPHABETTE · atelier d'idées</div>
+      <h1>50 logiciels qui <em>devinent</em> au lieu de demander</h1>
+      <p class="sous">
+        Personne n'a envie d'expliquer ce qu'il aime, ni d'aller chercher l'information. Chaque carte est une
+        question : cliquez sur celles qui vous parlent. Le prompt de projet se construit tout seul, en bas.
+      </p>
+
+      <div class="principe">
+        <div><strong>Zéro saisie</strong> Photo, voix, un tap, un swipe. Jamais un formulaire.</div>
+        <div><strong>Une seule réponse</strong> L'app tranche. Pas de liste de 40 résultats.</div>
+        <div><strong>Le goût révélé</strong> Elle dit à l'utilisateur ce qu'il aime avant qu'il le sache.</div>
+      </div>
+
+      <div id="groupes"></div>
+
+      <p class="rien">
+        50 idées, 5 familles. Sélectionnez-en une (ou plusieurs) puis <b>Construire le prompt</b>.<br />
+        Aperçu de la base commune : <a href="http://localhost:3000/base">localhost:3000/base</a>
+      </p>
+    </div>
+
+    <div class="barre" id="barre">
+      <span class="compte"><b id="compte">0</b> idée(s) sélectionnée(s)</span>
+      <button class="bouton" id="ouvrir">Construire le prompt</button>
+      <button class="bouton ghost" id="vider">Vider</button>
+    </div>
+
+    <dialog id="dlg">
+      <div class="dlg-tete">
+        <h3>Prompt prêt à coller dans une nouvelle session</h3>
+        <button class="bouton ghost" id="fermer">Fermer</button>
+      </div>
+      <pre id="prompt"></pre>
+      <div class="dlg-pied">
+        <button class="bouton" id="copier">Copier le prompt</button>
+      </div>
+    </dialog>
+
+    <script>
+      const GROUPES = [
+        {
+          id: 1,
+          titre: "Le goût révélé",
+          desc: "L'app déduit qui vous êtes à partir d'un signe déjà présent : vos photos, vos achats, vos sons. Aucune question.",
+        },
+        {
+          id: 2,
+          titre: "Décider à ma place",
+          desc: "Une envie floue, une seule réponse exécutable. Le logiciel tranche, réserve, commande.",
+        },
+        {
+          id: 3,
+          titre: "Découvrir par les sens",
+          desc: "Zéro mot : on touche, on écoute, on regarde. La préférence se mesure au geste.",
+        },
+        {
+          id: 4,
+          titre: "Offrir et partager",
+          desc: "Faire plaisir à quelqu'un sans connaître ses goûts, sans chercher, sans se tromper.",
+        },
+        {
+          id: 5,
+          titre: "Apprendre sans effort",
+          desc: "La curiosité nourrie chaque jour, sans moteur de recherche et sans plan de carrière.",
+        },
+      ];
+
+      const IDEES = [
+        // ── Groupe 1 ───────────────────────────────────────────────
+        { n:1, g:1, t:"Mes photos me connaissent déjà",
+          q:"Et si l'app devinait mes goûts en regardant 20 de mes photos ?",
+          i:"20 photos de la galerie", o:"un profil de goût en 1 écran",
+          p:"L'utilisateur tire 20 photos au hasard dans son téléphone. L'IA en déduit son univers (couleurs, lieux, ambiance, budget) et affiche une carte de personnalité esthétique, puis 5 découvertes qui lui ressemblent." },
+        { n:2, g:1, t:"Ma bibliothèque parle pour moi",
+          q:"Et si ma playlist disait tout de moi ?",
+          i:"export Spotify ou 20 titres", o:"portrait musical + 5 découvertes",
+          p:"À partir d'un export de playlist, l'app trace un portrait musical (énergie, époque, émotion dominante) et propose 5 artistes jamais écoutés mais statistiquement aimés." },
+        { n:3, g:1, t:"Mes reçus racontent mes envies",
+          q:"Et si mes achats révélaient ce que j'aime vraiment ?",
+          i:"3 captures de reçus", o:"3 envies concrètes",
+          p:"L'utilisateur photographie trois reçus. L'IA lit les catégories (jamais les montants) et en sort trois envies concrètes, avec un lien pour passer à l'acte." },
+        { n:4, g:1, t:"Le test des 9 images",
+          q:"Et si 9 images suffisaient à me cerner ?",
+          i:"9 clics j'aime / j'aime pas", o:"profil visuel + moodboard",
+          p:"Une grille de 9 images, un seul geste par image. Au bout de 30 secondes, l'app génère un moodboard personnel et une phrase qui résume le goût de l'utilisateur." },
+        { n:5, g:1, t:"Le test des 9 sons",
+          q:"Et si je choisissais juste ce qui me fait du bien à écouter ?",
+          i:"9 extraits de 5 secondes", o:"famille sonore + playlist",
+          p:"Neuf extraits courts (nature, ville, jazz, silence, pluie…). L'utilisateur réagit au ressenti. L'app en déduit sa famille sonore et construit une playlist d'ambiance." },
+        { n:6, g:1, t:"Ma façon de scroller",
+          q:"Et si l'app apprenait de ce sur quoi je m'arrête ?",
+          i:"temps de pause sur un fil", o:"fil affiné en 2 minutes",
+          p:"Un fil d'images défile. L'app ne demande rien : elle mesure les micro-pauses et reconstruit un fil de plus en plus juste, jusqu'à nommer le style de l'utilisateur." },
+        { n:7, g:1, t:"Mes dépenses dessinent ma vie",
+          q:"Et si mes dépenses en disaient plus que mes mots ?",
+          i:"relevé catégorisé (sans montants)", o:"profil de vie + 3 idées",
+          p:"Import d'un relevé anonymisé : seulement les catégories. L'app en déduit un profil de vie (sobre, aventurier, cocooning) et trois idées à tester ce mois-ci." },
+        { n:8, g:1, t:"Mes likes, mon miroir",
+          q:"Et si mes likes suffisaient ?",
+          i:"fichier de likes exporté", o:"carte d'identité de goût",
+          p:"L'utilisateur dépose l'export de ses likes. L'IA en tire une carte d'identité de goût en cinq traits, puis un objet, un lieu et une œuvre à découvrir." },
+        { n:9, g:1, t:"Ma ville me ressemble",
+          q:"Et si mon quartier me connaissait mieux que moi ?",
+          i:"géolocalisation + lieux fréquentés", o:"3 adresses qui me ressemblent",
+          p:"À partir des lieux déjà fréquentés, l'app propose trois adresses du même esprit mais jamais visitées, à moins de 15 minutes, ouvertes maintenant." },
+        { n:10, g:1, t:"La question à trois clics",
+          q:"Et si trois clics remplaçaient un long questionnaire ?",
+          i:"3 choix binaires", o:"profil de départ complet",
+          p:"Trois arbitrages binaires (mer / montagne, seul / foule, maintenant / plus tard) suffisent à générer un profil de goût complet et dix recommandations classées." },
+
+        // ── Groupe 2 ───────────────────────────────────────────────
+        { n:11, g:2, t:"Qu'est-ce qu'on mange ce soir ?",
+          q:"Et si on me disait quoi manger, une fois pour toutes ?",
+          i:"1 photo du frigo", o:"1 recette + liste de courses",
+          p:"Une photo du frigo ouvert. L'app reconnaît les ingrédients, choisit UNE recette réalisable en 25 minutes et affiche la liste des trois choses manquantes." },
+        { n:12, g:2, t:"Où on sort ce week-end ?",
+          q:"Et si je n'avais qu'une seule sortie à accepter ?",
+          i:"position + 1 tap d'envie", o:"1 sortie réservable",
+          p:"L'utilisateur tape une envie parmi six icônes. L'app propose une seule sortie proche, avec l'horaire idéal et le bouton de réservation." },
+        { n:13, g:2, t:"Le film de ce soir",
+          q:"Et si on choisissait le film à ma place ?",
+          i:"1 tap d'humeur", o:"1 film + la raison",
+          p:"Trois humeurs possibles (léger, intense, évasion). L'app donne un seul film, disponible sur les plateformes de l'utilisateur, et une phrase expliquant pourquoi celui-là." },
+        { n:14, g:2, t:"Ma prochaine lecture",
+          q:"Et si mon prochain livre était décidé pour moi ?",
+          i:"1 photo de ma table de nuit", o:"1 livre + 1 phrase",
+          p:"Une photo des livres déjà lus. L'app lit les titres, en déduit le seuil de tolérance (longueur, style, époque) et propose un seul livre, avec la phrase qui donne envie." },
+        { n:15, g:2, t:"La musique du moment",
+          q:"Et si la bonne musique arrivait sans que je la cherche ?",
+          i:"heure + météo + rythme", o:"playlist lancée automatiquement",
+          p:"L'app croise l'heure, la météo, le jour et le rythme de la semaine pour lancer d'elle-même la playlist juste. Aucun mot, aucun choix." },
+        { n:16, g:2, t:"Le cadeau parfait",
+          q:"Et si je n'avais qu'à donner un prénom et trois photos ?",
+          i:"prénom + 3 photos de la personne", o:"1 cadeau + lien d'achat",
+          p:"Trois photos de la personne et son prénom suffisent : l'app déduit son univers et propose un cadeau unique, à un prix choisi par l'utilisateur, livrable à temps." },
+        { n:17, g:2, t:"Ma tenue de demain",
+          q:"Et si demain était déjà habillé ?",
+          i:"météo + agenda + 1 photo de la penderie", o:"1 tenue, 1 fois",
+          p:"Une photo de la penderie, une seule fois. Chaque soir, l'app compose la tenue du lendemain selon la météo et les rendez-vous, et l'affiche comme une évidence." },
+        { n:18, g:2, t:"Le resto de ce soir",
+          q:"Et si je réservais sans comparer dix avis ?",
+          i:"budget + distance", o:"1 table, 1 réservation",
+          p:"L'app choisit une seule table selon le budget, la distance et les goûts déjà connus, puis réserve directement. Si c'est complet, elle réserve la suivante sans demander." },
+        { n:19, g:2, t:"Ma semaine de repas",
+          q:"Et si mes sept dîners se décidaient en une seconde ?",
+          i:"taille du foyer + allergies", o:"7 dîners + 1 liste de courses",
+          p:"L'app compose sept dîners équilibrés pour le foyer, réutilise les restes et produit une liste de courses unique, classée par rayon." },
+        { n:20, g:2, t:"L'activité du dimanche",
+          q:"Et si le dimanche était déjà organisé ?",
+          i:"âge des enfants", o:"1 sortie + billets",
+          p:"Chaque samedi soir, l'app propose une seule activité du dimanche adaptée à l'âge des enfants, à la météo et au budget, avec les billets déjà prêts." },
+
+        // ── Groupe 3 ───────────────────────────────────────────────
+        { n:21, g:3, t:"Un fil qu'on touche",
+          q:"Et si je découvrais mon style en swipant, sans écrire un mot ?",
+          i:"20 swipes de visuels", o:"signature esthétique + sélection",
+          p:"Un flux de visuels défile, l'utilisateur swipe. L'app extrait une signature esthétique (matières, couleurs, époques) et une sélection d'objets ou de lieux qui la prolongent." },
+        { n:22, g:3, t:"Ma voix suffit",
+          q:"Et si je racontais ma journée à voix haute, sans rien formuler ?",
+          i:"20 secondes de voix", o:"3 envies déduites",
+          p:"L'utilisateur parle librement vingt secondes de sa journée. L'app repère les élans, les frustrations et les manques, et en tire trois envies à satisfaire cette semaine." },
+        { n:23, g:3, t:"La radio de mes goûts",
+          q:"Et si un flux continu me connaissait mieux qu'un algorithme ?",
+          i:"écoute passive", o:"flux qui s'affine seul",
+          p:"Un flux audio permanent (musique, récits, silences). Aucun bouton : l'app observe ce qui n'est pas zappé et resserre le flux, jusqu'à devenir une radio personnelle." },
+        { n:24, g:3, t:"La madeleine sonore",
+          q:"Et si un son d'enfance révélait mes vrais goûts ?",
+          i:"5 sons choisis", o:"goût profond + 3 découvertes",
+          p:"Cinq sons d'enfance (la cour, la cuisine, la voiture, la mer, la télé). L'utilisateur garde ceux qui serrent le cœur : l'app en déduit un goût profond, souvent ignoré." },
+        { n:25, g:3, t:"Mon film intérieur",
+          q:"Et si on me montrait mon univers en images ?",
+          i:"aucune saisie", o:"une vidéo de 20 secondes",
+          p:"À partir du profil de goût déjà constitué, l'app génère un court film de l'univers de l'utilisateur et l'invite à dire, d'un seul tap, ce qui est juste ou faux." },
+        { n:26, g:3, t:"Le menu dégustation",
+          q:"Et si je choisissais mon repas avec les yeux ?",
+          i:"5 photos de plats", o:"menu personnalisé",
+          p:"Cinq photos de plats, un tap pour garder, un tap pour écarter. L'app compose un menu dégustation sur mesure et la liste des ingrédients à réunir." },
+        { n:27, g:3, t:"La couleur de ma personnalité",
+          q:"Et si une photo de mon salon me définissait ?",
+          i:"1 photo du salon", o:"palette + 3 objets",
+          p:"Une photo de l'intérieur suffit : l'app extrait une palette, nomme l'ambiance et propose trois objets ou une œuvre qui complètent l'espace sans le trahir." },
+        { n:28, g:3, t:"Le blind-test de mes goûts",
+          q:"Et si découvrir mes goûts était un jeu de 60 secondes ?",
+          i:"un jeu de 60 s", o:"profil + score de précision",
+          p:"Un blind-test rapide : paires d'images, de sons et d'odeurs décrites. Chaque réponse affine le modèle et le jeu devient une promesse : « je te connais à 87 % »." },
+        { n:29, g:3, t:"La carte de mes envies",
+          q:"Et si je pointais juste les endroits qui me font rêver ?",
+          i:"10 taps sur une carte", o:"3 destinations + budget",
+          p:"Une carte du monde, dix lieux à toucher selon l'instinct. L'app en déduit le type de voyage désiré et propose trois destinations avec un budget réaliste." },
+        { n:30, g:3, t:"Mon année en musique",
+          q:"Et si mon année se racontait sans que je la raconte ?",
+          i:"historique d'écoute", o:"récapitulatif annuel visuel",
+          p:"L'app transforme l'historique d'écoute en récit visuel de l'année : les saisons, les ruptures, les obsessions. Un miroir, pas un classement." },
+
+        // ── Groupe 4 ───────────────────────────────────────────────
+        { n:31, g:4, t:"Le cadeau sans idée",
+          q:"Et si offrir devenait facile même sans connaître la personne ?",
+          i:"3 photos + 1 prénom", o:"1 cadeau prêt à envoyer",
+          p:"Trois photos de la personne, son prénom, une date. L'app propose un cadeau unique et personnel, avec le message qui l'accompagne, prêt à expédier." },
+        { n:32, g:4, t:"Le resto pour deux inconnus",
+          q:"Et si l'app trouvait le lieu qui mettrait deux personnes d'accord ?",
+          i:"2 profils de goût", o:"1 table pour deux",
+          p:"Deux profils, aucun mot échangé. L'app trouve le restaurant qui satisfait les deux, réserve et prévient chacun par un message identique." },
+        { n:33, g:4, t:"La playlist de mon couple",
+          q:"Et si notre histoire avait sa bande-son automatique ?",
+          i:"dates + lieux partagés", o:"playlist + livret",
+          p:"À partir de quelques dates et lieux communs, l'app compose la bande-son du couple et un livret de souvenirs, à offrir tel quel." },
+        { n:34, g:4, t:"Le livre pour ma mère",
+          q:"Et si j'offrais un livre qui lui ressemble vraiment ?",
+          i:"5 photos de son intérieur", o:"1 livre + dédicace",
+          p:"Cinq photos de son intérieur. L'app en déduit ses goûts de lecture et propose un livre, avec une dédicace écrite dans le bon registre." },
+        { n:35, g:4, t:"L'anniversaire surprise",
+          q:"Et si tout était organisé à partir de trois indices ?",
+          i:"3 indices (âge, lieu, budget)", o:"un plan complet",
+          p:"L'app construit un anniversaire complet : lieu, gâteau, playlist, message, minutage. L'utilisateur n'a plus qu'à valider d'un tap." },
+        { n:36, g:4, t:"Le cadeau de dernière minute",
+          q:"Et si un cadeau était encore possible dans une heure ?",
+          i:"budget + ville", o:"1 cadeau ouvert ce soir",
+          p:"L'app ne cherche que ce qui est disponible immédiatement autour de l'utilisateur, à moins de 20 €, et propose un cadeau qui ne sent pas l'urgence." },
+        { n:37, g:4, t:"Nos points communs",
+          q:"Et si l'app trouvait ce qu'on a envie de faire ensemble ?",
+          i:"2 profils comparés", o:"1 activité à deux",
+          p:"Deux profils de goût, un seul point de rencontre. L'app propose une activité que les deux n'auraient pas choisie seuls, mais qui leur plaît à coup sûr." },
+        { n:38, g:4, t:"Le cadeau que personne n'aurait trouvé",
+          q:"Et si j'offrais quelque chose d'imprévisible mais juste ?",
+          i:"1 récit de 3 phrases", o:"3 objets singuliers",
+          p:"L'utilisateur décrit la personne en trois phrases. L'app cherche des objets singuliers (artisanat, éditions rares, expériences) qu'aucun moteur de recherche ne remonterait." },
+        { n:39, g:4, t:"Le repas qui rassemble",
+          q:"Et si un menu plaisait à tout le monde sans rien demander ?",
+          i:"liste des convives", o:"1 menu + plan de préparation",
+          p:"L'app déduit les contraintes de chaque convive (allergies connues, âges, habitudes) et compose un menu qui met tout le monde d'accord, avec le minutage de préparation." },
+        { n:40, g:4, t:"La carte postale vivante",
+          q:"Et si un souvenir s'envoyait tout seul ?",
+          i:"1 photo + 1 prénom", o:"une carte animée personnalisée",
+          p:"L'utilisateur choisit une photo et un prénom : l'app en fait une carte postale animée, avec un texte écrit dans le ton juste, envoyée par lien ou par courrier." },
+
+        // ── Groupe 5 ───────────────────────────────────────────────
+        { n:41, g:5, t:"Cinq minutes sur ce qui m'intéresse vraiment",
+          q:"Et si ma culture quotidienne était choisie pour moi ?",
+          i:"profil de goût existant", o:"1 leçon de 5 minutes par jour",
+          p:"Chaque jour, une seule micro-leçon de cinq minutes, choisie dans la zone proche de ce que l'utilisateur aime déjà. Jamais un cours, jamais un programme." },
+        { n:42, g:5, t:"Le podcast qui tombe juste",
+          q:"Et si le bon épisode arrivait au bon moment ?",
+          i:"durée du trajet + humeur", o:"1 épisode, 1 bouton lecture",
+          p:"L'app sait combien de temps dure le trajet et lit l'humeur du jour. Elle propose un seul épisode, calibré à la minute près, qui démarre tout seul." },
+        { n:43, g:5, t:"Ma prochaine compétence",
+          q:"Et si on me disait quoi apprendre, sans bilan de carrière ?",
+          i:"métier + 3 vidéos regardées", o:"1 compétence + premier pas",
+          p:"À partir du métier déclaré et de ce que l'utilisateur regarde déjà, l'app nomme une compétence à fort effet de levier et donne le tout premier pas, faisable ce soir." },
+        { n:44, g:5, t:"L'expo qu'il me faut",
+          q:"Et si la prochaine expo était déjà choisie ?",
+          i:"position + goûts visuels", o:"1 expo + créneau",
+          p:"L'app croise les expositions proches avec le profil visuel de l'utilisateur et propose une seule sortie culturelle, avec le créneau le moins bondé." },
+        { n:45, g:5, t:"Le musée invisible",
+          q:"Et si une œuvre par jour suffisait à me cultiver ?",
+          i:"aucune saisie", o:"1 œuvre + 1 histoire",
+          p:"Chaque matin, une œuvre choisie pour l'utilisateur, avec une histoire de 90 secondes et un détail à regarder. Un musée personnel qui ne se visite jamais deux fois." },
+        { n:46, g:5, t:"Mon mot du jour",
+          q:"Et si j'apprenais une langue sans jamais réviser ?",
+          i:"langue choisie une fois", o:"1 mot + 1 image + 1 scène",
+          p:"Un mot par jour, une image, une scène de la vie réelle. Aucune révision, aucune liste : la répétition se fait par le récit, pas par la mémoire." },
+        { n:47, g:5, t:"Le documentaire de ma vie",
+          q:"Et si un film répondait à une question que je ne pose pas ?",
+          i:"profil de curiosité", o:"1 documentaire + 1 question",
+          p:"L'app détecte une question latente dans les goûts de l'utilisateur et propose le documentaire qui y répond, avec une seule question à garder en tête pendant le visionnage." },
+        { n:48, g:5, t:"Mon défi du jour",
+          q:"Et si trois minutes par jour me rendaient plus créatif ?",
+          i:"1 tap pour accepter", o:"1 micro-défi créatif",
+          p:"Chaque jour un micro-défi de trois minutes (photographier une ombre, écrire six mots, dessiner de mémoire). Aucune consigne longue, aucun matériel." },
+        { n:49, g:5, t:"La visite surprise de ma ville",
+          q:"Et si ma propre ville devenait un voyage ?",
+          i:"position + 40 minutes", o:"1 parcours surprise",
+          p:"L'app compose un parcours de quarante minutes dans la ville de l'utilisateur, avec cinq arrêts et une histoire par arrêt. On ne sait où l'on va qu'en marchant." },
+        { n:50, g:5, t:"Mon année en découvertes",
+          q:"Et si mon année se résumait à ce que j'ai aimé découvrir ?",
+          i:"historique d'usage", o:"rétrospective + 10 envies",
+          p:"En fin d'année, l'app rassemble tout ce qu'elle a fait découvrir à l'utilisateur, en tire un récit et dix envies pour l'année suivante." },
+      ];
+
+      const selection = new Set();
+      const groupesEl = document.getElementById("groupes");
+
+      for (const g of GROUPES) {
+        const section = document.createElement("section");
+        section.className = "groupe";
+        section.id = "g" + g.id;
+        section.innerHTML =
+          '<div class="groupe-tete">' +
+            '<span class="badge-g">GROUPE ' + g.id + "</span>" +
+            "<h2>" + g.titre + "</h2>" +
+            '<button class="tout" data-g="' + g.id + '">tout sélectionner</button>' +
+          "</div>" +
+          '<p class="groupe-desc">' + g.desc + "</p>";
+
+        const cartes = document.createElement("div");
+        cartes.className = "cartes";
+
+        for (const id of IDEES.filter((x) => x.g === g.id)) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "carte";
+          b.setAttribute("role", "checkbox");
+          b.setAttribute("aria-checked", "false");
+          b.dataset.n = id.n;
+          b.innerHTML =
+            '<span class="case" aria-hidden="true"></span>' +
+            '<span class="num">' + String(id.n).padStart(2, "0") + "</span>" +
+            '<span class="titre">' + id.t + "</span>" +
+            '<span class="question">« ' + id.q + " »</span>" +
+            '<span class="chips"><span>entrée : ' + id.i + "</span><span>sortie : " + id.o + "</span></span>";
+          b.addEventListener("click", () => basculer(id.n, b));
+          cartes.appendChild(b);
+        }
+
+        section.appendChild(cartes);
+        groupesEl.appendChild(section);
+      }
+
+      function basculer(n, el) {
+        if (selection.has(n)) {
+          selection.delete(n);
+          el.setAttribute("aria-checked", "false");
+        } else {
+          selection.add(n);
+          el.setAttribute("aria-checked", "true");
+        }
+        majBarre();
+      }
+
+      document.querySelectorAll(".tout").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const g = Number(btn.dataset.g);
+          const ids = IDEES.filter((x) => x.g === g).map((x) => x.n);
+          const tousPris = ids.every((n) => selection.has(n));
+          ids.forEach((n) => {
+            const el = document.querySelector('.carte[data-n="' + n + '"]');
+            if (tousPris) { selection.delete(n); el.setAttribute("aria-checked", "false"); }
+            else { selection.add(n); el.setAttribute("aria-checked", "true"); }
+          });
+          majBarre();
+        });
+      });
+
+      function majBarre() {
+        document.getElementById("compte").textContent = selection.size;
+        document.getElementById("barre").classList.toggle("visible", selection.size > 0);
+      }
+
+      document.getElementById("vider").addEventListener("click", () => {
+        selection.clear();
+        document.querySelectorAll(".carte").forEach((el) => el.setAttribute("aria-checked", "false"));
+        majBarre();
+      });
+
+      function construirePrompt() {
+        const choisies = IDEES.filter((x) => selection.has(x.n));
+        const tete =
+          "SESSION ALPHABETTE — nouvelle application\n" +
+          "Lis BRIEFING-ALPHABETTE.md (sinon AGENTS.md) avant de coder.\n\n" +
+          "PRINCIPE DIRECTEUR : l'utilisateur ne décrit rien et ne cherche rien.\n" +
+          "Il donne un signal déjà présent (photo, voix, geste, position, historique)\n" +
+          "et l'application lui rend une réponse unique, prête à l'emploi.\n" +
+          "Jamais de formulaire, jamais de liste de 40 résultats.\n\n";
+
+        if (choisies.length === 1) {
+          const c = choisies[0];
+          return tete +
+            "APPLICATION : « " + c.t + " »\n" +
+            "Question posée à l'utilisateur : « " + c.q + " »\n" +
+            "Entrée (zéro effort) : " + c.i + "\n" +
+            "Sortie (une seule) : " + c.o + "\n\n" +
+            "CONCEPT\n" + c.p + "\n\n" +
+            "MVP ATTENDU\n" +
+            "- 1 écran d'entrée qui accepte : " + c.i + "\n" +
+            "- 1 écran de résultat : " + c.o + ", avec un bouton d'action concret\n" +
+            "- Le profil de goût se stocke et s'améliore à chaque usage\n" +
+            "- IA Mistral (BYOK ou clé managée), repli local si aucune clé\n\n" +
+            "CONTRAINTES ALPHABETTE\n" +
+            "- Générer avec bun run new:app <slug> \"Nom\" \"Sous-titre\" ; ne jamais recoder les barres\n" +
+            "- Identité uniquement dans src/alphabette.app.ts, couleurs dérivées de accent\n" +
+            "- Tarifs, IBAN et liens de paiement lus depuis le hub, jamais en dur\n" +
+            "- Livrer : bun run lint, bun run build, et un aperçu réel (capture)\n";
+        }
+
+        let txt = tete + "PROGRAMME : une application qui réunit les idées suivantes.\n" +
+          "La première est le cœur du produit (MVP) ; les autres sont des modules à ouvrir ensuite.\n\n";
+        choisies.forEach((c, k) => {
+          txt += (k + 1) + ". « " + c.t + " »\n" +
+            "   Question : « " + c.q + " »\n" +
+            "   Entrée : " + c.i + " -> Sortie : " + c.o + "\n" +
+            "   Concept : " + c.p + "\n\n";
+        });
+        txt += "ARCHITECTURE\n" +
+          "- Un seul profil de goût partagé, alimenté par chaque module\n" +
+          "- Chaque module = 1 écran d'entrée + 1 résultat + 1 action\n" +
+          "- IA Mistral (BYOK ou clé managée), repli local\n\n" +
+          "CONTRAINTES ALPHABETTE\n" +
+          "- bun run new:app pour partir de @alphabette/shell ; barres jamais recodées\n" +
+          "- Identité dans src/alphabette.app.ts, couleurs dérivées de accent\n" +
+          "- Tarifs / IBAN / paiement lus depuis le hub, jamais en dur\n" +
+          "- Livrer : bun run lint, bun run build, aperçu réel\n";
+        return txt;
+      }
+
+      const dlg = document.getElementById("dlg");
+      const pre = document.getElementById("prompt");
+      document.getElementById("ouvrir").addEventListener("click", () => {
+        pre.textContent = construirePrompt();
+        dlg.showModal();
+      });
+      document.getElementById("fermer").addEventListener("click", () => dlg.close());
+
+      document.getElementById("copier").addEventListener("click", async (e) => {
+        const btn = e.currentTarget;
+        try {
+          await navigator.clipboard.writeText(pre.textContent);
+        } catch {
+          const r = document.createRange();
+          r.selectNodeContents(pre);
+          const s = getSelection();
+          s.removeAllRanges();
+          s.addRange(r);
+          document.execCommand("copy");
+        }
+        btn.textContent = "Copié ✓";
+        btn.classList.add("fait");
+        setTimeout(() => { btn.textContent = "Copier le prompt"; btn.classList.remove("fait"); }, 1800);
+      });
+    </script>
+  </body>
+</html>

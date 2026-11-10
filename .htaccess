@@ -1,0 +1,35 @@
+# Généré par scripts/build-static.mjs — ne pas modifier à la main.
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.json$">
+    Header set Access-Control-Allow-Origin "*"
+    Header set Cache-Control "public, max-age=60"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTPS partout
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Continuité des anciennes adresses
+  RewriteRule ^goat(/.*)?$ https://goatchevretheking.alphabette.fr$1 [R=301,L]
+
+  # API publique figée au build
+  RewriteRule ^api/apps/?$ api/apps.json [L]
+  RewriteRule ^api/ai/config/?$ api/ai/config.json [L]
+  RewriteRule ^api/health/?$ api/health.json [L]
+  RewriteRule ^api/admin/session/?$ api/admin-session.json [L]
+
+  # Le reste de l'API (écriture, IA, admin) n'existe pas en statique
+  RewriteRule ^api/ - [R=404,L]
+
+  # Application monopage : toute autre adresse renvoie index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>

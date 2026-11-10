@@ -1,0 +1,44 @@
+{
+  "activeProvider": "gemini",
+  "availableProviders": [
+    {
+      "id": "mistral_cloud",
+      "name": "Mistral AI Cloud Officiel France (Recommandé Production)",
+      "description": "Technologie exclusive Mistral AI hébergée en France/Europe. 100% conforme RGPD, zéro réutilisation des données d'utilisateurs pour l'entraînement.",
+      "status": "ready",
+      "phase": "Production Officielle",
+      "headquarters": "Paris, France"
+    },
+    {
+      "id": "hybrid_mistral",
+      "name": "Moteur Hybride Souverain (Local Metal/Ollama + Secours Mistral Cloud)",
+      "description": "Priorité au serveur local haute performance (Mac Metal / Ollama, 0€ d'inférence). Bascule transparente vers l'API Cloud officielle de Mistral AI en cas de coupure.",
+      "status": "ready",
+      "phase": "Hybride Résilient",
+      "localUrl": "http://localhost:11434",
+      "timeoutMs": 3500,
+      "isMistralCloudConfigured": false
+    },
+    {
+      "id": "local",
+      "name": "Serveur Local Dédié Strict (Mac Metal / Ollama)",
+      "description": "100% Hors-ligne / In-House. Aucune transmission de données à l'extérieur.",
+      "status": "ready",
+      "phase": "Local Déconnecté"
+    },
+    {
+      "id": "gemini",
+      "name": "Phase 1 : Google Gemini (Prototypage & Sandbox)",
+      "description": "Actif pour la validation technique initiale dans Google AI Studio.",
+      "status": "missing_key",
+      "phase": "Prototypage"
+    }
+  ],
+  "localServerConfig": {
+    "endpoint": "http://localhost:11434",
+    "model": "mistral-nemo",
+    "timeoutMs": 3500
+  },
+  "hasGeminiKey": false,
+  "hasMistralKey": false
+}
