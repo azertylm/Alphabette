@@ -1,0 +1,1562 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wikicom · l'annuaire des bons outils du web</title>
+    <meta name="description" content="Un annuaire de sites et de logiciels utiles, libres et légaux : vie privée, IA, éducation, lecture, Linux, macOS." />
+    <!-- Manifest PWA embarqué -->
+    <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;Wikicom&quot;,&quot;short_name&quot;:&quot;Wikicom&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#0b0d13&quot;,&quot;theme_color&quot;:&quot;#6c8cff&quot;}">
+    <style>
+      /* ============================================================
+         WIKICOM — Thèmes & Variables CSS
+         ============================================================ */
+      :root[data-theme="dark"] {
+        --bg: #0b0d13; --bg-soft: #11141d; --card: #161a26; --card-hover: #1c2130;
+        --border: #232941; --text: #e8ebf4; --text-dim: #9aa3b8; --text-faint: #6b7490;
+        --accent: #6c8cff; --accent-2: #a06cff; --accent-3: #ff6ca8;
+      }
+      :root[data-theme="onyx"] {
+        --bg: #000000; --bg-soft: #080808; --card: #121212; --card-hover: #1a1a1a;
+        --border: #222222; --text: #ffffff; --text-dim: #a0a0a0; --text-faint: #555555;
+        --accent: #3b82f6; --accent-2: #8b5cf6; --accent-3: #ec4899;
+      }
+      :root[data-theme="cyber"] {
+        --bg: #050511; --bg-soft: #0b0b1a; --card: #101026; --card-hover: #181836;
+        --border: #2a2a5e; --text: #f0f0ff; --text-dim: #a3a3cc; --text-faint: #666699;
+        --accent: #00ffcc; --accent-2: #ff007f; --accent-3: #7928ca;
+      }
+
+      :root { --radius: 16px; --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: var(--font); background: var(--bg); color: var(--text);
+        line-height: 1.6; min-height: 100vh; transition: background 0.3s, color 0.3s;
+        background-image:
+          radial-gradient(ellipse 60% 40% at 20% -10%, rgba(108, 140, 255, 0.12), transparent),
+          radial-gradient(ellipse 50% 35% at 85% 0%, rgba(160, 108, 255, 0.08), transparent);
+        background-repeat: no-repeat;
+      }
+
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+      /* ---------- En-tête ---------- */
+      header {
+        position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+        background: var(--bg); border-bottom: 1px solid var(--border); opacity: 0.95;
+      }
+      .nav { display: flex; align-items: center; gap: 16px; padding: 14px 0; }
+      .logo {
+        display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px;
+        cursor: pointer; user-select: none;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      }
+      .logo-badge {
+        width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; font-size: 16px; font-weight: 900;
+        -webkit-text-fill-color: #fff;
+      }
+      .nav-links { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+      .nav-links a {
+        color: var(--text-dim); text-decoration: none; font-size: 14px;
+        padding: 7px 14px; border-radius: 999px; transition: 0.2s; cursor: pointer;
+      }
+      .nav-links a:hover { color: var(--text); background: var(--card); }
+      .theme-select {
+        background: var(--card); border: 1px solid var(--border); color: var(--text-dim);
+        padding: 6px 12px; border-radius: 999px; font-size: 13px; font-family: var(--font); cursor: pointer; outline: none;
+      }
+
+      /* ---------- Recherche & Filtres ---------- */
+      .search-zone { padding: 46px 0 20px; text-align: center; }
+      .search-zone h1 {
+        font-size: clamp(32px, 5.5vw, 52px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.15; margin-bottom: 12px;
+      }
+      .search-zone h1 .grad {
+        background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      }
+      .search-zone p { color: var(--text-dim); max-width: 580px; margin: 0 auto 20px; font-size: 16px; }
+      
+      .search-container { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+      .search-box {
+        display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--border);
+        border-radius: 999px; padding: 6px 8px 6px 20px; transition: 0.2s;
+      }
+      .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(108, 140, 255, 0.15); }
+      .search-box svg { flex-shrink: 0; color: var(--text-faint); }
+      .search-box input {
+        flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 15px; font-family: var(--font);
+      }
+      .search-box input::placeholder { color: var(--text-faint); }
+      .search-actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+      .action-pill-btn {
+        background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-dim);
+        padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.18s;
+        font-family: var(--font); display: inline-flex; align-items: center; gap: 6px;
+      }
+      .action-pill-btn:hover { background: var(--card); color: var(--text); border-color: var(--accent); }
+      .action-pill-btn.active-pack { background: var(--accent); color: #fff; border-color: var(--accent); }
+      
+      .search-box .btn-clear { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 18px; padding: 0 8px; display: none; }
+      .search-box .btn-clear:hover { color: var(--text); }
+      .search-box .btn-go {
+        border: none; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #fff; font-weight: 700; font-size: 14px; padding: 9px 20px; border-radius: 999px; font-family: var(--font);
+      }
+
+      .quick-tags { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; justify-content: center; flex-wrap: wrap; }
+      .quick-tags::-webkit-scrollbar { display: none; }
+      .q-tag {
+        font-size: 12px; font-weight: 600; color: var(--text-dim); background: var(--card); border: 1px solid var(--border);
+        padding: 5px 12px; border-radius: 999px; cursor: pointer; transition: 0.15s; white-space: nowrap;
+      }
+      .q-tag:hover { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+      /* ---------- Grilles & Vues (Liste / Grille compacte) ---------- */
+      .section-head { display: flex; align-items: baseline; gap: 14px; margin: 38px 0 16px; }
+      .section-head h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+      .section-head .count { color: var(--text-faint); font-size: 14px; margin-left: auto; display: flex; gap: 10px; align-items: center; }
+      .view-toggle-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 16px; padding: 2px 6px; border-radius: 6px; }
+      .view-toggle-btn.active { background: var(--card); color: var(--accent); }
+
+      .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+      .cat-card {
+        background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px;
+        cursor: pointer; transition: 0.22s; position: relative; overflow: hidden;
+      }
+      .cat-card::before {
+        content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1), var(--c2)); opacity: 0; transition: 0.25s;
+      }
+      .cat-card:hover { transform: translateY(-4px); border-color: var(--c1); }
+      .cat-card:hover::before { opacity: 0.07; }
+      .cat-card > * { position: relative; }
+      .cat-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+      .cat-icon {
+        width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: grid; place-items: center;
+        background: linear-gradient(135deg, var(--c1), var(--c2)); color: #fff;
+      }
+      .cat-icon svg { width: 22px; height: 22px; }
+      .cat-card h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+      .cat-card p { color: var(--text-dim); font-size: 14px; }
+      .cat-meta { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+      .cat-tag { font-size: 12px; color: var(--text-dim); background: var(--bg-soft); border: 1px solid var(--border); padding: 3px 10px; border-radius: 999px; }
+      .cat-count-badge { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--c1); }
+
+      /* Entrées de liens (Vue Liste vs Vue Grille) */
+      .entries { display: grid; gap: 10px; }
+      .entries.view-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+      
+      .entry {
+        display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 12px 16px; transition: 0.18s; cursor: pointer; position: relative;
+      }
+      .entry:hover { background: var(--card-hover); border-color: var(--accent); transform: translateX(2px); }
+      .entries.view-grid .entry { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; }
+      
+      .entry-checkbox { display: none; accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+      body.selecting-packs .entry-checkbox { display: inline-block; }
+
+      .entry-favicon { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; object-fit: contain; background: var(--bg-soft); }
+      .entry-title { color: var(--text); text-decoration: none; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+      .entry:hover .entry-title { color: var(--accent); text-decoration: underline; }
+      .entry .note { color: var(--text-dim); font-size: 13px; flex: 1; }
+      .entries.view-grid .entry .note { width: 100%; font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+      .entry-actions-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+      .entries.view-grid .entry-actions-right { margin-left: 0; width: 100%; justify-content: space-between; margin-top: 4px; border-top: 1px solid var(--border); padding-top: 8px; }
+
+      .fav-btn, .copy-btn, .note-btn { background: none; border: none; cursor: pointer; font-size: 15px; color: var(--text-faint); transition: 0.15s; padding: 3px; }
+      .fav-btn:hover, .fav-btn.favorited { color: #f59e0b; transform: scale(1.15); }
+      .copy-btn:hover { color: var(--accent); }
+      .note-btn:hover, .note-btn.has-note { color: var(--accent-2); }
+
+      .entry .cat-pill { font-size: 11px; font-weight: 600; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 2px 8px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+      .entry .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--accent); background: var(--bg-soft); border: 1px solid var(--border); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+      /* Surlignage de recherche */
+      mark { background: rgba(108, 140, 255, 0.3); color: var(--text); border-radius: 3px; padding: 0 2px; }
+
+      /* Barre flottante Packs */
+      #pack-bar {
+        position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--accent);
+        padding: 12px 24px; border-radius: 999px; display: flex; align-items: center; gap: 16px; z-index: 90;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      #pack-bar.show { bottom: 30px; }
+
+      /* Guide interactif Checklist */
+      .checklist-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; user-select: none; }
+      .checklist-item input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
+      .checklist-item.done span { text-decoration: line-through; opacity: 0.5; }
+      .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
+      .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; transition: width 0.3s; }
+
+      /* Modales */
+      .modal-overlay {
+        position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+        display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: 0.2s;
+      }
+      .modal-overlay.open { opacity: 1; pointer-events: auto; }
+      .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 480px; padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+      .modal-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+      .form-group { margin-bottom: 14px; }
+      .form-group label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; }
+      .form-group input, .form-group select, .form-group textarea {
+        width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px;
+        color: var(--text); font-size: 14px; font-family: var(--font); outline: none; transition: 0.2s;
+      }
+      .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+      .modal-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+      .btn-cancel { background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-dim); padding: 9px 18px; border-radius: 999px; cursor: pointer; font-weight: 700; }
+      .btn-submit { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; color: #fff; padding: 9px 22px; border-radius: 999px; cursor: pointer; font-weight: 700; }
+
+      #toast {
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+        background: var(--card); border: 1px solid var(--accent); color: var(--text); padding: 12px 24px;
+        border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      #toast.show { transform: translateX(-50%) translateY(0); }
+
+      footer { margin-top: 80px; border-top: 1px solid var(--border); padding: 34px 0 44px; color: var(--text-faint); font-size: 14px; text-align: center; }
+      footer a { color: var(--text-dim); }
+      .empty-msg { text-align: center; color: var(--text-faint); padding: 60px 0; font-size: 16px; }
+
+      @media (max-width: 720px) {
+        .nav-links { display: none; }
+        .grid { grid-template-columns: 1fr; }
+        .entry { flex-wrap: wrap; }
+        .entry .note { width: 100%; order: 3; margin-top: 4px; }
+      }
+          /* Téléphone et grande taille (BIG) : la recherche est instantanée, le bouton « Chercher » n'est pas nécessaire. */
+      .search-box input { min-width: 0; }
+      @media (max-width: 560px) { .search-box .btn-go { display: none; } }
+      html[data-ab-taille="grand"] .search-box .btn-go, html[data-ab-taille="tres-grand"] .search-box .btn-go { display: none; }
+      html { overflow-x: clip; }
+      .section-head { flex-wrap: wrap; gap: 8px; }
+      .section-head .count { flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <script src="/assets/alphabette-barre.js" data-cle="wikicom" data-nom="Wikicom" data-sous-titre="L'annuaire des bons outils du web" data-accent="#0d9488"></script>
+    <header>
+      <div class="wrap nav">
+        <div class="logo" onclick="go('')">
+          <span class="logo-badge">W</span> wikicom
+        </div>
+        <nav class="nav-links">
+          <a onclick="go('')">Accueil</a>
+          <a onclick="go('guide')">Guide interactif</a>
+          <a onclick="go('contribuer')">Contribuer</a>
+          <select class="theme-select" onchange="changerTheme(this.value)" id="theme-selector" title="Choisir le thème">
+            <option value="dark">🌙 Nuit</option>
+            <option value="onyx">🖤 Onyx AMOLED</option>
+            <option value="cyber">⚡ Cyber Neon</option>
+          </select>
+          <a class="action-pill-btn" onclick="ouvrirModalAjout()" style="padding:7px 14px">＋ Ajouter</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="app"></main>
+
+    <!-- Barre flottante pour le Créateur de Packs -->
+    <div id="pack-bar">
+      <span id="pack-count" style="font-weight: 700; font-size: 14px;">0 lien(s) sélectionné(s)</span>
+      <button class="action-pill-btn" onclick="copierPackSelectionne()" style="background:var(--accent); color:#fff; border:none;">📋 Copier la sélection</button>
+      <button class="action-pill-btn" onclick="basculerModePack()">✕ Quitter</button>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast">Action réussie !</div>
+
+    <!-- Modale d'ajout de lien -->
+    <div class="modal-overlay" id="modal-ajout">
+      <div class="modal-box">
+        <h3>Ajouter une ressource</h3>
+        <form onsubmit="soumettreNouveauLien(event)">
+          <div class="form-group">
+            <label>Nom du site / outil</label>
+            <input type="text" id="n-nom" required placeholder="Ex: Mon super outil" />
+          </div>
+          <div class="form-group">
+            <label>URL (Lien web)</label>
+            <input type="url" id="n-url" required placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label>Catégorie cible</label>
+            <select id="n-cat" required></select>
+          </div>
+          <div class="form-group">
+            <label>Courte description (Note)</label>
+            <input type="text" id="n-note" placeholder="Ex: Un outil formidable pour..." />
+          </div>
+          <div class="form-group">
+            <label>Tag (ex: Gratuit, Open Source...)</label>
+            <input type="text" id="n-tag" placeholder="Personnel" />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="fermerModalAjout()">Annuler</button>
+            <button type="submit" class="btn-submit">Ajouter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modale de Note Personnelle -->
+    <div class="modal-overlay" id="modal-note">
+      <div class="modal-box">
+        <h3>📝 Mémo personnel sur l'outil</h3>
+        <p id="note-target-name" style="color:var(--text-dim); font-size:14px; margin-bottom:14px;"></p>
+        <div class="form-group">
+          <textarea id="note-text" rows="4" placeholder="Écris ton mémo ici (ex: Astuce de configuration, raccourci...)"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="fermerModalNote()">Annuler</button>
+          <button type="button" class="btn-submit" onclick="sauvegarderNotePerso()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="wrap">
+        Wikicom, une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a> · Uniquement des outils légaux ·
+        <a onclick="go('contribuer')" style="cursor:pointer">Comment contribuer</a>
+      </div>
+    </footer>
+
+    <script>
+      /* ============================================================
+         WIKICOM — DONNÉES ET GESTION LOCALE (20 IDÉES INTÉGRÉES)
+         ============================================================ */
+      const WIKI_BASE = [
+        {
+          "id": "adblock",
+          "nom": "Blocage de pub / Vie privée",
+          "desc": "Bloqueurs de publicités, anti-traçage, DNS, VPN et navigateurs pour protéger votre vie privée.",
+          "couleurs": [
+            "#2dd4bf",
+            "#22d3ee"
+          ],
+          "icone": "bouclier",
+          "sections": [
+            {
+              "titre": "Bloqueurs de publicités",
+              "items": [
+                {
+                  "nom": "uBlock Origin",
+                  "url": "https://ublockorigin.com/",
+                  "note": "Le bloqueur de publicités et de traqueurs open-source le plus efficace du web",
+                  "tag": "Incontournable"
+                },
+                {
+                  "nom": "SponsorBlock",
+                  "url": "https://sponsor.ajay.app/",
+                  "note": "Passe automatiquement les segments sponsorisés, intros et rappels dans les vidéos YouTube",
+                  "tag": "YouTube"
+                },
+                {
+                  "nom": "AdGuard DNS",
+                  "url": "https://adguard-dns.io/fr/public-dns.html",
+                  "note": "Serveurs DNS gratuits bloquant les publicités et traqueurs sur tout votre appareil",
+                  "tag": "DNS"
+                }
+              ]
+            },
+            {
+              "titre": "Outils anti-traçage & Vie privée",
+              "items": [
+                {
+                  "nom": "PrivacyGuides",
+                  "url": "https://www.privacyguides.org/fr/",
+                  "note": "Guide francophone indépendant recommandant les meilleurs outils respectueux de la vie privée",
+                  "tag": "Guide"
+                },
+                {
+                  "nom": "Privacy Badger",
+                  "url": "https://privacybadger.org/",
+                  "note": "Extension de l'EFF bloquant automatiquement les traqueurs invisibles inter-sites",
+                  "tag": "Anti-Tracker"
+                },
+                {
+                  "nom": "ClearURLs",
+                  "url": "https://docs.clearurls.xyz/",
+                  "note": "Supprime automatiquement les paramètres de pistage dans les adresses URL",
+                  "tag": "Open Source"
+                },
+                {
+                  "nom": "Mullvad VPN",
+                  "url": "https://mullvad.net/fr",
+                  "note": "VPN ultra-confidentiel sans adresse e-mail ni données personnelles requises",
+                  "tag": "VPN"
+                }
+              ]
+            },
+            {
+              "titre": "Navigateurs axés confidentialité",
+              "items": [
+                {
+                  "nom": "Mullvad Browser",
+                  "url": "https://mullvad.net/fr/browser",
+                  "note": "Navigateur développé avec le projet Tor pour éliminer l'empreinte numérique",
+                  "tag": "Ultra Privé"
+                },
+                {
+                  "nom": "LibreWolf",
+                  "url": "https://librewolf.net/",
+                  "note": "Fork indépendant de Firefox préconfiguré pour la sécurité, sans aucune télémétrie",
+                  "tag": "Desktop"
+                },
+                {
+                  "nom": "Brave Browser",
+                  "url": "https://brave.com/fr/",
+                  "note": "Navigateur rapide basé sur Chromium avec bloqueur de publicités et de pistage intégré",
+                  "tag": "Chromium"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ia",
+          "nom": "Intelligence artificielle",
+          "desc": "Assistants IA, LLM locaux, génération d'images/audio et outils de productivité.",
+          "couleurs": [
+            "#6c8cff",
+            "#a06cff"
+          ],
+          "icone": "robot",
+          "sections": [
+            {
+              "titre": "Assistants conversationnels",
+              "items": [
+                {
+                  "nom": "ChatGPT",
+                  "url": "https://chatgpt.com/",
+                  "note": "L'assistant conversationnel multimodal de référence développé par OpenAI",
+                  "tag": "Populaire"
+                },
+                {
+                  "nom": "Claude AI",
+                  "url": "https://claude.ai/",
+                  "note": "Modèle d'Anthropic réputé pour la programmation, la rédaction et l'analyse de longs documents",
+                  "tag": "Code & Texte"
+                },
+                {
+                  "nom": "Google AI Studio",
+                  "url": "https://aistudio.google.com/",
+                  "note": "Environnement développeur donnant un accès gratuit aux modèles Gemini Pro",
+                  "tag": "Gratuit / Dev"
+                }
+              ]
+            },
+            {
+              "titre": "Génération d'images & Médias",
+              "items": [
+                {
+                  "nom": "ComfyUI",
+                  "url": "https://github.com/comfyanonymous/ComfyUI",
+                  "note": "Interface nodale ultra-optimisée pour faire tourner Flux, SDXL et générations vidéo en local",
+                  "tag": "Local / Pro"
+                },
+                {
+                  "nom": "Suno",
+                  "url": "https://suno.com/",
+                  "note": "Création de chansons complètes (voix, paroles et instruments) à partir d'une description texte",
+                  "tag": "Musique IA"
+                }
+              ]
+            },
+            {
+              "titre": "Outils de productivité & IA Locale",
+              "items": [
+                {
+                  "nom": "Ollama",
+                  "url": "https://ollama.com/",
+                  "note": "Lancez et gérez des LLM (Mistral, Llama, Qwen, Gemma) en local en une seule commande",
+                  "tag": "IA Locale"
+                },
+                {
+                  "nom": "Perplexity AI",
+                  "url": "https://www.perplexity.ai/",
+                  "note": "Moteur de recherche IA répondant avec des sources web vérifiables en temps réel",
+                  "tag": "Recherche"
+                },
+                {
+                  "nom": "NotebookLM",
+                  "url": "https://notebooklm.google.com/",
+                  "note": "Carnet de recherche IA de Google analysant vos PDF, notes et générant des résumés audio",
+                  "tag": "Synthèse"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "musique",
+          "nom": "Musique & Podcasts",
+          "desc": "Radios du monde entier et podcasts, à écouter librement.",
+          "couleurs": [
+            "#f472b6",
+            "#a06cff"
+          ],
+          "icone": "musique",
+          "sections": [
+            {
+              "titre": "Musique & Radios",
+              "items": [
+                {
+                  "nom": "Radio Garden",
+                  "url": "https://radio.garden/",
+                  "note": "Faites tourner le globe terrestre pour écouter en direct n'importe quelle radio locale du monde",
+                  "tag": "Radio Monde ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Podcasts & Livres Audio",
+              "items": [
+                {
+                  "nom": "AntennaPod",
+                  "url": "https://antennapod.org/",
+                  "note": "Le meilleur lecteur de podcasts open-source, sans publicité et respectueux de votre vie privée",
+                  "tag": "Open Source ⭐"
+                },
+                {
+                  "nom": "Listen Notes",
+                  "url": "https://www.listennotes.com/",
+                  "note": "Moteur de recherche permettant de chercher un sujet ou une personne dans des millions de podcasts",
+                  "tag": "Moteur"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "jeux",
+          "nom": "Jeux vidéo",
+          "desc": "Émulateurs, lanceurs et mods pour les jeux que vous possédez.",
+          "couleurs": [
+            "#4ade80",
+            "#22d3ee"
+          ],
+          "icone": "manette",
+          "sections": [
+            {
+              "titre": "Émulation",
+              "items": [
+                {
+                  "nom": "RetroArch",
+                  "url": "https://www.retroarch.com/",
+                  "note": "Interface unifiée multiplateforme regroupant les moteurs (cores) de dizaines de consoles",
+                  "tag": "Tout-en-un"
+                }
+              ]
+            },
+            {
+              "titre": "Mods, Lanceurs & Outils",
+              "items": [
+                {
+                  "nom": "Playnite",
+                  "url": "https://playnite.link/",
+                  "note": "Gestionnaire de bibliothèque open-source unifiant Steam, Epic, GOG et émulateurs",
+                  "tag": "Launcher ⭐"
+                },
+                {
+                  "nom": "Nexus Mods",
+                  "url": "https://www.nexusmods.com/",
+                  "note": "La plus grande plateforme mondiale de création et partage de mods pour jeux PC",
+                  "tag": "Mods ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lecture",
+          "nom": "Lecture",
+          "desc": "Livres du domaine public et bibliothèques numériques en accès libre.",
+          "couleurs": [
+            "#a3e635",
+            "#4ade80"
+          ],
+          "icone": "livre",
+          "sections": [
+            {
+              "titre": "Livres & Ebooks",
+              "items": [
+                {
+                  "nom": "Project Gutenberg",
+                  "url": "https://www.gutenberg.org/",
+                  "note": "Plus de 70 000 œuvres littéraires classiques libres de droits à télécharger gratuitement",
+                  "tag": "Domaine Public"
+                },
+                {
+                  "nom": "Gallica (BnF)",
+                  "url": "https://gallica.bnf.fr/",
+                  "note": "La bibliothèque numérique de la Bibliothèque nationale de France : livres, journaux, cartes et images en accès libre",
+                  "tag": "Domaine public ⭐"
+                },
+                {
+                  "nom": "Wikisource",
+                  "url": "https://fr.wikisource.org/",
+                  "note": "Bibliothèque libre de textes du domaine public, relus par des bénévoles",
+                  "tag": "Libre"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "telechargement",
+          "nom": "Sécurité & partage de fichiers",
+          "desc": "Vérifier un fichier suspect, protéger ses mots de passe et envoyer de gros fichiers.",
+          "couleurs": [
+            "#38bdf8",
+            "#6c8cff"
+          ],
+          "icone": "telecharger",
+          "sections": [
+            {
+              "titre": "Cybersécurité & Utilitaires",
+              "items": [
+                {
+                  "nom": "VirusTotal",
+                  "url": "https://www.virustotal.com/",
+                  "note": "Analysez gratuitement tout fichier ou lien suspect avec plus de 70 moteurs antivirus",
+                  "tag": "Antivirus Web ⭐"
+                },
+                {
+                  "nom": "Bitwarden",
+                  "url": "https://bitwarden.com/",
+                  "note": "Gestionnaire de mots de passe open-source sécurisé et synchronisé sur tous vos appareils",
+                  "tag": "Mots de passe ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Hébergeurs & Partage de fichiers",
+              "items": [
+                {
+                  "nom": "GoFile",
+                  "url": "https://gofile.io/",
+                  "note": "Hébergeur de fichiers gratuit, rapide et sans limite de bande passante pour le partage",
+                  "tag": "Hébergeur ⭐"
+                },
+                {
+                  "nom": "SwissTransfer",
+                  "url": "https://www.swisstransfer.com/fr-fr",
+                  "note": "Envoyez jusqu'à 50 Go de fichiers gratuitement, sans inscription et hébergé en Suisse",
+                  "tag": "Jusqu'à 50 Go ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "education",
+          "nom": "Éducation",
+          "desc": "Cours universitaires, MOOCs, apprentissage des langues, programmation et outils académiques.",
+          "couleurs": [
+            "#fbbf24",
+            "#f59e0b"
+          ],
+          "icone": "diplome",
+          "sections": [
+            {
+              "titre": "Cours en ligne",
+              "items": [
+                {
+                  "nom": "Khan Academy",
+                  "url": "https://fr.khanacademy.org/",
+                  "note": "Association offrant des milliers de cours et exercices interactifs gratuits",
+                  "tag": "Gratuit ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Programmation",
+              "items": [
+                {
+                  "nom": "CS50 (Harvard)",
+                  "url": "https://cs50.harvard.edu/x/",
+                  "note": "Le célèbre cours d'introduction à l'informatique, au code et au web de l'Université Harvard",
+                  "tag": "Harvard ⭐"
+                },
+                {
+                  "nom": "freeCodeCamp",
+                  "url": "https://www.freecodecamp.org/",
+                  "note": "Apprenez à coder gratuitement (HTML/CSS, JS, Python) via des exercices dans le navigateur",
+                  "tag": "Interactif ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mobile",
+          "nom": "Android / iOS",
+          "desc": "Applications libres pour Android et installation sur iPhone.",
+          "couleurs": [
+            "#34d399",
+            "#2dd4bf"
+          ],
+          "icone": "mobile",
+          "sections": [
+            {
+              "titre": "Applications Android",
+              "items": [
+                {
+                  "nom": "F-Droid",
+                  "url": "https://f-droid.org/fr/",
+                  "note": "Le catalogue d'applications Android libres et open-source, sans pisteurs",
+                  "tag": "Open Source ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Applications iOS",
+              "items": [
+                {
+                  "nom": "AltStore / SideStore",
+                  "url": "https://sidestore.io/",
+                  "note": "Installez et rafraîchissez des applications externes (.ipa) sur votre iPhone ou iPad sans jailbreak",
+                  "tag": "Sideloading ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "desktop",
+          "nom": "Linux / macOS",
+          "desc": "Le $HOME de Linux et macOS : dépôts d'applications, outils terminal, gaming et personnalisation.",
+          "couleurs": [
+            "#60a5fa",
+            "#38bdf8"
+          ],
+          "icone": "terminal",
+          "sections": [
+            {
+              "titre": "Logiciels Linux",
+              "items": [
+                {
+                  "nom": "Flathub",
+                  "url": "https://flathub.org/fr",
+                  "note": "La boutique centrale d'applications Linux (Flatpak) compatible avec toutes les distributions",
+                  "tag": "App Store ⭐"
+                },
+                {
+                  "nom": "ArchWiki",
+                  "url": "https://wiki.archlinux.org/",
+                  "note": "La meilleure documentation technique du monde Linux, précieuse quelle que soit votre distribution",
+                  "tag": "Bible Linux ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Logiciels macOS",
+              "items": [
+                {
+                  "nom": "Homebrew",
+                  "url": "https://brew.sh/fr/",
+                  "note": "Le gestionnaire de paquets indispensable sur macOS pour installer outils et applications",
+                  "tag": "Incontournable ⭐"
+                },
+                {
+                  "nom": "Raycast",
+                  "url": "https://www.raycast.com/",
+                  "note": "Remplaçant surpuissant de Spotlight avec presse-papiers, gestion de fenêtres et extensions",
+                  "tag": "Productivité ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "multilingue",
+          "nom": "Multilingue",
+          "desc": "Services libres francophones et outils de traduction.",
+          "couleurs": [
+            "#f87171",
+            "#f472b6"
+          ],
+          "icone": "globe",
+          "sections": [
+            {
+              "titre": "Français",
+              "items": [
+                {
+                  "nom": "Framasoft",
+                  "url": "https://framasoft.org/",
+                  "note": "Association française proposant des dizaines de services web libres, gratuits et éthiques",
+                  "tag": "Libre FR"
+                }
+              ]
+            },
+            {
+              "titre": "Traduction",
+              "items": [
+                {
+                  "nom": "Immersive Translate",
+                  "url": "https://immersivetranslate.com/",
+                  "note": "Extension traduisant côte à côte les pages web étrangères, PDF, EPUB et sous-titres vidéo",
+                  "tag": "Incontournable ⭐"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "divers",
+          "nom": "Divers",
+          "desc": "Index, boîte à outils web, actualités, cartes, cuisine, voyage et expériences interactives.",
+          "couleurs": [
+            "#c084fc",
+            "#f472b6"
+          ],
+          "icone": "etoile",
+          "sections": [
+            {
+              "titre": "Annuaires & Outils",
+              "items": [
+                {
+                  "nom": "Awesome Lists",
+                  "url": "https://github.com/sindresorhus/awesome",
+                  "note": "Méga-répertoire GitHub recensant les listes communautaires « Awesome » sur tous les sujets",
+                  "tag": "GitHub ⭐"
+                },
+                {
+                  "nom": "Stirling-PDF",
+                  "url": "https://stirlingpdf.io/",
+                  "note": "Boîte à outils complète et open-source pour fusionner, découper, compresser et convertir vos PDF",
+                  "tag": "Outil PDF ⭐"
+                }
+              ]
+            },
+            {
+              "titre": "Voyage, Cartes & Nourriture",
+              "items": [
+                {
+                  "nom": "Based Cooking",
+                  "url": "https://based.cooking/",
+                  "note": "Recettes de cuisine communautaires sans aucune publicité et sans blabla inutile",
+                  "tag": "Cuisine ⭐"
+                },
+                {
+                  "nom": "Organic Maps",
+                  "url": "https://organicmaps.app/fr/",
+                  "note": "Cartes et navigation GPS 100 % hors-ligne, open-source, ultra-rapides et sans aucun pistage",
+                  "tag": "GPS Hors-ligne ⭐"
+                }
+              ]
+            }
+          ]
+        }
+      ];
+
+      /* Stockage & États globaux */
+      let WIKI = JSON.parse(JSON.stringify(WIKI_BASE));
+      let favoris = JSON.parse(localStorage.getItem("wikicom_favs") || "[]");
+      let recents = JSON.parse(localStorage.getItem("wikicom_recents") || "[]");
+      let ajoutsPerso = JSON.parse(localStorage.getItem("wikicom_perso") || "[]");
+      let notesPerso = JSON.parse(localStorage.getItem("wikicom_notes") || "{}"); // { url: "note..." }
+      let currentTheme = localStorage.getItem("wikicom_theme") || "dark";
+      let currentView = localStorage.getItem("wikicom_view") || "list"; // list | grid
+      let isSelectingPacks = false;
+      let selectedPackLinks = [];
+      let currentNoteUrl = null;
+
+      document.documentElement.setAttribute("data-theme", currentTheme);
+
+      function changerTheme(theme) {
+        currentTheme = theme;
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("wikicom_theme", theme);
+      }
+
+      function basculerVue(vue) {
+        currentView = vue;
+        localStorage.setItem("wikicom_view", vue);
+        render(window.location.hash.replace(/^#\//, ""));
+      }
+
+      function fusionnerPerso() {
+        WIKI = JSON.parse(JSON.stringify(WIKI_BASE));
+        ajoutsPerso.forEach(item => {
+          let catObj = WIKI.find(c => c.id === item.catId);
+          if (catObj && catObj.sections.length > 0) {
+            catObj.sections[0].items.unshift(item);
+          }
+        });
+      }
+      fusionnerPerso();
+
+      function sauvegarderPerso() {
+        localStorage.setItem("wikicom_perso", JSON.stringify(ajoutsPerso));
+      }
+
+      function toggleFav(e, url) {
+        e.stopPropagation();
+        if (favoris.includes(url)) {
+          favoris = favoris.filter(f => f !== url);
+          montrerToast("Retiré des favoris");
+        } else {
+          favoris.push(url);
+          montrerToast("Ajouté aux favoris ⭐");
+        }
+        localStorage.setItem("wikicom_favs", JSON.stringify(favoris));
+        render(window.location.hash.replace(/^#\//, ""));
+      }
+
+      function copierLienDirect(e, url, nom) {
+        e.stopPropagation();
+        navigator.clipboard.writeText(url).then(() => {
+          montrerToast(`🔗 Lien copié : ${nom}`);
+        });
+      }
+
+      function ouvrirNotePerso(e, url, nom) {
+        e.stopPropagation();
+        currentNoteUrl = url;
+        document.getElementById("note-target-name").textContent = `Outil : ${nom}`;
+        document.getElementById("note-text").value = notesPerso[url] || "";
+        document.getElementById("modal-note").classList.add("open");
+      }
+
+      function fermerModalNote() {
+        document.getElementById("modal-note").classList.remove("open");
+        currentNoteUrl = null;
+      }
+
+      function sauvegarderNotePerso() {
+        if (!currentNoteUrl) return;
+        const txt = document.getElementById("note-text").value.trim();
+        if (txt) {
+          notesPerso[currentNoteUrl] = txt;
+        } else {
+          delete notesPerso[currentNoteUrl];
+        }
+        localStorage.setItem("wikicom_notes", JSON.stringify(notesPerso));
+        fermerModalNote();
+        montrerToast("Mémo personnel enregistré !");
+        render(window.location.hash.replace(/^#\//, ""));
+      }
+
+      function ajouterRecent(item) {
+        recents = recents.filter(r => r.url !== item.url);
+        recents.unshift({ nom: item.nom, url: item.url, note: item.note || "", tag: item.tag || "" });
+        if (recents.length > 5) recents.pop();
+        localStorage.setItem("wikicom_recents", JSON.stringify(recents));
+      }
+
+      function ouvrirLien(e, url, item) {
+        if (isSelectingPacks) {
+          e.preventDefault();
+          const chk = e.currentTarget.querySelector('.entry-checkbox');
+          if (chk) {
+            chk.checked = !chk.checked;
+            gererSelectionPack(url, chk.checked);
+          }
+          return;
+        }
+        e.preventDefault();
+        ajouterRecent(item);
+        try {
+          const win = window.open(url, '_blank');
+          if (!win || win.closed || typeof win.closed == 'undefined') {
+            window.location.href = url;
+          }
+        } catch (err) {
+          window.location.href = url;
+        }
+      }
+
+      function basculerModePack() {
+        isSelectingPacks = !isSelectingPacks;
+        selectedPackLinks = [];
+        document.body.classList.toggle("selecting-packs", isSelectingPacks);
+        const bar = document.getElementById("pack-bar");
+        if (isSelectingPacks) {
+          bar.classList.add("show");
+          montrerToast("Mode Pack activé : cochez les liens à regrouper");
+        } else {
+          bar.classList.remove("show");
+        }
+        render(window.location.hash.replace(/^#\//, ""));
+      }
+
+      function gererSelectionPack(url, checked) {
+        if (checked) {
+          if (!selectedPackLinks.includes(url)) selectedPackLinks.push(url);
+        } else {
+          selectedPackLinks = selectedPackLinks.filter(u => u !== url);
+        }
+        document.getElementById("pack-count").textContent = `${selectedPackLinks.length} lien(s) sélectionné(s)`;
+      }
+
+      function copierPackSelectionne() {
+        if (selectedPackLinks.length === 0) {
+          montrerToast("Aucun lien sélectionné !");
+          return;
+        }
+        let texte = "📦 Mon Pack de ressources Wikicom :\n\n";
+        WIKI.forEach(c => c.sections.forEach(s => s.items.forEach(i => {
+          if (selectedPackLinks.includes(i.url)) {
+            texte += `• ${i.nom} : ${i.url}\n`;
+          }
+        })));
+        navigator.clipboard.writeText(texte).then(() => {
+          montrerToast("Pack copié dans le presse-papiers !");
+          basculerModePack();
+        });
+      }
+
+      function montrerToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
+      }
+
+      /* Surlignage du texte recherché */
+      function surligner(texte, q) {
+        if (!q) return texte;
+        const regex = new RegExp(`(${q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+        return texte.replace(regex, '<mark>$1</mark>');
+      }
+
+      /* Pages simples (Guide interactif & Contribuer) */
+      const PAGES = {
+        guide: {
+          titre: "Guide interactif & Starter Pack",
+          html: `
+            <p style="color:var(--text-dim);max-width:640px; margin-bottom:20px;">Cochez les étapes de sécurisation et de configuration de votre appareil pour valider votre mise en route.</p>
+            <div class="progress-bar"><div class="progress-fill" id="checklist-progress"></div></div>
+            <div class="subsec">
+              <div class="subsec-head"><h3>Checklist de sécurisation</h3></div>
+              <div class="entries" style="gap:12px;">
+                <div class="entry checklist-item" onclick="cocherChecklist(this)">
+                  <input type="checkbox" />
+                  <div>
+                    <strong style="color:var(--text)">1. Installer un bloqueur de publicités</strong>
+                    <div class="note">Installez l'extension uBlock Origin pour naviguer sans pubs ni traqueurs.</div>
+                  </div>
+                </div>
+                <div class="entry checklist-item" onclick="cocherChecklist(this)">
+                  <input type="checkbox" />
+                  <div>
+                    <strong style="color:var(--text)">2. Sécuriser votre navigateur</strong>
+                    <div class="note">Utilisez Brave, LibreWolf ou Mullvad Browser pour éliminer le fingerprinting.</div>
+                  </div>
+                </div>
+                <div class="entry checklist-item" onclick="cocherChecklist(this)">
+                  <input type="checkbox" />
+                  <div>
+                    <strong style="color:var(--text)">3. Adopter un gestionnaire de mots de passe</strong>
+                    <div class="note">Installez Bitwarden pour chiffrer et générer des mots de passe uniques.</div>
+                  </div>
+                </div>
+                <div class="entry checklist-item" onclick="cocherChecklist(this)">
+                  <input type="checkbox" />
+                  <div>
+                    <strong style="color:var(--text)">4. Vérifier un fichier avant de l'ouvrir</strong>
+                    <div class="note">Un doute sur une pièce jointe ou un téléchargement ? Passez-le dans VirusTotal avant de l'ouvrir.</div>
+                  </div>
+                </div>
+              </div>
+            </div>`,
+        },
+        contribuer: {
+          titre: "Contribuer & Sauvegarde",
+          html: `
+            <p style="color:var(--text-dim);max-width:640px">Gérez vos données locales et exportez vos favoris vers votre navigateur ou vos applications.</p>
+            <div class="subsec">
+              <div class="subsec-head"><h3>Outils de sauvegarde & Export</h3></div>
+              <div class="entries" style="gap:14px">
+                <div class="entry" style="cursor:pointer" onclick="exporterDonneesJSON()">
+                  <span class="dot"></span>
+                  <span class="entry-title">Exporter mes favoris et notes (.json)</span>
+                  <span class="note">— Sauvegarde complète de vos données Wikicom</span>
+                </div>
+                <div class="entry" style="cursor:pointer" onclick="exporterMarquePagesHTML()">
+                  <span class="dot"></span>
+                  <span class="entry-title">Exporter en Marque-pages navigateur (.html)</span>
+                  <span class="note">— Prêt à être importé dans Chrome, Brave ou Firefox</span>
+                </div>
+                <div class="entry" style="cursor:pointer" onclick="document.getElementById('import-file').click()">
+                  <span class="dot"></span>
+                  <span class="entry-title">Importer un fichier de sauvegarde JSON</span>
+                  <span class="note">— Restaure vos favoris et liens personnalisés</span>
+                </div>
+                <input type="file" id="import-file" style="display:none" accept=".json" onchange="importerDonneesJSON(event)" />
+              </div>
+            </div>`,
+        },
+      };
+
+      /* Gestion de la Checklist interactive */
+      function cocherChecklist(el) {
+        const chk = el.querySelector('input');
+        chk.checked = !chk.checked;
+        el.classList.toggle('done', chk.checked);
+        mettreAJourProgressionChecklist();
+      }
+
+      function mettreAJourProgressionChecklist() {
+        const items = document.querySelectorAll('.checklist-item');
+        const checked = document.querySelectorAll('.checklist-item input:checked');
+        const pct = (checked.length / items.length) * 100;
+        const fill = document.getElementById('checklist-progress');
+        if (fill) fill.style.width = `${pct}%`;
+      }
+
+      /* Icônes SVG */
+      const ICONES = {
+        bouclier: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+        robot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></svg>',
+        play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg>',
+        musique: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+        manette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4c1.6 0 2.4-1 3.2-2h4.4c.8 1 1.6 2 3.2 2a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4z"/></svg>',
+        livre: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
+        telecharger: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>',
+        magnet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l-4-4 6.7-6.7a4.5 4.5 0 0 1 6.4 6.4L8.4 17.4 4.6 13.6"/><path d="M14 7l3 3"/><path d="M10 11l3 3"/></svg>',
+        diplome: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>',
+        mobile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg>',
+        terminal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 9l3 3-3 3"/><path d="M13 15h4"/></svg>',
+        globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+        etoile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>',
+      };
+
+      const app = document.getElementById("app");
+      const icone = (n) => ICONES[n] || ICONES.etoile;
+      const accent = (c) => `--c1:${c.couleurs[0]};--c2:${c.couleurs[1]}`;
+
+      function getFavicon(url) {
+        try {
+          const domain = new URL(url).hostname;
+          return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+        } catch(e) {
+          return "";
+        }
+      }
+
+      function totalItems(cat) {
+        return cat.sections.reduce((n, s) => n + s.items.length, 0);
+      }
+
+      function cardHTML(cat) {
+        const tags = cat.sections.slice(0, 3).map((s) => `<span class="cat-tag">${s.titre}</span>`).join("");
+        const nb = totalItems(cat);
+        return `
+          <div class="cat-card" style="${accent(cat)}" onclick="go('${cat.id}')">
+            <div class="cat-top">
+              <div class="cat-icon">${icone(cat.icone)}</div>
+              <h3>${cat.nom}</h3>
+            </div>
+            <p>${cat.desc}</p>
+            <div class="cat-meta">
+              ${tags}
+              <span class="cat-count-badge">${nb} liens</span>
+            </div>
+            <span class="cat-arrow">→</span>
+          </div>`;
+      }
+
+      function entryHTML(item, cat, secTitre = null, q = "") {
+        const isFav = favoris.includes(item.url);
+        const hasNote = Boolean(notesPerso[item.url]);
+        const isChecked = selectedPackLinks.includes(item.url);
+        const faviconUrl = getFavicon(item.url);
+        const faviconImg = faviconUrl ? `<img class="entry-favicon" src="${faviconUrl}" onerror="this.style.display='none'" alt="" />` : "";
+        const catPill = secTitre ? `<span class="cat-pill" onclick="event.stopPropagation(); go('${cat.id}')">${cat.nom}</span>` : "";
+        const noteText = notesPerso[item.url] || item.note || "";
+        
+        return `
+          <div class="entry" style="${accent(cat)}" onclick="ouvrirLien(event, '${item.url}', ${escapeItem(item)})">
+            <input type="checkbox" class="entry-checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); gererSelectionPack('${item.url}', this.checked)" />
+            ${faviconImg}
+            <span class="dot" style="${faviconUrl ? 'display:none' : ''}"></span>
+            <span class="entry-title">${surligner(item.nom, q)}</span>
+            ${noteText ? `<span class="note">— ${surligner(noteText, q)}</span>` : ""}
+            <div class="entry-actions-right">
+              ${catPill}
+              ${item.tag ? `<span class="tag">${item.tag}</span>` : ""}
+              <button class="note-btn ${hasNote ? 'has-note' : ''}" onclick="ouvrirNotePerso(event, '${item.url}', '${item.nom}')" title="Mémo perso">✏️</button>
+              <button class="copy-btn" onclick="copierLienDirect(event, '${item.url}', '${item.nom}')" title="Copier le lien">🔗</button>
+              <button class="fav-btn ${isFav ? 'favorited' : ''}" onclick="toggleFav(event, '${item.url}')" title="Favori">★</button>
+            </div>
+          </div>`;
+      }
+
+      function escapeItem(item) {
+        return JSON.stringify(item).replace(/"/g, '&quot;');
+      }
+
+      function renderHome() {
+        let favItems = [];
+        if (favoris.length > 0) {
+          WIKI.forEach(cat => {
+            cat.sections.forEach(sec => {
+              sec.items.forEach(item => {
+                if (favoris.includes(item.url) && !favItems.some(f => f.item.url === item.url)) {
+                  favItems.push({ item, cat, secTitre: sec.titre });
+                }
+              });
+            });
+          });
+        }
+
+        const viewClass = currentView === 'grid' ? 'view-grid' : '';
+
+        app.innerHTML = `
+          <div class="search-zone">
+            <h1>Bienvenue sur <span class="grad">wikicom</span></h1>
+            <p>L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux.</p>
+            
+            <div class="search-container">
+              <div class="search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input id="q" type="text" placeholder="Rechercher (ex : uBlock, podcast, Linux…)" oninput="filtrer(this.value)" />
+                <button class="btn-clear" id="btn-clear" onclick="effacerRecherche()" title="Effacer">✕</button>
+                <button class="btn-go" onclick="document.getElementById('q').focus()">Chercher</button>
+              </div>
+
+              <div class="search-actions">
+                <button class="action-pill-btn" onclick="pepiteAleatoire()">🎲 Pépite Aléatoire</button>
+                <button class="action-pill-btn" onclick="basculerModePack()">📦 Créateur de Pack</button>
+                <button class="action-pill-btn" onclick="ouvrirModalAjout()">＋ Ajouter un lien</button>
+              </div>
+
+              <div class="quick-tags">
+                <span class="q-tag" onclick="filtrerTag('⭐')">⭐ Incontournables</span>
+                <span class="q-tag" onclick="filtrerTag('Open Source')">Open Source</span>
+                <span class="q-tag" onclick="filtrerTag('Gratuit')">Gratuit</span>
+                
+                <span class="q-tag" onclick="filtrerTag('App Android')">Android</span>
+                <span class="q-tag" onclick="filtrerTag('Local')">Local</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Favoris -->
+          <div id="fav-section" style="${favItems.length ? '' : 'display:none'}">
+            <div class="section-head">
+              <h2>⭐ Mes Favoris épinglés</h2>
+              <span class="count">${favItems.length} favori(s)</span>
+            </div>
+            <div class="entries ${viewClass}">
+              ${favItems.map(f => entryHTML(f.item, f.cat, f.secTitre)).join("")}
+            </div>
+          </div>
+
+          <!-- Section Récents -->
+          <div id="recent-section" style="${recents.length ? '' : 'display:none'}">
+            <div class="section-head">
+              <h2>⏱️ Récemment consultés</h2>
+              <span class="count">Derniers clics</span>
+            </div>
+            <div class="entries ${viewClass}">
+              ${recents.map(r => {
+                let foundCat = WIKI[0];
+                let foundSec = "Général";
+                WIKI.forEach(c => c.sections.forEach(s => {
+                  if(s.items.some(i => i.url === r.url)) { foundCat = c; foundSec = s.titre; }
+                }));
+                return entryHTML(r, foundCat, foundSec);
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- Résultats de recherche directe -->
+          <div id="direct-results-wrap" style="display:none">
+            <div class="section-head">
+              <h2>Résultats de recherche</h2>
+              <span class="count" id="links-count">0 lien</span>
+            </div>
+            <div class="entries ${viewClass}" id="links-results"></div>
+          </div>
+
+          <div class="section-head" id="cat-section-head">
+            <h2>Parcourir les catégories</h2>
+            <div class="count">
+              <span id="count">${WIKI.length} catégories</span>
+              <button class="view-toggle-btn ${currentView === 'list' ? 'active' : ''}" onclick="basculerVue('list')" title="Vue Liste">☰</button>
+              <button class="view-toggle-btn ${currentView === 'grid' ? 'active' : ''}" onclick="basculerVue('grid')" title="Vue Grille">⊞</button>
+            </div>
+          </div>
+          <div class="grid" id="grid"></div>
+          <div class="empty-msg" id="empty" style="display:none">Aucun résultat trouvé pour cette recherche.</div>`;
+
+        document.getElementById("theme-selector").value = currentTheme;
+        document.getElementById("grid").innerHTML = WIKI.map(cardHTML).join("");
+      }
+
+      function effacerRecherche() {
+        const input = document.getElementById("q");
+        if (input) {
+          input.value = "";
+          filtrer("");
+          input.focus();
+        }
+      }
+
+      function filtrerTag(tag) {
+        const input = document.getElementById("q");
+        if (input) {
+          input.value = tag;
+          filtrer(tag);
+          input.focus();
+        }
+      }
+
+      function filtrer(rawQ) {
+        const q = rawQ.trim().toLowerCase();
+        const btnClear = document.getElementById("btn-clear");
+        if (btnClear) btnClear.style.display = q ? "block" : "none";
+
+        const directWrap = document.getElementById("direct-results-wrap");
+        const linksResults = document.getElementById("links-results");
+        const linksCount = document.getElementById("links-count");
+        const catHead = document.getElementById("cat-section-head");
+        const favSec = document.getElementById("fav-section");
+        const recentSec = document.getElementById("recent-section");
+
+        if (favSec) favSec.style.display = q ? "none" : (favoris.length ? "block" : "none");
+        if (recentSec) recentSec.style.display = q ? "none" : (recents.length ? "block" : "none");
+
+        let matchedLinks = [];
+        if (q) {
+          WIKI.forEach((cat) => {
+            cat.sections.forEach((sec) => {
+              sec.items.forEach((item) => {
+                const notePerso = notesPerso[item.url] || "";
+                const hay = (item.nom + " " + (item.note || "") + " " + notePerso + " " + (item.tag || "") + " " + sec.titre + " " + cat.nom).toLowerCase();
+                if (hay.includes(q)) {
+                  matchedLinks.push({ item, cat, secTitre: sec.titre });
+                }
+              });
+            });
+          });
+        }
+
+        const viewClass = currentView === 'grid' ? 'view-grid' : '';
+
+        if (q && matchedLinks.length > 0) {
+          directWrap.style.display = "block";
+          linksResults.className = `entries ${viewClass}`;
+          linksResults.innerHTML = matchedLinks.map((m) => entryHTML(m.item, m.cat, m.secTitre, q)).join("");
+          linksCount.textContent = matchedLinks.length + (matchedLinks.length > 1 ? " ressources" : " ressource");
+        } else {
+          directWrap.style.display = "none";
+          linksResults.innerHTML = "";
+        }
+
+        const visibleCats = WIKI.filter(
+          (c) =>
+            !q ||
+            c.nom.toLowerCase().includes(q) ||
+            c.desc.toLowerCase().includes(q) ||
+            c.sections.some(
+              (s) =>
+                s.titre.toLowerCase().includes(q) ||
+                s.items.some((i) => (i.nom + " " + (i.note || "") + " " + (i.tag || "")).toLowerCase().includes(q))
+            )
+        );
+
+        document.getElementById("grid").innerHTML = visibleCats.map(cardHTML).join("");
+        document.getElementById("count").textContent = visibleCats.length + (visibleCats.length > 1 ? " catégories" : " catégorie");
+
+        if (catHead) {
+          catHead.style.display = visibleCats.length ? "flex" : "none";
+        }
+
+        const rienTrouve = visibleCats.length === 0 && matchedLinks.length === 0;
+        document.getElementById("empty").style.display = rienTrouve ? "block" : "none";
+      }
+
+      function pepiteAleatoire() {
+        let tousLesLiens = [];
+        WIKI.forEach(cat => {
+          cat.sections.forEach(sec => {
+            sec.items.forEach(item => {
+              tousLesLiens.push({ item, cat, secTitre: sec.titre });
+            });
+          });
+        });
+        if (tousLesLiens.length > 0) {
+          const rand = tousLesLiens[Math.floor(Math.random() * tousLesLiens.length)];
+          montrerToast(`🎲 Découverte : ${rand.item.nom}`);
+          window.open(rand.item.url, '_blank');
+          ajouterRecent(rand.item);
+        }
+      }
+
+      function renderCategory(cat) {
+        const viewClass = currentView === 'grid' ? 'view-grid' : '';
+        const sections = cat.sections
+          .map((s) => {
+            const items = s.items.length
+              ? s.items.map((i) => entryHTML(i, cat)).join("")
+              : `<div class="entry placeholder">＋ Emplacement libre</div>`;
+            return `
+              <div class="subsec">
+                <div class="subsec-head"><h3>${s.titre}</h3></div>
+                <div class="entries ${viewClass}">${items}</div>
+              </div>`;
+          })
+          .join("");
+
+        const sourceBtn = cat.source
+          ? ''
+          : "";
+
+        app.innerHTML = `
+          <div class="breadcrumb">
+            <a onclick="go('')">Accueil</a> <span>/</span> <span>${cat.nom}</span>
+          </div>
+          <div class="cat-hero" style="${accent(cat)}">
+            <div class="cat-icon">${icone(cat.icone)}</div>
+            <div>
+              <h1>${cat.nom}</h1>
+              <p>${cat.desc}</p>
+              ${sourceBtn}
+            </div>
+          </div>
+          ${sections}
+          <div style="margin-top:50px">
+            <a onclick="go('')" style="color:var(--accent);cursor:pointer;font-size:15px">← Retour à l'accueil</a>
+          </div>`;
+      }
+
+      function renderPage(p) {
+        app.innerHTML = `
+          <div class="breadcrumb">
+            <a onclick="go('')">Accueil</a> <span>/</span> <span>${p.titre}</span>
+          </div>
+          <div class="cat-hero">
+            <div><h1>${p.titre}</h1></div>
+          </div>
+          ${p.html}
+          <div style="margin-top:50px">
+            <a onclick="go('')" style="color:var(--accent);cursor:pointer;font-size:15px">← Retour à l'accueil</a>
+          </div>`;
+          if(window.location.hash.includes('guide')) {
+            mettreAJourProgressionChecklist();
+          }
+      }
+
+      function render(route) {
+        window.scrollTo(0, 0);
+        const cat = WIKI.find((c) => c.id === route);
+        if (cat) renderCategory(cat);
+        else if (PAGES[route]) renderPage(PAGES[route]);
+        else renderHome();
+      }
+
+      function go(route) {
+        window.location.hash = route ? "#/" + route : "#/";
+        render(route);
+      }
+
+      window.addEventListener("hashchange", () => {
+        render(window.location.hash.replace(/^#\//, ""));
+      });
+
+      /* Raccourci / ou Ctrl+K */
+      window.addEventListener("keydown", (e) => {
+        if ((e.key === "/" || (e.ctrlKey && e.key.toLowerCase() === 'k')) && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          go('');
+          setTimeout(() => {
+            const input = document.getElementById("q");
+            if (input) input.focus();
+          }, 50);
+        }
+      });
+
+      /* Gestion modale d'ajout */
+      function ouvrirModalAjout() {
+        const select = document.getElementById("n-cat");
+        select.innerHTML = WIKI.map(c => `<option value="${c.id}">${c.nom}</option>`).join("");
+        document.getElementById("modal-ajout").classList.add("open");
+      }
+      function fermerModalAjout() {
+        document.getElementById("modal-ajout").classList.remove("open");
+      }
+      function soumettreNouveauLien(e) {
+        e.preventDefault();
+        const nom = document.getElementById("n-nom").value.trim();
+        const url = document.getElementById("n-url").value.trim();
+        const catId = document.getElementById("n-cat").value;
+        const note = document.getElementById("n-note").value.trim();
+        const tag = document.getElementById("n-tag").value.trim() || "Personnel";
+
+        ajoutsPerso.push({ nom, url, note, tag, catId });
+        sauvegarderPerso();
+        fusionnerPerso();
+        fermerModalAjout();
+        montrerToast("Lien ajouté sur cet appareil.");
+        render(window.location.hash.replace(/^#\//, ""));
+      }
+
+      /* Export / Import JSON & Marque-pages HTML */
+      function exporterDonneesJSON() {
+        const data = { favoris, ajoutsPerso, notesPerso };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "wikicom-sauvegarde.json"; a.click();
+        montrerToast("Sauvegarde JSON exportée !");
+      }
+
+      function exporterMarquePagesHTML() {
+        let html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">\n<TITLE>Bookmarks</TITLE>\n<H1>Bookmarks</H1>\n<DL><p>\n`;
+        WIKI.forEach(cat => {
+          html += `    <DT><H3>${cat.nom}</H3>\n    <DL><p>\n`;
+          cat.sections.forEach(sec => {
+            sec.items.forEach(item => {
+              html += `        <DT><A HREF="${item.url}">${item.nom}</A>\n`;
+            });
+          });
+          html += `    </DL><p>\n`;
+        });
+        html += `</DL><p>\n`;
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "wikicom-bookmarks.html"; a.click();
+        montrerToast("Marque-pages HTML exportés !");
+      }
+
+      function importerDonneesJSON(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (data.favoris) favoris = data.favoris;
+            if (data.ajoutsPerso) ajoutsPerso = data.ajoutsPerso;
+            if (data.notesPerso) notesPerso = data.notesPerso;
+            localStorage.setItem("wikicom_favs", JSON.stringify(favoris));
+            localStorage.setItem("wikicom_notes", JSON.stringify(notesPerso));
+            sauvegarderPerso();
+            fusionnerPerso();
+            montrerToast("Données restaurées avec succès !");
+            render("");
+          } catch(err) {
+            alert("Erreur lors de l'importation du fichier JSON.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      render(window.location.hash.replace(/^#\//, ""));
+    </script>
+  </body>
+</html>

@@ -39,18 +39,6 @@
       "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres."
     },
     {
-      "id": "echo",
-      "name": "ÉCHO",
-      "slug": "echo",
-      "icon": "Sparkles",
-      "status": "actif",
-      "url": "https://echo.alphabette.fr",
-      "subdomain": "echo",
-      "createdAt": "2026-10-20T10:13:53.850Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
-      "description": "Racontez votre journée pendant vingt secondes : ÉCHO devine vos goûts et vous propose cinq découvertes."
-    },
-    {
       "id": "ecobatisol",
       "name": "ÉCOBÂTISOL",
       "slug": "ecobatisol",
@@ -113,18 +101,6 @@
       "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements."
     },
     {
-      "id": "kurate",
-      "name": "KURATE",
-      "slug": "kurate",
-      "icon": "Sparkles",
-      "status": "actif",
-      "badge": "Nouveau",
-      "url": "https://alphabette.fr/kurate/",
-      "description": "Choisissez vos thèmes : Kurate prépare vos recherches d'actualités et de vidéos du jour.",
-      "createdAt": "2026-11-10T22:04:24.000Z",
-      "updatedAt": "2026-11-10T22:04:24.000Z"
-    },
-    {
       "id": "oeil-atelier",
       "name": "L'ŒIL DE L'ATELIER",
       "slug": "oeil-atelier",
@@ -175,19 +151,6 @@
       "description": "Les questions de l'actualité du moment et celles des syndicats, associations et citoyens : répondez en un geste."
     },
     {
-      "id": "sante-citoyenne",
-      "name": "SANTÉ CITOYENNE",
-      "slug": "sante-citoyenne",
-      "icon": "HeartPulse",
-      "status": "actif",
-      "url": "https://santecitoyenne.alphabette.fr",
-      "subdomain": "santecitoyenne",
-      "createdAt": "2026-10-22T09:52:39.373Z",
-      "updatedAt": "2026-11-10T14:00:00.000Z",
-      "gratuit": true,
-      "description": "Un carnet du moral, des exercices de respiration, l'entraide et une pochette d'urgence."
-    },
-    {
       "id": "bonplansenior",
       "name": "SENIOR BON PLAN",
       "slug": "bonplansenior",
@@ -214,16 +177,16 @@
       "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement."
     },
     {
-      "id": "studioinfo",
-      "name": "STUDIOINFO",
-      "slug": "studioinfo",
-      "icon": "Lightbulb",
+      "id": "wikicom",
+      "name": "WIKICOM",
+      "slug": "wikicom",
+      "icon": "Bookmark",
       "status": "actif",
       "badge": "Nouveau",
-      "url": "https://alphabette.fr/studioinfo/",
-      "description": "Vingt modules pour résumer, vérifier et explorer un sujet avec l'IA, sources à l'appui.",
-      "createdAt": "2026-11-10T22:04:24.000Z",
-      "updatedAt": "2026-11-10T22:04:24.000Z"
+      "url": "https://alphabette.fr/wikicom/",
+      "description": "L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux.",
+      "createdAt": "2026-11-10T22:52:30.000Z",
+      "updatedAt": "2026-11-10T22:52:30.000Z"
     }
   ]
 }
