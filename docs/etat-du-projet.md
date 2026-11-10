@@ -32,6 +32,10 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **BIG dans la base commune (`packages/shell`)** : désormais visible sur téléphone (il y était masqué), en couleur, et « Grand » passe de +12 % à +31 %. **Les applications gardent leur copie de la base : lancer `bun run sync:shell` puis republier chacune pour qu'elles en profitent.**
 - Valentin teste les applications et va en retirer / améliorer : passer une appli en `brouillon` dans `data/apps-registry.json` suffit à la retirer de l'accueil.
 
+## 11/11 : retraits demandés par Valentin et Wikicom légal
+- **Retirées d'alphabette.fr** : Écho, Santé Citoyenne, Kurate, StudioInfo. Registre → `brouillon` ; Écho et Santé Citoyenne retirées de `data/apps-sources.json` (plus publiées, leurs dépôts GitHub sont intacts) ; pages `public/kurate/` et `public/studioinfo/` supprimées (récupérables dans l'historique Git). Les sous-domaines `echo.` et `santecitoyenne.alphabette.fr` restent déclarés chez OVH : à supprimer dans l'espace client si le retrait est définitif.
+- **Wikicom** publié en version légale : `alphabette.fr/wikicom/` (46 liens gardés, 33 retirés : streaming et jeux piratés, ROMs, bibliothèques pirates, torrents, tous les index FMHY ; ajout de Gallica, Wikisource et F-Droid). Avec la double barre et BIG.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
