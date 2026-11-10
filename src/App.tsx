@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
+import { AppShell, type AlphaAppConfig } from '@alphabette/shell';
+import '@alphabette/shell/style.css';
+import { Accueil } from './components/Accueil';
 import { AppGrid } from './components/AppGrid';
-import { AppsRegistrySection } from './components/AppsRegistrySection';
 import { PricingSection } from './components/PricingSection';
 import { SovereignAiStudio } from './components/SovereignAiStudio';
 import { CommitmentsSection } from './components/CommitmentsSection';
@@ -57,6 +57,14 @@ const PROFIL_DIRECTION = (): UserProfile => ({
 import { AppItem, UserProfile, PlanType } from './types';
 import { isAppPlan, isEcosystemPlan, isTrialPlan, planToast } from './plans';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
+
+/** Le hub porte lui aussi la double barre de l'écosystème (avec le bouton BIG). */
+const HUB_APP: AlphaAppConfig = {
+  key: 'alphabette',
+  name: 'Alphabette',
+  tagline: 'Des applis qui simplifient la vie',
+  accent: '#0f766e',
+};
 
 const STORAGE_KEY_APPS = 'alphabette_apps_v4';
 const STORAGE_KEY_USER = 'alphabette_user_v4';
@@ -227,32 +235,14 @@ export default function App() {
         </div>
       )}
 
-      {/* 1. Header with Alphabette Logo, SSO user, Mistral AI badge and subscription status */}
-      <Header
-        user={user}
-        onChangeUserPlan={handleChangePlan}
-        onOpenUrlManager={ouvrirUrls}
-        onOpenDbArchitecture={ouvrirArchitecture}
-        onOpenPricing={handleScrollToPricing}
-        onOpenVipModal={() => handleOpenVipModal('activate')}
-        configuredCount={configuredCount}
-        totalAppsCount={nbApps}
-      />
-
-      {/* Main Page Body */}
+      {/* 1. Double barre de l'écosystème (DON, BIG, Jour/Nuit) + accueil « Kiosque clair » */}
+      <AppShell app={HUB_APP}>
       <main className="flex-1">
-        
-        {/* 2. Hero Section: Mission, engagements Mistral AI, essai 7j & grille tarifaire */}
-        <Hero
-          onOpenPricing={handleScrollToPricing}
-          onOpenUrlManager={ouvrirUrls}
-          onOpenDbArchitecture={ouvrirArchitecture}
-          appsCount={nbApps}
-        />
 
-        {/* 3. Nos Applications : registre central (applications réellement en ligne) */}
-        <AppsRegistrySection />
+        {/* 2. Phrase d'accroche, recherche et tuiles des applications (registre central) */}
+        <Accueil appsCount={nbApps} />
 
+        <div className="sections-claires">
         {/* 3 bis. Ancien catalogue de démonstration : réservé à l'administration (?admin) */}
         {MODE_ADMIN && <AppGrid
           apps={visibleApps}
@@ -289,15 +279,19 @@ export default function App() {
         {/* 7. Commitments Section: Souveraineté Mistral AI, RGPD France, Zéro Entraînement Public */}
         <CommitmentsSection />
 
+        </div>
       </main>
 
       {/* 8. Footer avec lien obligatoire vers https://alphabette.fr */}
+      <div className="sections-claires">
       <Footer
         onOpenPricing={handleScrollToPricing}
         onOpenUrlManager={ouvrirUrls}
         onOpenDbArchitecture={ouvrirArchitecture}
         appsCount={nbApps}
       />
+      </div>
+      </AppShell>
 
       {/* Modals */}
       {/* URL / Links Manager Modal */}

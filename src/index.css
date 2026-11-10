@@ -1,1 +1,96 @@
 @import "tailwindcss";
+
+/* ===================== Accueil « Kiosque clair » =====================
+   Tout est en rem : le bouton BIG de la barre agrandit l'ensemble.
+   Les couleurs suivent le thème Jour / Nuit de la base commune. */
+.ab-shell > .ab-content { padding: 0; }
+
+.accueil {
+  --acc: #0f766e;
+  --acc-fond: #fbf8f3;
+  --acc-carte: #ffffff;
+  --acc-encre: #1c1917;
+  --acc-doux: #44403c;
+  --acc-trait: #e7e5e4;
+  background: var(--acc-fond);
+  color: var(--acc-encre);
+  padding-bottom: 2.5rem;
+}
+html[data-ab-theme='nuit'] .accueil {
+  --acc: #5eead4;
+  --acc-fond: #0b1220;
+  --acc-carte: #111a2e;
+  --acc-encre: #f1f5f9;
+  --acc-doux: #cbd5e1;
+  --acc-trait: #24324d;
+}
+.accueil__haut,
+.accueil__applis { max-width: 72rem; margin: 0 auto; padding: 0 1.125rem; }
+.accueil__haut { padding-top: 1.75rem; }
+.accueil__titre { font-size: 2.125rem; line-height: 1.12; font-weight: 900; letter-spacing: -0.02em; }
+.accueil__titre em { font-style: normal; color: var(--acc); }
+.accueil__phrase { font-size: 1.25rem; line-height: 1.45; margin-top: 0.75rem; color: var(--acc-doux); max-width: 46rem; }
+.accueil__recherche {
+  margin-top: 1.25rem; display: flex; align-items: center; gap: 0.625rem; max-width: 42rem;
+  background: var(--acc-carte); border: 2px solid var(--acc-encre); border-radius: 1rem; padding: 0 1rem;
+}
+.accueil__recherche:focus-within { outline: 3px solid var(--acc); outline-offset: 2px; }
+.accueil__recherche svg { width: 1.5rem; height: 1.5rem; flex: none; color: var(--acc-doux); }
+.accueil__recherche input {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: inherit;
+  font-size: 1.25rem; padding: 1rem 0;
+}
+.accueil__recherche input::placeholder { color: var(--acc-doux); opacity: 0.8; }
+.accueil__cache { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.accueil__rubrique {
+  font-size: 0.95rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--acc); margin: 1.75rem 0 0.75rem; scroll-margin-top: 1rem;
+}
+.accueil__applis { scroll-margin-top: 1rem; }
+.accueil__message { font-size: 1.125rem; color: var(--acc-doux); margin-bottom: 1rem; }
+.accueil__lien { color: var(--acc); font-weight: 800; text-decoration: underline; cursor: pointer; }
+.accueil__tuiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.accueil__tuile {
+  display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;
+  background: var(--acc-carte); border: 1px solid var(--acc-trait); border-radius: 1.25rem;
+  padding: 1rem; box-shadow: 0 2px 0 var(--acc-trait);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.accueil__tuile:hover { border-color: var(--acc); transform: translateY(-2px); }
+.accueil__tuile:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+.accueil__icone {
+  display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem;
+  border-radius: 0.9rem; background: color-mix(in srgb, var(--acc) 14%, transparent); color: var(--acc); margin-bottom: 0.35rem;
+}
+.accueil__icone svg { width: 1.75rem; height: 1.75rem; }
+.accueil__tuile strong { font-size: 1.25rem; line-height: 1.15; font-weight: 800; overflow-wrap: anywhere; }
+.accueil__desc { font-size: 1rem; line-height: 1.35; color: var(--acc-doux); overflow-wrap: anywhere; hyphens: auto; }
+.accueil__pastilles { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
+.accueil__pastille {
+  font-size: 0.8rem; font-weight: 800; border-radius: 999px; padding: 0.1rem 0.6rem;
+  background: color-mix(in srgb, var(--acc-encre) 10%, transparent);
+}
+.accueil__pastille--gratuit { background: #dcfce7; color: #166534; }
+/* Très petits écrans ou BIG au maximum : une tuile par ligne, pour garder de gros textes lisibles. */
+@media (max-width: 22rem) { .accueil__tuiles { grid-template-columns: 1fr; } }
+/* Téléphone : une application par ligne, pictogramme à gauche, pour des textes larges et lisibles. */
+@media (max-width: 480px) {
+  .accueil__tuiles { grid-template-columns: 1fr; }
+  .accueil__tuile { display: grid; grid-template-columns: 3rem minmax(0, 1fr); column-gap: 0.85rem; align-items: start; }
+  .accueil__icone { grid-row: 1 / span 3; margin: 0; }
+  .accueil__tuile > :not(.accueil__icone) { grid-column: 2; }
+}
+@media (min-width: 48rem) {
+  .accueil__haut { padding-top: 3rem; }
+  .accueil__titre { font-size: 3.5rem; max-width: 56rem; }
+  .accueil__phrase { font-size: 1.5rem; }
+  .accueil__tuiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+}
+@media (min-width: 72rem) { .accueil__tuiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Les anciennes sections (atelier IA, tarifs, engagements, pied de page) ne connaissent
+   que le thème clair : en mode Nuit, on les inverse d'un bloc plutôt que de laisser
+   une moitié de page blanche. */
+html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180deg); }
+/* En grande taille, un élément trop large de ces sections ne doit pas faire défiler toute la page de côté. */
+.sections-claires { overflow-x: clip; }

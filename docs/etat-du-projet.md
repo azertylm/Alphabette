@@ -28,7 +28,9 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - `public/assets/alphabette-barre.js` : une ligne `<script src="/assets/alphabette-barre.js" data-cle data-nom data-sous-titre data-accent>` juste après `<body>` pose les deux barres (ALPHABETTE · DON · applis · Pass, puis nom · BIG · Plein écran). BIG agrandit toute la page (×1, ×1,25, ×1,5) et le choix est gardé. Applis, tarif et RIB viennent de `/api/apps` et `/api/config.json`.
 - Posée sur Alphabette Info, Kurate, StudioInfo et Promo Hub.
 - **Wikicom** (reçu le 10/11) : non publié. L'annuaire renvoie vers des sites de piratage (jeux crackés, streaming et téléchargements illégaux, torrents). À republier seulement en version légale si Valentin le souhaite.
-- **Refonte de l'accueil** : trois maquettes proposées à Valentin (A « Kiosque clair », B « De quoi avez-vous besoin ? », C « Éditorial »), choix en attente. Demandes fermes : double barre, BIG, textes plus gros, haut de page plus simple.
+- **Accueil refait (11/11), maquette A « Kiosque clair » choisie par Valentin** : `src/components/Accueil.tsx` + styles `.accueil` dans `src/index.css`. Double barre de la base (AppShell), phrase simple, recherche, tuiles tirées du registre (une par ligne sur téléphone). L'ancien en-tête (`Header.tsx`), `Hero.tsx` et `AppsRegistrySection.tsx` ne sont plus utilisés. Les sections du bas (atelier IA, tarifs, codes VIP, engagements) sont inchangées : à simplifier.
+- **BIG dans la base commune (`packages/shell`)** : désormais visible sur téléphone (il y était masqué), en couleur, et « Grand » passe de +12 % à +31 %. **Les applications gardent leur copie de la base : lancer `bun run sync:shell` puis republier chacune pour qu'elles en profitent.**
+- Valentin teste les applications et va en retirer / améliorer : passer une appli en `brouillon` dans `data/apps-registry.json` suffit à la retirer de l'accueil.
 
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
