@@ -136,7 +136,7 @@ La **source de vérité** est le fichier `data/donation.json` du hub, relayé pa
 ```json
 {
   "banque": "Crédit Agricole Toulouse 31",
-  "titulaire": "ALPHABETTE SASU",
+  "titulaire": "ALPHABETTE",
   "iban": "FR76 …",
   "bic": "CRCAMRPXXX",
   "contact": "direction@alphabette.fr",

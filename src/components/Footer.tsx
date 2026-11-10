@@ -73,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({
                 α
               </div>
               <div>
-                <span className="text-xl font-extrabold text-white tracking-tight">ALPHABETTE SASU</span>
+                <span className="text-xl font-extrabold text-white tracking-tight">ALPHABETTE</span>
                 <span className="block text-[11px] text-emerald-400 font-medium">Des applications utiles, conçues à La Grande-Motte</span>
               </div>
             </div>
@@ -160,7 +160,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom copyright line */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
           <div>
-            © {new Date().getFullYear()} ALPHABETTE SASU — Établi à La Grande-Motte. Tous droits réservés.
+            © {new Date().getFullYear()} ALPHABETTE — Établi à La Grande-Motte. Tous droits réservés.
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-slate-400 cursor-pointer">Souveraineté des Données</span>

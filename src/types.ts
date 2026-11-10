@@ -9,7 +9,7 @@ export type AppCategory =
   | 'France Service (Zero-Knowledge)';
 
 /**
- * Plans officiels ALPHABETTE SASU :
+ * Plans officiels ALPHABETTE :
  * - trial_7d  : Essai 7 jours offerts (clé Mistral Alphabette incluse)
  * - app       : 15 € / an — une application au choix
  * - ecosystem : 40 € / an — l'écosystème complet

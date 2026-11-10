@@ -422,7 +422,7 @@ export const DatabaseArchitectureModal: React.FC<DatabaseArchitectureModalProps>
         {/* Modal Footer */}
         <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Conçu pour la société ALPHABETTE SASU
+            Conçu pour ALPHABETTE
           </div>
           <button
             onClick={onClose}

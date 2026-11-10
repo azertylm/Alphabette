@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-19T09:00:00.000Z",
+  "updatedAt": "2026-11-11T00:00:00.000Z",
   "exemple": false,
   "banque": "Société Générale",
   "titulaire": "M. VALENTIN RICHAUD",
@@ -14,9 +14,13 @@
   "contact": "direction@alphabette.fr",
   "objetVirement": "DON ALPHABETTE",
   "placeMax": 500,
-  "placesAttribuees": 84,
+  "placesAttribuees": 0,
   "montantMinimum": 30,
-  "montants": [30, 50, 100],
+  "montants": [
+    30,
+    50,
+    100
+  ],
   "contreparties": [
     "Accès illimité et garanti à vie à toutes les fonctionnalités actuelles et futures de l'écosystème.",
     "Zéro abonnement récurrent : aucune reconduction tacite, aucun frais dissimulé.",

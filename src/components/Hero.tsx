@@ -35,7 +35,7 @@ export const Hero: React.FC<HeroProps> = ({
         
         {/* Top quiet metadata line */}
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 font-medium mb-4 text-center">
-          <span className="text-emerald-700 font-semibold">ALPHABETTE SASU</span>
+          <span className="text-emerald-700 font-semibold">ALPHABETTE</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
           <span>Hub Central https://alphabette.fr</span>
           <span aria-hidden="true" className="text-slate-300">·</span>

@@ -105,7 +105,7 @@ export const DB_TABLES: DBTableDef[] = [
 
 export const SQL_SCHEMA_SCRIPT = `-- =========================================================================
 -- ALPHABETTE ECOSYSTEM : SCHEMA MULTI-TENANT & SERVICE D'AUTH SSO
--- Société éditrice : ALPHABETTE SASU
+-- Société éditrice : ALPHABETTE
 -- Standard : PostgreSQL 15+ avec Row Level Security (RLS) & Chiffrement
 -- =========================================================================
 

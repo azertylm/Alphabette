@@ -48,6 +48,12 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - Base 0.3.4 synchronisée, construite et poussée dans les 9 applications qui l'utilisent.
 - **Pour ouvrir le paiement** : créer deux liens de paiement Stripe et les mettre dans `stripePaymentLinks` de `server.ts` ; les boutons réapparaissent partout à la publication suivante.
 
+## 11/11 : statut de l'entreprise et dons
+- **La société n'est pas encore créée** (Valentin y travaille). La mention « ALPHABETTE SASU » a donc été retirée du hub, de Goat, ProxiLien, Service France, IA Débat et Info Perso (remplacée par « ALPHABETTE »). À remettre, avec le numéro SIREN, quand la société existera. Lidarsol (en pause) la porte encore.
+- **Dons** : par virement sur le RIB de `data/donation.json` (compte personnel de Valentin, en attendant la société). Le compteur « places de membre fondateur » était inventé (84) : remis à 0. Le mettre à jour à la main à chaque vrai don.
+- **Pas de compte Stripe** pour l'instant : le paiement en ligne reste fermé (voir plus haut).
+- **À trancher par Valentin** : ProxiLien annonce un « partenariat d'expérimentation avec la commune de La Grande-Motte » et « 1ʳᵉ année offerte par Alphabette & la Ville (0 € au lieu de 59 €/an) » (`AlphabetteSubscriptionModal.tsx`, `App.tsx`). À retirer si aucun accord n'est signé avec la mairie.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
