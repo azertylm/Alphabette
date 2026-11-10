@@ -13,6 +13,11 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **L'Œil de l'Atelier** — faux paiement d'abonnement et faux formulaire de carte pour les dons retirés (tous les modules sont ouverts, don = espace dons du hub) ; faux visiteurs et fausses options d'achat retirés ; le QR code ouvre un vrai e-mail ou WhatsApp ; fiscalité art. 238 bis AB à jour (BNC exclus, plafond annuel, échéance 31/12/2028) ; bandeau « exemple » tant qu'aucune analyse IA n'est faite.
 - **Révolution** — bandeau permanent « prototype : votes simulés » ; dictionnaire corrigé (RIP, ordonnance, décret, DGF) ; règle des 500 000 signatures corrigée ; statistique fabriquée et coûts en euros inventés retirés.
 
+## Ajouté le 10/11 (tard)
+- **Promo Hub** : `alphabette.fr/promo/` (fichier `public/promo/index.html`, non référencé). Générateur de messages pour les réseaux, branché sur le registre (15 applis réelles, adresses et descriptions à jour). Retirés de la version reçue : applis inexistantes (Studio, ValHub, Omnilocal, « Bien Commun »), « sans inscription / tout pré-rempli », « point technique de 17h », données d'Info Perso mal décrites. Tarif rappelé : 15 € TTC/an par appli, 40 € TTC/an pour toutes.
+- **ProxiLien** : page de présentation `proxilien.fr/presentation.html` (dépôt `azertylm/Proxilien`, `public/presentation.html`), version honnête (démonstration annoncée, SOS décrit tel qu'il est, idées et testeurs par e-mail à contact@alphabette.fr).
+- Le fichier « index » BonPlan reçu le 10/11 est une **ancienne version** : non publiée, la version en ligne reste celle du dépôt.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
