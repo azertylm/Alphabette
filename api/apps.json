@@ -77,9 +77,9 @@
       "icon": "Scale",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://alphabette.fr/apps/iadebat/",
+      "url": "https://iadebat.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:30:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z"
     },
     {
       "id": "infos-perso",
@@ -88,9 +88,9 @@
       "icon": "Newspaper",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://alphabette.fr/apps/infosperso/",
+      "url": "https://infosperso.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:30:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z"
     },
     {
       "id": "oeil-atelier",
@@ -99,9 +99,9 @@
       "icon": "Hammer",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://alphabette.fr/apps/atelier/",
+      "url": "https://atelier.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:30:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z"
     },
     {
       "id": "promptmagic",
@@ -121,9 +121,9 @@
       "icon": "HeartHandshake",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://alphabette.fr/apps/proxilien/",
+      "url": "https://proxilien.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:30:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z"
     },
     {
       "id": "revolution",
