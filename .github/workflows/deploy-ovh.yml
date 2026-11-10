@@ -26,12 +26,21 @@ jobs:
           node-version: 22
       - run: bun install --frozen-lockfile
       - run: bun run build:static
-      - name: Pousser dist-static sur la branche ovh-deploy
+      - name: Ajouter la publication à la branche ovh-deploy
+        # Historique linéaire obligatoire : OVH fait un « git pull » et refuse
+        # les branches réécrites (pas de push --force ici).
         run: |
-          cd dist-static
-          git init -q -b ovh-deploy
+          git fetch origin ovh-deploy
+          git worktree add ../publication origin/ovh-deploy
+          cd ../publication
+          git rm -rq --ignore-unmatch .
+          cp -a "$GITHUB_WORKSPACE/dist-static/." .
+          git add -A
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -q -m "Publication du hub — ${GITHUB_SHA::7}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ovh-deploy
+          if git diff --cached --quiet; then
+            echo "Rien de nouveau à publier."
+          else
+            git commit -q -m "Publication du hub — ${GITHUB_SHA::7}"
+            git push origin HEAD:ovh-deploy
+          fi
