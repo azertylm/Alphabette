@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Violences du 17 octobre : derrière les pillages et les dégradations, ces coûts cachés qui menacent de peser durablement sur l’économie française - InfoPerso</title>
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #0f172a;
+      --primary-color: #4f46e5;
+      --border-color: #e2e8f0;
+      --control-bg: #f1f5f9;
+      --logo-color: #334155;
+      --meta-color: #64748b;
+      --title-color: #0f172a;
+      --p-color: #1e293b;
+      --lead-bg: #f5f7ff;
+      --lead-border: #4f46e5;
+      --lead-text: #1e1b4b;
+      --btn-bg: #ffffff;
+      --btn-border: #cbd5e1;
+      --btn-color: #0f172a;
+      --btn-hover-bg: #e2e8f0;
+      --footer-color: #64748b;
+      --font-size: 19px;
+    }
+    
+    body.dark-mode {
+      --bg-color: #000000;
+      --card-bg: #09090b;
+      --text-color: #f4f4f5;
+      --primary-color: #818cf8;
+      --border-color: #27272a;
+      --control-bg: #141418;
+      --logo-color: #e2e8f0;
+      --meta-color: #a1a1aa;
+      --title-color: #ffffff;
+      --p-color: #f4f4f5;
+      --lead-bg: #121124;
+      --lead-border: #818cf8;
+      --lead-text: #e0e7ff;
+      --btn-bg: #1f1f23;
+      --btn-border: #3f3f46;
+      --btn-color: #ffffff;
+      --btn-hover-bg: #2a2a30;
+      --footer-color: #71717a;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .container {
+      max-width: 720px;
+      margin: 10px auto;
+      background: var(--card-bg);
+      padding: 28px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      border: 1px solid var(--border-color);
+    }
+    
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--control-bg);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .logo-text {
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--logo-color);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-color);
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      background: var(--btn-hover-bg);
+    }
+    
+    .article-meta {
+      font-size: 13px;
+      color: var(--meta-color);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-weight: 500;
+    }
+    
+    .badge-source {
+      background: var(--control-bg);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-weight: 700;
+      color: var(--title-color);
+    }
+    
+    h1 {
+      font-size: 1.6em;
+      line-height: 1.3;
+      color: var(--title-color);
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    
+    .article-lead {
+      font-size: calc(var(--font-size) * 1.05);
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--lead-text);
+      background-color: var(--lead-bg);
+      border-left: 4px solid var(--lead-border);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 14px 0 22px 0;
+    }
+
+    .photo-box {
+      margin: 12px 0 20px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      max-height: 150px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border: 1px solid var(--border-color);
+      background: var(--control-bg);
+    }
+    .hero-photo {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-caption {
+      font-size: 11px;
+      color: var(--meta-color);
+      padding: 5px 12px;
+      font-style: italic;
+      background: var(--control-bg);
+    }
+
+    .video-card {
+      margin: 22px 0 26px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: var(--control-bg);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .video-header {
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--title-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-bg);
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    .subheading {
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-top: 26px;
+      margin-bottom: 8px;
+    }
+    
+    p.content-p {
+      font-size: var(--font-size);
+      line-height: 1.7;
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: var(--p-color);
+      text-align: justify;
+    }
+    
+    .deepdive-box {
+      background-color: var(--control-bg);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary-color);
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+    }
+    
+    .deepdive-box h3 {
+      margin-top: 0;
+      font-size: 16px;
+      color: var(--title-color);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .footer {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+      font-size: 12px;
+      color: var(--footer-color);
+      text-align: center;
+    }
+    
+    @media print {
+      body, body.dark-mode {
+        background: #fff !important;
+        color: #000 !important;
+        --card-bg: #fff !important;
+        --text-color: #000 !important;
+        --p-color: #000 !important;
+        --title-color: #000 !important;
+        padding: 0;
+      }
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      .control-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="container">
+    <div class="control-bar">
+      <div class="logo-text">📰 InfoPerso</div>
+      <div class="btn-group">
+        <button class="btn" onclick="changeSize(-2)" title="Réduire la taille du texte">A-</button>
+        <button class="btn" onclick="changeSize(2)" title="Agrandir la taille du texte (Grandes Lettres)">A+</button>
+        <button class="btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Basculer entre fond noir et fond clair">
+          ☀️ Fond clair
+        </button>
+        <button class="btn" onclick="window.print()" title="Imprimer ou enregistrer en PDF">🖨️ Imprimer</button>
+      </div>
+    </div>
+    
+    <div class="article-meta">
+      <span class="badge-source">Le Figaro International</span>
+      <span>•</span>
+      <span>International</span>
+      <span>•</span>
+      <span>Édition InfoPerso</span>
+    </div>
+    
+    <h1>Violences du 17 octobre : derrière les pillages et les dégradations, ces coûts cachés qui menacent de peser durablement sur l’économie française</h1>
+
+    
+    <div class="article-lead">
+      ANALYSE - Vitrines brisées, magasins pillés : la casse du 17 octobre se chiffre en centaines de millions d’euros. Mais l’essentiel de l’impact sur l’économie tricolore est ailleurs.
+    </div>
+    
+
+    
+    <div class="photo-box">
+      <img src="https://i.f1g.fr/media/cms/3000x2001_crop/2026/10/20/5977460913c135ec5e20a6c89a4486dcf9991a07ceb16bf481d0de156ff2b0f5.jpg" alt="Violences du 17 octobre : derrière les pillages et les dégradations, ces coûts cachés qui menacent de peser durablement sur l’économie française" class="hero-photo" onerror="this.style.display='none'" />
+      <div class="photo-caption">📷 Photo d'illustration • International</div>
+    </div>
+    
+    
+    
+    
+    <div id="content-body">
+      <p class="content-p">ANALYSE - Vitrines brisées, magasins pillés : la casse du 17 octobre se chiffre en centaines de millions d’euros. Mais l’essentiel de l’impact sur l’économie tricolore est ailleurs.</p>
+    </div>
+
+    
+    
+    <div class="footer">
+      Document généré par <strong>InfoPerso</strong> le 21/10/2026 • ALPHABETTE SASU
+    </div>
+  </div>
+  
+  <script>
+    let currentSize = 19;
+    let isDark = true;
+    
+    document.documentElement.style.setProperty('--font-size', currentSize + 'px');
+    
+    function changeSize(amount) {
+      currentSize = Math.max(14, Math.min(42, currentSize + amount));
+      document.documentElement.style.setProperty('--font-size', currentSize + 'px');
+      
+      const ps = document.querySelectorAll('.content-p, #summary-text');
+      ps.forEach(p => {
+        p.style.fontSize = currentSize + 'px';
+      });
+      
+      const h1 = document.querySelector('h1');
+      if (h1) {
+        h1.style.fontSize = Math.max(22, Math.round(currentSize * 1.45)) + 'px';
+      }
+    }
+
+    function updateThemeUI() {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (isDark) {
+        document.body.classList.add('dark-mode');
+        if (btn) btn.innerHTML = '☀️ Fond clair';
+      } else {
+        document.body.classList.remove('dark-mode');
+        if (btn) btn.innerHTML = '🌙 Fond noir';
+      }
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      updateThemeUI();
+      try {
+        localStorage.setItem('infoperso_html_dark', isDark ? '1' : '0');
+      } catch (e) {}
+    }
+
+    // Restore preference if already saved by user in this browser
+    try {
+      const stored = localStorage.getItem('infoperso_html_dark');
+      if (stored !== null) {
+        isDark = stored === '1';
+        updateThemeUI();
+      }
+    } catch (e) {}
+  </script>
+</body>
+</html>
