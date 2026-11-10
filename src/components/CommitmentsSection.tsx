@@ -100,7 +100,7 @@ export const CommitmentsSection: React.FC = () => {
                 15 € par an pour une application, ou 40 € par an pour débloquer l'ensemble de l'écosystème. Un prix fixe annuel, zéro commission cachée, zéro publicité.
               </p>
               <div className="text-[11px] font-semibold text-amber-800 flex items-center gap-1.5 pt-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Pilotage centralisé en temps réel depuis le hub http://alphabette.fr
+                <CheckCircle2 className="w-3.5 h-3.5" /> Pilotage centralisé en temps réel depuis le hub https://alphabette.fr
               </div>
             </div>
           </div>

@@ -128,7 +128,7 @@ async function startServer() {
     res.json({
       status: "ok",
       ecosystem: "ALPHABETTE Hub & Sovereign Mistral AI Engine",
-      hubUrl: "http://alphabette.fr",
+      hubUrl: "https://alphabette.fr",
       time: new Date().toISOString(),
     });
   });

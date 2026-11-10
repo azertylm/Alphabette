@@ -329,7 +329,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
               <span>Les futures applications incluses sans surcoût</span>
-              <span className="text-emerald-400 font-semibold">Hub http://alphabette.fr</span>
+              <span className="text-emerald-400 font-semibold">Hub https://alphabette.fr</span>
             </div>
           </div>
 
@@ -510,7 +510,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
               <div className="flex items-center gap-3">
                 <span className="text-slate-400 text-[11px]">
-                  Endpoint exposé : <code>GET http://alphabette.fr/api/config.json</code>
+                  Endpoint exposé : <code>GET https://alphabette.fr/api/config.json</code>
                 </span>
                 <button
                   type="button"

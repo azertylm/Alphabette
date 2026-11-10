@@ -240,7 +240,7 @@ export default function App() {
 
       </main>
 
-      {/* 8. Footer avec lien obligatoire vers http://alphabette.fr */}
+      {/* 8. Footer avec lien obligatoire vers https://alphabette.fr */}
       <Footer
         onOpenPricing={handleScrollToPricing}
         onOpenUrlManager={() => setIsUrlManagerOpen(true)}

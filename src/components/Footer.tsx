@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({
                 Hub Central & Vitrine Officielle
               </div>
               <h3 className="text-lg font-black text-white tracking-tight">
-                Découvrir toutes les applications de la suite sur <span className="text-emerald-400">http://alphabette.fr</span>
+                Découvrir toutes les applications de la suite sur <span className="text-emerald-400">https://alphabette.fr</span>
               </h3>
               <p className="text-xs text-slate-300 mt-0.5">
                 Portail d'interconnexion pour les 15 applications métiers propulsées exclusivement par Mistral AI.
@@ -52,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <a
-            href="http://alphabette.fr"
+            href="https://alphabette.fr"
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow-md hover:scale-102 flex items-center gap-2 shrink-0 cursor-pointer"

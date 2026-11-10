@@ -150,7 +150,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
             </div>
             <div>
               <h3 className="font-bold text-base text-white">Moteur de Codes Privilèges & VIP</h3>
-              <p className="text-xs text-slate-400">Option 1 : Usage unique strict & anti-fuite · http://alphabette.fr</p>
+              <p className="text-xs text-slate-400">Option 1 : Usage unique strict & anti-fuite · https://alphabette.fr</p>
             </div>
           </div>
           <button 
@@ -500,7 +500,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
           {/* Mentions RGPD & Souveraineté */}
           <div className="pt-4 mt-4 border-t border-slate-200 text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Moteur souverain Mistral AI · Hub http://alphabette.fr · Usage unique strict</span>
+            <span>Moteur souverain Mistral AI · Hub https://alphabette.fr · Usage unique strict</span>
           </div>
 
         </div>

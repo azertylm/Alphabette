@@ -36,7 +36,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 font-medium mb-4 text-center">
           <span className="text-emerald-700 font-semibold">ALPHABETTE SASU</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
-          <span>Hub Central http://alphabette.fr</span>
+          <span>Hub Central https://alphabette.fr</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
           <span className="text-blue-700 font-semibold">Technologie Mistral AI Exclusive</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
