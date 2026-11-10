@@ -59,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="font-extrabold text-xl tracking-tight text-slate-900">ALPHABETTE</span>
                   <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    HUB SSO
+                    HUB
                   </span>
                 </div>
                 <span className="text-xs text-slate-500 font-medium">
@@ -155,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
                 <div className="hidden lg:flex flex-col text-left leading-tight">
                   <span className="font-semibold text-slate-900 truncate max-w-[130px]">{user.name}</span>
-                  <span className="text-[10px] text-slate-500">{user.role === 'superadmin' ? 'Direction · SSO Admin' : 'Compte Citoyen'}</span>
+                  <span className="text-[10px] text-slate-500">{user.role === 'superadmin' ? 'Direction · SSO Admin' : user.id === 'visiteur' ? 'Visiteur' : 'Compte Citoyen'}</span>
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
@@ -170,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className="flex items-center justify-between mb-1">
                       <p className="font-bold text-slate-900 text-sm">{user.name}</p>
                       <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
-                        {user.role}
+                        {user.role === 'superadmin' ? 'direction' : user.id === 'visiteur' ? 'visiteur' : 'membre'}
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 truncate">{user.email}</p>

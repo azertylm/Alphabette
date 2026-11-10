@@ -23,10 +23,10 @@ export const CommitmentsSection: React.FC = () => {
             Manifeste Éthique & Souveraineté Numérique
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3">
-            Pourquoi ALPHABETTE a choisi exclusivement Mistral AI
+            Pourquoi ALPHABETTE privilégie Mistral AI
           </h2>
           <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-            La suite ALPHABETTE repose rigoureusement sur les technologies françaises de <strong>Mistral AI</strong> : conformité RGPD native, immunité juridique européenne et respect absolu de la confidentialité de vos données professionnelles.
+            Quand une application a besoin d'intelligence artificielle, ALPHABETTE privilégie les technologies françaises de <strong>Mistral AI</strong> : conformité RGPD, droit européen et respect de la confidentialité. Vous pouvez aussi utiliser la clé IA de votre choix.
           </p>
         </div>
 

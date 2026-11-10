@@ -21,6 +21,39 @@ import { fetchPublicApps } from './services/registryService';
  * (URLs, architecture) restent accessibles en ajoutant ?admin à l'adresse.
  */
 const MODE_ADMIN = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('admin');
+
+/** Profil d'un visiteur anonyme : aucune offre souscrite, essai disponible. */
+const PROFIL_VISITEUR = (): UserProfile => ({
+  id: 'visiteur',
+  name: 'Invité',
+  email: '',
+  role: 'citizen_member',
+  tenantId: 'public',
+  tenantName: 'Visiteur',
+  subscriptionPlan: 'trial_7d',
+  unlockedAppIds: [],
+  ssoSessionId: '',
+  memberSince: String(new Date().getFullYear()),
+  trialDaysLeft: 7,
+  trialExpiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString(),
+});
+
+/** Profil de démonstration de la direction (mode administration uniquement). */
+const PROFIL_DIRECTION = (): UserProfile => ({
+      id: 'usr_alphabette_admin_01',
+      name: 'Direction ALPHABETTE',
+      email: 'direction@alphabette.fr',
+      role: 'superadmin',
+      tenantId: 'tnt_alphabette_france',
+      tenantName: 'ALPHABETTE Hub Central',
+      subscriptionPlan: 'ecosystem', // Par défaut : l'écosystème complet débloqué
+      unlockedAppIds: INITIAL_APPS.map(a => a.id),
+      ssoSessionId: 'sso_live_89f3a1c2',
+      memberSince: '2024',
+      city: 'La Grande-Motte',
+      trialDaysLeft: 7,
+      trialExpiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString()
+    });
 import { AppItem, UserProfile, PlanType } from './types';
 import { isAppPlan, isEcosystemPlan, isTrialPlan, planToast } from './plans';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
@@ -60,26 +93,15 @@ export default function App() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_USER);
       if (saved) {
-        return JSON.parse(saved);
+        const profil = JSON.parse(saved);
+        // Les anciennes versions enregistraient le profil « Direction » chez tous
+        // les visiteurs : hors mode administration, on repart d'un visiteur.
+        if (MODE_ADMIN || profil?.id !== 'usr_alphabette_admin_01') return profil;
       }
     } catch (e) {
       console.warn('Erreur de lecture du profil utilisateur', e);
     }
-    return {
-      id: 'usr_alphabette_admin_01',
-      name: 'Direction ALPHABETTE',
-      email: 'direction@alphabette.fr',
-      role: 'superadmin',
-      tenantId: 'tnt_alphabette_france',
-      tenantName: 'ALPHABETTE Hub Central',
-      subscriptionPlan: 'ecosystem', // Par défaut : l'écosystème complet débloqué
-      unlockedAppIds: INITIAL_APPS.map(a => a.id),
-      ssoSessionId: 'sso_live_89f3a1c2',
-      memberSince: '2024',
-      city: 'La Grande-Motte',
-      trialDaysLeft: 7,
-      trialExpiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString()
-    };
+    return MODE_ADMIN ? PROFIL_DIRECTION() : PROFIL_VISITEUR();
   });
 
   // 3. Modal visibility states
@@ -176,9 +198,18 @@ export default function App() {
 
   // Nombre d'applications réellement en ligne (registre central).
   const [nbEnLigne, setNbEnLigne] = useState<number | null>(null);
+  // Applications payantes réellement en ligne, proposées à l'achat « une application ».
+  const [appsAchetables, setAppsAchetables] = useState<AppItem[] | null>(null);
   useEffect(() => {
     fetchPublicApps()
-      .then((liste) => setNbEnLigne(liste.length))
+      .then((liste) => {
+        setNbEnLigne(liste.length);
+        setAppsAchetables(
+          liste
+            .filter((app) => !app.gratuit)
+            .map((app) => ({ id: app.slug, name: app.name, tagline: app.description ?? '' }) as AppItem),
+        );
+      })
       .catch(() => setNbEnLigne(null));
   }, []);
   const nbApps = nbEnLigne ?? visibleApps.length;
@@ -241,8 +272,9 @@ export default function App() {
 
         {/* 5. Interactive Pricing Table : 15 € (une application) · 40 € (écosystème) avec API promo & activation VIP */}
         <PricingSection
+          key={appsAchetables ? 'registre' : 'local'}
           user={user}
-          apps={visibleApps}
+          apps={MODE_ADMIN || !appsAchetables?.length ? visibleApps : appsAchetables}
           onSelectPlan={handleChangePlan}
           onOpenVipModal={(tab) => handleOpenVipModal(tab || 'activate')}
         />

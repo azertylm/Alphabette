@@ -39,9 +39,9 @@ export const Hero: React.FC<HeroProps> = ({
           <span aria-hidden="true" className="text-slate-300">·</span>
           <span>Hub Central https://alphabette.fr</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
-          <span className="text-blue-700 font-semibold">Technologie Mistral AI Exclusive</span>
+          <span className="text-blue-700 font-semibold">Sans publicité</span>
           <span aria-hidden="true" className="text-slate-300">·</span>
-          <span className="text-slate-700 font-semibold">100% RGPD · Hébergement France</span>
+          <span className="text-slate-700 font-semibold">Site hébergé en France</span>
         </div>
 
         {/* Main Headline & Subtitle */}
@@ -51,7 +51,7 @@ export const Hero: React.FC<HeroProps> = ({
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-slate-700 font-normal leading-relaxed">
-            Le hub central <strong className="text-slate-900 font-semibold">ALPHABETTE</strong> fédère les <strong className="text-emerald-800 font-bold">{appsCount} applications métiers</strong> de la suite. Toutes reposent rigoureusement sur les technologies françaises de <strong>Mistral AI</strong> : conformité RGPD native, données cloisonnées en Europe et zéro réutilisation pour l'entraînement.
+            Le hub central <strong className="text-slate-900 font-semibold">ALPHABETTE</strong> réunit les <strong className="text-emerald-800 font-bold">{appsCount} applications</strong> de la suite, conçues à La Grande-Motte pour rendre la vie plus simple. Beaucoup fonctionnent sans intelligence artificielle ; les autres utilisent <strong>Mistral AI</strong>, hébergée en France, ou la clé IA de votre choix.
           </p>
 
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-medium">
@@ -109,20 +109,20 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div className="flex items-center gap-2 mb-1">
               <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Mistral AI Exclusif</h3>
+              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">L'IA, si vous voulez</h3>
             </div>
             <p className="text-xs text-slate-600 leading-snug">
-              Hébergement en France/Europe. Zéro transfert hors de l'Union européenne et stricte conformité RGPD.
+              Beaucoup d'applis fonctionnent sans IA. Les autres utilisent Mistral AI, française, ou la clé IA de votre choix.
             </p>
           </div>
 
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div className="flex items-center gap-2 mb-1">
               <Lock className="w-4 h-4 text-blue-700 shrink-0" />
-              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Confidentialité Absolue</h3>
+              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Vos données chez vous</h3>
             </div>
             <p className="text-xs text-slate-600 leading-snug">
-              Vos requêtes professionnelles et données ne sont jamais utilisées pour l'entraînement public des modèles.
+              La plupart des applis gardent vos informations dans votre appareil : pas de compte obligatoire, aucune revente.
             </p>
           </div>
 
@@ -139,10 +139,10 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="w-4 h-4 text-purple-700 shrink-0" />
-              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Hub Centralisé & SSO</h3>
+              <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Tout au même endroit</h3>
             </div>
             <p className="text-xs text-slate-600 leading-snug">
-              Un identifiant unique pour lancer les 15 applications avec circulation sécurisée des données inter-modules.
+              Les {appsCount} applications réunies ici, et une barre commune pour passer de l'une à l'autre.
             </p>
           </div>
 

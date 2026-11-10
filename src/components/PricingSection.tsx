@@ -266,8 +266,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 L'écosystème complet
               </h3>
               <p className="text-xs text-slate-300 mt-1 min-h-[32px] leading-relaxed">
-                Une tour de contrôle unifiée pour votre foyer ou votre entreprise. Synergie native des données et
-                compte SSO centralisé.
+                Toutes les applications de la suite, pour votre foyer ou votre entreprise, avec un seul
+                compte.
               </p>
 
               {/* Prix unique (avec promotion éventuelle) */}
@@ -318,7 +318,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>SSO centralisé sans re-saisie d'identifiants</span>
+                  <span>Un seul compte pour tout l'écosystème</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0" />

@@ -74,11 +74,11 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div>
                 <span className="text-xl font-extrabold text-white tracking-tight">ALPHABETTE SASU</span>
-                <span className="block text-[11px] text-emerald-400 font-medium">Écosystème logiciel souverain & moteur Mistral AI exclusif</span>
+                <span className="block text-[11px] text-emerald-400 font-medium">Des applications utiles, conçues à La Grande-Motte</span>
               </div>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-md">
-              Établi à <strong>La Grande-Motte</strong>. Toutes les applications de la suite reposent rigoureusement et exclusivement sur <strong>Mistral AI</strong> (France/UE) pour garantir une conformité RGPD absolue, la souveraineté européenne et zéro réutilisation des données pour l'entraînement.
+              Établi à <strong>La Grande-Motte</strong>. Des applications simples pour la vie de tous les jours, sans publicité. Quand elles utilisent l'IA, elles privilégient <strong>Mistral AI</strong> (France) ou la clé de votre choix.
             </p>
             <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
               <span className="flex items-center gap-1 text-emerald-400">
@@ -86,7 +86,7 @@ export const Footer: React.FC<FooterProps> = ({
               </span>
               <span>•</span>
               <span className="flex items-center gap-1 text-blue-400">
-                <ShieldCheck className="w-3.5 h-3.5" /> Mistral AI Exclusif
+                <ShieldCheck className="w-3.5 h-3.5" /> Hébergé en France
               </span>
               <span>•</span>
               <span className="flex items-center gap-1 text-amber-400">
