@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T13:30:00.000Z",
+  "updatedAt": "2026-11-10T13:40:00.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -9,10 +9,10 @@
       "icon": "Crown",
       "status": "actif",
       "badge": "Nouveau",
-      "url": "https://alphabette.fr/apps/goatchevretheking/",
+      "url": "https://goatchevretheking.alphabette.fr",
       "subdomain": "goatchevretheking",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z",
+      "updatedAt": "2026-11-10T13:40:00.000Z",
       "gratuit": true
     },
     {
@@ -88,9 +88,10 @@
       "icon": "ShieldCheck",
       "status": "actif",
       "badge": "Populaire",
-      "url": "https://alphabette.fr/apps/franceservice/",
+      "url": "https://franceservice.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "subdomain": "franceservice"
     },
     {
       "id": "copro-transparence",
@@ -187,10 +188,10 @@
       "icon": "Rocket",
       "status": "actif",
       "badge": "Nouveau",
-      "url": "https://alphabette.fr/apps/revolution/",
+      "url": "https://revolution.alphabette.fr",
       "subdomain": "revolution",
       "createdAt": "2026-10-18T09:41:35.949Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z",
+      "updatedAt": "2026-11-10T13:40:00.000Z",
       "gratuit": true
     },
     {
@@ -210,10 +211,10 @@
       "slug": "bonplansenior",
       "icon": "Lightbulb",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/bonplansenior/",
+      "url": "https://bonplansenior.alphabette.fr",
       "subdomain": "bonplansenior",
       "createdAt": "2026-10-19T11:25:14.881Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z",
+      "updatedAt": "2026-11-10T13:40:00.000Z",
       "gratuit": true
     },
     {
@@ -222,10 +223,10 @@
       "slug": "frigoplacard",
       "icon": "Sparkles",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/frigoplacard/",
+      "url": "https://frigoplacard.alphabette.fr",
       "subdomain": "frigoplacard",
       "createdAt": "2026-10-19T11:34:35.505Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "bonplan",
@@ -234,10 +235,10 @@
       "icon": "Lightbulb",
       "status": "actif",
       "badge": "Nouveau",
-      "url": "https://alphabette.fr/apps/bonplan/",
+      "url": "https://bonplan.alphabette.fr",
       "subdomain": "bonplan",
       "createdAt": "2026-10-20T08:55:00.000Z",
-      "updatedAt": "2026-10-20T08:55:00.000Z",
+      "updatedAt": "2026-11-10T13:40:00.000Z",
       "gratuit": true
     },
     {
@@ -246,10 +247,10 @@
       "slug": "echo",
       "icon": "Sparkles",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/echo/",
+      "url": "https://echo.alphabette.fr",
       "subdomain": "echo",
       "createdAt": "2026-10-20T10:13:53.850Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "devine",
@@ -268,10 +269,10 @@
       "slug": "accord",
       "icon": "Sparkles",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/accord/",
+      "url": "https://accord.alphabette.fr",
       "subdomain": "accord",
       "createdAt": "2026-10-21T15:45:42.673Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "ecobatisol",
@@ -279,10 +280,10 @@
       "slug": "ecobatisol",
       "icon": "Sparkles",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/ecobatisol/",
+      "url": "https://ecobatisol.alphabette.fr",
       "subdomain": "ecobatisol",
       "createdAt": "2026-10-22T08:08:36.614Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "lsf-atelier",
@@ -301,10 +302,10 @@
       "slug": "promptmagic",
       "icon": "Sparkles",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/promptmagic/",
+      "url": "https://promptmagic.alphabette.fr",
       "subdomain": "promptmagic",
       "createdAt": "2026-10-22T08:36:42.482Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "sante-citoyenne",
@@ -312,10 +313,10 @@
       "slug": "sante-citoyenne",
       "icon": "HeartPulse",
       "status": "actif",
-      "url": "https://alphabette.fr/apps/santecitoyenne/",
+      "url": "https://santecitoyenne.alphabette.fr",
       "subdomain": "santecitoyenne",
       "createdAt": "2026-10-22T09:52:39.373Z",
-      "updatedAt": "2026-11-10T10:00:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z"
     },
     {
       "id": "sillage",
