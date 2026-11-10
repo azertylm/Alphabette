@@ -147,7 +147,8 @@
       "url": "https://santecitoyenne.alphabette.fr",
       "subdomain": "santecitoyenne",
       "createdAt": "2026-10-22T09:52:39.373Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T14:00:00.000Z",
+      "gratuit": true
     },
     {
       "id": "bonplansenior",

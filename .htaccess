@@ -17,8 +17,23 @@ DirectoryIndex index.html
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Domaines propres des applications (aiguillage par nom d'hôte)
-  # proxilien : proxilien.fr, proxilien.eu
-  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.eu)$ [NC]
+  # infosperso : infosperso.alphabette.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(infosperso\.alphabette\.fr)$ [NC]
+  RewriteCond %{REQUEST_URI} !^/apps/infosperso/
+  RewriteRule ^(.*)$ apps/infosperso/$1 [L]
+
+  # iadebat : iadebat.alphabette.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(iadebat\.alphabette\.fr)$ [NC]
+  RewriteCond %{REQUEST_URI} !^/apps/iadebat/
+  RewriteRule ^(.*)$ apps/iadebat/$1 [L]
+
+  # atelier : atelier.alphabette.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(atelier\.alphabette\.fr)$ [NC]
+  RewriteCond %{REQUEST_URI} !^/apps/atelier/
+  RewriteRule ^(.*)$ apps/atelier/$1 [L]
+
+  # proxilien : proxilien.fr, proxilien.eu, proxilien.alphabette.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.eu|proxilien\.alphabette\.fr)$ [NC]
   RewriteCond %{REQUEST_URI} !^/apps/proxilien/
   RewriteRule ^(.*)$ apps/proxilien/$1 [L]
 
