@@ -54,6 +54,17 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **Pas de compte Stripe** pour l'instant : le paiement en ligne reste fermé (voir plus haut).
 - **ProxiLien (11/11)** : Valentin confirme qu'il n'y a **aucun accord avec la mairie**. Retirés : partenariat avec la commune, « offerte par Alphabette & la Ville », « Ville pilote officielle », « vérifiable par le CCAS », alertes d'exemple attribuées à la mairie / au port / aux secours avec mention « vérifié », faux « Formule activée avec succès », anciens tarifs 39/59/99/199 € (remplacés par 15 € et 40 €). La 1re année offerte aux habitants de La Grande-Motte reste, comme offre d'Alphabette seule. L'onglet « Offre Mairies » (proposition commerciale aux communes, contact par e-mail) est conservé.
 
+## 11/11 : tarifs relus dans Service France, Info Perso et IA Débat
+- Dans les trois, la fenêtre des tarifs est remplacée par une version courte et honnête (15 € / an, 40 € / an pour tout, paiement en ligne pas encore ouvert). Retirés : boutons « Simuler l'activation », « Formule activée avec succès », anciens prix 39 / 59 / 99 / 199 €.
+- **Info Perso** : un **faux formulaire de carte bancaire** (numéro, expiration, CVC, « Simuler paiement ») et l'offre « 10 € les 3 mois puis 5 €/mois » sont retirés du tiroir Profil.
+- **IA Débat** : les barres du haut passent à la ligne sur téléphone (la page débordait de 554 px en 390 px).
+- Non relu : le « compte Alphabette » local d'IA Débat (`AlphabetteAccountModal`, compte créé sur l'appareil) et la bannière d'essai de Service France (`AlphabetteTrialBanner`).
+
+## Orbit-v4 (demandé le 11/11) : pas encore publiable
+- Dépôt `azertylm/Orbit-v4` : application vidéo très lourde (App.tsx 15 800 lignes, server.ts 7 700 lignes), entièrement dépendante de son serveur (25 appels `/api/orbit/...`).
+- Le serveur **extrait les fichiers vidéo** de TikTok, Facebook, Instagram et YouTube (`yt-dlp`, service tiers « tikwm ») et les **rediffuse** (`/api/orbit/proxy-mp4`, `vlc-stream`). C'est contraire aux conditions des plateformes et risqué juridiquement (même problème que Wikicom), et de toute façon impossible sur l'hébergement OVH statique.
+- Piste proposée à Valentin : une version qui lit les vidéos avec les **lecteurs officiels intégrés** des plateformes (légal, sans serveur), avec la double barre et BIG. En attente de sa décision.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
