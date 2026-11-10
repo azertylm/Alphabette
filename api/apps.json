@@ -9,7 +9,8 @@
       "url": "https://accord.alphabette.fr",
       "subdomain": "accord",
       "createdAt": "2026-10-21T15:45:42.673Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "description": "Neuf extraits de cinq secondes pour trouver les sons qui vous font du bien, et la playlist qui va avec."
     },
     {
       "id": "bonplan",
@@ -22,7 +23,8 @@
       "subdomain": "bonplan",
       "createdAt": "2026-10-20T08:55:00.000Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
-      "gratuit": true
+      "gratuit": true,
+      "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres."
     },
     {
       "id": "echo",
@@ -33,7 +35,8 @@
       "url": "https://echo.alphabette.fr",
       "subdomain": "echo",
       "createdAt": "2026-10-20T10:13:53.850Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "description": "Racontez votre journée pendant vingt secondes : ÉCHO devine vos goûts et vous propose cinq découvertes."
     },
     {
       "id": "ecobatisol",
@@ -44,7 +47,8 @@
       "url": "https://ecobatisol.alphabette.fr",
       "subdomain": "ecobatisol",
       "createdAt": "2026-10-22T08:08:36.614Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "description": "Autonomie solaire et récupération d'eau de pluie, chiffrées pour votre maison."
     },
     {
       "id": "frigoplacard",
@@ -55,7 +59,8 @@
       "url": "https://frigoplacard.alphabette.fr",
       "subdomain": "frigoplacard",
       "createdAt": "2026-10-19T11:34:35.505Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées."
     },
     {
       "id": "goat-chevre-the-king",
@@ -68,7 +73,8 @@
       "subdomain": "goatchevretheking",
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
-      "gratuit": true
+      "gratuit": true,
+      "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres."
     },
     {
       "id": "iadebat",
@@ -79,7 +85,8 @@
       "badge": "Populaire",
       "url": "https://iadebat.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z",
+      "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux."
     },
     {
       "id": "infos-perso",
@@ -90,7 +97,8 @@
       "badge": "Populaire",
       "url": "https://infosperso.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z",
+      "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements."
     },
     {
       "id": "oeil-atelier",
@@ -101,7 +109,8 @@
       "badge": "Populaire",
       "url": "https://atelier.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z",
+      "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché."
     },
     {
       "id": "promptmagic",
@@ -112,7 +121,8 @@
       "url": "https://promptmagic.alphabette.fr",
       "subdomain": "promptmagic",
       "createdAt": "2026-10-22T08:36:42.482Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z"
+      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire."
     },
     {
       "id": "proxilien",
@@ -123,7 +133,8 @@
       "badge": "Populaire",
       "url": "https://proxilien.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z"
+      "updatedAt": "2026-11-10T14:35:00.000Z",
+      "description": "Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision."
     },
     {
       "id": "revolution",
@@ -136,7 +147,8 @@
       "subdomain": "revolution",
       "createdAt": "2026-10-18T09:41:35.949Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
-      "gratuit": true
+      "gratuit": true,
+      "description": "Proposez et votez sur des questions citoyennes, simplement, avec un pseudo."
     },
     {
       "id": "sante-citoyenne",
@@ -148,7 +160,8 @@
       "subdomain": "santecitoyenne",
       "createdAt": "2026-10-22T09:52:39.373Z",
       "updatedAt": "2026-11-10T14:00:00.000Z",
-      "gratuit": true
+      "gratuit": true,
+      "description": "Un carnet du moral, des exercices de respiration, l'entraide et une pochette d'urgence."
     },
     {
       "id": "bonplansenior",
@@ -160,7 +173,8 @@
       "subdomain": "bonplansenior",
       "createdAt": "2026-10-19T11:25:14.881Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
-      "gratuit": true
+      "gratuit": true,
+      "description": "Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans."
     },
     {
       "id": "france-service",
@@ -172,7 +186,8 @@
       "url": "https://franceservice.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
-      "subdomain": "franceservice"
+      "subdomain": "franceservice",
+      "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement."
     }
   ]
 }
