@@ -11,7 +11,7 @@
  * Usage : bun run build && node scripts/build-static.mjs
  */
 import { spawn } from 'node:child_process';
-import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const racine = process.cwd();
@@ -27,6 +27,21 @@ const ROUTES = [
   ['/api/ai/config', 'api/ai/config.json'],
   ['/api/health', 'api/health.json'],
 ];
+
+/**
+ * Domaines propres des applications (data/apps-sources.json → "domains") :
+ * rattachés chez OVH au MÊME dossier que alphabette.fr (aucune place de
+ * multisite consommée), puis aiguillés ici vers apps/<clé>/ selon le nom d'hôte.
+ */
+const { apps: sources = {} } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-sources.json'), 'utf8'));
+const echapper = (d) => d.replace(/[.]/g, '\\.');
+const REGLES_DOMAINES = Object.entries(sources)
+  .filter(([, s]) => Array.isArray(s.domains) && s.domains.length)
+  .map(([cle, s]) => `  # ${cle} : ${s.domains.join(', ')}
+  RewriteCond %{HTTP_HOST} ^(www\\.)?(${s.domains.map(echapper).join('|')})$ [NC]
+  RewriteCond %{REQUEST_URI} !^/apps/${cle}/
+  RewriteRule ^(.*)$ apps/${cle}/$1 [L]`)
+  .join('\n\n');
 
 const HTACCESS = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes
@@ -45,6 +60,9 @@ DirectoryIndex index.html
   # HTTPS partout
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Domaines propres des applications (aiguillage par nom d'hôte)
+${REGLES_DOMAINES || '  # (aucun)'}
 
   # Continuité des anciennes adresses
   RewriteRule ^goat(/.*)?$ https://goatchevretheking.alphabette.fr$1 [R=301,L]

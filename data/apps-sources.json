@@ -44,7 +44,11 @@
       "repo": "azertylm/L-oeil-de-l-atelier"
     },
     "proxilien": {
-      "repo": "azertylm/Proxilien"
+      "repo": "azertylm/Proxilien",
+      "domains": [
+        "proxilien.fr",
+        "proxilien.eu"
+      ]
     }
   }
 }

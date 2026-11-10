@@ -18,3 +18,14 @@ OVH récupère la branche `ovh-deploy`.
 Notes : une appli Vite/React est construite automatiquement (`vite build --base=./`) ;
 une appli HTML simple est copiée telle quelle. Dépôt privé : ajouter le secret
 GitHub `APPS_TOKEN` (jeton en lecture) au dépôt du hub.
+
+## Donner à une application son propre nom de domaine (proxilien.fr…)
+
+Sans consommer de place de multisite (l'offre Perso en compte 15) :
+
+1. Dans `data/apps-sources.json`, ajouter `"domains": ["mondomaine.fr", "mondomaine.eu"]`
+   à l'application : le `.htaccess` du hub aiguille ces domaines (et leur `www.`)
+   vers `apps/<clé>/`.
+2. Chez OVH : enregistrements `A`/`AAAA` de `@` et `www` vers l'hébergement, puis
+   multisite → rattacher le domaine et `www.` au **même dossier que alphabette.fr**
+   (`alphabette`), SSL activé.
