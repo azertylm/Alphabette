@@ -72,3 +72,21 @@ Vérification de toutes les adresses du registre (résolution DNS publique + tes
 Conséquence : les 15 applications marquées `actif` sans être joignables sont
 repassées en `brouillon`. Seul **BON PLAN** reste `actif`. Repasser une
 application en `actif` uniquement quand son URL répond.
+
+## État au 2026-11-10 (fin de journée de mise en ligne)
+
+- `alphabette.fr` : hub statique publié depuis la branche `ovh-deploy`
+  (hébergement OVH Perso, dossier `alphabette/`, webhook GitHub → OVH actif).
+- 11 applications publiées et vérifiées sur `https://alphabette.fr/apps/<clé>/` :
+  bonplan, goatchevretheking, revolution, promptmagic, ecobatisol, santecitoyenne,
+  accord, frigoplacard, echo, bonplansenior, franceservice.
+- Pour ces 11 clés : enregistrements `A`/`AAAA` créés dans la zone et multisite
+  `<clé>.alphabette.fr` → `alphabette/apps/<clé>` (certificats Let's Encrypt en
+  cours de génération). Le registre pointe sur `/apps/<clé>/` tant que le
+  sous-domaine ne répond pas en HTTPS.
+- Limite de l'offre : 15 sites (13 utilisés) et 1 seul site relié à Git. Les
+  applications suivantes peuvent vivre sans sous-domaine, sur `/apps/<clé>/`.
+- L'ancien Joomla est toujours dans le dossier `www/` (plus servi) ; à supprimer
+  depuis l'espace client OVH.
+- En attente d'un hébergement Node : Info Perso, IA Débat, L'Œil de l'Atelier,
+  Proxilien, Lidarsol (dépôt privé).
