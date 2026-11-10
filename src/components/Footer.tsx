@@ -16,8 +16,9 @@ import {
 
 interface FooterProps {
   onOpenPricing: () => void;
-  onOpenUrlManager: () => void;
-  onOpenDbArchitecture: () => void;
+  /** Outils d'administration : absents de la vitrine publique (voir App.tsx, ?admin). */
+  onOpenUrlManager?: () => void;
+  onOpenDbArchitecture?: () => void;
   appsCount: number;
 }
 
@@ -113,9 +114,9 @@ export const Footer: React.FC<FooterProps> = ({
                 </a>
               </li>
               <li>
-                <a href="#applications" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+                <a href="#nos-applications" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Catalogue Officiel ({appsCount} apps)</span>
+                  <span>Nos applications ({appsCount})</span>
                 </a>
               </li>
               <li>
@@ -124,6 +125,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <span>Tarifs : 15 € (application) · 40 € (écosystème)</span>
                 </button>
               </li>
+              {onOpenUrlManager && (<>
               <li>
                 <button onClick={onOpenUrlManager} className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer">
                   <LinkIcon className="w-3.5 h-3.5 text-purple-500" />
@@ -136,6 +138,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <span>Architecture BDD & SSO</span>
                 </button>
               </li>
+              </>)}
             </ul>
           </div>
 

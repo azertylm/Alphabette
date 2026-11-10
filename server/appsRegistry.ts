@@ -33,6 +33,8 @@ export interface RegistryApp {
    * et la vitrine la marque « Gratuit ».
    */
   gratuit?: boolean;
+  /** Une phrase qui dit, simplement, ce que l'application apporte (vitrine). */
+  description?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -55,6 +57,13 @@ const EMPTY_REGISTRY: RegistryFile = {
 };
 
 /** Normalise un libellé en slug URL (supprime les accents, espaces -> tirets). */
+/** Description de vitrine : une phrase, 200 caractères au plus ; vide = champ retiré. */
+function sanitizeDescription(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const texte = value.replace(/\s+/g, " ").trim().slice(0, 200);
+  return texte || undefined;
+}
+
 export function slugify(input: string): string {
   return input
     .normalize("NFD")
@@ -133,6 +142,7 @@ export interface CreateAppInput {
   url?: unknown;
   subdomain?: unknown;
   gratuit?: unknown;
+  description?: unknown;
 }
 
 export interface UpdateAppInput extends CreateAppInput {}
@@ -209,6 +219,7 @@ export function createApp(input: CreateAppInput): RegistryApp {
     subdomain: sanitizeSubdomain(input.subdomain),
     // `undefined` = application payante : le champ disparaît du JSON.
     gratuit: input.gratuit === true || input.gratuit === "true" ? true : undefined,
+    description: sanitizeDescription(input.description),
     createdAt: now,
     updatedAt: now,
   };
@@ -274,6 +285,10 @@ export function updateApp(id: string, input: UpdateAppInput): RegistryApp {
     }
     // Faux = on retire le champ : le JSON reste propre.
     next.gratuit = input.gratuit === true || input.gratuit === "true" ? true : undefined;
+  }
+
+  if (input.description !== undefined) {
+    next.description = sanitizeDescription(input.description);
   }
 
   next.updatedAt = new Date().toISOString();

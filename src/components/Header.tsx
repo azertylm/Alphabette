@@ -20,8 +20,9 @@ import { isAppPlan, isEcosystemPlan, planBadge as planBadgeOf } from '../plans';
 interface HeaderProps {
   user: UserProfile;
   onChangeUserPlan: (plan: PlanType, unlockedAppIds?: string[]) => void;
-  onOpenUrlManager: () => void;
-  onOpenDbArchitecture: () => void;
+  /** Outils d'administration : absents de la vitrine publique (voir App.tsx, ?admin). */
+  onOpenUrlManager?: () => void;
+  onOpenDbArchitecture?: () => void;
   onOpenPricing: () => void;
   onOpenVipModal?: () => void;
   configuredCount: number;
@@ -71,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Desktop Navigation links */}
           <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-slate-600">
             <a 
-              href="#applications" 
+              href="#nos-applications" 
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5"
             >
               <Layers className="w-4 h-4 text-emerald-600" />
@@ -107,6 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
+{onOpenUrlManager && (
             <button 
               onClick={onOpenUrlManager}
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 cursor-pointer relative"
@@ -117,7 +119,9 @@ export const Header: React.FC<HeaderProps> = ({
                 {configuredCount}/{totalAppsCount}
               </span>
             </button>
+            )}
 
+            {onOpenDbArchitecture && (
             <button 
               onClick={onOpenDbArchitecture}
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 cursor-pointer text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200"
@@ -125,6 +129,7 @@ export const Header: React.FC<HeaderProps> = ({
               <Database className="w-4 h-4 text-emerald-600" />
               <span>Architecture BDD & SSO</span>
             </button>
+            )}
           </nav>
 
           {/* User profile & Active Subscription Badge */}
@@ -258,10 +263,11 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
                   </div>
 
+                  {onOpenUrlManager && (
                   <div className="pt-2 px-1 flex flex-col gap-1">
                     <button
                       onClick={() => {
-                        onOpenUrlManager();
+                        onOpenUrlManager?.();
                         setIsUserMenuOpen(false);
                       }}
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-700 hover:bg-slate-100 flex items-center gap-2"
@@ -271,7 +277,7 @@ export const Header: React.FC<HeaderProps> = ({
                     </button>
                     <button
                       onClick={() => {
-                        onOpenDbArchitecture();
+                        onOpenDbArchitecture?.();
                         setIsUserMenuOpen(false);
                       }}
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-700 hover:bg-slate-100 flex items-center gap-2"
@@ -280,6 +286,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <span>Architecture multi-tenant & SSO</span>
                     </button>
                   </div>
+                  )}
                 </div>
               )}
             </div>
@@ -307,7 +314,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div className="grid grid-cols-1 gap-2">
             <a 
-              href="#applications" 
+              href="#nos-applications" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm"
             >
@@ -344,9 +351,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Activer un Code VIP / Privilège</span>
               </button>
             )}
+            {onOpenUrlManager && (<>
             <button 
               onClick={() => {
-                onOpenUrlManager();
+                onOpenUrlManager?.();
                 setIsMobileMenuOpen(false);
               }}
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm text-left"
@@ -356,7 +364,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button 
               onClick={() => {
-                onOpenDbArchitecture();
+                onOpenDbArchitecture?.();
                 setIsMobileMenuOpen(false);
               }}
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm text-left bg-emerald-50"
@@ -364,6 +372,7 @@ export const Header: React.FC<HeaderProps> = ({
               <Database className="w-4 h-4 text-emerald-600" />
               <span>Architecture Technique & BDD</span>
             </button>
+            </>)}
           </div>
         </div>
       )}

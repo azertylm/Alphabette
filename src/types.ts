@@ -151,6 +151,8 @@ export interface RegistryApp {
   subdomain?: string;
   /** Application gratuite, définitivement : aucun prix, aucun essai. */
   gratuit?: boolean;
+  /** Une phrase qui dit ce que l'application apporte (vitrine). */
+  description?: string;
   createdAt: string;
   updatedAt: string;
 }

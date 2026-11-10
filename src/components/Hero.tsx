@@ -17,8 +17,9 @@ import {
 
 interface HeroProps {
   onOpenPricing: () => void;
-  onOpenUrlManager: () => void;
-  onOpenDbArchitecture: () => void;
+  /** Outils d'administration : absents de la vitrine publique (voir App.tsx, ?admin). */
+  onOpenUrlManager?: () => void;
+  onOpenDbArchitecture?: () => void;
   appsCount: number;
 }
 
@@ -64,7 +65,7 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Action CTAs */}
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
             <a
-              href="#applications"
+              href="#nos-applications"
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-xs transition-all cursor-pointer"
             >
               <Layers className="w-4 h-4" />
@@ -80,14 +81,14 @@ export const Hero: React.FC<HeroProps> = ({
               <span>Grille tarifaire (15 € · 40 €)</span>
             </button>
 
-            <button
+            {onOpenUrlManager && <button
               onClick={onOpenUrlManager}
               className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs sm:text-sm transition-all cursor-pointer border border-slate-200"
               title="Configurer les adresses réelles des 15 applications"
             >
               <KeyRound className="w-3.5 h-3.5 text-slate-600" />
               <span>Gérer les URLs</span>
-            </button>
+            </button>}
 
             <a
               href="/50-idees-logiciels-decouverte.html"

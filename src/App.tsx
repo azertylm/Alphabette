@@ -13,6 +13,14 @@ import { AppLaunchModal } from './components/AppLaunchModal';
 import { VipCodeModal } from './components/VipCodeModal';
 import { VipActivationSection } from './components/VipActivationSection';
 import { INITIAL_APPS, RETIRED_APP_IDS } from './data/initialApps';
+import { fetchPublicApps } from './services/registryService';
+
+/**
+ * Vitrine publique : seul le registre central (applications réellement en ligne)
+ * est présenté. L'ancien catalogue de démonstration et les outils de gestion
+ * (URLs, architecture) restent accessibles en ajoutant ?admin à l'adresse.
+ */
+const MODE_ADMIN = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('admin');
 import { AppItem, UserProfile, PlanType } from './types';
 import { isAppPlan, isEcosystemPlan, isTrialPlan, planToast } from './plans';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
@@ -166,6 +174,17 @@ export default function App() {
 
   const configuredCount = apps.filter(a => a.isConfigured).length;
 
+  // Nombre d'applications réellement en ligne (registre central).
+  const [nbEnLigne, setNbEnLigne] = useState<number | null>(null);
+  useEffect(() => {
+    fetchPublicApps()
+      .then((liste) => setNbEnLigne(liste.length))
+      .catch(() => setNbEnLigne(null));
+  }, []);
+  const nbApps = nbEnLigne ?? visibleApps.length;
+  const ouvrirUrls = MODE_ADMIN ? () => setIsUrlManagerOpen(true) : undefined;
+  const ouvrirArchitecture = MODE_ADMIN ? () => setIsDbArchitectureOpen(true) : undefined;
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-emerald-500 selection:text-white">
       
@@ -181,12 +200,12 @@ export default function App() {
       <Header
         user={user}
         onChangeUserPlan={handleChangePlan}
-        onOpenUrlManager={() => setIsUrlManagerOpen(true)}
-        onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
+        onOpenUrlManager={ouvrirUrls}
+        onOpenDbArchitecture={ouvrirArchitecture}
         onOpenPricing={handleScrollToPricing}
         onOpenVipModal={() => handleOpenVipModal('activate')}
         configuredCount={configuredCount}
-        totalAppsCount={visibleApps.length}
+        totalAppsCount={nbApps}
       />
 
       {/* Main Page Body */}
@@ -195,13 +214,16 @@ export default function App() {
         {/* 2. Hero Section: Mission, engagements Mistral AI, essai 7j & grille tarifaire */}
         <Hero
           onOpenPricing={handleScrollToPricing}
-          onOpenUrlManager={() => setIsUrlManagerOpen(true)}
-          onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
-          appsCount={visibleApps.length}
+          onOpenUrlManager={ouvrirUrls}
+          onOpenDbArchitecture={ouvrirArchitecture}
+          appsCount={nbApps}
         />
 
-        {/* 3. Dynamic App Grid: Les 15 applications métiers avec descriptif, capture & accès direct */}
-        <AppGrid
+        {/* 3. Nos Applications : registre central (applications réellement en ligne) */}
+        <AppsRegistrySection />
+
+        {/* 3 bis. Ancien catalogue de démonstration : réservé à l'administration (?admin) */}
+        {MODE_ADMIN && <AppGrid
           apps={visibleApps}
           user={user}
           onLaunch={(app) => setLaunchingApp(app)}
@@ -209,10 +231,7 @@ export default function App() {
           onSelectSubscribe={() => handleScrollToPricing()}
           onAddNewAppSlot={handleAddNewAppSlot}
           onOpenUrlManager={() => setIsUrlManagerOpen(true)}
-        />
-
-        {/* 3 bis. Nos Applications : registre central synchronisé (statut « actif ») */}
-        <AppsRegistrySection />
+        />}
 
         {/* 4. Atelier Moteur IA Souverain (Mistral Cloud France / Local Metal Ollama) */}
         <SovereignAiStudio
@@ -243,9 +262,9 @@ export default function App() {
       {/* 8. Footer avec lien obligatoire vers https://alphabette.fr */}
       <Footer
         onOpenPricing={handleScrollToPricing}
-        onOpenUrlManager={() => setIsUrlManagerOpen(true)}
-        onOpenDbArchitecture={() => setIsDbArchitectureOpen(true)}
-        appsCount={visibleApps.length}
+        onOpenUrlManager={ouvrirUrls}
+        onOpenDbArchitecture={ouvrirArchitecture}
+        appsCount={nbApps}
       />
 
       {/* Modals */}
