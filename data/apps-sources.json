@@ -1,6 +1,39 @@
 {
   "_aide": "Dossier publié (apps/<clé>/) → dépôt GitHub de l'application. Ajouter une ligne ici suffit pour qu'une application soit publiée avec le hub. Voir docs/PUBLIER-UNE-APP.md.",
   "apps": {
-    "bonplan": { "repo": "azertylm/bonplan-alphabette.fr" }
-  }
+    "bonplan": {
+      "repo": "azertylm/bonplan-alphabette.fr"
+    },
+    "goatchevretheking": {
+      "repo": "azertylm/goatchevretheking.alphabette.fr"
+    },
+    "revolution": {
+      "repo": "azertylm/revolution.alphabette.fr"
+    },
+    "promptmagic": {
+      "repo": "azertylm/promptmagic.alphabette.fr"
+    },
+    "ecobatisol": {
+      "repo": "azertylm/ecobatisol.alphabette.fr"
+    },
+    "santecitoyenne": {
+      "repo": "azertylm/sante-citoyenne-alphabette.fr"
+    },
+    "accord": {
+      "repo": "azertylm/accord-alphabette.fr"
+    },
+    "frigoplacard": {
+      "repo": "azertylm/frigoplacard-alphabette.fr"
+    },
+    "echo": {
+      "repo": "azertylm/echo-alphabette.fr"
+    },
+    "bonplansenior": {
+      "repo": "azertylm/bonplansenior-alphabette.fr"
+    },
+    "franceservice": {
+      "repo": "azertylm/Service-france"
+    }
+  },
+  "_en_attente": "Applications qui ont besoin d'un serveur Node (API /api/...) et ne peuvent pas tourner sur l'offre Perso : infosperso (Info-perso-2), iadebat (Il-y-a-des-bas-), atelier (L-oeil-de-l-atelier), proxilien (Proxilien)."
 }
