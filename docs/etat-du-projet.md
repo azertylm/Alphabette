@@ -18,6 +18,12 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **ProxiLien** : page de présentation `proxilien.fr/presentation.html` (dépôt `azertylm/Proxilien`, `public/presentation.html`), version honnête (démonstration annoncée, SOS décrit tel qu'il est, idées et testeurs par e-mail à contact@alphabette.fr).
 - Le fichier « index » BonPlan reçu le 10/11 est une **ancienne version** : non publiée, la version en ligne reste celle du dépôt.
 
+## Ajouté le 10/11 (nuit) : trois pages HTML publiées par le hub (`public/`)
+- **Alphabette Info** : `alphabette.fr/info.html` (ex « infoperso-1.html »). Stockage dans le navigateur, IA Claude avec la clé du visiteur, articles d'exemple marqués « Exemple inventé » et masqués dès qu'un vrai flux est lu, trois flux suggérés.
+- **Kurate** : `alphabette.fr/kurate/`. Faux articles (signés de vrais médias) et faux « envoi d'e-mail » retirés : vrais liens de recherche Google Actualités / YouTube, vraies vidéos avec une clé YouTube, résumé à copier ou à s'envoyer.
+- **StudioInfo** : `alphabette.fr/studioinfo/`. Modèle Gemini à jour, recherche web avec sources pour les modules d'actualité, utilisable sur téléphone.
+- Les trois sont en `actif` dans le registre (badge Nouveau). **Elles n'ont pas la double barre Alphabette ni le bouton BIG** (pages HTML simples) : à convertir avec la base commune si elles restent.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).

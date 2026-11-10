@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T14:35:00.000Z",
+  "updatedAt": "2026-11-10T22:04:24.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -344,6 +344,42 @@
       "subdomain": "sillage",
       "createdAt": "2026-10-22T10:23:14.331Z",
       "updatedAt": "2026-10-22T10:23:14.331Z"
+    },
+    {
+      "id": "info",
+      "name": "ALPHABETTE INFO",
+      "slug": "info",
+      "icon": "Newspaper",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/info.html",
+      "description": "Vos flux d'actualités dans une page calme, avec dix outils pour creuser chaque article.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
+    },
+    {
+      "id": "kurate",
+      "name": "KURATE",
+      "slug": "kurate",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/kurate/",
+      "description": "Choisissez vos thèmes : Kurate prépare vos recherches d'actualités et de vidéos du jour.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
+    },
+    {
+      "id": "studioinfo",
+      "name": "STUDIOINFO",
+      "slug": "studioinfo",
+      "icon": "Lightbulb",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/studioinfo/",
+      "description": "Vingt modules pour résumer, vérifier et explorer un sujet avec l'IA, sources à l'appui.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
     }
   ]
 }

@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabette Info — vos actualités, à creuser</title>
+<meta name="description" content="Lisez vos flux d'actualités et creusez chaque article avec dix outils d'analyse. Vos sources et votre clé restent sur votre appareil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#15191F; --ink-surface:#1D232C; --ink-surface-2:#242B35;
+  --paper:#EEE8DB; --paper-surface:#E4DCC9; --paper-surface-2:#DACFB6;
+  --signal:#A82F2A; --signal-soft:#C75C43;
+  --steel:#57677E; --ochre:#9C7A25;
+  --text-dark:#EDE8DD; --text-dark-dim:#A9ADB5;
+  --text-light:#211C14; --text-light-dim:#6B6153;
+  --line-dark: rgba(237,232,221,.13); --line-light: rgba(33,28,20,.15);
+  --radius:3px;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'IBM Plex Sans', system-ui, sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+[data-theme="dark"]{
+  --bg:var(--ink); --surface:var(--ink-surface); --surface-2:var(--ink-surface-2);
+  --text:var(--text-dark); --text-dim:var(--text-dark-dim); --line:var(--line-dark);
+}
+[data-theme="light"]{
+  --bg:var(--paper); --surface:var(--paper-surface); --surface-2:var(--paper-surface-2);
+  --text:var(--text-light); --text-dim:var(--text-light-dim); --line:var(--line-light);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  transition:background .25s ease, color .25s ease;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+input,select,textarea{font-family:inherit; color:inherit;}
+::selection{background:var(--signal); color:#fff;}
+
+/* ---------- Masthead ---------- */
+.masthead{
+  border-bottom:1px solid var(--line);
+  padding:14px 18px 12px;
+  position:sticky; top:0; z-index:40; background:var(--bg);
+}
+.masthead-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.brand{display:flex; align-items:baseline; gap:10px;}
+.brand-mark{
+  font-family:var(--serif); font-weight:700; font-size:1.55rem; letter-spacing:-.01em;
+}
+.brand-mark span{color:var(--signal);}
+.edition-date{font-size:.72rem; color:var(--text-dim); font-family:var(--mono); text-transform:lowercase;}
+.masthead-tools{display:flex; align-items:center; gap:6px;}
+.icon-btn{
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--line); border-radius:var(--radius); color:var(--text-dim);
+  transition:border-color .15s, color .15s;
+}
+.icon-btn:hover{border-color:var(--text-dim); color:var(--text);}
+.icon-btn.active{border-color:var(--signal); color:var(--signal);}
+.search-wrap{
+  margin-top:12px; display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid var(--line); padding-bottom:10px;
+}
+.search-wrap input{
+  flex:1; background:none; border:none; outline:none; font-size:.92rem; color:var(--text);
+  font-family:var(--sans);
+}
+.search-wrap input::placeholder{color:var(--text-dim);}
+
+/* ---------- Category strip ---------- */
+.cat-strip{
+  display:flex; gap:2px; overflow-x:auto; padding:0 18px; border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+.cat-strip::-webkit-scrollbar{display:none;}
+.cat-btn{
+  padding:10px 12px; font-size:.8rem; white-space:nowrap; color:var(--text-dim);
+  border-bottom:2px solid transparent; font-weight:500; letter-spacing:.01em;
+}
+.cat-btn.active{color:var(--text); border-bottom-color:var(--signal);}
+
+/* ---------- Feed ---------- */
+.feed-wrap{padding:16px 18px 90px; max-width:920px; margin:0 auto;}
+.feed{display:flex; flex-direction:column;}
+.article-card{
+  padding:16px 0; border-bottom:1px solid var(--line); display:flex; gap:14px; align-items:flex-start;
+  cursor:pointer;
+}
+.article-card:first-child{padding-top:4px;}
+.article-card .num{
+  font-family:var(--mono); font-size:.68rem; color:var(--text-dim); padding-top:4px; width:22px; flex:none;
+}
+.article-body{flex:1; min-width:0;}
+.article-meta{display:flex; gap:8px; align-items:center; margin-bottom:6px; font-size:.68rem;}
+.tag{
+  color:var(--steel); font-weight:600; letter-spacing:.03em;
+}
+.source-name{color:var(--text-dim);}
+.dot{color:var(--text-dim);}
+.article-title{
+  font-family:var(--serif); font-size:1.18rem; line-height:1.3; font-weight:600; margin-bottom:5px;
+}
+.feed.grand .article-title{font-size:1.4rem;}
+.article-snippet{font-size:.87rem; color:var(--text-dim); line-height:1.5;}
+.feed.grand .article-snippet{font-size:.95rem; line-height:1.6;}
+.article-card.lead{padding-top:16px; padding-bottom:20px;}
+.article-card.lead .article-title{font-size:1.65rem; line-height:1.25;}
+.article-card.lead .num{display:none;}
+.empty-state{padding:60px 10px; text-align:center; color:var(--text-dim); font-size:.9rem;}
+
+/* ---------- Reader overlay ---------- */
+.reader-overlay{
+  position:fixed; inset:0; background:var(--bg); z-index:100; display:none; flex-direction:column;
+  overflow:hidden;
+}
+.reader-overlay.open{display:flex;}
+.reader-topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 16px; border-bottom:1px solid var(--line); flex:none;
+}
+.reader-topbar .left{display:flex; align-items:center; gap:10px;}
+.back-btn{display:flex; align-items:center; gap:6px; font-size:.82rem; color:var(--text-dim); font-weight:500;}
+.reader-topbar .right{display:flex; align-items:center; gap:4px;}
+.reader-scroll{flex:1; overflow-y:auto; padding:24px 18px 140px;}
+.reader-inner{max-width:640px; margin:0 auto;}
+.reader-inner.flex-mode{max-width:100%; display:grid; grid-template-columns:1fr 340px; gap:28px; align-items:start;}
+.reader-eyebrow{display:flex; gap:8px; align-items:center; font-size:.7rem; margin-bottom:10px;}
+.reader-title{
+  font-family:var(--serif); font-weight:700; line-height:1.18; font-size:1.7rem; margin-bottom:10px;
+}
+.reader-inner.grand .reader-title{font-size:2.1rem;}
+.reader-sub{color:var(--text-dim); font-size:.82rem; margin-bottom:22px; font-family:var(--mono);}
+.reader-text{font-family:var(--serif); font-size:1.02rem; line-height:1.75;}
+.reader-text.sans-mode{font-family:var(--sans); line-height:1.65;}
+.reader-text.sans-mode p:first-of-type::first-letter{font-family:var(--sans);}
+.reader-inner.grand .reader-text{font-size:1.14rem; line-height:1.85;}
+.reader-text p{margin-bottom:16px;}
+.reader-text p:first-of-type::first-letter{
+  font-size:2.6em; float:left; line-height:.85; padding-right:7px; padding-top:4px;
+  font-weight:700; color:var(--signal);
+}
+
+/* dossier / studio panel */
+.dossier{margin-top:30px; border-top:1px solid var(--line); padding-top:20px;}
+.reader-inner.flex-mode .dossier{
+  margin-top:0; border-top:none; border-left:1px solid var(--line); padding-top:0; padding-left:24px;
+  position:sticky; top:0;
+}
+.dossier-head{font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; color:var(--text-dim); margin-bottom:12px;}
+.tool-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:6px;}
+.reader-inner.flex-mode .tool-grid{grid-template-columns:1fr 1fr;}
+.reader-inner.grand .tool-grid{grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:5px;}
+.reader-inner.grand .tool-btn{padding:7px 8px;}
+.reader-inner.grand .tool-btn .tname{display:flex; align-items:center; gap:4px; font-size:.68rem;}
+.reader-inner.grand .tool-btn .ticon{margin-right:0;}
+.tool-btn{
+  border:1px solid var(--line); border-radius:var(--radius); padding:10px 10px; text-align:left;
+  font-size:.76rem; line-height:1.3; font-weight:500;
+}
+.tool-btn:hover{border-color:var(--steel);}
+.tool-btn .tname{display:block; margin-bottom:2px;}
+.tool-btn .ticon{font-family:var(--mono); color:var(--signal); font-size:.7rem; margin-right:5px;}
+.tool-result{
+  margin-top:14px; border:1px solid var(--line); border-radius:var(--radius); padding:16px;
+  background:var(--surface); display:none;
+}
+.tool-result.show{display:block;}
+.tool-result h4{font-family:var(--sans); font-size:.72rem; letter-spacing:.05em; color:var(--signal); margin-bottom:10px; text-transform:uppercase; display:flex; justify-content:space-between; align-items:center;}
+.tool-result h4 button{font-size:.9rem; color:var(--text-dim);}
+.tool-result-body{font-size:.88rem; line-height:1.6;}
+.tool-result-body p{margin-bottom:10px;}
+.tool-loading{display:flex; align-items:center; gap:8px; font-size:.82rem; color:var(--text-dim);}
+.spinner{width:12px; height:12px; border-radius:50%; border:2px solid var(--line); border-top-color:var(--signal); animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.persp-block{border-left:2px solid var(--steel); padding-left:10px; margin-bottom:12px;}
+.persp-block .plabel{font-weight:600; font-size:.78rem; color:var(--steel); margin-bottom:3px;}
+.quote-block{border-left:2px solid var(--ochre); padding-left:10px; margin-bottom:10px; font-style:italic;}
+.quote-block .qauthor{display:block; font-style:normal; font-size:.72rem; color:var(--text-dim); margin-top:3px;}
+.tl-item{display:flex; gap:10px; margin-bottom:10px;}
+.tl-date{font-family:var(--mono); font-size:.72rem; color:var(--steel); flex:none; width:90px;}
+.qz-item{margin-bottom:14px;}
+.qz-q{font-weight:600; margin-bottom:6px; font-size:.85rem;}
+.qz-opt{
+  display:block; width:100%; text-align:left; border:1px solid var(--line); border-radius:var(--radius);
+  padding:7px 10px; margin-bottom:5px; font-size:.8rem;
+}
+.qz-opt.correct{border-color:#4C7A4C; background:rgba(76,122,76,.12);}
+.qz-opt.wrong{border-color:var(--signal); background:rgba(168,47,42,.1);}
+.vid-link{display:block; padding:8px 0; border-bottom:1px solid var(--line); font-size:.85rem;}
+.vid-link .vq{color:var(--text-dim); font-size:.72rem;}
+.gloss-term{font-weight:600; color:var(--steel);}
+
+/* ---------- Bottom dock ---------- */
+.dock{
+  position:fixed; bottom:0; left:0; right:0; z-index:110;
+  background:var(--bg); border-top:1px solid var(--line);
+  padding:9px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.dock-group{display:flex; align-items:center; gap:4px;}
+.dock-btn{
+  display:flex; flex-direction:column; align-items:center; gap:3px; font-size:.62rem;
+  color:var(--text-dim); padding:5px 9px; border-radius:var(--radius);
+}
+.dock-btn .di{font-size:1.05rem;}
+.dock-btn.active,.dock-btn:hover{color:var(--text);}
+.mode-select{
+  display:flex; gap:2px; border:1px solid var(--line); border-radius:var(--radius); padding:2px;
+}
+.mode-select button{font-size:.68rem; padding:5px 8px; border-radius:2px; color:var(--text-dim);}
+.mode-select button.active{background:var(--signal); color:#fff;}
+
+/* ---------- Modals (sources / export / toast) ---------- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:200; display:none;
+  align-items:flex-end; justify-content:center;
+}
+.modal-backdrop.open{display:flex;}
+.modal{
+  background:var(--bg); border-top:1px solid var(--line); border-radius:10px 10px 0 0;
+  width:100%; max-width:520px; max-height:82vh; overflow-y:auto; padding:20px 18px 26px;
+}
+@media(min-width:640px){
+  .modal-backdrop{align-items:center;}
+  .modal{border-radius:6px; border:1px solid var(--line);}
+}
+.modal-title{font-family:var(--serif); font-size:1.15rem; font-weight:700; margin-bottom:4px;}
+.modal-sub{font-size:.78rem; color:var(--text-dim); margin-bottom:16px;}
+.modal-close{position:absolute; top:14px; right:16px;}
+.field-row{display:flex; gap:8px; margin-bottom:12px;}
+.field-row input[type=text],.field-row input[type=url]{
+  flex:1; border:1px solid var(--line); border-radius:var(--radius); padding:9px 10px; background:var(--surface); font-size:.85rem;
+}
+.btn{
+  border:1px solid var(--line); border-radius:var(--radius); padding:9px 14px; font-size:.82rem; font-weight:600;
+}
+.btn.primary{background:var(--signal); border-color:var(--signal); color:#fff;}
+.btn.block{width:100%; text-align:center; margin-bottom:8px;}
+.source-item{display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line); font-size:.83rem; gap:8px;}
+.source-item .surl{color:var(--text-dim); font-size:.7rem; font-family:var(--mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.source-status{font-size:.65rem; font-family:var(--mono); flex:none;}
+.source-status.ok{color:#5C9A5C;}
+.source-status.err{color:var(--signal);}
+.opml-actions{display:flex; gap:8px; margin:14px 0;}
+.opml-actions .btn{flex:1;}
+.export-opt{display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line);}
+.export-opt .oname{font-weight:600; font-size:.88rem; margin-bottom:2px;}
+.export-opt .odesc{font-size:.72rem; color:var(--text-dim);}
+.toast{
+  position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--text); color:var(--bg);
+  padding:9px 16px; border-radius:4px; font-size:.78rem; z-index:300; opacity:0; pointer-events:none; transition:opacity .2s;
+}
+.toast.show{opacity:1;}
+
+.hidden{display:none !important;}
+.demo-notice{border:1px solid var(--signal); border-radius:6px; padding:12px 14px; margin:0 0 18px; font-size:.86rem; line-height:1.5; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;}
+.site-foot{margin:28px 0 8px; font-size:.75rem; color:var(--text-dim); text-align:center;}
+.site-foot a{color:inherit;}
+.suggest-row{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 4px;}
+.key-box{border-top:1px solid var(--line); margin-top:16px; padding-top:14px;}
+.key-box .khelp{font-size:.74rem; color:var(--text-dim); line-height:1.5; margin:6px 0 0;}
+.key-box a{color:inherit;}
+.reader-text a{color:var(--signal); word-break:break-all;}
+@media(min-width:760px){
+  .feed{display:grid; grid-template-columns:1fr 1fr; gap:0 28px;}
+  .article-card.lead{grid-column:1/-1; border-bottom:1px solid var(--line);}
+  .article-card{border-bottom:1px solid var(--line);}
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<header class="masthead">
+  <div class="masthead-row">
+    <div class="brand">
+      <div class="brand-mark">Alphabette<span>Info</span></div>
+      <div class="edition-date" id="editionDate">—</div>
+    </div>
+    <div class="masthead-tools">
+      <button class="icon-btn" id="sourcesBtn" title="Sources RSS / OPML">⛭</button>
+      <button class="icon-btn" id="themeBtn" title="Thème">◐</button>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <span style="color:var(--text-dim);font-size:.85rem;">⌕</span>
+    <input type="text" id="searchInput" placeholder="Rechercher un mot-clé, une source, un sujet…">
+  </div>
+</header>
+
+<nav class="cat-strip" id="catStrip"></nav>
+
+<main class="feed-wrap">
+  <div class="demo-notice" id="demoNotice">
+    <span><strong>Ces articles sont des exemples inventés</strong>, pour vous montrer l'outil. Ce ne sont pas de vraies actualités.</span>
+    <button class="btn primary" id="demoAddBtn" type="button">Ajouter mes sources d'actualités</button>
+  </div>
+  <div class="feed" id="feed"></div>
+  <p class="site-foot">Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>. Vos sources, vos favoris et votre clé restent sur cet appareil.</p>
+</main>
+
+<!-- ===== Reader overlay ===== -->
+<div class="reader-overlay" id="reader">
+  <div class="reader-topbar">
+    <div class="left">
+      <button class="back-btn" id="closeReader">← Retour au fil</button>
+    </div>
+    <div class="right">
+      <button class="icon-btn" id="fontFamilyBtn" title="Police">Aa</button>
+      <button class="icon-btn" id="fontMinusBtn" title="Réduire le texte">A-</button>
+      <button class="icon-btn" id="fontPlusBtn" title="Agrandir le texte">A+</button>
+      <button class="icon-btn" id="bookmarkBtn" title="Enregistrer">☆</button>
+      <button class="icon-btn" id="rateBtn" title="Vitesse de lecture">1×</button>
+      <button class="icon-btn" id="ttsBtn" title="Lecture audio">▶</button>
+      <button class="icon-btn" id="shareBtn" title="Partager">⤴</button>
+      <button class="icon-btn" id="exportBtn" title="Exporter">⭳</button>
+    </div>
+  </div>
+  <div class="reader-scroll">
+    <div class="reader-inner" id="readerInner">
+      <div class="reader-eyebrow">
+        <span class="tag" id="rTag"></span><span class="dot">·</span><span class="source-name" id="rSource"></span>
+      </div>
+      <h1 class="reader-title" id="rTitle"></h1>
+      <div class="reader-sub" id="rSub"></div>
+      <div class="reader-text" id="rText"></div>
+
+      <div class="dossier">
+        <div class="dossier-head">STUDIO D'APPROFONDISSEMENT — 10 OUTILS</div>
+        <p style="font-size:.74rem; color:var(--text-dim); margin:0 0 10px;">Analyses rédigées par une IA à partir du texte ci-dessus : elles peuvent contenir des erreurs. L'article d'origine fait foi.</p>
+        <div class="tool-grid" id="toolGrid"></div>
+        <div id="toolResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dock" id="dock">
+    <div class="dock-group mode-select" id="modeSelect">
+      <button data-mode="standard" class="active">Standard</button>
+      <button data-mode="grand">Grand</button>
+      <button data-mode="flex">Flex</button>
+    </div>
+    <div class="dock-group">
+      <button class="dock-btn" id="dockShare"><span class="di">⤴</span>Partager</button>
+      <button class="dock-btn" id="dockExport"><span class="di">⭳</span>Exporter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Sources modal ===== -->
+<div class="modal-backdrop" id="sourcesModal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close icon-btn" id="closeSources">✕</button>
+    <div class="modal-title">Mes sources d'actualités</div>
+    <div class="modal-sub">Ajoutez l'adresse d'un flux RSS, choisissez une suggestion, ou importez un fichier OPML. Quand un site bloque la lecture directe, le flux passe par le service public allorigins.win.</div>
+    <div class="suggest-row" id="suggestRow"></div>
+    <div class="field-row">
+      <input type="url" id="newFeedUrl" placeholder="https://exemple.com/rss.xml">
+      <button class="btn primary" id="addFeedBtn">Ajouter</button>
+    </div>
+    <div class="opml-actions">
+      <button class="btn" id="importOpmlBtn">Importer OPML</button>
+      <button class="btn" id="exportOpmlBtn">Exporter OPML</button>
+    </div>
+    <input type="file" id="opmlFile" accept=".opml,.xml" style="display:none;">
+    <div id="sourcesList"></div>
+    <div class="key-box">
+      <div class="modal-title" style="font-size:.95rem;">Clé IA (facultative)</div>
+      <div class="field-row">
+        <input type="password" id="apiKeyInput" placeholder="sk-ant-…" autocomplete="off" aria-label="Clé API Claude">
+        <button class="btn primary" id="saveKeyBtn" type="button">Enregistrer</button>
+      </div>
+      <p class="khelp">Nécessaire seulement pour les dix outils d'analyse. La clé se crée sur <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">platform.claude.com</a> (usage payant, facturé par Anthropic). Elle reste dans ce navigateur et n'est envoyée qu'à Anthropic. Sur un appareil partagé, effacez-la après usage (champ vide puis Enregistrer).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Export modal ===== -->
+<div class="modal-backdrop" id="exportModal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close icon-btn" id="closeExport">✕</button>
+    <div class="modal-title">Exporter l'article</div>
+    <div class="modal-sub">L'export inclut le texte et les analyses du studio déjà générées.</div>
+    <div class="export-opt">
+      <div><div class="oname">Fichier HTML — Dark</div><div class="odesc">Relecture hors ligne, écran sombre</div></div>
+      <button class="btn" data-export="html-dark">Télécharger</button>
+    </div>
+    <div class="export-opt">
+      <div><div class="oname">Fichier HTML — Light</div><div class="odesc">Prêt pour l'impression / lecture papier</div></div>
+      <button class="btn" data-export="html-light">Télécharger</button>
+    </div>
+    <div class="export-opt" style="border-bottom:none;">
+      <div><div class="oname">Texte brut (.txt)</div><div class="odesc">Archivage, prise de notes</div></div>
+      <button class="btn" data-export="txt">Télécharger</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+
+/* ========================= DATA ========================= */
+const BASE_CATEGORIES = ["Toutes","Technologie","Économie","International","Science","Société"];
+
+const ARTICLES = [
+ {id:1,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-14",
+  title:"Un consortium européen dévoile une puce d'inférence sobre en énergie",
+  snippet:"Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués.",
+  body:["Un consortium réunissant sept laboratoires de recherche européens a présenté hier les premiers résultats d'un processeur spécialisé dans l'inférence de modèles de langage, conçu pour réduire drastiquement la consommation énergétique des applications embarquées.","Selon les données communiquées, la puce atteindrait une efficacité trois fois supérieure aux solutions commerciales actuelles pour un coût de fabrication comparable. Les premiers prototypes seront testés dans des objets connectés grand public dès le printemps prochain.","Les industriels du secteur restent prudents quant au calendrier de commercialisation, évoquant des défis persistants sur la chaîne d'approvisionnement en semi-conducteurs avancés. Plusieurs voix appellent néanmoins à accélérer les investissements publics pour ne pas prendre de retard face aux acteurs asiatiques et nord-américains.","Le consortium annonce une phase de tests élargie d'ici la fin de l'année, avec un objectif de production en petite série en 2027."]},
+ {id:2,category:"Économie",source:"Cahiers Économiques",date:"2026-09-13",
+  title:"La désindexation partielle des loyers commerciaux relance le débat sur l'inflation",
+  snippet:"Une proposition parlementaire vise à plafonner la révision annuelle des baux commerciaux pour les petites enseignes.",
+  body:["Une proposition de loi déposée cette semaine entend plafonner la révision annuelle des loyers commerciaux pour les commerces de proximité, dans un contexte où plusieurs fédérations professionnelles alertent sur la fragilité financière des petites enseignes.","Les partisans du texte estiment que l'indexation actuelle, calquée sur un indice composite, pénalise disproportionnellement les commerces de centre-ville face aux grandes surfaces périphériques. Les représentants des bailleurs jugent au contraire que la mesure fragiliserait l'investissement immobilier commercial.","Les économistes consultés restent divisés sur l'effet net attendu, certains pointant un risque de raréfaction de l'offre locative, d'autres saluant un frein bienvenu à la désertification commerciale des centres-villes moyens.","Le texte doit être examiné en commission dans les prochaines semaines."]},
+ {id:3,category:"International",source:"Dépêches du Monde",date:"2026-09-13",
+  title:"Sommet régional sur la gestion partagée des ressources en eau douce",
+  snippet:"Six pays riverains d'un même bassin fluvial ont entamé des négociations sur un mécanisme d'allocation conjointe.",
+  body:["Six États partageant un même bassin fluvial transfrontalier ont ouvert cette semaine des négociations en vue d'un mécanisme conjoint de répartition des ressources en eau douce, dans un contexte de tensions croissantes liées aux sécheresses répétées.","Le projet de mécanisme prévoit un comité technique permanent chargé d'arbitrer les prélèvements agricoles et industriels selon les niveaux hydrologiques mesurés en temps réel. Plusieurs organisations non gouvernementales saluent une avancée, tout en réclamant des garanties contraignantes plutôt qu'un simple cadre déclaratif.","Les délégations doivent se retrouver à nouveau dans deux mois pour tenter de finaliser un texte, alors que certains États riverains expriment des réserves sur la gouvernance du futur comité.","Les observateurs notent que ce type d'accord reste rare à l'échelle régionale et pourrait servir de modèle pour d'autres bassins sous tension."]},
+ {id:4,category:"Science",source:"Revue des Sciences",date:"2026-09-12",
+  title:"Des chercheurs affinent la datation d'une lignée végétale disparue",
+  snippet:"Une nouvelle méthode combinant analyse isotopique et modélisation permet de resserrer l'estimation de plusieurs millions d'années.",
+  body:["Une équipe de paléobotanistes a publié une révision de la datation d'une lignée végétale éteinte depuis plusieurs dizaines de millions d'années, en combinant analyse isotopique fine et modélisation statistique des sédiments environnants.","La nouvelle fourchette de datation, plus resserrée que les estimations précédentes, permettrait de mieux situer cette lignée par rapport aux grands épisodes climatiques connus de la période. Les auteurs soulignent toutefois que l'échantillon reste limité géographiquement.","D'autres équipes de recherche saluent la rigueur méthodologique tout en appelant à répliquer l'analyse sur des sites distincts avant d'en tirer des conclusions générales sur l'évolution du climat régional.","La publication complète est attendue dans une revue à comité de lecture d'ici la fin du trimestre."]},
+ {id:5,category:"Société",source:"Chroniques Locales",date:"2026-09-12",
+  title:"Des communes rurales expérimentent la mutualisation des services de garde d'enfants",
+  snippet:"Sept communes voisines testent un dispositif commun pour pallier le manque de places en crèche.",
+  body:["Sept communes rurales voisines ont lancé un dispositif expérimental de mutualisation de leurs services de garde d'enfants, face à une pénurie persistante de places en crèche dans les territoires peu denses.","Le mécanisme repose sur une plateforme commune de réservation et un pool partagé d'assistantes maternelles itinérantes, financé conjointement par les budgets communaux et une subvention régionale. Les premiers retours des familles participantes sont globalement positifs, malgré des critiques sur les temps de trajet.","Les élus porteurs du projet espèrent en tirer un modèle reproductible pour d'autres bassins de vie ruraux confrontés aux mêmes difficultés démographiques et budgétaires.","Une évaluation à mi-parcours est prévue dans six mois."]},
+ {id:6,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-11",
+  title:"Un standard ouvert pour l'interopérabilité des assistants domestiques gagne du terrain",
+  snippet:"Plusieurs fabricants annoncent leur ralliement à un protocole commun de communication entre appareils connectés.",
+  body:["Plusieurs fabricants d'appareils domestiques connectés ont annoncé leur ralliement à un protocole de communication ouvert destiné à améliorer l'interopérabilité entre marques concurrentes, un chantier réclamé de longue date par les associations de consommateurs.","Le standard, développé par une fondation à but non lucratif, promet une intégration simplifiée des objets connectés sans dépendance à un écosystème propriétaire unique. Les premiers appareils compatibles sont attendus en rayon d'ici la fin de l'année.","Certains acteurs historiques du secteur restent en retrait, évoquant des préoccupations sur la sécurité du protocole et la gouvernance à long terme de la fondation.","Les analystes du secteur estiment que l'adoption massive dépendra largement de la position des plus grands fabricants, encore indécise à ce stade."]},
+ {id:7,category:"Économie",source:"Cahiers Économiques",date:"2026-09-10",
+  title:"La filière du réemploi textile cherche un modèle économique stable",
+  snippet:"Entre subventions publiques et volatilité des prix de la matière recyclée, les acteurs du secteur peinent à se structurer.",
+  body:["La filière du réemploi et du recyclage textile peine à trouver un modèle économique stable, tiraillée entre la volatilité des prix des matières recyclées à l'export et une dépendance persistante aux subventions publiques.","Plusieurs coopératives du secteur alertent sur un risque de fragilisation si les aides actuelles venaient à être révisées à la baisse, tandis que les pouvoirs publics défendent une logique de soutien dégressif destinée à encourager l'autonomie financière des acteurs.","Des initiatives locales de vente directe et de réparation tentent de diversifier les sources de revenus, avec des résultats encore inégaux selon les territoires.","Un rapport parlementaire sur le financement de la filière est attendu avant la fin de l'année."]},
+ {id:8,category:"International",source:"Dépêches du Monde",date:"2026-09-09",
+  title:"Une médiation régionale relance le dialogue autour d'un différend frontalier ancien",
+  snippet:"Deux pays voisins ont accepté la reprise de pourparlers sous l'égide d'une organisation régionale.",
+  body:["Deux pays voisins ont accepté la reprise de pourparlers autour d'un différend frontalier vieux de plusieurs décennies, sous l'égide d'une organisation régionale mandatée comme médiatrice.","Les discussions doivent porter dans un premier temps sur des mesures de confiance limitées, avant d'aborder les questions territoriales les plus sensibles. Les analystes restent prudents sur les chances d'aboutissement rapide, rappelant l'échec de plusieurs tentatives précédentes.","La société civile des deux pays a globalement salué la reprise du dialogue, tout en appelant à davantage de transparence sur le contenu des négociations.","Un nouveau cycle de discussions est programmé dans les prochaines semaines."]},
+ {id:9,category:"Science",source:"Revue des Sciences",date:"2026-09-08",
+  title:"Le suivi longitudinal d'une colonie d'oiseaux marins éclaire l'adaptation aux vagues de chaleur",
+  snippet:"Quinze années de données révèlent des ajustements comportementaux inattendus dans les stratégies de nidification.",
+  body:["Une étude longitudinale portant sur quinze années de suivi d'une colonie d'oiseaux marins met en évidence des ajustements comportementaux notables face à la multiplication des vagues de chaleur marines.","Les chercheurs observent un décalage progressif des périodes de nidification ainsi qu'une modification des stratégies d'alimentation des adultes, qui semblent privilégier des zones de pêche plus éloignées mais plus stables thermiquement.","Ces résultats interrogent la capacité d'adaptation d'autres espèces marines moins mobiles, et alimentent le débat scientifique sur les seuils de résilience des écosystèmes côtiers face au changement climatique.","L'équipe de recherche prévoit d'étendre le suivi à deux colonies supplémentaires dès la saison prochaine."]},
+ {id:10,category:"Société",source:"Chroniques Locales",date:"2026-09-07",
+  title:"Le bénévolat de compétences séduit une nouvelle génération de retraités actifs",
+  snippet:"Des plateformes dédiées mettent en relation associations et professionnels expérimentés souhaitant transmettre leur savoir-faire.",
+  body:["Un nombre croissant de retraités récents choisit de s'engager dans des missions de bénévolat de compétences, mettant à profit leur expérience professionnelle au service d'associations locales confrontées à des besoins pointus en gestion, comptabilité ou numérique.","Plusieurs plateformes spécialisées facilitent désormais la mise en relation entre ces profils expérimentés et les structures associatives, avec des missions généralement courtes et ciblées sur un besoin précis.","Les associations bénéficiaires soulignent la valeur de cet apport, tout en reconnaissant des difficultés à fidéliser ces bénévoles sur des engagements plus longs.","Les acteurs du secteur y voient une tendance appelée à se renforcer avec l'arrivée à la retraite de générations plus nombreuses et globalement en meilleure santé."]},
+ {id:11,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-14",
+  title:"Des bibliothèques municipales testent des ateliers de vérification de l'information",
+  snippet:"Une vingtaine de médiathèques proposent désormais des sessions d'initiation à l'esprit critique face aux contenus générés par IA.",
+  body:["Une vingtaine de médiathèques municipales ont mis en place des ateliers d'initiation à la vérification de l'information, spécifiquement centrés sur la détection de contenus textuels et visuels générés par intelligence artificielle.","Les animateurs constatent un intérêt croissant du public, notamment chez les adolescents et les retraités, deux populations identifiées comme particulièrement exposées à la désinformation en ligne selon plusieurs études récentes.","Le réseau des médiathèques participantes envisage de mutualiser ses supports pédagogiques et de les rendre disponibles en licence libre d'ici la fin de l'année.","Des sessions de formation à destination des bibliothécaires eux-mêmes sont également prévues."]},
+ {id:12,category:"Économie",source:"Cahiers Économiques",date:"2026-09-11",
+  title:"Les coopératives agricoles s'organisent face à la volatilité des prix de l'énergie",
+  snippet:"Plusieurs groupements investissent dans des unités de production solaire mutualisées pour sécuriser leurs coûts.",
+  body:["Face à la volatilité persistante des prix de l'énergie, plusieurs coopératives agricoles régionales ont lancé des projets d'unités de production solaire mutualisées, destinées à couvrir une partie de leurs besoins en électricité.","Le financement repose sur un montage associant fonds propres des coopératives, prêts bancaires dédiés à la transition énergétique et subventions régionales. Les porteurs de projet évoquent un retour sur investissement estimé entre huit et douze ans selon les sites.","Les exploitants concernés espèrent ainsi limiter leur exposition aux fluctuations du marché de l'énergie, un poste de dépense devenu particulièrement pesant ces dernières années.","D'autres coopératives du secteur observent l'expérience avec intérêt avant de se positionner à leur tour."]},
+ {id:13,category:"International",source:"Dépêches du Monde",date:"2026-09-10",
+  title:"Une alliance de villes portuaires coordonne ses plans d'adaptation côtière",
+  snippet:"Douze ports de quatre continents mutualisent leurs études sur la montée du niveau de la mer.",
+  body:["Douze villes portuaires réparties sur quatre continents ont formalisé une alliance destinée à mutualiser leurs études techniques sur l'adaptation aux risques côtiers liés à la montée du niveau de la mer.","L'accord prévoit un partage de données hydrologiques et de retours d'expérience sur les infrastructures de protection déjà expérimentées, qu'il s'agisse de digues mobiles, de restauration de zones humides tampons ou de relocalisation partielle d'activités portuaires.","Les experts saluent une initiative pragmatique, tout en soulignant que les besoins de financement restent très largement supérieurs aux engagements actuellement mobilisés à l'échelle internationale.","Un premier bilan des travaux de l'alliance est attendu lors d'une conférence prévue l'an prochain."]},
+ {id:14,category:"Science",source:"Revue des Sciences",date:"2026-09-09",
+  title:"Une modélisation affine les projections de recharge des nappes phréatiques karstiques",
+  snippet:"Le nouveau modèle intègre pour la première fois la variabilité fine des sols calcaires sur un vaste bassin versant.",
+  body:["Une équipe d'hydrogéologues a publié un modèle affiné de recharge des nappes phréatiques karstiques, intégrant pour la première fois la variabilité fine de la structure des sols calcaires sur un vaste bassin versant.","Les simulations obtenues suggèrent des temps de recharge plus hétérogènes que ne le supposaient les modèles précédents, avec des zones à recharge rapide côtoyant des poches à recharge très lente selon la structure géologique locale.","Ces résultats intéressent directement les gestionnaires de ressources en eau, qui pourraient affiner leurs politiques de prélèvement saisonnier en tenant compte de cette hétérogénéité plutôt que d'une moyenne globale du bassin.","L'équipe prévoit d'appliquer sa méthode à deux autres bassins karstiques dans les prochains mois pour tester sa généralisabilité."]},
+ {id:15,category:"Société",source:"Chroniques Locales",date:"2026-09-08",
+  title:"Le covoiturage courte distance progresse dans les bassins d'emploi périurbains",
+  snippet:"Des plateformes locales, souvent adossées aux intercommunalités, misent sur la régularité des trajets domicile-travail.",
+  body:["Le covoiturage courte distance progresse dans plusieurs bassins d'emploi périurbains, porté par des plateformes locales souvent adossées aux intercommunalités plutôt que par les grands acteurs nationaux du secteur.","Ces dispositifs misent sur la régularité des trajets domicile-travail pour constituer des communautés stables de covoitureurs, avec des incitations financières modestes mais récurrentes plutôt que des primes ponctuelles.","Les premiers bilans font état d'une adoption progressive mais réelle, notamment sur des axes mal desservis par les transports en commun classiques.","Les collectivités porteuses espèrent que ces dispositifs contribueront à désengorger certains axes routiers saturés aux heures de pointe."]},
+ {id:16,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-08",
+  title:"Le débat sur la portabilité des données personnelles entre plateformes relancé",
+  snippet:"Une association de consommateurs réclame un droit d'export renforcé, au-delà du cadre réglementaire actuel.",
+  body:["Une association de défense des consommateurs a publié un rapport réclamant un droit à la portabilité des données personnelles renforcé, jugeant le cadre réglementaire actuel insuffisant face à la réalité technique des principales plateformes.","Le rapport pointe notamment des formats d'export jugés peu exploitables et des délais de traitement des demandes qui resteraient, selon l'association, largement supérieurs aux standards annoncés par les entreprises concernées.","Plusieurs plateformes visées contestent ce constat, affirmant avoir investi ces derniers mois dans l'amélioration de leurs outils d'export de données.","Les autorités de régulation compétentes n'ont pas encore réagi publiquement au rapport."]},
+];
+
+const TOOLS = [
+ {id:"deepen", icon:"01", name:"Creuser le sujet",
+  prompt:a=>`Tu es un journaliste spécialisé. Rédige une synthèse contextuelle approfondie (220-280 mots, en français, ton neutre et factuel) qui éclaire les enjeux de fond de l'article ci-dessous. Réponds en 2-3 paragraphes de prose, sans titre.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"prose"},
+ {id:"nuances", icon:"02", name:"Nuances & perspectives",
+  prompt:a=>`Présente 3 à 4 perspectives distinctes et divergentes sur le sujet de cet article (par exemple : perspective économique, perspective sociale, point de vue critique, angle international — adapte selon le sujet réel). Pour chaque perspective, réponds strictement au format JSON, un tableau d'objets {"label":"...", "text":"..."} (texte de 2-3 phrases par perspective, en français). Ne réponds QUE le JSON, sans texte autour.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"perspectives"},
+ {id:"timeline", icon:"03", name:"Frise chronologique",
+  prompt:a=>`Reconstitue une frise chronologique des événements clés évoqués ou sous-entendus par cet article (4 à 7 étapes). Réponds strictement en JSON, tableau d'objets {"date":"...", "event":"..."} (dates approximatives si besoin, en français). Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"timeline"},
+ {id:"devil", icon:"04", name:"Avocat du diable",
+  prompt:a=>`Adopte un ton socratique. Formule les meilleurs contre-arguments, biais potentiels et angles morts de cet article, sous forme de 3 questions incisives suivies chacune d'une courte réponse critique (en français). Réponds en prose structurée, sans JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"prose"},
+ {id:"brief", icon:"05", name:"Fiche exécutive",
+  prompt:a=>`Rédige une fiche exécutive décisionnelle en français, structurée en puces courtes sous ces intitulés exacts : "Contexte", "Enjeux clés", "Chiffres et faits", "Risques", "À surveiller". Reste concis (une phrase par puce).\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"prose"},
+ {id:"citations", icon:"06", name:"Citations clés",
+  prompt:a=>`Extrait ou reformule les 3 à 5 déclarations les plus significatives attribuables aux acteurs mentionnés dans cet article. Réponds strictement en JSON, tableau d'objets {"quote":"...", "author":"..."} en français. Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"quotes"},
+ {id:"quiz", icon:"07", name:"Quiz de mémorisation",
+  prompt:a=>`Génère un quiz de 5 questions à choix multiples (4 options chacune, une seule correcte) pour valider la compréhension de cet article. Réponds strictement en JSON, tableau d'objets {"q":"...", "options":["...","...","...","..."], "correct":0} (correct = index 0-3), en français. Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"quiz"},
+ {id:"video", icon:"08", name:"Passerelle vidéo",
+  prompt:a=>`Propose 4 requêtes de recherche YouTube ciblées et pertinentes (reportages, interviews, décryptages) en lien avec le sujet de cet article, en français. Réponds strictement en JSON, tableau d'objets {"label":"...", "query":"..."}. Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"video"},
+ {id:"factcheck", icon:"09", name:"Vérification express",
+  prompt:a=>`Identifie 3 affirmations factuelles vérifiables dans cet article et propose, pour chacune, une piste concrète de vérification (type de source à consulter), sans prétendre vérifier toi-même. Réponds strictement en JSON, tableau d'objets {"claim":"...", "how":"..."}, en français. Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"factcheck"},
+ {id:"glossary", icon:"10", name:"Glossaire & décryptage",
+  prompt:a=>`Identifie 4 à 6 termes techniques ou complexes dans cet article et donne pour chacun une définition claire et accessible en une phrase. Réponds strictement en JSON, tableau d'objets {"term":"...", "def":"..."}, en français. Ne réponds QUE le JSON.\n\nArticle : "${a.title}"\n${a.body.join(" ")}`,
+  render:"glossary"},
+];
+
+/* ========================= STATE ========================= */
+let state = {
+  theme:"dark", category:"Toutes", query:"", readingMode:"standard",
+  currentArticle:null, sources:[], toolCache:{}, speaking:false,
+  fontScale:1, fontFamily:"serif", ttsRate:1,
+  bookmarks:[], imported:[]
+};
+const FONT_SCALES = [0.9,1,1.1,1.25,1.4];
+const TTS_RATES = [0.75,1,1.25,1.5];
+
+/* ========================= STORAGE ========================= */
+// Tout reste dans le navigateur de l'appareil (localStorage) : rien n'est envoyé à Alphabette.
+const store = {
+  async get(k){ try{ const v = localStorage.getItem(k); return v===null ? null : {value:v}; }catch(e){ return null; } },
+  async set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+function getApiKey(){ try{ return (localStorage.getItem("alphabette-info:cle-claude")||"").trim(); }catch(e){ return ""; } }
+function setApiKey(v){ try{ v ? localStorage.setItem("alphabette-info:cle-claude", v) : localStorage.removeItem("alphabette-info:cle-claude"); }catch(e){} }
+
+async function loadPrefs(){
+  try{
+    const r = await store.get("alphabette-info:prefs");
+    if(r && r.value){
+      const p = JSON.parse(r.value);
+      if(p.theme) state.theme = p.theme;
+      if(p.fontScale) state.fontScale = p.fontScale;
+      if(p.fontFamily) state.fontFamily = p.fontFamily;
+      if(p.ttsRate) state.ttsRate = p.ttsRate;
+    }
+  }catch(e){}
+  try{
+    const r = await store.get("alphabette-info:sources");
+    if(r && r.value) state.sources = JSON.parse(r.value);
+  }catch(e){}
+  try{
+    const r = await store.get("alphabette-info:bookmarks");
+    if(r && r.value) state.bookmarks = JSON.parse(r.value);
+  }catch(e){}
+  try{
+    const r = await store.get("alphabette-info:imported");
+    if(r && r.value) state.imported = JSON.parse(r.value);
+  }catch(e){}
+}
+async function savePrefs(){
+  try{ await store.set("alphabette-info:prefs", JSON.stringify({theme:state.theme, fontScale:state.fontScale, fontFamily:state.fontFamily, ttsRate:state.ttsRate})); }catch(e){}
+}
+async function saveSources(){
+  try{ await store.set("alphabette-info:sources", JSON.stringify(state.sources)); }catch(e){}
+}
+async function saveBookmarks(){
+  try{ await store.set("alphabette-info:bookmarks", JSON.stringify(state.bookmarks)); }catch(e){}
+}
+async function saveImported(){
+  try{ await store.set("alphabette-info:imported", JSON.stringify(state.imported)); }catch(e){}
+}
+function allArticles(){
+  // Les articles fournis sont des exemples inventés : ils disparaissent dès qu'un vrai flux est lu.
+  return state.imported.length ? state.imported : ARTICLES.map(a=>Object.assign({}, a, {source:"Exemple inventé"}));
+}
+
+/* ========================= RENDER: masthead / feed ========================= */
+function renderEditionDate(){
+  const d = new Date();
+  document.getElementById("editionDate").textContent =
+    d.toLocaleDateString("fr-FR",{weekday:"long", day:"numeric", month:"long", year:"numeric"});
+}
+
+function currentCategories(){
+  const cats = BASE_CATEGORIES.slice();
+  if(state.imported.length) return ["Toutes","Mes flux"].concat(state.bookmarks.length ? ["Enregistrés"] : []);
+  if(state.bookmarks.length) cats.push("Enregistrés");
+  return cats;
+}
+
+function renderCategories(){
+  const strip = document.getElementById("catStrip");
+  strip.innerHTML = "";
+  currentCategories().forEach(c=>{
+    const b = document.createElement("button");
+    b.className = "cat-btn" + (c===state.category ? " active":"");
+    b.textContent = c;
+    b.onclick = ()=>{ state.category = c; renderCategories(); renderFeed(); };
+    strip.appendChild(b);
+  });
+}
+
+function filteredArticles(){
+  const pool = allArticles();
+  return pool.filter(a=>{
+    let okCat;
+    if(state.category==="Toutes") okCat = true;
+    else if(state.category==="Enregistrés") okCat = state.bookmarks.includes(a.id);
+    else okCat = a.category===state.category;
+    const q = state.query.trim().toLowerCase();
+    const okQ = !q || a.title.toLowerCase().includes(q) || a.snippet.toLowerCase().includes(q) || a.source.toLowerCase().includes(q) || a.category.toLowerCase().includes(q);
+    return okCat && okQ;
+  }).sort((x,y)=> y.date.localeCompare(x.date));
+}
+
+function renderFeed(){
+  const feed = document.getElementById("feed");
+  feed.className = "feed " + (state.readingMode==="grand" ? "grand":"");
+  const list = filteredArticles();
+  feed.innerHTML = "";
+  const notice = document.getElementById("demoNotice");
+  if(notice) notice.classList.toggle("hidden", state.imported.length>0);
+  if(list.length===0){
+    feed.innerHTML = `<div class="empty-state">Aucun article ne correspond à votre recherche.</div>`;
+    return;
+  }
+  list.forEach((a,i)=>{
+    const card = document.createElement("div");
+    card.className = "article-card" + (i===0 && state.category==="Toutes" && !state.query ? " lead":"");
+    card.innerHTML = `
+      <div class="num">${String(i+1).padStart(2,"0")}</div>
+      <div class="article-body">
+        <div class="article-meta"><span class="tag">${escapeHtml(a.category)}</span><span class="dot">·</span><span class="source-name">${escapeHtml(a.source)}</span><span class="dot">·</span><span class="source-name">${formatDate(a.date)}</span></div>
+        <div class="article-title">${escapeHtml(a.title)}</div>
+        <div class="article-snippet">${escapeHtml(a.snippet)}</div>
+      </div>`;
+    card.onclick = ()=> openArticle(a);
+    feed.appendChild(card);
+  });
+}
+
+function formatDate(iso){
+  const d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
+}
+
+/* ========================= READER ========================= */
+function openArticle(a){
+  state.currentArticle = a;
+  document.getElementById("rTag").textContent = a.category;
+  document.getElementById("rSource").textContent = a.source;
+  document.getElementById("rTitle").textContent = a.title;
+  document.getElementById("rSub").textContent = formatDate(a.date) + " · lecture ≈ " + Math.max(1,Math.round(a.body.join(" ").split(" ").length/200)) + " min";
+  const lien = (a.link && /^https?:\/\//i.test(a.link)) ? a.link : "";
+  document.getElementById("rText").innerHTML = a.body.filter(p=>!(lien && p.indexOf("Lire l'article original : ")===0)).map(p=>`<p>${escapeHtml(p)}</p>`).join("")
+    + (lien ? `<p><a href="${escapeHtml(lien)}" target="_blank" rel="noopener">Lire l'article complet sur le site d'origine ↗</a></p>` : "");
+  document.getElementById("toolResults").innerHTML = "";
+  renderToolGrid();
+  applyReadingMode();
+  applyTypography();
+  updateBookmarkBtn();
+  document.getElementById("rateBtn").textContent = state.ttsRate+"×";
+  document.getElementById("reader").classList.add("open");
+  document.getElementById("reader").querySelector(".reader-scroll").scrollTop = 0;
+}
+function closeArticle(){
+  stopTTS();
+  document.getElementById("reader").classList.remove("open");
+}
+document.getElementById("closeReader").onclick = closeArticle;
+
+function renderToolGrid(){
+  const grid = document.getElementById("toolGrid");
+  grid.innerHTML = "";
+  TOOLS.forEach(t=>{
+    const b = document.createElement("button");
+    b.className = "tool-btn";
+    b.innerHTML = `<span class="tname"><span class="ticon">${t.icon}</span>${t.name}</span>`;
+    b.onclick = ()=> runTool(t);
+    grid.appendChild(b);
+  });
+}
+
+function applyReadingMode(){
+  const inner = document.getElementById("readerInner");
+  inner.className = "reader-inner " + (state.readingMode==="grand"?"grand":"") + (state.readingMode==="flex"?"flex-mode":"");
+  document.querySelectorAll("#modeSelect button").forEach(b=>{
+    b.classList.toggle("active", b.dataset.mode===state.readingMode);
+  });
+}
+document.getElementById("modeSelect").addEventListener("click",(e)=>{
+  const btn = e.target.closest("button"); if(!btn) return;
+  state.readingMode = btn.dataset.mode;
+  applyReadingMode();
+  renderFeed();
+});
+
+/* ---- Typography controls ---- */
+function applyTypography(){
+  const rText = document.getElementById("rText");
+  rText.style.fontSize = "calc(1.02rem * " + state.fontScale + ")";
+  rText.classList.toggle("sans-mode", state.fontFamily==="sans");
+}
+document.getElementById("fontPlusBtn").onclick = ()=>{
+  const i = FONT_SCALES.indexOf(state.fontScale);
+  state.fontScale = FONT_SCALES[Math.min(i+1, FONT_SCALES.length-1)];
+  applyTypography(); savePrefs();
+};
+document.getElementById("fontMinusBtn").onclick = ()=>{
+  const i = FONT_SCALES.indexOf(state.fontScale);
+  state.fontScale = FONT_SCALES[Math.max(i-1, 0)];
+  applyTypography(); savePrefs();
+};
+document.getElementById("fontFamilyBtn").onclick = ()=>{
+  state.fontFamily = state.fontFamily==="serif" ? "sans" : "serif";
+  applyTypography(); savePrefs();
+};
+
+/* ---- Bookmarks ---- */
+function updateBookmarkBtn(){
+  const a = state.currentArticle; if(!a) return;
+  const on = state.bookmarks.includes(a.id);
+  const btn = document.getElementById("bookmarkBtn");
+  btn.textContent = on ? "★" : "☆";
+  btn.classList.toggle("active", on);
+}
+document.getElementById("bookmarkBtn").onclick = ()=>{
+  const a = state.currentArticle; if(!a) return;
+  const idx = state.bookmarks.indexOf(a.id);
+  if(idx===-1){ state.bookmarks.push(a.id); showToast("Article enregistré."); }
+  else { state.bookmarks.splice(idx,1); showToast("Retiré des articles enregistrés."); }
+  updateBookmarkBtn(); saveBookmarks(); renderCategories();
+};
+
+/* ---- TTS rate ---- */
+document.getElementById("rateBtn").onclick = ()=>{
+  const i = TTS_RATES.indexOf(state.ttsRate);
+  state.ttsRate = TTS_RATES[(i+1) % TTS_RATES.length];
+  document.getElementById("rateBtn").textContent = state.ttsRate+"×";
+  if(utter) utter.rate = state.ttsRate;
+  if(state.speaking){ window.speechSynthesis.cancel(); toggleTTS(); }
+  savePrefs();
+};
+
+/* ========================= CLAUDE API ========================= */
+async function callClaude(prompt){
+  const key = getApiKey();
+  if(!key){ const e = new Error("clé manquante"); e.noKey = true; throw e; }
+  const res = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "x-api-key": key,
+      "anthropic-version":"2026-10-21",
+      "anthropic-beta":"server-side-fallback-2026-07-01",
+      "anthropic-dangerous-direct-browser-access":"true"
+    },
+    body: JSON.stringify({
+      model:"claude-sonnet-5-5",
+      max_tokens:8000,
+      output_config:{effort:"low"},
+      fallbacks:"default",
+      messages:[{role:"user", content:prompt}]
+    })
+  });
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok){
+    if(res.status===401) throw new Error("clé refusée : vérifiez-la dans ⛭");
+    if(res.status===429) throw new Error("trop de demandes ou crédit épuisé, réessayez plus tard");
+    throw new Error((data.error && data.error.message) || ("erreur "+res.status));
+  }
+  if(data.stop_reason==="refusal") throw new Error("l'IA a refusé de traiter cet article");
+  const textBlocks = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
+  if(!textBlocks.length) throw new Error("réponse vide");
+  return textBlocks.join("\n");
+}
+function extractJSON(txt){
+  const cleaned = txt.replace(/```json|```/g,"").trim();
+  const start = cleaned.indexOf("[")===-1 ? cleaned.indexOf("{") : cleaned.indexOf("[");
+  const end = cleaned.lastIndexOf("]")===-1 ? cleaned.lastIndexOf("}") : cleaned.lastIndexOf("]");
+  const slice = (start!==-1 && end!==-1) ? cleaned.slice(start,end+1) : cleaned;
+  return JSON.parse(slice);
+}
+
+async function runTool(tool){
+  const a = state.currentArticle;
+  const cacheKey = a.id+"_"+tool.id;
+  const resultsWrap = document.getElementById("toolResults");
+
+  let panel = document.getElementById("tr_"+tool.id);
+  if(panel){ panel.classList.toggle("show"); return; }
+
+  panel = document.createElement("div");
+  panel.className = "tool-result show";
+  panel.id = "tr_"+tool.id;
+  panel.innerHTML = `<h4>${tool.icon} · ${tool.name} <button onclick="this.closest('.tool-result').classList.remove('show')">✕</button></h4><div class="tool-result-body"><div class="tool-loading"><span class="spinner"></span>Génération en cours…</div></div>`;
+  resultsWrap.prepend(panel);
+
+  try{
+    let output;
+    if(state.toolCache[cacheKey]){
+      output = state.toolCache[cacheKey];
+    } else {
+      const raw = await callClaude(tool.prompt(a));
+      output = raw;
+      state.toolCache[cacheKey] = raw;
+    }
+    renderToolOutput(panel.querySelector(".tool-result-body"), tool, output);
+  }catch(err){
+    panel.querySelector(".tool-result-body").innerHTML = err.noKey
+      ? `<p>Les dix outils utilisent l'IA Claude avec <strong>votre propre clé</strong> (payante à l'usage, chez Anthropic). Aucune clé n'est enregistrée pour l'instant.</p><p><button class="btn primary" onclick="document.getElementById('sourcesBtn').click()">Ajouter ma clé</button></p>`
+      : `<p style="color:var(--signal);">Impossible de générer ce contenu (${escapeHtml(String(err.message||err))}).</p>`;
+    panel.id = "";
+  }
+}
+
+function renderToolOutput(el, tool, raw){
+  try{
+    if(tool.render==="prose"){
+      el.innerHTML = raw.trim().split(/\n{1,2}/).filter(Boolean).map(p=>`<p>${escapeHtml(p)}</p>`).join("");
+      return;
+    }
+    const data = extractJSON(raw);
+    if(tool.render==="perspectives"){
+      el.innerHTML = data.map(d=>`<div class="persp-block"><div class="plabel">${escapeHtml(d.label)}</div>${escapeHtml(d.text)}</div>`).join("");
+    } else if(tool.render==="timeline"){
+      el.innerHTML = data.map(d=>`<div class="tl-item"><div class="tl-date">${escapeHtml(d.date)}</div><div>${escapeHtml(d.event)}</div></div>`).join("");
+    } else if(tool.render==="quotes"){
+      el.innerHTML = data.map(d=>`<div class="quote-block">« ${escapeHtml(d.quote)} »<span class="qauthor">— ${escapeHtml(d.author)}</span></div>`).join("");
+    } else if(tool.render==="quiz"){
+      el.innerHTML = data.map((q,i)=>`
+        <div class="qz-item" data-correct="${q.correct}">
+          <div class="qz-q">${i+1}. ${escapeHtml(q.q)}</div>
+          ${q.options.map((o,oi)=>`<button class="qz-opt" data-idx="${oi}">${escapeHtml(o)}</button>`).join("")}
+        </div>`).join("");
+      el.querySelectorAll(".qz-item").forEach(item=>{
+        const correct = parseInt(item.dataset.correct,10);
+        item.querySelectorAll(".qz-opt").forEach(btn=>{
+          btn.onclick = ()=>{
+            const idx = parseInt(btn.dataset.idx,10);
+            item.querySelectorAll(".qz-opt").forEach(b=>b.disabled=true);
+            btn.classList.add(idx===correct ? "correct":"wrong");
+            if(idx!==correct) item.querySelectorAll(".qz-opt")[correct].classList.add("correct");
+          };
+        });
+      });
+    } else if(tool.render==="video"){
+      el.innerHTML = data.map(d=>`<a class="vid-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d.query)}">${escapeHtml(d.label)}<span class="vq">${escapeHtml(d.query)} — voir sur YouTube ↗</span></a>`).join("");
+    } else if(tool.render==="factcheck"){
+      el.innerHTML = data.map(d=>`<div class="persp-block"><div class="plabel">${escapeHtml(d.claim)}</div>${escapeHtml(d.how)}</div>`).join("");
+    } else if(tool.render==="glossary"){
+      el.innerHTML = data.map(d=>`<p><span class="gloss-term">${escapeHtml(d.term)}</span> — ${escapeHtml(d.def)}</p>`).join("");
+    }
+  }catch(e){
+    el.innerHTML = `<p>${escapeHtml(raw)}</p>`;
+  }
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+/* ========================= TTS ========================= */
+let utter = null;
+function toggleTTS(){
+  if(state.speaking){ stopTTS(); return; }
+  const a = state.currentArticle; if(!a) return;
+  const text = a.title + ". " + a.body.join(" ");
+  utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "fr-FR"; utter.rate = state.ttsRate;
+  utter.onend = ()=>{ state.speaking=false; updateTTSBtn(); };
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+  state.speaking = true; updateTTSBtn();
+}
+function stopTTS(){
+  window.speechSynthesis.cancel();
+  state.speaking = false; updateTTSBtn();
+}
+function updateTTSBtn(){
+  document.getElementById("ttsBtn").textContent = state.speaking ? "■" : "▶";
+  document.getElementById("ttsBtn").classList.toggle("active", state.speaking);
+}
+document.getElementById("ttsBtn").onclick = toggleTTS;
+
+/* ========================= THEME ========================= */
+function applyTheme(){
+  document.body.dataset.theme = state.theme;
+  document.getElementById("themeBtn").textContent = state.theme==="dark" ? "◐" : "◑";
+}
+document.getElementById("themeBtn").onclick = ()=>{
+  state.theme = state.theme==="dark" ? "light" : "dark";
+  applyTheme(); savePrefs();
+};
+
+/* ========================= SEARCH ========================= */
+document.getElementById("searchInput").addEventListener("input",(e)=>{
+  state.query = e.target.value; renderFeed();
+});
+
+/* ========================= SOURCES / OPML ========================= */
+const sourcesModal = document.getElementById("sourcesModal");
+document.getElementById("sourcesBtn").onclick = ()=>{ renderSourcesList(); sourcesModal.classList.add("open"); };
+document.getElementById("closeSources").onclick = ()=> sourcesModal.classList.remove("open");
+sourcesModal.addEventListener("click",(e)=>{ if(e.target===sourcesModal) sourcesModal.classList.remove("open"); });
+
+function renderSourcesList(){
+  const wrap = document.getElementById("sourcesList");
+  if(state.sources.length===0){
+    wrap.innerHTML = `<div class="empty-state" style="padding:24px 4px;">Aucune source ajoutée. Importez un OPML ou ajoutez une URL de flux ci-dessus.</div>`;
+    return;
+  }
+  wrap.innerHTML = state.sources.map((s,i)=>`
+    <div class="source-item">
+      <div style="min-width:0;">
+        <div>${escapeHtml(s.title||s.url)}</div>
+        <div class="surl">${escapeHtml(s.url)}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span class="source-status ${s.status==='ok'?'ok':(s.status==='err'?'err':'')}">${s.status==='ok'?'flux lu':(s.status==='err'?'lecture impossible':'en attente')}</span>
+        <button class="icon-btn" data-refetch="${i}" title="Actualiser">↻</button>
+        <button class="icon-btn" data-remove="${i}">✕</button>
+      </div>
+    </div>`).join("");
+  wrap.querySelectorAll("[data-remove]").forEach(btn=>{
+    btn.onclick = ()=>{
+      state.sources.splice(parseInt(btn.dataset.remove,10),1);
+      saveSources(); renderSourcesList();
+    };
+  });
+}
+
+const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+
+function stripHtml(html){
+  const div = document.createElement("div");
+  div.innerHTML = html || "";
+  return (div.textContent || div.innerText || "").trim();
+}
+function textOf(node, selector){
+  const el = node.querySelector(selector);
+  return el ? el.textContent.trim() : "";
+}
+function parseFeedXml(xml, sourceTitle, sourceUrl){
+  const items = [];
+  const isAtom = xml.querySelector("feed") !== null;
+  const nodes = isAtom ? xml.querySelectorAll("entry") : xml.querySelectorAll("item");
+  nodes.forEach((n,i)=>{
+    const title = textOf(n,"title") || "(sans titre)";
+    const rawDesc = isAtom ? (textOf(n,"summary")||textOf(n,"content")) : (textOf(n,"description")||textOf(n,"encoded"));
+    const desc = stripHtml(rawDesc).slice(0,900);
+    let link = "";
+    if(isAtom){ const l = n.querySelector("link"); link = l ? (l.getAttribute("href")||"") : ""; }
+    else { link = textOf(n,"link"); }
+    const pub = textOf(n,"pubDate") || textOf(n,"published") || textOf(n,"updated");
+    let dateIso = new Date().toISOString().slice(0,10);
+    const d = pub ? new Date(pub) : null;
+    if(d && !isNaN(d)) dateIso = d.toISOString().slice(0,10);
+    items.push({
+      id: "imp_"+slug(sourceUrl)+"_"+i+"_"+slug(title).slice(0,24),
+      category:"Mes flux", source: sourceTitle || sourceUrl, date: dateIso,
+      title, snippet: desc.slice(0,180)+(desc.length>180?"…":""),
+      body:[desc || "Aucun extrait fourni par le flux.", link ? ("Lire l'article original : "+link) : ""].filter(Boolean),
+      link
+    });
+  });
+  return items;
+}
+
+async function fetchFeed(url){
+  let lastErr;
+  for(const attemptUrl of [url, CORS_PROXY+encodeURIComponent(url)]){
+    try{
+      const res = await fetch(attemptUrl);
+      if(!res.ok) throw new Error("HTTP "+res.status);
+      const text = await res.text();
+      const xml = new DOMParser().parseFromString(text, "application/xml");
+      if(xml.querySelector("parsererror")) throw new Error("XML invalide");
+      return xml;
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error("échec");
+}
+
+document.getElementById("addFeedBtn").onclick = async ()=>{
+  const input = document.getElementById("newFeedUrl");
+  const url = input.value.trim();
+  if(!url) return;
+  const src = {url, title:url, status:"pending"};
+  state.sources.push(src);
+  input.value = "";
+  renderSourcesList(); saveSources();
+  try{
+    const xml = await fetchFeed(url);
+    const titleNode = xml.querySelector("channel > title, feed > title");
+    src.title = titleNode ? titleNode.textContent.trim() : url;
+    src.status = "ok";
+    const items = parseFeedXml(xml, src.title, url);
+    const existingIds = new Set(state.imported.map(a=>a.id));
+    let added = 0;
+    items.forEach(it=>{ if(!existingIds.has(it.id)){ state.imported.unshift(it); existingIds.add(it.id); added++; } });
+    saveImported(); renderCategories(); renderFeed();
+    showToast(added+" article(s) importé(s) depuis « "+src.title+" ».");
+  }catch(e){
+    src.status = "err";
+    showToast("Impossible de lire ce flux pour l'instant. La source reste enregistrée : réessayez avec ↻.");
+  }
+  renderSourcesList(); saveSources();
+};
+
+document.getElementById("sourcesModal").addEventListener("click", async (e)=>{
+  const btn = e.target.closest("[data-refetch]");
+  if(!btn) return;
+  const i = parseInt(btn.dataset.refetch,10);
+  const src = state.sources[i]; if(!src) return;
+  showToast("Actualisation de « "+(src.title||src.url)+" »…");
+  try{
+    const xml = await fetchFeed(src.url);
+    const titleNode = xml.querySelector("channel > title, feed > title");
+    src.title = titleNode ? titleNode.textContent.trim() : src.url;
+    src.status = "ok";
+    const items = parseFeedXml(xml, src.title, src.url);
+    const existingIds = new Set(state.imported.map(a=>a.id));
+    let added = 0;
+    items.forEach(it=>{ if(!existingIds.has(it.id)){ state.imported.unshift(it); existingIds.add(it.id); added++; } });
+    saveImported(); renderCategories(); renderFeed(); renderSourcesList(); saveSources();
+    showToast(added+" nouvel(nouveaux) article(s).");
+  }catch(err){
+    src.status = "err"; renderSourcesList(); saveSources();
+    showToast("Ce flux reste illisible pour l'instant.");
+  }
+});
+
+document.getElementById("importOpmlBtn").onclick = ()=> document.getElementById("opmlFile").click();
+document.getElementById("opmlFile").addEventListener("change",(e)=>{
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const xml = new DOMParser().parseFromString(reader.result, "application/xml");
+      const outlines = xml.querySelectorAll("outline[xmlUrl], outline[xmlurl]");
+      let added = 0;
+      outlines.forEach(o=>{
+        const url = o.getAttribute("xmlUrl") || o.getAttribute("xmlurl");
+        const title = o.getAttribute("title") || o.getAttribute("text") || url;
+        if(url && !state.sources.some(s=>s.url===url)){
+          state.sources.push({url, title, status:"pending"});
+          added++;
+        }
+      });
+      renderSourcesList(); saveSources();
+      showToast(added+" flux importé(s) depuis l'OPML.");
+    }catch(err){
+      showToast("Fichier OPML illisible.");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+document.getElementById("exportOpmlBtn").onclick = ()=>{
+  const body = state.sources.map(s=>`    <outline text="${escapeHtml(s.title||s.url)}" title="${escapeHtml(s.title||s.url)}" type="rss" xmlUrl="${escapeHtml(s.url)}"/>`).join("\n");
+  const opml = `<?xml version="1.0" encoding="UTF-8"?>\n<opml version="2.0">\n  <head><title>Alphabette Info — Bibliothèque de flux</title></head>\n  <body>\n${body}\n  </body>\n</opml>`;
+  downloadFile("alphabette-info-flux.opml", opml, "text/x-opml");
+  showToast("Export OPML téléchargé.");
+};
+
+/* ========================= EXPORT / SHARE (article) ========================= */
+const exportModal = document.getElementById("exportModal");
+function openExportModal(){ exportModal.classList.add("open"); }
+document.getElementById("exportBtn").onclick = openExportModal;
+document.getElementById("dockExport").onclick = openExportModal;
+document.getElementById("closeExport").onclick = ()=> exportModal.classList.remove("open");
+exportModal.addEventListener("click",(e)=>{ if(e.target===exportModal) exportModal.classList.remove("open"); });
+
+exportModal.querySelectorAll("[data-export]").forEach(btn=>{
+  btn.onclick = ()=>{
+    const kind = btn.dataset.export;
+    const a = state.currentArticle; if(!a) return;
+    if(kind==="txt"){
+      downloadFile(slug(a.title)+".txt", buildPlainText(a), "text/plain");
+    } else {
+      const dark = kind==="html-dark";
+      downloadFile(slug(a.title)+(dark?"-dark":"-light")+".html", buildHtmlExport(a, dark), "text/html");
+    }
+    exportModal.classList.remove("open");
+    showToast("Export généré.");
+  };
+});
+
+function buildPlainText(a){
+  let out = a.title.toUpperCase()+"\n"+a.source+" · "+formatDate(a.date)+" · "+a.category+"\n\n"+a.body.join("\n\n");
+  TOOLS.forEach(t=>{
+    const cached = state.toolCache[a.id+"_"+t.id];
+    if(cached){ out += "\n\n--- "+t.name.toUpperCase()+" ---\n"+cached; }
+  });
+  return out;
+}
+function buildHtmlExport(a, dark){
+  const bg = dark ? "#15191F" : "#EEE8DB";
+  const fg = dark ? "#EDE8DD" : "#211C14";
+  let extras = "";
+  TOOLS.forEach(t=>{
+    const cached = state.toolCache[a.id+"_"+t.id];
+    if(cached){ extras += `<h3>${escapeHtml(t.name)}</h3><pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(cached)}</pre>`; }
+  });
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${escapeHtml(a.title)}</title>
+<style>body{background:${bg};color:${fg};font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.7;} h1{font-size:1.8rem;} .meta{color:${dark?'#A9ADB5':'#6B6153'};font-size:.85rem;margin-bottom:24px;font-family:sans-serif;} h3{margin-top:30px;font-family:sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;color:#A82F2A;}</style>
+</head><body>
+<div class="meta">${escapeHtml(a.category)} · ${escapeHtml(a.source)} · ${escapeHtml(formatDate(a.date))}</div>
+<h1>${escapeHtml(a.title)}</h1>
+${a.body.map(p=>`<p>${escapeHtml(p)}</p>`).join("\n")}
+${extras}
+<hr style="margin-top:40px;opacity:.3;"><p style="font-size:.75rem;color:${dark?'#A9ADB5':'#6B6153'};">Exporté depuis Alphabette Info.</p>
+</body></html>`;
+}
+function slug(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"").slice(0,60); }
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], {type:mime+";charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url; link.download = filename;
+  document.body.appendChild(link); link.click(); document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/* ========================= SHARE ========================= */
+async function shareArticle(){
+  const a = state.currentArticle; if(!a) return;
+  const text = a.title+"\n\n"+a.snippet;
+  if(navigator.share){
+    try{ await navigator.share({title:a.title, text}); return; }catch(e){}
+  }
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast("Résumé copié dans le presse-papiers.");
+  }catch(e){
+    showToast("Impossible de copier automatiquement.");
+  }
+}
+document.getElementById("shareBtn").onclick = shareArticle;
+document.getElementById("dockShare").onclick = shareArticle;
+
+/* ========================= TOAST ========================= */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove("show"), 3200);
+}
+
+/* ========================= SUGGESTIONS & CLÉ ========================= */
+const SUGGESTED_FEEDS = [
+  ["Le Monde", "https://www.lemonde.fr/rss/une.xml"],
+  ["franceinfo", "https://www.francetvinfo.fr/titres.rss"],
+  ["France 24", "https://www.france24.com/fr/rss"]
+];
+document.getElementById("suggestRow").innerHTML = SUGGESTED_FEEDS.map((f,i)=>`<button class="btn" type="button" data-suggest="${i}">+ ${f[0]}</button>`).join("");
+document.getElementById("suggestRow").addEventListener("click",(e)=>{
+  const b = e.target.closest("[data-suggest]"); if(!b) return;
+  const url = SUGGESTED_FEEDS[parseInt(b.dataset.suggest,10)][1];
+  if(state.sources.some(s=>s.url===url)){ showToast("Cette source est déjà dans votre liste."); return; }
+  document.getElementById("newFeedUrl").value = url;
+  document.getElementById("addFeedBtn").click();
+});
+document.getElementById("demoAddBtn").onclick = ()=> document.getElementById("sourcesBtn").click();
+document.getElementById("apiKeyInput").value = getApiKey();
+document.getElementById("saveKeyBtn").onclick = ()=>{
+  const v = document.getElementById("apiKeyInput").value.trim();
+  setApiKey(v);
+  showToast(v ? "Clé enregistrée sur cet appareil." : "Clé effacée.");
+};
+
+/* ========================= INIT ========================= */
+async function init(){
+  await loadPrefs();
+  applyTheme();
+  renderEditionDate();
+  renderCategories();
+  renderFeed();
+}
+init();
+
+})();
+</script>
+</body>
+</html>
