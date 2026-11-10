@@ -26,6 +26,8 @@ jobs:
           node-version: 22
       - run: bun install --frozen-lockfile
       - run: bun run build:static
+        env:
+          APPS_TOKEN: ${{ secrets.APPS_TOKEN }}
       - name: Ajouter la publication à la branche ovh-deploy
         # Historique linéaire obligatoire : OVH fait un « git pull » et refuse
         # les branches réécrites (pas de push --force ici).

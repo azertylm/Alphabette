@@ -1,0 +1,6 @@
+{
+  "_aide": "Dossier publié (apps/<clé>/) → dépôt GitHub de l'application. Ajouter une ligne ici suffit pour qu'une application soit publiée avec le hub. Voir docs/PUBLIER-UNE-APP.md.",
+  "apps": {
+    "bonplan": { "repo": "azertylm/bonplan-alphabette.fr" }
+  }
+}
