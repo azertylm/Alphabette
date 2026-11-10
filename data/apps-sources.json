@@ -35,19 +35,29 @@
       "repo": "azertylm/Service-france"
     },
     "infosperso": {
-      "repo": "azertylm/Info-perso-2"
+      "repo": "azertylm/Info-perso-2",
+      "domains": [
+        "infosperso.alphabette.fr"
+      ]
     },
     "iadebat": {
-      "repo": "azertylm/Il-y-a-des-bas-"
+      "repo": "azertylm/Il-y-a-des-bas-",
+      "domains": [
+        "iadebat.alphabette.fr"
+      ]
     },
     "atelier": {
-      "repo": "azertylm/L-oeil-de-l-atelier"
+      "repo": "azertylm/L-oeil-de-l-atelier",
+      "domains": [
+        "atelier.alphabette.fr"
+      ]
     },
     "proxilien": {
       "repo": "azertylm/Proxilien",
       "domains": [
         "proxilien.fr",
-        "proxilien.eu"
+        "proxilien.eu",
+        "proxilien.alphabette.fr"
       ]
     }
   }
