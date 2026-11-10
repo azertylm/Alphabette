@@ -13,7 +13,8 @@ OVH récupère la branche `ovh-deploy`.
    `A`/`AAAA` `monapp` vers l'hébergement, puis multisite
    `monapp.alphabette.fr` → dossier `alphabette/apps/monapp`, SSL activé.
 3. **Passer l'application en `actif`** dans `data/apps-registry.json`
-   (avec son `url`), seulement quand l'adresse répond.
+   (avec son `url` et une `description` d'une phrase : elle s'affiche sur la
+   page d'accueil), seulement quand l'adresse répond.
 
 Notes : une appli Vite/React est construite automatiquement (`vite build --base=./`) ;
 une appli HTML simple est copiée telle quelle. Dépôt privé : ajouter le secret
