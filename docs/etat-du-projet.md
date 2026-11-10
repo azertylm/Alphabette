@@ -36,6 +36,11 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **Retirées d'alphabette.fr** : Écho, Santé Citoyenne, Kurate, StudioInfo. Registre → `brouillon` ; Écho et Santé Citoyenne retirées de `data/apps-sources.json` (plus publiées, leurs dépôts GitHub sont intacts) ; pages `public/kurate/` et `public/studioinfo/` supprimées (récupérables dans l'historique Git). Les sous-domaines `echo.` et `santecitoyenne.alphabette.fr` restent déclarés chez OVH : à supprimer dans l'espace client si le retrait est définitif.
 - **Wikicom** publié en version légale : `alphabette.fr/wikicom/` (46 liens gardés, 33 retirés : streaming et jeux piratés, ROMs, bibliothèques pirates, torrents, tous les index FMHY ; ajout de Gallica, Wikisource et F-Droid). Avec la double barre et BIG.
 
+## 11/11 : BIG diffusé dans les applications (base commune 0.3.3)
+- Synchronisées (`bun run sync:shell`), construites, vérifiées en 390 px (BIG visible, « Grand » = 21 px de base) et poussées : Goat, Révolution, Prompt Magic, ÉcoBâtiSol, Accord, Frigo-Placard, Senior Bon Plan. Frigo-Placard : grille des « restes » corrigée (débordait en grande taille). ÉcoBâtiSol : débordement de 8 px déjà présent avant, non corrigé.
+- Ont leur propre bouton BIG (non modifié) : Info Perso, IA Débat, ProxiLien, BON PLAN.
+- **N'ont ni double barre commune ni BIG : Service France et L'Œil de l'Atelier.** À équiper avec la base commune (AppShell).
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
