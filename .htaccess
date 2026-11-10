@@ -29,6 +29,9 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
+  # Applications publiées dans apps/<clé>/ : servies telles quelles
+  RewriteRule ^apps/ - [L]
+
   # Application monopage : toute autre adresse renvoie index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

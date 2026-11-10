@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BonPlan — Conseils du Quotidien</title>
+<meta name="description" content="Découvrez, votez et partagez les meilleures trouvailles recommandées par la communauté.">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="icon" href="bonplan_icon.svg" type="image/svg+xml">
+<link rel="manifest" href="bonplan_manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0B;
+  --bg2: #111113;
+  --bg3: #1A1A1E;
+  --surface: #1E1E23;
+  --surface2: #252529;
+  --ink: #F0EDE8;
+  --ink2: #B8B3AC;
+  --muted: #6B6660;
+  --border: #2A2A30;
+  --border2: #323238;
+  --accent: #FF5C2B;
+  --accent-glow: rgba(255,92,43,0.25);
+  --green: #34C759;
+  --green-bg: rgba(52,199,89,0.12);
+  --red: #FF3B30;
+  --red-bg: rgba(255,59,48,0.12);
+  --gold: #FFD60A;
+  --hot: #FF375F;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --header-bg: rgba(10,10,11,.85);
+}
+/* ─── Thème JOUR (bascule de la base commune) ─── */
+html[data-theme="jour"] {
+  --bg: #F4F2EE;
+  --bg2: #FFFFFF;
+  --bg3: #EAE6E0;
+  --surface: #FFFFFF;
+  --surface2: #F6F4F0;
+  --ink: #171412;
+  --ink2: #4A453F;
+  --muted: #8A837A;
+  --border: #E0DAD2;
+  --border2: #D2CBC1;
+  --accent-glow: rgba(255,92,43,.16);
+  --green-bg: rgba(52,199,89,.14);
+  --red-bg: rgba(255,59,48,.12);
+  --header-bg: rgba(244,242,238,.9);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; animation: pageIn .35s cubic-bezier(.25,.46,.45,.94); }
+@keyframes pageIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+/* ─── HEADER ─── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -1px; cursor: pointer; user-select: none; }
+.logo-bon { color: var(--ink); }
+.logo-plan { color: var(--accent); }
+.logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-left: 2px; margin-bottom: 4px; box-shadow: 0 0 10px var(--accent); }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.btn { font-family: 'DM Sans', sans-serif; padding: 8px 20px; border-radius: 100px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: all .2s; }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+.btn-primary:hover { background: #ff7347; box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-1px); }
+.btn-modo { background: transparent; color: var(--muted); border: 1px solid var(--border2); font-size: 13px; padding: 7px 14px; border-radius: 100px; }
+.btn-modo.on { background: rgba(255,92,43,.15); color: var(--accent); border-color: rgba(255,92,43,.4); }
+.admin-bar { background: rgba(255,92,43,.08); border-bottom: 1px solid rgba(255,92,43,.2); padding: 7px 24px; font-size: 12px; text-align: center; color: var(--accent); font-weight: 500; display: none; }
+
+/* ─── HOME HERO ─── */
+.hero { text-align: center; padding: 64px 24px 40px; position: relative; overflow: hidden; }
+.hero-glow { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(255,92,43,.12) 0%, transparent 70%); pointer-events: none; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,92,43,.1); border: 1px solid rgba(255,92,43,.2); border-radius: 100px; padding: 5px 16px; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 20px; }
+.hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+.hero h1 { font-family: 'Syne', sans-serif; font-weight: 900; font-size: clamp(28px, 5vw, 52px); line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px; }
+.hero h1 em { color: var(--accent); font-style: normal; }
+.hero p { color: var(--ink2); font-size: 16px; max-width: 460px; margin: 0 auto 32px; line-height: 1.7; }
+.search-wrap { max-width: 480px; margin: 0 auto; position: relative; }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 16px; }
+.search-wrap input { width: 100%; padding: 15px 20px 15px 50px; border-radius: 100px; border: 1px solid var(--border2); background: var(--surface); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--ink); outline: none; transition: all .2s; box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus { border-color: rgba(255,92,43,.5); box-shadow: 0 0 0 3px rgba(255,92,43,.1), 0 4px 20px rgba(0,0,0,.3); }
+
+/* ─── STATS ─── */
+.stats-row { display: flex; justify-content: center; gap: 0; margin: 48px auto 44px; max-width: 480px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.stat { flex: 1; text-align: center; padding: 20px 12px; border-right: 1px solid var(--border); position: relative; }
+.stat:last-child { border-right: none; }
+.stat-icon { font-size: 20px; margin-bottom: 4px; }
+.stat-n { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: var(--accent); line-height: 1; }
+.stat-l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-top: 3px; }
+
+/* ─── CATEGORIES GRID ─── */
+.section-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 0 auto 24px; max-width: 900px; padding: 0 24px; }
+.cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+.disc-item { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; }
+.disc-wrap { position: relative; }
+.disc { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s; box-shadow: 0 4px 16px rgba(0,0,0,.4); }
+.disc-shine { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%); border-radius: 50%; pointer-events: none; }
+.disc-item:hover .disc { transform: translateY(-8px) scale(1.1); }
+.disc-label { font-size: 11px; font-weight: 500; text-align: center; line-height: 1.3; max-width: 84px; color: var(--ink2); transition: color .2s; }
+.disc-item:hover .disc-label { color: var(--ink); }
+.tip-count-badge { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); }
+.disc-add { width: 72px; height: 72px; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1.5px dashed var(--border2); transition: all .2s; color: var(--muted); }
+.disc-item:hover .disc-add { border-color: var(--accent); background: rgba(255,92,43,.08); color: var(--accent); }
+
+/* ─── CATEGORY PAGE ─── */
+.back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; cursor: pointer; padding: 20px 24px 8px; background: none; border: none; font-family: 'DM Sans', sans-serif; transition: color .2s; }
+.back-btn:hover { color: var(--ink); }
+
+.cat-hero { padding: 12px 24px 28px; max-width: 860px; margin: 0 auto; display: flex; align-items: center; gap: 20px; }
+.cat-disc-lg { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.4); flex-shrink: 0; position: relative; overflow: hidden; }
+.cat-disc-lg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.15), transparent); border-radius: 50%; }
+.cat-hero h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -.5px; }
+.cat-hero p { color: var(--ink2); font-size: 13px; margin-top: 3px; }
+
+/* ─── TOOLBAR ─── */
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin: 0 auto 20px; max-width: 860px; padding: 0 24px; flex-wrap: wrap; gap: 12px; }
+.tabs { display: flex; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 4px; }
+.tab { padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all .18s; font-family: 'DM Sans', sans-serif; }
+.tab.active { background: var(--surface2); color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+
+/* ─── REDESIGNED TIPS (REDDIT STYLE) ─── */
+.tips-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
+
+.tip-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+  animation: cardIn .3s ease both;
+  display: flex;
+  overflow: hidden;
+}
+@keyframes cardIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+.tip-card:hover { border-color: var(--border2); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+
+/* HOT & TOP STATES */
+.tip-card.is-top { border-color: rgba(255,214,10,.4); box-shadow: 0 0 0 1px rgba(255,214,10,.1), 0 8px 32px rgba(255,214,10,.05); }
+.tip-card.is-hot { border-color: rgba(255,55,95,.4); box-shadow: 0 0 0 1px rgba(255,55,95,.1), 0 8px 32px rgba(255,55,95,.08); }
+.tip-card.is-flagged { border-color: rgba(255,59,48,.3); background: rgba(255,59,48,.03); }
+
+/* VOTE COLUMN */
+.tip-vote-col {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding: 16px 12px; background: var(--bg3);
+  border-right: 1px solid var(--border); min-width: 64px;
+}
+.vote-btn { 
+  width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; 
+  cursor: pointer; font-size: 16px; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.vote-btn:hover { background: var(--surface2); color: var(--ink); transform: scale(1.1); }
+.vote-btn.up.active { color: var(--green); background: var(--green-bg); }
+.vote-btn.down.active { color: var(--red); background: var(--red-bg); }
+.vote-score { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin: 8px 0; }
+.vs-pos { color: var(--green); }
+.vs-neg { color: var(--red); }
+.vs-zero { color: var(--muted); }
+.vs-hot { color: var(--hot); text-shadow: 0 0 10px rgba(255,55,95,0.4); }
+
+/* CONTENT COLUMN */
+.tip-content { padding: 20px 24px; flex: 1; }
+.tip-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: .5px; }
+.badge-top { background: rgba(255,214,10,.1); color: var(--gold); border: 1px solid rgba(255,214,10,.2); }
+.badge-hot { background: rgba(255,55,95,.1); color: var(--hot); border: 1px solid rgba(255,55,95,.2); }
+.badge-new { background: rgba(52,199,89,.1); color: var(--green); border: 1px solid rgba(52,199,89,.2); }
+.badge-flag { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,59,48,.2); }
+
+.tip-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 5px; color: var(--ink); line-height: 1.3; }
+.tip-meta { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.tip-meta strong { color: var(--ink2); }
+.tip-summary { font-size: 14px; line-height: 1.6; color: var(--ink2); margin-bottom: 16px; }
+.tip-link { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--accent); font-weight: 600; text-decoration: none; padding: 8px 18px; background: var(--accent-glow); border: 1px solid rgba(255,92,43,.3); border-radius: 100px; transition: all .18s; }
+.tip-link:hover { background: rgba(255,92,43,.3); transform: translateX(2px); }
+
+.tip-actions { display: flex; align-items: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 16px; }
+.act-btn { padding: 6px 14px; border-radius: 100px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all .18s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-qr { background: var(--bg3); border: 1px solid var(--border); color: var(--ink2); }
+.btn-qr:hover { border-color: var(--border2); color: var(--ink); background: var(--surface2); }
+.btn-report { background: transparent; border: 1px solid transparent; color: var(--muted); }
+.btn-report:hover { color: var(--red); background: var(--red-bg); }
+.btn-del { background: var(--red-bg); border: 1px solid rgba(255,59,48,.2); color: var(--red); }
+.btn-fav { background: var(--bg3); border: 1px solid var(--border); color: var(--ink2); }
+.btn-fav:hover { color: var(--gold); border-color: rgba(255,214,10,.4); }
+.btn-fav.on { background: rgba(255,214,10,.1); border: 1px solid rgba(255,214,10,.35); color: var(--gold); }
+
+/* ─── PASTILLE RÉSEAU ─── */
+.net-pill { font-size:11px; padding:5px 12px; border-radius:100px; border:1px solid var(--border); color:var(--ink2); background:var(--bg3); display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.net-pill.off { color:var(--red); border-color:rgba(255,59,48,.3); background:var(--red-bg); }
+
+/* ─── RECHERCHE GLOBALE ─── */
+.chips { display:flex; flex-wrap:wrap; gap:8px; max-width:860px; margin:6px auto 20px; padding:0 24px; }
+.chip { padding:8px 16px; border-radius:100px; background:var(--surface); border:1px solid var(--border); color:var(--ink2); font-size:13px; cursor:pointer; transition:all .15s; font-family:'DM Sans',sans-serif; }
+.chip:hover { border-color:var(--border2); color:var(--ink); transform:translateY(-1px); }
+.chip.active { background:rgba(255,92,43,.12); border-color:rgba(255,92,43,.4); color:var(--accent); }
+.chip-cat { background:var(--bg3); }
+
+/* ─── PROFIL ─── */
+.profile-hero { display:flex; align-items:center; gap:20px; max-width:860px; margin:16px auto 22px; padding:0 24px; }
+.avatar { width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:26px; font-weight:900; color:#fff; box-shadow:0 4px 20px rgba(0,0,0,.4); position:relative; overflow:hidden; flex-shrink:0; }
+.avatar::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.18),transparent); border-radius:50%; }
+.profile-hero h2 { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; letter-spacing:-.5px; }
+.profile-hero p { color:var(--muted); font-size:13px; margin-top:3px; }
+.profile-actions { display:flex; justify-content:center; gap:10px; padding:0 24px 100px; flex-wrap:wrap; }
+.cat-chip { font-size:11px; font-weight:600; padding:4px 10px; border-radius:100px; cursor:pointer; transition:all .15s; }
+.cat-chip:hover { filter:brightness(1.2); }
+
+/* ─── MODALE CONNEXION ─── */
+.fg input.err { border-color: rgba(255,59,48,.7) !important; box-shadow: 0 0 0 3px rgba(255,59,48,.1); }
+.login-avatar-row { display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+.login-avatar-row .fg { flex:1; margin-bottom:0; }
+.login-avatar-row .avatar { width:48px; height:48px; font-size:20px; }
+.saved-acc { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 18px; }
+.saved-chip { padding:7px 16px; border-radius:100px; background:var(--bg3); border:1px solid var(--border2); font-size:13px; cursor:pointer; color:var(--ink2); display:inline-flex; align-items:center; gap:6px; transition:all .15s; font-family:'DM Sans',sans-serif; }
+.saved-chip:hover { border-color:var(--accent); color:var(--ink); background:rgba(255,92,43,.08); }
+.login-skip { text-align:center; font-size:12px; color:var(--muted); background:none; border:none; cursor:pointer; margin-top:16px; font-family:'DM Sans',sans-serif; text-decoration:underline; width:100%; }
+.login-skip:hover { color:var(--ink2); }
+
+/* ─── BOUTON IA ─── */
+.btn-ai { padding:10px 16px; border-radius:var(--radius-sm); background:rgba(191,90,242,.1); border:1px solid rgba(191,90,242,.35); color:#BF5AF2; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.btn-ai:hover { background:rgba(191,90,242,.2); box-shadow:0 0 16px rgba(191,90,242,.15); }
+.btn-ai:disabled { opacity:.55; cursor:wait; }
+
+/* ─── RÉGLAGES & DONNÉES ─── */
+.settings-stats { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; font-size:13px; color:var(--ink2); line-height:1.8; margin-bottom:18px; }
+.settings-stats strong { color:var(--ink); }
+.set-btn { width:100%; padding:11px 14px; border-radius:var(--radius-sm); background:var(--bg3); border:1px solid var(--border2); color:var(--ink2); font-family:'DM Sans',sans-serif; font-size:14px; cursor:pointer; transition:all .18s; margin-bottom:8px; }
+.set-btn:hover { color:var(--ink); border-color:var(--ink2); }
+.set-btn.danger { color:var(--red); border-color:rgba(255,59,48,.25); }
+.set-btn.danger:hover { background:var(--red-bg); }
+
+@media (max-width:720px) {
+  .net-pill { display:none; }
+  .btn-modo { padding:7px 10px; font-size:12px; }
+}
+
+/* ─── PROPOSE FORM ─── */
+.propose-form { background: var(--surface); border: 1px solid rgba(255,92,43,.3); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; display: none; box-shadow: 0 0 40px rgba(255,92,43,.05); }
+.propose-form.open { display: block; animation: pageIn .3s ease; }
+.propose-form h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.propose-form > p { color: var(--ink2); font-size: 13px; margin-bottom: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.fg { margin-bottom: 12px; }
+.fg label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 7px; }
+.fg input, .fg textarea { width: 100%; padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--bg3); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink); outline: none; transition: all .2s; }
+.fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+.fg input:focus, .fg textarea:focus { border-color: rgba(255,92,43,.5); box-shadow: 0 0 0 3px rgba(255,92,43,.08); }
+.fg textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+.form-btns { display: flex; gap: 10px; margin-top: 16px; }
+.btn-cancel { padding: 10px 20px; border-radius: 100px; background: transparent; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: all .2s; }
+.btn-cancel:hover { border-color: var(--ink2); color: var(--ink); }
+
+/* ─── EMPTY STATE ─── */
+.empty-state { text-align: center; padding: 80px 20px; color: var(--muted); background: var(--surface); border: 1px dashed var(--border2); border-radius: var(--radius); }
+.empty-state .big { font-size: 56px; margin-bottom: 16px; opacity: .5; }
+.empty-state h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--ink2); }
+.empty-state p { font-size: 14px; line-height: 1.6; }
+
+/* ─── MODALS ─── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: flex; align-items: center; justify-content: center; z-index: 300; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity .25s; }
+.overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 24px; padding: 28px; max-width: 360px; width: 92%; box-shadow: 0 32px 80px rgba(0,0,0,.6); position: relative; transform: scale(.94) translateY(8px); transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+.overlay.open .modal { transform: scale(1) translateY(0); }
+.modal-lg { max-width: 420px; }
+.modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.modal-close:hover { background: var(--surface2); color: var(--ink); }
+.modal h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; color: var(--ink); }
+.modal > p { color: var(--ink2); font-size: 13px; margin-bottom: 20px; }
+
+/* QR */
+#qr-box { display: flex; justify-content: center; margin: 18px 0; }
+#qr-box img { border-radius: 12px; border: 4px solid var(--bg3); box-shadow: 0 4px 24px rgba(0,0,0,.5); }
+.qr-url { font-size: 11px; color: var(--muted); margin-bottom: 20px; word-break: break-all; background: var(--bg3); padding: 10px 14px; border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--border); }
+
+/* ADD CAT */
+.section-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 10px; }
+.emoji-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+.emoji-opt { width: 38px; height: 38px; border-radius: 50%; background: var(--bg3); border: 1.5px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all .15s; }
+.emoji-opt:hover { border-color: var(--border2); background: var(--surface2); }
+.emoji-opt.sel { border-color: var(--accent); background: rgba(255,92,43,.1); }
+.color-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.color-opt { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2.5px solid transparent; transition: all .15s; }
+.color-opt.sel { border-color: var(--ink); transform: scale(1.2); box-shadow: 0 0 12px rgba(255,255,255,.2); }
+.cat-preview-row { display: flex; align-items: center; gap: 14px; padding-top: 4px; }
+.cat-preview-disc { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 20px rgba(0,0,0,.4); flex-shrink: 0; position: relative; overflow: hidden; transition: all .2s; }
+.cat-preview-disc::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.15),transparent); border-radius:50%; }
+
+/* ─── NOTIFICATION ─── */
+#notif { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(90px); background: var(--surface2); border: 1px solid var(--border2); color: var(--ink); padding: 13px 24px; border-radius: 100px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 40px rgba(0,0,0,.5); z-index: 400; transition: all .35s cubic-bezier(.34,1.56,.64,1); opacity: 0; pointer-events: none; white-space: nowrap; }
+#notif.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+@media (max-width:600px) {
+  .tip-card { flex-direction: column; }
+  .tip-vote-col { flex-direction: row; justify-content: space-between; padding: 12px 20px; border-right: none; border-bottom: 1px solid var(--border); }
+  .vote-score { margin: 0 16px; }
+  .cats-grid { grid-template-columns: repeat(4,1fr); gap: 14px; padding: 0 16px 70px; }
+  .disc { width: 60px; height: 60px; font-size: 22px; }
+  .hero { padding: 44px 20px 32px; }
+  .form-row { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: flex-start; }
+}
+/* Barre écosystème : dégradé sombre dérivé de l'accent (identique à la base) */
+.ab-eco {
+  --ab-eco-bg: color-mix(in oklab, var(--accent) 32%, #0a1226);
+  --ab-eco-ink: #e6ecf7;
+  --ab-eco-muted: #b9c4da;
+}
+
+/* ─── BASE COMMUNE — Barre 1 : écosystème ─── */
+.ab-eco {
+  display: flex; align-items: center; gap: .5rem;
+  height: 2.5rem; padding: 0 .75rem;
+  background: var(--ab-eco-bg);
+  color: var(--ab-eco-ink); font-size: .8rem;
+  overflow: hidden;
+}
+.ab-eco__brand {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-weight: 800; letter-spacing: .02em; color: #fff;
+  text-decoration: none; white-space: nowrap;
+}
+.ab-eco__brand-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.25rem; height: 1.25rem; border-radius: 999px;
+  background: var(--accent); color: #fff;
+  font-size: .68rem; font-weight: 900;
+}
+.ab-eco__sites {
+  display: flex; align-items: center; gap: .25rem;
+  overflow-x: auto; scrollbar-width: none;
+  flex: 1 1 auto; min-width: 0;
+}
+.ab-eco__sites::-webkit-scrollbar { display: none; }
+.ab-site {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .25rem .65rem; border-radius: 999px;
+  color: var(--ab-eco-muted); text-decoration: none; white-space: nowrap;
+  font-size: inherit; transition: background .15s ease, color .15s ease;
+}
+.ab-site:hover, .ab-site:focus-visible { background: rgba(255,255,255,.14); color: #fff; }
+.ab-eco__right { display: flex; align-items: center; gap: .4rem; margin-left: auto; white-space: nowrap; }
+.ab-counter {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .6rem; border-radius: 999px;
+  background: rgba(255,255,255,.1); color: var(--ab-eco-ink);
+  font-size: inherit; text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.ab-counter:hover { background: rgba(255,255,255,.2); }
+.ab-counter__trial { color: #fca5a5; font-weight: 600; }
+
+/* ─── BASE COMMUNE — Barre 2 : application ─── */
+.ab-bar {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .5rem .9rem;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 200;
+}
+.ab-bar__identity { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+.ab-bar__identity .logo { font-size: 22px; line-height: 1; }
+.ab-bar__ident-ico { font-size: 1.15rem; line-height: 1; }
+.ab-bar__titles { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.ab-bar__name {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: .95rem; letter-spacing: -.2px; color: var(--ink);
+  white-space: nowrap;
+}
+.ab-bar__tagline {
+  font-size: .72rem; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ab-bar__actions {
+  display: flex; align-items: center; gap: .35rem;
+  margin-left: auto; flex-wrap: nowrap;
+  overflow-x: auto; scrollbar-width: none; min-width: 0;
+}
+.ab-bar__actions::-webkit-scrollbar { display: none; }
+.ab-bar__separateur { width: 1px; height: 20px; background: var(--border2); flex: none; margin: 0 2px; }
+.ab-btn {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .34rem .65rem; border: 1px solid transparent;
+  border-radius: 999px; background: var(--surface2);
+  color: var(--ink); font-family: 'DM Sans', sans-serif;
+  font-size: .76rem; font-weight: 600; line-height: 1.1;
+  cursor: pointer; white-space: nowrap; text-decoration: none;
+  transition: background .15s ease, transform .05s ease, border-color .15s ease;
+}
+.ab-btn:hover { background: var(--bg3); }
+.ab-btn:active { transform: translateY(1px); }
+.ab-btn--ghost { background: transparent; border-color: var(--border2); }
+.ab-btn--ghost:hover { background: var(--surface2); }
+.ab-btn--don { background: var(--hot); color: #fff; }
+.ab-btn--don:hover { background: #e03052; }
+.ab-btn--pass { background: var(--gold); color: #3a2a00; }
+.ab-btn--pass:hover { background: #edc90e; }
+.ab-btn--accent { background: var(--accent); color: #fff; }
+.ab-btn--accent:hover { background: var(--accent-hover, #ff7347); }
+.ab-status { width: .55rem; height: .55rem; border-radius: 999px; background: var(--muted); flex: none; }
+.ab-status--ok { background: var(--green); box-shadow: 0 0 0 3px var(--green-bg); }
+.ab-status--off { background: var(--muted); }
+.ab-density { display: inline-flex; align-items: flex-end; gap: 2px; height: .8rem; }
+.ab-density__bar { width: 3px; border-radius: 2px; background: currentColor; opacity: .28; }
+.ab-density__bar:nth-child(1) { height: 40%; }
+.ab-density__bar:nth-child(2) { height: 70%; }
+.ab-density__bar:nth-child(3) { height: 100%; }
+.ab-density__bar--on { opacity: 1; }
+
+/* Bouton JOUR/NUIT (même codes couleur que la base) */
+.ab-theme--nuit { background: #1e293b; color: #e2e8f0; }
+html[data-theme="jour"] .ab-theme--nuit { background: var(--surface2); color: var(--ink); }
+
+/* Panneau DON (espace dons relayé par le hub) + Dons accessibles depuis les 2 barres */
+.ab-modal-wrap {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(0,0,0,.8);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.ab-don-card {
+  width: min(430px, 94vw); max-height: 86vh; overflow: auto;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 24px; padding: 26px 26px 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+}
+.ab-don-card h3 { font-family: 'Syne', sans-serif; font-size: 20px; margin-bottom: 6px; color: var(--ink); }
+.ab-don-card p { color: var(--ink2); font-size: 13.5px; line-height: 1.65; margin-bottom: 12px; }
+.ab-don-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.ab-don-code {
+  flex: 1; font-family: ui-monospace, monospace; font-size: 12.5px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 9px 11px; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ab-don-mini {
+  background: var(--surface2); color: var(--ink);
+  border: 1px solid var(--border2); border-radius: 10px;
+  font-size: 12.5px; font-weight: 600; padding: 8px 14px; cursor: pointer;
+}
+.ab-don-mini:hover { background: var(--bg3); }
+.ab-don-ferme { margin-top: 10px; width: 100%; }
+
+@media (max-width: 760px) {
+  .ab-hide-sm { display: none !important; }
+  .ab-bar__tagline { max-width: 40vw; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ═══════════ BASE COMMUNE — Barre 1 : écosystème ═══════════ -->
+<div class="ab-eco">
+  <a class="ab-eco__brand" href="https://alphabette.fr" title="alphabette.fr — hub de l'écosystème">
+    <span class="ab-eco__brand-mark">◉</span><span>ALPHABETTE</span>
+  </a>
+  <button type="button" class="ab-btn ab-btn--don" onclick="abOpenDon()" title="Soutenir le projet">♥ DON</button>
+
+  <nav class="ab-eco__sites" aria-label="Autres sites de l'écosystème">
+    <a class="ab-site" href="https://lidarsol.fr" title="LIDARSOL — lidarsol.fr">🌍<span>LIDARSOL</span></a>
+    <a class="ab-site" href="https://proxilien.alphabette.fr" title="Proxilien — proxilien.alphabette.fr">🧭<span>Proxilien</span></a>
+    <a class="ab-site" href="https://iadebat.alphabette.fr" title="IA Débat — iadebat.alphabette.fr">💬<span>IA Débat</span></a>
+    <a class="ab-site" href="https://infosperso.alphabette.fr" title="Info Perso — infosperso.alphabette.fr">📰<span>Info Perso</span></a>
+    <a class="ab-site" href="https://atelier.alphabette.fr" title="L'œil de l'Atelier — atelier.alphabette.fr">🎨<span>L'œil de l'Atelier</span></a>
+  </nav>
+
+  <div class="ab-eco__right">
+    <a class="ab-counter" href="https://alphabette.fr" title="BonPlan est gratuite. Aucun prix, aucun essai, aucune carte bancaire — voir la liste.">
+      <span>gratuit</span>
+    </a>
+    <a class="ab-btn ab-btn--pass" href="https://alphabette.fr" title="Écosystème complet : 40 €/an — voir l'offre">⭐ L'écosystème</a>
+  </div>
+</div>
+
+<!-- ═══════════ BASE COMMUNE — Barre 2 : application (fusionnée avec l'en-tête du site) ═══════════ -->
+<div class="ab-bar">
+  <div class="ab-bar__identity" onclick="goHome()" title="Accueil BonPlan" style="cursor:pointer">
+    <span class="logo"><span class="logo-bon">Bon</span><span class="logo-plan">Plan</span><span class="logo-dot"></span></span>
+    <div class="ab-bar__titles">
+      <span class="ab-bar__tagline">Les meilleurs conseils du quotidien</span>
+    </div>
+  </div>
+  <div class="ab-bar__actions">
+    <span class="net-pill" id="netStatus"></span>
+    <button class="btn-modo ab-hide-sm" title="Rechercher" onclick="goHomeSearch()">🔍</button>
+    <button class="btn-modo" id="accountBtn" onclick="onAccountClick()">👤 Mon Compte</button>
+    <button class="btn-modo" title="Réglages &amp; Données" onclick="openSettings()">⚙️</button>
+    <button class="btn-modo ab-hide-sm" id="modoBtn" onclick="toggleAdmin()">🛡️ Modo</button>
+    <button class="btn btn-primary" id="proposeBtn" style="display:none" onclick="togglePropose()">+ Proposer</button>
+
+    <span class="ab-bar__separateur ab-hide-sm"></span>
+
+    <button type="button" class="ab-btn ab-btn--don" onclick="abOpenDon()" title="Soutenir le projet (dons)">♥ DON</button>
+    <button type="button" class="ab-btn ab-btn--ghost ab-hide-sm" id="abBtnBig" onclick="abDensity()" title="Taille d'affichage">
+      BIG <span class="ab-density" id="abDensity"><span class="ab-density__bar"></span><span class="ab-density__bar"></span><span class="ab-density__bar"></span></span>
+    </button>
+    <button type="button" class="ab-btn ab-hide-sm" id="abBtnKeys" onclick="openSettings()" title="Clés d'API (Gemini BYOK) : Non configurée">
+      🔑 Clé API <span class="ab-status" id="abKeyDot"></span>
+    </button>
+    <button type="button" class="ab-btn ab-btn--ghost ab-hide-sm" id="abBtnFull" onclick="abFullscreen()" title="Plein écran">
+      ⛶
+    </button>
+    <button type="button" class="ab-btn ab-theme--nuit" id="abBtnTheme" onclick="abTheme()" title="Bascule jour / nuit">
+      ☾ Nuit <span style="width:7px;height:7px;border-radius:999px;background:currentColor;opacity:.8;display:inline-block"></span>
+    </button>
+  </div>
+</div>
+
+<div id="admin-bar" class="admin-bar">🛡️ Mode Modération actif — vous pouvez supprimer les contenus inappropriés</div>
+
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-tag">Communauté · Gratuit · Sans pub</div>
+    <h1>Les meilleurs conseils<br><em>du quotidien</em></h1>
+    <p>Découvrez, votez et partagez les meilleures trouvailles recommandées par la communauté.</p>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Rechercher un conseil, un sujet, une catégorie…" oninput="filterCats(this.value)">
+    </div>
+  </div>
+
+  <div id="search-results" style="display:none">
+    <div class="chips" id="domain-chips"></div>
+    <div class="section-title" style="margin-bottom:12px" id="search-lbl"></div>
+    <div class="chips" id="search-cats" style="margin-top:0"></div>
+    <div class="tips-wrap" style="padding-bottom:60px"><div id="search-list"></div></div>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat"><div class="stat-icon">💡</div><div class="stat-n" id="s-tips">0</div><div class="stat-l">Conseils</div></div>
+    <div class="stat"><div class="stat-icon">🔥</div><div class="stat-n" id="s-votes">0</div><div class="stat-l">Votes positifs</div></div>
+    <div class="stat"><div class="stat-icon">📂</div><div class="stat-n" id="s-cats">0</div><div class="stat-l">Catégories</div></div>
+  </div>
+
+  <div class="section-title" id="section-lbl">Toutes les catégories</div>
+  <div class="cats-grid" id="cats-grid"></div>
+</div>
+
+<div class="page" id="page-cat">
+  <button class="back-btn" onclick="goHome()">← Retour</button>
+  <div class="cat-hero">
+    <div class="cat-disc-lg" id="cat-disc-lg"></div>
+    <div>
+      <h2 id="cat-title"></h2>
+      <p id="cat-sub"></p>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab active" onclick="setFilter('top',this)">🏆 Top</button>
+      <button class="tab" onclick="setFilter('hot',this)">🔥 Tendances</button>
+      <button class="tab" onclick="setFilter('new',this)">✨ Récents</button>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">→ Plus un conseil a de votes, plus il est visible !</span>
+  </div>
+  <div class="tips-wrap">
+    <div class="propose-form" id="propose-form">
+      <h3>💡 Partager un conseil</h3>
+      <p>Proposez un lien utile — la communauté votera pour le faire monter !</p>
+      <div class="form-row">
+        <div class="fg"><label>Titre du conseil *</label><input id="f-title" placeholder="Ex: Comparateur d'énergie"></div>
+        <div class="fg"><label>Votre pseudo *</label><input id="f-author" placeholder="Ex: Marie75"></div>
+      </div>
+      <div class="fg"><label>Lien (URL) *</label>
+        <div style="display:flex;gap:8px">
+          <input id="f-url" type="url" placeholder="https://..." style="flex:1">
+          <button type="button" class="btn-ai" id="aiBtn" onclick="aiSummarize()">✨ Résumer avec l'IA</button>
+        </div>
+      </div>
+      <div class="fg"><label>Résumé *</label><textarea id="f-summary" placeholder="Pourquoi ce lien est-il utile ? Qu'y trouve-t-on ?"></textarea></div>
+      <div class="form-btns">
+        <button class="btn btn-primary" onclick="submitTip()">Publier le conseil ✓</button>
+        <button class="btn-cancel" onclick="togglePropose()">Annuler</button>
+      </div>
+    </div>
+    <div id="tips-list"></div>
+  </div>
+</div>
+
+<div class="page" id="page-profil">
+  <button class="back-btn" onclick="profileBack()">← Retour</button>
+  <div class="profile-hero">
+    <div class="avatar" id="pf-avatar"></div>
+    <div style="flex:1">
+      <h2 id="pf-name"></h2>
+      <p id="pf-since"></p>
+    </div>
+  </div>
+  <div class="stats-row" style="max-width:520px;margin:0 auto 36px">
+    <div class="stat"><div class="stat-icon">⭐</div><div class="stat-n" id="pf-favs">0</div><div class="stat-l">Favoris</div></div>
+    <div class="stat"><div class="stat-icon">💡</div><div class="stat-n" id="pf-tips">0</div><div class="stat-l">Conseils</div></div>
+    <div class="stat"><div class="stat-icon">🗳️</div><div class="stat-n" id="pf-votes">0</div><div class="stat-l">Votes</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab active" onclick="setProfileTab('fav',this)">⭐ Mes Favoris</button>
+      <button class="tab" onclick="setProfileTab('tips',this)">💡 Mes conseils</button>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">→ Vos favoris et conseils, enregistrés sur cet appareil</span>
+  </div>
+  <div class="tips-wrap" style="padding-bottom:24px"><div id="profile-list"></div></div>
+  <div class="profile-actions">
+    <button class="btn-modo" onclick="openLogin()">🔄 Changer de pseudo</button>
+    <button class="btn-modo" onclick="logout()">👋 Se déconnecter</button>
+  </div>
+</div>
+
+<div class="overlay" id="login-overlay" onclick="closeOverlay('login-overlay',event)">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="cancelLogin()">✕</button>
+    <h3>Bienvenue sur BonPlan</h3>
+    <p>Pas de mot de passe, pas d'email — juste un pseudo, stocké sur cet appareil.</p>
+    <div class="login-avatar-row">
+      <div class="avatar" id="li-prev"></div>
+      <div class="fg">
+        <label>Votre pseudo</label>
+        <input id="li-pseudo" placeholder="Ex : Marie75" maxlength="20" autocomplete="off" oninput="updateLoginPreview()" onkeydown="if(event.key==='Enter')completeLogin()">
+      </div>
+    </div>
+    <div id="saved-acc-wrap">
+      <div class="section-lbl">Comptes sur cet appareil</div>
+      <div class="saved-acc" id="saved-acc"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:12px" onclick="completeLogin()">Entrer sur BonPlan →</button>
+    <button class="login-skip" onclick="cancelLogin()">Continuer sans pseudo →</button>
+  </div>
+</div>
+
+<div class="overlay" id="settings-overlay" onclick="closeOverlay('settings-overlay',event)">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeOverlayDirect('settings-overlay')">✕</button>
+    <h3>⚙️ Réglages &amp; Données</h3>
+    <p>Vos données restent sur cet appareil — pensez à les sauvegarder avec l'Export.</p>
+    <div class="settings-stats" id="set-stats"></div>
+    <div class="section-lbl">🔑 Clé API Gemini (IA · stockée sur cet appareil)</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <input id="set-key" type="password" placeholder="AIza…" style="flex:1">
+      <button class="btn btn-primary" onclick="saveKey()">Enregistrer</button>
+    </div>
+    <div class="section-lbl">💾 Sauvegarde communautaire</div>
+    <button class="set-btn" onclick="exportData()">📤 Exporter mes données (JSON)</button>
+    <button class="set-btn" onclick="document.getElementById('import-file').click()">📥 Importer un fichier JSON</button>
+    <input type="file" id="import-file" accept="application/json,.json" style="display:none" onchange="importData(this.files[0])">
+    <div class="section-lbl" style="margin-top:12px">⚠️ Zone dangereuse</div>
+    <button class="set-btn danger" onclick="resetData()">🗑️ Réinitialiser toutes les données</button>
+  </div>
+</div>
+
+<div class="overlay" id="qr-overlay" onclick="closeOverlay('qr-overlay',event)">
+  <div class="modal" style="text-align:center">
+    <button class="modal-close" onclick="closeOverlayDirect('qr-overlay')">✕</button>
+    <div id="qr-emoji" style="font-size:30px;margin-bottom:10px"></div>
+    <h3 id="qr-title"></h3>
+    <p id="qr-desc"></p>
+    <div id="qr-box"></div>
+    <div id="qr-url-box" class="qr-url"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="closeOverlayDirect('qr-overlay')">Fermer</button>
+  </div>
+</div>
+
+<div class="overlay" id="addcat-overlay" onclick="closeOverlay('addcat-overlay',event)">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeOverlayDirect('addcat-overlay')">✕</button>
+    <h3>Nouvelle catégorie</h3>
+    <p>Suggérez une thématique à la communauté</p>
+    <div class="fg"><label>Nom *</label><input id="nc-name" placeholder="Ex: Astronomie"></div>
+    <div class="section-lbl">Emoji</div>
+    <div class="emoji-grid" id="emoji-grid"></div>
+    <div class="section-lbl">Couleur</div>
+    <div class="color-grid" id="color-grid"></div>
+    <div class="cat-preview-row">
+      <div class="cat-preview-disc" id="nc-prev"></div>
+      <button class="btn btn-primary" style="flex:1;padding:12px" onclick="submitNewCat()">Créer la catégorie ✓</button>
+    </div>
+  </div>
+</div>
+
+<div id="notif"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// PALETTE & EMOJIS
+// ═══════════════════════════════════════════════════
+const PALETTE = [
+  "#FF5C2B","#FF9F0A","#FFD60A","#34C759","#30D158",
+  "#00C7BE","#0A84FF","#5E5CE6","#BF5AF2","#FF375F",
+  "#FF6B6B","#4ECDC4","#45B7D1","#96CEB4","#FFEAA7",
+  "#DDA0DD","#98D8C8","#F7DC6F","#85C1E9","#F0B27A"
+];
+const EMOJIS = [
+  "🌟","🚀","💎","🎯","🌈","⚡","🔥","💫","🌙","☀️",
+  "🎪","🎨","🎭","🎵","🎸","🏆","🦋","🌺","🌊","🏔️",
+  "🦊","🐬","🦁","🌿","🍀","🎋","🌸","🍁","🎃","🎄",
+  "💰","📈","🪴","📷","🇬🇧","🎓","👴","💻","🎬","🧶",
+  "🧘","💍","🤰","✈️","🏡","🪙","⏱️","💼","🎹","🖌️"
+];
+
+// ═══════════════════════════════════════════════════
+// LES 40 CATÉGORIES (Augmenté)
+// ═══════════════════════════════════════════════════
+const DEFAULT_CATS = [
+  // Existantes
+  {id:1, emoji:"🛒", label:"Alimentation", color:"#34C759"},
+  {id:2, emoji:"🍳", label:"Cuisine & Recettes", color:"#FF9F0A"},
+  {id:3, emoji:"🏠", label:"Maison & Déco", color:"#FF5C2B"},
+  {id:4, emoji:"🧹", label:"Entretien & Ménage", color:"#00C7BE"},
+  {id:5, emoji:"👗", label:"Mode", color:"#BF5AF2"},
+  {id:6, emoji:"💆", label:"Beauté", color:"#FF375F"},
+  {id:7, emoji:"❤️", label:"Santé", color:"#FF6B6B"},
+  {id:8, emoji:"🏃", label:"Sport", color:"#0A84FF"},
+  {id:9, emoji:"📱", label:"High-Tech", color:"#5E5CE6"},
+  {id:10, emoji:"⚡", label:"Électroménager", color:"#FFD60A"},
+  {id:11, emoji:"🌿", label:"Écologie", color:"#30D158"},
+  {id:12, emoji:"👶", label:"Enfants", color:"#FF9F0A"},
+  {id:13, emoji:"🐶", label:"Animaux", color:"#F0B27A"},
+  {id:14, emoji:"📚", label:"Culture", color:"#BF5AF2"},
+  {id:15, emoji:"🎮", label:"Jeux", color:"#45B7D1"},
+  {id:16, emoji:"🚗", label:"Auto", color:"#FF375F"},
+  {id:17, emoji:"✈️", label:"Voyage", color:"#0A84FF"},
+  {id:18, emoji:"💰", label:"Bons Plans", color:"#FFD60A"},
+  {id:19, emoji:"🍽️", label:"Restaurants", color:"#FF5C2B"},
+  {id:20, emoji:"🔨", label:"Bricolage", color:"#96CEB4"},
+  // Nouvelles (21 à 40)
+  {id:21, emoji:"📈", label:"Finance & Invest", color:"#34C759"},
+  {id:22, emoji:"🪴", label:"Jardinage", color:"#30D158"},
+  {id:23, emoji:"📷", label:"Photographie", color:"#0A84FF"},
+  {id:24, emoji:"🇬🇧", label:"Langues Étrangères", color:"#BF5AF2"},
+  {id:25, emoji:"🎓", label:"Vie Étudiante", color:"#FF9F0A"},
+  {id:26, emoji:"👴", label:"Seniors", color:"#F0B27A"},
+  {id:27, emoji:"💻", label:"Code & Logiciels", color:"#5E5CE6"},
+  {id:28, emoji:"🎬", label:"Streaming & VOD", color:"#FF375F"},
+  {id:29, emoji:"🧶", label:"DIY & Artisanat", color:"#FF5C2B"},
+  {id:30, emoji:"🧘", label:"Santé Mentale", color:"#00C7BE"},
+  {id:31, emoji:"💍", label:"Mariage & Fêtes", color:"#FFD60A"},
+  {id:32, emoji:"🤰", label:"Grossesse", color:"#FF6B6B"},
+  {id:33, emoji:"🌍", label:"Expatriation", color:"#0A84FF"},
+  {id:34, emoji:"🏡", label:"Immobilier", color:"#96CEB4"},
+  {id:35, emoji:"🪙", label:"Crypto & Web3", color:"#5E5CE6"},
+  {id:36, emoji:"⏱️", label:"Productivité", color:"#FF9F0A"},
+  {id:37, emoji:"💼", label:"Entrepreneuriat", color:"#34C759"},
+  {id:38, emoji:"🎹", label:"Musique (Pratique)", color:"#BF5AF2"},
+  {id:39, emoji:"🖌️", label:"Dessin & Arts", color:"#FF375F"},
+  {id:40, emoji:"🤝", label:"Bénévolat", color:"#00C7BE"},
+];
+
+// ═══════════════════════════════════════════════════
+// TIPS DATA
+// J'ai rempli intégralement les catégories 21 et 27 avec 20 conseils chacune 
+// pour te montrer la qualité des recommandations et tester le design.
+// ═══════════════════════════════════════════════════
+const DEFAULT_TIPS = {
+  // Catégorie 21 : Finance & Investissement (Remplie de 20 conseils ultra pertinents)
+  21: [
+    {id:2101,title:"Finary : Suivre tout son patrimoine",author:"InvestBros",date:"il y a 1j",url:"https://finary.com/fr",summary:"Agrège tous vos comptes bancaires, livrets, crypto et immobilier au même endroit. L'outil gratuit numéro 1 en France pour suivre sa richesse.",score:1245,flags:0,votes:{}},
+    {id:2102,title:"Avenue des Investisseurs : Le guide ultime",author:"FinanceFR",date:"il y a 2j",url:"https://avenuedesinvestisseurs.fr/",summary:"Le meilleur site francophone pour comprendre la bourse, les ETF, le PEA et l'assurance vie. Gratuit, clair et sans conflit d'intérêt majeur.",score:892,flags:0,votes:{}},
+    {id:2103,title:"Trade Republic : 4% d'intérêts sur le cash",author:"SaverPro",date:"il y a 3j",url:"https://traderepublic.com/fr-fr",summary:"L'application rémunère votre argent non investi à 4% brut par an, payé mensuellement. Mieux que la plupart des livrets bancaires classiques.",score:756,flags:0,votes:{}},
+    {id:2104,title:"JustETF : Trouver les meilleurs ETF",author:"BourseMalin",date:"il y a 3j",url:"https://www.justetf.com/fr/",summary:"Comparateur et moteur de recherche d'ETF. Indispensable pour trouver les frais les plus bas et construire son portefeuille passif.",score:634,flags:0,votes:{}},
+    {id:2105,title:"Boursorama (BoursoBank) : La moins chère",author:"BanqueFree",date:"il y a 4j",url:"https://www.boursobank.com/",summary:"Élue banque la moins chère de France depuis 15 ans. Idéale pour un compte principal ou secondaire sans aucun frais de tenue de compte.",score:512,flags:0,votes:{}},
+    {id:2106,title:"La règle du 50/30/20 pour son budget",author:"BudgetMaster",date:"il y a 5j",url:"https://www.economie.gouv.fr/particuliers/gerer-budget-regle-50-30-20",summary:"Méthode simple : 50% pour les besoins (loyer, courses), 30% pour les envies (sorties), 20% pour l'épargne. Automatisable facilement.",score:489,flags:0,votes:{}},
+    {id:2107,title:"Bankin' : Budgétisation automatique",author:"AppFin",date:"il y a 1sem",url:"https://bankin.com/",summary:"Application française gratuite qui catégorise vos dépenses automatiquement. Parfait pour identifier où part votre argent chaque mois.",score:445,flags:0,votes:{}},
+    {id:2108,title:"Ouvrir un PEA le plus tôt possible",author:"LongTerm",date:"il y a 1sem",url:"https://www.service-public.fr/particuliers/vosdroits/F2385",summary:"Le Plan d'Épargne en Actions offre de gros avantages fiscaux après 5 ans. Ouvrez-le aujourd'hui avec 10€ juste pour prendre date.",score:412,flags:0,votes:{}},
+    {id:2109,title:"Simulateur d'intérêts composés",author:"MathMagic",date:"il y a 1sem",url:"https://www.gerezmieuxvotreargent.ca/calculatrices/calculatrice-interets-composes/",summary:"Découvrez la magie des intérêts composés. 200€ par mois investis à 7% sur 30 ans = 244 000€. L'outil parfait pour se motiver à épargner.",score:378,flags:0,votes:{}},
+    {id:2110,title:"Loup de la Rue de la Paix (Podcast)",author:"AudioFin",date:"il y a 2sem",url:"https://podcast.ausha.co/la-martingale",summary:"Le podcast 'La Martingale' par Matthieu Stefani explique les finances personnelles de manière très accessible avec des experts français.",score:356,flags:0,votes:{}},
+    {id:2111,title:"Linxea : Les meilleures assurances vie",author:"AssurVie",date:"il y a 2sem",url:"https://www.linxea.com/",summary:"Fuyez les assurances vie de votre banque classique (trop de frais). Les courtiers en ligne comme Linxea proposent des frais à 0,5% ou 0,6%.",score:310,flags:0,votes:{}},
+    {id:2112,title:"Moning : Suivi des dividendes",author:"DiviCash",date:"il y a 2sem",url:"https://moning.co/fr",summary:"Si vous investissez pour les dividendes, Moning calcule vos revenus annuels futurs et analyse la santé de vos actions.",score:290,flags:0,votes:{}},
+    {id:2113,title:"L'or physique vs l'or papier",author:"GoldBug",date:"il y a 3sem",url:"https://www.cafedelabourse.com/archive/article/investir-or-comment",summary:"Guide complet pour comprendre comment se protéger de l'inflation en achetant de l'or via des ETC sans avoir à stocker des lingots.",score:245,flags:0,votes:{}},
+    {id:2114,title:"Crowdfunding Immobilier : ClubFunding",author:"ImmoCrowd",date:"il y a 3sem",url:"https://www.clubfunding.fr/",summary:"Prêtez de l'argent (dès 1000€) à des promoteurs immobiliers pour des rendements de 9 à 11% sur 12 à 24 mois. (Risque de perte en capital).",score:212,flags:0,votes:{}},
+    {id:2115,title:"Revolut : Parfait pour les voyages",author:"NoFees",date:"il y a 3sem",url:"https://www.revolut.com/fr-FR/",summary:"Convertissez vos euros en devises étrangères sans frais de change la semaine. Indispensable pour éviter les frais bancaires en vacances.",score:198,flags:0,votes:{}},
+    {id:2116,title:"Déclarer ses impôts de bourse",author:"TaxPro",date:"il y a 1 mois",url:"https://www.impots.gouv.fr/particulier/valeurs-mobilieres",summary:"Flat tax (30%) vs barème progressif. Comment choisir la meilleure option d'imposition selon votre tranche marginale (TMI).",score:175,flags:0,votes:{}},
+    {id:2117,title:"Cashback Boursorama (The Corner)",author:"BonsPlansBank",date:"il y a 1 mois",url:"https://www.boursorama-banque.com/the-corner/",summary:"Si vous êtes chez Bourso, la section The Corner offre -5% chez Carrefour, Amazon, etc. Des centaines d'euros d'économies par an.",score:150,flags:0,votes:{}},
+    {id:2118,title:"Livret A et LDDS pleins : que faire ?",author:"EpargneMax",date:"il y a 1 mois",url:"https://www.moneyvox.fr/livret/",summary:"Vos livrets réglementés sont pleins ? Guide sur le compte à terme (CAT) ou les fonds euros pour garder son argent disponible et sécurisé.",score:124,flags:0,votes:{}},
+    {id:2119,title:"DCA (Dollar Cost Averaging)",author:"ZenInvest",date:"il y a 1 mois",url:"https://www.amf-france.org/fr/espace-epargnants/comprendre-les-produits-financiers/supports-dinvestissement/investissement-programme",summary:"La technique d'investir la même somme chaque mois, peu importe si la bourse monte ou descend. Supprime le stress et bat 90% des traders pros.",score:98,flags:0,votes:{}},
+    {id:2120,title:"Négocier son crédit immobilier",author:"ImmoHack",date:"il y a 1 mois",url:"https://www.meilleurtaux.com/",summary:"Ne prenez jamais l'assurance de votre banque. La loi Lemoine permet de changer d'assurance emprunteur à tout moment (des milliers d'euros d'économies).",score:85,flags:0,votes:{}}
+  ],
+
+  // Catégorie 27 : Code & Logiciels (Remplie de 20 conseils)
+  27: [
+    {id:2701,title:"GitHub Copilot gratuit pour étudiants",author:"DevStudent",date:"il y a 1j",url:"https://education.github.com/pack",summary:"Le pack étudiant GitHub offre Copilot, des domaines gratuits et des crédits cloud gratuitement avec une adresse email universitaire.",score:1350,flags:0,votes:{}},
+    {id:2702,title:"FreeCodeCamp : Apprendre à coder gratis",author:"NoobToPro",date:"il y a 2j",url:"https://www.freecodecamp.org/",summary:"Le meilleur parcours gratuit mondial pour apprendre le dev web (HTML, CSS, JS, React, Python) avec des projets pratiques et des certificats.",score:980,flags:0,votes:{}},
+    {id:2703,title:"Roadmap.sh : Les chemins d'apprentissage",author:"PathFinder",date:"il y a 2j",url:"https://roadmap.sh/",summary:"Vous ne savez pas quoi apprendre pour devenir dev Backend, Frontend ou DevOps ? Ce site trace la carte exacte des technos à maîtriser.",score:856,flags:0,votes:{}},
+    {id:2704,title:"Vercel : Héberger son site gratuitement",author:"HostFree",date:"il y a 3j",url:"https://vercel.com/",summary:"Hébergez vos projets frontend (React, Vue, HTML/CSS) gratuitement et en quelques secondes depuis votre repo GitHub. Déploiement auto.",score:712,flags:0,votes:{}},
+    {id:2705,title:"Tailwind CSS : Styliser plus vite",author:"CssMagic",date:"il y a 3j",url:"https://tailwindcss.com/",summary:"Oubliez les fichiers CSS interminables. Tailwind permet de styliser vos sites directement dans l'HTML via des classes utilitaires. Un gain de temps fou.",score:645,flags:0,votes:{}},
+    {id:2706,title:"StackOverflow : Formuler la bonne question",author:"BugFixer",date:"il y a 4j",url:"https://stackoverflow.com/help/how-to-ask",summary:"90% du métier de dev est de savoir chercher. Ce guide officiel explique comment créer un exemple minimal reproductible pour obtenir de l'aide.",score:534,flags:0,votes:{}},
+    {id:2707,title:"Figma : Maquetter avant de coder",author:"DesignDev",date:"il y a 5j",url:"https://www.figma.com/",summary:"Gratuit pour les solos. Faites toujours une maquette de votre application avant de taper la première ligne de code. Vous gagnerez des heures.",score:489,flags:0,votes:{}},
+    {id:2708,title:"CodePen : Tester du code rapidement",author:"FastCode",date:"il y a 1sem",url:"https://codepen.io/",summary:"Besoin de tester un petit bout de HTML/JS sans ouvrir VS Code ? CodePen est le meilleur bac à sable en ligne du marché.",score:423,flags:0,votes:{}},
+    {id:2709,title:"Regex101 : Comprendre les expressions régulières",author:"RegexGod",date:"il y a 1sem",url:"https://regex101.com/",summary:"Les regex vous donnent mal à la tête ? Ce site explique chaque caractère de votre expression en temps réel et teste vos chaînes.",score:398,flags:0,votes:{}},
+    {id:2710,title:"Oh My Zsh : Un terminal magnifique",author:"TermPro",date:"il y a 1sem",url:"https://ohmyz.sh/",summary:"Transformez votre terminal basique en un outil puissant avec autocomplétion visuelle, intégration Git et des centaines de thèmes.",score:367,flags:0,votes:{}},
+    {id:2711,title:"Postman : Tester ses APIs",author:"ApiTester",date:"il y a 2sem",url:"https://www.postman.com/",summary:"L'outil indispensable pour envoyer des requêtes (GET, POST, PUT) à une API avant de commencer à coder l'intégration dans votre app.",score:312,flags:0,votes:{}},
+    {id:2712,title:"MDN Web Docs : La vraie documentation",author:"DocsLover",date:"il y a 2sem",url:"https://developer.mozilla.org/fr/",summary:"Fuyez W3Schools, MDN par Mozilla est la référence absolue, à jour et exhaustive pour tout ce qui concerne le web (HTML, CSS, JS).",score:289,flags:0,votes:{}},
+    {id:2713,title:"Coolors : Générer des palettes parfaites",author:"ColorUI",date:"il y a 3sem",url:"https://coolors.co/",summary:"Appuyez sur la barre espace et générez des palettes de couleurs harmonieuses pour vos sites web. Exportez en CSS en un clic.",score:245,flags:0,votes:{}},
+    {id:2714,title:"DevToys : Le couteau suisse du dev",author:"SwissDev",date:"il y a 3sem",url:"https://devtoys.app/",summary:"Application bureau hors-ligne qui regroupe encodeurs Base64, formateurs JSON, testeurs Regex et générateurs de Lorem Ipsum.",score:212,flags:0,votes:{}},
+    {id:2715,title:"NeetCode : Préparer les entretiens (Algo)",author:"JobHunter",date:"il y a 3sem",url:"https://neetcode.io/",summary:"Meilleur que LeetCode pur. Propose la liste des 150 algorithmes essentiels à maîtriser pour réussir les entretiens techniques des GAFAM.",score:189,flags:0,votes:{}},
+    {id:2716,title:"CSS-Tricks : Flexbox et Grid",author:"FlexGod",date:"il y a 1 mois",url:"https://css-tricks.com/snippets/css/a-guide-to-flexbox/",summary:"Le guide visuel ultime pour se rappeler enfin comment centrer une div ou aligner des éléments avec Flexbox et CSS Grid.",score:167,flags:0,votes:{}},
+    {id:2717,title:"GitMoji : Des commits plus clairs",author:"CleanGit",date:"il y a 1 mois",url:"https://gitmoji.dev/",summary:"Standardisez vos messages de commit avec des emojis (🐛 pour un bug, ✨ pour une feature). Rend l'historique Git beaucoup plus lisible.",score:145,flags:0,votes:{}},
+    {id:2718,title:"Supabase : L'alternative open-source à Firebase",author:"BaaSPro",date:"il y a 1 mois",url:"https://supabase.com/",summary:"Besoin d'une base de données PostgreSQL + authentification en 5 minutes ? Supabase est incroyable et possède un niveau gratuit très généreux.",score:123,flags:0,votes:{}},
+    {id:2719,title:"CodeWars : S'entraîner en s'amusant",author:"CodeNinja",date:"il y a 1 mois",url:"https://www.codewars.com/",summary:"Montez en niveau (Kyu) en résolvant des petits défis d'algorithmique dans le langage de votre choix. Excellent pour la gymnastique mentale.",score:98,flags:0,votes:{}},
+    {id:2720,title:"Bundlephobia : Vérifier le poids des librairies",author:"PerfWeb",date:"il y a 1 mois",url:"https://bundlephobia.com/",summary:"Avant de faire un 'npm install', vérifiez l'impact de la librairie sur le temps de chargement de votre site. Préserve les performances.",score:76,flags:0,votes:{}}
+  ],
+  
+  // ── Catégorie 1 : Alimentation ──
+  1: [
+    {id:101,title:"Quiestlemoinscher : comparer les prix super",author:"Marie75",date:"il y a 2j",url:"https://www.quiestlemoinscher.com",summary:"Compare automatiquement les prix dans tous les supermarchés de votre région. Économisez facilement 20 à 30% sur vos courses en changeant d'enseigne.",score:342,flags:0,votes:{}},
+    {id:102,title:"Too Good To Go : paniers anti-gaspillage",author:"ZeroWaste",date:"il y a 4j",url:"https://toogoodtogo.com/fr",summary:"Achetez des paniers invendus de restaurants et boulangeries locales chaque soir. En moyenne 70% moins cher que le prix normal.",score:256,flags:0,votes:{}},
+    {id:103,title:"Yuka : scanner l'étiquette de vos aliments",author:"HealthFirst",date:"il y a 1sem",url:"https://yuka.io/",summary:"Scannez le code-barre d'un produit et obtenez immédiatement une note sur 100 basée sur la composition nutritionnelle et les additifs.",score:198,flags:0,votes:{}},
+    {id:104,title:"Open Food Facts : la base de données alimentaire",author:"DataFood",date:"il y a 2sem",url:"https://fr.openfoodfacts.org/",summary:"Base de données collaborative et gratuite de produits alimentaires. Retrouvez le nutri-score, le nova-score et la liste complète des ingrédients.",score:145,flags:0,votes:{}},
+    {id:105,title:"Phenix : soldes alimentaires de saison",author:"BonPrix",date:"il y a 3sem",url:"https://www.phenixapp.com/",summary:"Application similaire à Too Good To Go mais plus orientée grandes surfaces et épiceries. Bons plans de fin de journée à prix cassés.",score:112,flags:0,votes:{}},
+    {id:106,title:"Courses en drive : comparer les enseignes",author:"DriveCompare",date:"il y a 1 mois",url:"https://www.leclercdrive.fr/",summary:"Le drive Leclerc est régulièrement élu le moins cher de France. Commandez en ligne et retirez vos courses sans frais de livraison.",score:89,flags:0,votes:{}},
+    {id:107,title:"Flexy : acheter dégriffé en ligne",author:"DegriffePro",date:"il y a 1 mois",url:"https://www.fleury-michon.fr/",summary:"Cherchez les produits 'déclassés' ou 'fins de série' sur les sites de marques. Même qualité, conditionnement différent, prix divisé par 2.",score:67,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 2 : Cuisine & Recettes ──
+  2: [
+    {id:201,title:"Marmiton : le moteur de recettes n°1 en France",author:"CuisineAddict",date:"il y a 1j",url:"https://www.marmiton.org/",summary:"Plus de 60 000 recettes notées et commentées par la communauté. Cherchez par ingrédient disponible dans votre frigo pour éviter le gaspillage.",score:876,flags:0,votes:{}},
+    {id:202,title:"750g : recettes vidéo pas à pas",author:"ChefMaison",date:"il y a 2j",url:"https://www.750g.com/",summary:"Tutoriels vidéo pour tous les niveaux. Le site explique les techniques de base (beurre noisette, fond de veau, pâte feuilletée) de manière très claire.",score:654,flags:0,votes:{}},
+    {id:203,title:"Paprika Recipe Manager : organiser ses recettes",author:"OrganizerChef",date:"il y a 3j",url:"https://www.paprikaapp.com/",summary:"L'application ultime pour sauvegarder et organiser vos recettes depuis n'importe quel site web. Génère automatiquement une liste de courses.",score:512,flags:0,votes:{}},
+    {id:204,title:"Just A Pinch : recettes de grand-mères américaines",author:"TradiFood",date:"il y a 5j",url:"https://www.justapinch.com/",summary:"Une mine d'or de recettes maison authentiques partagées par des familles. Idéal pour retrouver des saveurs traditionnelles et découvrir de nouvelles cultures.",score:423,flags:0,votes:{}},
+    {id:205,title:"SideChef : recettes avec guidage en temps réel",author:"SmartKitchen",date:"il y a 1sem",url:"https://www.sidechef.com/",summary:"L'application vous guide étape par étape avec des minuteurs intégrés. Elle peut même piloter certains appareils connectés (Thermomix, etc.).",score:345,flags:0,votes:{}},
+    {id:206,title:"Techniques culinaires : le site du Chef Simon",author:"ProCook",date:"il y a 2sem",url:"https://chefsimon.com/",summary:"L'encyclopédie des techniques professionnelles expliquées aux amateurs. Apprenez à lever un filet, réaliser une julienne ou clarifier un beurre.",score:278,flags:0,votes:{}},
+    {id:207,title:"Innit : planifier ses repas de la semaine",author:"MealPlanner",date:"il y a 1 mois",url:"https://www.innit.com/",summary:"Planifiez vos repas de la semaine, réduisez le gaspillage alimentaire et générez votre liste de courses optimisée automatiquement.",score:189,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 3 : Maison & Déco ──
+  3: [
+    {id:301,title:"Pinterest : l'inspiration déco infinie",author:"DecoAddict",date:"il y a 1j",url:"https://www.pinterest.fr/",summary:"Créez des tableaux de moodboard pour chaque pièce de votre maison. Idéal pour visualiser un projet avant de l'acheter ou de commander.",score:923,flags:0,votes:{}},
+    {id:302,title:"IKEA Place : visualiser les meubles en AR",author:"ARDeco",date:"il y a 2j",url:"https://www.ikea.com/fr/fr/customer-service/ikea-apps/",summary:"L'application IKEA Place permet de voir en réalité augmentée comment un meuble s'intégrerait dans votre pièce avant de l'acheter. Bluffant.",score:745,flags:0,votes:{}},
+    {id:303,title:"Leboncoin : meubles de seconde main",author:"SecondLife",date:"il y a 3j",url:"https://www.leboncoin.fr/",summary:"80% des meubles de qualité que vous voyez dans les magazines se trouvent d'occasion sur Leboncoin à 10-20% de leur prix neuf.",score:634,flags:0,votes:{}},
+    {id:304,title:"Houzz : photos de rénovations par pièce",author:"RenoIdeas",date:"il y a 5j",url:"https://www.houzz.fr/",summary:"Des millions de photos de maisons rénovées par pièce, style et budget. Trouvez l'architecte ou le décorateur qui a réalisé le projet qui vous plaît.",score:512,flags:0,votes:{}},
+    {id:305,title:"Rénover son appartement sans se ruiner",author:"BudgetDeco",date:"il y a 1sem",url:"https://www.maison-travaux.fr/",summary:"Guide complet des coûts réels de rénovation par poste (peinture, carrelage, parquet). Évitez les mauvaises surprises budgétaires.",score:398,flags:0,votes:{}},
+    {id:306,title:"Vinted & Facebook Marketplace pour la déco",author:"VintageHome",date:"il y a 2sem",url:"https://www.vinted.fr/",summary:"Vinted n'est pas que pour les vêtements. La section Maison regorge de petits objets déco, vaisselle et luminaires à prix bradés.",score:287,flags:0,votes:{}},
+    {id:307,title:"Color Hunt : palettes de couleurs gratuites",author:"ColorHome",date:"il y a 1 mois",url:"https://colorhunt.co/",summary:"Trouvez la combinaison de couleurs parfaite pour repeindre une pièce. Des centaines de palettes tendance sélectionnées par des designers.",score:198,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 4 : Entretien & Ménage ──
+  4: [
+    {id:401,title:"Vinaigre blanc + bicarbonate : le duo miracle",author:"GreenClean",date:"il y a 1j",url:"https://www.consoglobe.com/vinaigre-blanc-bicarbonate-menage-cg",summary:"Ces deux produits naturels remplacent 90% des produits chimiques ménagers. Guide complet des dosages et applications par surface.",score:867,flags:0,votes:{}},
+    {id:402,title:"Cleanipedia : toutes les taches expliquées",author:"StainFighter",date:"il y a 2j",url:"https://www.cleanipedia.com/fr/",summary:"La base de données de référence pour enlever n'importe quelle tache. Cherchez le tissu + la tache et obtenez la méthode étape par étape.",score:634,flags:0,votes:{}},
+    {id:403,title:"Méthode Marie Kondo gratuite en PDF",author:"MinimalistLife",date:"il y a 4j",url:"https://konmari.com/",summary:"La méthode KonMari pour désencombrer votre maison une fois pour toutes. Pliage des vêtements, tri par catégorie : tout est expliqué gratuitement.",score:512,flags:0,votes:{}},
+    {id:404,title:"Fly Lady : routine ménage en 15 min/jour",author:"RoutinePro",date:"il y a 1sem",url:"https://www.flylady.net/",summary:"Système de routines ménagères qui permet d'avoir une maison propre sans jamais passer plus de 15 min d'affilée à nettoyer. Change la vie.",score:423,flags:0,votes:{}},
+    {id:405,title:"Entretien du lave-linge : le guide complet",author:"ElectroPro",date:"il y a 2sem",url:"https://www.darty.com/nav/extra/edito/conseils/entretien-lave-linge.html",summary:"Détartrer, nettoyer le bac à lessive, vider le filtre : les gestes simples qui prolongent la durée de vie de votre lave-linge de plusieurs années.",score:312,flags:0,votes:{}},
+    {id:406,title:"Comment détartrer naturellement",author:"NaturalWay",date:"il y a 1 mois",url:"https://www.que-choisir.org/",summary:"Acide citrique à 5% dans 1 litre d'eau : efficace sur le calcaire, moins agressif que le vinaigre et sans odeur. Parfait pour bouilloire et cafetière.",score:245,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 5 : Mode ──
+  5: [
+    {id:501,title:"Vinted : revendre et acheter vêtements",author:"FashionSaver",date:"il y a 1j",url:"https://www.vinted.fr/",summary:"La plateforme n°1 de seconde main en Europe. Vendez vos vêtements inutilisés pour financer votre prochaine garde-robe. Aucun frais pour le vendeur.",score:1123,flags:0,votes:{}},
+    {id:502,title:"Vestiaire Collective : luxe d'occasion",author:"LuxuryResale",date:"il y a 2j",url:"https://fr.vestiairecollective.com/",summary:"Achetez des pièces de luxe authentifiées à -70%. Chaque article est expertisé par des professionnels. L'investissement mode intelligent.",score:867,flags:0,votes:{}},
+    {id:503,title:"Good On You : noter les marques éthiques",author:"EcoFashion",date:"il y a 3j",url:"https://goodonyou.eco/",summary:"Scannez ou recherchez une marque pour voir sa note environnementale, sociale et de bien-être animal. Faites des choix de mode éclairés.",score:634,flags:0,votes:{}},
+    {id:504,title:"Capsule wardrobe : s'habiller avec 33 pièces",author:"MinimalistStyle",date:"il y a 5j",url:"https://www.bemorewithless.com/project-333/",summary:"Le projet 333 : vivez avec 33 vêtements pendant 3 mois. Découvrez que vous avez besoin de moins que vous ne pensez et dépensez moins.",score:512,flags:0,votes:{}},
+    {id:505,title:"Depop : mode vintage et streetwear",author:"VintageVibes",date:"il y a 1sem",url:"https://www.depop.com/",summary:"Le spot n°1 pour trouver des pièces vintage, streetwear et y/2k. Plus tendance que Vinted pour les créateurs et les pièces uniques.",score:423,flags:0,votes:{}},
+    {id:506,title:"Shpock : le Vinted des objets",author:"ResellerPro",date:"il y a 2sem",url:"https://www.shpock.com/fr-fr",summary:"Alternative à Vinted et Leboncoin pour les vêtements et accessoires. Moins de concurrence = vos annonces sont plus visibles.",score:234,flags:0,votes:{}},
+    {id:507,title:"The Bradery : ventes privées mode",author:"SaleHunter",date:"il y a 1 mois",url:"https://www.thebradery.com/",summary:"Ventes privées de grandes marques avec des réductions de 30 à 70%. Inscrivez-vous pour recevoir les alertes ventes flash avant tout le monde.",score:178,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 6 : Beauté ──
+  6: [
+    {id:601,title:"INCI Beauty : décrypter les cosmétiques",author:"BeautyLab",date:"il y a 1j",url:"https://incibeauty.com/",summary:"Scannez ou recherchez un produit cosmétique et obtenez une analyse complète de ses ingrédients. Identifiez les perturbateurs endocriniens et allergènes.",score:987,flags:0,votes:{}},
+    {id:602,title:"Notino : parfums et cosmétiques moins chers",author:"PerfumeSaver",date:"il y a 2j",url:"https://www.notino.fr/",summary:"Parfums, maquillage et soins authentiques jusqu'à 50% moins chers qu'en parfumerie. Stock immense, livraison rapide et SAV sérieux.",score:756,flags:0,votes:{}},
+    {id:603,title:"Paula's Choice : routine skincare fondée sur les preuves",author:"SkinNerd",date:"il y a 3j",url:"https://www.paulaschoice.fr/",summary:"Le site et la marque de référence pour construire une routine skincare efficace basée sur des études scientifiques. Fini les effets marketing.",score:623,flags:0,votes:{}},
+    {id:604,title:"Huile de coco : 50 utilisations beauté",author:"NaturalBeauty",date:"il y a 5j",url:"https://www.doctissimo.fr/beaute/soins/huile-de-coco",summary:"Démaquillant, hydratant corps, soin cheveux, soin lèvres... L'huile de coco vierge remplace une dizaine de produits de beauté pour quelques euros.",score:534,flags:0,votes:{}},
+    {id:605,title:"r/SkincareAddiction : les experts Reddit",author:"RedditBeauty",date:"il y a 1sem",url:"https://www.reddit.com/r/SkincareAddiction/",summary:"La plus grande communauté skincare du monde. Des milliers de routines expliquées, des ingrédients décryptés et des avis honnêtes sans pub.",score:445,flags:0,votes:{}},
+    {id:606,title:"Adopt' : parfums de luxe à 5€",author:"ParfumMalin",date:"il y a 2sem",url:"https://www.adopt.fr/",summary:"Des eaux de toilette inspirées des grandes maisons (Dior, Chanel, YSL) pour 5 à 15€. La qualité est réelle, le prix imbattable.",score:367,flags:0,votes:{}},
+    {id:607,title:"Le gommage maison au sucre",author:"DIYBeauty",date:"il y a 1 mois",url:"https://www.bioalaune.com/fr/actualite-bio/8023/recette-gommage-corps-maison-sucre",summary:"Sucre + huile végétale + quelques gouttes d'huile essentielle = gommage corps aussi efficace que les produits à 30€ en grande surface.",score:289,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 7 : Santé ──
+  7: [
+    {id:701,title:"Doctolib : prise de RDV médicaux en ligne",author:"HealthPro",date:"il y a 1j",url:"https://www.doctolib.fr/",summary:"Trouvez des créneaux disponibles chez tous les médecins et spécialistes de votre région, sans attente téléphonique. Aussi pratique pour les vaccins.",score:1234,flags:0,votes:{}},
+    {id:702,title:"Ameli : votre espace santé CPAM",author:"SecsocialPro",date:"il y a 2j",url:"https://www.ameli.fr/",summary:"Suivez vos remboursements, téléchargez votre attestation vitale, gérez votre médecin traitant. Tout ce qu'offre la Sécurité sociale en ligne.",score:934,flags:0,votes:{}},
+    {id:703,title:"Assurance maladie : 100% santé",author:"OptiqueGratuit",date:"il y a 3j",url:"https://www.ameli.fr/assure/sante/examen-et-soins/100-sante",summary:"Le 100% Santé permet d'obtenir lunettes, prothèses auditives et soins dentaires sans reste à charge. Beaucoup d'assurés ne connaissent pas ce droit.",score:756,flags:0,votes:{}},
+    {id:704,title:"Passeport Santé : fiches maladies de référence",author:"InfoMedic",date:"il y a 5j",url:"https://www.passeportsante.net/",summary:"Des fiches médicales rédigées par des professionnels de santé en langage accessible. Comprendre un diagnostic, préparer un rendez-vous médical.",score:534,flags:0,votes:{}},
+    {id:705,title:"Médica-Pass : trouver un médecin acceptant la Sécu",author:"CmuUser",date:"il y a 1sem",url:"https://www.doctolib.fr/",summary:"Filtrez sur Doctolib 'secteur 1' pour trouver des médecins qui ne pratiquent pas de dépassements d'honoraires.",score:456,flags:0,votes:{}},
+    {id:706,title:"Vidal : vérifier interactions médicaments",author:"PharmaPro",date:"il y a 2sem",url:"https://www.vidal.fr/",summary:"Avant de combiner deux médicaments, vérifiez leurs interactions sur Vidal, la base de données médicale de référence des pharmaciens.",score:378,flags:0,votes:{}},
+    {id:707,title:"MédecinDirect : consultation médicale en ligne",author:"TéléSanté",date:"il y a 1 mois",url:"https://www.medecindirect.fr/",summary:"Consultez un médecin par vidéo en moins de 10 minutes, 24h/24. Ordonnance électronique possible pour les cas simples (angine, cystite, etc.).",score:289,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 8 : Sport ──
+  8: [
+    {id:801,title:"Strava : tracker d'activités sportives",author:"RunnerPro",date:"il y a 1j",url:"https://www.strava.com/",summary:"La meilleure appli pour tracker course à pied, vélo et natation. Les segments Strava créent une émulation saine entre sportifs de votre quartier.",score:1087,flags:0,votes:{}},
+    {id:802,title:"Nike Training Club : musculation gratuite",author:"GymFree",date:"il y a 2j",url:"https://www.nike.com/fr/ntc-app",summary:"Accès à 200+ séances d'entraînement guidées par des coachs Nike, entièrement gratuites. Du HIIT à la musculation, tout y est.",score:876,flags:0,votes:{}},
+    {id:803,title:"Freeletics : HIIT sans équipement",author:"BodyweightKing",date:"il y a 3j",url:"https://www.freeletics.com/fr/",summary:"Programmes de sport au poids du corps pour se mettre en forme sans salle de sport. L'entraîneur IA adapte les séances à votre niveau.",score:654,flags:0,votes:{}},
+    {id:804,title:"Zwift : cyclisme virtuel en ligne",author:"VeloIndoor",date:"il y a 5j",url:"https://www.zwift.com/fr",summary:"Pédalez sur des courses virtuelles avec des milliers de cyclistes du monde entier. Transformez votre vélo en machine à entraînement gamifiée.",score:534,flags:0,votes:{}},
+    {id:805,title:"Decathlon en occasion : les bonnes affaires",author:"SportBudget",date:"il y a 1sem",url:"https://www.decathlon.fr/browsing/reconditionnés",summary:"Decathlon vend son propre matériel reconditionné ou retourné avec des remises de 20 à 50%. Qualité garantie et retour sous 30 jours.",score:423,flags:0,votes:{}},
+    {id:806,title:"Couch to 5K : débuter la course à pied",author:"BeginnerRunner",date:"il y a 2sem",url:"https://www.nhs.uk/live-well/exercise/running-and-aerobic-exercises/get-running-with-couch-to-5k/",summary:"Le programme NHS de 9 semaines pour passer de zéro à 5 km de course sans s'arrêter. Des milliers de personnes l'ont réussi, c'est prouvé.",score:356,flags:0,votes:{}},
+    {id:807,title:"MapMyRun : planifier ses itinéraires de course",author:"RouteRunner",date:"il y a 1 mois",url:"https://www.mapmyrun.com/",summary:"Planifiez vos parcours de course en calculant distance et dénivelé. Découvrez les itinéraires populaires autour de chez vous.",score:234,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 9 : High-Tech ──
+  9: [
+    {id:901,title:"RTINGS : les meilleurs tests TV et casques",author:"TechReview",date:"il y a 1j",url:"https://www.rtings.com/fr",summary:"Les tests les plus rigoureux du marché pour TV, moniteurs, casques audio. Des mesures objectives plutôt que des opinions. Indispensable avant tout achat.",score:1156,flags:0,votes:{}},
+    {id:902,title:"GSMArena : comparateur de smartphones",author:"PhoneNerd",date:"il y a 2j",url:"https://www.gsmarena.com/",summary:"La base de données la plus complète de smartphones avec fiches techniques détaillées. Comparez côte à côte jusqu'à 3 appareils.",score:934,flags:0,votes:{}},
+    {id:903,title:"Camelcamelcamel : historique des prix Amazon",author:"PriceSpy",date:"il y a 3j",url:"https://camelcamelcamel.com/",summary:"Visualisez l'évolution des prix Amazon sur 1-2 ans. Évitez les fausses promotions et créez des alertes pour être notifié quand un produit baisse.",score:812,flags:0,votes:{}},
+    {id:904,title:"Idealo : comparateur de prix high-tech",author:"PriceHunter",date:"il y a 5j",url:"https://www.idealo.fr/",summary:"Compare les prix de plus de 5000 marchands en ligne. Spécialement redoutable pour l'électronique, les jeux vidéo et les appareils photo.",score:678,flags:0,votes:{}},
+    {id:905,title:"iFixit : réparer soi-même ses appareils",author:"RepairPro",date:"il y a 1sem",url:"https://fr.ifixit.com/",summary:"Guides de réparation pas à pas pour iPhone, Samsung, PC portables, consoles. Réparer coûte 10x moins cher qu'acheter neuf. Tutoriels gratuits.",score:556,flags:0,votes:{}},
+    {id:906,title:"Backmarket : reconditionné testé et garanti",author:"EcoTech",date:"il y a 2sem",url:"https://www.backmarket.fr/",summary:"L'alternative sérieuse au neuf. Smartphones, MacBooks et tablettes reconditionnés avec garantie 12 mois à -30-50% du neuf.",score:489,flags:0,votes:{}},
+    {id:907,title:"Wirecutter : recommandations produits tech",author:"TrustReview",date:"il y a 1 mois",url:"https://www.nytimes.com/wirecutter/",summary:"Le site de recommandations du New York Times. Tests terrain approfondis sur des centaines de produits par an. Un seul lauréat par catégorie.",score:378,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 10 : Électroménager ──
+  10: [
+    {id:1001,title:"Fnac Darty : rachat et reprise d'appareils",author:"TradeInPro",date:"il y a 2j",url:"https://www.darty.com/",summary:"Darty reprend vos anciens appareils en bon état contre un bon d'achat. Peut financer partiellement votre prochain achat électroménager.",score:678,flags:0,votes:{}},
+    {id:1002,title:"Électroménager classe A+++ : vraie économie?",author:"EnergyWatcher",date:"il y a 3j",url:"https://www.ademe.fr/",summary:"L'ADEME a publié des études montrant qu'un lave-linge A+++ consomme 40% de moins qu'un A+. L'investissement est rentabilisé en 3-4 ans.",score:534,flags:0,votes:{}},
+    {id:1003,title:"Spareka : pièces détachées & réparation",author:"RepairSave",date:"il y a 5j",url:"https://www.spareka.fr/",summary:"Trouvez la pièce détachée exacte pour votre lave-vaisselle, lave-linge ou réfrigérateur. Vidéos de réparation incluses. Souvent 5-10x moins cher qu'un SAV.",score:812,flags:0,votes:{}},
+    {id:1004,title:"Comparateur d'aspirateurs Wirecutter",author:"VacuumNerd",date:"il y a 1sem",url:"https://www.rtings.com/vacuum",summary:"RTINGS teste aussi les aspirateurs avec des mesures objectives de puissance d'aspiration, filtration et bruit. Indispensable avant achat.",score:423,flags:0,votes:{}},
+    {id:1005,title:"Robot aspirateur Eufy ou Roborock?",author:"RobotHome",date:"il y a 2sem",url:"https://www.rtings.com/robot-vacuum",summary:"Eufy et Roborock offrent les meilleures performances pour le prix. Évitez les marques de grande surface. Guide complet de comparaison.",score:356,flags:0,votes:{}},
+    {id:1006,title:"Lapeyre : promo permanente sur les cuisines",author:"KitchenBudget",date:"il y a 1 mois",url:"https://www.lapeyre.fr/",summary:"Lapeyre a toujours une promotion en cours (30-40% sur les cuisines). Négociez en fin de mois quand les commerciaux font leurs objectifs.",score:289,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 11 : Écologie ──
+  11: [
+    {id:1101,title:"Nos Gestes Climat : calculer son bilan carbone",author:"GreenFighter",date:"il y a 1j",url:"https://nosgestesclimat.fr/",summary:"Calculez votre empreinte carbone personnelle en 10 minutes. Identifiez vos leviers d'action les plus impactants (alimentation, transport, logement).",score:876,flags:0,votes:{}},
+    {id:1102,title:"Too Good To Go : zéro gaspillage alimentaire",author:"NoWaste",date:"il y a 2j",url:"https://toogoodtogo.com/fr",summary:"Récupérez les invendus de restaurants et commerces à prix cassés. Double impact : économies personnelles et réduction du gaspillage.",score:723,flags:0,votes:{}},
+    {id:1103,title:"La Recharge : trouver les commerces vrac",author:"VracMap",date:"il y a 4j",url:"https://la-recharge.fr/",summary:"Carte interactive des magasins vrac et en vrac en France. Apportez vos contenants et achetez exactement la quantité dont vous avez besoin.",score:534,flags:0,votes:{}},
+    {id:1104,title:"Enercoop : fournisseur d'énergie 100% verte",author:"GreenEnergy",date:"il y a 1sem",url:"https://www.enercoop.fr/",summary:"Coopérative qui fournit de l'électricité 100% renouvelable avec traçabilité totale. Prix légèrement supérieur mais impact climatique réel.",score:445,flags:0,votes:{}},
+    {id:1105,title:"Repair Café : réparer plutôt que jeter",author:"CaféRéparation",date:"il y a 2sem",url:"https://www.repaircafe.org/fr/",summary:"Trouvez un Repair Café près de chez vous où des bénévoles vous aident à réparer vêtements, électronique et appareils gratuitement.",score:356,flags:0,votes:{}},
+    {id:1106,title:"Carte Co2 : impact des modes de transport",author:"TransportGreen",date:"il y a 1 mois",url:"https://impactco2.fr/transport",summary:"Comparez l'impact CO2 de tous les modes de transport (avion, voiture, TGV, vélo) pour un trajet donné. Prenez des décisions éclairées.",score:278,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 12 : Enfants ──
+  12: [
+    {id:1201,title:"Vinted Kids : vêtements enfants d'occasion",author:"MamanMaline",date:"il y a 1j",url:"https://www.vinted.fr/",summary:"Les enfants grandissent vite. Achetez leurs vêtements d'occasion sur Vinted Kids : qualité souvent neuve car peu portés, prix 5x moins chers.",score:987,flags:0,votes:{}},
+    {id:1202,title:"Khan Academy Kids : apprendre en jouant",author:"EduKids",date:"il y a 2j",url:"https://www.khanacademy.org/kids",summary:"Application gratuite et sans publicité pour les enfants de 2 à 8 ans. Maths, lecture, logique : tout un programme éducatif ludique.",score:756,flags:0,votes:{}},
+    {id:1203,title:"Pomme d'Api : le magazine numérique 3-7 ans",author:"ParentLecteur",date:"il y a 4j",url:"https://www.pommepapi.fr/",summary:"Abonnement numérique à 6€/mois avec accès à des dizaines de magazines pour enfants. Pratique pour les longs trajets en voiture ou en avion.",score:534,flags:0,votes:{}},
+    {id:1204,title:"Le bon coin enfants : jouets et poussettes",author:"JouetsBudget",date:"il y a 1sem",url:"https://www.leboncoin.fr/",summary:"Les jouets d'occasion font des cadeaux tout aussi heureux. Cherchez les ventes de puériculture : poussettes à 50€, marchettes à 20€.",score:456,flags:0,votes:{}},
+    {id:1205,title:"Luciole : l'appli lecture pour enfants DYS",author:"DysHelp",date:"il y a 2sem",url:"https://www.luciole-lecture.fr/",summary:"Application adaptée aux enfants dyslexiques avec une police de caractères et un espacement spécialement conçus pour faciliter la lecture.",score:312,flags:0,votes:{}},
+    {id:1206,title:"Animéo : dessin animé gratuit sans pub",author:"TVKids",date:"il y a 1 mois",url:"https://www.france.tv/enfants/",summary:"France TV propose une plateforme gratuite et sans publicité pour enfants avec des centaines d'épisodes de dessins animés.",score:234,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 13 : Animaux ──
+  13: [
+    {id:1301,title:"Planète Vétérinaire : frais vétérinaires comparés",author:"PetOwner",date:"il y a 1j",url:"https://www.planete-veterinaire.fr/",summary:"Comparez les tarifs des vétérinaires par ville. Les prix varient du simple au triple pour les mêmes actes. Économisez sans changer la qualité.",score:756,flags:0,votes:{}},
+    {id:1302,title:"Assurance chien/chat : est-ce rentable?",author:"PetInsurance",date:"il y a 2j",url:"https://www.meilleureassurance.com/assurance-animaux",summary:"Comparatif complet des assurances animaux. Pour un chien, une assurance à 30€/mois peut sauver des milliers d'euros en cas d'urgence.",score:612,flags:0,votes:{}},
+    {id:1303,title:"SPA : adopter plutôt qu'acheter",author:"AdoptDontShop",date:"il y a 4j",url:"https://www.spa.asso.fr/",summary:"Des milliers d'animaux attendent une famille dans les refuges SPA. L'adoption coûte 50-150€ contre 1000-3000€ chez un éleveur.",score:934,flags:0,votes:{}},
+    {id:1304,title:"Animal Sitter : garde d'animaux entre particuliers",author:"PetSitter",date:"il y a 1sem",url:"https://www.animalsitter.fr/",summary:"Trouvez un particulier pour garder votre animal pendant vos vacances. Beaucoup moins cher qu'une pension (15-25€/jour vs 35-50€).",score:512,flags:0,votes:{}},
+    {id:1305,title:"Croquetteland : nourriture pas chère",author:"PetFood",date:"il y a 2sem",url:"https://www.croquetteland.com/",summary:"Site spécialisé dans la nourriture pour animaux avec des prix souvent 30-40% inférieurs à l'animalerie. Livraison automatique disponible.",score:389,flags:0,votes:{}},
+    {id:1306,title:"Petclic : médicaments vétérinaires en ligne",author:"VetMed",date:"il y a 1 mois",url:"https://www.petclic.fr/",summary:"Achetez les médicaments prescrits par votre vétérinaire en ligne 2 à 3 fois moins chers. Légal avec ordonnance.",score:312,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 14 : Culture ──
+  14: [
+    {id:1401,title:"Gallica : bibliothèque numérique de la BnF",author:"BookLover",date:"il y a 1j",url:"https://gallica.bnf.fr/",summary:"Des millions d'œuvres numérisées gratuitement (livres, journaux, photos, cartes, musique). Un trésor culturel inestimable entièrement gratuit.",score:867,flags:0,votes:{}},
+    {id:1402,title:"Project Gutenberg : 70 000 ebooks gratuits",author:"FreeBooks",date:"il y a 2j",url:"https://www.gutenberg.org/",summary:"Tous les classiques de la littérature mondiale sont dans le domaine public. Téléchargez gratuitement Balzac, Proust, Zola en EPUB ou PDF.",score:712,flags:0,votes:{}},
+    {id:1403,title:"Overdrive/Libby : ebooks gratuits via la médiathèque",author:"BiblioNumerique",date:"il y a 3j",url:"https://www.overdrive.com/apps/libby/",summary:"Si vous avez une carte de médiathèque, accédez à des milliers d'ebooks et d'audiobooks numériques gratuitement via l'app Libby.",score:634,flags:0,votes:{}},
+    {id:1404,title:"Arte : culture gratuite de qualité",author:"CulturePub",date:"il y a 5j",url:"https://www.arte.tv/fr/",summary:"Documentaires, films d'auteur, concerts : Arte propose du contenu culturel de qualité gratuitement en streaming. Bien supérieur à la plupart des plateformes payantes.",score:823,flags:0,votes:{}},
+    {id:1405,title:"Spotify free : podcasts culturels illimités",author:"PodcastAddict",date:"il y a 1sem",url:"https://open.spotify.com/",summary:"Des milliers de podcasts historiques, littéraires et artistiques entièrement gratuits. 'Passeport pour le cosmos', 'Choses à Savoir', 'L'Histoire'...",score:534,flags:0,votes:{}},
+    {id:1406,title:"Khan Academy : cours universitaires gratuits",author:"EduFree",date:"il y a 2sem",url:"https://fr.khanacademy.org/",summary:"Des cours de mathématiques, physique, histoire de l'art et informatique de niveau lycée à université, entièrement gratuits et en français.",score:445,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 15 : Jeux ──
+  15: [
+    {id:1501,title:"Epic Games Store : jeux PC gratuits chaque semaine",author:"FreeGamer",date:"il y a 1j",url:"https://store.epicgames.com/fr/free-games",summary:"Epic offre 1 à 2 jeux PC gratuits chaque semaine. En un an, vous pouvez récupérer des jeux d'une valeur de 500€ sans dépenser un centime.",score:1245,flags:0,votes:{}},
+    {id:1502,title:"IsThereAnyDeal : historique prix jeux vidéo",author:"GameSaver",date:"il y a 2j",url:"https://isthereanydeal.com/",summary:"Ne payez jamais plein tarif. Ce site agrège les prix de 40 boutiques de jeux et alerte quand un jeu atteint votre prix cible.",score:967,flags:0,votes:{}},
+    {id:1503,title:"Humble Bundle : packs de jeux à prix libre",author:"HumbleFan",date:"il y a 3j",url:"https://www.humblebundle.com/",summary:"Des packs de 10-20 jeux pour quelques euros avec une partie reversée à des associations. Les meilleurs rapports qualité-prix du marché.",score:812,flags:0,votes:{}},
+    {id:1504,title:"GOG.com : jeux sans DRM",author:"DRMFree",date:"il y a 5j",url:"https://www.gog.com/fr",summary:"Alternative à Steam où vous possédez vraiment vos jeux (pas de DRM). Revente de compte possible. Parfait pour les jeux rétro.",score:634,flags:0,votes:{}},
+    {id:1505,title:"Xbox Game Pass PC : 200+ jeux pour 10€/mois",author:"PassGamer",date:"il y a 1sem",url:"https://www.xbox.com/fr-FR/xbox-game-pass",summary:"Le Netflix du jeu vidéo. Accès à plus de 200 jeux PC pour 9.99€/mois. Rentabilisé avec un seul jeu AAA qui sort en day one.",score:756,flags:0,votes:{}},
+    {id:1506,title:"Board Game Arena : jeux de plateau gratuits",author:"BoardGamer",date:"il y a 2sem",url:"https://boardgamearena.com/",summary:"Jouez à plus de 500 jeux de plateau (Catan, Ticket to Ride, Carcassonne) gratuitement en ligne avec des amis ou des inconnus.",score:512,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 16 : Auto ──
+  16: [
+    {id:1601,title:"La Centrale : cote voiture officielle",author:"AutoExpert",date:"il y a 1j",url:"https://www.lacentrale.fr/",summary:"La Centrale est la référence pour connaître la cote d'une voiture d'occasion. Vérifiez le prix avant d'acheter et négociez en connaissance de cause.",score:934,flags:0,votes:{}},
+    {id:1602,title:"Carfax / Histovec : historique véhicule",author:"VehicleCheck",date:"il y a 2j",url:"https://histovec.interieur.gouv.fr/",summary:"Service officiel du gouvernement pour vérifier gratuitement l'historique d'un véhicule d'occasion : sinistres, kilométrage, contrôles techniques.",score:812,flags:0,votes:{}},
+    {id:1603,title:"Assurance auto : comparer chaque année",author:"AssuCompare",date:"il y a 3j",url:"https://www.assurland.com/",summary:"Les Français paient en moyenne 200€ de trop par an sur leur assurance auto. Renégociez chaque année avec Assurland ou LeLynx.",score:756,flags:0,votes:{}},
+    {id:1604,title:"Vignette Crit'Air gratuite",author:"CityCar",date:"il y a 5j",url:"https://www.certificat-air.gouv.fr/",summary:"La vignette Crit'Air est obligatoire dans les zones à faibles émissions. Elle coûte 3.70€. Ne payez pas plus cher sur les sites parasites.",score:623,flags:0,votes:{}},
+    {id:1605,title:"GasNow : trouver le carburant le moins cher",author:"FuelSaver",date:"il y a 1sem",url:"https://www.prix-carburants.gouv.fr/",summary:"Site officiel du gouvernement pour trouver la station la moins chère dans un rayon de 10 km. Économisez 10-20€ à chaque plein.",score:534,flags:0,votes:{}},
+    {id:1606,title:"Midas, Norauto : entretien moins cher",author:"GarageCompare",date:"il y a 2sem",url:"https://www.midas.fr/",summary:"Les chaînes de garages (Midas, Norauto, Feu Vert) proposent régulièrement des offres sur vidange, pneus et freins. Souvent 30% moins cher que le concessionnaire.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 17 : Voyage ──
+  17: [
+    {id:1701,title:"Google Flights : trouver les vols les moins chers",author:"TravelHacker",date:"il y a 1j",url:"https://flights.google.com/",summary:"Activez le calendrier des prix pour voir les dates les moins chères du mois. La fonctionnalité Explorer permet de trouver une destination selon votre budget.",score:1345,flags:0,votes:{}},
+    {id:1702,title:"Skyscanner : comparateur de vols et hôtels",author:"FlightSaver",date:"il y a 2j",url:"https://www.skyscanner.fr/",summary:"Comparez des centaines de compagnies aériennes. La recherche 'partout' et 'le mois le moins cher' vous révèlent des destinations insoupçonnées.",score:1123,flags:0,votes:{}},
+    {id:1703,title:"Booking : tarifs non remboursables vs flexibles",author:"HotelSmart",date:"il y a 3j",url:"https://www.booking.com/",summary:"Comparez toujours le tarif non remboursable (souvent -30%) avec le tarif flexible. Si vous êtes sûr de partir, le non remboursable est rentable.",score:867,flags:0,votes:{}},
+    {id:1704,title:"TripAdvisor : éviter les attrape-touristes",author:"LocalEater",date:"il y a 5j",url:"https://www.tripadvisor.fr/",summary:"Cherchez les restaurants avec le plus de photos de plats locaux et les commentaires en langue locale. Fuyez ceux avec des menus en 6 langues.",score:712,flags:0,votes:{}},
+    {id:1705,title:"PriceFreeze : bloquer un prix de billet",author:"PriceLock",date:"il y a 1sem",url:"https://www.airfarewatchdog.com/",summary:"Certaines compagnies (et l'application Hopper) permettent de bloquer un tarif pendant 24-48h contre quelques euros, le temps de décider.",score:534,flags:0,votes:{}},
+    {id:1706,title:"Iati Seguros : assurance voyage sérieuse",author:"TravelInsure",date:"il y a 2sem",url:"https://www.iati.net/fr/",summary:"Assurance voyage reconnue par les nomades digitaux. Couvre rapatriement, urgences médicales et annulation. Bien supérieure aux assurances bancaires.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 18 : Bons Plans ──
+  18: [
+    {id:1801,title:"Dealabs : les meilleures promos votées",author:"DealHunter",date:"il y a 1j",url:"https://www.dealabs.com/",summary:"Communauté francophone de chasseurs de bonnes affaires. Les deals sont votés et validés par la communauté. Ne payez plus jamais plein tarif.",score:1456,flags:0,votes:{}},
+    {id:1802,title:"iGraal : cashback sur tous vos achats",author:"CashbackPro",date:"il y a 2j",url:"https://fr.igraal.com/",summary:"Obtenez jusqu'à 15% de remise en argent sur vos achats chez 1800 marchands. Cumulable avec les codes promos. 50€ récupérables par chèque.",score:1123,flags:0,votes:{}},
+    {id:1803,title:"Honey : codes promos automatiques",author:"CouponAuto",date:"il y a 3j",url:"https://www.joinhoney.com/fr",summary:"Extension Chrome gratuite qui teste automatiquement tous les codes promos disponibles lors de votre paiement en ligne. Économies garanties.",score:934,flags:0,votes:{}},
+    {id:1804,title:"Rakuten : cashback + points Kobo",author:"RakutenFan",date:"il y a 5j",url:"https://www.rakuten.fr/",summary:"Plateforme de cashback avec 3500 marchands partenaires. Les points se convertissent en euros ou en livres numériques Kobo.",score:756,flags:0,votes:{}},
+    {id:1805,title:"Les Numériques : guide achat fiable",author:"TechGuide",date:"il y a 1sem",url:"https://www.lesnumeriques.com/",summary:"Le meilleur guide d'achat tech français avec des tests approfondis et indépendants. Aucun conflit d'intérêt majeur avec les marques testées.",score:612,flags:0,votes:{}},
+    {id:1806,title:"Black Friday Tracker : surveiller les vrais prix",author:"BlackFridaySpy",date:"il y a 2sem",url:"https://fr.camelcamelcamel.com/",summary:"Avant le Black Friday, vérifiez l'historique des prix. 60% des 'promotions' Black Friday sont des hausses préalables puis des fausses réductions.",score:523,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 19 : Restaurants ──
+  19: [
+    {id:1901,title:"TheFork : réservations avec réductions -50%",author:"RestaurantLover",date:"il y a 1j",url:"https://www.thefork.fr/",summary:"Réservez en ligne dans des milliers de restaurants et obtenez des yums (points) ou des réductions immédiates pouvant aller jusqu'à -50%.",score:1023,flags:0,votes:{}},
+    {id:1902,title:"Google Maps : restaurants populaires locaux",author:"LocalFoody",date:"il y a 2j",url:"https://maps.google.com/",summary:"Filtrez par 'ouvert maintenant', 'très bien noté', 'moins de 15€'. Les photos des vrais clients vous évitent les mauvaises surprises.",score:867,flags:0,votes:{}},
+    {id:1903,title:"Yelp : avis détaillés des restaurants",author:"YelpUser",date:"il y a 3j",url:"https://www.yelp.fr/",summary:"Contrairement à Google, Yelp filtre les faux avis plus agressivement. Les photos de plats sont plus nombreuses et les avis plus détaillés.",score:634,flags:0,votes:{}},
+    {id:1904,title:"Le Fooding : les restos branchés avant tout le monde",author:"FoodieGuide",date:"il y a 5j",url:"https://lefooding.com/",summary:"Le guide culinaire indépendant par excellence. Découvrez les nouvelles adresses parisiennes et régionales avant qu'elles deviennent inaccessibles.",score:512,flags:0,votes:{}},
+    {id:1905,title:"Menu végétarien : Happy Cow",author:"VeggieEater",date:"il y a 1sem",url:"https://www.happycow.net/fr/",summary:"La carte mondiale des restaurants végétariens et végans avec avis de la communauté. Trouve les bonnes adresses partout dans le monde.",score:423,flags:0,votes:{}},
+    {id:1906,title:"Petit Futé : restaurants du quotidien",author:"PetitFutéFan",date:"il y a 2sem",url:"https://www.petitfute.com/",summary:"Guide de référence pour les restaurants locaux avec une sélection moins 'hype' mais plus accessible que Le Fooding. Idéal pour les voyages en régions.",score:312,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 20 : Bricolage ──
+  20: [
+    {id:2001,title:"Leroy Merlin : tutoriels vidéo gratuits",author:"BricoloFan",date:"il y a 1j",url:"https://www.leroymerlin.fr/",summary:"Leroy Merlin propose des centaines de vidéos tutoriels gratuits sur son site et YouTube. Poser du carrelage, peindre un mur, installer un robinet : tout y est.",score:876,flags:0,votes:{}},
+    {id:2002,title:"Castorama : location d'outillage",author:"ToolRent",date:"il y a 2j",url:"https://www.castorama.fr/",summary:"Castorama loue des outils (ponceuse, perceuse à colonne, nettoyeur HP) à la journée. Inutile d'acheter un outil utilisé une fois par an.",score:712,flags:0,votes:{}},
+    {id:2003,title:"r/DIY : la communauté bricolage Reddit",author:"DIYReddit",date:"il y a 3j",url:"https://www.reddit.com/r/DIY/",summary:"Des millions de projets de bricolage avec photos avant/après et explications détaillées. Posez vos questions et obtenez des réponses d'experts.",score:567,flags:0,votes:{}},
+    {id:2004,title:"Tout Faire Matériaux : tarifs pro",author:"ProBrico",date:"il y a 5j",url:"https://www.toutfaire.fr/",summary:"Les négoces de matériaux vendent aussi aux particuliers. Agences Tout Faire, Point P : prix souvent 20-40% inférieurs à la grande distribution.",score:445,flags:0,votes:{}},
+    {id:2005,title:"Schémas électriques : Hager",author:"ElectroPro",date:"il y a 1sem",url:"https://www.hager.fr/",summary:"Hager propose des guides gratuits pour comprendre et réaliser ses installations électriques selon les normes NF C 15-100.",score:356,flags:0,votes:{}},
+    {id:2006,title:"Brico Dépôt : les fins de séries soldées",author:"BricoSoldes",date:"il y a 2sem",url:"https://www.bricodepot.fr/",summary:"Brico Dépôt pratique des prix bas permanents sur les fins de séries. Moins attrayant que Leroy Merlin mais souvent 20-30% moins cher pour les matériaux de base.",score:289,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 22 : Jardinage ──
+  22: [
+    {id:2201,title:"Promesse de Fleurs : le guide des plantes",author:"GardenLover",date:"il y a 1j",url:"https://www.promessedefleurs.com/",summary:"Le catalogue en ligne le plus complet avec des fiches de culture ultra-détaillées pour chaque plante. Idéal pour savoir quoi planter et quand.",score:756,flags:0,votes:{}},
+    {id:2202,title:"GrowVeg : planifier son potager",author:"VeggieGarden",date:"il y a 2j",url:"https://www.growveg.fr/",summary:"Planificateur de potager en ligne : dessinez votre jardin, et le logiciel vous dit quoi planter où selon les associations bénéfiques et votre région.",score:612,flags:0,votes:{}},
+    {id:2203,title:"Compostage maison : le guide ADEME",author:"CompostPro",date:"il y a 4j",url:"https://agirpourlatransition.ademe.fr/particuliers/maison/dechets/composter-matieres-organiques",summary:"Déchets alimentaires en or brun. Guide ADEME pour composter efficacement et enrichir votre sol gratuitement. Economisez l'engrais.",score:489,flags:0,votes:{}},
+    {id:2204,title:"Binette & Jardin : almanach du jardinier",author:"OldSchoolGarden",date:"il y a 1sem",url:"https://www.binette-et-jardin.com/",summary:"Conseils traditionnels du jardinier avec un calendrier lunaire et des astuces pour jardiner sans pesticides chimiques.",score:378,flags:0,votes:{}},
+    {id:2205,title:"Troc de plantes : Les Végétaux partagés",author:"PlantShare",date:"il y a 2sem",url:"https://www.trocdesplantes.fr/",summary:"Boutures, graines, plants en surplus : échangez avec d'autres jardiniers près de chez vous. Agrandissez votre jardin sans rien dépenser.",score:289,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 23 : Photographie ──
+  23: [
+    {id:2301,title:"Ken Rockwell : avis appareils photo honnêtes",author:"PhotoExpert",date:"il y a 1j",url:"https://www.kenrockwell.com/",summary:"Avis et comparatifs d'appareils photo par un photographe professionnel depuis 20 ans. Les tests incluent des photos réelles, pas que des chiffres.",score:834,flags:0,votes:{}},
+    {id:2302,title:"Lightroom Mobile gratuit",author:"EditPro",date:"il y a 2j",url:"https://lightroom.adobe.com/",summary:"La version mobile de Lightroom est gratuite et permet de retoucher vos photos avec des curseurs précis. Remplace efficacement Snapseed.",score:712,flags:0,votes:{}},
+    {id:2303,title:"Unsplash : photos professionnelles libres de droits",author:"FreePics",date:"il y a 3j",url:"https://unsplash.com/fr",summary:"Des milliers de photos professionnelles haute résolution gratuites et libres de droits. Usage commercial et personnel autorisé sans attribution.",score:623,flags:0,votes:{}},
+    {id:2304,title:"Pixlr : Photoshop gratuit en ligne",author:"EditFree",date:"il y a 5j",url:"https://pixlr.com/fr/",summary:"Editeur photo avancé directement dans le navigateur, sans installation. Fonctions de détourage, calques et effets proches de Photoshop.",score:534,flags:0,votes:{}},
+    {id:2305,title:"Photography Life : tutoriels photo débutants",author:"SnapLearner",date:"il y a 1sem",url:"https://photographylife.com/",summary:"Le meilleur site pour apprendre la photographie : règle des tiers, exposition, ouverture, vitesse... Tout est expliqué clairement avec des exemples.",score:423,flags:0,votes:{}},
+    {id:2306,title:"DxOMark : classement des objectifs et appareils",author:"LensNerd",date:"il y a 2sem",url:"https://www.dxomark.com/",summary:"Tests scientifiques des appareils photo et objectifs. Comparez les scores de piqué, bruit et dynamique avant d'investir.",score:334,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 24 : Langues Étrangères ──
+  24: [
+    {id:2401,title:"Duolingo : apprendre une langue gratuitement",author:"LangLearner",date:"il y a 1j",url:"https://www.duolingo.com/",summary:"La façon la plus accessible de se mettre à une langue. La gamification maintient la motivation. Idéal pour les 3-4 premières semaines d'immersion.",score:1234,flags:0,votes:{}},
+    {id:2402,title:"Anki : flashcards de vocabulaire",author:"FlashcardPro",date:"il y a 2j",url:"https://apps.ankiweb.net/",summary:"Application gratuite de flashcards avec système de répétition espacée. Mémorisez 20 mots/jour et atteignez 3000 mots courants en 6 mois.",score:934,flags:0,votes:{}},
+    {id:2403,title:"HelloTalk : pratiquer avec des locuteurs natifs",author:"NativeSpeaker",date:"il y a 3j",url:"https://www.hellotalk.com/",summary:"Chattez avec des locuteurs natifs du monde entier qui apprennent votre langue. L'échange mutuel est gratuit et très efficace pour l'oral.",score:756,flags:0,votes:{}},
+    {id:2404,title:"Italki : cours particuliers en ligne",author:"PrivateLessons",date:"il y a 5j",url:"https://www.italki.com/fr",summary:"Des professeurs natifs à partir de 8€/heure sur Italki. Plus motivant que les cours collectifs et moins cher qu'une école de langues.",score:612,flags:0,votes:{}},
+    {id:2405,title:"Language Transfer : méthode audio gratuite",author:"AudioMethod",date:"il y a 1sem",url:"https://www.languagetransfer.org/",summary:"Cours audio gratuits basés sur des transferts linguistiques. La méthode 'Complete Spanish' est considérée comme la meilleure ressource gratuite en espagnol.",score:512,flags:0,votes:{}},
+    {id:2406,title:"Netflix en VO : activer les sous-titres dans les 2 langues",author:"ImmerseMethod",date:"il y a 2sem",url:"https://languagelearningwithnetflix.com/",summary:"L'extension Language Reactor pour Chrome ajoute les sous-titres simultanés VO+VF sur Netflix. L'immersion passive la plus agréable qui soit.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 25 : Vie Étudiante ──
+  25: [
+    {id:2501,title:"Mes aides.1jeune1solution.gouv.fr",author:"StudentLife",date:"il y a 1j",url:"https://mes-aides.1jeune1solution.gouv.fr/",summary:"Simulateur officiel de toutes les aides auxquelles vous avez droit en tant qu'étudiant (APL, bourses, aide alimentaire). Beaucoup ne connaissent pas tous leurs droits.",score:1123,flags:0,votes:{}},
+    {id:2502,title:"Notion : organiser ses cours et sa vie étudiante",author:"NotionStudent",date:"il y a 2j",url:"https://www.notion.so/fr",summary:"L'outil tout-en-un pour prendre des notes, gérer ses partiels, ses candidatures de stage et ses finances. Gratuit pour les étudiants.",score:934,flags:0,votes:{}},
+    {id:2503,title:"ISIC : carte étudiant internationale",author:"StudentCard",date:"il y a 3j",url:"https://www.isic.fr/",summary:"La carte ISIC (14€/an) donne des réductions dans les musées, cinémas, transports et logements dans 130 pays. Rentabilisée en 2 sorties.",score:712,flags:0,votes:{}},
+    {id:2504,title:"UNiDAYS : réductions étudiantes tech & mode",author:"UniSaver",date:"il y a 5j",url:"https://www.myunidays.com/FR/fr-FR",summary:"Apple (-10%), Nike (-20%), Spotify Duo (-50%) : des centaines de réductions étudiantes accessibles avec une adresse mail universitaire.",score:623,flags:0,votes:{}},
+    {id:2505,title:"Pomodoro : méthode de travail anti-procrastination",author:"StudyHack",date:"il y a 1sem",url:"https://pomofocus.io/",summary:"25 minutes de travail, 5 minutes de pause. La méthode Pomodoro est la plus efficace pour se concentrer. Pomofocus est la meilleure application gratuite.",score:534,flags:0,votes:{}},
+    {id:2506,title:"Zotero : gérer ses références bibliographiques",author:"ResearchPro",date:"il y a 2sem",url:"https://www.zotero.org/",summary:"Collectez et organisez vos sources de recherche en un clic depuis votre navigateur. Génère automatiquement bibliographies et citations en APA, MLA, Chicago.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 26 : Seniors ──
+  26: [
+    {id:2601,title:"Service-Public.fr : toutes vos démarches",author:"SeniorHelper",date:"il y a 1j",url:"https://www.service-public.fr/",summary:"Le portail officiel de l'administration française. Retraite, carte d'identité, déclaration de revenus : chaque démarche expliquée étape par étape.",score:867,flags:0,votes:{}},
+    {id:2602,title:"MaRetraite.fr : simuler votre retraite",author:"RetirementPlan",date:"il y a 2j",url:"https://www.lassuranceretraite.fr/portail-info/",summary:"Simulez le montant de votre future retraite selon différentes dates de départ. Récupérez votre relevé de carrière pour vérifier vos droits acquis.",score:712,flags:0,votes:{}},
+    {id:2603,title:"Silversurf : formation numérique pour seniors",author:"DigiSenior",date:"il y a 4j",url:"https://www.france-numerique.fr/",summary:"Des ateliers et tutoriels simples pour apprendre à utiliser smartphone, tablette et ordinateur à son rythme. Souvent proposés gratuitement en mairie.",score:534,flags:0,votes:{}},
+    {id:2604,title:"CNAV : pension d'invalidité et allocations",author:"SocialRight",date:"il y a 1sem",url:"https://www.cnav.fr/",summary:"Ne ratez aucune aide sociale à laquelle vous avez droit. ASPA (minimum vieillesse), APA (aide personnalisée autonomie) : les montants sont significatifs.",score:445,flags:0,votes:{}},
+    {id:2605,title:"Maintien à domicile : aides et services",author:"HomeHelper",date:"il y a 2sem",url:"https://www.pour-les-personnes-agees.gouv.fr/",summary:"Le portail du gouvernement dédié au maintien à domicile des personnes âgées. Trouvez les aides locales pour l'adaptation du logement.",score:356,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 28 : Streaming & VOD ──
+  28: [
+    {id:2801,title:"JustWatch : retrouver où est disponible un film",author:"StreamFinder",date:"il y a 1j",url:"https://www.justwatch.com/fr",summary:"Cherchez n'importe quel film ou série et JustWatch vous dit sur quelle plateforme il est disponible en France. Plus besoin de chercher manuellement.",score:1345,flags:0,votes:{}},
+    {id:2802,title:"Partager son Netflix avec la famille",author:"FamilyStream",date:"il y a 2j",url:"https://help.netflix.com/fr/node/114227",summary:"Netflix permet un foyer principal + des membres supplémentaires à tarif réduit. Optimisez votre abonnement selon le nombre d'utilisateurs.",score:934,flags:0,votes:{}},
+    {id:2803,title:"Arte.tv : films et docs culturels gratuits",author:"CultureStream",date:"il y a 3j",url:"https://www.arte.tv/fr/",summary:"Des films d'auteur, documentaires et concerts accessibles gratuitement sans abonnement. La meilleure plateforme culturelle gratuite francophone.",score:812,flags:0,votes:{}},
+    {id:2804,title:"Mubi : cinéma d'auteur sélectionné",author:"CinephileStream",date:"il y a 5j",url:"https://mubi.com/fr/fr",summary:"30 films sélectionnés par des curateurs experts, renouvelés chaque mois. L'alternative raffinée pour cinéphiles fatigués des algorithmes Netflix.",score:634,flags:0,votes:{}},
+    {id:2805,title:"Pluto TV : streaming gratuit avec pubs",author:"FreeStream",date:"il y a 1sem",url:"https://pluto.tv/fr/",summary:"Des dizaines de chaînes thématiques et des films gratuits avec publicités. Excellent pour regarder sans abonnement.",score:456,flags:0,votes:{}},
+    {id:2806,title:"Rakuten TV : location de films HD",author:"RentMovie",date:"il y a 2sem",url:"https://www.rakuten.tv/fr",summary:"Location de films en 4K HDR dès 3.99€ sans abonnement. Souvent les films les plus récents avant leur arrivée sur les plateformes d'abonnement.",score:312,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 29 : DIY & Artisanat ──
+  29: [
+    {id:2901,title:"Pinterest DIY : des milliers de tutoriels",author:"CraftAddict",date:"il y a 1j",url:"https://www.pinterest.fr/",summary:"La plus grande bibliothèque de tutoriels DIY au monde. Décorations, couture, recyclage, bijoux : trouvez n'importe quel projet avec des étapes visuelles.",score:934,flags:0,votes:{}},
+    {id:2902,title:"YouTube Craft : chaînes DIY françaises",author:"YTCraft",date:"il y a 2j",url:"https://www.youtube.com/results?search_query=DIY+français",summary:"Des centaines de chaînes françaises enseignent la couture, le crochet, la reliure, la poterie et la marqueterie gratuitement en vidéo.",score:756,flags:0,votes:{}},
+    {id:2903,title:"Blabla Blog : patron couture gratuits",author:"SewingFan",date:"il y a 4j",url:"https://www.blaablaa.com/patrons-gratuits",summary:"Des dizaines de patrons de couture gratuits à télécharger en PDF. Robes, sacs, vêtements enfants, accessoires : tous les niveaux sont couverts.",score:534,flags:0,votes:{}},
+    {id:2904,title:"Ravelry : base de données tricot et crochet",author:"KnitCrochet",date:"il y a 1sem",url:"https://www.ravelry.com/",summary:"La plus grande communauté de tricoteurs et crocheteurs au monde. Milliers de patrons gratuits, échanges de fils et projets de la communauté.",score:445,flags:0,votes:{}},
+    {id:2905,title:"Système D : le magazine bricolage créatif",author:"DIYMag",date:"il y a 2sem",url:"https://www.systeme-d.com/",summary:"Le magazine de référence du bricolage créatif français avec des projets complets incluant plans, liste de matériaux et étapes de réalisation.",score:334,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 30 : Santé Mentale ──
+  30: [
+    {id:3001,title:"Headspace : méditation guidée",author:"MindfulLife",date:"il y a 1j",url:"https://www.headspace.com/fr",summary:"Application de méditation avec des programmes pour débutants, gestion du stress et sommeil. Les 10 premières sessions sont gratuites.",score:934,flags:0,votes:{}},
+    {id:3002,title:"Psycom : guide des soins en santé mentale",author:"MentalHelp",date:"il y a 2j",url:"https://www.psycom.net/",summary:"Site d'information indépendant qui explique les troubles psy, les traitements disponibles et comment trouver un thérapeute conventionné.",score:756,flags:0,votes:{}},
+    {id:3003,title:"Santé BD : comprendre sa santé en images",author:"EasyHealth",date:"il y a 4j",url:"https://santebd.org/",summary:"Des fiches en langage simplifié (FALC) pour expliquer les soins, médicaments et droits des patients. Idéal pour les personnes en situation de handicap.",score:534,flags:0,votes:{}},
+    {id:3004,title:"EMDR et TCC : les thérapies remboursées",author:"TherapyGuide",date:"il y a 1sem",url:"https://www.has-sante.fr/",summary:"La HAS a validé les TCC et l'EMDR pour de nombreux troubles anxieux. Certains psychologues conventionnés permettent un remboursement partiel.",score:445,flags:0,votes:{}},
+    {id:3005,title:"3114 : numéro national de prévention du suicide",author:"CrisisHelp",date:"il y a 2sem",url:"https://www.3114.fr/",summary:"Le 3114 est le numéro national de crise et d'accès aux soins psychiatriques. Disponible 24h/24, gratuit depuis tous les opérateurs.",score:867,flags:0,votes:{}},
+    {id:3006,title:"Calm : applications sommeil et relaxation",author:"SleepBetter",date:"il y a 1 mois",url:"https://www.calm.com/fr",summary:"Sons de la nature, histoires de sommeil et séances de respiration. Très efficace pour les insomnies légères et les angoisses nocturnes.",score:356,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 31 : Mariage & Fêtes ──
+  31: [
+    {id:3101,title:"Mariages.net : inspirations et prestataires",author:"BrideToBe",date:"il y a 1j",url:"https://www.mariages.net/",summary:"Le portail de référence du mariage en France. Trouvez et comparez des prestataires locaux (traiteurs, photographes, fleuristes) avec avis vérifiés.",score:834,flags:0,votes:{}},
+    {id:3102,title:"Zankyou : liste de mariage moderne",author:"WeddingList",date:"il y a 2j",url:"https://www.zankyou.fr/",summary:"Créez votre liste de mariage multi-boutiques ou en cagnotte commune. Plus pratique que les listes de grands magasins, et vos invités apprécient.",score:634,flags:0,votes:{}},
+    {id:3103,title:"Trouver un DJ pas cher via StarOfService",author:"WeddingDJ",date:"il y a 4j",url:"https://www.starofservice.com/",summary:"Comparez des devis de prestataires (DJ, photographe, traiteur) pour votre mariage. Les prix sont transparents et la concurrence fait baisser les tarifs.",score:512,flags:0,votes:{}},
+    {id:3104,title:"DIY décoration mariage sur Etsy",author:"WeddingDIY",date:"il y a 1sem",url:"https://www.etsy.com/fr/",summary:"Des créateurs indépendants proposent des décorations de mariage personnalisées à des prix bien inférieurs aux boutiques spécialisées.",score:423,flags:0,votes:{}},
+    {id:3105,title:"Budget mariage moyen en France",author:"WeddingBudget",date:"il y a 2sem",url:"https://www.caissedepargne.fr/",summary:"Le budget moyen d'un mariage en France est de 12 000€. Cet article détaille comment économiser 30-40% en faisant des choix intelligents.",score:334,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 32 : Grossesse ──
+  32: [
+    {id:3201,title:"Ameli : droits maternité et congé parental",author:"MamanInfo",date:"il y a 1j",url:"https://www.ameli.fr/assure/droits-demarches/famille/maternite-paternite-adoption",summary:"Tout sur le congé maternité, les indemnités journalières, l'allocation naissance et le congé parental. Vérifiez vos droits exacts selon votre situation.",score:987,flags:0,votes:{}},
+    {id:3202,title:"Qare : téléconsultation sage-femme",author:"PregnancyOnline",date:"il y a 2j",url:"https://www.qare.fr/",summary:"Consultez une sage-femme par vidéo en moins de 10 minutes pour vos questions de grossesse. Remboursé par l'Assurance Maladie.",score:756,flags:0,votes:{}},
+    {id:3203,title:"Mamanpourlavie : suivi semaine par semaine",author:"PregnancyTrack",date:"il y a 4j",url:"https://www.mamanpourlavie.com/",summary:"Découvrez le développement de votre bébé semaine après semaine avec explications détaillées et conseils pratiques pour la maman.",score:612,flags:0,votes:{}},
+    {id:3204,title:"Troc de bébé : acheter occasion bébé",author:"BabyBudget",date:"il y a 1sem",url:"https://www.leboncoin.fr/",summary:"Le matériel de puériculture (poussette, lit, siège auto) est souvent utilisé quelques mois seulement. Achetez tout d'occasion sur Leboncoin.",score:534,flags:0,votes:{}},
+    {id:3205,title:"Grossesse.org : guide des examens prénataux",author:"PrenatalGuide",date:"il y a 2sem",url:"https://www.grossesse.fr/",summary:"Calendrier complet des examens et échographies obligatoires et recommandés. Ne ratez aucun examen de suivi prénatal.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 33 : Expatriation ──
+  33: [
+    {id:3301,title:"Expatica : guide d'expatriation par pays",author:"ExpatLife",date:"il y a 1j",url:"https://www.expatica.com/",summary:"Guides complets pour s'installer dans plus de 50 pays : visa, fiscalité, logement, santé. La référence de la communauté expatriée mondiale.",score:867,flags:0,votes:{}},
+    {id:3302,title:"Wise (ex-TransferWise) : transferts sans frais",author:"MoneyTransfer",date:"il y a 2j",url:"https://wise.com/fr/",summary:"Envoyez de l'argent à l'étranger au taux de change réel (interbancaire) avec des frais de 0.5-1%. 5x moins cher que les virements bancaires classiques.",score:1123,flags:0,votes:{}},
+    {id:3303,title:"Arrete.moi.si : fiscalité des expatriés français",author:"TaxExpat",date:"il y a 4j",url:"https://www.service-public.fr/particuliers/vosdroits/N8/",summary:"Guide fiscal officiel pour les Français à l'étranger. Convention fiscale, impôts sur les revenus français, CFE : ce que vous devez réellement déclarer.",score:712,flags:0,votes:{}},
+    {id:3304,title:"InterNations : réseau social expatriés",author:"ExpatNetwork",date:"il y a 1sem",url:"https://www.internations.org/",summary:"Le plus grand réseau d'expatriés au monde avec des groupes locaux dans 390 villes. Trouvez des Français près de chez vous partout dans le monde.",score:534,flags:0,votes:{}},
+    {id:3305,title:"Se domicilier en boîte aux lettres virtuelle",author:"VirtualAddress",date:"il y a 2sem",url:"https://www.courrier.fr/",summary:"Service de domiciliation postale en France pour conserver votre adresse légale française. Indispensable pour votre compte bancaire et vos abonnements.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 34 : Immobilier ──
+  34: [
+    {id:3401,title:"SeLoger : le portail immo de référence",author:"ImmoPro",date:"il y a 1j",url:"https://www.seloger.com/",summary:"Le plus grand catalogue d'annonces immobilières françaises avec des outils d'estimation, d'alerte et de carte des prix au m² par quartier.",score:1023,flags:0,votes:{}},
+    {id:3402,title:"DVF : prix de vente réels des logements",author:"PrixImmo",date:"il y a 2j",url:"https://app.dvf.etalab.gouv.fr/",summary:"Données officielles sur toutes les transactions immobilières des 5 dernières années. Vérifiez le vrai prix payé pour les logements de votre rue.",score:912,flags:0,votes:{}},
+    {id:3403,title:"MeilleursAgents : estimer la valeur de son bien",author:"EstimationPro",date:"il y a 3j",url:"https://www.meilleursagents.com/",summary:"Estimation en ligne basée sur les transactions réelles autour de votre adresse. Indispensable avant d'acheter ou de vendre pour négocier au bon prix.",score:756,flags:0,votes:{}},
+    {id:3404,title:"Pretto : simulation de crédit immo",author:"MortgageSim",date:"il y a 5j",url:"https://www.pretto.fr/",summary:"Simulez votre crédit immobilier en 2 minutes et comparez les offres de 70 banques. Les courtiers Pretto négocient à votre place.",score:634,flags:0,votes:{}},
+    {id:3405,title:"Action Logement : aides au logement pour salariés",author:"SalarieLogement",date:"il y a 1sem",url:"https://www.actionlogement.fr/",summary:"Les salariés du privé ont accès à des prêts à taux zéro (1%) et des aides à la caution via Action Logement. Des milliers d'euros à ne pas laisser de côté.",score:534,flags:0,votes:{}},
+    {id:3406,title:"Loi Pinel : simulation de défiscalisation",author:"TaxImmo",date:"il y a 2sem",url:"https://www.service-public.fr/particuliers/vosdroits/F31151",summary:"Guide officiel sur les dispositifs de défiscalisation immobilière (Pinel, Denormandie, Loc'Avantages). Calculez vos économies d'impôts potentielles.",score:423,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 35 : Crypto & Web3 ──
+  35: [
+    {id:3501,title:"CoinMarketCap : suivre les cours crypto",author:"CryptoWatcher",date:"il y a 1j",url:"https://coinmarketcap.com/fr/",summary:"La référence mondiale pour suivre les prix de toutes les cryptomonnaies en temps réel. Historiques, marketcap et dominance du BTC.",score:934,flags:0,votes:{}},
+    {id:3502,title:"Ledger : sécuriser ses cryptos hors ligne",author:"HardwareWallet",date:"il y a 2j",url:"https://www.ledger.com/fr",summary:"Un hardware wallet est l'unique façon vraiment sécurisée de stocker ses cryptos. Ledger est la marque française de référence mondiale.",score:812,flags:0,votes:{}},
+    {id:3503,title:"Koinly : déclaration fiscale crypto en France",author:"CryptoTax",date:"il y a 3j",url:"https://koinly.io/fr/",summary:"La fiscalité crypto est complexe en France (PFU 30%). Koinly agrège toutes vos transactions et génère automatiquement la déclaration 2086.",score:712,flags:0,votes:{}},
+    {id:3504,title:"DeFiLlama : suivre la DeFi",author:"DeFiNerd",date:"il y a 5j",url:"https://defillama.com/",summary:"Tableau de bord des protocoles DeFi classés par TVL (Total Value Locked). Identifiez les protocoles sérieux des scams avant d'investir.",score:523,flags:0,votes:{}},
+    {id:3505,title:"AMF : liste noire des arnaques crypto",author:"AntiScam",date:"il y a 1sem",url:"https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde",summary:"L'AMF publie une liste noire régulièrement mise à jour des sites et plateformes crypto frauduleux. Vérifiez avant d'envoyer le moindre euro.",score:1023,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 36 : Productivité ──
+  36: [
+    {id:3601,title:"Notion : l'outil tout-en-un de productivité",author:"NotionFan",date:"il y a 1j",url:"https://www.notion.so/fr",summary:"Notes, bases de données, wikis, gestion de projet, tableaux Kanban : tout dans un seul outil. Gratuit pour usage personnel. Idéal pour les freelances.",score:1234,flags:0,votes:{}},
+    {id:3602,title:"Getting Things Done (GTD) : résumé gratuit",author:"GTDPro",date:"il y a 2j",url:"https://gettingthingsdone.com/",summary:"La méthode GTD de David Allen reste la meilleure pour vider son cerveau et avoir confiance dans son système de tâches. Des résumés gratuits sur YouTube.",score:867,flags:0,votes:{}},
+    {id:3603,title:"Freedom : bloquer les distractions",author:"FocusApp",date:"il y a 3j",url:"https://freedom.to/",summary:"Bloquez Facebook, Twitter, YouTube et les sites chronophages pendant vos sessions de travail. Augmente la productivité de 200% selon les études.",score:712,flags:0,votes:{}},
+    {id:3604,title:"Toggl Track : suivre son temps de travail",author:"TimeTracker",date:"il y a 5j",url:"https://toggl.com/track/",summary:"Chronométrez chaque tâche pour savoir où passe réellement votre temps. La prise de conscience est la première étape de l'optimisation.",score:534,flags:0,votes:{}},
+    {id:3605,title:"Obsidian : prise de notes liées",author:"PKMPro",date:"il y a 1sem",url:"https://obsidian.md/",summary:"Système de notes en Markdown avec liens bidirectionnels entre les notes. Vos connaissances deviennent un réseau plutôt qu'une pile de fichiers.",score:623,flags:0,votes:{}},
+    {id:3606,title:"Zapier : automatiser ses tâches répétitives",author:"AutoPro",date:"il y a 2sem",url:"https://zapier.com/fr",summary:"Connectez vos applications entre elles pour automatiser les tâches répétitives (email → spreadsheet → Slack). Économisez des heures chaque semaine.",score:489,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 37 : Entrepreneuriat ──
+  37: [
+    {id:3701,title:"BpiFrance Création : lancer son entreprise",author:"StartupFR",date:"il y a 1j",url:"https://bpifrance-creation.fr/",summary:"Le portail officiel pour créer son entreprise en France. Guide juridique, financier et fiscal complet. Testez votre idée avec le business model canvas.",score:934,flags:0,votes:{}},
+    {id:3702,title:"Indy : comptabilité freelance automatisée",author:"FreelanceCompta",date:"il y a 2j",url:"https://www.indy.fr/",summary:"Solution comptable pour auto-entrepreneurs et micro-entreprises. Catégorisation automatique des dépenses, déclarations TVA et cotisations simplifiées.",score:756,flags:0,votes:{}},
+    {id:3703,title:"Le Coin des Entrepreneurs : guide complet",author:"EntrepreneursGuide",date:"il y a 3j",url:"https://www.lecoindesentrepreneurs.fr/",summary:"Blog référence de l'entrepreneuriat français. Création, financement, fiscalité, statuts juridiques : tout est expliqué de manière pratique et à jour.",score:634,flags:0,votes:{}},
+    {id:3704,title:"Agence France Entrepreneur : mentorat gratuit",author:"MentorFR",date:"il y a 5j",url:"https://www.afecreation.fr/",summary:"L'AFE met en relation les créateurs d'entreprises avec des mentors bénévoles expérimentés. Un accompagnement gratuit qui peut faire la différence.",score:512,flags:0,votes:{}},
+    {id:3705,title:"Stripe Atlas : créer une LLC américaine depuis la France",author:"GlobalStartup",date:"il y a 1sem",url:"https://stripe.com/fr/atlas",summary:"Pour les entrepreneurs qui veulent vendre à l'international avec une structure américaine (Delaware LLC). 500$ et 2 semaines pour être opérationnel.",score:423,flags:0,votes:{}},
+    {id:3706,title:"Y Combinator Startup School : cours en ligne",author:"YCStudent",date:"il y a 2sem",url:"https://www.startupschool.org/",summary:"Le cursus entrepreneurial du meilleur accélérateur au monde est entièrement gratuit en ligne. Des centaines d'heures de vidéos par des fondateurs qui ont réussi.",score:534,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 38 : Musique (Pratique) ──
+  38: [
+    {id:3801,title:"Justin Guitar : apprendre la guitare gratuitement",author:"GuitarBeginner",date:"il y a 1j",url:"https://www.justinguitar.com/",summary:"Le meilleur cours de guitare gratuit sur internet. Justin Sandercoe enseigne avec une méthode progressive qui a formé des millions de musiciens.",score:1123,flags:0,votes:{}},
+    {id:3802,title:"Musicca : solfège en ligne gratuit",author:"MusicTheory",date:"il y a 2j",url:"https://www.musicca.com/fr",summary:"Apprenez à lire une partition, reconnaître les intervalles et les accords avec des exercices interactifs et ludiques. 100% gratuit.",score:756,flags:0,votes:{}},
+    {id:3803,title:"Yousician : apprendre guitare, piano, basse",author:"AppMusicLearner",date:"il y a 3j",url:"https://yousician.com/fr",summary:"Application qui écoute votre instrument et vous donne un retour en temps réel sur vos erreurs. Gratuit pour une demi-heure par jour.",score:634,flags:0,votes:{}},
+    {id:3804,title:"IMSLP : partitions classiques gratuites",author:"ClassicalPlayer",date:"il y a 5j",url:"https://imslp.org/",summary:"Des milliers de partitions de musique classique dans le domaine public, gratuitement. Bach, Beethoven, Mozart, Chopin : tout est là.",score:534,flags:0,votes:{}},
+    {id:3805,title:"Soundtrap : enregistrement audio collaboratif",author:"RecordingStudio",date:"il y a 1sem",url:"https://www.soundtrap.com/fr/",summary:"Studio d'enregistrement en ligne gratuit et collaboratif. Enregistrez, éditez et partagez vos morceaux sans aucun logiciel à installer.",score:423,flags:0,votes:{}},
+    {id:3806,title:"Theory.com : harmonie et composition",author:"ComposerPro",date:"il y a 2sem",url:"https://www.musictheory.net/fr",summary:"Cours d'harmonie et de théorie musicale interactifs et gratuits. Des leçons claires sur les gammes, tonalités, rythmes et accords.",score:312,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 39 : Dessin & Arts ──
+  39: [
+    {id:3901,title:"Proko : apprendre le dessin de figure humaine",author:"DrawingPro",date:"il y a 1j",url:"https://www.proko.com/",summary:"Les meilleures vidéos YouTube pour apprendre à dessiner le corps humain. Stan Prokopenko explique l'anatomie artistique avec une clarté exceptionnelle.",score:934,flags:0,votes:{}},
+    {id:3902,title:"Line of Action : poses aléatoires pour s'entraîner",author:"PracticeArt",date:"il y a 2j",url:"https://line-of-action.com/",summary:"Entraînez-vous à dessiner des poses de modèles vivants avec un minuteur intégré. Essentiel pour améliorer votre fluidité de trait.",score:756,flags:0,votes:{}},
+    {id:3903,title:"Krita : logiciel de dessin numérique gratuit",author:"DigitalArtist",date:"il y a 3j",url:"https://krita.org/fr/",summary:"Alternative gratuite et open-source à Photoshop et Procreate pour le dessin numérique. Des brosses et outils professionnels, entièrement gratuits.",score:634,flags:0,votes:{}},
+    {id:3904,title:"Ctrl+Paint : fondamentaux du dessin numérique",author:"DigitalFoundations",date:"il y a 5j",url:"https://www.ctrlpaint.com/",summary:"Bibliothèque gratuite de vidéos courtes sur les fondamentaux du dessin numérique (valeurs, ombres, perspectives). Recommandé pour tous les niveaux.",score:512,flags:0,votes:{}},
+    {id:3905,title:"Artstation : portfolio et inspiration",author:"PortfolioPro",date:"il y a 1sem",url:"https://www.artstation.com/",summary:"La plateforme de référence pour exposer et découvrir l'art numérique professionnel. Utilisez-la comme source d'inspiration et pour vous situer dans votre progression.",score:423,flags:0,votes:{}},
+    {id:3906,title:"Colorful.community : palettes pour artistes",author:"ColorArtist",date:"il y a 2sem",url:"https://colorhunt.co/",summary:"Des milliers de palettes de couleurs harmonieuses sélectionnées par des artistes. Résolvez vos problèmes de couleurs rapidement.",score:334,flags:0,votes:{}}
+  ],
+
+  // ── Catégorie 40 : Bénévolat ──
+  40: [
+    {id:4001,title:"France Bénévolat : trouver une mission",author:"VolunteerFR",date:"il y a 1j",url:"https://www.francebenevolat.org/",summary:"Le portail national du bénévolat avec des milliers de missions référencées dans toute la France. Trouvez une association selon vos compétences et disponibilités.",score:867,flags:0,votes:{}},
+    {id:4002,title:"JeVeuxAider.gouv.fr : missions officielles",author:"CivicAction",date:"il y a 2j",url:"https://www.jeveuxaider.gouv.fr/",summary:"La plateforme nationale du bénévolat lancée par le gouvernement. Des missions ponctuelles ou régulières, en présentiel ou en ligne, partout en France.",score:712,flags:0,votes:{}},
+    {id:4003,title:"Ashoka : l'entrepreneuriat social",author:"SocialEntrepreneur",date:"il y a 4j",url:"https://www.ashoka.org/fr-fr",summary:"Découvrez les projets d'entrepreneurs sociaux qui changent le monde. Si vous souhaitez créer votre propre association à impact, Ashoka guide et finance.",score:534,flags:0,votes:{}},
+    {id:4004,title:"Don de compétences : Sinapro",author:"SkillsDonation",date:"il y a 1sem",url:"https://www.sinapro.org/",summary:"Donnez vos compétences professionnelles (comptabilité, communication, informatique) à des associations qui en ont besoin. Plus impactant que l'aide financière.",score:445,flags:0,votes:{}},
+    {id:4005,title:"Emmaüs Connect : bénévolat numérique",author:"DigitalInclude",date:"il y a 2sem",url:"https://emmaus-connect.org/",summary:"Aidez des personnes en difficulté numérique à utiliser les services en ligne essentiels. Des ateliers à animer près de chez vous.",score:356,flags:0,votes:{}}
+  ]
+};
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let cats = JSON.parse(localStorage.getItem('bp3-cats') || 'null') || DEFAULT_CATS;
+let tips = JSON.parse(localStorage.getItem('bp3-tips') || 'null') || DEFAULT_TIPS;
+let curCat = null;
+let curFilter = 'top'; // top, hot, new
+let isAdmin = false;
+let selEmoji = EMOJIS[0];
+let selColor = PALETTE[0];
+let notifTimer = null;
+
+// ═══ Profils utilisateurs (pseudo simple, stocké en local) ═══
+let profiles = JSON.parse(localStorage.getItem('bp3-profiles') || '{}');
+let currentUser = localStorage.getItem('bp3-user') || null;
+let profileTab = 'fav';
+let afterLogin = null;
+let curQuery = '';
+let curDomain = 'all';
+
+function save() {
+  localStorage.setItem('bp3-cats', JSON.stringify(cats));
+  localStorage.setItem('bp3-tips', JSON.stringify(tips));
+}
+
+function saveProfiles() {
+  localStorage.setItem('bp3-profiles', JSON.stringify(profiles));
+  localStorage.setItem('bp3-user', currentUser || '');
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  buildEmojiPicker();
+  buildColorPicker();
+  renderHome();
+  updateAccountBtn();
+  updateNetStatus();
+  if (!currentUser) setTimeout(() => openLogin(), 400);
+  // PWA : Service Worker uniquement en ligne (http/https), jamais en file://
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    navigator.serviceWorker.register('./bonplan_sw.js').catch(() => {});
+  }
+});
+window.addEventListener('online', updateNetStatus);
+window.addEventListener('offline', updateNetStatus);
+
+// ═══════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════
+function renderHome(filter = '') {
+  curQuery = filter;
+  const totalTips = Object.values(tips).reduce((s,a) => s + a.length, 0);
+  const totalVotes = Object.values(tips).flat().reduce((s,t) => s + Math.max(0, t.score), 0); // Uniquement les votes positifs pour la stat
+
+  // Compteur animé simple
+  document.getElementById('s-tips').textContent = totalTips;
+  document.getElementById('s-votes').textContent = totalVotes.toLocaleString('fr-FR');
+  document.getElementById('s-cats').textContent = cats.length;
+
+  const elStats = document.getElementById('stats-row');
+  const elLbl = document.getElementById('section-lbl');
+  const elGrid = document.getElementById('cats-grid');
+  const elRes = document.getElementById('search-results');
+  elStats.style.display = filter ? 'none' : 'flex';
+  elLbl.style.display = filter ? 'none' : 'block';
+  elGrid.style.display = filter ? 'none' : 'grid';
+  elRes.style.display = filter ? 'block' : 'none';
+
+  if (!filter) {
+    elLbl.textContent = 'Toutes les catégories';
+    elGrid.innerHTML = cats.map((c, i) => {
+      const count = (tips[c.id] || []).length;
+      return `
+    <div class="disc-item" onclick="openCat(${c.id})" style="animation-delay:${(i%10)*0.03}s">
+      <div class="disc-wrap">
+        <div class="disc" style="background:linear-gradient(135deg, ${c.color}, ${darken(c.color)})">
+          <span>${c.emoji}</span>
+          <div class="disc-shine"></div>
+        </div>
+        ${count > 0 ? `<div class="tip-count-badge">${count}</div>` : ''}
+      </div>
+      <div class="disc-label">${c.label}</div>
+    </div>`;
+    }).join('') + `
+    <div class="disc-item" onclick="openAddCat()">
+      <div class="disc-wrap"><div class="disc-add">➕</div></div>
+      <div class="disc-label" style="color:var(--muted)">Ajouter</div>
+    </div>`;
+    return;
+  }
+
+  // ── Recherche globale : catégories + tous les titres / résumés / liens des conseils ──
+  const q = filter.trim();
+  const matched = searchTips(q);
+  const catMatches = cats.filter(c => c.label.toLowerCase().includes(q.toLowerCase()));
+
+  document.getElementById('domain-chips').innerHTML = DOMAIN_GROUPS.map(g => {
+    const n = g.id === 'all' ? matched.length : matched.filter(m => g.cats.includes(m.cat.id)).length;
+    return `<button class="chip ${curDomain === g.id ? 'active' : ''}" onclick="setDomain('${g.id}')">${g.label} (${n})</button>`;
+  }).join('');
+  document.getElementById('search-cats').innerHTML = catMatches.length
+    ? catMatches.map(c => `<button class="chip chip-cat" onclick="openCat(${c.id})">${c.emoji} ${esc(c.label)}</button>`).join('')
+    : '';
+
+  const allowed = curDomain === 'all' ? null : new Set((DOMAIN_GROUPS.find(g => g.id === curDomain) || { cats: [] }).cats);
+  const shown = allowed ? matched.filter(m => allowed.has(m.cat.id)) : matched;
+  const total = shown.length + catMatches.length;
+  document.getElementById('search-lbl').textContent = `${total} résultat${total !== 1 ? 's' : ''} pour « ${q} »`;
+
+  const list = document.getElementById('search-list');
+  if (!total) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="big">🔎</div>
+        <h3>Aucun résultat</h3>
+        <p>Aucun conseil ni catégorie ne correspond à « ${esc(q)} ».<br>Essayez un autre mot-clé, ou <strong style="color:var(--accent)">proposiez ce conseil</strong> vous-même !</p>
+      </div>`;
+  } else {
+    list.innerHTML = shown.map((m, i) => profileCardHTML(m.tip, m.cat, i, false)).join('');
+  }
+}
+
+function filterCats(v) { renderHome(v); }
+
+function darken(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.max(0,r-40)},${Math.max(0,g-40)},${Math.max(0,b-40)})`;
+}
+
+// ═══════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  curCat = null;
+  curDomain = 'all';
+  document.getElementById('proposeBtn').style.display = 'none';
+  document.getElementById('searchInput').value = '';
+  showPage('page-home');
+  renderHome();
+}
+
+function openCat(id) {
+  curCat = cats.find(c => c.id === id);
+  if (!tips[id]) tips[id] = [];
+  const disc = document.getElementById('cat-disc-lg');
+  disc.style.background = `linear-gradient(135deg, ${curCat.color}, ${darken(curCat.color)})`;
+  disc.textContent = curCat.emoji;
+  document.getElementById('cat-title').textContent = curCat.label;
+  document.getElementById('proposeBtn').style.display = 'flex';
+  document.getElementById('propose-form').classList.remove('open');
+  curFilter = 'top';
+  document.querySelectorAll('#page-cat .tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  renderTips();
+  showPage('page-cat');
+}
+
+// ═══════════════════════════════════════════════════
+// TIPS (REDDIT STYLE)
+// ═══════════════════════════════════════════════════
+function renderTips() {
+  let data = (tips[curCat.id] || []).slice();
+  if (!isAdmin) data = data.filter(t => t.flags < 5);
+  
+  // Tri selon le filtre
+  if (curFilter === 'top') data.sort((a,b) => b.score - a.score);
+  else if (curFilter === 'hot') {
+    // Algorithme "Tendances" simple (score combiné à la nouveauté de l'ID)
+    data.sort((a,b) => (b.score * b.id) - (a.score * a.id));
+  }
+  else data.sort((a,b) => b.id - a.id); // New
+
+  document.getElementById('cat-sub').textContent = `${data.length} conseil${data.length!==1?'s':''} partagés`;
+
+  if (!data.length) {
+    document.getElementById('tips-list').innerHTML = `
+      <div class="empty-state">
+        <div class="big">🌱</div>
+        <h3>Soyez le premier !</h3>
+        <p>Il n'y a pas encore de conseils dans cette catégorie.<br>Cliquez sur <strong style="color:var(--accent)">+ Proposer</strong> pour lancer la machine.</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('tips-list').innerHTML = data.map((t, i) => {
+    const cid = curCat.id;
+    const mv = myVote(t.id);
+    
+    // Détermination des styles de mise en valeur
+    const isTop1 = i === 0 && t.score > 10 && curFilter === 'top';
+    const isHot = t.score >= 500; // Feu🔥 si score massif
+    const isFlagged = t.flags >= 3;
+    
+    let scColor = 'vs-zero';
+    if(isHot) scColor = 'vs-hot';
+    else if(t.score > 0) scColor = 'vs-pos';
+    else if(t.score < 0) scColor = 'vs-neg';
+
+    const badges = (isTop1 ? `<span class="badge badge-top">👑 #1 Top</span>` : '') +
+      (isHot ? `<span class="badge badge-hot">🔥 En Feu</span>` : '') +
+      (i < 3 && t.id > Date.now()-86400000*3 ? `<span class="badge badge-new">🆕 Récent</span>` : '') +
+      (isFlagged && isAdmin ? `<span class="badge badge-flag">⚠️ Signalé ${t.flags}×</span>` : '');
+
+    return `
+    <div class="tip-card ${isTop1?'is-top':''} ${isHot?'is-hot':''} ${isFlagged&&isAdmin?'is-flagged':''}" style="animation-delay:${i*0.05}s">
+      
+      <div class="tip-vote-col">
+        <button class="vote-btn up ${mv===1?'active':''}" onclick="vote(${t.id},1)" title="Utile">▲</button>
+        <div class="vote-score ${scColor}">${t.score}</div>
+        <button class="vote-btn down ${mv===-1?'active':''}" onclick="vote(${t.id},-1)" title="Pas utile">▼</button>
+      </div>
+
+      <div class="tip-content">
+        ${badges ? `<div class="badges">${badges}</div>` : ''}
+        <div class="tip-title">${esc(t.title)}</div>
+        <div class="tip-meta">Posté par <strong>${esc(t.author)}</strong> · ${t.date}</div>
+        <div class="tip-summary">${esc(t.summary)}</div>
+        <a class="tip-link" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">🌐 Voir le site : ${shorten(t.url)}</a>
+        
+        <div class="tip-actions">
+          <button class="act-btn btn-fav ${isFav(cid,t.id)?'on':''}" onclick="toggleFav(${cid},${t.id})">${isFav(cid,t.id)?'★ Favori':'☆ Favori'}</button>
+          <button class="act-btn btn-qr" onclick="showQR(${t.id})">📱 Partager (QR)</button>
+          <button class="act-btn btn-report" onclick="report(${t.id})">🚩 Signaler${t.flags>0?` (${t.flags})`:''}</button>
+          ${isAdmin ? `<button class="act-btn btn-del" onclick="deleteTip(${t.id})">🗑️ Supprimer</button>` : ''}
+        </div>
+      </div>
+      
+    </div>`;
+  }).join('');
+}
+
+function setFilter(f, btn) {
+  curFilter = f;
+  document.querySelectorAll('#page-cat .tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTips();
+}
+
+// ═══════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════
+function vote(tid, dir, catId) {
+  if (!requireUser('🗳️ Choisissez un pseudo pour voter.', () => vote(tid, dir, catId))) return;
+  const cid = catId != null ? catId : curCat.id;
+  const t = (tips[cid] || []).find(x => x.id === tid);
+  if (!t) return;
+  const p = getProfile();
+  if (!p.myVotes) p.myVotes = {};
+  const prev = p.myVotes[tid] || (t.votes && t.votes['me']) || 0;
+  const next = prev === dir ? 0 : dir; // Toggle vote
+  t.score = t.score - prev + next;
+  t.votes = t.votes || {};
+  delete t.votes['me'];
+  p.myVotes[tid] = next;
+  save(); saveProfiles(); refreshCurrentView();
+}
+
+function report(tid) {
+  const t = tips[curCat.id].find(x => x.id === tid);
+  if (!t) return;
+  t.flags++;
+  save();
+  notify('🚩 Signalement enregistré. L\'équipe va vérifier.');
+  if (t.flags >= 5 && !isAdmin) { renderTips(); setTimeout(() => notify('⚠️ Conseil masqué suite aux signalements.'), 1200); }
+  else renderTips();
+}
+
+function deleteTip(tid) {
+  if (!confirm('Supprimer ce conseil définitivement ?')) return;
+  tips[curCat.id] = tips[curCat.id].filter(x => x.id !== tid);
+  save(); notify('🗑️ Conseil supprimé.'); renderTips();
+}
+
+// ═══════════════════════════════════════════════════
+// PROPOSE
+// ═══════════════════════════════════════════════════
+function togglePropose() {
+  if (!requireUser('💡 Choisissez un pseudo pour proposer un conseil.', () => togglePropose())) return;
+  const f = document.getElementById('propose-form');
+  document.getElementById('f-author').value = currentUser;
+  document.getElementById('f-author').readOnly = true;
+  f.classList.toggle('open');
+  if (f.classList.contains('open')) setTimeout(() => f.scrollIntoView({behavior:'smooth',block:'nearest'}), 50);
+}
+
+function submitTip() {
+  const t = document.getElementById('f-title').value.trim();
+  const a = document.getElementById('f-author').value.trim();
+  const u = document.getElementById('f-url').value.trim();
+  const s = document.getElementById('f-summary').value.trim();
+  if (!t||!a||!u||!s) { notify('⚠️ Veuillez remplir tous les champs.'); return; }
+  if (!u.startsWith('http')) { notify('⚠️ Le lien doit commencer par http:// ou https://'); return; }
+  
+  const tip = { id:Date.now(), title:t, author:a, url:u, summary:s, date:"à l'instant", score:1, flags:0, votes:{} }; // Auto upvote (dans le profil)
+  if (!tips[curCat.id]) tips[curCat.id] = [];
+  tips[curCat.id].unshift(tip);
+  const p = getProfile();
+  if (p) { p.myVotes[tip.id] = 1; if (!p.myTips) p.myTips = []; p.myTips.unshift({ c: curCat.id, t: tip.id }); saveProfiles(); }
+  save();
+  
+  ['f-title','f-author','f-url','f-summary'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('propose-form').classList.remove('open');
+  curFilter = 'new';
+  document.querySelectorAll('#page-cat .tab').forEach((tab,i) => tab.classList.toggle('active', i===2)); // Index 2 is New
+  notify('✅ Conseil publié ! Vous avez reçu un vote automatique.');
+  renderTips();
+}
+
+// ═══════════════════════════════════════════════════
+// QR CODE
+// ═══════════════════════════════════════════════════
+function showQR(tid, catId) {
+  const cid = catId != null ? catId : curCat.id;
+  const t = (tips[cid] || []).find(x => x.id === tid);
+  if (!t) return;
+  const cat = cats.find(c => c.id === cid) || {};
+  document.getElementById('qr-emoji').textContent = cat.emoji || '💡';
+  document.getElementById('qr-title').textContent = t.title;
+  document.getElementById('qr-desc').textContent = t.summary.slice(0,90) + '…';
+  document.getElementById('qr-url-box').textContent = t.url;
+  document.getElementById('qr-box').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(t.url)}&bgcolor=1E1E23&color=F0EDE8&qzone=2&format=png" width="200" height="200" alt="QR">`;
+  document.getElementById('qr-overlay').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════
+// ADD CATEGORY
+// ═══════════════════════════════════════════════════
+function buildEmojiPicker() {
+  document.getElementById('emoji-grid').innerHTML = EMOJIS.map((e,i) =>
+    `<div class="emoji-opt ${i===0?'sel':''}" onclick="pickEmoji('${e}',this)">${e}</div>`
+  ).join('');
+}
+function buildColorPicker() {
+  document.getElementById('color-grid').innerHTML = PALETTE.map((c,i) =>
+    `<div class="color-opt ${i===0?'sel':''}" style="background:${c}" onclick="pickColor('${c}',this)"></div>`
+  ).join('');
+  updatePreview();
+}
+function pickEmoji(e, el) {
+  selEmoji = e;
+  document.querySelectorAll('.emoji-opt').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel'); updatePreview();
+}
+function pickColor(c, el) {
+  selColor = c;
+  document.querySelectorAll('.color-opt').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel'); updatePreview();
+}
+function updatePreview() {
+  const d = document.getElementById('nc-prev');
+  d.style.background = `linear-gradient(135deg,${selColor},${darken(selColor)})`;
+  d.textContent = selEmoji;
+}
+function openAddCat() { document.getElementById('addcat-overlay').classList.add('open'); }
+function submitNewCat() {
+  const name = document.getElementById('nc-name').value.trim();
+  if (!name) { notify('⚠️ Indiquez un nom pour la catégorie.'); return; }
+  const cat = { id:Date.now(), emoji:selEmoji, label:name, color:selColor };
+  cats.push(cat); tips[cat.id] = [];
+  save();
+  closeOverlayDirect('addcat-overlay');
+  document.getElementById('nc-name').value = '';
+  renderHome();
+  notify(`✅ Catégorie "${name}" créée !`);
+}
+
+// ═══════════════════════════════════════════════════
+// COMPTE & PROFIL (pseudo simple, tout en local — esprit ToutToutTout)
+// ═══════════════════════════════════════════════════
+function pseudoColor(s) {
+  let h = 0;
+  for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+function rgba(hex, a) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function validPseudo(s) { return /^[A-Za-z0-9àâäéèêëîïôöùûüç._\- ]{3,20}$/.test(s); }
+function getProfile() { return currentUser && profiles[currentUser] ? profiles[currentUser] : null; }
+function myVote(tid) { const p = getProfile(); return (p && p.myVotes && p.myVotes[tid]) || 0; }
+function isFav(catId, tid) {
+  const p = getProfile();
+  return !!p && (p.favorites || []).some(f => f.c === catId && f.t === tid);
+}
+
+// Garde : demande un pseudo avant un vote / favori / proposition, puis reprend l'action
+function requireUser(msg, after) {
+  if (currentUser) return true;
+  if (msg) notify(msg);
+  afterLogin = after || null;
+  openLogin();
+  return false;
+}
+
+// ── Modale de connexion ──
+function openLogin() {
+  renderSavedAcc();
+  updateLoginPreview();
+  document.getElementById('login-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('li-pseudo').focus(), 200);
+}
+function updateLoginPreview() {
+  const v = document.getElementById('li-pseudo').value.trim();
+  const col = pseudoColor(v || '?');
+  const d = document.getElementById('li-prev');
+  d.style.background = `linear-gradient(135deg, ${col}, ${darken(col)})`;
+  d.textContent = v ? v[0].toUpperCase() : '?';
+}
+function renderSavedAcc() {
+  const wrap = document.getElementById('saved-acc-wrap');
+  const list = Object.keys(profiles).filter(n => n !== currentUser);
+  if (!list.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  document.getElementById('saved-acc').innerHTML = list.map(n =>
+    `<button class="saved-chip" style="border-color:${rgba(pseudoColor(n), .5)}" onclick="quickLogin('${n}')">${esc(n)}</button>`
+  ).join('');
+}
+function completeLogin() {
+  const el = document.getElementById('li-pseudo');
+  const name = el.value.trim().replace(/\s+/g, ' ');
+  if (!validPseudo(name)) {
+    el.classList.add('err');
+    notify('⚠️ Pseudo invalide : 3 à 20 caractères (lettres, chiffres, espace, . _ -).');
+    setTimeout(() => el.classList.remove('err'), 1600);
+    return;
+  }
+  loginAs(name);
+}
+function quickLogin(name) { loginAs(name); }
+function loginAs(name) {
+  const isNew = !profiles[name];
+  if (isNew) {
+    profiles[name] = { created: Date.now(), favorites: [], myVotes: {}, myTips: [], migrated: false };
+    if (!Object.values(profiles).some(p => p.migrated)) migrateLegacy(profiles[name]);
+    notify(`👋 Bienvenue ${name} ! Votre profil est prêt.`);
+  } else {
+    notify(`👋 Salut ${name}, content de vous revoir !`);
+  }
+  currentUser = name;
+  saveProfiles();
+  updateAccountBtn();
+  closeOverlayDirect('login-overlay');
+  if (curCat) renderTips();
+  const f = afterLogin; afterLogin = null;
+  if (f) f();
+}
+function migrateLegacy(profile) {
+  // Import des anciens votes stockés dans les conseils (votes['me']) vers le profil
+  Object.values(tips).forEach(arr => (arr || []).forEach(t => {
+    if (t.votes && t.votes['me']) { profile.myVotes[t.id] = t.votes['me']; delete t.votes['me']; }
+  }));
+  profile.migrated = true;
+  save();
+}
+function cancelLogin() { afterLogin = null; closeOverlayDirect('login-overlay'); }
+
+// ── Header ──
+function onAccountClick() {
+  if (!requireUser(null, openProfile)) return;
+  openProfile();
+}
+function updateAccountBtn() {
+  const b = document.getElementById('accountBtn');
+  if (currentUser) { b.textContent = '👤 ' + currentUser; b.classList.add('on'); }
+  else { b.textContent = '👤 Mon Compte'; b.classList.remove('on'); }
+}
+function logout() {
+  currentUser = null;
+  afterLogin = null;
+  saveProfiles();
+  updateAccountBtn();
+  if (curCat) renderTips();
+  goHome();
+  notify('👋 Déconnecté. À bientôt !');
+}
+
+// ── Page Mon Profil ──
+function openProfile() {
+  if (!getProfile()) return;
+  profileTab = 'fav';
+  document.querySelectorAll('#page-profil .tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  renderProfile();
+  showPage('page-profil');
+}
+function profileBack() {
+  if (curCat) { renderTips(); showPage('page-cat'); }
+  else showPage('page-home');
+}
+function setProfileTab(t, btn) {
+  profileTab = t;
+  document.querySelectorAll('#page-profil .tab').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  renderProfileList();
+}
+function renderProfile() {
+  const p = getProfile(); if (!p) return;
+  const col = pseudoColor(currentUser);
+  const av = document.getElementById('pf-avatar');
+  av.style.background = `linear-gradient(135deg, ${col}, ${darken(col)})`;
+  av.textContent = currentUser[0].toUpperCase();
+  document.getElementById('pf-name').textContent = currentUser;
+  document.getElementById('pf-since').textContent = 'Membre depuis le ' +
+    new Date(p.created || Date.now()).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  document.getElementById('pf-favs').textContent = (p.favorites || []).length;
+  document.getElementById('pf-tips').textContent = getMyTips().length;
+  document.getElementById('pf-votes').textContent = Object.values(p.myVotes || {}).filter(v => v !== 0).length;
+  renderProfileList();
+}
+function getFavTips() {
+  const p = getProfile(); const out = [];
+  (p.favorites || []).forEach(f => {
+    const cat = cats.find(c => c.id === f.c);
+    const t = (tips[f.c] || []).find(x => x.id === f.t);
+    if (cat && t) out.push({ tip: t, cat });
+  });
+  return out;
+}
+function getMyTips() {
+  const p = getProfile(); if (!p) return [];
+  const map = new Map();
+  (p.myTips || []).forEach(({ c, t }) => {
+    const tip = (tips[c] || []).find(x => x.id === t);
+    if (tip) map.set(t, { tip, cat: cats.find(x => x.id === c) });
+  });
+  Object.entries(tips).forEach(([cid, arr]) => (arr || []).forEach(x => {
+    if (x.author && x.author.toLowerCase() === currentUser.toLowerCase() && !map.has(x.id)) {
+      map.set(x.id, { tip: x, cat: cats.find(c => c.id === +cid) });
+    }
+  }));
+  return [...map.values()].filter(v => v.cat);
+}
+function renderProfileList() {
+  const list = document.getElementById('profile-list');
+  const items = profileTab === 'fav' ? getFavTips() : getMyTips();
+  if (!items.length) {
+    list.innerHTML = profileTab === 'fav' ? `
+      <div class="empty-state">
+        <div class="big">⭐</div>
+        <h3>Aucun favori pour l'instant</h3>
+        <p>Repérez un conseil qui vous plaît et cliquez sur <strong style="color:var(--gold)">☆ Favori</strong><br>il apparaîtra ici, enregistré sur cet appareil.</p>
+        <button class="btn btn-primary" style="margin-top:16px" onclick="goHome()">Parcourir les catégories</button>
+      </div>` : `
+      <div class="empty-state">
+        <div class="big">💡</div>
+        <h3>Pas encore de conseils proposés</h3>
+        <p>Ouvrez une catégorie, cliquez sur <strong style="color:var(--accent)">+ Proposer</strong><br>et tout ce que vous partagerez sera réuni ici.</p>
+        <button class="btn btn-primary" style="margin-top:16px" onclick="goHome()">Découvrir les catégories</button>
+      </div>`;
+    return;
+  }
+  list.innerHTML = items.map((it, i) => profileCardHTML(it.tip, it.cat, i, profileTab === 'tips')).join('');
+}
+function profileCardHTML(t, cat, i, own) {
+  const mv = myVote(t.id);
+  const fav = cat ? isFav(cat.id, t.id) : false;
+  let scColor = t.score > 0 ? 'vs-pos' : (t.score < 0 ? 'vs-neg' : 'vs-zero');
+  if (t.score >= 500) scColor = 'vs-hot';
+  return `
+  <div class="tip-card" style="animation-delay:${i * 0.05}s">
+    <div class="tip-vote-col">
+      <button class="vote-btn up ${mv === 1 ? 'active' : ''}" onclick="vote(${t.id},1,${cat ? cat.id : 'null'})" title="Utile">▲</button>
+      <div class="vote-score ${scColor}">${t.score}</div>
+      <button class="vote-btn down ${mv === -1 ? 'active' : ''}" onclick="vote(${t.id},-1,${cat ? cat.id : 'null'})" title="Pas utile">▼</button>
+    </div>
+    <div class="tip-content">
+      <div class="tip-title">${esc(t.title)}</div>
+      <div class="tip-meta">Posté par <strong>${esc(t.author)}</strong> · ${esc(t.date)}${cat ? ` · <span class="cat-chip" style="background:${rgba(cat.color, .12)};color:${cat.color}" onclick="openCat(${cat.id})">${cat.emoji} ${esc(cat.label)}</span>` : ''}</div>
+      <div class="tip-summary">${esc(t.summary)}</div>
+      <a class="tip-link" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">🌐 Voir le site : ${shorten(t.url)}</a>
+      <div class="tip-actions">
+        ${cat ? `<button class="act-btn btn-fav ${fav ? 'on' : ''}" onclick="toggleFav(${cat.id},${t.id})">${fav ? '★ Favori' : '☆ Favori'}</button>` : ''}
+        <button class="act-btn btn-qr" onclick="showQR(${t.id},${cat ? cat.id : 'null'})">📱 Partager (QR)</button>
+        ${own && cat ? `<button class="act-btn btn-del" onclick="deleteMyTip(${cat.id},${t.id})">🗑️ Supprimer</button>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+function toggleFav(catId, tid) {
+  if (!requireUser('⭐ Choisissez un pseudo pour enregistrer vos favoris.', () => toggleFav(catId, tid))) return;
+  const p = getProfile();
+  if (!p.favorites) p.favorites = [];
+  const i = p.favorites.findIndex(f => f.c === catId && f.t === tid);
+  if (i >= 0) { p.favorites.splice(i, 1); notify('☆ Retiré de vos favoris.'); }
+  else { p.favorites.unshift({ c: catId, t: tid }); notify('★ Ajouté à vos favoris !'); }
+  saveProfiles();
+  refreshCurrentView();
+}
+function deleteMyTip(catId, tid) {
+  if (!confirm('Supprimer ce conseil définitivement ?')) return;
+  tips[catId] = (tips[catId] || []).filter(x => x.id !== tid);
+  const p = getProfile();
+  if (p) p.myTips = (p.myTips || []).filter(m => !(m.c === catId && m.t === tid));
+  save(); saveProfiles();
+  notify('🗑️ Conseil supprimé.');
+  refreshCurrentView();
+}
+function refreshCurrentView() {
+  const prof = document.getElementById('page-profil');
+  if (prof.classList.contains('active') && getProfile()) renderProfile();
+  else if (curCat) renderTips();
+}
+
+// ═══════════════════════════════════════════════════
+// RECHERCHE GLOBALE (conseils + catégories + domaines)
+// ═══════════════════════════════════════════════════
+const DOMAIN_GROUPS = [
+  { id: 'all', label: '🌐 Tous' },
+  { id: 'tech', label: '💻 Tech', cats: [9, 23, 27, 35, 36] },
+  { id: 'finance', label: '💰 Finance', cats: [18, 21, 33, 37] },
+  { id: 'maison', label: '🏠 Maison', cats: [3, 4, 10, 20, 22, 34] },
+  { id: 'pratique', label: '🧺 Vie pratique', cats: [1, 2, 7, 12, 13, 26, 30, 32] },
+  { id: 'loisirs', label: '🎉 Loisirs', cats: [5, 6, 8, 11, 14, 15, 16, 17, 19, 24, 25, 28, 29, 31, 38, 39, 40] }
+];
+function searchTips(q) {
+  const qs = q.toLowerCase();
+  const out = [];
+  Object.entries(tips).forEach(([cid, arr]) => {
+    const cat = cats.find(c => c.id === +cid); if (!cat) return;
+    (arr || []).forEach(t => {
+      const hay = (t.title + ' ' + t.summary + ' ' + t.url).toLowerCase();
+      if (hay.includes(qs)) out.push({ tip: t, cat });
+    });
+  });
+  out.sort((a, b) => b.tip.score - a.tip.score);
+  return out;
+}
+function setDomain(d) { curDomain = d; renderHome(curQuery); }
+function goHomeSearch() { goHome(); setTimeout(() => document.getElementById('searchInput').focus(), 80); }
+
+// ═══════════════════════════════════════════════════
+// RÉGLAGES & DONNÉES (⚙️ — export / import / reset)
+// ═══════════════════════════════════════════════════
+function openSettings() {
+  const p = getProfile();
+  const nCustom = Object.values(tips).flat().filter(t => t.id > 10000).length;
+  document.getElementById('set-stats').innerHTML =
+    `${p ? `👤 Compte actif : <strong>${esc(currentUser)}</strong>` : '👤 Aucun compte actif (navigation anonyme)'}<br>
+     💡 ${nCustom} conseil(s) personnalisé(s) · ⭐ ${(p && p.favorites || []).length} favori(s) · 🗂️ ${cats.length - DEFAULT_CATS.length} catégorie(s) créée(s)<br>
+     📦 Tout est stocké en local sur cet appareil.`;
+  document.getElementById('set-key').value = getGeminiKey();
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function saveKey() {
+  const v = document.getElementById('set-key').value.trim();
+  if (v) localStorage.setItem('bp3-gemini-key', v); else localStorage.removeItem('bp3-gemini-key');
+  notify(v ? '🔑 Clé Gemini enregistrée.' : '🔑 Clé Gemini effacée.');
+}
+function exportData() {
+  const defIds = new Set(DEFAULT_CATS.map(c => c.id));
+  const customCats = cats.filter(c => !defIds.has(c.id));
+  const customTips = {};
+  Object.entries(tips).forEach(([cid, arr]) => {
+    const mine = (arr || []).filter(t => t.id > 10000); // conseils créés (id = Date.now)
+    if (mine.length) customTips[cid] = mine;
+  });
+  const payload = {
+    app: 'bonplan', format: 1,
+    exportedAt: new Date().toISOString(),
+    profileName: currentUser || null,
+    profile: getProfile() || null,
+    customCats, customTips
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bonplan-export-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  notify('💾 Export téléchargé !');
+}
+function importData(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      if (!d || d.app !== 'bonplan') throw new Error('format');
+      let addedC = 0, addedT = 0, favM = 0, voteM = 0;
+      (d.customCats || []).forEach(c => {
+        if (!cats.some(x => x.id === c.id)) { cats.push(c); if (!tips[c.id]) tips[c.id] = []; addedC++; }
+      });
+      Object.entries(d.customTips || {}).forEach(([cid, arr]) => {
+        if (!tips[cid]) tips[cid] = [];
+        arr.forEach(t => { if (!tips[cid].some(x => x.id === t.id)) { tips[cid].push(t); addedT++; } });
+      });
+      if (d.profile && d.profileName) {
+        const name = d.profileName;
+        const local = profiles[name] || (profiles[name] = { created: Date.now(), favorites: [], myVotes: {}, myTips: [], migrated: true });
+        (d.profile.favorites || []).forEach(f => {
+          if (!(local.favorites || []).some(x => x.c === f.c && x.t === f.t)) { local.favorites.push(f); favM++; }
+        });
+        Object.entries(d.profile.myVotes || {}).forEach(([tid, dir]) => {
+          if (dir && !local.myVotes[tid]) { local.myVotes[tid] = dir; voteM++; }
+        });
+        (d.profile.myTips || []).forEach(m => {
+          if (!(local.myTips || []).some(x => x.c === m.c && x.t === m.t)) local.myTips.push(m);
+        });
+        if (!currentUser) { currentUser = name; updateAccountBtn(); }
+      }
+      save(); saveProfiles();
+      closeOverlayDirect('settings-overlay');
+      document.getElementById('searchInput').value = '';
+      renderHome('');
+      notify(`✅ Import réussi : ${addedC} catégorie(s), ${addedT} conseil(s), ${favM} favori(s), ${voteM} vote(s).`);
+    } catch (e) {
+      notify('⚠️ Fichier non reconnu (export BonPlan attendu).');
+    }
+  };
+  r.readAsText(file);
+}
+function resetData() {
+  if (!confirm("⚠️ Effacer TOUTES les données locales (profils, favoris, votes, conseils, catégories ajoutées) et revenir à l'état d'origine ?\n\nPensez à faire un Export avant — cette action est irréversible.")) return;
+  ['bp3-cats', 'bp3-tips', 'bp3-profiles', 'bp3-user'].forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+
+// ═══════════════════════════════════════════════════
+// IA — Résumé automatique de liens (Gemini, clé utilisateur)
+// ═══════════════════════════════════════════════════
+function getGeminiKey() { return localStorage.getItem('bp3-gemini-key') || ''; }
+async function aiSummarize() {
+  const urlInput = document.getElementById('f-url');
+  const url = urlInput.value.trim();
+  if (!url || !/^https?:\/\/./.test(url)) { notify("⚠️ Saisissez d'abord une URL valide (https://…)."); return; }
+  if (!getGeminiKey()) { notify('⚙️ Ajoutez votre clé API Gemini dans Réglages (⚙️).'); openSettings(); return; }
+  const btn = document.getElementById('aiBtn');
+  const old = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Analyse…';
+  try {
+    // 1) Récupération du contenu de la page via un proxy lisible compatible CORS (échec silencieux possible)
+    let pageText = '';
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch('https://r.jina.ai/' + url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) pageText = (await res.text()).slice(0, 5000);
+    } catch (e) { /* CORS ou site bloqué : mode "connaissance du domaine" */ }
+    // 2) Appel à Gemini (clé utilisateur, côté client)
+    const promptText = pageText
+      ? `Analyse le contenu de cette page web (URL : ${url}).\n---\n${pageText}\n---\nRéponds UNIQUEMENT avec un JSON valide (sans markdown) : {"titre":"…","resume":"…"} — "titre" : titre court du service (max 60 caractères), "resume" : résumé clair de 2 phrases sur son utilité concrète au quotidien.`
+      : `Le contenu de ${url} n'a pas pu être récupéré (CORS). À partir de ta connaissance du site et de son nom de domaine, réponds UNIQUEMENT avec un JSON valide (sans markdown) : {"titre":"…","resume":"…"} — "titre" : titre court du service (max 60 caractères), "resume" : 2 phrases sur son utilité concrète.`;
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(getGeminiKey())}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }], generationConfig: { temperature: 0.4 } })
+    });
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    const raw = ((data.candidates || [])[0]?.content?.parts || []).map(x => x.text).join('') || '';
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('réponse illisible');
+    const parsed = JSON.parse(m[0]);
+    if (parsed.titre) document.getElementById('f-title').value = String(parsed.titre).slice(0, 80);
+    if (parsed.resume) document.getElementById('f-summary').value = String(parsed.resume).slice(0, 600);
+    notify("✨ Titre et résumé générés par l'IA !");
+  } catch (err) {
+    // Fallback textuel intelligent : on pré-remplit au moins le titre depuis le domaine
+    let host = url; try { host = new URL(url).hostname.replace('www.', ''); } catch (e) {}
+    if (!document.getElementById('f-title').value.trim()) {
+      document.getElementById('f-title').value = host.charAt(0).toUpperCase() + host.slice(1);
+    }
+    notify('⚠️ IA indisponible (' + (err && err.message ? err.message : 'erreur') + ') — pré-rempli au mieux, finalisez le résumé à la main.');
+  } finally {
+    btn.disabled = false; btn.textContent = old;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// RÉSEAU — pastille En ligne / Hors-ligne
+// ═══════════════════════════════════════════════════
+function updateNetStatus() {
+  const el = document.getElementById('netStatus');
+  if (!el) return;
+  const on = navigator.onLine;
+  el.textContent = on ? '🟢 En ligne' : '🔴 Hors-ligne';
+  el.classList.toggle('off', !on);
+}
+
+// ═══════════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════════
+function toggleAdmin() {
+  isAdmin = !isAdmin;
+  document.getElementById('modoBtn').classList.toggle('on', isAdmin);
+  document.getElementById('admin-bar').style.display = isAdmin ? 'block' : 'none';
+  notify(isAdmin ? '🛡️ Mode modération activé' : 'Mode modération désactivé');
+  if (curCat) renderTips();
+}
+
+// ═══════════════════════════════════════════════════
+// OVERLAYS
+// ═══════════════════════════════════════════════════
+function closeOverlay(id, e) { if (e.target.id === id) closeOverlayDirect(id); }
+function closeOverlayDirect(id) { document.getElementById(id).classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function esc(s) { return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"'); }
+function shorten(u) { try { return new URL(u).hostname.replace('www.',''); } catch { return u.slice(0,30)+'…'; } }
+function notify(msg) {
+  const n = document.getElementById('notif');
+  n.textContent = msg; n.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => n.classList.remove('show'), 3200);
+}
+
+/* ═════════════ BASE COMMUNE — les 2 barres du haut ═══════════════
+   Préférences (thème, densité) stockées sur l'appareil, comme la base
+   @alphabette/shell. Aucune couleur d'identité codée en dur : tout dérive
+   de --accent. L'espace dons est relayé par le hub (/api/config.json). */
+
+const AB_KEY = 'bp3-shell';
+function abLirePrefs() {
+  try { return JSON.parse(localStorage.getItem(AB_KEY) || '{}'); }
+  catch (e) { return {}; }
+}
+function abEcrirePrefs() {
+  try { localStorage.setItem(AB_KEY, JSON.stringify(abPrefs)); } catch (e) {}
+}
+const abPrefs = abLirePrefs();
+if (abPrefs.thème !== 'jour' && abPrefs.thème !== 'nuit') abPrefs.thème = 'nuit';
+if (abPrefs.densité !== 'grand' && abPrefs.densité !== 'max') abPrefs.densité = 'normal';
+
+function appliqueThème() {
+  const jour = abPrefs.thème === 'jour';
+  document.documentElement.dataset.theme = jour ? 'jour' : 'nuit';
+  document.getElementById('abBtnTheme').innerHTML =
+    (jour ? '☀ Jour' : '☾ Nuit') +
+    '<span style="width:7px;height:7px;border-radius:999px;background:currentColor;opacity:.8;display:inline-block"></span>';
+  document.getElementById('abBtnTheme').title = jour
+    ? 'Affichage en mode jour — passer en mode nuit'
+    : 'Affichage en mode nuit — passer en mode jour';
+}
+function abTheme() {
+  abPrefs.thème = abPrefs.thème === 'jour' ? 'nuit' : 'jour';
+  appliqueThème();
+  abEcrirePrefs();
+}
+
+/* Densité : 3 niveaux comme la base (normal / grand / max). Implémenté en
+   zoom pour adapter tout l'app, qui taille ses textes en px. */
+const AB_ZOOMS = { normal: 1, grand: 1.15, max: 1.3 };
+function appliqueDensité() {
+  document.body.style.zoom = AB_ZOOMS[abPrefs.densité] || 1;
+  const bars = document.querySelectorAll('#abDensity .ab-density__bar');
+  const niveau = { normal: 0, grand: 1, max: 2 }[abPrefs.densité] || 0;
+  bars.forEach((b, i) => b.classList.toggle('ab-density__bar--on', i <= niveau));
+  document.getElementById('abBtnBig').title = 'Taille : ' + ({ normal: 'normale', grand: 'grande', max: 'très grande' }[abPrefs.densité]);
+}
+function abDensity() {
+  abPrefs.densité = abPrefs.densité === 'normal' ? 'grand' : abPrefs.densité === 'grand' ? 'max' : 'normal';
+  appliqueDensité();
+  abEcrirePrefs();
+}
+
+/* Plein écran */
+function abFullscreen() {
+  if (document.fullscreenElement) { document.exitFullscreen(); return; }
+  document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+}
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('abBtnFull');
+  btn.innerHTML = document.fullscreenElement ? '✕' : '⛶';
+  btn.title = document.fullscreenElement ? 'Quitter le plein écran' : 'Plein écran';
+});
+
+/* Statut de la clé API (Gemini BYOK) affiché dans la barre 2 */
+function abStatutClé() {
+  const ok = Boolean(localStorage.getItem('bp3-gemini-key'));
+  document.getElementById('abKeyDot').classList.toggle('ab-status--ok', ok);
+  document.getElementById('abBtnKeys').title =
+    'Clés d\'API (Gemini BYOK) : ' + (ok ? 'prête, stockée sur cet appareil' : 'non configurée');
+}
+abStatutClé();
+window.addEventListener('storage', abStatutClé);
+
+/* Espace dons de la base commune : coordonnées relayées par le hub
+   (data/donation.json → /api/config.json). Aucune coordonnée codée en dur. */
+const AB_HUB = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
+  ? 'http://localhost:3000'
+  : 'https://alphabette.fr';
+let abHubDon = null;
+let abHubPricing = null;
+
+async function abSyncHub() {
+  // 1) Tarifs + espace dons (source de vérité : le hub)
+  try {
+    const r = await fetch(AB_HUB + '/api/config.json', { headers: { Accept: 'application/json' } });
+    if (r.ok) {
+      const c = await r.json();
+      abHubDon = c && c.donation ? c.donation : null;
+      abHubPricing = c && c.pricing ? c.pricing : null;
+    }
+  } catch (e) { /* hub injoignable : repli statique */ }
+
+  // 2) Sites de l'écosystème + compteur (registre public du hub)
+  try {
+    const r = await fetch(AB_HUB + '/api/apps', { headers: { Accept: 'application/json' } });
+    if (!r.ok) return;
+    const data = await r.json();
+    const apps = Array.isArray(data.apps) ? data.apps.filter((a) => a && a.name) : [];
+    if (!apps.length) return;
+
+    const nav = document.querySelector('.ab-eco__sites');
+    if (nav) {
+      nav.innerHTML = apps.slice(0, 5).map((a) => {
+        const nom = esc(a.name.charAt(0) + a.name.slice(1).toLowerCase());
+        const lien = /^https?:\/\//i.test(a.url || '') ? a.url : AB_HUB + (a.url || '');
+        const ici = a.slug === 'bonplan';
+        return ici
+          ? `<span class="ab-site ab-site--active" aria-current="page" title="${nom} — vous êtes ici">${nom}</span>`
+          : `<a class="ab-site" href="${esc(lien)}" title="${nom}">${nom}</a>`;
+      }).join('');
+    }
+    const compteur = document.querySelector('.ab-counter');
+    if (compteur) {
+      const gratuites = apps.filter((a) => a.gratuit).length;
+      compteur.innerHTML = `<span>gratuit</span> <span class="ab-counter__trial">(${gratuites} sur ${apps.length})</span>`;
+      compteur.title = `${gratuites} des ${apps.length} applications de l'écosystème sont gratuites — voir la liste.`;
+    }
+    const brand = document.querySelector('.ab-eco__brand');
+    if (brand) brand.href = AB_HUB;
+    document.querySelectorAll('.ab-eco__right a[href]').forEach((a) => { a.href = AB_HUB; });
+  } catch (e) { /* registre injoignable : liste de secours conservée */ }
+}
+
+function abDonMessage() {
+  const fond = document.createElement('div');
+  fond.className = 'ab-modal-wrap';
+  fond.innerHTML = `
+    <div class="ab-don-card">
+      <h3>♥ Soutenir l'écosystème</h3>
+      <p>L'espace dons (RIB copiable, virement SEPA instantané, offre Membre fondateur)
+      sera affiché ici dès que le hub alphabette.fr publiera ses coordonnées.</p>
+      <p style="color:var(--muted);font-size:12.5px">Aucune coordonnée bancaire n'est codée dans l'application (règle de l'écosystème).</p>
+      <button class="ab-don-mini ab-don-ferme" onclick="this.closest('.ab-modal-wrap').remove()">Fermer</button>
+    </div>`;
+  fond.addEventListener('click', (ev) => { if (ev.target === fond) fond.remove(); });
+  document.body.appendChild(fond);
+}
+
+async function abOpenDon() {
+  if (!abHubDon) {
+    try {
+      const res = await fetch(AB_HUB + '/api/config.json', { headers: { 'Accept': 'application/json' } });
+      if (res.ok) {
+        const data = await res.json();
+        abHubDon = data && data.donation ? data.donation : null;
+        abHubPricing = data && data.pricing ? data.pricing : null;
+      }
+    } catch (e) { /* hub injoignable */ }
+  }
+  if (!abHubDon || (!abHubDon.iban && !abHubDon.titulaire)) {
+    abDonMessage();
+    return;
+  }
+  const don = abHubDon;
+
+  const fond = document.createElement('div');
+  fond.className = 'ab-modal-wrap';
+  fond.innerHTML = `
+    <div class="ab-don-card">
+      <h3>♥ Soutenir l'écosystème</h3>
+      <p>Votre don finance les applications gratuites (BonPlan en fait partie).
+      0 % de frais : le virement se fait depuis votre banque, puis dites-le nous${don.contact ? ' à ' + esc(String(don.contact)) : ''}.</p>
+      ${don.titulaire ? `<div class="ab-don-row"><div class="ab-don-code">${esc(don.titulaire)}</div><button class="ab-don-mini" data-ab-copie="${esc(don.titulaire)}">Copier</button></div>` : ''}
+      ${don.iban ? `<div class="ab-don-row"><div class="ab-don-code">IBAN ${esc(String(don.iban).replace(/\s/g, ' '))}</div><button class="ab-don-mini" data-ab-copie="${esc(String(don.iban).replace(/\s/g, ''))}">Copier</button></div>` : ''}
+      ${don.bic ? `<div class="ab-don-row"><div class="ab-don-code">BIC ${esc(don.bic)}</div><button class="ab-don-mini" data-ab-copie="${esc(don.bic)}">Copier</button></div>` : ''}
+      ${don.objetVirement ? `<div class="ab-don-row"><div class="ab-don-code">Objet : ${esc(don.objetVirement)}</div><button class="ab-don-mini" data-ab-copie="${esc(don.objetVirement)}">Copier</button></div>` : ''}
+      ${don.exemple === true ? '<p style="color:var(--gold)">⚠ Coordonnées d\'exemple pour l\'instant — la base le signale.</p>' : ''}
+      ${don.placeMax ? `<p><strong>Membre fondateur</strong> — places limitées : ${Number(don.placesAttribuees || 0)}/${don.placeMax} attribuées, contreparties à vie.</p>` : ''}
+      <button class="ab-don-mini ab-don-ferme" onclick="this.closest('.ab-modal-wrap').remove()">Fermer</button>
+    </div>`;
+  fond.addEventListener('click', (ev) => {
+    if (ev.target === fond) fond.remove();
+    const b = ev.target.closest && ev.target.closest('[data-ab-copie]');
+    if (b) {
+      navigator.clipboard && navigator.clipboard.writeText(b.dataset.abCopie);
+      notify('Copié !');
+    }
+  });
+  document.body.appendChild(fond);
+}
+
+appliqueThème();
+appliqueDensité();
+abSyncHub();
+</script>
+</body>
+</html>
