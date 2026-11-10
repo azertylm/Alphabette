@@ -49,3 +49,22 @@ jobs:
             git commit -q -m "Publication du hub — ${GITHUB_SHA::7}"
             git push origin HEAD:ovh-deploy
           fi
+
+      - name: Vérifier la mise en ligne (relance si OVH a manqué l'envoi)
+        # Le point d'entrée d'OVH refuse parfois l'envoi de GitHub (erreur 401
+        # aléatoire). On compare version.json en ligne avec ce commit et, tant
+        # qu'il diffère, on renvoie un commit vide sur ovh-deploy (nouvel envoi).
+        run: |
+          cd ../publication
+          for essai in 1 2 3 4 5 6; do
+            sleep 75
+            en_ligne=$(curl -fsS "https://alphabette.fr/version.json?t=$(date +%s)" | sed -n 's/.*"sha": *"\([0-9a-f]*\)".*/\1/p' || true)
+            if [ "$en_ligne" = "$GITHUB_SHA" ]; then
+              echo "En ligne : ${GITHUB_SHA::7}"
+              exit 0
+            fi
+            echo "Pas encore en ligne (essai $essai ; en ligne : ${en_ligne:-inconnu}) : nouvel envoi vers OVH."
+            git commit --allow-empty -q -m "Relance de la publication — ${GITHUB_SHA::7} (essai $essai)"
+            git push -q origin HEAD:ovh-deploy
+          done
+          echo "::warning::OVH n'a pas mis en ligne ${GITHUB_SHA::7} après 6 relances : cliquer sur « Déployer » dans l'espace OVH."

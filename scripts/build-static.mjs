@@ -129,4 +129,9 @@ await writeFile(
   JSON.stringify({ authenticated: false, configured: false }) + '\n',
 );
 await writeFile(path.join(sortie, '.htaccess'), HTACCESS);
+// Empreinte de la version publiée : la publication vérifie qu'OVH l'a bien mise en ligne.
+await writeFile(
+  path.join(sortie, 'version.json'),
+  JSON.stringify({ sha: process.env.GITHUB_SHA || 'local' }) + '\n',
+);
 console.log(`\nSite statique prêt : ${path.relative(racine, sortie)}/`);
