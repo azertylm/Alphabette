@@ -56,6 +56,7 @@ DirectoryIndex index.html
   RewriteRule ^api/admin/session/?$ api/admin-session.json [L]
 
   # Le reste de l'API (écriture, IA, admin) n'existe pas en statique
+  RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
   # Application monopage : toute autre adresse renvoie index.html
