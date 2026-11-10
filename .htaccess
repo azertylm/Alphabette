@@ -16,6 +16,12 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+  # Domaines propres des applications (aiguillage par nom d'hôte)
+  # proxilien : proxilien.fr, proxilien.eu
+  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.eu)$ [NC]
+  RewriteCond %{REQUEST_URI} !^/apps/proxilien/
+  RewriteRule ^(.*)$ apps/proxilien/$1 [L]
+
   # Continuité des anciennes adresses
   RewriteRule ^goat(/.*)?$ https://goatchevretheking.alphabette.fr$1 [R=301,L]
 
