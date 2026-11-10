@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promo Hub · Alphabette</title>
+  <meta name="robots" content="noindex">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            alpha: {
+              bg: '#0b0f17',
+              card: '#151c28',
+              border: '#263248',
+              accent: '#6366f1',
+              accentHover: '#4f46e5',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              rose: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0b0f17; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0b0f17; }
+    ::-webkit-scrollbar-thumb { background: #263248; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="border-b border-alpha-border bg-alpha-card/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center font-black text-xl tracking-tighter text-white shadow-lg shadow-indigo-500/30">A</div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight flex items-center gap-2">
+            Alphabette Promo Hub
+            <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-medium">Usine Social Media v1.0</span>
+          </h1>
+          <p class="text-xs text-slate-400">Générateur de discussions, publications & réponses éthiques en 1 clic</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openNewAppModal()" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition flex items-center gap-1.5">
+          <span>+ Ajouter / Éditer une App</span>
+        </button>
+        <button onclick="exportData()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-medium transition">
+          Exporter JSON
+        </button>
+        <label class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-medium transition cursor-pointer">
+          Importer JSON
+          <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+
+    <!-- COLONNE GAUCHE : SÉLECTION DE L'APPLICATION (4 cols) -->
+    <section class="lg:col-span-4 flex flex-col gap-4">
+      <div class="bg-alpha-card border border-alpha-border rounded-xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400">1. Choisir l'Application (<span id="appCount">…</span>)</h2>
+          <select id="pillarFilter" onchange="renderAppList()" class="bg-slate-900 border border-slate-700 text-xs rounded-lg px-2 py-1 text-slate-300 focus:outline-none focus:border-indigo-500">
+            <option value="ALL">Tous les piliers</option>
+            <option value="Création">🎨 Création</option>
+            <option value="Autonomie">🔐 Autonomie & Hub</option>
+            <option value="IA">🧠 IA & Esprit Critique</option>
+            <option value="Énergie">☀️ Énergie Solaire</option>
+            <option value="Proximité">🤝 Vie Locale & Bien Commun</option>
+          </select>
+        </div>
+
+        <div id="appList" class="space-y-2 max-h-[540px] overflow-y-auto pr-1">
+          <!-- Généré par JS -->
+        </div>
+      </div>
+
+      <!-- COMMUNAUTÉS CIBLES POUR L'APP SÉLECTIONNÉE -->
+      <div class="bg-alpha-card border border-alpha-border rounded-xl p-4">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-2">🎯 Où lancer la discussion aujourd'hui ?</h3>
+        <p class="text-xs text-slate-400 mb-2">Cibles prioritaires pour <strong id="targetAppName" class="text-white">...</strong> :</p>
+        <ul id="targetCommunities" class="text-xs space-y-1.5 text-slate-300">
+          <!-- Généré par JS -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- COLONNE CENTRALE : GÉNÉRATEUR DE MESSAGES & CERBÈRE ÉTHIQUE (5 cols) -->
+    <section class="lg:col-span-5 flex flex-col gap-4">
+      <div class="bg-alpha-card border border-alpha-border rounded-xl p-4 flex flex-col gap-4">
+        
+        <!-- Choix Plateforme -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">2. Choisir le Canal de Diffusion</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="platformButtons">
+            <button onclick="setPlatform('grupos')" data-plat="grupos" class="plat-btn px-3 py-2 rounded-lg text-xs font-semibold border transition text-center">💬 Groupes / Forums</button>
+            <button onclick="setPlatform('linkedin')" data-plat="linkedin" class="plat-btn px-3 py-2 rounded-lg text-xs font-semibold border transition text-center">💼 LinkedIn</button>
+            <button onclick="setPlatform('insta')" data-plat="insta" class="plat-btn px-3 py-2 rounded-lg text-xs font-semibold border transition text-center">📸 Insta / Carrousel</button>
+            <button onclick="setPlatform('youtube')" data-plat="youtube" class="plat-btn px-3 py-2 rounded-lg text-xs font-semibold border transition text-center">▶️ YouTube / Short</button>
+          </div>
+        </div>
+
+        <!-- Choix Angle d'attaque -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">3. Angle de prise de parole</label>
+          <div class="grid grid-cols-2 gap-2" id="angleButtons">
+            <button onclick="setAngle('debat')" data-angle="debat" class="angle-btn px-3 py-2 rounded-lg text-xs font-medium border transition text-left">🔥 Lancer une discussion / question</button>
+            <button onclick="setAngle('usage')" data-angle="usage" class="angle-btn px-3 py-2 rounded-lg text-xs font-medium border transition text-left">🛠️ Cas concret (Avant / Après)</button>
+            <button onclick="setAngle('testeur')" data-angle="testeur" class="angle-btn px-3 py-2 rounded-lg text-xs font-medium border transition text-left">🧪 Appel aux bêta-testeurs</button>
+            <button onclick="setAngle('coulisses')" data-angle="coulisses" class="angle-btn px-3 py-2 rounded-lg text-xs font-medium border transition text-left">⚡ Coulisses & Vision sobre</button>
+          </div>
+        </div>
+
+        <!-- Options de personnalisation rapide -->
+        <div class="grid grid-cols-2 gap-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Ancrage territorial (optionnel)</label>
+            <select id="citySelect" onchange="generatePost()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              <option value="national">France / Général (Sans ville)</option>
+              <option value="La Grande-Motte">📍 La Grande-Motte</option>
+              <option value="Montpellier / Hérault">📍 Montpellier / Hérault</option>
+              <option value="Lille / Nord">📍 Lille / Métropole Lilloise</option>
+            </select>
+          </div>
+          <div class="flex flex-col justify-end">
+            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer select-none bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5">
+              <input type="checkbox" id="includeDisclaimer" checked onchange="generatePost()" class="accent-indigo-500 rounded">
+              <span>Clause "Cerbère Éthique"</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Zone de texte générée -->
+        <div class="relative">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-semibold text-indigo-300">Message prêt à publier (éditable) :</span>
+            <span id="charCount" class="text-[11px] text-slate-400">0 caractères</span>
+          </div>
+          <textarea id="postOutput" oninput="checkEthics()" rows="11" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3.5 text-sm text-slate-100 leading-relaxed focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <!-- Contrôleur Cerbère Éthique en direct -->
+        <div id="ethicsBanner" class="rounded-lg p-3 text-xs border flex items-start gap-2.5">
+          <!-- Mis à jour dynamiquement par checkEthics() -->
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="flex items-center gap-3">
+          <button onclick="copyPost()" id="copyBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+            <span>📋 Copier le message</span>
+          </button>
+          <button onclick="generatePost()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+            🔄 Régénérer
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COLONNE DROITE : RÉPONSES AUX OBJECTIONS & ROUTINE (3 cols) -->
+    <section class="lg:col-span-3 flex flex-col gap-4">
+      
+      <!-- Kit de réponses aux commentaires -->
+      <div class="bg-alpha-card border border-alpha-border rounded-xl p-4 flex-1 flex flex-col">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-1">4. Réponses Rapides (Commentaires)</h2>
+        <p class="text-xs text-slate-400 mb-3">Clique sur une question d'internaute pour copier une réponse impeccable et non-agressive :</p>
+
+        <div id="objectionsList" class="space-y-2.5 overflow-y-auto max-h-[420px] pr-1">
+          <!-- Généré par JS -->
+        </div>
+      </div>
+
+      <!-- Tracker Quotidien de l'Employée -->
+      <div class="bg-alpha-card border border-alpha-border rounded-xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">✅ Routine Promo du Jour</h3>
+          <button onclick="resetChecklist()" class="text-[11px] text-slate-400 hover:text-white">Réinitialiser</button>
+        </div>
+        <div class="space-y-1.5 text-xs text-slate-300" id="dailyChecklist">
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="routine-cb accent-emerald-500" onchange="saveChecklist()"> 1 discussion lancée dans un groupe</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="routine-cb accent-emerald-500" onchange="saveChecklist()"> 1 post publié (LinkedIn ou Insta)</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="routine-cb accent-emerald-500" onchange="saveChecklist()"> 1 Short / Vidéo partagé</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="routine-cb accent-emerald-500" onchange="saveChecklist()"> Répondu à 100% des commentaires</label>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL AJOUT / ÉDITION D'APPLICATION -->
+  <div id="appModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-alpha-card border border-alpha-border rounded-2xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-white">Ajouter ou modifier une application Alphabette</h3>
+        <button onclick="closeNewAppModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Nom de l'application *</label>
+            <input id="modName" type="text" placeholder="Ex: ÉcoPartage" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Pilier *</label>
+            <select id="modPillar" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+              <option value="Proximité">🤝 Vie Locale & Bien Commun</option>
+              <option value="Création">🎨 Création</option>
+              <option value="Autonomie">🔐 Autonomie & Hub</option>
+              <option value="IA">🧠 IA & Esprit Critique</option>
+              <option value="Énergie">☀️ Énergie Solaire</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Statut officiel (Section 7) *</label>
+            <select id="modStatus" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+              <option value="Prototype">Prototype</option>
+              <option value="Démonstrateur">Démonstrateur</option>
+              <option value="Test utilisateur">Test utilisateur</option>
+              <option value="Version bêta">Version bêta</option>
+              <option value="Application opérationnelle">Application opérationnelle</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">URL en ligne *</label>
+            <input id="modUrl" type="text" placeholder="https://alphabette.fr/..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Problème résolu (Question d'accroche) *</label>
+          <input id="modProblem" type="text" placeholder="Ex: Comment éviter de jeter des objets encore utiles dans son quartier ?" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Proposition de valeur (1 phrase claire) *</label>
+          <textarea id="modPitch" rows="2" placeholder="Ex: Une carte locale ultra-simple pour donner ou prêter du matériel entre voisins sans créer de compte." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Publics cibles (séparés par une virgule)</label>
+          <input id="modAudience" type="text" placeholder="Habitants, associations, étudiants, mairies" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button onclick="closeNewAppModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold">Annuler</button>
+        <button onclick="saveNewApp()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">Enregistrer l'Application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT PRINCIPAL -->
+  <script>
+    const FORBIDDEN_WORDS = [
+      "résultat garanti", "résultats garantis", "sécurité absolue", "rentabilité assurée",
+      "intelligence artificielle infaillible", "ia infaillible", "analyse définitive",
+      "solution parfaite", "données totalement inviolables", "100% garanti", "sans aucun risque"
+    ];
+
+    // Les applications viennent du registre officiel d'alphabette.fr (/api/apps) :
+    // nom, adresse et description sont toujours à jour. Ci-dessous : le texte promo de chacune.
+    const PROMO = {
+      "goat": {
+        "pillar": "Proximité",
+        "status": "Version bêta",
+        "audience": "Fans de football, amis, clubs amateurs",
+        "problem": "Qui sont, pour vous, les vraies légendes du football ? Et vos amis sont-ils d'accord ?",
+        "useCase": "Classer ses joueurs préférés en pyramide en deux minutes, puis comparer avec les classements des autres.",
+        "precaution": "Application de loisir, gratuite.",
+        "communities": [
+          "Groupes de supporters et de foot amateur",
+          "Forums football francophones",
+          "Clubs et associations sportives locales"
+        ]
+      },
+      "proxilien": {
+        "pillar": "Proximité",
+        "status": "Test utilisateur",
+        "audience": "Seniors, jeunes, voisins, associations de La Grande-Motte",
+        "problem": "Comment recréer du lien entre générations dans une ville où beaucoup d'aînés vivent seuls ?",
+        "useCase": "Demander ou proposer un coup de main entre voisins, sur téléphone, ordinateur ou télévision.",
+        "precaution": "En test à La Grande-Motte : les règles de prudence entre voisins restent essentielles.",
+        "communities": [
+          "Groupes Facebook de La Grande-Motte",
+          "Associations d'entraide et clubs seniors",
+          "Conseils de quartier et CCAS"
+        ]
+      },
+      "iadebat": {
+        "pillar": "IA",
+        "status": "Version bêta",
+        "audience": "Étudiants, enseignants, citoyens curieux",
+        "problem": "Sur un sujet de société, avez-vous déjà entendu tous les arguments, y compris ceux qui vous dérangent ?",
+        "useCase": "Choisir un sujet et regarder six intelligences artificielles en débattre, argument contre argument.",
+        "precaution": "Les IA peuvent se tromper : c'est un exercice d'esprit critique, pas une source de vérité. Une clé d'IA personnelle est nécessaire.",
+        "communities": [
+          "Groupes débat, philosophie et esprit critique",
+          "Enseignants et associations d'éloquence",
+          "Communautés IA francophones"
+        ]
+      },
+      "infos-perso": {
+        "pillar": "IA",
+        "status": "Version bêta",
+        "audience": "Lecteurs d'actualité, curieux, professionnels pressés",
+        "problem": "Trop d'actualités, pas assez de temps : comment ne lire que ce qui vous intéresse vraiment ?",
+        "useCase": "Choisir ses sources et ses thèmes, puis lire des résumés et des approfondissements.",
+        "precaution": "Les résumés par IA peuvent contenir des erreurs : l'article d'origine reste la référence.",
+        "communities": [
+          "Communautés veille et productivité",
+          "Groupes autour des médias et de l'information",
+          "Forums technologie francophones"
+        ]
+      },
+      "oeil-atelier": {
+        "pillar": "Création",
+        "status": "Démonstrateur",
+        "audience": "Artistes, photographes, galeries, ateliers",
+        "problem": "Artistes : combien de temps passez-vous sur l'organisation plutôt que sur la création ?",
+        "useCase": "Préparer une curation ou un vernissage et obtenir une première estimation de marché avec l'aide de l'IA.",
+        "precaution": "Les estimations et les modèles de documents sont indicatifs : à faire valider par un professionnel.",
+        "communities": [
+          "Collectifs d'artistes et maisons des artistes",
+          "Groupes photographie et arts visuels",
+          "Galeries et écoles d'art"
+        ]
+      },
+      "france-service": {
+        "pillar": "Autonomie",
+        "status": "Version bêta",
+        "audience": "Tous publics, aidants, travailleurs sociaux",
+        "problem": "Points de permis, amendes, démarches : vous ne savez plus où chercher la bonne information ?",
+        "useCase": "Trouver en quelques questions la démarche à faire et la bonne adresse officielle.",
+        "precaution": "Guide d'information : seuls les sites officiels (service-public.fr, ANTS…) font foi.",
+        "communities": [
+          "Groupes d'entraide administrative",
+          "Associations d'aide aux démarches",
+          "Groupes de vie locale"
+        ]
+      },
+      "revolution": {
+        "pillar": "Proximité",
+        "status": "Prototype",
+        "audience": "Citoyens, syndicats, associations",
+        "problem": "Et si on pouvait donner son avis sur l'actualité en un geste, sans débat stérile ?",
+        "useCase": "Répondre en un geste aux questions du moment et voir où en est l'opinion.",
+        "precaution": "Prototype : les votes affichés sont simulés pour la démonstration.",
+        "communities": [
+          "Groupes citoyens et démocratie participative",
+          "Associations et syndicats",
+          "Forums d'actualité"
+        ]
+      },
+      "bonplansenior": {
+        "pillar": "Proximité",
+        "status": "Version bêta",
+        "audience": "Plus de 60 ans, aidants, familles",
+        "problem": "Aides, santé, arnaques : où trouver des conseils fiables pour bien vivre après 60 ans ?",
+        "useCase": "Parcourir 150 conseils vérifiés, rangés par thème, écrits en gros et simplement.",
+        "precaution": "Conseils d'information générale : pour la santé ou le droit, demandez l'avis d'un professionnel.",
+        "communities": [
+          "Clubs seniors et CCAS",
+          "Groupes d'aidants familiaux",
+          "Associations de retraités"
+        ]
+      },
+      "frigoplacard": {
+        "pillar": "Autonomie",
+        "status": "Version bêta",
+        "audience": "Familles, étudiants, tous ceux qui cuisinent",
+        "problem": "Que faire avec ce qui reste dans le frigo, au lieu de le jeter ?",
+        "useCase": "Indiquer ce qu'il reste dans le frigo et obtenir des recettes et une liste de courses.",
+        "precaution": "Vérifiez toujours les dates et l'état des aliments.",
+        "communities": [
+          "Groupes anti-gaspillage et zéro déchet",
+          "Groupes cuisine du quotidien",
+          "Réseaux étudiants"
+        ]
+      },
+      "bonplan": {
+        "pillar": "Proximité",
+        "status": "Version bêta",
+        "audience": "Tous publics",
+        "problem": "Quelle est la meilleure astuce du quotidien que vous ayez apprise cette année ?",
+        "useCase": "Parcourir des trouvailles utiles par thème, voter pour ses préférées et ajouter les siennes.",
+        "precaution": "Astuces partagées à titre indicatif.",
+        "communities": [
+          "Groupes bons plans et astuces",
+          "Groupes de vie locale",
+          "Forums consommation"
+        ]
+      },
+      "echo": {
+        "pillar": "Création",
+        "status": "Version bêta",
+        "audience": "Curieux, amateurs de culture",
+        "problem": "Envie de découvrir autre chose que ce que les algorithmes vous proposent toujours ?",
+        "useCase": "Raconter sa journée pendant vingt secondes et recevoir cinq découvertes.",
+        "precaution": "Suggestions générées automatiquement, à prendre comme des pistes.",
+        "communities": [
+          "Groupes culture et découvertes",
+          "Communautés musique, livres et films",
+          "Forums curiosité"
+        ]
+      },
+      "accord": {
+        "pillar": "Création",
+        "status": "Version bêta",
+        "audience": "Tous publics, amateurs de musique",
+        "problem": "Quels sons vous font vraiment du bien ? Vous ne le savez peut-être pas encore.",
+        "useCase": "Écouter neuf extraits de cinq secondes et obtenir une playlist qui vous ressemble.",
+        "precaution": "Outil de bien-être, pas un soin.",
+        "communities": [
+          "Groupes musique et playlists",
+          "Communautés bien-être",
+          "Groupes de vie locale"
+        ]
+      },
+      "ecobatisol": {
+        "pillar": "Énergie",
+        "status": "Version bêta",
+        "audience": "Propriétaires, auto-constructeurs, collectivités",
+        "problem": "Panneaux solaires, récupération d'eau de pluie : combien votre maison pourrait-elle vraiment économiser ?",
+        "useCase": "Chiffrer l'autonomie solaire et la récupération d'eau de pluie d'une maison.",
+        "precaution": "Estimation d'aide à la réflexion : elle ne remplace pas une étude par un professionnel sur place.",
+        "communities": [
+          "Groupes autoconsommation solaire",
+          "Groupes rénovation énergétique et habitat",
+          "Forums autonomie et eau de pluie"
+        ]
+      },
+      "promptmagic": {
+        "pillar": "IA",
+        "status": "Version bêta",
+        "audience": "Porteurs de projet, associations, curieux du numérique",
+        "problem": "Vous avez une idée d'application utile, mais vous ne savez pas comment l'expliquer à un développeur ?",
+        "useCase": "Décrire son idée en quelques phrases et obtenir un cahier des charges prêt à construire.",
+        "precaution": "Le cahier des charges est un point de départ à relire et compléter.",
+        "communities": [
+          "Groupes entrepreneurs et porteurs de projet",
+          "Communautés no-code et IA",
+          "Associations"
+        ]
+      },
+      "sante-citoyenne": {
+        "pillar": "Proximité",
+        "status": "Version bêta",
+        "audience": "Tous publics, aidants",
+        "problem": "Comment prendre soin de son moral au quotidien, avec des outils simples ?",
+        "useCase": "Tenir un carnet du moral, faire un exercice de respiration, préparer sa pochette d'urgence.",
+        "precaution": "Ne remplace pas un professionnel de santé. En cas d'urgence : 15 ou 112. Détresse psychologique : 3114.",
+        "communities": [
+          "Groupes bien-être et santé mentale",
+          "Associations d'aidants",
+          "Groupes de vie locale"
+        ]
+      }
+    };
+
+    const GENERIC = {
+      pillar: "Proximité", status: "Version bêta", audience: "Tous publics",
+      useCase: "Essayer l'application directement dans le navigateur.",
+      precaution: "Application en cours d'évolution : vos retours aident à l'améliorer.",
+      communities: ["Groupes spécialisés sur les réseaux", "Groupes de vie locale", "Testeurs de l'écosystème Alphabette"]
+    };
+
+    function fromRegistry(a) {
+      const extra = PROMO[a.slug] || PROMO[a.id] || {};
+      const pitch = a.description || `${a.name} est une application de l'écosystème Alphabette.`;
+      return {
+        ...GENERIC,
+        problem: `Vous connaissez ${a.name} ?`,
+        ...extra,
+        id: a.id, name: a.name, url: a.url, pitch, gratuit: !!a.gratuit, official: true
+      };
+    }
+
+    const OBJECTIONS = [
+      {
+        q: "« C'est payant ? Quel est le piège ? »",
+        a: "Pas de piège : les applications s'utilisent librement aujourd'hui, et celles marquées « gratuites » le resteront. Un Pass est prévu pour soutenir le projet : 15 € TTC par an pour une application, ou 40 € TTC par an pour toutes, avec 7 jours d'essai."
+      },
+      {
+        q: "« Que faites-vous de mes données ? »",
+        a: "La plupart des applications gardent ce que vous saisissez dans votre navigateur, sur votre appareil. Quand vous utilisez l'intelligence artificielle, votre texte est envoyé au fournisseur d'IA avec votre propre clé. Rien n'est revendu."
+      },
+      {
+        q: "« Vos calculs solaires (ÉcoBâtiSol) remplacent un pro ? »",
+        a: "Non : ÉcoBâtiSol donne une estimation pour réfléchir et comparer. Avant de signer quoi que ce soit, il faut une étude sur place par un professionnel."
+      },
+      {
+        q: "« Encore une IA qui pense à notre place (IA Débat) ? »",
+        a: "Au contraire : IA Débat montre plusieurs IA qui se contredisent, pour entendre tous les arguments. Elles peuvent se tromper, et c'est vous qui jugez."
+      },
+      {
+        q: "« J'ai trouvé un bug ou un affichage bizarre sur téléphone ! »",
+        a: "Merci beaucoup pour ce retour ! Tu peux me dire ton modèle de téléphone, ton navigateur et la page concernée ? Je transmets pour correction."
+      },
+      {
+        q: "« J'ai une idée d'application, je fais comment ? »",
+        a: "Avec plaisir ! Décris-la dans Prompt Magic, qui en fait un cahier des charges : https://promptmagic.alphabette.fr — puis envoie-le nous."
+      }
+    ];
+
+    let apps = [];
+    let selectedAppId = "";
+    let selectedPlatform = "grupos";
+    let selectedAngle = "debat";
+
+    function readCustomApps() {
+      try { return JSON.parse(localStorage.getItem("alphabette_promo_custom") || "[]"); } catch (e) { return []; }
+    }
+    function saveCustomApps() {
+      try { localStorage.setItem("alphabette_promo_custom", JSON.stringify(apps.filter(a => !a.official))); } catch (e) {}
+    }
+
+    async function init() {
+      let official = [];
+      try {
+        const r = await fetch("/api/apps", { headers: { Accept: "application/json" } });
+        official = ((await r.json()).apps || []).map(fromRegistry);
+      } catch (e) {
+        document.getElementById("appList").innerHTML = '<p class="text-xs text-rose-300">Registre des applications indisponible : ouvrez cette page depuis alphabette.fr/promo/.</p>';
+      }
+      apps = [...readCustomApps(), ...official];
+      if (!apps.length) return;
+      selectedAppId = apps[0].id;
+      renderAppList();
+      renderObjections();
+      loadChecklist();
+      updateUI();
+    }
+
+    function getSelectedApp() {
+      return apps.find(a => a.id === selectedAppId) || apps[0];
+    }
+
+    function renderAppList() {
+      const filter = document.getElementById("pillarFilter").value;
+      const list = document.getElementById("appList");
+      const filtered = filter === "ALL" ? apps : apps.filter(a => a.pillar === filter);
+      document.getElementById("appCount").textContent = filtered.length;
+
+      list.innerHTML = filtered.map(app => {
+        const active = app.id === selectedAppId;
+        const badgeColor = app.status.includes("opérationnelle") || app.status.includes("bêta")
+          ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+          : "bg-amber-500/20 text-amber-300 border-amber-500/30";
+        return `
+          <div onclick="selectApp('${app.id}')" class="p-3 rounded-xl border transition cursor-pointer ${active ? 'bg-indigo-600/15 border-indigo-500 shadow-sm' : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'}">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="font-bold text-sm text-white">${app.name}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeColor}">${app.status}</span>
+            </div>
+            <p class="text-xs text-slate-400 line-clamp-2">${app.pitch}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function selectApp(id) {
+      selectedAppId = id;
+      renderAppList();
+      updateUI();
+    }
+
+    function setPlatform(plat) {
+      selectedPlatform = plat;
+      updateUI();
+    }
+
+    function setAngle(angle) {
+      selectedAngle = angle;
+      updateUI();
+    }
+
+    function updateUI() {
+      document.querySelectorAll(".plat-btn").forEach(btn => {
+        const active = btn.dataset.plat === selectedPlatform;
+        btn.className = `plat-btn px-3 py-2 rounded-lg text-xs font-semibold border transition text-center ${active ? 'bg-indigo-600 text-white border-indigo-500' : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'}`;
+      });
+
+      document.querySelectorAll(".angle-btn").forEach(btn => {
+        const active = btn.dataset.angle === selectedAngle;
+        btn.className = `angle-btn px-3 py-2 rounded-lg text-xs font-medium border transition text-left ${active ? 'bg-indigo-600/20 text-indigo-200 border-indigo-500' : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'}`;
+      });
+
+      const app = getSelectedApp();
+      document.getElementById("targetAppName").textContent = app.name;
+      document.getElementById("targetCommunities").innerHTML = (app.communities || [
+        "Groupes Facebook thématiques", "Communautés LinkedIn spécialisées", "Réseau local Montpellier / Lille"
+      ]).map(c => `<li class="flex items-center gap-2"><span class="text-indigo-400">▸</span> ${c}</li>`).join("");
+
+      generatePost();
+    }
+
+    function generatePost() {
+      const app = getSelectedApp();
+      const city = document.getElementById("citySelect").value;
+      const withDisclaimer = document.getElementById("includeDisclaimer").checked;
+      const cityIntro = city === "national" ? "" : ` (avis aux personnes du côté de ${city} 👋)`;
+
+      let text = "";
+      const disclaimer = `\n\nℹ️ Statut actuel : ${app.status}. Cet outil propose une estimation, une aide à la décision ou une première analyse à vérifier selon le contexte réel de votre projet. (${app.precaution})`;
+
+      if (selectedPlatform === "grupos") {
+        if (selectedAngle === "debat") {
+          text = `Bonjour à toutes et tous${cityIntro} !\n\nPetite question concrète pour le groupe : ${app.problem}\n\nDans le cadre du projet indépendant Alphabette, on développe **${app.name}**. L'idée est simple : ${app.pitch.toLowerCase()}\n\nConcrètement, ça permet de : ${app.useCase.toLowerCase()}\n\n👉 À tester directement en ligne : ${app.url}\n\nQu'est-ce qui vous manquerait le plus dans un outil comme celui-ci au quotidien ? Vos retours francs nous aident énormément !`;
+        } else if (selectedAngle === "usage") {
+          text = `Hello le groupe${cityIntro} !\n\nRetour d'expérience sur un besoin qu'on rencontre souvent (${app.audience.toLowerCase()}) :\n\nAvant : on perd du temps sur des outils lourds ou dispersés.\nL'approche qu'on teste avec **${app.name}** : ${app.useCase}\n\n${app.pitch}\n\n🔗 Accès direct en ligne : ${app.url}\n\nSi certains d'entre vous veulent essayer 2 minutes sur mobile ou PC et me dire si le parcours est fluide, je prends tous les avis !`;
+        } else if (selectedAngle === "testeur") {
+          text = `Bonjour${cityIntro} ! 🧪 Appel aux regards critiques !\n\nOn cherche 5 personnes parmi les ${app.audience.toLowerCase()} pour tester **${app.name}** en conditions réelles.\n\n🎯 L'objectif de l'outil : ${app.pitch}\n\nÇa se teste en quelques minutes, directement dans le navigateur :\n👉 ${app.url}\n\nEst-ce que l'interface vous paraît claire dès le premier coup d'œil ?`;
+        } else {
+          text = `Bonjour à tous${cityIntro},\n\nOn travaille actuellement sur l'écosystème numérique Alphabette avec une règle simple : créer des outils utiles, sobres et accessibles.\n\nFocus du jour sur la brique **${app.name}** : ${app.pitch}\n\nÀ découvrir librement ici : ${app.url}\n\nCurieux d'avoir votre ressenti sur cette approche !`;
+        }
+      } else if (selectedPlatform === "linkedin") {
+        text = `【 ÉCOSYSTÈME ALPHABETTE — FOCUS : ${app.name.toUpperCase()} 】\n\n${app.problem}\n\nChez Alphabette, à La Grande-Motte, nous construisons des applications utiles qui relient création, IA raisonnée, autonomie, énergie et vie locale${cityIntro}.\n\n🎯 Aujourd'hui, focus sur **${app.name}** :\n• Proposition : ${app.pitch}\n• Usage concret : ${app.useCase}\n• Publics : ${app.audience}\n\nPourquoi cette approche ? Parce que la technologie n'a de valeur que lorsqu'elle reste lisible, honnête sur ses limites et au service de l'autonomie humaine.\n\n🌐 Tester l'application en ligne : ${app.url}\n\n#Alphabette #InnovationResponsable #${app.name.replace(/\s+/g, '')} #NumériqueUtile`;
+      } else if (selectedPlatform === "insta") {
+        text = `✨ [CARROUSEL 6 SLIDES] — Découvrir ${app.name}\n\nSlide 1 (Titre) : ${app.problem}\nSlide 2 (Constat) : Trop d'outils complexes ou opaques pour les ${app.audience.toLowerCase()}.\nSlide 3 (L'outil) : ${app.pitch}\nSlide 4 (En pratique) : ${app.useCase}\nSlide 5 (Transparence) : Outil en statut "${app.status}", à retrouver sur alphabette.fr.\nSlide 6 (Action) : À tester via le lien en bio -> ${app.url}\n\n---\nLégende du post :\n${app.pitch}${cityIntro}\nUn outil de l'écosystème Alphabette à tester et faire évoluer avec vos retours 👇\n🔗 ${app.url}\n\n#Alphabette #${app.pillar} #CreationNumerique #OutilUtile`;
+      } else if (selectedPlatform === "youtube") {
+        text = `🎬 [SCRIPT SHORT / DESCRIPTION YOUTUBE — 45 SECONDES] : ${app.name}\n\n⏱️ 00:00 - 00:04 (Accroche) :\n"${app.problem}"\n\n⏱️ 00:04 - 00:18 (Problème & Solution à l'écran) :\n"Voici ${app.name}, l'une des applications de l'écosystème Alphabette. En clair : ${app.pitch}"\n\n⏱️ 00:18 - 00:35 (Démo en direct sur l'interface) :\n"Regardez comme c'est direct : ${app.useCase}"\n\n⏱️ 00:35 - 00:45 (Appel à l'action & Transparence) :\n"L'application est en ligne en statut ${app.status}. Le lien direct est en description : testez-la et dites-moi en commentaire ce qu'on doit améliorer !"\n\n🔗 Lien à mettre en description YouTube : ${app.url}`;
+      }
+
+      if (withDisclaimer) {
+        text += disclaimer;
+      }
+
+      document.getElementById("postOutput").value = text;
+      checkEthics();
+    }
+
+    function checkEthics() {
+      const text = document.getElementById("postOutput").value;
+      document.getElementById("charCount").textContent = `${text.length} caractères`;
+
+      const lower = text.toLowerCase();
+      const foundForbidden = FORBIDDEN_WORDS.filter(w => lower.includes(w));
+      const app = getSelectedApp();
+      const hasStatus = lower.includes(app.status.toLowerCase()) || lower.includes("prototype") || lower.includes("bêta") || lower.includes("démonstrateur") || lower.includes("estimation");
+
+      const banner = document.getElementById("ethicsBanner");
+
+      if (foundForbidden.length > 0) {
+        banner.className = "rounded-lg p-3 text-xs border bg-rose-500/15 border-rose-500/40 text-rose-200 flex items-start gap-2.5";
+        banner.innerHTML = `<span class="text-base">🚨</span><div><strong>Alerte Cerbère Éthique (Section 11) :</strong> Terme interdit détecté (${foundForbidden.join(", ")}). Supprime toute promesse absolue avant publication.</div>`;
+      } else if (!hasStatus) {
+        banner.className = "rounded-lg p-3 text-xs border bg-amber-500/15 border-amber-500/40 text-amber-200 flex items-start gap-2.5";
+        banner.innerHTML = `<span class="text-base">⚠️</span><div><strong>Vigilance Cerbère Éthique :</strong> Pense à préciser le niveau de maturité de l'outil (${app.status}) pour éviter toute confusion.</div>`;
+      } else {
+        banner.className = "rounded-lg p-3 text-xs border bg-emerald-500/15 border-emerald-500/40 text-emerald-200 flex items-start gap-2.5";
+        banner.innerHTML = `<span class="text-base">🛡️</span><div><strong>Validation Cerbère Éthique OK :</strong> Aucun terme interdit détecté, statut ("${app.status}") et ton responsable respectés. Prêt à diffuser !</div>`;
+      }
+    }
+
+    function copyPost() {
+      const textarea = document.getElementById("postOutput");
+      (navigator.clipboard ? navigator.clipboard.writeText(textarea.value) : Promise.reject()).catch(() => { textarea.select(); document.execCommand("copy"); });
+      const btn = document.getElementById("copyBtn");
+      const original = btn.innerHTML;
+      btn.innerHTML = `<span>✅ Copié dans le presse-papier !</span>`;
+      btn.classList.replace("bg-indigo-600", "bg-emerald-600");
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.replace("bg-emerald-600", "bg-indigo-600");
+      }, 1800);
+    }
+
+    function renderObjections() {
+      const container = document.getElementById("objectionsList");
+      container.innerHTML = OBJECTIONS.map((obj, idx) => `
+        <div onclick="copyObjection(${idx})" class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 transition cursor-pointer group">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <span class="font-semibold text-xs text-indigo-300 group-hover:text-indigo-200">${obj.q}</span>
+            <span id="objBadge-${idx}" class="text-[10px] text-slate-400 group-hover:text-white">Copier</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">${obj.a}</p>
+        </div>
+      `).join("");
+    }
+
+    function copyObjection(idx) {
+      navigator.clipboard.writeText(OBJECTIONS[idx].a);
+      const badge = document.getElementById(`objBadge-${idx}`);
+      badge.textContent = "✅ Copié !";
+      badge.className = "text-[10px] text-emerald-400 font-bold";
+      setTimeout(() => {
+        badge.textContent = "Copier";
+        badge.className = "text-[10px] text-slate-400 group-hover:text-white";
+      }, 1500);
+    }
+
+    // Modal Nouvelle App
+    function openNewAppModal() {
+      document.getElementById("appModal").classList.remove("hidden");
+      document.getElementById("appModal").classList.add("flex");
+    }
+
+    function closeNewAppModal() {
+      document.getElementById("appModal").classList.add("hidden");
+      document.getElementById("appModal").classList.remove("flex");
+    }
+
+    function saveNewApp() {
+      const name = document.getElementById("modName").value.trim();
+      const pillar = document.getElementById("modPillar").value;
+      const status = document.getElementById("modStatus").value;
+      const url = document.getElementById("modUrl").value.trim() || "https://alphabette.fr/apps";
+      const problem = document.getElementById("modProblem").value.trim() || `Comment simplifier vos usages autour de ${name} ?`;
+      const pitch = document.getElementById("modPitch").value.trim() || `${name} est une nouvelle application de l'écosystème Alphabette.`;
+      const audience = document.getElementById("modAudience").value.trim() || "Utilisateurs, citoyens et professionnels";
+
+      if (!name) return alert("Indique au moins le nom de l'application.");
+
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, "") + "_" + Date.now().toString().slice(-3);
+      const newApp = {
+        id, name, pillar, status, url, audience, problem, pitch,
+        useCase: `Utiliser ${name} directement en ligne sans friction pour répondre à un besoin concret.`,
+        precaution: "Outil en cours d'évolution, vos retours permettent d'affiner les fonctionnalités.",
+        communities: ["Groupes spécialisés sur les réseaux", "Communautés locales Montpellier / Lille", "Testeurs de l'écosystème Alphabette"]
+      };
+
+      apps.unshift(newApp);
+      saveCustomApps();
+      selectedAppId = id;
+      closeNewAppModal();
+      renderAppList();
+      updateUI();
+    }
+
+    // Export / Import JSON
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apps, null, 2));
+      const a = document.createElement("a");
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", "alphabette_promo_hub_data.json");
+      a.click();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            apps = [...imported.map(a => ({ ...a, official: false })), ...apps.filter(a => a.official)];
+            saveCustomApps();
+            selectedAppId = apps[0].id;
+            renderAppList();
+            updateUI();
+          }
+        } catch (err) {
+          alert("Fichier JSON invalide.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Checklist quotidienne
+    function saveChecklist() {
+      const states = Array.from(document.querySelectorAll(".routine-cb")).map(cb => cb.checked);
+      localStorage.setItem("alphabette_routine", JSON.stringify(states));
+    }
+
+    function loadChecklist() {
+      const saved = JSON.parse(localStorage.getItem("alphabette_routine") || "[]");
+      document.querySelectorAll(".routine-cb").forEach((cb, i) => {
+        cb.checked = !!saved[i];
+      });
+    }
+
+    function resetChecklist() {
+      document.querySelectorAll(".routine-cb").forEach(cb => cb.checked = false);
+      saveChecklist();
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
