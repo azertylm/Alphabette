@@ -13,6 +13,18 @@
       "description": "Neuf extraits de cinq secondes pour trouver les sons qui vous font du bien, et la playlist qui va avec."
     },
     {
+      "id": "info",
+      "name": "ALPHABETTE INFO",
+      "slug": "info",
+      "icon": "Newspaper",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/info.html",
+      "description": "Vos flux d'actualités dans une page calme, avec dix outils pour creuser chaque article.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
+    },
+    {
       "id": "bonplan",
       "name": "BON PLAN",
       "slug": "bonplan",
@@ -99,6 +111,18 @@
       "createdAt": "2026-10-17T00:00:00.000Z",
       "updatedAt": "2026-11-10T14:35:00.000Z",
       "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements."
+    },
+    {
+      "id": "kurate",
+      "name": "KURATE",
+      "slug": "kurate",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/kurate/",
+      "description": "Choisissez vos thèmes : Kurate prépare vos recherches d'actualités et de vidéos du jour.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
     },
     {
       "id": "oeil-atelier",
@@ -188,6 +212,18 @@
       "updatedAt": "2026-11-10T13:40:00.000Z",
       "subdomain": "franceservice",
       "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement."
+    },
+    {
+      "id": "studioinfo",
+      "name": "STUDIOINFO",
+      "slug": "studioinfo",
+      "icon": "Lightbulb",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/studioinfo/",
+      "description": "Vingt modules pour résumer, vérifier et explorer un sujet avec l'IA, sources à l'appui.",
+      "createdAt": "2026-11-10T22:04:24.000Z",
+      "updatedAt": "2026-11-10T22:04:24.000Z"
     }
   ]
 }

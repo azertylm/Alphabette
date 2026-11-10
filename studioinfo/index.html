@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudioInfo · 20 outils pour comprendre un sujet</title>
+    <meta name="description" content="Vingt modules pour résumer, vérifier et explorer un sujet avec l'IA Gemini et YouTube, avec votre propre clé.">
+    <style>
+        /* --- DESIGN SYSTEM SIGNATURE --- */
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131a26;
+            --bg-input: #1c2635;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #243249;
+            --radius: 12px;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- API CONFIG BOX --- */
+        .api-config {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: var(--radius);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .api-config input {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            width: 200px;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        /* --- CATEGORIES & CARDS --- */
+        .section-title {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem 0;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .grid-ideas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- INTERACTION & WORKSPACE --- */
+        .workspace {
+            position: sticky;
+            top: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: var(--radius);
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .workspace h2 {
+            font-size: 1.4rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 0.75rem;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            height: 80px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            border-radius: var(--radius);
+            resize: none;
+            font-family: inherit;
+        }
+
+        .btn-run {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-run:hover { opacity: 0.9; }
+
+        /* --- OUTPUT PANEL --- */
+        .output-zone {
+            flex: 1;
+            min-height: 160px;
+            overflow-y: auto;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .video-item img {
+            width: 100%;
+            border-radius: 6px;
+        }
+        .video-item p {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        .video-item a, .sources a, .keys-help a, .foot a { color: var(--accent); }
+        .card.active { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .card:focus-visible { outline: 2px solid var(--accent); }
+        .sources { margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); white-space: normal; }
+        .sources li { margin-left: 1.1rem; }
+        .keys-help { font-size: 0.8rem; color: var(--text-muted); max-width: 440px; }
+        .keys-help summary { cursor: pointer; color: var(--accent); }
+        .note-ia { font-size: 0.78rem; color: var(--text-muted); }
+        .foot { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 2rem; }
+        /* Téléphone : l'espace de travail passe en premier et n'est plus collé à l'écran. */
+        @media (max-width: 1024px) {
+            body { padding: 1rem; }
+            .workspace { position: static; height: auto; order: -1; padding: 1.25rem; }
+            .api-config { flex-direction: column; width: 100%; }
+            .api-config input { width: 100%; }
+            .output-zone { max-height: 60vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>StudioInfo</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Intelligence collective & Flux multimédia</p>
+        </div>
+        <div>
+            <div class="api-config">
+                <input type="password" id="geminiKey" placeholder="Clé API Gemini" aria-label="Clé API Gemini" autocomplete="off" onchange="saveKeys()">
+                <input type="password" id="youtubeKey" placeholder="Clé API YouTube" aria-label="Clé API YouTube" autocomplete="off" onchange="saveKeys()">
+            </div>
+            <details class="keys-help">
+                <summary>Où trouver ces clés ?</summary>
+                <p>Clé Gemini : <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Clé YouTube : <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud Console</a> (activer « YouTube Data API v3 », puis créer une clé). Vos clés restent dans ce navigateur et ne sont envoyées qu'à Google.</p>
+            </details>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- GAUGHE : LES 20 MODULES -->
+        <div class="panel-ideas">
+            
+            <div class="section-title">Actualités & Synthèses</div>
+            <div class="grid-ideas">
+                <div class="card" onclick="selectModule('Résumé Express', 'Synthétise les dernières 24h sur le sujet suivant de manière ultra-concise avec puces importantes :', 'gemini')">
+                    <h3>Résumé Express</h3>
+                    <p>L'essentiel d'un sujet d'actualité en 5 puces nettes.</p>
+                </div>
+                <div class="card" onclick="selectModule('Décryptage de Tendance', 'Analyse l\'émergence et l\'impact de la tendance actuelle suivante :', 'gemini')">
+                    <h3>Décryptage de Tendance</h3>
+                    <p>Comprendre les mouvements de fond du web et de la société.</p>
+                </div>
+                <div class="card" onclick="selectModule('Revue de Presse', 'Donne-moi 3 angles médiatiques différents (neutre, critique, enthousiaste) sur :', 'gemini')">
+                    <h3>Revue de Presse</h3>
+                    <p>Analyse multi-perspective d'un événement précis.</p>
+                </div>
+                <div class="card" onclick="selectModule('Détecteur de Fake News', 'Analyse la véracité et lister les biais potentiels ou rumeurs concernant :', 'gemini')">
+                    <h3>Vérification des Faits</h3>
+                    <p>Esprit critique appliqué sur un sujet ou une affirmation.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Arts Visuels & Image</div>
+            <div class="grid-ideas">
+                <div class="card" onclick="selectModule('Brief Créatif Photo', 'Génère un brief artistique détaillé de photographie (concept, gestion de la lumière, composition abstraite ou réelle) basé sur le mot-clé :', 'gemini')">
+                    <h3>Brief Créatif Photo</h3>
+                    <p>Idées de concepts visuels et gestion avancée de la lumière.</p>
+                </div>
+                <div class="card" onclick="selectModule('Analyse de Style Visuel', 'Explique les fondements esthétiques et techniques du style artistique suivant :', 'gemini')">
+                    <h3>Analyse Esthétique</h3>
+                    <p>Décortiquer les mouvements artistiques ou codes de l'image.</p>
+                </div>
+                <div class="card" onclick="selectModule('Tutos Techniques', 'Tutoriels avancés d\'imagerie et de techniques visuelles', 'youtube')">
+                    <h3>Tutos Vidéo</h3>
+                    <p>Recherche ciblée de démonstrations techniques sur YouTube.</p>
+                </div>
+                <div class="card" onclick="selectModule('Curateur d\'Inspirations', 'Donne-moi 5 pistes de projets mêlant art technologique et visuels abstraits autour de :', 'gemini')">
+                    <h3>Inspirations Hybrides</h3>
+                    <p>Croisement entre techniques modernes et arts graphiques.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Environnement & Sciences</div>
+            <div class="grid-ideas">
+                <div class="card" onclick="selectModule('Agroclimatologie & Climat', 'Explique les impacts climatiques actuels et les projections à court terme pour :', 'gemini')">
+                    <h3>Climat & Agroclimatologie</h3>
+                    <p>Suivi des interactions entre météo, agriculture et écosystèmes.</p>
+                </div>
+                <div class="card" onclick="selectModule('Synthèse de Rapport', 'Rends simple et accessible les conclusions majeures des études écologiques sur :', 'gemini')">
+                    <h3>Rapports Environnementaux</h3>
+                    <p>Vulgarisation de données complexes sur la biodiversité ou le climat.</p>
+                </div>
+                <div class="card" onclick="selectModule('Innovations Vertes', 'Quelles sont les dernières percées technologiques ou low-tech concernant :', 'gemini')">
+                    <h3>Innovations Vertes</h3>
+                    <p>Veille sur les solutions écologiques et énergétiques de demain.</p>
+                </div>
+                <div class="card" onclick="selectModule('Phénomènes Terrestres', 'Explique de manière scientifique mais accessible le fonctionnement de :', 'gemini')">
+                    <h3>Phénomènes Terrestres</h3>
+                    <p>Comprendre les grands cycles géologiques ou atmosphériques.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Code & Web Dev</div>
+            <div class="grid-ideas">
+                <div class="card" onclick="selectModule('Compagnon UI/UX', 'Propose une structure HTML/CSS moderne, propre et accessible (thème, variables, flexbox/grid) pour un composant de type :', 'gemini')">
+                    <h3>Composants UI/UX</h3>
+                    <p>Idées de structures HTML/CSS pures, fluides et réutilisables.</p>
+                </div>
+                <div class="card" onclick="selectModule('Simplificateur de Docs', 'Résume les syntaxes clés et cas d\'usage principaux de l\'outil/API suivant :', 'gemini')">
+                    <h3>Simplificateur de Docs</h3>
+                    <p>Aller droit à l'essentiel d'une documentation technique.</p>
+                </div>
+                <div class="card" onclick="selectModule('Brainstorm d\'Apps', 'Génère 3 concepts d\'applications web minimalistes d\'utilité publique basées sur :', 'gemini')">
+                    <h3>Idées d'Applications</h3>
+                    <p>Concepts d'outils web légers axés sur l'expérience utilisateur.</p>
+                </div>
+                <div class="card" onclick="selectModule('Assistant Debug', 'Quelles sont les causes courantes et les résolutions pour l\'erreur ou le comportement suivant en JS/CSS :', 'gemini')">
+                    <h3>Debug de Poche</h3>
+                    <p>Analyse rapide de comportements inattendus dans le code.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Culture & Plume</div>
+            <div class="grid-ideas">
+                <div class="card" onclick="selectModule('Analyse Textuelle', 'Analyse la structure rhétorique, le rythme et le style d\'écriture de :', 'gemini')">
+                    <h3>Analyse de Style</h3>
+                    <p>Étude de la rythmique, de la poésie ou de la chanson d'auteur.</p>
+                </div>
+                <div class="card" onclick="selectModule('Docu-Curation', 'Documentaires de fond et reportages', 'youtube')">
+                    <h3>Documentaires</h3>
+                    <p>Sélection de contenus vidéo longs et qualitatifs sur YouTube.</p>
+                </div>
+                <div class="card" onclick="selectModule('Grandes Biographies', 'Raconte le parcours, les engagements clés et les tournants de la vie de :', 'gemini')">
+                    <h3>Parcours de Vie</h3>
+                    <p>Synthèse de profils inspirants, d'artistes ou de penseurs.</p>
+                </div>
+                <div class="card" onclick="selectModule('Courriers Fluides', 'Rédige une lettre ou un canevas administratif formel, clair et percutant en français pour :', 'gemini')">
+                    <h3>La Plume Administrative</h3>
+                    <p>Modèles de requêtes ou courriers soignés et structurés.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DROITE : ZONE D'INTERACTION ET RÉSULTAT -->
+        <div class="workspace">
+            <h2 id="moduleTitle">Sélectionnez un module</h2>
+            <div class="input-group">
+                <textarea id="userInput" aria-label="Votre sujet" placeholder="Saisissez vos mots-clés ou le contexte ici..."></textarea>
+            </div>
+            <button class="btn-run" onclick="executeRequest()">Lancer la recherche</button>
+            <p class="note-ia">Réponses rédigées par une IA : elles peuvent contenir des erreurs. Vérifiez les faits importants à la source.</p>
+            <div class="output-zone" id="outputZone" aria-live="polite">Le résultat s'affichera ici...</div>
+        </div>
+    </div>
+    <p class="foot">Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+
+    <script>
+        let currentPromptPrefix = "";
+        let currentEngine = "gemini";
+        let currentTitle = "";
+
+        // Modules qui parlent d'actualité ou de faits récents : l'IA cherche alors sur le web
+        // (recherche Google intégrée à Gemini) au lieu de répondre de mémoire, et cite ses sources.
+        const MODULES_WEB = ['Résumé Express', 'Décryptage de Tendance', 'Revue de Presse', 'Détecteur de Fake News',
+            'Agroclimatologie & Climat', 'Synthèse de Rapport', 'Innovations Vertes'];
+
+        function lire(cle) { try { return localStorage.getItem(cle) || ''; } catch (e) { return ''; } }
+        function esc(t) {
+            return String(t).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        window.onload = function() {
+            document.getElementById('geminiKey').value = lire('geminiKey');
+            document.getElementById('youtubeKey').value = lire('youtubeKey');
+            // Les cartes deviennent utilisables au clavier.
+            document.querySelectorAll('.card').forEach(card => {
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.card.active').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    if (window.matchMedia('(max-width: 1024px)').matches) document.querySelector('.workspace').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        };
+
+        function saveKeys() {
+            try {
+                localStorage.setItem('geminiKey', document.getElementById('geminiKey').value.trim());
+                localStorage.setItem('youtubeKey', document.getElementById('youtubeKey').value.trim());
+            } catch (e) {}
+        }
+
+        function selectModule(title, promptPrefix, engine) {
+            document.getElementById('moduleTitle').innerText = title;
+            currentTitle = title;
+            currentPromptPrefix = promptPrefix;
+            currentEngine = engine;
+            document.getElementById('userInput').placeholder = `Précisions pour : ${title}...`;
+        }
+
+        async function executeRequest() {
+            const userInput = document.getElementById('userInput').value.trim();
+            const outputZone = document.getElementById('outputZone');
+
+            if (!currentTitle) { outputZone.innerText = "Choisissez d'abord un module dans la liste."; return; }
+            if (!userInput) { outputZone.innerText = "Veuillez saisir un mot-clé ou un sujet."; return; }
+
+            outputZone.innerText = "Chargement en cours...";
+
+            if (currentEngine === 'gemini') {
+                const key = document.getElementById('geminiKey').value.trim();
+                if (!key) { outputZone.innerText = "Clé API Gemini manquante : ajoutez-la en haut de la page (« Où trouver ces clés ? »)."; return; }
+
+                const avecWeb = MODULES_WEB.includes(currentTitle);
+                const body = { contents: [{ parts: [{ text: `${currentPromptPrefix} ${userInput}\n\nRéponds en français. Si tu n'es pas sûr d'un fait, dis-le.` }] }] };
+                if (avecWeb) body.tools = [{ google_search: {} }];
+
+                try {
+                    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+                        body: JSON.stringify(body)
+                    });
+                    const data = await response.json();
+                    if (data.error) { outputZone.innerText = "Gemini a refusé la demande : " + (data.error.message || "erreur inconnue"); return; }
+                    const candidat = data.candidates && data.candidates[0];
+                    const texte = candidat && candidat.content && candidat.content.parts
+                        ? candidat.content.parts.map(p => p.text || '').join('') : '';
+                    if (!texte) { outputZone.innerText = "Réponse vide. Reformulez votre sujet et réessayez."; return; }
+
+                    let html = esc(texte);
+                    const morceaux = (candidat.groundingMetadata && candidat.groundingMetadata.groundingChunks) || [];
+                    const sources = morceaux.filter(m => m.web && /^https?:\/\//.test(m.web.uri || ''));
+                    if (sources.length) {
+                        html += '<div class="sources"><strong>Sources consultées :</strong><ul>' +
+                            sources.map(m => `<li><a href="${esc(m.web.uri)}" target="_blank" rel="noopener">${esc(m.web.title || m.web.uri)}</a></li>`).join('') + '</ul></div>';
+                    } else if (avecWeb) {
+                        html += '<div class="sources">Aucune source web n\'a été renvoyée : cette réponse vient de la mémoire de l\'IA et peut être dépassée.</div>';
+                    }
+                    outputZone.innerHTML = html;
+                } catch (err) {
+                    outputZone.innerText = "Erreur de connexion avec Gemini.";
+                }
+
+            } else if (currentEngine === 'youtube') {
+                const key = document.getElementById('youtubeKey').value.trim();
+                if (!key) { outputZone.innerText = "Clé API YouTube manquante : ajoutez-la en haut de la page (« Où trouver ces clés ? »)."; return; }
+
+                try {
+                    const query = encodeURIComponent(`${currentPromptPrefix} ${userInput}`);
+                    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&relevanceLanguage=fr&q=${query}&type=video&key=${encodeURIComponent(key)}`);
+                    const data = await response.json();
+                    if (data.error) { outputZone.innerText = "YouTube a refusé la demande : " + (data.error.message || "erreur inconnue"); return; }
+
+                    if (data.items && data.items.length > 0) {
+                        outputZone.innerHTML = '<div class="video-grid">' + data.items.map(item => `
+                            <div class="video-item">
+                                <a href="https://www.youtube.com/watch?v=${encodeURIComponent(item.id.videoId)}" target="_blank" rel="noopener">
+                                    <img src="${esc(item.snippet.thumbnails.medium.url)}" alt="">
+                                    <p><strong>${esc(item.snippet.title)}</strong></p>
+                                </a>
+                            </div>`).join('') + '</div>';
+                    } else {
+                        outputZone.innerText = "Aucune vidéo trouvée.";
+                    }
+                } catch (err) {
+                    outputZone.innerText = "Erreur de connexion avec l'API YouTube.";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
