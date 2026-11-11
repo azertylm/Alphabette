@@ -1,4 +1,4 @@
-# État du projet Alphabette — 10 novembre 2026 (soir)
+# État du projet Alphabette — 11 novembre 2026
 
 ## En ligne
 - alphabette.fr sur OVH (hébergement Perso, statique). 15 applications, chacune sur `<clé>.alphabette.fr`, plus proxilien.fr et proxilien.eu.
@@ -84,18 +84,32 @@ Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur
 - Non testé ici : la lecture réelle dans les lecteurs des plateformes et la récupération des titres (plateformes injoignables depuis l'atelier). Testés : reconnaissance des liens, listes, partage, historique, sauvegarde, affichage téléphone et BIG.
 - Fonctions d'Orbit-v4 non reprises : regarder à plusieurs, blind test, suggestions par goûts, analyses IA, export de clips, diffusion VLC / Freebox (ces trois dernières dépendaient de l'extraction).
 
+## 11/11 : Révolution repartie de zéro (demandé par Valentin)
+- Plus aucune donnée simulée : l'ancien prototype (assemblée, sections, livre public, votes simulés) est retiré (récupérable : commit `b9a2981` du dépôt). Les anciennes données restées dans les navigateurs sont effacées.
+- **À la une** : à chaque publication (toutes les 3 h, de 6 h à 22 h), `scripts/actualite.mjs` lit 37 flux (franceinfo + Google Actualités par thème et par région) et écrit `actu.json` (~70 sujets). Filtres : presse française d'information générale seulement (liste dans `src/revolution/reperes.json`, titres très engagés exclus des deux bords), au moins un thème de vie publique, faits divers / sport / pub / éditos écartés, un sujet régional doit nommer sa région. Question neutre selon le type : « Ce sujet compte-t-il pour vous ? », « Sur cette mesure… : plutôt pour / contre / je ne sais pas », « Soutenez-vous ce mouvement ? ». Échantillon de 40 sujets lisible dans le journal du workflow.
+- **Pour toi** : région + sujets choisis, gardés sur l'appareil ; l'ordre change selon la région, les sujets et la fraîcheur.
+- **Questions** : syndicats, associations, collectifs, élus, citoyens publient une question (2 à 4 réponses), la partagent (lien, QR code à imprimer), voient les résultats ; nom « déclaré, non vérifié » ; signalement (masquée à 5) ; retrait par l'auteur. Résultats affichés seulement après sa propre réponse ; « consultation ouverte, pas un sondage ».
+- **Recueil partagé (Firestore, projet Firebase d'Info Perso, collections `revolution_*`) : PAS ENCORE OUVERT.** Il faut publier les règles `firebase/regles-completes.rules` du dépôt Révolution (console Firebase → Firestore → base d'Info Perso → Règles), vérifier que la connexion anonyme est activée et que `revolution.alphabette.fr` est un domaine autorisé. Règles non testées (émulateur non téléchargeable depuis l'atelier) : à tester en ligne juste après publication. En attendant, réponses gardées sur l'appareil et questions « en attente », l'appli le dit.
+
+## 11/11 : IA Débat relue (hors compte local)
+- Chaque réplique dit quelle IA l'a vraiment écrite ; sans clé, c'est Gemini qui écrit pour les six orateurs : affiché « écrit par Gemini, à la manière de ChatGPT » (bulle, mode lecture, exports).
+- Vote du public : les votes inventés de départ (18, 24, 15…) sont retirés, « sur cet appareil ».
+- Zone de saisie : ne déborde plus en 390 px.
+- À revoir : modèles par défaut anciens (`claude-3-5-haiku-20241022`, `grok-2-1212`, `gpt-4o-mini`) ; mention « Données hébergées en UE » (Gemini ne l'est pas forcément) ; « compte Alphabette » local.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
-2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
+2. **Révolution** — ouvrir le recueil partagé (règles Firebase à publier avec Valentin, puis test en ligne).
 3. **L'Œil de l'Atelier** — relire les modèles de contrats et de factures avec un professionnel avant de les présenter comme utilisables ; renseigner e-mail et téléphone dans le Profil Artiste pour que le QR code fonctionne.
 4. **Accord** — vérifier sur un vrai téléphone que la prévision météo s'affiche (non testable depuis l'atelier de Claude).
-5. Applis pas encore relues : IA Débat (hors Firebase), et un passage « téléphone 390 px » systématique sur les 15.
+5. Un passage « téléphone 390 px » systématique sur toutes les applis ; IA Débat : modèles par défaut à mettre à jour.
 
 ## En pause (ne pas y toucher)
 Lidarsol, Osolar, serveur ProxiLien, domaines Orbit et Info Perso.
 
 ## Pistes pour la suite
-- Vrais votes pour Révolution et vrai livre d'or pour l'Atelier : il faut un petit serveur ou Firebase (déjà utilisé par Info Perso). Sans cela, tout reste sur l'appareil.
+- Vrai livre d'or pour l'Atelier : même modèle que le recueil partagé de Révolution (Firebase).
+- Révolution : badge « organisation vérifiée » pour les syndicats et associations ; résultats par région (si Valentin l'accepte) ; IA Débat qui débat des questions du moment de Révolution.
 - Contrôle automatique mensuel des chiffres officiels (aides, plafonds, numéros utiles) dans Senior Bon Plan, BON PLAN, Santé Citoyenne, France Service.
 - Page « Ce que fait vraiment chaque appli » sur le hub (ce qui marche sans clé, ce qui demande une clé IA, ce qui est une démonstration).
 - Test automatique « téléphone » dans le workflow, pour bloquer une publication qui déborde de l'écran.
