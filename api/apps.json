@@ -113,6 +113,42 @@
       "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché."
     },
     {
+      "id": "dico-loufoque",
+      "name": "LE DICO LOUFOQUE",
+      "slug": "dico-loufoque",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/dico-loufoque/",
+      "description": "Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.",
+      "createdAt": "2026-11-11T12:34:30.000Z",
+      "updatedAt": "2026-11-11T12:34:30.000Z"
+    },
+    {
+      "id": "juste-chiffre",
+      "name": "LE JUSTE CHIFFRE",
+      "slug": "juste-chiffre",
+      "icon": "Lightbulb",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/juste-chiffre/",
+      "description": "Devinez un chiffre réel au plus près : hauteurs, dates, distances. Chaque réponse cite sa source.",
+      "createdAt": "2026-11-11T12:34:30.000Z",
+      "updatedAt": "2026-11-11T12:34:30.000Z"
+    },
+    {
+      "id": "memo-meninges",
+      "name": "MÉMO-MÉNINGES",
+      "slug": "memo-meninges",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/memo-meninges/",
+      "description": "Cinq minutes de petits jeux de mémoire et de calcul par jour, avec de gros boutons et sans chronomètre.",
+      "createdAt": "2026-11-11T12:34:30.000Z",
+      "updatedAt": "2026-11-11T12:34:30.000Z"
+    },
+    {
       "id": "promptmagic",
       "name": "PROMPT MAGIC",
       "slug": "promptmagic",

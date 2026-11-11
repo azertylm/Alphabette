@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mémo-Méninges · cinq minutes de jeux pour la mémoire</title>
+<meta name="description" content="Trois petits jeux par jour pour faire travailler sa mémoire et sa logique, avec de gros boutons et sans chronomètre.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#0f766e; --okf:#dcfce7; --ok:#15803d; --nonf:#fee2e2; --non:#b91c1c; }
+  @media (prefers-color-scheme: dark) { :root { --fond:#0c1614; --carte:#13211e; --encre:#f0fdfa; --doux:#99f6e4; --trait:#234039; --acc:#2dd4bf; --okf:#14532d; --ok:#86efac; --nonf:#7f1d1d; --non:#fca5a5; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  h2 { font-size: 28px; font-weight: 900; line-height: 1.15; }
+  .intro { color: var(--doux); margin: 10px 0 20px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  .carte + .carte { margin-top: 14px; }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
+  .consigne { color: var(--doux); margin: 6px 0 16px; }
+  .gros { font: inherit; width: 100%; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; margin-top: 16px; }
+  @media (prefers-color-scheme: dark) { .gros { color: #04211d; } }
+  .gros.clair { background: transparent; color: var(--acc); }
+  button:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+  .menu { display: grid; gap: 12px; margin-top: 14px; }
+  .menu button { font: inherit; display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); color: var(--encre); cursor: pointer; }
+  .menu button:hover { border-color: var(--acc); }
+  .menu .ico { font-size: 34px; }
+  .menu strong { display: block; font-size: 22px; }
+  .menu span span { color: var(--doux); font-size: 17px; }
+  /* Paires */
+  .paires { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .paires button { aspect-ratio: 1; font-size: 40px; border-radius: 16px; border: 2px solid var(--trait); background: color-mix(in srgb, var(--acc) 14%, var(--carte)); color: var(--encre); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .paires button.ouverte { background: var(--carte); border-color: var(--acc); }
+  .paires button.trouvee { background: var(--okf); border-color: var(--ok); cursor: default; }
+  @media (max-width: 420px) { .paires { grid-template-columns: repeat(3, 1fr); } .paires button { font-size: 44px; } }
+  /* Suite */
+  .pads { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pads button { font: inherit; font-size: 44px; font-weight: 900; padding: 26px 8px; border-radius: 20px; border: 4px solid transparent; color: #fff; cursor: pointer; opacity: .55; }
+  .pads button:nth-child(1) { background: #b91c1c; } .pads button:nth-child(2) { background: #1d4ed8; }
+  .pads button:nth-child(3) { background: #15803d; } .pads button:nth-child(4) { background: #a16207; }
+  .pads button.allume { opacity: 1; border-color: var(--encre); transform: scale(1.03); }
+  .pads.actif button { opacity: .9; }
+  /* Calcul */
+  .operation { font-size: 54px; font-weight: 900; text-align: center; margin: 8px 0 18px; color: var(--acc); font-variant-numeric: tabular-nums; }
+  .reponses { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .reponses button { font: inherit; font-size: 32px; font-weight: 900; padding: 20px 8px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); color: var(--encre); cursor: pointer; }
+  .reponses button.vrai { background: var(--okf); border-color: var(--ok); } .reponses button.faux { background: var(--nonf); border-color: var(--non); }
+  .message { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--acc) 12%, transparent); font-weight: 700; }
+  .centre { text-align: center; }
+  .score { font-size: 48px; font-weight: 900; color: var(--acc); line-height: 1.1; }
+  .bilan { display: grid; gap: 8px; margin-top: 12px; text-align: left; }
+  .bilan div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-radius: 12px; background: color-mix(in srgb, var(--acc) 10%, transparent); }
+  .pied { margin-top: 28px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="memo-meninges" data-nom="Mémo-Méninges" data-sous-titre="Cinq minutes de jeux pour la mémoire" data-accent="#0f766e"></script>
+<main>
+  <section id="accueil">
+    <h1>Cinq minutes de jeux, <em>pour garder l'esprit vif.</em></h1>
+    <p class="intro">Trois petits jeux, de gros boutons, pas de chronomètre. Prenez votre temps.</p>
+    <div class="carte">
+      <p id="serie" style="font-weight:800;"></p>
+      <button class="gros" id="seance" type="button">Commencer la séance du jour</button>
+      <p class="consigne" style="margin:14px 0 0;">Ou choisissez un seul jeu :</p>
+      <div class="menu">
+        <button type="button" data-jeu="paires"><span class="ico" aria-hidden="true">🃏</span><span><strong>Les paires</strong><span>Retrouvez les cartes identiques.</span></span></button>
+        <button type="button" data-jeu="suite"><span class="ico" aria-hidden="true">🔢</span><span><strong>La suite</strong><span>Répétez une suite de plus en plus longue.</span></span></button>
+        <button type="button" data-jeu="calcul"><span class="ico" aria-hidden="true">➕</span><span><strong>Le calcul</strong><span>Huit petites opérations de tête.</span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="paires" hidden>
+    <div class="carte">
+      <div class="suivi"><span>Les paires</span><span id="pairesCompte"></span></div>
+      <p class="consigne">Touchez deux cartes pour les retourner. Retrouvez les six paires.</p>
+      <div class="paires" id="pairesGrille"></div>
+      <div class="message" id="pairesMessage" hidden aria-live="polite"></div>
+      <button class="gros" id="pairesSuite" type="button" hidden></button>
+    </div>
+  </section>
+
+  <section id="suite" hidden>
+    <div class="carte">
+      <div class="suivi"><span>La suite</span><span id="suiteCompte"></span></div>
+      <p class="consigne" id="suiteConsigne" aria-live="polite"></p>
+      <div class="pads" id="pads">
+        <button type="button" data-pad="0">1</button><button type="button" data-pad="1">2</button>
+        <button type="button" data-pad="2">3</button><button type="button" data-pad="3">4</button>
+      </div>
+      <div class="message" id="suiteMessage" hidden aria-live="polite"></div>
+      <button class="gros" id="suiteLancer" type="button">Montrer la suite</button>
+      <button class="gros" id="suiteSuite" type="button" hidden></button>
+    </div>
+  </section>
+
+  <section id="calcul" hidden>
+    <div class="carte">
+      <div class="suivi"><span>Le calcul</span><span id="calculCompte"></span></div>
+      <div class="operation" id="operation"></div>
+      <div class="reponses" id="reponses"></div>
+      <div class="message" id="calculMessage" hidden aria-live="polite"></div>
+      <button class="gros" id="calculSuite" type="button" hidden></button>
+    </div>
+  </section>
+
+  <section id="fin" hidden>
+    <div class="carte centre">
+      <h2>Séance terminée, bravo !</h2>
+      <div class="bilan" id="bilan"></div>
+      <p id="finSerie" style="margin-top:14px; font-weight:800;"></p>
+      <button class="gros" id="retour" type="button">Revenir à l'accueil</button>
+    </div>
+  </section>
+
+  <p class="pied">Un moment de jeu, pas un test médical : ces exercices ne mesurent pas votre santé. Vos résultats restent sur cet appareil.<br>Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+</main>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const lire = (c) => { try { return localStorage.getItem(c); } catch (e) { return null; } };
+  const ecrire = (c, v) => { try { localStorage.setItem(c, v); } catch (e) {} };
+  const attendre = (ms) => new Promise((r) => setTimeout(r, ms));
+  const jour = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+
+  const ECRANS = ['accueil', 'paires', 'suite', 'calcul', 'fin'];
+  const ORDRE = ['paires', 'suite', 'calcul'];
+  let enSeance = false, resultats = {};
+
+  function montrer(nom) { ECRANS.forEach((e) => { $(e).hidden = e !== nom; }); window.scrollTo(0, 0); }
+
+  // ---------------- Série de jours
+  function serie() { try { return JSON.parse(lire('memo-meninges.serie') || 'null') || { dernier: '', jours: 0 }; } catch (e) { return { dernier: '', jours: 0 }; } }
+  function afficherSerie() {
+    const s = serie(), aujourdhui = jour(new Date());
+    const hier = jour(new Date(Date.now() - 86400000));
+    const vivante = s.dernier === aujourdhui || s.dernier === hier;
+    $('serie').textContent = s.dernier === aujourdhui
+      ? 'Séance du jour faite. ' + s.jours + ' jour' + (s.jours > 1 ? 's' : '') + ' de suite !'
+      : vivante && s.jours > 0 ? s.jours + ' jour' + (s.jours > 1 ? 's' : '') + ' de suite. On continue aujourd’hui ?'
+      : 'Prêt pour votre séance du jour ?';
+  }
+  function validerSeance() {
+    const s = serie(), aujourdhui = jour(new Date()), hier = jour(new Date(Date.now() - 86400000));
+    if (s.dernier !== aujourdhui) { s.jours = s.dernier === hier ? s.jours + 1 : 1; s.dernier = aujourdhui; ecrire('memo-meninges.serie', JSON.stringify(s)); }
+    return s.jours;
+  }
+
+  function apresJeu(nom, texte, bouton) {
+    resultats[nom] = texte;
+    const suivant = enSeance ? ORDRE[ORDRE.indexOf(nom) + 1] : null;
+    bouton.textContent = suivant ? 'Jeu suivant' : enSeance ? 'Voir mon bilan' : 'Revenir à l’accueil';
+    bouton.hidden = false; bouton.focus();
+    bouton.onclick = () => {
+      if (suivant) return lancer(suivant);
+      if (!enSeance) { afficherSerie(); return montrer('accueil'); }
+      const jours = validerSeance();
+      const bilan = $('bilan'); bilan.textContent = '';
+      [['Les paires', 'paires'], ['La suite', 'suite'], ['Le calcul', 'calcul']].forEach(([titre, cle]) => {
+        const l = document.createElement('div'); const a = document.createElement('strong'); a.textContent = titre; const b = document.createElement('span'); b.textContent = resultats[cle] || '';
+        l.appendChild(a); l.appendChild(b); bilan.appendChild(l);
+      });
+      $('finSerie').textContent = jours + ' jour' + (jours > 1 ? 's' : '') + ' de suite. À demain !';
+      enSeance = false; montrer('fin'); $('retour').focus();
+    };
+  }
+
+  function lancer(nom) { montrer(nom); ({ paires: jeuPaires, suite: jeuSuite, calcul: jeuCalcul })[nom](); }
+
+  // ---------------- 1. Les paires
+  const SYMBOLES = ['🍎', '🐱', '🌻', '🚲', '☂️', '🎈', '🐟', '🍰', '🔔', '🦋', '🍋', '⭐'];
+  function jeuPaires() {
+    const choisis = melanger(SYMBOLES).slice(0, 6);
+    const cartes = melanger(choisis.concat(choisis));
+    const grille = $('pairesGrille'); grille.textContent = '';
+    $('pairesMessage').hidden = true; $('pairesSuite').hidden = true;
+    let ouvertes = [], trouvees = 0, essais = 0, bloque = false;
+    const maj = () => { $('pairesCompte').textContent = trouvees + ' / 6 paires · ' + essais + ' essai' + (essais > 1 ? 's' : ''); };
+    maj();
+    cartes.forEach((symbole, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Carte ' + (i + 1) + ', cachée');
+      b.addEventListener('click', async () => {
+        if (bloque || b.classList.contains('ouverte') || b.classList.contains('trouvee')) return;
+        b.textContent = symbole; b.classList.add('ouverte'); b.setAttribute('aria-label', 'Carte ' + (i + 1) + ' : ' + symbole);
+        ouvertes.push({ b, symbole, i });
+        if (ouvertes.length < 2) return;
+        essais++; bloque = true;
+        const [x, y] = ouvertes; ouvertes = [];
+        if (x.symbole === y.symbole) {
+          [x, y].forEach((c) => { c.b.classList.remove('ouverte'); c.b.classList.add('trouvee'); });
+          trouvees++;
+        } else {
+          await attendre(1100); // le temps de bien regarder les deux cartes
+          [x, y].forEach((c) => { c.b.textContent = ''; c.b.classList.remove('ouverte'); c.b.setAttribute('aria-label', 'Carte ' + (c.i + 1) + ', cachée'); });
+        }
+        bloque = false; maj();
+        if (trouvees === 6) {
+          const m = $('pairesMessage'); m.textContent = 'Toutes les paires sont trouvées en ' + essais + ' essais !'; m.hidden = false;
+          apresJeu('paires', essais + ' essais', $('pairesSuite'));
+        }
+      });
+      grille.appendChild(b);
+    });
+  }
+
+  // ---------------- 2. La suite
+  function jeuSuite() {
+    const pads = Array.from(document.querySelectorAll('#pads button'));
+    const zone = $('pads');
+    let suite = [], position = 0, ecoute = false, meilleur = 0;
+    $('suiteMessage').hidden = true; $('suiteSuite').hidden = true; $('suiteLancer').hidden = false; $('suiteLancer').textContent = 'Montrer la suite';
+    $('suiteConsigne').textContent = 'Regardez les cases s’allumer, puis touchez-les dans le même ordre.';
+    const maj = () => { $('suiteCompte').textContent = 'Suite réussie : ' + meilleur; };
+    maj(); zone.classList.remove('actif');
+
+    async function montrerSuite() {
+      ecoute = false; zone.classList.remove('actif'); $('suiteLancer').hidden = true;
+      suite.push(Math.floor(Math.random() * 4)); position = 0;
+      $('suiteConsigne').textContent = 'Regardez bien… (' + suite.length + ' case' + (suite.length > 1 ? 's' : '') + ')';
+      await attendre(700);
+      for (const n of suite) { pads[n].classList.add('allume'); await attendre(750); pads[n].classList.remove('allume'); await attendre(300); }
+      $('suiteConsigne').textContent = 'À vous : touchez les cases dans le même ordre.';
+      ecoute = true; zone.classList.add('actif');
+    }
+    function fini() {
+      ecoute = false; zone.classList.remove('actif');
+      const m = $('suiteMessage');
+      m.textContent = meilleur === 0 ? 'Ce n’était pas la bonne case. On réessaiera !' : 'Vous avez retenu une suite de ' + meilleur + ' case' + (meilleur > 1 ? 's' : '') + '.';
+      m.hidden = false; $('suiteConsigne').textContent = '';
+      apresJeu('suite', 'suite de ' + meilleur, $('suiteSuite'));
+    }
+    pads.forEach((pad, n) => {
+      pad.onclick = async () => {
+        if (!ecoute) return;
+        pad.classList.add('allume'); setTimeout(() => pad.classList.remove('allume'), 250);
+        if (n !== suite[position]) return fini();
+        position++;
+        if (position === suite.length) {
+          meilleur = suite.length; maj(); ecoute = false;
+          if (meilleur >= 8) return fini(); // huit cases : c'est déjà une très belle mémoire
+          $('suiteConsigne').textContent = 'Bravo ! Une case de plus…';
+          await attendre(900); montrerSuite();
+        }
+      };
+    });
+    $('suiteLancer').onclick = montrerSuite;
+  }
+
+  // ---------------- 3. Le calcul
+  function jeuCalcul() {
+    const TOTAL = 8; let numero = 0, justes = 0;
+    $('calculMessage').hidden = true; $('calculSuite').hidden = true;
+    function question() {
+      numero++;
+      $('calculCompte').textContent = 'Opération ' + numero + ' sur ' + TOTAL;
+      const plus = Math.random() < 0.6;
+      let a = 3 + Math.floor(Math.random() * 27), b = 2 + Math.floor(Math.random() * 18);
+      if (!plus && b > a) [a, b] = [b, a];
+      const resultat = plus ? a + b : a - b;
+      $('operation').textContent = a + (plus ? ' + ' : ' − ') + b + ' = ?';
+      const propositions = new Set([resultat]);
+      while (propositions.size < 4) { const v = resultat + [-10, -3, -2, -1, 1, 2, 3, 10][Math.floor(Math.random() * 8)]; if (v >= 0) propositions.add(v); }
+      const zone = $('reponses'); zone.textContent = '';
+      melanger(Array.from(propositions)).forEach((v) => {
+        const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = v;
+        btn.addEventListener('click', async () => {
+          zone.querySelectorAll('button').forEach((x) => { x.disabled = true; if (Number(x.textContent) === resultat) x.classList.add('vrai'); });
+          if (v === resultat) justes++; else btn.classList.add('faux');
+          await attendre(v === resultat ? 700 : 1600);
+          if (numero < TOTAL) return question();
+          $('operation').textContent = justes + ' / ' + TOTAL; zone.textContent = '';
+          const m = $('calculMessage'); m.textContent = justes === TOTAL ? 'Sans faute !' : justes >= 6 ? 'Très bien calculé.' : 'Les calculs de tête, ça revient vite.'; m.hidden = false;
+          apresJeu('calcul', justes + ' / ' + TOTAL, $('calculSuite'));
+        });
+        zone.appendChild(btn);
+      });
+    }
+    question();
+  }
+
+  $('seance').addEventListener('click', () => { enSeance = true; resultats = {}; lancer('paires'); });
+  document.querySelectorAll('.menu button').forEach((b) => b.addEventListener('click', () => { enSeance = false; resultats = {}; lancer(b.dataset.jeu); }));
+  $('retour').addEventListener('click', () => { afficherSerie(); montrer('accueil'); });
+  afficherSerie();
+})();
+</script>
+</body>
+</html>

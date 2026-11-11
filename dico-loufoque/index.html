@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Dico Loufoque · le jeu des mots rares</title>
+<meta name="description" content="Un mot rare, quatre définitions, une seule vraie. Trouvez-la, riez des fausses et enrichissez votre vocabulaire.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#7c3aed; --ok:#15803d; --okf:#dcfce7; --non:#b91c1c; --nonf:#fee2e2; }
+  @media (prefers-color-scheme: dark) { :root { --fond:#12101a; --carte:#1c1929; --encre:#f5f3ff; --doux:#c4b5fd; --trait:#322c47; --acc:#a78bfa; --okf:#14532d; --nonf:#7f1d1d; --ok:#86efac; --non:#fca5a5; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 20px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 12px; }
+  .mot { font-size: 40px; font-weight: 900; color: var(--acc); line-height: 1.1; overflow-wrap: anywhere; }
+  .nature { color: var(--doux); font-size: 17px; margin: 4px 0 16px; font-style: italic; }
+  .choix { display: grid; gap: 12px; }
+  .choix button, .gros { font: inherit; width: 100%; text-align: left; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); color: var(--encre); cursor: pointer; }
+  .choix button:hover:not(:disabled) { border-color: var(--acc); }
+  .choix button:focus-visible, .gros:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .choix button:disabled { cursor: default; opacity: 1; }
+  .choix button.vrai { background: var(--okf); border-color: var(--ok); color: var(--encre); font-weight: 700; }
+  .choix button.faux { background: var(--nonf); border-color: var(--non); }
+  .verdict { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--acc) 12%, transparent); }
+  .verdict strong { display: block; font-size: 22px; }
+  .gros { text-align: center; font-weight: 800; background: var(--acc); border-color: var(--acc); color: #fff; margin-top: 16px; font-size: 22px; }
+  .gros.clair { background: transparent; color: var(--acc); }
+  .score { font-size: 56px; font-weight: 900; color: var(--acc); line-height: 1; }
+  .centre { text-align: center; }
+  .pied { margin-top: 28px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="dico-loufoque" data-nom="Le Dico Loufoque" data-sous-titre="Le jeu des mots rares" data-accent="#7c3aed"></script>
+<main>
+  <section id="accueil">
+    <h1>Un mot rare, <em>quatre définitions.</em></h1>
+    <p class="intro">Une seule est vraie. Les trois autres sont inventées pour vous faire sourire. Saurez-vous trouver la bonne ?</p>
+    <div class="carte centre">
+      <p>10 mots par partie. Tous existent vraiment dans les dictionnaires.</p>
+      <p id="record" style="color:var(--doux); margin-top:8px;"></p>
+      <button class="gros" id="demarrer" type="button">Jouer</button>
+    </div>
+  </section>
+
+  <section id="jeu" hidden>
+    <div class="carte">
+      <div class="suivi"><span id="etape"></span><span id="points"></span></div>
+      <div class="mot" id="mot"></div>
+      <div class="nature" id="nature"></div>
+      <div class="choix" id="choix"></div>
+      <div class="verdict" id="verdict" hidden aria-live="polite"></div>
+      <button class="gros" id="suivant" type="button" hidden>Mot suivant</button>
+    </div>
+  </section>
+
+  <section id="fin" hidden>
+    <div class="carte centre">
+      <p>Votre score</p>
+      <div class="score" id="scoreFinal"></div>
+      <p id="commentaire" style="margin-top:10px;"></p>
+      <button class="gros" id="rejouer" type="button">Rejouer avec d'autres mots</button>
+    </div>
+  </section>
+
+  <p class="pied">Les vraies définitions suivent l'usage des dictionnaires courants. Les fausses sont de pures inventions.<br>Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+</main>
+
+<script>
+(function () {
+  // [mot, nature, vraie définition, fausse 1, fausse 2, fausse 3]
+  const MOTS = [
+    ["pétrichor", "nom masculin", "Odeur particulière que dégage la terre après la pluie.", "Petit pétrin portatif des boulangers ambulants.", "Chanteur de chorale qui arrive toujours en retard.", "Caillou que l'on garde dans sa poche pour se rassurer."],
+    ["callipyge", "adjectif", "Qui a de belles fesses.", "Qui écrit très bien, mais seulement de la main gauche.", "Se dit d'un pigeon capable de retrouver son chemin dans le métro.", "Qui parle en dormant avec un accent étranger."],
+    ["nyctalope", "adjectif et nom", "Qui voit bien dans l'obscurité.", "Qui ne sort se promener que les jours fériés.", "Antilope des régions polaires, très rare.", "Qui s'endort dès qu'on éteint la télévision."],
+    ["borborygme", "nom masculin", "Bruit de gargouillement produit par le ventre.", "Petit lutin grognon des forêts bretonnes.", "Formule magique que l'on prononce avant de monter sur un vélo.", "Champignon qui pousse dans les vieilles chaussures."],
+    ["zinzinuler", "verbe", "Chanter, en parlant de la mésange.", "Tourner en rond en cherchant ses lunettes.", "Jouer du violon avec des moufles.", "Devenir un peu fou à force de compter les moutons."],
+    ["apocope", "nom féminin", "Chute de la fin d'un mot, comme « ciné » pour « cinéma ».", "Coup de ciseaux malheureux chez le coiffeur.", "Petite fin du monde qui ne concerne qu'un seul village.", "Abricot tombé de l'arbre avant d'être mûr."],
+    ["sérendipité", "nom féminin", "Fait de trouver par hasard quelque chose d'intéressant que l'on ne cherchait pas.", "Calme profond qui suit une sieste réussie.", "Maladie imaginaire des gens qui collectionnent les sérums.", "Art de servir le dîner exactement à l'heure."],
+    ["capillotracté", "adjectif", "Tiré par les cheveux, en parlant d'un raisonnement.", "Qui porte une perruque montée sur roulettes.", "Se dit d'un tracteur équipé d'un peigne géant.", "Rasé de très près, mais d'un seul côté."],
+    ["hapax", "nom masculin", "Mot ou expression dont on ne connaît qu'un seul exemple dans un ensemble de textes.", "Éternuement si fort qu'il fait tomber le chapeau.", "Coup de pied secret d'un art martial oublié.", "Taxe que l'on payait autrefois sur les éternuements."],
+    ["ultracrépidarianisme", "nom masculin", "Habitude de donner son avis sur des sujets que l'on ne maîtrise pas.", "Passion excessive pour les crêpes au-delà de la Chandeleur.", "Peur panique des chaussures trop cirées.", "Doctrine selon laquelle il faut se coucher après le crépuscule."],
+    ["vespéral", "adjectif", "Qui se rapporte au soir.", "Qui se déplace uniquement en scooter italien.", "Piqué par une guêpe au moins une fois dans l'été.", "Se dit d'un gilet porté sous un autre gilet."],
+    ["sycophante", "nom masculin", "Délateur, personne qui dénonce les autres.", "Éléphant de petite taille qui adore les figues.", "Médecin qui ne soigne que les rhumes de cerveau.", "Admirateur qui applaudit avant la fin du morceau."],
+    ["billevesée", "nom féminin", "Parole vide de sens, sottise.", "Bille de verre soufflée à la bouche par un enfant.", "Ancienne monnaie utilisée pour payer les ménestrels.", "Petite veste que l'on met sur une autre veste."],
+    ["coquecigrue", "nom féminin", "Baliverne, chose absurde ou imaginaire.", "Grue de chantier peinte en jaune poussin.", "Coq qui chante le soir par esprit de contradiction.", "Coquillage qui grince quand on marche dessus."],
+    ["ébaubi", "adjectif", "Très étonné, frappé de surprise.", "Mouillé jusqu'aux os par une averse soudaine.", "Qui vient d'avaler une arête et n'ose plus parler.", "Coiffé avec un ventilateur."],
+    ["mirliflore", "nom masculin", "Jeune homme élégant et prétentieux.", "Fleur qui ne s'ouvre que lorsqu'on lui joue du mirliton.", "Miroir déformant des fêtes foraines.", "Parfum très fort porté par les jardiniers."],
+    ["pusillanime", "adjectif", "Qui manque de courage, qui craint le risque.", "Qui possède un tout petit animal de compagnie.", "Très poli avec les puces de son chien.", "Qui pousse de petits cris en éternuant."],
+    ["thuriféraire", "nom masculin", "Flatteur, personne qui encense quelqu'un à l'excès.", "Marchand de thon installé sur une aire d'autoroute.", "Forgeron spécialisé dans les fers à repasser.", "Voyageur qui ne prend que des trains en retard."],
+    ["valétudinaire", "adjectif", "Qui a une santé fragile, souvent malade.", "Qui range ses valises par ordre de taille.", "Se dit d'un valet qui dîne avant ses maîtres.", "Qui hésite longuement avant de choisir un dessert."],
+    ["immarcescible", "adjectif", "Qui ne peut pas se flétrir, qui ne passe pas.", "Qui refuse de marcher sur les lignes du trottoir.", "Impossible à faire rentrer dans un tiroir.", "Qui ne peut pas être noyé, même dans un grand verre d'eau."],
+    ["sibyllin", "adjectif", "Obscur, énigmatique, difficile à comprendre.", "Qui siffle très juste, mais seulement sous la douche.", "Doux comme un lapin de six mois.", "Se dit d'un vin qui fait parler en rimes."],
+    ["galimatias", "nom masculin", "Discours confus, incompréhensible.", "Grand gala donné en l'honneur d'un matelas.", "Gâteau breton à base de galettes écrasées.", "Chapeau à plumes des mousquetaires fatigués."],
+    ["escarbille", "nom féminin", "Petit fragment de charbon ou de bois incomplètement brûlé qui s'échappe d'un foyer.", "Bille que l'on lance dans un escalier pour compter les marches.", "Petit escargot très pressé.", "Boucle d'oreille en forme de carabine."],
+    ["rodomontade", "nom féminin", "Vantardise, fanfaronnade.", "Promenade à dos de mulet en montagne.", "Salade composée servie dans un chapeau.", "Danse où l'on tourne autour d'un rond-point."],
+    ["tintinnabuler", "verbe", "Produire un son de clochettes.", "Lire des bandes dessinées en cachette pendant la sieste.", "Trinquer avec des verres vides.", "Marcher sur la pointe des pieds avec des sabots."],
+    ["cacochyme", "adjectif", "D'une santé faible, souvent malade ; se dit surtout d'un vieillard.", "Qui cache son chocolat dans la cheminée.", "Qui a un rire semblable à celui d'une poule.", "Passionné de chimie, mais maladroit."],
+    ["potron-minet", "nom masculin", "Le point du jour, le tout début de la matinée.", "Chaton qui dort sur le poêle.", "Petit pot dans lequel on fait tremper les biscuits.", "Patron d'un bar fréquenté par des chats."],
+    ["peccadille", "nom féminin", "Faute légère, sans gravité.", "Petit poisson que l'on relâche par gentillesse.", "Pâtisserie espagnole en forme de bec.", "Tache de rousseur située sur le nez."],
+    ["anacoluthe", "nom féminin", "Rupture dans la construction d'une phrase.", "Serpent d'Amérique du Sud qui a le hoquet.", "Instrument à cordes joué avec les coudes.", "Fête où chacun apporte un ananas."],
+    ["smaragdin", "adjectif", "D'un vert émeraude.", "Malin comme un singe, mais en plus petit.", "Qui sent le hareng fumé.", "Se dit d'un marin qui a le mal de terre."],
+    ["pandiculation", "nom féminin", "Action de s'étirer en bâillant.", "Calcul du nombre de pandas dans une forêt.", "Art de cuisiner avec une seule poêle.", "Balancement d'une pendule qui retarde."],
+    ["nycthémère", "nom masculin", "Durée de vingt-quatre heures, comprenant un jour et une nuit.", "Papillon de nuit qui ne vit qu'un quart d'heure.", "Veilleur de nuit qui s'endort à son poste.", "Lampe de chevet qui s'allume toute seule."],
+    ["glabre", "adjectif", "Dépourvu de poils.", "Froid et glissant comme une patinoire.", "Qui avale sans mâcher.", "D'une couleur située entre le gris et le sabre."],
+    ["palimpseste", "nom masculin", "Parchemin dont on a effacé le premier texte pour en écrire un autre.", "Palmier nain cultivé en appartement.", "Liste de courses que l'on retrouve six mois plus tard.", "Remède de grand-mère contre les peines de cœur."],
+    ["chafouin", "adjectif", "Sournois, rusé, à l'air fourbe.", "Qui a chaud aux pieds même en hiver.", "Très friand de foin, en parlant d'un chat.", "Légèrement enrhumé du côté gauche."],
+    ["olibrius", "nom masculin", "Personnage excentrique, bizarre et un peu ridicule.", "Arbre fruitier qui donne des olives carrées.", "Ancien instrument servant à mesurer l'ennui.", "Chauffeur de bus qui connaît tous ses passagers."],
+    ["esperluette", "nom féminin", "Nom du signe « & », qui signifie « et ».", "Petite perle que l'on trouve dans les huîtres optimistes.", "Sifflet utilisé pour appeler les alouettes.", "Espoir très léger, de la taille d'une allumette."],
+    ["vétille", "nom féminin", "Chose insignifiante, détail sans importance.", "Petite veste portée par les vétérinaires.", "Brindille qui sert à remuer le café.", "Jeune vache qui n'aime pas l'herbe."],
+    ["prolégomènes", "nom masculin pluriel", "Longue introduction placée au début d'un ouvrage.", "Légumes que l'on sert avant les légumes.", "Fantômes professionnels, payés à l'heure.", "Exercices d'échauffement des joueurs de pétanque."],
+    ["lallation", "nom féminin", "Babillage du nourrisson, premiers sons qu'il répète.", "Chanson que l'on fredonne quand on a oublié les paroles.", "Installation d'un lavabo dans un salon.", "Tradition qui consiste à laver son linge en chantant."]
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const lire = (c) => { try { return localStorage.getItem(c); } catch (e) { return null; } };
+  const ecrire = (c, v) => { try { localStorage.setItem(c, v); } catch (e) {} };
+
+  const TAILLE = 10;
+  let partie = [], index = 0, points = 0;
+
+  function afficherRecord() {
+    const r = lire('dico-loufoque.record');
+    $('record').textContent = r ? 'Votre meilleur score : ' + r + ' / ' + TAILLE : '';
+  }
+
+  function demarrer() {
+    // On évite de reproposer tout de suite les mots de la partie précédente.
+    let deja = []; try { deja = JSON.parse(lire('dico-loufoque.vus') || '[]'); } catch (e) {}
+    let reserve = MOTS.filter((m) => !deja.includes(m[0]));
+    if (reserve.length < TAILLE) { reserve = MOTS.slice(); deja = []; }
+    partie = melanger(reserve).slice(0, TAILLE);
+    ecrire('dico-loufoque.vus', JSON.stringify(deja.concat(partie.map((m) => m[0]))));
+    index = 0; points = 0;
+    $('accueil').hidden = true; $('fin').hidden = true; $('jeu').hidden = false;
+    question();
+  }
+
+  function question() {
+    const [mot, nature, vraie, ...fausses] = partie[index];
+    $('etape').textContent = 'Mot ' + (index + 1) + ' sur ' + TAILLE;
+    $('points').textContent = points + ' point' + (points > 1 ? 's' : '');
+    $('mot').textContent = mot;
+    $('nature').textContent = nature;
+    $('verdict').hidden = true; $('suivant').hidden = true;
+    const zone = $('choix'); zone.textContent = '';
+    melanger([vraie].concat(fausses)).forEach((def) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = def;
+      b.addEventListener('click', () => repondre(b, def === vraie, vraie, mot));
+      zone.appendChild(b);
+    });
+    $('mot').scrollIntoView({ block: 'nearest' });
+  }
+
+  function repondre(bouton, juste, vraie, mot) {
+    document.querySelectorAll('#choix button').forEach((b) => {
+      b.disabled = true;
+      if (b.textContent === vraie) b.classList.add('vrai');
+    });
+    if (juste) points++; else bouton.classList.add('faux');
+    $('points').textContent = points + ' point' + (points > 1 ? 's' : '');
+    const v = $('verdict'); v.textContent = '';
+    const titre = document.createElement('strong'); titre.textContent = juste ? 'Bravo, c’est ça !' : 'Raté, c’était un piège.';
+    const texte = document.createElement('span'); texte.textContent = '« ' + mot + ' » : ' + vraie;
+    v.appendChild(titre); v.appendChild(texte); v.hidden = false;
+    const s = $('suivant'); s.textContent = index + 1 < TAILLE ? 'Mot suivant' : 'Voir mon score'; s.hidden = false; s.focus();
+  }
+
+  function suivant() {
+    index++;
+    if (index < TAILLE) return question();
+    $('jeu').hidden = true; $('fin').hidden = false;
+    $('scoreFinal').textContent = points + ' / ' + TAILLE;
+    $('commentaire').textContent = points === TAILLE ? 'Sans faute ! Vous êtes un dictionnaire sur pattes.'
+      : points >= 7 ? 'Très beau score : on ne vous la fait pas.'
+      : points >= 4 ? 'Pas mal ! Les fausses définitions étaient bien tentantes.'
+      : 'Les pièges ont gagné cette fois. Revanche ?';
+    const record = parseInt(lire('dico-loufoque.record') || '0', 10);
+    if (points > record) ecrire('dico-loufoque.record', String(points));
+    $('rejouer').focus();
+  }
+
+  $('demarrer').addEventListener('click', demarrer);
+  $('rejouer').addEventListener('click', demarrer);
+  $('suivant').addEventListener('click', suivant);
+  afficherRecord();
+})();
+</script>
+</body>
+</html>

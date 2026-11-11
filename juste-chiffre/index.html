@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Juste Chiffre · devinez au plus près</title>
+<meta name="description" content="Devinez un chiffre réel au plus près : hauteurs, dates, distances. Plus vous êtes proche, plus vous marquez. Chaque réponse cite sa source.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#c2410c; --ok:#15803d; }
+  @media (prefers-color-scheme: dark) { :root { --fond:#16110d; --carte:#211a14; --encre:#fff7ed; --doux:#fdba74; --trait:#3b2f24; --acc:#fb923c; --ok:#86efac; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 20px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 12px; }
+  .question { font-size: 26px; font-weight: 800; line-height: 1.2; }
+  .valeur { font-size: 52px; font-weight: 900; color: var(--acc); text-align: center; margin: 18px 0 4px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .unite { text-align: center; color: var(--doux); margin-bottom: 14px; }
+  input[type=range] { width: 100%; height: 44px; accent-color: var(--acc); }
+  .bornes { display: flex; justify-content: space-between; color: var(--doux); font-size: 16px; }
+  .pas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .pas button { font: inherit; font-weight: 800; padding: 14px 4px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); color: var(--encre); cursor: pointer; font-variant-numeric: tabular-nums; }
+  .pas button:hover { border-color: var(--acc); }
+  .gros { font: inherit; width: 100%; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; margin-top: 16px; }
+  button:focus-visible, input:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .verdict { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--acc) 12%, transparent); }
+  .verdict strong { display: block; font-size: 24px; }
+  .verdict .source { display: block; font-size: 16px; color: var(--doux); margin-top: 6px; }
+  .score { font-size: 56px; font-weight: 900; color: var(--acc); line-height: 1; }
+  .centre { text-align: center; }
+  .pied { margin-top: 28px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="juste-chiffre" data-nom="Le Juste Chiffre" data-sous-titre="Devinez au plus près" data-accent="#c2410c"></script>
+<main>
+  <section id="accueil">
+    <h1>Devinez le chiffre, <em>au plus près.</em></h1>
+    <p class="intro">Une hauteur, une date, une distance… Réglez le curseur sur votre meilleure estimation. Plus vous êtes proche, plus vous marquez de points.</p>
+    <div class="carte centre">
+      <p>8 questions par partie, 100 points par question.</p>
+      <p id="record" style="color:var(--doux); margin-top:8px;"></p>
+      <button class="gros" id="demarrer" type="button">Jouer</button>
+    </div>
+  </section>
+
+  <section id="jeu" hidden>
+    <div class="carte">
+      <div class="suivi"><span id="etape"></span><span id="points"></span></div>
+      <div class="question" id="question"></div>
+      <div class="valeur" id="valeur" aria-live="polite"></div>
+      <div class="unite" id="unite"></div>
+      <div id="reglage">
+        <input type="range" id="curseur" aria-label="Votre estimation">
+        <div class="bornes"><span id="min"></span><span id="max"></span></div>
+        <div class="pas" id="pas"></div>
+        <button class="gros" id="valider" type="button">Valider ma réponse</button>
+      </div>
+      <div class="verdict" id="verdict" hidden aria-live="polite"></div>
+      <button class="gros" id="suivant" type="button" hidden>Question suivante</button>
+    </div>
+  </section>
+
+  <section id="fin" hidden>
+    <div class="carte centre">
+      <p>Votre score</p>
+      <div class="score" id="scoreFinal"></div>
+      <p id="commentaire" style="margin-top:10px;"></p>
+      <button class="gros" id="rejouer" type="button">Rejouer avec d'autres questions</button>
+    </div>
+  </section>
+
+  <p class="pied">Chaque réponse indique sa source. Certaines valeurs sont arrondies ou évoluent avec le temps : la date est alors précisée.<br>Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+</main>
+
+<script>
+(function () {
+  // q : question · r : réponse · u : unité · min/max : bornes du curseur · pas : réglage fin · s : source · n : précision donnée après coup
+  const QUESTIONS = [
+    { q: "Quelle est la hauteur de la tour Eiffel, antennes comprises ?", r: 330, u: "mètres", min: 225, max: 600, pas: 1, s: "Société d'exploitation de la tour Eiffel (hauteur depuis 2022)" },
+    { q: "Combien de marches faut-il gravir pour atteindre le sommet de la tour Eiffel ?", r: 1665, u: "marches", min: 1145, max: 3000, pas: 5, s: "Société d'exploitation de la tour Eiffel" },
+    { q: "Quelle est l'altitude du mont Blanc ?", r: 4806, u: "mètres", min: 3000, max: 5508, pas: 2, s: "Mesure des géomètres-experts, septembre 2023 (4 805,59 m)", n: "Elle varie de quelques mètres selon l'épaisseur de neige au sommet." },
+    { q: "Quelle est l'altitude de l'Everest ?", r: 8849, u: "mètres", min: 6000, max: 10000, pas: 1, s: "Mesure officielle Chine–Népal, 2020 (8 848,86 m)" },
+    { q: "À quelle hauteur culmine le viaduc de Millau ?", r: 343, u: "mètres", min: 243, max: 600, pas: 1, s: "Exploitant du viaduc (sommet du plus haut pylône)" },
+    { q: "Quelle distance sépare en moyenne la Terre de la Lune ?", r: 384400, u: "kilomètres", min: 261600, max: 700000, pas: 200, s: "NASA (distance moyenne)" },
+    { q: "Quel est le diamètre de la Terre à l'équateur ?", r: 12756, u: "kilomètres", min: 5000, max: 15772, pas: 4, s: "NASA" },
+    { q: "Quelle est la vitesse de la lumière dans le vide, en milliers de kilomètres par seconde ?", r: 300, u: "milliers de kilomètres par seconde", min: 50, max: 900, pas: 5, s: "Bureau international des poids et mesures", n: "Exactement 299 792,458 km/s." },
+    { q: "Combien d'os compte le squelette d'un adulte ?", r: 206, u: "os", min: 131, max: 400, pas: 1, s: "Manuels d'anatomie", n: "Un nouveau-né en compte environ 300, qui se soudent en grandissant." },
+    { q: "Combien de dents compte une dentition adulte complète, dents de sagesse comprises ?", r: 32, u: "dents", min: 16, max: 38, pas: 1, s: "Manuels d'anatomie" },
+    { q: "Combien de cœurs possède une pieuvre ?", r: 3, u: "cœurs", min: 1, max: 9, pas: 1, s: "Encyclopédies de zoologie", n: "Un cœur principal et deux cœurs qui alimentent les branchies." },
+    { q: "Combien de mois dure la gestation d'une éléphante ?", r: 22, u: "mois", min: 4, max: 29, pas: 1, s: "Encyclopédies de zoologie (environ 22 mois, la plus longue des mammifères terrestres)" },
+    { q: "Combien de touches compte un piano moderne ?", r: 88, u: "touches", min: 40, max: 107, pas: 1, s: "Clavier standard : 52 touches blanches et 36 noires" },
+    { q: "Combien de cases compte un échiquier ?", r: 64, u: "cases", min: 42, max: 120, pas: 1, s: "8 rangées × 8 colonnes" },
+    { q: "Combien de cartes compte un jeu de tarot ?", r: 78, u: "cartes", min: 30, max: 97, pas: 1, s: "Règles du tarot : 56 cartes de couleur, 21 atouts et l'excuse" },
+    { q: "Combien y a-t-il de secondes dans une journée ?", r: 86400, u: "secondes", min: 42200, max: 200000, pas: 100, s: "24 heures × 60 minutes × 60 secondes" },
+    { q: "Combien de pays compte l'Union européenne ?", r: 27, u: "pays", min: 20, max: 45, pas: 1, s: "Union européenne (depuis 2020)" },
+    { q: "Combien d'étoiles compte le drapeau européen ?", r: 12, u: "étoiles", min: 5, max: 30, pas: 1, s: "Drapeau adopté par le Conseil de l'Europe en 1955", n: "Ce nombre ne dépend pas du nombre de pays membres." },
+    { q: "Combien de départements compte la France, outre-mer compris ?", r: 101, u: "départements", min: 50, max: 121, pas: 1, s: "Insee" },
+    { q: "Combien d'habitants compte la France ?", r: 68, u: "millions d'habitants", min: 56, max: 100, pas: 1, s: "Insee, estimation au 1er janvier 2024 (environ 68 millions)" },
+    { q: "En quelle année la Bastille a-t-elle été prise ?", r: 1789, u: "", min: 1500, max: 1900, pas: 1, s: "14 juillet 1789" },
+    { q: "En quelle année Gutenberg achève-t-il l'impression de sa Bible ?", r: 1455, u: "", min: 1200, max: 1554, pas: 1, s: "Histoire de l'imprimerie (vers 1455)" },
+    { q: "En quelle année est né Victor Hugo ?", r: 1802, u: "", min: 1700, max: 1842, pas: 1, s: "Né le 26 février 1802 à Besançon" },
+    { q: "En quelle année les frères Lumière présentent-ils le cinématographe ?", r: 1895, u: "", min: 1820, max: 1924, pas: 1, s: "Première projection publique payante le 28 décembre 1895, à Paris" },
+    { q: "En quelle année ouvre la première ligne du métro de Paris ?", r: 1900, u: "", min: 1820, max: 1931, pas: 1, s: "RATP (19 juillet 1900)" },
+    { q: "En quelle année a lieu le premier Tour de France cycliste ?", r: 1903, u: "", min: 1881, max: 1960, pas: 1, s: "Premier départ le 1er juillet 1903" },
+    { q: "En quelle année est votée la loi de séparation des Églises et de l'État ?", r: 1905, u: "", min: 1789, max: 1950, pas: 1, s: "Loi du 9 décembre 1905" },
+    { q: "En quelle année les Françaises obtiennent-elles le droit de vote ?", r: 1944, u: "", min: 1850, max: 1981, pas: 1, s: "Ordonnance du 21 avril 1944", n: "Elles votent pour la première fois en 1945." },
+    { q: "En quelle année l'être humain marche-t-il pour la première fois sur la Lune ?", r: 1969, u: "", min: 1957, max: 2000, pas: 1, s: "NASA (mission Apollo 11, juillet 1969)" },
+    { q: "En quelle année La Grande-Motte devient-elle une commune ?", r: 1974, u: "", min: 1900, max: 2000, pas: 1, s: "Ville de La Grande-Motte (1er octobre 1974)" },
+    { q: "En quelle année le TGV entre-t-il en service entre Paris et Lyon ?", r: 1981, u: "", min: 1950, max: 1993, pas: 1, s: "SNCF (septembre 1981)" },
+    { q: "En quelle année tombe le mur de Berlin ?", r: 1989, u: "", min: 1950, max: 2004, pas: 1, s: "9 novembre 1989" },
+    { q: "En quelle année les pièces et billets en euros arrivent-ils dans nos porte-monnaie ?", r: 2002, u: "", min: 1980, max: 2011, pas: 1, s: "Banque de France (1er janvier 2002)" }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const lire = (c) => { try { return localStorage.getItem(c); } catch (e) { return null; } };
+  const ecrire = (c, v) => { try { localStorage.setItem(c, v); } catch (e) {} };
+  // Les années s'écrivent sans espace (1789), les autres nombres avec (384 400).
+  const fmt = (n, q) => (q.u === '' ? String(n) : n.toLocaleString('fr-FR'));
+
+  const TAILLE = 8;
+  let partie = [], index = 0, total = 0, courant = null;
+
+  function afficherRecord() {
+    const r = lire('juste-chiffre.record');
+    $('record').textContent = r ? 'Votre meilleur score : ' + r + ' / ' + TAILLE * 100 : '';
+  }
+
+  function demarrer() {
+    let deja = []; try { deja = JSON.parse(lire('juste-chiffre.vues') || '[]'); } catch (e) {}
+    let reserve = QUESTIONS.filter((x) => !deja.includes(x.q));
+    if (reserve.length < TAILLE) { reserve = QUESTIONS.slice(); deja = []; }
+    partie = melanger(reserve).slice(0, TAILLE);
+    ecrire('juste-chiffre.vues', JSON.stringify(deja.concat(partie.map((x) => x.q))));
+    index = 0; total = 0;
+    $('accueil').hidden = true; $('fin').hidden = true; $('jeu').hidden = false;
+    question();
+  }
+
+  function regler(v) {
+    const c = $('curseur');
+    c.value = Math.min(courant.max, Math.max(courant.min, v));
+    $('valeur').textContent = fmt(Number(c.value), courant);
+  }
+
+  function question() {
+    courant = partie[index];
+    $('etape').textContent = 'Question ' + (index + 1) + ' sur ' + TAILLE;
+    $('points').textContent = total + ' points';
+    $('question').textContent = courant.q;
+    $('unite').textContent = courant.u;
+    const c = $('curseur'); c.min = courant.min; c.max = courant.max; c.step = courant.pas; c.disabled = false;
+    $('min').textContent = fmt(courant.min, courant); $('max').textContent = fmt(courant.max, courant);
+    // Le curseur part du milieu arrondi : il ne donne aucun indice sur la réponse.
+    regler(Math.round((courant.min + courant.max) / 2 / courant.pas) * courant.pas);
+    const zone = $('pas'); zone.textContent = '';
+    [-10, -1, 1, 10].forEach((k) => {
+      const b = document.createElement('button'); b.type = 'button';
+      const ecart = k * courant.pas;
+      b.textContent = (k > 0 ? '+ ' : '− ') + Math.abs(ecart).toLocaleString('fr-FR');
+      b.setAttribute('aria-label', (k > 0 ? 'Ajouter ' : 'Retirer ') + Math.abs(ecart));
+      b.addEventListener('click', () => regler(Number(c.value) + ecart));
+      zone.appendChild(b);
+    });
+    $('reglage').hidden = false; $('verdict').hidden = true; $('suivant').hidden = true;
+    $('question').scrollIntoView({ block: 'nearest' });
+  }
+
+  function valider() {
+    const reponse = Number($('curseur').value);
+    const ecart = Math.abs(reponse - courant.r);
+    // 100 points pour la valeur exacte, 0 au-delà d'un cinquième de l'étendue du curseur.
+    const gain = Math.max(0, Math.round(100 - (500 * ecart) / (courant.max - courant.min)));
+    total += gain;
+    $('points').textContent = total + ' points';
+    $('reglage').hidden = true;
+    const v = $('verdict'); v.textContent = '';
+    const titre = document.createElement('strong');
+    titre.textContent = (ecart === 0 ? 'Pile dessus ! ' : gain >= 85 ? 'Tout près ! ' : gain >= 50 ? 'Pas loin. ' : gain > 0 ? 'Un peu loin. ' : 'Loin du compte. ') + '+ ' + gain + ' points';
+    const texte = document.createElement('span');
+    texte.textContent = 'La bonne réponse : ' + fmt(courant.r, courant) + (courant.u ? ' ' + courant.u : '') + '. Vous aviez répondu ' + fmt(reponse, courant) + '.' + (courant.n ? ' ' + courant.n : '');
+    const source = document.createElement('span'); source.className = 'source'; source.textContent = 'Source : ' + courant.s + '.';
+    v.appendChild(titre); v.appendChild(texte); v.appendChild(source); v.hidden = false;
+    const s = $('suivant'); s.textContent = index + 1 < TAILLE ? 'Question suivante' : 'Voir mon score'; s.hidden = false; s.focus();
+  }
+
+  function suivant() {
+    index++;
+    if (index < TAILLE) return question();
+    $('jeu').hidden = true; $('fin').hidden = false;
+    $('scoreFinal').textContent = total + ' / ' + TAILLE * 100;
+    const moyenne = total / TAILLE;
+    $('commentaire').textContent = moyenne >= 90 ? 'Impressionnant : vous avez le compas dans l’œil.'
+      : moyenne >= 70 ? 'Très belle partie, vos estimations sont solides.'
+      : moyenne >= 45 ? 'Pas mal du tout. Certaines réponses surprennent, non ?'
+      : 'Les chiffres sont parfois étonnants. On retente ?';
+    const record = parseInt(lire('juste-chiffre.record') || '0', 10);
+    if (total > record) ecrire('juste-chiffre.record', String(total));
+    $('rejouer').focus();
+  }
+
+  $('curseur').addEventListener('input', (e) => { $('valeur').textContent = fmt(Number(e.target.value), courant); });
+  $('demarrer').addEventListener('click', demarrer);
+  $('rejouer').addEventListener('click', demarrer);
+  $('valider').addEventListener('click', valider);
+  $('suivant').addEventListener('click', suivant);
+  afficherRecord();
+})();
+</script>
+</body>
+</html>
