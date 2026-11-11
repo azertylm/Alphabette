@@ -175,8 +175,8 @@
   function valider() {
     const reponse = Number($('curseur').value);
     const ecart = Math.abs(reponse - courant.r);
-    // 100 points pour la valeur exacte, 0 au-delà d'un dixième de l'étendue du curseur.
-    const gain = Math.max(0, Math.round(100 - (1000 * ecart) / (courant.max - courant.min)));
+    // 100 points pour la valeur exacte, 0 au-delà d'un cinquième de l'étendue du curseur.
+    const gain = Math.max(0, Math.round(100 - (500 * ecart) / (courant.max - courant.min)));
     total += gain;
     $('points').textContent = total + ' points';
     $('reglage').hidden = true;

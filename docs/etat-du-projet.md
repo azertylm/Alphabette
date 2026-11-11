@@ -70,6 +70,13 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - **Orbit** : Valentin valide la version « lecteurs officiels » (légale, sans serveur) et veut garder Orbit-v4 intact. La nouvelle version ira dans un dépôt **`Orbit-v5`**, que Valentin doit créer vide sur GitHub (la session ne peut pas créer de dépôt). Travail pas encore commencé.
 - **Nouvelles applications** : Valentin veut des applis du quotidien, qui occupent et rendent heureux, où l'on s'informe en jouant, et des jeux loufoques. Une liste d'idées lui a été proposée ; choix en attente.
 
+## 11/11 : trois jeux créés (choisis par Valentin parmi dix idées)
+Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur, scores gardés sur l'appareil. Jouées de bout en bout en 390 px avant publication.
+- **Le Dico Loufoque** (`/dico-loufoque/`) : 40 mots rares réels, une vraie définition et trois inventées. Pour ajouter des mots : tableau `MOTS` en haut du script.
+- **Le Juste Chiffre** (`/juste-chiffre/`) : 33 questions chiffrées avec source, curseur + boutons de réglage fin. Barème : 100 points pile dessus, 0 au-delà d'un cinquième de l'étendue ; les bornes sont décentrées pour que « valider sans réfléchir » rapporte 0. Tableau `QUESTIONS`. Valeurs datées à revoir de temps en temps (population 2024, hauteur de la tour Eiffel, mont Blanc 2023).
+- **Mémo-Méninges** (`/memo-meninges/`) : séance du jour en trois jeux (paires, suite à répéter, calcul), sans chronomètre, série de jours. Mention « pas un test médical ».
+- Autres idées proposées, non faites : Vrai ou Faux du jour, Chrono-Frise, Où c'est ?, Trois Kifs, Le Défi du jour, La Mouette de La Grande-Motte, Quiz en famille.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
