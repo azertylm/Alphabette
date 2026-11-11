@@ -50,8 +50,10 @@
       "repo": "azertylm/Proxilien",
       "domains": [
         "proxilien.fr",
-        "proxilien.eu",
         "proxilien.alphabette.fr"
+      ],
+      "redirects": [
+        "proxilien.eu"
       ]
     }
   }

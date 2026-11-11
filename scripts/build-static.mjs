@@ -43,6 +43,19 @@ const REGLES_DOMAINES = Object.entries(sources)
   RewriteRule ^(.*)$ apps/${cle}/$1 [L]`)
   .join('\n\n');
 
+/**
+ * Domaines en simple redirection (data/apps-sources.json → "redirects") :
+ * proxilien.eu → https://proxilien.fr. Tant que le domaine est encore rattaché à
+ * l'hébergement, la redirection se fait ici ; une fois la redirection posée chez
+ * OVH (zone du domaine), il peut être détaché de l'hébergement.
+ */
+const REGLES_REDIRECTIONS = Object.entries(sources)
+  .filter(([, s]) => Array.isArray(s.redirects) && s.redirects.length && Array.isArray(s.domains) && s.domains.length)
+  .map(([cle, s]) => `  # ${cle} : ${s.redirects.join(', ')} → ${s.domains[0]}
+  RewriteCond %{HTTP_HOST} ^(www\\.)?(${s.redirects.map(echapper).join('|')})$ [NC]
+  RewriteRule ^(.*)$ https://${s.domains[0]}/$1 [R=301,L]`)
+  .join('\n\n');
+
 const HTACCESS = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes
 DirectoryIndex index.html
@@ -60,6 +73,9 @@ DirectoryIndex index.html
   # HTTPS partout
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Domaines en redirection vers le domaine principal de leur application
+${REGLES_REDIRECTIONS || '  # (aucun)'}
 
   # Domaines propres des applications (aiguillage par nom d'hôte)
 ${REGLES_DOMAINES || '  # (aucun)'}

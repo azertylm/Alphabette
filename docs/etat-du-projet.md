@@ -65,6 +65,11 @@ Senior Bon Plan, BON PLAN, Santé Citoyenne, ProxiLien (SOS), France Service, É
 - Le serveur **extrait les fichiers vidéo** de TikTok, Facebook, Instagram et YouTube (`yt-dlp`, service tiers « tikwm ») et les **rediffuse** (`/api/orbit/proxy-mp4`, `vlc-stream`). C'est contraire aux conditions des plateformes et risqué juridiquement (même problème que Wikicom), et de toute façon impossible sur l'hébergement OVH statique.
 - Piste proposée à Valentin : une version qui lit les vidéos avec les **lecteurs officiels intégrés** des plateformes (légal, sans serveur), avec la double barre et BIG. En attente de sa décision.
 
+## 11/11 : proxilien.eu en simple redirection ; Orbit-v5
+- `proxilien.eu` (et `www.`) redirige en 301 vers `https://proxilien.fr` : nouvelle clé `"redirects"` dans `data/apps-sources.json`, règle générée dans le `.htaccess` (`scripts/build-static.mjs`). Valentin ne veut pas que ce domaine occupe un site sur l'hébergement : **à faire par lui chez OVH** → Noms de domaine → proxilien.eu → onglet « Redirection » → vers `https://proxilien.fr` (visible permanente, 301), puis Hébergement → Multisite → supprimer `proxilien.eu` et `www.proxilien.eu`. Ensuite la clé `"redirects"` peut être retirée.
+- **Orbit** : Valentin valide la version « lecteurs officiels » (légale, sans serveur) et veut garder Orbit-v4 intact. La nouvelle version ira dans un dépôt **`Orbit-v5`**, que Valentin doit créer vide sur GitHub (la session ne peut pas créer de dépôt). Travail pas encore commencé.
+- **Nouvelles applications** : Valentin veut des applis du quotidien, qui occupent et rendent heureux, où l'on s'informe en jouant, et des jeux loufoques. Une liste d'idées lui a été proposée ; choix en attente.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).

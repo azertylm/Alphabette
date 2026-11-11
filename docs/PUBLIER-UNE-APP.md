@@ -30,3 +30,11 @@ Sans consommer de place de multisite (l'offre Perso en compte 15) :
 2. Chez OVH : enregistrements `A`/`AAAA` de `@` et `www` vers l'hébergement, puis
    multisite → rattacher le domaine et `www.` au **même dossier que alphabette.fr**
    (`alphabette`), SSL activé.
+
+## Faire d'un domaine une simple redirection (proxilien.eu → proxilien.fr)
+
+Dans `data/apps-sources.json`, sur l'application : `"redirects": ["mondomaine.eu"]`.
+Le `.htaccess` du hub renvoie alors ce domaine (et son `www.`) en 301 vers le premier
+domaine de `"domains"`. Pour qu'il n'occupe plus de site sur l'hébergement, poser la
+redirection directement chez OVH (Noms de domaine → le domaine → « Redirection »), puis
+le retirer du multisite.
