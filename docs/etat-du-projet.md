@@ -97,6 +97,14 @@ Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur
 - Zone de saisie : ne déborde plus en 390 px.
 - À revoir : modèles par défaut anciens (`claude-3-5-haiku-20241022`, `grok-2-1212`, `gpt-4o-mini`) ; mention « Données hébergées en UE » (Gemini ne l'est pas forcément) ; « compte Alphabette » local.
 
+## 11/11 (soir) : Orbit — retour à l'application d'origine
+- **Valentin a refusé la version réécrite d'Orbit** (« Orbit 5 » en une page) : elle est retirée. Consigne : garder Orbit le plus proche possible de ce qu'il est.
+- Le dépôt `azertylm/orbitvideo-` contient maintenant **Orbit-v4 à l'identique**, avec un seul changement regroupé dans `src/utils/lecteursOfficiels.ts` et quelques retouches du lecteur (`UniversalVideoPlayer.tsx`) : une vidéo de plateforme est toujours lue par son lecteur officiel ; plus d'extraction, de relais, de flux VLC ni de vidéo de substitution ; boutons « MP4 direct / Télécharger » visibles seulement pour un fichier importé par l'utilisateur.
+- Vérifié en 390 px, sans serveur : YouTube → `youtube-nocookie.com/embed`, TikTok → `tiktok.com/embed/v2`, Facebook → `plugins/video.php`, Instagram → `/embed` ; anciennes données contenant un flux extrait → lecteur officiel aussi ; aucune requête interdite, aucune erreur. La lecture réelle n'a pas pu être vue (plateformes injoignables depuis l'atelier).
+- **Publication** : dépôt privé et pas de secret `APPS_TOKEN` → le hub publie le dossier **construit** : `public/orbit/` = contenu de `dist/` après `bun run build:static` dans le dépôt. **À refaire à chaque modification d'Orbit** (ou rendre le dépôt public / ajouter `APPS_TOKEN`, puis déclarer `"orbit": {"repo": "azertylm/orbitvideo-"}` dans `apps-sources.json`).
+- Sans son serveur, Orbit n'a pas : propositions par IA, fil communautaire, codes à vie, regarder à plusieurs. Orbit n'a pas la double barre Alphabette (il a son propre bouton « Big ») : à décider avec Valentin.
+- À relire plus tard dans Orbit : titre, note, nombre de votes et durée inventés quand le titre réel n'est pas récupéré (« Découverte — IA & Robotique », « 8.4/10 », « 16 min »).
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — ouvrir le recueil partagé (règles Firebase à publier avec Valentin, puis test en ligne).

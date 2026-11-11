@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-11T12:50:46.000Z",
+  "updatedAt": "2026-11-11T21:28:12.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -428,6 +428,18 @@
       "description": "Cinq minutes de petits jeux de mémoire et de calcul par jour, avec de gros boutons et sans chronomètre.",
       "createdAt": "2026-11-11T12:34:30.000Z",
       "updatedAt": "2026-11-11T12:34:30.000Z"
+    },
+    {
+      "id": "orbit",
+      "name": "ORBIT",
+      "slug": "orbit",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/orbit/",
+      "description": "Vos vidéos YouTube, TikTok, Facebook et Instagram réunies : fil, listes, Panthéon et propositions selon vos goûts.",
+      "createdAt": "2026-11-11T21:28:12.000Z",
+      "updatedAt": "2026-11-11T21:28:12.000Z"
     }
   ]
 }
