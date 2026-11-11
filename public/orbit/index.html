@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit · toutes vos vidéos au même endroit</title>
+<meta name="description" content="Rassemblez vos vidéos YouTube, Dailymotion, Vimeo et TikTok dans une seule bibliothèque, avec vos listes et votre historique. Lecture par les lecteurs officiels.">
+<meta name="theme-color" content="#4338ca">
+<style>
+  :root { --fond:#f6f5fb; --carte:#fff; --encre:#17152b; --doux:#55516e; --trait:#e3e0f0; --acc:#4338ca; --accf:#eef2ff; --non:#b91c1c; }
+  @media (prefers-color-scheme: dark) { :root { --fond:#0e0d1a; --carte:#181629; --encre:#f1f0ff; --doux:#b4b0d6; --trait:#2c2947; --acc:#a5b4fc; --accf:#23214a; --non:#fca5a5; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: clip; }
+  .actions select { width: auto; max-width: 100%; min-width: 0; flex: 1 1 160px; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 19px; line-height: 1.45; }
+  main { max-width: 980px; margin: 0 auto; padding: 18px 14px 56px; }
+  h1 { font-size: 32px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  h2 { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+  .intro { color: var(--doux); margin: 8px 0 16px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+  label { display: block; font-weight: 800; font-size: 17px; margin-bottom: 6px; }
+  input[type=text], input[type=url], input[type=search], input[type=password], select { font: inherit; width: 100%; padding: 13px 14px; border-radius: 12px; border: 2px solid var(--trait); background: var(--fond); color: var(--encre); }
+  input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .ligne { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+  .ligne > * { flex: 1 1 200px; min-width: 0; }
+  .ligne > .etroit { flex: 0 0 auto; }
+  button, .bouton { font: inherit; font-weight: 800; padding: 13px 16px; border-radius: 12px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  @media (prefers-color-scheme: dark) { button, .bouton { color: #14122b; } }
+  button.clair, .bouton.clair { background: transparent; color: var(--acc); }
+  button.petit { padding: 8px 11px; font-size: 16px; border-radius: 10px; }
+  button.danger { border-color: var(--non); color: var(--non); background: transparent; }
+  .aide { font-size: 16px; color: var(--doux); margin-top: 8px; }
+  .onglets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .onglets button { background: var(--carte); color: var(--encre); border-color: var(--trait); }
+  .onglets button[aria-selected=true] { background: var(--acc); border-color: var(--acc); color: #fff; }
+  @media (prefers-color-scheme: dark) { .onglets button[aria-selected=true] { color: #14122b; } }
+  .lecteur { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 14px; overflow: hidden; }
+  .lecteur.vertical { aspect-ratio: 9 / 16; max-width: 360px; margin: 0 auto; }
+  .lecteur iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .titre-lecture { font-weight: 900; font-size: 22px; margin: 12px 0 4px; overflow-wrap: anywhere; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .video { background: var(--carte); border: 1px solid var(--trait); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+  .vignette { position: relative; aspect-ratio: 16 / 9; background: var(--accf); border: 0; border-radius: 0; padding: 0; width: 100%; color: var(--acc); font-size: 44px; }
+  .vignette img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .video .corps { padding: 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .video .nom { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .meta { font-size: 15px; color: var(--doux); }
+  .puces { display: flex; flex-wrap: wrap; gap: 6px; }
+  .puce { font-size: 15px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--accf); color: var(--acc); border: 0; cursor: pointer; }
+  .puce[aria-pressed=true] { background: var(--acc); color: #fff; }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .vide { text-align: center; color: var(--doux); padding: 28px 12px; }
+  .pied { margin-top: 26px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  #message { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--encre); color: var(--fond); padding: 12px 18px; border-radius: 12px; font-weight: 700; max-width: calc(100% - 28px); z-index: 50; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="orbit" data-nom="Orbit" data-sous-titre="Toutes vos vidéos au même endroit" data-accent="#4338ca"></script>
+<main>
+  <h1>Toutes vos vidéos, <em>au même endroit.</em></h1>
+  <p class="intro">Collez le lien d'une vidéo YouTube, Dailymotion, Vimeo ou TikTok : Orbit la range dans votre bibliothèque et la lit avec le lecteur officiel de la plateforme.</p>
+
+  <section class="carte" aria-labelledby="t-ajout">
+    <h2 id="t-ajout">Ajouter une vidéo</h2>
+    <form id="formAjout" class="ligne">
+      <div><label for="lien">Lien de la vidéo</label><input type="url" id="lien" placeholder="https://www.youtube.com/watch?v=…" required autocomplete="off"></div>
+      <div><label for="etiquettes">Thèmes (facultatif, séparés par des virgules)</label><input type="text" id="etiquettes" placeholder="cuisine, musique" autocomplete="off"></div>
+      <button type="submit" class="etroit">Ajouter</button>
+    </form>
+    <p class="aide">Le titre est récupéré auprès de la plateforme quand elle le permet. Sinon vous pourrez le renommer.</p>
+  </section>
+
+  <section id="zoneLecture" class="carte" hidden aria-live="polite">
+    <div class="lecteur" id="lecteur"></div>
+    <div class="titre-lecture" id="titreLecture"></div>
+    <div class="meta" id="metaLecture"></div>
+    <div class="actions">
+      <button type="button" class="clair petit" id="precedente">◀ Précédente</button>
+      <button type="button" class="clair petit" id="suivante">Suivante ▶</button>
+      <a class="bouton clair petit" id="ouvrirSite" target="_blank" rel="noopener">Ouvrir sur le site d'origine ↗</a>
+      <button type="button" class="clair petit" id="fermerLecture">Fermer</button>
+    </div>
+  </section>
+
+  <div class="onglets" role="tablist" aria-label="Rubriques">
+    <button type="button" role="tab" data-onglet="bibliotheque" aria-selected="true">Ma bibliothèque</button>
+    <button type="button" role="tab" data-onglet="listes" aria-selected="false">Mes listes</button>
+    <button type="button" role="tab" data-onglet="historique" aria-selected="false">Historique</button>
+    <button type="button" role="tab" data-onglet="recherche" aria-selected="false">Chercher sur YouTube</button>
+    <button type="button" role="tab" data-onglet="reglages" aria-selected="false">Sauvegarde</button>
+  </div>
+
+  <section id="bibliotheque">
+    <div class="carte">
+      <div class="ligne">
+        <div><label for="filtre">Chercher dans ma bibliothèque</label><input type="search" id="filtre" placeholder="Un titre, un thème…" autocomplete="off"></div>
+        <button type="button" class="clair etroit" id="favorisSeuls" aria-pressed="false">★ Favoris seulement</button>
+      </div>
+      <div class="puces" id="themes" style="margin-top:10px;"></div>
+    </div>
+    <div class="grille" id="grille"></div>
+    <p class="vide" id="videBiblio" hidden></p>
+  </section>
+
+  <section id="listes" hidden>
+    <div class="carte">
+      <form id="formListe" class="ligne">
+        <div><label for="nomListe">Nouvelle liste de lecture</label><input type="text" id="nomListe" placeholder="Recettes du dimanche" required autocomplete="off"></div>
+        <button type="submit" class="etroit">Créer la liste</button>
+      </form>
+    </div>
+    <div id="zoneListes"></div>
+    <p class="vide" id="videListes" hidden>Aucune liste pour l'instant. Créez-en une, puis ajoutez-y des vidéos depuis votre bibliothèque.</p>
+  </section>
+
+  <section id="historique" hidden>
+    <div class="grille" id="grilleHistorique"></div>
+    <p class="vide" id="videHistorique" hidden>Vous n'avez encore regardé aucune vidéo ici.</p>
+    <p style="text-align:center; margin-top:12px;"><button type="button" class="danger" id="effacerHistorique" hidden>Effacer l'historique</button></p>
+  </section>
+
+  <section id="recherche" hidden>
+    <div class="carte">
+      <h2>Chercher sur YouTube</h2>
+      <form id="formRecherche" class="ligne">
+        <div><label for="requete">Votre recherche</label><input type="search" id="requete" placeholder="recette tarte tatin" required autocomplete="off"></div>
+        <button type="submit" class="etroit">Chercher</button>
+      </form>
+      <details style="margin-top:12px;">
+        <summary style="font-weight:800; cursor:pointer; color:var(--acc);">Clé YouTube (nécessaire pour chercher)</summary>
+        <div class="ligne" style="margin-top:10px;">
+          <div><label for="cleYoutube">Votre clé « YouTube Data API »</label><input type="password" id="cleYoutube" autocomplete="off" placeholder="AIza…"></div>
+          <button type="button" class="clair etroit" id="enregistrerCle">Enregistrer</button>
+        </div>
+        <p class="aide">La recherche passe par le service officiel de YouTube, qui demande une clé gratuite (console Google Cloud → activer « YouTube Data API v3 » → créer une clé). Elle reste dans ce navigateur. Sans clé, cherchez directement sur YouTube puis collez le lien ici.</p>
+      </details>
+    </div>
+    <div class="grille" id="resultats"></div>
+    <p class="vide" id="videRecherche" hidden></p>
+  </section>
+
+  <section id="reglages" hidden>
+    <div class="carte">
+      <h2>Sauvegarde</h2>
+      <p class="aide" style="margin:0 0 12px;">Votre bibliothèque est enregistrée dans ce navigateur, sur cet appareil. Pour la retrouver ailleurs ou la mettre à l'abri, exportez-la dans un fichier.</p>
+      <div class="actions">
+        <button type="button" id="exporter">Exporter ma bibliothèque</button>
+        <button type="button" class="clair" id="importerBouton">Importer un fichier</button>
+        <input type="file" id="importer" accept="application/json,.json" hidden>
+        <button type="button" class="danger" id="toutEffacer">Tout effacer</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="pied">Orbit ne télécharge et ne copie aucune vidéo : chaque vidéo est lue par le lecteur officiel de sa plateforme, avec ses propres règles et, parfois, ses publicités.<br>Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+</main>
+<div id="message" role="status" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const CLE = 'orbit.v5';
+  const NOMS = { youtube: 'YouTube', dailymotion: 'Dailymotion', vimeo: 'Vimeo', tiktok: 'TikTok' };
+
+  // ------------------------------------------------------------ Données (dans ce navigateur uniquement)
+  let etat = { videos: [], listes: [], historique: [] };
+  function charger() {
+    try { const d = JSON.parse(localStorage.getItem(CLE) || 'null'); if (d && Array.isArray(d.videos)) etat = { videos: d.videos, listes: d.listes || [], historique: d.historique || [] }; } catch (e) {}
+  }
+  function sauver() { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) { dire('Enregistrement impossible sur cet appareil.'); } }
+  let minuterie = null;
+  function dire(texte) { const m = $('message'); m.textContent = texte; m.hidden = false; clearTimeout(minuterie); minuterie = setTimeout(() => { m.hidden = true; }, 3500); }
+  function el(tag, attrs, enfants) {
+    const n = document.createElement(tag);
+    Object.entries(attrs || {}).forEach(([k, v]) => { if (k === 'text') n.textContent = v; else if (k === 'onclick') n.addEventListener('click', v); else n.setAttribute(k, v); });
+    (enfants || []).forEach((c) => c && n.appendChild(c));
+    return n;
+  }
+
+  // ------------------------------------------------------------ Reconnaître un lien (uniquement les lecteurs officiels)
+  function analyser(texte) {
+    let u; try { u = new URL(texte.trim()); } catch (e) { return null; }
+    if (!/^https?:$/.test(u.protocol)) return null;
+    const hote = u.hostname.replace(/^(www|m|music)\./, '');
+    const propre = (id) => (/^[A-Za-z0-9_-]{3,40}$/.test(id || '') ? id : null);
+    let m;
+    if (hote === 'youtu.be') { const id = propre(u.pathname.slice(1).split('/')[0]); return id && { plateforme: 'youtube', id }; }
+    if (hote === 'youtube.com' || hote === 'youtube-nocookie.com') {
+      const id = propre(u.searchParams.get('v') || ((m = u.pathname.match(/^\/(?:shorts|embed|live)\/([^/?]+)/)) && m[1]));
+      return id && { plateforme: 'youtube', id, vertical: /^\/shorts\//.test(u.pathname) };
+    }
+    if (hote === 'dai.ly') { const id = propre(u.pathname.slice(1)); return id && { plateforme: 'dailymotion', id }; }
+    if (hote === 'dailymotion.com') { const id = propre((m = u.pathname.match(/\/video\/([^_/?]+)/)) && m[1]); return id && { plateforme: 'dailymotion', id }; }
+    if (hote === 'vimeo.com' || hote === 'player.vimeo.com') { const id = (m = u.pathname.match(/(\d{5,})/)) && m[1]; return id && { plateforme: 'vimeo', id }; }
+    if (hote === 'tiktok.com') { const id = (m = u.pathname.match(/\/video\/(\d{8,})/)) && m[1]; return id && { plateforme: 'tiktok', id, vertical: true }; }
+    return null;
+  }
+  const adresseLecteur = (v) => ({
+    youtube: 'https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0',
+    dailymotion: 'https://www.dailymotion.com/embed/video/' + v.id + '?autoplay=1',
+    vimeo: 'https://player.vimeo.com/video/' + v.id + '?autoplay=1',
+    tiktok: 'https://www.tiktok.com/embed/v2/' + v.id,
+  })[v.plateforme];
+  const adresseSite = (v) => ({
+    youtube: 'https://www.youtube.com/watch?v=' + v.id,
+    dailymotion: 'https://www.dailymotion.com/video/' + v.id,
+    vimeo: 'https://vimeo.com/' + v.id,
+    tiktok: v.lien || 'https://www.tiktok.com/',
+  })[v.plateforme];
+  const vignette = (v) => v.image || ({ youtube: 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg', dailymotion: 'https://www.dailymotion.com/thumbnail/video/' + v.id })[v.plateforme] || '';
+  const cleVideo = (v) => v.plateforme + ':' + v.id;
+
+  // Titre officiel, quand la plateforme l'autorise depuis un navigateur. Un échec n'empêche rien.
+  async function chercherTitre(v) {
+    try {
+      const adresses = {
+        youtube: 'https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent(adresseSite(v)),
+        vimeo: 'https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(adresseSite(v)),
+        dailymotion: 'https://api.dailymotion.com/video/' + v.id + '?fields=title,thumbnail_360_url',
+      };
+      if (!adresses[v.plateforme]) return;
+      const r = await fetch(adresses[v.plateforme]); if (!r.ok) return;
+      const d = await r.json();
+      const titre = d.title; const image = d.thumbnail_360_url || (v.plateforme === 'vimeo' ? d.thumbnail_url : '');
+      const cible = etat.videos.find((x) => cleVideo(x) === cleVideo(v)); if (!cible) return;
+      if (titre && cible.titreAuto) { cible.titre = String(titre).slice(0, 200); cible.titreAuto = false; }
+      if (image && /^https:\/\//.test(image)) cible.image = image;
+      sauver(); afficher();
+    } catch (e) { /* la plateforme refuse la demande : on garde le titre provisoire */ }
+  }
+
+  function ajouter(lien, etiquettes, titre) {
+    const v = analyser(lien);
+    if (!v) { dire('Lien non reconnu. Orbit lit les vidéos YouTube, Dailymotion, Vimeo et TikTok.'); return null; }
+    const existante = etat.videos.find((x) => cleVideo(x) === cleVideo(v));
+    if (existante) { dire('Cette vidéo est déjà dans votre bibliothèque.'); return existante; }
+    const video = { ...v, lien: lien.trim(), titre: titre || 'Vidéo ' + NOMS[v.plateforme], titreAuto: !titre, etiquettes: nettoyerEtiquettes(etiquettes), favori: false, ajout: Date.now() };
+    etat.videos.unshift(video); sauver(); afficher();
+    if (!titre) chercherTitre(video);
+    return video;
+  }
+  const nettoyerEtiquettes = (t) => Array.from(new Set(String(t || '').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean))).slice(0, 8);
+
+  // ------------------------------------------------------------ Lecture
+  let file = [], position = -1;
+  function lire(video, liste) {
+    file = (liste && liste.length ? liste : [video]); position = file.findIndex((x) => cleVideo(x) === cleVideo(video));
+    const zone = $('lecteur'); zone.textContent = ''; zone.classList.toggle('vertical', Boolean(video.vertical));
+    zone.appendChild(el('iframe', { src: adresseLecteur(video), title: video.titre, allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen', allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin' }));
+    $('titreLecture').textContent = video.titre;
+    $('metaLecture').textContent = NOMS[video.plateforme] + (file.length > 1 ? ' · vidéo ' + (position + 1) + ' sur ' + file.length : '');
+    $('ouvrirSite').href = adresseSite(video);
+    $('precedente').hidden = $('suivante').hidden = file.length < 2;
+    $('zoneLecture').hidden = false; $('zoneLecture').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    etat.historique = [{ cle: cleVideo(video), quand: Date.now() }].concat(etat.historique.filter((h) => h.cle !== cleVideo(video))).slice(0, 100);
+    sauver(); afficherHistorique();
+  }
+  function decaler(pas) { if (file.length < 2) return; position = (position + pas + file.length) % file.length; lire(file[position], file); }
+  function fermerLecture() { $('lecteur').textContent = ''; $('zoneLecture').hidden = true; }
+
+  // ------------------------------------------------------------ Affichage
+  let filtreTheme = '', favorisSeuls = false;
+  function carteVideo(v, contexte) {
+    const image = vignette(v);
+    const bouton = el('button', { type: 'button', class: 'vignette', 'aria-label': 'Lire : ' + v.titre, onclick: () => lire(v, contexte.liste) }, [image ? el('img', { src: image, alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' }) : null, el('span', { 'aria-hidden': 'true', text: image ? '' : '▶' })]);
+    const actions = el('div', { class: 'actions' });
+    if (contexte.dansBiblio) {
+      actions.appendChild(el('button', { type: 'button', class: 'clair petit', 'aria-pressed': String(v.favori), text: v.favori ? '★ Favori' : '☆ Favori', onclick: () => { v.favori = !v.favori; sauver(); afficher(); } }));
+      actions.appendChild(el('button', { type: 'button', class: 'clair petit', text: '✎ Renommer', onclick: () => { const t = prompt('Titre de la vidéo :', v.titre); if (t && t.trim()) { v.titre = t.trim().slice(0, 200); v.titreAuto = false; sauver(); afficher(); } } }));
+      actions.appendChild(el('button', { type: 'button', class: 'clair petit', text: '# Thèmes', onclick: () => { const t = prompt('Thèmes, séparés par des virgules :', v.etiquettes.join(', ')); if (t !== null) { v.etiquettes = nettoyerEtiquettes(t); sauver(); afficher(); } } }));
+      if (etat.listes.length) {
+        const choix = el('select', { 'aria-label': 'Ajouter à une liste' }, [el('option', { value: '', text: '+ Ajouter à une liste…' })].concat(etat.listes.map((l) => el('option', { value: l.id, text: l.nom }))));
+        choix.addEventListener('change', () => { const l = etat.listes.find((x) => x.id === choix.value); if (l && !l.videos.includes(cleVideo(v))) { l.videos.push(cleVideo(v)); sauver(); afficherListes(); dire('Ajoutée à « ' + l.nom + ' ».'); } choix.value = ''; });
+        actions.appendChild(choix);
+      }
+      actions.appendChild(el('button', { type: 'button', class: 'danger petit', text: 'Retirer', onclick: () => { if (!confirm('Retirer « ' + v.titre + ' » de votre bibliothèque ?')) return; etat.videos = etat.videos.filter((x) => x !== v); etat.listes.forEach((l) => { l.videos = l.videos.filter((c) => c !== cleVideo(v)); }); etat.historique = etat.historique.filter((h) => h.cle !== cleVideo(v)); sauver(); afficher(); } }));
+    }
+    if (contexte.retirerDeListe) actions.appendChild(el('button', { type: 'button', class: 'danger petit', text: 'Retirer de la liste', onclick: contexte.retirerDeListe }));
+    if (contexte.ajouter) actions.appendChild(el('button', { type: 'button', class: 'petit', text: '+ Ajouter à ma bibliothèque', onclick: contexte.ajouter }));
+    return el('article', { class: 'video' }, [bouton, el('div', { class: 'corps' }, [
+      el('div', { class: 'nom', text: v.titre }),
+      el('div', { class: 'meta', text: NOMS[v.plateforme] + (contexte.meta ? ' · ' + contexte.meta : '') }),
+      v.etiquettes && v.etiquettes.length ? el('div', { class: 'puces' }, v.etiquettes.map((t) => el('span', { class: 'puce', text: t }))) : null,
+      actions,
+    ])]);
+  }
+
+  function afficherBiblio() {
+    const q = $('filtre').value.trim().toLowerCase();
+    const themes = Array.from(new Set(etat.videos.flatMap((v) => v.etiquettes))).sort((a, b) => a.localeCompare(b, 'fr'));
+    if (filtreTheme && !themes.includes(filtreTheme)) filtreTheme = '';
+    const zoneThemes = $('themes'); zoneThemes.textContent = '';
+    themes.forEach((t) => zoneThemes.appendChild(el('button', { type: 'button', class: 'puce', 'aria-pressed': String(filtreTheme === t), text: t, onclick: () => { filtreTheme = filtreTheme === t ? '' : t; afficherBiblio(); } })));
+    const liste = etat.videos.filter((v) => (!favorisSeuls || v.favori) && (!filtreTheme || v.etiquettes.includes(filtreTheme)) && (!q || (v.titre + ' ' + v.etiquettes.join(' ') + ' ' + NOMS[v.plateforme]).toLowerCase().includes(q)));
+    const grille = $('grille'); grille.textContent = '';
+    liste.forEach((v) => grille.appendChild(carteVideo(v, { dansBiblio: true, liste })));
+    const vide = $('videBiblio'); vide.hidden = liste.length > 0;
+    vide.textContent = etat.videos.length ? 'Aucune vidéo ne correspond à votre recherche.' : 'Votre bibliothèque est vide. Collez un premier lien ci-dessus pour commencer.';
+  }
+
+  function afficherListes() {
+    const zone = $('zoneListes'); zone.textContent = '';
+    $('videListes').hidden = etat.listes.length > 0;
+    etat.listes.forEach((l) => {
+      const videos = l.videos.map((c) => etat.videos.find((v) => cleVideo(v) === c)).filter(Boolean);
+      const grille = el('div', { class: 'grille' }, videos.map((v) => carteVideo(v, { liste: videos, retirerDeListe: () => { l.videos = l.videos.filter((c) => c !== cleVideo(v)); sauver(); afficherListes(); } })));
+      zone.appendChild(el('div', { class: 'carte' }, [
+        el('h2', { text: l.nom + ' (' + videos.length + ')' }),
+        el('div', { class: 'actions', style: 'margin:0 0 12px; padding:0;' }, [
+          videos.length ? el('button', { type: 'button', class: 'petit', text: '▶ Tout lire', onclick: () => lire(videos[0], videos) }) : null,
+          videos.length ? el('button', { type: 'button', class: 'clair petit', text: 'Copier le lien de partage', onclick: () => partager(l, videos) }) : null,
+          el('button', { type: 'button', class: 'danger petit', text: 'Supprimer la liste', onclick: () => { if (confirm('Supprimer la liste « ' + l.nom + ' » ? Les vidéos restent dans votre bibliothèque.')) { etat.listes = etat.listes.filter((x) => x !== l); sauver(); afficher(); } } }),
+        ]),
+        videos.length ? grille : el('p', { class: 'aide', text: 'Liste vide : ajoutez-y des vidéos depuis « Ma bibliothèque ».' }),
+      ]));
+    });
+  }
+
+  function afficherHistorique() {
+    const grille = $('grilleHistorique'); grille.textContent = '';
+    const vues = etat.historique.map((h) => ({ h, v: etat.videos.find((v) => cleVideo(v) === h.cle) })).filter((x) => x.v);
+    vues.forEach(({ h, v }) => grille.appendChild(carteVideo(v, { meta: 'vue le ' + new Date(h.quand).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) })));
+    $('videHistorique').hidden = vues.length > 0; $('effacerHistorique').hidden = vues.length === 0;
+  }
+  function afficher() { afficherBiblio(); afficherListes(); afficherHistorique(); }
+
+  // ------------------------------------------------------------ Partage d'une liste par simple lien (aucun serveur)
+  function partager(l, videos) {
+    const donnees = { n: l.nom, v: videos.map((v) => [adresseSite(v), v.titre]) };
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(donnees)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const lien = location.origin + location.pathname + '#liste=' + code;
+    (navigator.clipboard ? navigator.clipboard.writeText(lien) : Promise.reject()).then(() => dire('Lien copié : envoyez-le à qui vous voulez.'), () => prompt('Copiez ce lien :', lien));
+  }
+  function recevoirPartage() {
+    const m = location.hash.match(/^#liste=([A-Za-z0-9_-]+)$/); if (!m) return;
+    try {
+      const d = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, '+').replace(/_/g, '/')))));
+      if (!d || !Array.isArray(d.v)) return;
+      const nom = String(d.n || 'Liste reçue').slice(0, 80);
+      if (!confirm('Ajouter la liste « ' + nom + ' » (' + d.v.length + ' vidéos) à votre bibliothèque ?')) return;
+      const cles = [];
+      d.v.slice(0, 200).forEach(([lien, titre]) => { const a = analyser(String(lien)); if (!a) return; let v = etat.videos.find((x) => cleVideo(x) === cleVideo(a)); if (!v) { v = { ...a, lien: String(lien), titre: String(titre || 'Vidéo ' + NOMS[a.plateforme]).slice(0, 200), titreAuto: !titre, etiquettes: [], favori: false, ajout: Date.now() }; etat.videos.unshift(v); } cles.push(cleVideo(v)); });
+      etat.listes.unshift({ id: 'l' + Date.now(), nom, videos: Array.from(new Set(cles)) });
+      sauver(); afficher(); ouvrirOnglet('listes'); dire('Liste ajoutée.');
+    } catch (e) { dire('Ce lien de partage est illisible.'); }
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  // ------------------------------------------------------------ Recherche YouTube officielle (clé personnelle)
+  const lireCle = () => { try { return localStorage.getItem('orbit.cleYoutube') || ''; } catch (e) { return ''; } };
+  async function chercherYoutube(q) {
+    const zone = $('resultats'), vide = $('videRecherche'); zone.textContent = ''; vide.hidden = true;
+    const cle = lireCle();
+    if (!cle) { vide.textContent = 'Ajoutez d’abord votre clé YouTube (ci-dessus), ou cherchez sur YouTube puis collez le lien de la vidéo.'; vide.hidden = false; return; }
+    vide.textContent = 'Recherche en cours…'; vide.hidden = false;
+    try {
+      const r = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&relevanceLanguage=fr&q=' + encodeURIComponent(q) + '&key=' + encodeURIComponent(cle));
+      const d = await r.json();
+      if (d.error) { vide.textContent = 'YouTube a refusé la demande : ' + (d.error.message || 'clé invalide ?'); return; }
+      const items = (d.items || []).filter((i) => i.id && i.id.videoId);
+      if (!items.length) { vide.textContent = 'Aucun résultat.'; return; }
+      vide.hidden = true;
+      items.forEach((i) => {
+        const v = { plateforme: 'youtube', id: i.id.videoId, titre: i.snippet.title, etiquettes: [], image: (i.snippet.thumbnails && i.snippet.thumbnails.medium && i.snippet.thumbnails.medium.url) || '' };
+        zone.appendChild(carteVideo(v, { meta: i.snippet.channelTitle || '', ajouter: () => { const a = ajouter(adresseSite(v), '', v.titre); if (a) dire('Ajoutée à votre bibliothèque.'); } }));
+      });
+    } catch (e) { vide.textContent = 'YouTube ne répond pas. Réessayez plus tard.'; }
+  }
+
+  // ------------------------------------------------------------ Onglets et événements
+  const ONGLETS = ['bibliotheque', 'listes', 'historique', 'recherche', 'reglages'];
+  function ouvrirOnglet(nom) { ONGLETS.forEach((o) => { $(o).hidden = o !== nom; }); document.querySelectorAll('.onglets button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.onglet === nom))); }
+  document.querySelectorAll('.onglets button').forEach((b) => b.addEventListener('click', () => ouvrirOnglet(b.dataset.onglet)));
+
+  $('formAjout').addEventListener('submit', (e) => { e.preventDefault(); if (ajouter($('lien').value, $('etiquettes').value)) { $('lien').value = ''; $('etiquettes').value = ''; ouvrirOnglet('bibliotheque'); } });
+  $('filtre').addEventListener('input', afficherBiblio);
+  $('favorisSeuls').addEventListener('click', () => { favorisSeuls = !favorisSeuls; $('favorisSeuls').setAttribute('aria-pressed', String(favorisSeuls)); $('favorisSeuls').classList.toggle('clair', !favorisSeuls); afficherBiblio(); });
+  $('formListe').addEventListener('submit', (e) => { e.preventDefault(); const nom = $('nomListe').value.trim(); if (!nom) return; etat.listes.unshift({ id: 'l' + Date.now(), nom: nom.slice(0, 80), videos: [] }); $('nomListe').value = ''; sauver(); afficher(); });
+  $('precedente').addEventListener('click', () => decaler(-1));
+  $('suivante').addEventListener('click', () => decaler(1));
+  $('fermerLecture').addEventListener('click', fermerLecture);
+  $('effacerHistorique').addEventListener('click', () => { if (confirm('Effacer tout l’historique ?')) { etat.historique = []; sauver(); afficherHistorique(); } });
+  $('formRecherche').addEventListener('submit', (e) => { e.preventDefault(); chercherYoutube($('requete').value.trim()); });
+  $('cleYoutube').value = lireCle();
+  $('enregistrerCle').addEventListener('click', () => { const v = $('cleYoutube').value.trim(); try { v ? localStorage.setItem('orbit.cleYoutube', v) : localStorage.removeItem('orbit.cleYoutube'); } catch (e) {} dire(v ? 'Clé enregistrée sur cet appareil.' : 'Clé effacée.'); });
+  $('exporter').addEventListener('click', () => { const a = el('a', { href: URL.createObjectURL(new Blob([JSON.stringify(etat, null, 2)], { type: 'application/json' })), download: 'orbit-bibliotheque.json' }); document.body.appendChild(a); a.click(); a.remove(); });
+  $('importerBouton').addEventListener('click', () => $('importer').click());
+  $('importer').addEventListener('change', (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    const lecteur = new FileReader();
+    lecteur.onload = () => {
+      try {
+        const d = JSON.parse(lecteur.result); if (!d || !Array.isArray(d.videos)) throw new Error();
+        // On ne garde que des vidéos reconnues, reconstruites à partir de leur lien.
+        const videos = d.videos.map((v) => { const a = analyser(String(v.lien || '')) ; return a && { ...a, lien: String(v.lien), titre: String(v.titre || 'Vidéo').slice(0, 200), titreAuto: false, etiquettes: nettoyerEtiquettes((v.etiquettes || []).join(',')), favori: Boolean(v.favori), ajout: Number(v.ajout) || Date.now(), image: /^https:\/\//.test(v.image || '') ? v.image : undefined }; }).filter(Boolean);
+        const cles = new Set(videos.map(cleVideo));
+        if (!confirm('Remplacer votre bibliothèque actuelle par ce fichier (' + videos.length + ' vidéos) ?')) return;
+        etat = { videos, listes: (d.listes || []).map((l) => ({ id: String(l.id || 'l' + Math.random()), nom: String(l.nom || 'Liste').slice(0, 80), videos: (l.videos || []).filter((c) => cles.has(c)) })), historique: (d.historique || []).filter((h) => h && cles.has(h.cle)).slice(0, 100) };
+        sauver(); afficher(); dire('Bibliothèque importée.');
+      } catch (err) { dire('Ce fichier n’est pas une sauvegarde Orbit.'); }
+    };
+    lecteur.readAsText(f); e.target.value = '';
+  });
+  $('toutEffacer').addEventListener('click', () => { if (confirm('Effacer toute votre bibliothèque, vos listes et votre historique sur cet appareil ?')) { etat = { videos: [], listes: [], historique: [] }; sauver(); fermerLecture(); afficher(); } });
+
+  charger(); afficher(); recevoirPartage();
+})();
+</script>
+</body>
+</html>
