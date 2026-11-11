@@ -77,6 +77,13 @@ Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur
 - **Mémo-Méninges** (`/memo-meninges/`) : séance du jour en trois jeux (paires, suite à répéter, calcul), sans chronomètre, série de jours. Mention « pas un test médical ».
 - Autres idées proposées, non faites : Vrai ou Faux du jour, Chrono-Frise, Où c'est ?, Trois Kifs, Le Défi du jour, La Mouette de La Grande-Motte, Quiz en famille.
 
+## 11/11 : Orbit 5 (version légale, sans serveur)
+- Dépôt créé par Valentin : **`azertylm/orbitvideo-`** (privé). Orbit-v4 reste intact et non publié.
+- Orbit 5 = une seule page : ajout par lien (YouTube, Dailymotion, Vimeo, TikTok), lecture par les **lecteurs officiels intégrés**, listes partageables par lien, favoris, thèmes, historique, export/import, recherche YouTube par l'API officielle avec la clé de l'utilisateur. Aucune extraction ni rediffusion.
+- **Publication** : le dépôt étant privé et le hub n'ayant pas de secret `APPS_TOKEN`, la publication par `apps-sources.json` a échoué (dossier `apps/orbit/` absent de `ovh-deploy`). Orbit est donc publié par le hub lui-même : **`public/orbit/index.html` → `alphabette.fr/orbit/`**, copie du `index.html` du dépôt (seule différence : le script de la barre en chemin relatif). **Toute modification doit être faite dans le dépôt puis recopiée ici**, tant que le dépôt n'est pas public ou que `APPS_TOKEN` n'existe pas.
+- Non testé ici : la lecture réelle dans les lecteurs des plateformes et la récupération des titres (plateformes injoignables depuis l'atelier). Testés : reconnaissance des liens, listes, partage, historique, sauvegarde, affichage téléphone et BIG.
+- Fonctions d'Orbit-v4 non reprises : regarder à plusieurs, blind test, suggestions par goûts, analyses IA, export de clips, diffusion VLC / Freebox (ces trois dernières dépendaient de l'extraction).
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — décision de Valentin : garder les votes simulés avec le bandeau (état actuel) ou repartir de zéro (aucun faux vote, appli vide au départ).
