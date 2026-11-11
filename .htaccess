@@ -16,6 +16,11 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+  # Domaines en redirection vers le domaine principal de leur application
+  # proxilien : proxilien.eu → proxilien.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.eu)$ [NC]
+  RewriteRule ^(.*)$ https://proxilien.fr/$1 [R=301,L]
+
   # Domaines propres des applications (aiguillage par nom d'hôte)
   # infosperso : infosperso.alphabette.fr
   RewriteCond %{HTTP_HOST} ^(www\.)?(infosperso\.alphabette\.fr)$ [NC]
@@ -32,8 +37,8 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_URI} !^/apps/atelier/
   RewriteRule ^(.*)$ apps/atelier/$1 [L]
 
-  # proxilien : proxilien.fr, proxilien.eu, proxilien.alphabette.fr
-  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.eu|proxilien\.alphabette\.fr)$ [NC]
+  # proxilien : proxilien.fr, proxilien.alphabette.fr
+  RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.alphabette\.fr)$ [NC]
   RewriteCond %{REQUEST_URI} !^/apps/proxilien/
   RewriteRule ^(.*)$ apps/proxilien/$1 [L]
 
