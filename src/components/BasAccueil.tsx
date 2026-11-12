@@ -45,6 +45,13 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
           Prix TTC, avec {config.trialDays} jours d'essai. Le paiement en ligne n'est pas encore ouvert :
           aujourd'hui, les applications s'utilisent librement.
         </p>
+        <p className="accueil__note">
+          🎟️ Vous avez un code d'invitation ?{' '}
+          <a className="accueil__lien" href="/inscription/">
+            Inscrivez-vous gratuitement
+          </a>{' '}
+          : toutes les applications vous reconnaîtront.
+        </p>
       </section>
 
       <section className="accueil__bloc" aria-labelledby="titre-engagements">

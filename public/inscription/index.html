@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription · alphabette</title>
+<meta name="description" content="Inscription gratuite sur invitation : un prénom, un code, et toutes les applications alphabette vous reconnaissent.">
+<meta name="robots" content="noindex">
+<style>
+  :root { --fond:#f6f8fc; --carte:#fff; --encre:#0f172a; --doux:#475569; --trait:#e2e8f0; --acc:#2563eb; --ok:#15803d; --okf:#dcfce7; --non:#b91c1c; --nonf:#fee2e2; }
+  :root[data-ab-theme="nuit"] { --fond:#0b1120; --carte:#111a2e; --encre:#e2e8f0; --doux:#a5b4cf; --trait:#1e293b; --acc:#7aa2ff; --ok:#86efac; --okf:#14532d; --non:#fca5a5; --nonf:#7f1d1d; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 19px; line-height: 1.5; }
+  main { max-width: 620px; margin: 0 auto; padding: 22px 16px 48px; }
+  h1 { font-size: 32px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 20px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  label { display: block; font-weight: 800; margin: 14px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  input { font: inherit; width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--fond); color: var(--encre); }
+  input:focus-visible { outline: 3px solid var(--acc); outline-offset: 1px; border-color: var(--acc); }
+  #code { text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+  .aide { color: var(--doux); font-size: 15px; margin-top: 6px; }
+  .gros { font: inherit; display: block; width: 100%; text-align: center; padding: 15px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; font-weight: 800; font-size: 20px; cursor: pointer; margin-top: 18px; text-decoration: none; }
+  .gros.clair { background: transparent; color: var(--acc); }
+  .gros:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .gros:disabled { opacity: .6; cursor: wait; }
+  .message { margin-top: 14px; padding: 12px 14px; border-radius: 14px; font-weight: 700; }
+  .message.non { background: var(--nonf); color: var(--non); }
+  .bienvenue { font-size: 26px; font-weight: 900; line-height: 1.2; }
+  .role { display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 12px; background: var(--okf); color: var(--ok); font-weight: 800; font-size: 16px; }
+  .petit { font-size: 16px; color: var(--doux); }
+  ul.points { margin: 10px 0 0 22px; display: grid; gap: 6px; }
+  h2 { font-size: 22px; margin: 26px 0 8px; }
+  .lien { background: none; border: 0; color: var(--acc); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0; }
+  .rangee { display: flex; gap: 10px; align-items: flex-end; }
+  .rangee input { flex: 1; }
+  .rangee .gros { width: auto; margin-top: 0; padding: 14px 16px; font-size: 17px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="inscription" data-nom="Inscription" data-sous-titre="Gratuite, sur invitation" data-accent="#2563eb"></script>
+<main>
+  <h1>Inscription <em>gratuite</em></h1>
+  <p class="intro">Un prénom, un code d’invitation, et toutes les applications alphabette vous reconnaissent.</p>
+
+  <!-- Formulaire d'inscription -->
+  <form class="carte" id="formulaire" hidden novalidate>
+    <label for="prenom">Votre prénom ou pseudo</label>
+    <input id="prenom" name="prenom" autocomplete="given-name" maxlength="24" required>
+    <label for="code">Votre code d’invitation</label>
+    <input id="code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24" placeholder="ALPHA-XXXX-XXXX" required>
+    <p class="aide">Le code vous a été donné par Valentin ou par un ami. Les tirets et les majuscules n’ont pas d’importance.</p>
+    <button class="gros" type="submit" id="valider">M’inscrire gratuitement</button>
+    <p class="message non" id="erreur" role="alert" hidden></p>
+  </form>
+
+  <!-- Déjà inscrit -->
+  <section class="carte" id="inscrit" hidden aria-live="polite">
+    <p class="bienvenue" id="bonjour"></p>
+    <p><span class="role" id="role"></span></p>
+    <p style="margin-top:12px;">Toutes les applications alphabette vous reconnaissent sur cet appareil : votre prénom remplace « S’abonner » en haut de chaque page, et l’accès vous est offert.</p>
+    <a class="gros" id="retour" hidden>Revenir à l’application</a>
+    <a class="gros clair" href="https://alphabette.fr/">Voir toutes les applications</a>
+    <form class="rangee" id="changerPrenom" style="margin-top:18px;" novalidate>
+      <div style="flex:1;">
+        <label for="nouveauPrenom">Changer mon prénom</label>
+        <input id="nouveauPrenom" maxlength="24">
+      </div>
+      <button class="gros clair" type="submit">Enregistrer</button>
+    </form>
+    <p class="petit" style="margin-top:16px;"><button class="lien" type="button" id="desinscrire">Me désinscrire de cet appareil</button></p>
+  </section>
+
+  <h2>Comment ça marche</h2>
+  <ul class="points">
+    <li>L’inscription est <strong>gratuite</strong> et se fait <strong>sur invitation</strong>, avec un code.</li>
+    <li>Elle est gardée <strong>dans ce navigateur</strong> et vaut pour toutes les applications en <strong>alphabette.fr</strong>.</li>
+    <li>Rien n’est envoyé à un serveur : le code est vérifié sur votre appareil.</li>
+    <li>Sur un autre téléphone ou ordinateur, entrez à nouveau votre code.</li>
+    <li>Pas de code ? Les applications s’utilisent librement en attendant.</li>
+  </ul>
+</main>
+<script>
+(function () {
+  'use strict';
+  // Codes d'invitation actifs. On ne garde ici que leur empreinte SHA-256 (le code lui-même n'apparaît pas).
+  // Pour ajouter un code : empreinte du code en MAJUSCULES, sans tirets ni espaces (ex. « ALPHA7DCV3V35 »).
+  var CODES = [
+    { id: 'fondateur-1', role: 'fondateur', empreinte: '58064c11c97348d83aa3be4c60f191cfe7c96defa8367b51a9a78b5f91f04389' },
+    { id: 'amis-1', role: 'ami', empreinte: '768cda4b76dbe34681f8c0d080f5f6aa1ba35d7363090698bd3607d975488062' }
+  ];
+  var ROLES = { fondateur: 'Fondateur', ami: 'Ami(e) d’alphabette', invite: 'Invité(e)' };
+  var COOKIE = 'ab_membre', CLE_LOCALE = 'alphabette.membre', DUREE = 400 * 24 * 3600;
+
+  function $(id) { return document.getElementById(id); }
+  function domaine() { var m = location.hostname.match(/(?:^|\.)(alphabette\.(?:fr|eu))$/); return m ? '.' + m[1] : null; }
+  function lire() {
+    var m = null;
+    try { var c = document.cookie.match(/(?:^|; )ab_membre=([^;]*)/); if (c) m = JSON.parse(decodeURIComponent(c[1])); } catch (e) { m = null; }
+    if (!m) { try { m = JSON.parse(localStorage.getItem(CLE_LOCALE) || 'null'); } catch (e) { m = null; } }
+    return m && typeof m.prenom === 'string' && m.prenom.trim() ? m : null;
+  }
+  function ecrire(m) {
+    var json = JSON.stringify(m), dom = domaine();
+    try { localStorage.setItem(CLE_LOCALE, json); } catch (e) {}
+    document.cookie = COOKIE + '=' + encodeURIComponent(json) + '; Path=/; Max-Age=' + DUREE + '; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '') + (dom ? '; Domain=' + dom : '');
+    window.dispatchEvent(new Event('alphabette:membre'));
+  }
+  function oublier() {
+    var dom = domaine();
+    try { localStorage.removeItem(CLE_LOCALE); } catch (e) {}
+    document.cookie = COOKIE + '=; Path=/; Max-Age=0; SameSite=Lax' + (dom ? '; Domain=' + dom : '');
+    window.dispatchEvent(new Event('alphabette:membre'));
+  }
+  function nettoyerPrenom(p) { return String(p || '').replace(/[<>"]/g, '').replace(/\s+/g, ' ').trim().slice(0, 24); }
+  function normaliser(code) {
+    var c = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    return c && c.indexOf('ALPHA') !== 0 ? 'ALPHA' + c : c;
+  }
+  function empreinte(texte) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(texte)).then(function (buf) {
+      return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+    });
+  }
+  // Retour vers l'application d'où l'on vient (uniquement un site alphabette).
+  function adresseRetour() {
+    try {
+      var r = new URL(new URLSearchParams(location.search).get('retour') || '');
+      if (r.protocol === 'https:' && /(^|\.)alphabette\.(fr|eu)$/.test(r.hostname) && r.pathname.indexOf('/inscription') !== 0) return r.href;
+    } catch (e) {}
+    return '';
+  }
+
+  function afficher() {
+    var m = lire();
+    $('formulaire').hidden = !!m;
+    $('inscrit').hidden = !m;
+    if (!m) { setTimeout(function () { $('prenom').focus(); }, 50); return; }
+    $('bonjour').textContent = 'Bonjour ' + m.prenom + ', vous êtes inscrit(e) !';
+    var depuis = ''; try { depuis = new Date(m.depuis).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {}
+    $('role').textContent = (ROLES[m.role] || 'Inscrit(e)') + (depuis ? ' · depuis le ' + depuis : '');
+    $('nouveauPrenom').value = m.prenom;
+    var r = adresseRetour();
+    $('retour').hidden = !r; if (r) $('retour').href = r;
+  }
+
+  $('formulaire').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var prenom = nettoyerPrenom($('prenom').value), code = normaliser($('code').value), err = $('erreur');
+    err.hidden = true;
+    if (prenom.length < 2) { err.textContent = 'Indiquez un prénom ou un pseudo (2 lettres au moins).'; err.hidden = false; $('prenom').focus(); return; }
+    if (code.length < 9) { err.textContent = 'Indiquez votre code d’invitation.'; err.hidden = false; $('code').focus(); return; }
+    if (!window.crypto || !crypto.subtle) { err.textContent = 'Ce navigateur ne permet pas de vérifier le code. Essayez avec un navigateur à jour.'; err.hidden = false; return; }
+    $('valider').disabled = true;
+    empreinte(code).then(function (h) {
+      $('valider').disabled = false;
+      var trouve = CODES.filter(function (c) { return c.empreinte === h; })[0];
+      if (!trouve) { err.textContent = 'Ce code n’est pas reconnu. Vérifiez-le auprès de la personne qui vous l’a donné.'; err.hidden = false; $('code').focus(); return; }
+      ecrire({ prenom: prenom, role: trouve.role, depuis: new Date().toISOString(), code: trouve.id });
+      afficher();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, function () { $('valider').disabled = false; err.textContent = 'La vérification a échoué. Réessayez.'; err.hidden = false; });
+  });
+
+  $('changerPrenom').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var m = lire(), p = nettoyerPrenom($('nouveauPrenom').value);
+    if (!m || p.length < 2) return;
+    m.prenom = p; ecrire(m); afficher();
+  });
+
+  $('desinscrire').addEventListener('click', function () {
+    if (!confirm('Vous désinscrire de cet appareil ? Vous pourrez vous réinscrire avec votre code.')) return;
+    oublier(); afficher();
+  });
+
+  afficher();
+})();
+</script>
+</body>
+</html>

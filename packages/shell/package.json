@@ -1,6 +1,6 @@
 {
   "name": "@alphabette/shell",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "type": "module",
   "description": "Base commune de toutes les applications de l'écosystème alphabette.fr : barre écosystème, en-tête d'application, thème jour/nuit, densité, plein écran.",

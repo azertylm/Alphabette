@@ -29,6 +29,19 @@
   var HUB = local ? location.origin : 'https://alphabette.fr';
   var app = { cle: d.cle || '', nom: d.nom || document.title, sousTitre: d.sousTitre || '', accent: d.accent || '#2563eb' };
 
+  // ------------------------------------------------------------ Inscription (code d'invitation)
+  // Écrite par https://alphabette.fr/inscription/ dans un cookie de tout le domaine : chaque appli la lit.
+  var INSCRIPTION = 'https://alphabette.fr/inscription/';
+  function lireMembre() {
+    var m = null;
+    try { var c = document.cookie.match(/(?:^|; )ab_membre=([^;]*)/); if (c) m = JSON.parse(decodeURIComponent(c[1])); } catch (e) { m = null; }
+    if (!m) { try { m = JSON.parse(localStorage.getItem('alphabette.membre') || 'null'); } catch (e) { m = null; } }
+    return m && typeof m.prenom === 'string' && m.prenom.trim() ? m : null;
+  }
+  var membre = lireMembre();
+  var ROLES = { fondateur: 'Fondateur', ami: 'Ami(e) d’alphabette', invite: 'Invité(e)' };
+  function lienInscription() { return INSCRIPTION + '?retour=' + encodeURIComponent(location.href); }
+
   // ------------------------------------------------------------ Préférences partagées
   var COOKIE = 'ab_prefs', CLE_LOCALE = 'alphabette.prefs';
   function domaine() { var m = location.hostname.match(/(?:^|\.)(alphabette\.(?:fr|eu))$/); return m ? '.' + m[1] : null; }
@@ -50,7 +63,7 @@
 
   // ------------------------------------------------------------ Langue de la barre
   var EN = {
-    'Aller sur alphabette.fr': 'Go to alphabette.fr', 'Toutes les applis': 'All apps', 'Nouveautés': 'What’s new', 'S’abonner': 'Subscribe',
+    'Aller sur alphabette.fr': 'Go to alphabette.fr', 'Toutes les applis': 'All apps', 'Nouveautés': 'What’s new', 'S’abonner': 'Subscribe', 'Mon inscription': 'My membership', 'S’inscrire avec un code': 'Join with a code',
     'Faire un don': 'Donate', 'Passer en mode nuit': 'Switch to night mode', 'Passer en mode jour': 'Switch to day mode',
     'Lire à voix haute': 'Read aloud', 'Arrêter la lecture': 'Stop reading', 'Plus d’options': 'More options', 'Taille du texte': 'Text size',
     'Normale': 'Normal', 'Grande': 'Large', 'Très grande': 'Extra large', 'Épingler cette appli': 'Pin this app', 'Retirer de mes favoris': 'Remove from favorites',
@@ -114,6 +127,8 @@
     '.ab-eco__droite{display:flex;align-items:center;margin-left:auto;}',
     '.ab-abonner{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 14px;border:0;border-radius:999px;background:#f5b50a;color:#3a2a00;font:inherit;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;text-decoration:none;}',
     '.ab-abonner:hover{background:#dba207;}',
+    '.ab-abonner--membre{background:rgba(245,181,10,.18);color:#fff;border:1px solid rgba(245,181,10,.7);max-width:150px;overflow:hidden;text-overflow:ellipsis;}',
+    '.ab-abonner--membre:hover{background:rgba(245,181,10,.32);}',
     '.ab-bar{position:relative;display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--ab-bar-fond);color:var(--ab-bar-encre);border-bottom:1px solid var(--ab-bar-trait);}',
     '.ab-bar__titres{display:flex;flex-direction:column;min-width:0;}',
     '.ab-bar__nom{font-size:20px;font-weight:800;line-height:1.1;color:var(--ab-accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
@@ -329,6 +344,26 @@
     });
   }
 
+  // ------------------------------------------------------------ Panneau « Mon inscription »
+  function panneauMembre() {
+    membre = lireMembre();
+    modale(membre ? '👤 ' + membre.prenom : '🎟️ ' + T('S’inscrire avec un code'), function (boite) {
+      var actions = el('div', { class: 'ab-modale__actions' });
+      if (membre) {
+        var depuis = ''; try { depuis = new Date(membre.depuis).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {}
+        boite.appendChild(el('p', { text: (ROLES[membre.role] || 'Inscrit(e)') + (depuis ? ' · inscrit(e) le ' + depuis : '') }));
+        boite.appendChild(el('p', { text: 'Inscription gratuite, sur invitation : toutes les applications alphabette vous reconnaissent sur cet appareil, et l’accès vous est offert.' }));
+        boite.appendChild(el('p', { style: 'color:var(--ab-muted);font-size:14px;', text: 'Votre inscription est gardée dans ce navigateur, rien n’est envoyé à un serveur. Sur un autre appareil, entrez à nouveau votre code.' }));
+        actions.appendChild(el('a', { class: 'ab-btn ab-btn--accent', href: INSCRIPTION, text: 'Gérer mon inscription' }));
+      } else {
+        boite.appendChild(el('p', { text: 'L’inscription est gratuite avec un code d’invitation. Une fois inscrit(e), toutes les applications alphabette vous reconnaissent sur cet appareil.' }));
+        boite.appendChild(el('p', { style: 'color:var(--ab-muted);font-size:14px;', text: 'Pas de code ? Les applications s’utilisent librement en attendant.' }));
+        actions.appendChild(el('a', { class: 'ab-btn ab-btn--accent', href: lienInscription(), text: '🎟️ M’inscrire avec un code' }));
+      }
+      boite.appendChild(actions);
+    });
+  }
+
   // ------------------------------------------------------------ Les deux barres
   var racine = null, favorisZone = null, menuOuvert = false, menuEl = null;
   function entreeMenu(emoji, mot, action, etat) {
@@ -344,6 +379,7 @@
     var epingle = favoris.indexOf(app.cle) >= 0;
     menuEl = el('div', { class: 'ab-menu', role: 'menu' });
     menuEl.appendChild(entreeMenu(epingle ? '★' : '⭐', T(epingle ? 'Retirer de mes favoris' : 'Épingler cette appli'), function () { basculerFavori(app.cle || location.pathname); }, epingle));
+    menuEl.appendChild(membre ? entreeMenu('👤', T('Mon inscription'), panneauMembre) : entreeMenu('🎟️', T('S’inscrire avec un code'), function () { location.href = lienInscription(); }));
     menuEl.appendChild(entreeMenu('🧘', T(simple ? 'Quitter le mode simple' : 'Mode simple'), function () { simple = !simple; ecrirePrefs({ simple: simple }); appliquerSimple(); }, simple));
     if (!dejaInstallee()) menuEl.appendChild(entreeMenu('📲', T('Installer sur mon téléphone'), installer));
     menuEl.appendChild(entreeMenu('💬', T('Donner mon avis'), donnerAvis));
@@ -372,7 +408,9 @@
       tip(el('button', { type: 'button', class: 'ab-eco__icone', text: '▦', onclick: panneauApps }), T('Toutes les applis')),
       tip(el('button', { type: 'button', class: 'ab-eco__icone', onclick: panneauNouveautes }, [el('span', { text: '🆕' }), point]), T('Nouveautés')),
       favorisZone,
-      el('div', { class: 'ab-eco__droite' }, [el('a', { class: 'ab-abonner', href: HUB + '/#tarifs', text: '⭐ ' + T('S’abonner') })]),
+      el('div', { class: 'ab-eco__droite' }, [membre
+        ? tip(el('button', { type: 'button', class: 'ab-abonner ab-abonner--membre', text: '👤 ' + membre.prenom, onclick: panneauMembre }), T('Mon inscription'))
+        : el('a', { class: 'ab-abonner', href: HUB + '/#tarifs', text: '⭐ ' + T('S’abonner') })]),
     ]);
     var big = el('button', { type: 'button', class: 'ab-pico ab-pico--big', id: 'ab-big' }, [el('span', { text: 'BIG' }), el('span', { class: 'ab-density', 'aria-hidden': 'true' }, [el('span', { class: 'ab-density__bar' }), el('span', { class: 'ab-density__bar' }), el('span', { class: 'ab-density__bar' })])]);
     big.addEventListener('click', function () { indexTaille = (indexTaille + 1) % TAILLES.length; ecrirePrefs({ density: TAILLES[indexTaille].cle }); appliquerTaille(); cacherBulle(); montrerBulle(big, 1600); });
@@ -403,6 +441,10 @@
     if (window.ResizeObserver) new ResizeObserver(hauteur).observe(document.body);
   }
   if (document.body) poser(); else document.addEventListener('DOMContentLoaded', poser);
+  function relireMembre() { var m = lireMembre(); if (JSON.stringify(m) !== JSON.stringify(membre)) { membre = m; if (racine) reconstruire(); } }
+  window.addEventListener('focus', relireMembre);
+  window.addEventListener('alphabette:membre', relireMembre);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) relireMembre(); });
 
   // ------------------------------------------------------------ Données du hub
   fetch(HUB + '/api/apps').then(function (r) { return r.json(); }).then(function (data) { appsHub = (data && data.apps) || []; dessinerFavoris(); majPoint(); }).catch(function () {});
