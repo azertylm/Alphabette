@@ -1,6 +1,6 @@
 ---
 name: gardien-securite
-description: Audit sécurité et vie privée du hub ou d'une application Alphabette — clés et secrets dans le code, failles XSS, règles Firebase, dépendances vulnérables, données personnelles, protection de /admin, IBAN codé en dur. À utiliser avant une publication importante ou au moindre doute.
+description: "Audit sécurité et vie privée du hub ou d'une application Alphabette — clés et secrets dans le code, failles XSS, règles Firebase, dépendances vulnérables, données personnelles, protection de /admin, IBAN codé en dur. À utiliser avant une publication importante ou au moindre doute."
 model: inherit
 ---
 

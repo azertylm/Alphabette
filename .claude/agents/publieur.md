@@ -1,6 +1,6 @@
 ---
 name: publieur
-description: Met en ligne une application ou le hub Alphabette — vérifie que les tests sont passés, pousse sur le bon dépôt, relance le workflow deploy-ovh.yml, contrôle version.json et l'adresse <clé>.alphabette.fr, puis passe la fiche en « actif » dans le registre. À utiliser pour toute publication.
+description: "Met en ligne une application ou le hub Alphabette — vérifie que les tests sont passés, pousse sur le bon dépôt, relance le workflow deploy-ovh.yml, contrôle version.json et l'adresse <clé>.alphabette.fr, puis passe la fiche en « actif » dans le registre. À utiliser pour toute publication."
 model: sonnet
 ---
 

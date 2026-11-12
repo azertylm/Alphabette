@@ -1,6 +1,6 @@
 ---
 name: verificateur-honnetete
-description: Contrôle de vérité avant publication d'une application Alphabette — chasse les faux contenus (avis, votes, auteurs, analyses « d'exemple », paiements simulés) et vérifie chiffres officiels, numéros d'urgence, conseils santé, alimentation, argent et droit sur des sources officielles à jour. À utiliser avant chaque mise en ligne et pour toute appli qui donne des conseils.
+description: "Contrôle de vérité avant publication d'une application Alphabette — chasse les faux contenus (avis, votes, auteurs, analyses « d'exemple », paiements simulés) et vérifie chiffres officiels, numéros d'urgence, conseils santé, alimentation, argent et droit sur des sources officielles à jour. À utiliser avant chaque mise en ligne et pour toute appli qui donne des conseils."
 model: sonnet
 ---
 

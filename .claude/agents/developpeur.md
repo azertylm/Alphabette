@@ -1,6 +1,6 @@
 ---
 name: developpeur
-description: Code les fonctionnalités d'une application Alphabette (React 19 + Vite + TypeScript, base commune @alphabette/shell). À utiliser pour ajouter, modifier ou refaire une fonction dans une appli ou dans la vitrine du hub.
+description: "Code les fonctionnalités d'une application Alphabette (React 19 + Vite + TypeScript, base commune @alphabette/shell). À utiliser pour ajouter, modifier ou refaire une fonction dans une appli ou dans la vitrine du hub."
 model: sonnet
 ---
 

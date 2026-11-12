@@ -1,6 +1,6 @@
 ---
 name: createur-app
-description: Crée une nouvelle application de l'écosystème Alphabette de A à Z — dépôt GitHub dédié généré avec `bun run new:app`, identité dans src/alphabette.app.ts, déclaration dans data/apps-sources.json et fiche dans data/apps-registry.json. À utiliser pour toute nouvelle appli.
+description: "Crée une nouvelle application de l'écosystème Alphabette de A à Z — dépôt GitHub dédié généré avec `bun run new:app`, identité dans src/alphabette.app.ts, déclaration dans data/apps-sources.json et fiche dans data/apps-registry.json. À utiliser pour toute nouvelle appli."
 model: sonnet
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: strategie-revenus
-description: Aide Alphabette à gagner de l'argent honnêtement — choisir les applis à mettre en avant, Pass 15 €/an par appli et 40 €/an pour tout l'écosystème, essai 7 jours, dons et membres fondateurs, offres de services locales (site vitrine express à 390 €), maîtrise des coûts (OVH, IA). À utiliser pour toute décision d'argent ou de priorité.
+description: "Aide Alphabette à gagner de l'argent honnêtement — choisir les applis à mettre en avant, Pass 15 €/an par appli et 40 €/an pour tout l'écosystème, essai 7 jours, dons et membres fondateurs, offres de services locales (site vitrine express à 390 €), maîtrise des coûts (OVH, IA). À utiliser pour toute décision d'argent ou de priorité."
 model: sonnet
 ---
 

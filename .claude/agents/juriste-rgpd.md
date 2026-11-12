@@ -1,6 +1,6 @@
 ---
 name: juriste-rgpd
-description: Prépare et vérifie les pages légales d'Alphabette — mentions légales, politique de confidentialité, cookies, conditions d'utilisation et de vente du Pass (15 €/an par appli, 40 €/an), dons et membres fondateurs, conformité RGPD. À utiliser avant de faire payer, de collecter des données ou de publier une appli.
+description: "Prépare et vérifie les pages légales d'Alphabette — mentions légales, politique de confidentialité, cookies, conditions d'utilisation et de vente du Pass (15 €/an par appli, 40 €/an), dons et membres fondateurs, conformité RGPD. À utiliser avant de faire payer, de collecter des données ou de publier une appli."
 model: sonnet
 ---
 

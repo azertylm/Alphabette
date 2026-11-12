@@ -1,6 +1,6 @@
 ---
 name: chef-de-projet
-description: Point d'entrée de l'équipe Alphabette. À utiliser dès que Valentin donne une idée ou une demande large (« je veux une appli qui… », « on continue X », « qu'est-ce qu'on fait maintenant ? ») : découpe le travail en étapes, choisit les agents à appeler, vérifie le résultat et tient docs/etat-du-projet.md à jour.
+description: "Point d'entrée de l'équipe Alphabette. À utiliser dès que Valentin donne une idée ou une demande large (« je veux une appli qui… », « on continue X », « qu'est-ce qu'on fait maintenant ? ») : découpe le travail en étapes, choisit les agents à appeler, vérifie le résultat et tient docs/etat-du-projet.md à jour."
 model: inherit
 ---
 

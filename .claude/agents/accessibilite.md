@@ -1,6 +1,6 @@
 ---
 name: accessibilite
-description: Rend une application Alphabette utilisable par tous, en particulier les seniors, les personnes malvoyantes ou qui utilisent un lecteur d'écran — contrastes, tailles, bouton BIG, navigation au clavier, libellés, WCAG 2.1 AA. À utiliser pour les applis grand public (MémoireVive, Bon Plan Senior, Santé Citoyenne…) et avant publication.
+description: "Rend une application Alphabette utilisable par tous, en particulier les seniors, les personnes malvoyantes ou qui utilisent un lecteur d'écran — contrastes, tailles, bouton BIG, navigation au clavier, libellés, WCAG 2.1 AA. À utiliser pour les applis grand public (MémoireVive, Bon Plan Senior, Santé Citoyenne…) et avant publication."
 model: sonnet
 ---
 

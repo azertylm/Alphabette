@@ -1,6 +1,6 @@
 ---
 name: debogueur
-description: Trouve et corrige un bug ou un build cassé dans le hub ou une application Alphabette — erreur console, page blanche, appli qui ne s'affiche pas sur son sous-domaine, workflow deploy-ovh.yml en échec, données perdues. À utiliser dès que quelque chose ne marche pas.
+description: "Trouve et corrige un bug ou un build cassé dans le hub ou une application Alphabette — erreur console, page blanche, appli qui ne s'affiche pas sur son sous-domaine, workflow deploy-ovh.yml en échec, données perdues. À utiliser dès que quelque chose ne marche pas."
 model: inherit
 ---
 

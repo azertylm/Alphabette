@@ -1,6 +1,6 @@
 ---
 name: designer-ui
-description: Conçoit ou retouche l'interface d'une application Alphabette ou de la vitrine — mise en page mobile, hiérarchie visuelle, palette --ab-* dérivée de l'accent, mode jour/nuit, bouton BIG. À utiliser quand un écran est confus, moche, chargé, ou pour dessiner un nouvel écran.
+description: "Conçoit ou retouche l'interface d'une application Alphabette ou de la vitrine — mise en page mobile, hiérarchie visuelle, palette --ab-* dérivée de l'accent, mode jour/nuit, bouton BIG. À utiliser quand un écran est confus, moche, chargé, ou pour dessiner un nouvel écran."
 model: sonnet
 ---
 

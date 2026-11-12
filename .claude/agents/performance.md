@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Accélère une application Alphabette ou la vitrine — poids du bundle, images, polices, chargement sur 4G et vieux téléphones, mise en cache, PWA hors ligne. À utiliser quand une appli est lente, lourde, ou avant une mise en avant.
+description: "Accélère une application Alphabette ou la vitrine — poids du bundle, images, polices, chargement sur 4G et vieux téléphones, mise en cache, PWA hors ligne. À utiliser quand une appli est lente, lourde, ou avant une mise en avant."
 model: sonnet
 ---
 

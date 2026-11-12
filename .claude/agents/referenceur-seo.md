@@ -1,6 +1,6 @@
 ---
 name: referenceur-seo
-description: Référencement naturel et partage d'alphabette.fr et de chaque sous-domaine — balises title et description, Open Graph, données structurées, sitemap.xml, robots.txt, textes de la vitrine pensés pour ce que les gens tapent dans Google. À utiliser à chaque nouvelle appli et pour faire venir du monde sans budget.
+description: "Référencement naturel et partage d'alphabette.fr et de chaque sous-domaine — balises title et description, Open Graph, données structurées, sitemap.xml, robots.txt, textes de la vitrine pensés pour ce que les gens tapent dans Google. À utiliser à chaque nouvelle appli et pour faire venir du monde sans budget."
 model: sonnet
 ---
 

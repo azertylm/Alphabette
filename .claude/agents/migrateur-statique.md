@@ -1,6 +1,6 @@
 ---
 name: migrateur-statique
-description: Rend une application qui dépend d'un serveur Node (Express) compatible avec l'hébergement statique OVH Perso — static/staticApi.ts, static/shims/, script build:static, VITE_ALPHABETTE_STATIC=1. À utiliser quand une appli ne marche pas en ligne parce qu'elle appelle une API serveur.
+description: "Rend une application qui dépend d'un serveur Node (Express) compatible avec l'hébergement statique OVH Perso — static/staticApi.ts, static/shims/, script build:static, VITE_ALPHABETTE_STATIC=1. À utiliser quand une appli ne marche pas en ligne parce qu'elle appelle une API serveur."
 model: sonnet
 ---
 

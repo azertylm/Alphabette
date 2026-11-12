@@ -1,6 +1,6 @@
 ---
 name: graphiste
-description: Produit les visuels d'Alphabette — icône et favicon d'une appli, icônes PWA, image de partage Open Graph (1200×630), captures d'écran pour la vitrine et les réseaux, illustrations SVG originales. À utiliser dès qu'il faut une image.
+description: "Produit les visuels d'Alphabette — icône et favicon d'une appli, icônes PWA, image de partage Open Graph (1200×630), captures d'écran pour la vitrine et les réseaux, illustrations SVG originales. À utiliser dès qu'il faut une image."
 model: sonnet
 ---
 

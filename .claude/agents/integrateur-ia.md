@@ -1,6 +1,6 @@
 ---
 name: integrateur-ia
-description: Branche ou améliore l'intelligence artificielle d'une application Alphabette — Mistral AI (règle nº 5) en clé utilisateur ou clé managée, repli local, prompts, sorties JSON, gestion des erreurs et du coût. À utiliser pour toute fonction qui appelle une IA.
+description: "Branche ou améliore l'intelligence artificielle d'une application Alphabette — Mistral AI (règle nº 5) en clé utilisateur ou clé managée, repli local, prompts, sorties JSON, gestion des erreurs et du coût. À utiliser pour toute fonction qui appelle une IA."
 model: sonnet
 ---
 

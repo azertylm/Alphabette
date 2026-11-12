@@ -1,6 +1,6 @@
 ---
 name: documentaliste
-description: Tient la documentation d'Alphabette à jour — README de chaque appli, docs/ du hub (etat-du-projet, PUBLIER-UNE-APP, ecosysteme-alphabette), page d'aide / FAQ pour les utilisateurs, journal des changements — et fait le résumé de fin de session. À utiliser à la fin de chaque session de travail.
+description: "Tient la documentation d'Alphabette à jour — README de chaque appli, docs/ du hub (etat-du-projet, PUBLIER-UNE-APP, ecosysteme-alphabette), page d'aide / FAQ pour les utilisateurs, journal des changements — et fait le résumé de fin de session. À utiliser à la fin de chaque session de travail."
 model: sonnet
 ---
 

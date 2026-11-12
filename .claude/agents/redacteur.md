@@ -1,6 +1,6 @@
 ---
 name: redacteur
-description: Écrit et relit tous les textes d'Alphabette — accroches de la vitrine, descriptions d'une phrase du registre, textes d'interface, boutons, messages d'erreur, pages d'aide, e-mails aux utilisateurs. À utiliser pour tout texte visible.
+description: "Écrit et relit tous les textes d'Alphabette — accroches de la vitrine, descriptions d'une phrase du registre, textes d'interface, boutons, messages d'erreur, pages d'aide, e-mails aux utilisateurs. À utiliser pour tout texte visible."
 model: sonnet
 ---
 

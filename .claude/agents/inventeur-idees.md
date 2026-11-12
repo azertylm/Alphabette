@@ -1,6 +1,6 @@
 ---
 name: inventeur-idees
-description: Trouve et évalue de nouvelles idées d'applications utiles pour Alphabette (ou des améliorations d'applis existantes) — vérifie qu'elles n'existent pas déjà dans le registre, regarde la concurrence, et rédige une fiche projet prête pour le chef-de-projet. À utiliser quand Valentin cherche quoi créer ensuite.
+description: "Trouve et évalue de nouvelles idées d'applications utiles pour Alphabette (ou des améliorations d'applis existantes) — vérifie qu'elles n'existent pas déjà dans le registre, regarde la concurrence, et rédige une fiche projet prête pour le chef-de-projet. À utiliser quand Valentin cherche quoi créer ensuite."
 model: sonnet
 ---
 

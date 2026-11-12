@@ -1,6 +1,6 @@
 ---
 name: testeur-mobile
-description: Teste une application Alphabette comme un vrai utilisateur sur téléphone (390 px) avant publication — parcours principaux, boutons, BIG, jour/nuit, erreurs console, liens — et rend une liste de bugs classée avec des captures. À utiliser avant chaque mise en ligne ou après une correction.
+description: "Teste une application Alphabette comme un vrai utilisateur sur téléphone (390 px) avant publication — parcours principaux, boutons, BIG, jour/nuit, erreurs console, liens — et rend une liste de bugs classée avec des captures. À utiliser avant chaque mise en ligne ou après une correction."
 model: sonnet
 ---
 
