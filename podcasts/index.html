@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Podcasts · écoutez, sans pub ni compte</title>
+<meta name="description" content="Un lecteur de podcasts simple et gratuit : cherchez, abonnez-vous, réglez la vitesse, reprenez là où vous vous êtes arrêté. Sans publicité, sans compte, vos abonnements restent sur votre appareil.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#6d28d9; --accfond:#ede9fe; --ok:#15803d; }
+  :root[data-ab-theme="nuit"] { --fond:#140f1f; --carte:#1e1630; --encre:#f5f3ff; --doux:#c4b5fd; --trait:#392b57; --acc:#a78bfa; --accfond:#2b2045; --ok:#86efac; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 330px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  h2 { font-size: 24px; font-weight: 900; margin: 26px 0 10px; }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, .pod:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .onglets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+  .onglets button { font-weight: 800; padding: 14px 6px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .onglets button[aria-selected="true"] { border-color: var(--acc); background: var(--accfond); color: var(--acc); }
+  .bouton { font-weight: 800; padding: 12px 18px; border-radius: 14px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .bouton { color: #1a1030; }
+  .bouton.clair { background: var(--carte); color: var(--acc); }
+  :root[data-ab-theme="nuit"] .bouton.clair { color: var(--acc); }
+  .bouton.danger { border-color: #b91c1c; color: #b91c1c; background: var(--carte); }
+  :root[data-ab-theme="nuit"] .bouton.danger { border-color: #f87171; color: #f87171; }
+  .rang { display: flex; gap: 10px; flex-wrap: wrap; }
+  .champ { display: flex; gap: 8px; margin: 8px 0 4px; }
+  .champ input { flex: 1; min-width: 0; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .pod { display: flex; flex-direction: column; gap: 8px; text-align: left; background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 12px; cursor: pointer; width: 100%; }
+  .pod:hover { border-color: var(--acc); }
+  .pod img, .pochette { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: var(--accfond); display: block; }
+  .pod strong { font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+  .liste { display: flex; flex-direction: column; gap: 10px; }
+  .ligne { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: start; background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 12px; }
+  .ligne .pochette { width: 72px; height: 72px; }
+  .ligne h3 { font-size: 19px; line-height: 1.25; overflow-wrap: anywhere; }
+  .meta { color: var(--doux); font-size: 16px; }
+  .desc { color: var(--doux); font-size: 17px; margin-top: 4px; overflow-wrap: anywhere; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .actions .bouton { padding: 10px 14px; font-size: 18px; }
+  .barre-prog { height: 6px; border-radius: 3px; background: var(--trait); margin-top: 6px; overflow: hidden; }
+  .barre-prog i { display: block; height: 100%; background: var(--acc); }
+  .vide, .etat { color: var(--doux); padding: 14px 4px; }
+  .puces { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .puces button { padding: 10px 16px; border-radius: 999px; border: 2px solid var(--trait); background: var(--carte); font-weight: 700; cursor: pointer; }
+  .puces button:hover { border-color: var(--acc); }
+  .tete { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; margin: 8px 0 12px; }
+  .tete .pochette { width: 120px; }
+  .tete h2 { margin: 0 0 4px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 16px; margin-top: 12px; }
+  .note { color: var(--doux); font-size: 16px; margin-top: 8px; }
+  .erreur { color: #b91c1c; font-weight: 700; }
+  :root[data-ab-theme="nuit"] .erreur { color: #fca5a5; }
+  /* Lecteur fixe en bas */
+  #lecteur { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--carte); border-top: 3px solid var(--acc); padding: 10px 14px 12px; box-shadow: 0 -6px 20px rgba(0,0,0,.12); }
+  #lecteur .int { max-width: 860px; margin: 0 auto; }
+  .titre-lect { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; }
+  .titre-lect .pochette { width: 52px; height: 52px; }
+  .titre-lect strong { display: block; font-size: 18px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .temps { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin: 6px 0; font-variant-numeric: tabular-nums; color: var(--doux); font-size: 16px; }
+  input[type=range] { width: 100%; height: 36px; accent-color: var(--acc); }
+  .commandes { display: grid; grid-template-columns: 1fr 1fr 1.3fr 1fr 1fr; gap: 8px; }
+  .commandes button, .reglages button, .reglages select { padding: 10px 4px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); font-weight: 800; cursor: pointer; min-height: 48px; }
+  .commandes button:hover, .reglages button:hover { border-color: var(--acc); }
+  .commandes .lire { background: var(--acc); border-color: var(--acc); color: #fff; font-size: 18px; }
+  :root[data-ab-theme="nuit"] .commandes .lire { color: #1a1030; }
+  .reglages { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .reglages select { appearance: auto; }
+  .msg-lect { margin-top: 6px; font-size: 16px; }
+  .msg-lect a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .tete { grid-template-columns: 90px 1fr; } .tete .pochette { width: 90px; } .commandes button { font-size: 15px; } }
+  @media print { #lecteur { display: none; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="podcasts" data-nom="Podcasts" data-sous-titre="Écoutez, sans pub ni compte" data-accent="#6d28d9"></script>
+<main>
+  <h1>Podcasts. <em>Écoutez ce qui vous plaît.</em></h1>
+  <p class="intro">Sans publicité, sans compte. Vos abonnements restent sur votre appareil.</p>
+
+  <div class="onglets" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" id="t-abos" aria-selected="true">Mes podcasts</button>
+    <button type="button" role="tab" id="t-chercher" aria-selected="false">Chercher</button>
+    <button type="button" role="tab" id="t-reglages" aria-selected="false">Réglages</button>
+  </div>
+
+  <section id="v-abos" role="tabpanel" aria-labelledby="t-abos"></section>
+
+  <section id="v-chercher" role="tabpanel" aria-labelledby="t-chercher" hidden>
+    <form class="champ" id="f-chercher"><input id="q" type="search" placeholder="Un sujet, un nom de podcast…" aria-label="Chercher un podcast" autocomplete="off"><button class="bouton" type="submit">Chercher</button></form>
+    <div class="puces" id="idees"></div>
+    <div id="resultats" aria-live="polite"></div>
+    <h2>Ou collez une adresse de flux (RSS)</h2>
+    <form class="champ" id="f-rss"><input id="rss" type="url" placeholder="https://…" aria-label="Adresse du flux RSS"><button class="bouton clair" type="submit">Ajouter</button></form>
+    <p class="note" id="msg-rss" aria-live="polite"></p>
+  </section>
+
+  <section id="v-reglages" role="tabpanel" aria-labelledby="t-reglages" hidden>
+    <div class="carte">
+      <h2 style="margin-top:0">Vos abonnements</h2>
+      <p class="meta">Exportez-les pour les garder ou les ouvrir dans une autre application de podcasts (fichier OPML), ou importez-en.</p>
+      <div class="actions"><button class="bouton clair" id="exporter" type="button">Exporter (OPML)</button><label class="bouton clair" style="cursor:pointer">Importer<input type="file" id="importer" accept=".opml,.xml,text/xml" hidden></label></div>
+      <p class="note" id="msg-import" aria-live="polite"></p>
+    </div>
+    <div class="carte">
+      <h2 style="margin-top:0">Vie privée</h2>
+      <p class="meta">Pas de compte, pas de publicité, pas de suivi. Abonnements, positions d'écoute et réglages sont enregistrés uniquement dans ce navigateur. Les flux passent par un petit relais d'Alphabette qui ne garde rien. Le son vient directement du site du podcast.</p>
+      <div class="actions"><button class="bouton danger" id="effacer" type="button">Tout effacer sur cet appareil</button></div>
+    </div>
+  </section>
+</main>
+
+<div id="lecteur" hidden>
+  <div class="int">
+    <div class="titre-lect"><img class="pochette" id="l-img" alt="" referrerpolicy="no-referrer"><div><strong id="l-titre"></strong><span class="meta" id="l-pod"></span></div></div>
+    <div class="temps"><span id="l-pos">0:00</span><input type="range" id="l-prog" min="0" max="0" step="1" value="0" aria-label="Position dans l'épisode"><span id="l-dur">0:00</span></div>
+    <div class="commandes">
+      <button type="button" id="l-m30" aria-label="Reculer de 30 secondes">−30 s</button>
+      <button type="button" id="l-m10" aria-label="Reculer de 10 secondes">−10 s</button>
+      <button type="button" class="lire" id="l-lire" aria-label="Lecture">▶ Lire</button>
+      <button type="button" id="l-p10" aria-label="Avancer de 10 secondes">+10 s</button>
+      <button type="button" id="l-p30" aria-label="Avancer de 30 secondes">+30 s</button>
+    </div>
+    <div class="reglages">
+      <button type="button" id="l-vit" aria-label="Vitesse de lecture">Vitesse ×1</button>
+      <select id="l-veille" aria-label="Minuterie de sommeil"><option value="0">😴 Pas de minuterie</option><option value="15">😴 Arrêt dans 15 min</option><option value="30">😴 Arrêt dans 30 min</option><option value="60">😴 Arrêt dans 1 h</option><option value="fin">😴 Fin de l'épisode</option></select>
+    </div>
+    <p class="msg-lect" id="l-msg" aria-live="polite"></p>
+  </div>
+</div>
+<audio id="audio" preload="none"></audio>
+
+<script>
+(function () {
+  'use strict';
+  const RELAIS = 'flux.php';
+  const CLE = 'ab_podcasts';
+  const VITESSES = [0.8, 1, 1.2, 1.5, 1.8, 2];
+  const IDEES = ['Histoire', 'Sciences', 'Humour', 'Actualités', 'Santé', 'Musique', 'Nature', 'Cuisine'];
+  const $ = (id) => document.getElementById(id);
+  const audio = $('audio');
+
+  // ---------- Données locales ----------
+  let etat = { abos: [], pos: {}, vitesse: 1, dernier: null };
+  try { const s = JSON.parse(localStorage.getItem(CLE) || 'null'); if (s && Array.isArray(s.abos)) etat = Object.assign(etat, s); } catch (e) {}
+  const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {} };
+
+  // ---------- Petits outils ----------
+  function h(tag, props, ...enfants) {
+    const e = document.createElement(tag);
+    if (props) for (const k in props) { if (k === 'class') e.className = props[k]; else if (k.startsWith('on')) e.addEventListener(k.slice(2), props[k]); else if (props[k] !== undefined && props[k] !== null) e.setAttribute(k, props[k]); }
+    enfants.flat().forEach((c) => { if (c !== null && c !== undefined && c !== false) e.append(c.nodeType ? c : document.createTextNode(String(c))); });
+    return e;
+  }
+  const https = (u) => (typeof u === 'string' && /^http:\/\//i.test(u) ? 'https://' + u.slice(7) : u || '');
+  const sur = (u) => /^https?:\/\//i.test(u || '');
+  function pochette(url, classe) {
+    const i = h('img', { class: classe || 'pochette', alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' });
+    if (sur(url)) i.src = https(url); i.addEventListener('error', () => { i.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; }, { once: true });
+    return i;
+  }
+  function duree(s) { s = Math.max(0, Math.floor(s || 0)); const hh = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60), ss = s % 60; return hh ? `${hh}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}` : `${mm}:${String(ss).padStart(2, '0')}`; }
+  function dureeLongue(s) { if (!s) return ''; const m = Math.round(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}` : `${m} min`; }
+  function dateFr(d) { return d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''; }
+  function texte(html) { const d = new DOMParser().parseFromString(html || '', 'text/html'); return (d.body.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function secondes(v) { if (!v) return 0; v = String(v).trim(); if (/^\d+$/.test(v)) return +v; const p = v.split(':').map(Number); if (p.some(isNaN)) return 0; return p.reduce((a, n) => a * 60 + n, 0); }
+
+  // ---------- Flux ----------
+  const cacheFlux = new Map();
+  async function chargerFlux(url) {
+    if (cacheFlux.has(url)) return cacheFlux.get(url);
+    const p = (async () => {
+      const r = await fetch(`${RELAIS}?u=${encodeURIComponent(url)}`);
+      if (!r.ok) throw new Error(await r.text().catch(() => '') || 'Flux inaccessible.');
+      const doc = new DOMParser().parseFromString(await r.text(), 'application/xml');
+      if (doc.querySelector('parsererror')) throw new Error("Ce n'est pas un flux de podcast valide.");
+      const canal = doc.querySelector('channel');
+      if (!canal) throw new Error("Ce n'est pas un flux de podcast valide.");
+      const direct = (parent, nom) => { for (const c of parent.children) if (c.localName === nom) return c; return null; };
+      const imgItunes = (parent) => { for (const c of parent.children) if (c.localName === 'image' && c.getAttribute('href')) return c.getAttribute('href'); return ''; };
+      const titre = (direct(canal, 'title') || {}).textContent || url;
+      let image = imgItunes(canal); if (!image) { const im = direct(canal, 'image'); const u = im && direct(im, 'url'); image = u ? u.textContent.trim() : ''; }
+      const eps = [];
+      canal.querySelectorAll(':scope > item').forEach((it) => {
+        const enc = direct(it, 'enclosure'); const src = enc && enc.getAttribute('url'); if (!src) return;
+        let dur = 0; for (const c of it.children) if (c.localName === 'duration') dur = secondes(c.textContent);
+        const guid = direct(it, 'guid');
+        eps.push({ id: ((guid && guid.textContent.trim()) || src).slice(0, 300), titre: ((direct(it, 'title') || {}).textContent || 'Épisode').trim(), url: src.trim(), date: (direct(it, 'pubDate') || {}).textContent || '', duree: dur, desc: texte((direct(it, 'description') || {}).textContent || '').slice(0, 400), image: imgItunes(it) });
+      });
+      eps.forEach((e) => { e.t = Date.parse(e.date) || 0; });
+      eps.sort((a, b) => b.t - a.t);
+      return { feed: url, titre: titre.trim(), image, desc: texte((direct(canal, 'description') || {}).textContent || '').slice(0, 500), eps: eps.slice(0, 80) };
+    })();
+    cacheFlux.set(url, p); p.catch(() => cacheFlux.delete(url));
+    return p;
+  }
+  const abonne = (feed) => etat.abos.some((a) => a.feed === feed);
+  function sabonner(feed, titre, image) {
+    if (abonne(feed)) return;
+    etat.abos.unshift({ feed, titre: titre || feed, image: image || '' }); sauver();
+  }
+  function desabonner(feed) { etat.abos = etat.abos.filter((a) => a.feed !== feed); sauver(); }
+
+  // ---------- Onglets ----------
+  const VUES = ['abos', 'chercher', 'reglages'];
+  function aller(v) {
+    VUES.forEach((n) => { $('v-' + n).hidden = n !== v; $('t-' + n).setAttribute('aria-selected', String(n === v)); });
+    if (v === 'abos') montrerAbos(); if (v === 'chercher') $('q').focus({ preventScroll: true });
+  }
+  VUES.forEach((n) => $('t-' + n).addEventListener('click', () => aller(n)));
+
+  // ---------- Mes podcasts ----------
+  function montrerAbos() {
+    const z = $('v-abos'); z.textContent = '';
+    if (!etat.abos.length) {
+      z.append(h('p', { class: 'vide' }, "Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner »."),
+        h('button', { class: 'bouton', type: 'button', onclick: () => aller('chercher') }, 'Chercher un podcast'));
+      return;
+    }
+    const g = h('div', { class: 'grille' });
+    etat.abos.forEach((a) => g.append(h('button', { class: 'pod', type: 'button', onclick: () => detail(a.feed) }, pochette(a.image), h('strong', null, a.titre))));
+    z.append(h('h2', { style: 'margin-top:0' }, 'Mes podcasts'), g);
+    const zone = h('div', { class: 'liste', id: 'dernieres' }, h('p', { class: 'etat' }, 'Recherche des derniers épisodes…'));
+    z.append(h('h2', null, 'Dernières sorties'), zone);
+    derniers(zone);
+  }
+  async function derniers(zone) {
+    const abos = etat.abos.slice(0, 10), res = [];
+    let i = 0;
+    await Promise.all([0, 1, 2].map(async () => {
+      while (i < abos.length) {
+        const a = abos[i++];
+        try { const f = await chargerFlux(a.feed); majAbo(a, f); if (f.eps[0]) res.push({ f, e: f.eps[0] }); } catch (e) { /* un flux en panne ne bloque pas les autres */ }
+      }
+    }));
+    if (!zone.isConnected) return;
+    zone.textContent = '';
+    res.sort((x, y) => y.e.t - x.e.t);
+    if (!res.length) { zone.append(h('p', { class: 'etat' }, "Impossible de charger les épisodes pour l'instant. Vérifiez votre connexion et réessayez.")); return; }
+    res.forEach(({ f, e }) => zone.append(ligneEpisode(f, e, true)));
+  }
+  function majAbo(a, f) {
+    let change = false;
+    if (f.titre && a.titre !== f.titre) { a.titre = f.titre; change = true; }
+    if (f.image && a.image !== f.image) { a.image = f.image; change = true; }
+    if (change) sauver();
+  }
+
+  // ---------- Page d'un podcast ----------
+  async function detail(feed, titreSecours, imageSecours) {
+    aller('abos'); const z = $('v-abos'); z.textContent = '';
+    z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'), h('p', { class: 'etat' }, 'Chargement…'));
+    try {
+      const f = await chargerFlux(feed);
+      z.textContent = '';
+      const dej = () => abonne(feed);
+      const bouton = h('button', { class: 'bouton', type: 'button' });
+      const rafraichir = () => { bouton.textContent = dej() ? '✓ Abonné (retirer)' : "S'abonner"; bouton.className = dej() ? 'bouton clair' : 'bouton'; };
+      bouton.addEventListener('click', () => { dej() ? desabonner(feed) : sabonner(feed, f.titre, f.image); rafraichir(); });
+      rafraichir();
+      const a = etat.abos.find((x) => x.feed === feed); if (a) majAbo(a, f);
+      z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'),
+        h('div', { class: 'tete' }, pochette(f.image), h('div', null, h('h2', null, f.titre), h('p', { class: 'desc' }, f.desc), h('div', { class: 'actions' }, bouton))));
+      const l = h('div', { class: 'liste' });
+      if (!f.eps.length) l.append(h('p', { class: 'etat' }, 'Aucun épisode dans ce flux.'));
+      f.eps.forEach((e) => l.append(ligneEpisode(f, e, false)));
+      z.append(h('h2', null, `Épisodes (${f.eps.length})`), l);
+    } catch (err) {
+      z.textContent = '';
+      z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'), h('p', { class: 'erreur' }, 'Impossible de charger ce podcast : ' + (err.message || 'erreur inconnue')));
+    }
+  }
+  const cleEp = (f, e) => f.feed + '|' + e.id;
+  function ligneEpisode(f, e, avecPodcast) {
+    const p = etat.pos[cleEp(f, e)] || {};
+    const total = e.duree || p.d || 0;
+    const pc = p.fini ? 100 : total ? Math.min(100, Math.round((p.t || 0) / total * 100)) : 0;
+    const reste = !p.fini && p.t > 10;
+    const l = h('article', { class: 'ligne' }, pochette(e.image || f.image),
+      h('div', null,
+        avecPodcast ? h('div', { class: 'meta' }, f.titre) : null,
+        h('h3', null, e.titre),
+        h('div', { class: 'meta' }, [dateFr(e.date), dureeLongue(e.duree), p.fini ? '✓ écouté' : ''].filter(Boolean).join(' · ')),
+        e.desc ? h('p', { class: 'desc' }, e.desc.length > 160 ? e.desc.slice(0, 157) + '…' : e.desc) : null,
+        pc ? h('div', { class: 'barre-prog' }, h('i', { style: `width:${pc}%` })) : null,
+        h('div', { class: 'actions' }, h('button', { class: 'bouton', type: 'button', onclick: () => jouer(f, e) }, reste ? `▶ Reprendre à ${duree(p.t)}` : '▶ Écouter'),
+          avecPodcast ? h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(f.feed) }, 'Tous les épisodes') : null)));
+    return l;
+  }
+
+  // ---------- Recherche ----------
+  IDEES.forEach((m) => $('idees').append(h('button', { type: 'button', onclick: () => { $('q').value = m; chercher(m); } }, m)));
+  $('f-chercher').addEventListener('submit', (ev) => { ev.preventDefault(); chercher($('q').value.trim()); });
+  async function chercher(mots) {
+    const z = $('resultats'); if (!mots) return;
+    z.textContent = ''; z.append(h('p', { class: 'etat' }, 'Recherche en cours…'));
+    try {
+      const r = await fetch(`${RELAIS}?q=${encodeURIComponent(mots)}`);
+      if (!r.ok) throw new Error('La recherche ne répond pas.');
+      const d = await r.json();
+      const liste = (d.results || []).filter((x) => sur(x.feedUrl));
+      z.textContent = '';
+      if (!liste.length) { z.append(h('p', { class: 'vide' }, 'Aucun podcast trouvé. Essayez un autre mot.')); return; }
+      const l = h('div', { class: 'liste' });
+      liste.forEach((x) => {
+        const feed = https(x.feedUrl);
+        const b = h('button', { class: 'bouton', type: 'button' });
+        const rafr = () => { b.textContent = abonne(feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(feed) ? 'bouton clair' : 'bouton'; };
+        b.addEventListener('click', () => { abonne(feed) ? desabonner(feed) : sabonner(feed, x.collectionName, x.artworkUrl600 || x.artworkUrl100); rafr(); });
+        rafr();
+        l.append(h('article', { class: 'ligne' }, pochette(x.artworkUrl100 || x.artworkUrl600),
+          h('div', null, h('h3', null, x.collectionName || 'Podcast'), h('div', { class: 'meta' }, [x.artistName, x.primaryGenreName].filter(Boolean).join(' · ')),
+            h('div', { class: 'actions' }, b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(feed, x.collectionName, x.artworkUrl600) }, 'Voir les épisodes')))));
+      });
+      z.append(l);
+    } catch (err) { z.textContent = ''; z.append(h('p', { class: 'erreur' }, err.message || 'Recherche impossible pour le moment.')); }
+  }
+  $('f-rss').addEventListener('submit', async (ev) => {
+    ev.preventDefault(); const u = $('rss').value.trim(); const m = $('msg-rss'); m.className = 'note';
+    if (!sur(u)) { m.textContent = "L'adresse doit commencer par http:// ou https://"; m.className = 'note erreur'; return; }
+    m.textContent = 'Vérification du flux…';
+    try { const f = await chargerFlux(https(u)); sabonner(f.feed, f.titre, f.image); m.textContent = `« ${f.titre} » ajouté à vos podcasts.`; $('rss').value = ''; }
+    catch (err) { m.textContent = 'Impossible d’ajouter ce flux : ' + (err.message || 'erreur'); m.className = 'note erreur'; }
+  });
+
+  // ---------- Réglages : OPML, effacement ----------
+  $('exporter').addEventListener('click', () => {
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<opml version="2.0"><head><title>Mes podcasts</title></head><body>\n' + etat.abos.map((a) => `<outline type="rss" text="${esc(a.titre)}" xmlUrl="${esc(a.feed)}"/>`).join('\n') + '\n</body></opml>';
+    const u = URL.createObjectURL(new Blob([xml], { type: 'text/x-opml' }));
+    const a = h('a', { href: u, download: 'mes-podcasts.opml' }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000);
+  });
+  $('importer').addEventListener('change', async (ev) => {
+    const fichier = ev.target.files[0]; if (!fichier) return; const m = $('msg-import');
+    try {
+      const doc = new DOMParser().parseFromString(await fichier.text(), 'application/xml'); let n = 0;
+      doc.querySelectorAll('outline[xmlUrl], outline[xmlurl]').forEach((o) => { const u = https(o.getAttribute('xmlUrl') || o.getAttribute('xmlurl')); if (sur(u) && !abonne(u)) { etat.abos.push({ feed: u, titre: o.getAttribute('text') || o.getAttribute('title') || u, image: '' }); n++; } });
+      sauver(); m.className = 'note'; m.textContent = n ? `${n} podcast${n > 1 ? 's' : ''} importé${n > 1 ? 's' : ''}.` : 'Aucun nouveau podcast dans ce fichier.';
+    } catch (e) { m.className = 'note erreur'; m.textContent = 'Fichier illisible.'; }
+    ev.target.value = '';
+  });
+  $('effacer').addEventListener('click', () => {
+    if (!confirm('Effacer tous vos abonnements et positions d’écoute sur cet appareil ?')) return;
+    etat = { abos: [], pos: {}, vitesse: 1, dernier: null }; sauver(); audio.pause(); $('lecteur').hidden = true; aller('abos');
+  });
+
+  // ---------- Lecteur ----------
+  let courant = null, minuteur = null, finEpisode = false, derniereSauve = 0;
+  const msg = (t, html) => { const m = $('l-msg'); m.textContent = t || ''; if (html) m.append(' ', html); };
+  function majVitesse() { audio.defaultPlaybackRate = audio.playbackRate = etat.vitesse; $('l-vit').textContent = 'Vitesse ×' + String(etat.vitesse).replace('.', ','); }
+  function jouer(f, e) {
+    if (courant && audio.currentTime) sauverPosition();
+    courant = { f, e, cle: cleEp(f, e) }; finEpisode = false;
+    const p = etat.pos[courant.cle];
+    $('lecteur').hidden = false;
+    const img = $('l-img'); img.removeAttribute('src'); if (sur(e.image || f.image)) img.src = https(e.image || f.image);
+    $('l-titre').textContent = e.titre; $('l-pod').textContent = f.titre; msg('Chargement…');
+    audio.src = https(e.url); majVitesse();
+    const reprise = p && !p.fini && p.t > 5 ? p.t : 0;
+    audio.addEventListener('loadedmetadata', function une() { audio.removeEventListener('loadedmetadata', une); if (reprise) audio.currentTime = reprise; }, { once: true });
+    audio.play().catch(() => msg("Touchez ▶ pour lancer l'écoute."));
+    etat.dernier = { feed: f.feed, id: e.id }; sauver(); metaSession();
+  }
+  function sauverPosition() {
+    if (!courant) return; const d = audio.duration && isFinite(audio.duration) ? audio.duration : courant.e.duree;
+    etat.pos[courant.cle] = Object.assign(etat.pos[courant.cle] || {}, { t: audio.currentTime || 0, d: d || 0 });
+    const cles = Object.keys(etat.pos); if (cles.length > 400) delete etat.pos[cles[0]];
+    sauver();
+  }
+  audio.addEventListener('playing', () => { $('l-lire').textContent = 'Pause'; $('l-lire').setAttribute('aria-label', 'Pause'); msg(''); });
+  audio.addEventListener('pause', () => { $('l-lire').textContent = '▶ Lire'; $('l-lire').setAttribute('aria-label', 'Lecture'); sauverPosition(); });
+  audio.addEventListener('waiting', () => msg('Chargement…'));
+  audio.addEventListener('loadedmetadata', () => { $('l-prog').max = Math.floor(audio.duration || 0); $('l-dur').textContent = duree(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    $('l-prog').value = Math.floor(audio.currentTime); $('l-pos').textContent = duree(audio.currentTime);
+    if (Date.now() - derniereSauve > 5000) { derniereSauve = Date.now(); sauverPosition(); }
+  });
+  audio.addEventListener('ended', () => {
+    if (courant) { etat.pos[courant.cle] = { t: 0, d: audio.duration || 0, fini: true }; sauver(); }
+    if (finEpisode) { finEpisode = false; $('l-veille').value = '0'; }
+  });
+  audio.addEventListener('error', () => {
+    if (!courant) return;
+    msg('Impossible de lire cet épisode ici.', h('a', { href: courant.e.url, target: '_blank', rel: 'noopener noreferrer' }, "Ouvrir sur le site du podcast"));
+  });
+  const pas = (s) => { audio.currentTime = Math.max(0, Math.min(audio.duration || 1e9, audio.currentTime + s)); };
+  $('l-m30').onclick = () => pas(-30); $('l-m10').onclick = () => pas(-10); $('l-p10').onclick = () => pas(10); $('l-p30').onclick = () => pas(30);
+  $('l-lire').onclick = () => { if (!courant) return; audio.paused ? audio.play().catch(() => {}) : audio.pause(); };
+  $('l-prog').addEventListener('input', (ev) => { audio.currentTime = +ev.target.value; });
+  $('l-vit').onclick = () => { const i = VITESSES.indexOf(etat.vitesse); etat.vitesse = VITESSES[(i + 1) % VITESSES.length]; sauver(); majVitesse(); };
+  $('l-veille').addEventListener('change', (ev) => {
+    clearTimeout(minuteur); finEpisode = false; const v = ev.target.value;
+    if (v === 'fin') { finEpisode = true; msg("L'écoute s'arrêtera à la fin de l'épisode."); }
+    else if (v !== '0') { minuteur = setTimeout(() => { audio.pause(); $('l-veille').value = '0'; msg('Minuterie terminée : bonne nuit !'); }, +v * 60000); msg(`Arrêt automatique dans ${v} minutes.`); }
+    else msg('');
+  });
+  audio.addEventListener('timeupdate', () => { if (finEpisode && audio.duration && audio.duration - audio.currentTime < 0.6) { audio.pause(); } });
+  function metaSession() {
+    if (!('mediaSession' in navigator) || !courant) return;
+    try {
+      const art = sur(courant.e.image || courant.f.image) ? [{ src: https(courant.e.image || courant.f.image) }] : [];
+      navigator.mediaSession.metadata = new MediaMetadata({ title: courant.e.titre, artist: courant.f.titre, artwork: art });
+      navigator.mediaSession.setActionHandler('play', () => audio.play()); navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+      navigator.mediaSession.setActionHandler('seekbackward', () => pas(-10)); navigator.mediaSession.setActionHandler('seekforward', () => pas(30));
+    } catch (e) {}
+  }
+  window.addEventListener('pagehide', sauverPosition);
+
+  majVitesse(); montrerAbos();
+})();
+</script>
+</body>
+</html>
