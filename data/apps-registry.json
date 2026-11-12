@@ -496,6 +496,20 @@
       "updatedAt": "2026-11-12T11:30:00.000Z",
       "ordre": 13,
       "gratuit": true
+    },
+    {
+      "id": "ou-cest-france",
+      "name": "OÙ C'EST EN FRANCE ?",
+      "slug": "ou-cest-france",
+      "icon": "MapPin",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/ou-cest-france/",
+      "description": "Dix lieux de France, célèbres ou savoureux : touchez la carte à l'endroit où vous pensez qu'ils se trouvent.",
+      "createdAt": "2026-11-12T12:00:00.000Z",
+      "updatedAt": "2026-11-12T12:00:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
     }
   ]
 }

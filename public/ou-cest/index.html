@@ -77,7 +77,7 @@
     <button class="gros" id="rejouer" type="button">Rejouer avec d'autres lieux</button>
   </section>
 
-  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Fonds de carte : Natural Earth (domaine public).</p>
+  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Fonds de carte : Natural Earth (domaine public). <a href="/ou-cest-france/">Version France</a></p>
 </main>
 <script>
 (function () {
@@ -148,7 +148,7 @@
   function el(nom, attrs) { const e = document.createElementNS(NS, nom); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
   function dessiner() {
     marques.textContent = '';
-    const u = vue.w / 360; // 1 unité d'écran, à l'échelle du zoom
+    const u = vue.w / 360 * 2.2; // 1 unité d'écran, à l'échelle du zoom
     function repere(p, couleur, texte) {
       marques.appendChild(el('circle', { cx: p.x, cy: p.y, r: 3.2 * u, fill: couleur, stroke: '#fff', 'stroke-width': .9 * u }));
       if (texte) { const t = el('text', { x: p.x + 4.5 * u, y: p.y - 3 * u, 'font-size': 6.5 * u, 'font-weight': 800, fill: couleur, stroke: '#fff', 'stroke-width': 1.6 * u, 'paint-order': 'stroke' }); t.textContent = texte; marques.appendChild(t); }
