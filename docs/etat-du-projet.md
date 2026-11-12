@@ -177,3 +177,8 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 
 ## 12/11 (nuit) — Quiz musique
 - **Quiz musique** (`/quiz-musique/`, groupe petits-jeux) : 49 questions sur des anecdotes de la vie d'artistes des années 60 à 90 — 14 Amérique, 21 France (Coluche et les Restos, Michel Berger, France Gall, Cabrel, Goldman, Balavoine, Brassens, Gainsbourg, Barbara, Ferré, Ferrat, Renaud, Hallyday, Dalida, Moustaki…), 14 monde entier (Marley, Fela Kuti, Makeba, Theodorakis, Geldof, Gabriel…). Une partie au choix ou un mélange ; un titre à écouter par réponse. Faits relus le 12/11 au soir : 47 confirmés, 2 corrigés après recherche (Makeba : passeport annulé dès 1960, nationalité retirée après l'ONU en 1963 ; Gilberto Gil : arrêté le 27/12/1968, exil à Londres 1969-1972).
+
+## 12/11 (soir, 20 h) — Relecture du Quiz musique, Orbit sans note inventée
+- **Quiz musique** : les 49 anecdotes relues ; 47 confirmées, 2 corrigées après recherche (Makeba, Gilberto Gil). Prêt à être mis en avant.
+- **Orbit** (`ab94182`) : une vidéo que personne n'a notée affiche « ☆ Noter » au lieu d'une note tirée au hasard ; une nouvelle vidéo part avec 0 avis (au lieu de 4). Les propositions automatiques sans serveur affichent un message clair. Vérifié en ligne : titre réel, auteur, « Noter » (vidéo de test retirée ensuite).
+- **ChipJourney** : la fiche « Orbit by Alphabette » est publiée dans l'annuaire. FreeNoSignup : relecture manuelle en cours.
