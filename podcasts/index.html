@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Podcasts · écoutez, sans pub ni compte</title>
 <meta name="description" content="Un lecteur de podcasts simple et gratuit : cherchez, abonnez-vous, réglez la vitesse, reprenez là où vous vous êtes arrêté. Sans publicité, sans compte, vos abonnements restent sur votre appareil.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6d28d9">
+<link rel="icon" type="image/svg+xml" href="icone.svg">
+<link rel="apple-touch-icon" href="icone-192.png">
 <style>
   :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#6d28d9; --accfond:#ede9fe; --ok:#15803d; }
   :root[data-ab-theme="nuit"] { --fond:#140f1f; --carte:#1e1630; --encre:#f5f3ff; --doux:#c4b5fd; --trait:#392b57; --acc:#a78bfa; --accfond:#2b2045; --ok:#86efac; }
@@ -52,6 +56,8 @@
   .tete .pochette { width: 120px; }
   .tete h2 { margin: 0 0 4px; }
   .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 16px; margin-top: 12px; }
+  .groupe-titre { font-size: 22px; font-weight: 900; margin: 22px 0 4px; }
+  .groupe-note { color: var(--doux); font-size: 16px; margin-bottom: 8px; }
   .note { color: var(--doux); font-size: 16px; margin-top: 8px; }
   .erreur { color: #b91c1c; font-weight: 700; }
   :root[data-ab-theme="nuit"] .erreur { color: #fca5a5; }
@@ -94,6 +100,7 @@
   <section id="v-chercher" role="tabpanel" aria-labelledby="t-chercher" hidden>
     <form class="champ" id="f-chercher"><input id="q" type="search" placeholder="Un sujet, un nom de podcast…" aria-label="Chercher un podcast" autocomplete="off"><button class="bouton" type="submit">Chercher</button></form>
     <div class="puces" id="idees"></div>
+    <div id="selection-chercher"></div>
     <div id="resultats" aria-live="polite"></div>
     <h2>Ou collez une adresse de flux (RSS)</h2>
     <form class="champ" id="f-rss"><input id="rss" type="url" placeholder="https://…" aria-label="Adresse du flux RSS"><button class="bouton clair" type="submit">Ajouter</button></form>
@@ -210,9 +217,92 @@
   const VUES = ['abos', 'chercher', 'reglages'];
   function aller(v) {
     VUES.forEach((n) => { $('v-' + n).hidden = n !== v; $('t-' + n).setAttribute('aria-selected', String(n === v)); });
-    if (v === 'abos') montrerAbos(); if (v === 'chercher') $('q').focus({ preventScroll: true });
+    if (v === 'abos') montrerAbos(); if (v === 'chercher') { if (!$('selection-chercher').childNodes.length) { const t = h('h2', null, 'Notre sélection'); $('selection-chercher').append(t); const zs = h('div'); $('selection-chercher').append(zs); montrerSelection(zs); } }
   }
   VUES.forEach((n) => $('t-' + n).addEventListener('click', () => aller(n)));
+
+
+  // ---------- Sélection d'Alphabette ----------
+  // Les flux sont retrouvés par nom dans l'annuaire (rien n'est figé : si un podcast change d'adresse, il est retrouvé).
+  const SELECTION = [
+    { titre: 'À la une', note: 'Radio et actualités du jour.', items: [
+      { nom: 'Radio Nova', q: 'Radio Nova', cle: 'nova', desc: 'La radio des musiques et des idées.' },
+      { nom: 'La Dernière', q: 'La Dernière Radio Nova', cle: 'derniere', desc: 'L’émission de fin de journée de Radio Nova.' },
+      { nom: 'La Matinale du Soir', q: 'La Matinale du Soir', cle: 'matinale', desc: 'Le rendez-vous du soir pour comprendre la journée.' },
+      { nom: 'HugoDécrypte', q: 'HugoDécrypte', cle: 'hugo', desc: 'L’actualité du jour, expliquée simplement.' }] },
+    { titre: 'Médias de gauche et indépendants', note: 'Une sélection de médias engagés à gauche ou indépendants, à compléter.', items: [
+      { nom: 'Mediapart', q: 'Mediapart', cle: 'mediapart', desc: 'Journal d’investigation indépendant.' },
+      { nom: 'Blast', q: 'Blast le souffle de l’info', cle: 'blast', desc: 'Média indépendant, enquêtes et entretiens.' },
+      { nom: 'Le Média', q: 'Le Média', cle: 'le media', desc: 'Média en ligne engagé à gauche.' },
+      { nom: 'Libération', q: 'Libération', cle: 'liberation', desc: 'Les podcasts du quotidien Libération.' },
+      { nom: 'L’Humanité', q: 'L’Humanité', cle: 'humanite', desc: 'Les podcasts du journal L’Humanité.' },
+      { nom: 'Politis', q: 'Politis', cle: 'politis', desc: 'Hebdomadaire de gauche : politique, société, écologie.' },
+      { nom: 'Regards', q: 'Regards', cle: 'regards', desc: 'Magazine de la gauche : débats et analyses.' },
+      { nom: 'Reporterre', q: 'Reporterre', cle: 'reporterre', desc: 'Le quotidien de l’écologie.' },
+      { nom: 'Basta !', q: 'Basta', cle: 'basta', desc: 'Média indépendant : social, écologie, droits.' },
+      { nom: 'Les Jours', q: 'Les Jours', cle: 'les jours', desc: 'Journal indépendant en « obsessions ».' },
+      { nom: 'Arrêt sur images', q: 'Arrêt sur images', cle: 'arret sur images', desc: 'Décryptage critique des médias.' },
+      { nom: 'Alternatives économiques', q: 'Alternatives économiques', cle: 'alternatives', desc: 'Économie et société, sans jargon.' },
+      { nom: 'Binge Audio', q: 'Binge Audio', cle: 'binge', desc: 'Podcasts de société, de culture et d’idées.' },
+      { nom: 'Là-bas si j’y suis', q: 'Là-bas si j’y suis', cle: 'la bas', desc: 'Reportages et révoltes, à la radio.' },
+      { nom: 'Le Monde diplomatique', q: 'Le Monde diplomatique', cle: 'diplomatique', desc: 'Analyses et enquêtes internationales.' }] },
+    { titre: 'Radio publique', note: 'Radio France.', items: [
+      { nom: 'France Inter', q: 'France Inter', cle: 'france inter', desc: 'Chroniques, débats et grands entretiens.' },
+      { nom: 'franceinfo', q: 'franceinfo', cle: 'franceinfo', desc: 'L’information en continu.' },
+      { nom: 'Affaires sensibles', q: 'Affaires sensibles', cle: 'affaires sensibles', desc: 'L’histoire racontée par de grands récits.' }] }
+  ];
+  const norm = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  let cacheSel = {}; try { cacheSel = JSON.parse(localStorage.getItem('ab_podcasts_sel') || '{}'); } catch (e) {}
+  const enAttente = new Map();
+  function retrouver(it) {
+    const c = cacheSel[it.nom]; if (c && Date.now() - c.t < 7 * 864e5) return Promise.resolve(c);
+    if (enAttente.has(it.nom)) return enAttente.get(it.nom);
+    const p = fetch(`${RELAIS}?q=${encodeURIComponent(it.q)}`).then((r) => r.json()).then((d) => {
+      const trouve = (d.results || []).find((x) => sur(x.feedUrl) && norm(x.collectionName + ' ' + x.artistName).includes(norm(it.cle)));
+      if (!trouve) return { introuvable: true, t: Date.now() };
+      const res = { feed: https(trouve.feedUrl), titre: trouve.collectionName, image: trouve.artworkUrl600 || trouve.artworkUrl100 || '', t: Date.now() };
+      cacheSel[it.nom] = res; try { localStorage.setItem('ab_podcasts_sel', JSON.stringify(cacheSel)); } catch (e) {}
+      return res;
+    }).catch(() => ({ erreur: true }));
+    enAttente.set(it.nom, p); p.then(() => enAttente.delete(it.nom));
+    return p;
+  }
+  function montrerSelection(z) {
+    z.textContent = '';
+    const aResoudre = [];
+    SELECTION.forEach((g) => {
+      z.append(h('h2', { class: 'groupe-titre' }, g.titre), h('p', { class: 'groupe-note' }, g.note));
+      const l = h('div', { class: 'liste' });
+      g.items.forEach((it) => {
+        const img = pochette(''), boutons = h('div', { class: 'actions' });
+        const info = h('div', { class: 'meta' }, 'Recherche du podcast…');
+        l.append(h('article', { class: 'ligne' }, img, h('div', null, h('h3', null, it.nom), h('p', { class: 'desc' }, it.desc), info, boutons)));
+        aResoudre.push({ it, img, info, boutons });
+      });
+      z.append(l);
+    });
+    let i = 0;
+    Promise.all([0, 1, 2].map(async () => {
+      while (i < aResoudre.length) {
+        const { it, img, info, boutons } = aResoudre[i++];
+        const r = await retrouver(it);
+        if (!info.isConnected) continue;
+        boutons.textContent = '';
+        if (r.feed) {
+          if (sur(r.image)) img.src = https(r.image);
+          info.textContent = r.titre;
+          const b = h('button', { class: 'bouton', type: 'button' });
+          const rafr = () => { b.textContent = abonne(r.feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(r.feed) ? 'bouton clair' : 'bouton'; };
+          b.addEventListener('click', () => { abonne(r.feed) ? desabonner(r.feed) : sabonner(r.feed, r.titre, r.image); rafr(); });
+          rafr();
+          boutons.append(b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(r.feed) }, 'Voir les épisodes'));
+        } else {
+          info.textContent = r.erreur ? 'Recherche indisponible pour le moment.' : 'Pas trouvé automatiquement.';
+          boutons.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => { aller('chercher'); $('q').value = it.q; chercher(it.q); } }, 'Chercher « ' + it.nom + ' »'));
+        }
+      }
+    }));
+  }
 
   // ---------- Mes podcasts ----------
   function montrerAbos() {
@@ -220,6 +310,7 @@
     if (!etat.abos.length) {
       z.append(h('p', { class: 'vide' }, "Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner »."),
         h('button', { class: 'bouton', type: 'button', onclick: () => aller('chercher') }, 'Chercher un podcast'));
+      const zs = h('div'); z.append(h('h2', null, 'Notre sélection'), zs); montrerSelection(zs);
       return;
     }
     const g = h('div', { class: 'grille' });
@@ -411,6 +502,7 @@
   }
   window.addEventListener('pagehide', sauverPosition);
 
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js', { scope: './' }).catch(() => {});
   majVitesse(); montrerAbos();
 })();
 </script>
