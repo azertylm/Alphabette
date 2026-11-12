@@ -109,3 +109,10 @@ automatiquement chaque projet modifié dans son dépôt GitHub dédié
 Le hub et les applications vivent dans des dépôts distincts : toujours
 pousser chaque dossier dans LE bon dépôt. Ne jamais considérer une
 livraison terminée tant qu'elle n'est pas sur GitHub.
+
+## Équipe d'agents
+
+20 agents spécialisés vivent dans `.claude/agents/` (chef de projet,
+développeur, testeur mobile, vérificateur d'honnêteté, publieur…).
+Liste et mode d'emploi : `docs/EQUIPE-AGENTS.md`. Pour une demande large,
+commencer par `chef-de-projet`.
