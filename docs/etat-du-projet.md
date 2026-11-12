@@ -136,3 +136,8 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 - **Préférences partagées** : cookie `ab_prefs` (.alphabette.fr, 1 an) + copie localStorage : thème, taille, langue, mode simple, favoris.
 - **Limites** : 🌍 traduit la barre (le contenu passe par Google Traduction) ; Service France n'a pas de mode nuit (bouton masqué) ; apps à barre propre non migrées : Info Perso, IA Débat, ProxiLien, Bon Plan, Orbit.
 - **Règle de confidentialité** : ne jamais indiquer où habite Valentin ni où les applis sont faites (ni La Grande-Motte, ni autre lieu). Adresse de domiciliation bancaire retirée. ProxiLien garde son contenu « pilote » (fonctionnel). Projet Lidaros (en pause) contient encore des mentions ; l'historique git ne peut pas être réécrit.
+
+## 12/11 (soir) — Podcasts et « Où c'est ? »
+- **Podcasts** (`/podcasts/`, inspiré d'AntennaPod) : recherche (annuaire iTunes), abonnement, ajout d'un flux RSS, import/export OPML, lecteur fixe (±10/30 s, vitesse 0,8→2, minuterie de sommeil, reprise automatique, commandes écran verrouillé). Tout reste dans le navigateur (localStorage). Les flux passent par `public/podcasts/flux.php` (relais PHP d'OVH, sans journal, http/https uniquement, adresses publiques uniquement). **À vérifier en ligne** : le relais n'a pu être testé que sur une copie locale (pas d'accès réseau ici).
+- **Où c'est ?** (`/ou-cest/`, groupe petits-jeux) : 10 lieux étonnants tirés parmi 25, carte du monde (Natural Earth, domaine public) intégrée, zoom/glisser/clavier, score selon la distance.
+- Idée suivante : « Où c'est ? » version France, Vrai ou Faux du jour, Chrono-Frise.

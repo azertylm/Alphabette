@@ -468,6 +468,34 @@
       "createdAt": "2026-11-12T09:14:47.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 11
+    },
+    {
+      "id": "ou-cest",
+      "name": "OÙ C'EST ?",
+      "slug": "ou-cest",
+      "icon": "MapPin",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/ou-cest/",
+      "description": "Un lieu étonnant, une carte du monde : posez le doigt où vous pensez qu'il est. Plus vous êtes près, plus vous marquez.",
+      "createdAt": "2026-11-12T11:30:00.000Z",
+      "updatedAt": "2026-11-12T11:30:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
+    },
+    {
+      "id": "podcasts",
+      "name": "PODCASTS",
+      "slug": "podcasts",
+      "icon": "Headphones",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/podcasts/",
+      "description": "Un lecteur de podcasts simple : cherchez, abonnez-vous, réglez la vitesse, reprenez où vous vous êtes arrêté. Sans pub, sans compte.",
+      "createdAt": "2026-11-12T11:30:00.000Z",
+      "updatedAt": "2026-11-12T11:30:00.000Z",
+      "ordre": 13,
+      "gratuit": true
     }
   ]
 }

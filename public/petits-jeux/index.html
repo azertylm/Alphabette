@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Petits Jeux · s'amuser et apprendre</title>
-<meta name="description" content="Des petits jeux gratuits pour s'amuser et apprendre : mots rares, chiffres à deviner, mémoire, légendes du football.">
+<meta name="description" content="Des petits jeux gratuits pour s'amuser et apprendre : mots rares, chiffres à deviner, mémoire, géographie, légendes du football.">
 <style>
   :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#be185d; }
   :root[data-ab-theme="nuit"] { --fond:#170d13; --carte:#22141c; --encre:#fdf2f8; --doux:#f9a8d4; --trait:#3d2433; --acc:#f472b6; }
@@ -41,11 +41,12 @@
   // Les jeux viennent du registre d'alphabette.fr : toute application qui porte
   // « groupe : petits-jeux » apparaît ici toute seule. La liste ci-dessous ne sert
   // que si le registre ne répond pas, et donne un pictogramme à chaque jeu connu.
-  const PICTOS = { 'dico-loufoque': '📖', 'juste-chiffre': '🎯', 'memo-meninges': '🧠', goat: '⚽' };
+  const PICTOS = { 'dico-loufoque': '📖', 'juste-chiffre': '🎯', 'memo-meninges': '🧠', 'ou-cest': '🌍', goat: '⚽' };
   const SECOURS = [
     { slug: 'dico-loufoque', name: 'Le Dico Loufoque', url: '/dico-loufoque/', description: 'Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.' },
     { slug: 'juste-chiffre', name: 'Le Juste Chiffre', url: '/juste-chiffre/', description: 'Devinez un chiffre réel au plus près : hauteurs, dates, distances.' },
     { slug: 'memo-meninges', name: 'Mémo-Méninges', url: '/memo-meninges/', description: 'Cinq minutes de petits jeux de mémoire et de calcul, sans chronomètre.' },
+    { slug: 'ou-cest', name: 'Où c\'est ?', url: '/ou-cest/', description: 'Un lieu étonnant, une carte du monde : posez le doigt où vous pensez qu\'il est.' },
     { slug: 'goat', name: 'Goat Chèvre The King', url: 'https://goatchevretheking.alphabette.fr', description: 'Élisez vos légendes du football et classez-les en pyramide.' },
   ];
   const lisible = (nom) => (nom !== nom.toUpperCase() ? nom : nom.toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()));
