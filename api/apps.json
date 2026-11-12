@@ -252,6 +252,20 @@
       "ordre": 2
     },
     {
+      "id": "quiz-famille",
+      "name": "QUIZ EN FAMILLE",
+      "slug": "quiz-famille",
+      "icon": "Users",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/quiz-famille/",
+      "description": "Un quiz loufoque à plusieurs sur un seul écran : films cultes, humoristes, répliques. Une anecdote à chaque réponse.",
+      "createdAt": "2026-11-12T13:00:00.000Z",
+      "updatedAt": "2026-11-12T13:00:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
+    },
+    {
       "id": "revolution",
       "name": "RÉVOLUTION",
       "slug": "revolution",
