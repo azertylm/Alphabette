@@ -69,7 +69,7 @@
   var indexTaille = Math.max(0, TAILLES.findIndex(function (t) { return t.cle === prefs.density; }));
   function appliquerTaille() {
     var t = TAILLES[indexTaille], r = document.documentElement;
-    r.style.zoom = t.zoom === 1 ? '' : String(t.zoom);
+    r.style.zoom = t.zoom === 1 ? '' : String(t.zoom); r.style.setProperty('--ab-zoom', String(t.zoom));
     r.dataset.abDensity = t.cle; r.dataset.abTaille = t.ancien; // « abTaille » : ancien nom, encore lu par certaines pages
     var b = document.getElementById('ab-big');
     if (b) {
@@ -393,6 +393,10 @@
     var cs = getComputedStyle(document.body);
     if (parseFloat(cs.paddingTop) || parseFloat(cs.paddingLeft) || parseFloat(cs.paddingRight)) racine.style.margin = '-' + cs.paddingTop + ' -' + cs.paddingRight + ' ' + cs.paddingTop + ' -' + cs.paddingLeft;
     appliquerTaille(); appliquerTheme(false); majLecture();
+    // Hauteur des deux barres, pour les applications à hauteur d'écran fixe : height: calc(100dvh - var(--ab-hauteur, 0px)).
+    function hauteur() { if (racine) document.documentElement.style.setProperty('--ab-hauteur', racine.offsetHeight + 'px'); }
+    hauteur(); window.addEventListener('resize', hauteur);
+    if (window.ResizeObserver) new ResizeObserver(hauteur).observe(document.body);
   }
   if (document.body) poser(); else document.addEventListener('DOMContentLoaded', poser);
 
