@@ -63,11 +63,15 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
   const visibles = useMemo(() => {
     const q = sansAccent(recherche.trim());
+    // Sans recherche : les jeux sont regroupés derrière la tuile « Petits Jeux ».
+    // Avec une recherche, on cherche partout, jeux compris.
     const liste = q
       ? apps.filter((app) => sansAccent(`${app.name} ${app.description ?? ''}`).includes(q))
-      : apps;
-    // Les applications « Populaire » d'abord, puis l'ordre alphabétique du registre.
-    return [...liste].sort((a, b) => Number(b.badge === 'Populaire') - Number(a.badge === 'Populaire'));
+      : apps.filter((app) => !app.groupe);
+    // Ordre choisi dans le registre (champ « ordre »), puis les autres par ordre alphabétique.
+    return [...liste].sort(
+      (a, b) => (a.ordre ?? 999) - (b.ordre ?? 999) || a.name.localeCompare(b.name, 'fr'),
+    );
   }, [apps, recherche]);
 
   return (
@@ -77,7 +81,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           Des applications simples, <em>pour mieux vivre au quotidien.</em>
         </h1>
         <p className="accueil__phrase">
-          {appsCount} applications faites à La Grande-Motte. Sans publicité.
+          {apps.length ? apps.filter((app) => app.slug !== 'petits-jeux').length : appsCount} applications faites à La
+          Grande-Motte. Sans publicité.
           {gratuites > 0 && ` ${gratuites} sont gratuites, définitivement.`}
         </p>
 

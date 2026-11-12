@@ -105,6 +105,11 @@ Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur
 - Sans son serveur, Orbit n'a pas : propositions par IA, fil communautaire, codes à vie, regarder à plusieurs. Orbit n'a pas la double barre Alphabette (il a son propre bouton « Big ») : à décider avec Valentin.
 - À relire plus tard dans Orbit : titre, note, nombre de votes et durée inventés quand le titre réel n'est pas récupéré (« Découverte — IA & Robotique », « 8.4/10 », « 16 min »).
 
+## 12/11 : « Petits Jeux » et accueil sur deux colonnes
+- **Petits Jeux** : `alphabette.fr/petits-jeux/` (`public/petits-jeux/index.html`) regroupe Goat Chèvre The King, Le Dico Loufoque, Le Juste Chiffre et Mémo-Méninges. La page lit le registre : toute appli avec `"groupe": "petits-jeux"` y apparaît seule (pictogramme par clé dans `PICTOS`). Les jeux n'ont plus de tuile propre sur l'accueil (ils ressortent quand même dans la recherche) et renvoient vers « Tous les Petits Jeux ».
+- **Accueil** : deux colonnes sur tous les écrans (une seule en BIG maximum sur téléphone). Ordre fixé par le champ `"ordre"` du registre : Infos Perso, ProxiLien / Wikicom, IA Débat / L'Œil de l'Atelier, Service France / Bon Plan, Senior Bon Plan / Prompt Magic, Frigo-Placard / Petits Jeux, Orbit. Les applis sans `ordre` (Accord, Alphabette Info, ÉcoBâtiSol, Révolution) suivent par ordre alphabétique : Valentin ne les a pas citées, à lui de dire s'il les garde sur l'accueil.
+- **Double barre** : Valentin veut la revoir sur tous les sites. Points fermes : BIG ; bouton Jour/Nuit en émoticônes ☀️/🌙 ; « Alphabette » écrit petit en haut à gauche, lien vers www.alphabette.fr ; bouton « S'abonner » en haut à droite à la place de « L'écosystème » (qui déborde). Vingt idées de boutons lui ont été proposées ; **attendre son choix avant de modifier la base commune**, pour ne resynchroniser les applis qu'une fois.
+
 ## Reste à faire
 1. **Info Perso** — essai réel de connexion à un compte sur infosperso.alphabette.fr (à faire avec Valentin : lui seul tape son mot de passe).
 2. **Révolution** — ouvrir le recueil partagé (règles Firebase à publier avec Valentin, puis test en ligne).

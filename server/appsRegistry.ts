@@ -35,6 +35,13 @@ export interface RegistryApp {
   gratuit?: boolean;
   /** Une phrase qui dit, simplement, ce que l'application apporte (vitrine). */
   description?: string;
+  /** Rang sur la page d'accueil (1 = en premier). Sans rang : après les autres, par ordre alphabétique. */
+  ordre?: number;
+  /**
+   * Regroupement : une application qui porte « petits-jeux » n'a pas sa propre tuile
+   * sur l'accueil, elle est listée sur la page du groupe (alphabette.fr/petits-jeux/).
+   */
+  groupe?: string;
   createdAt: string;
   updatedAt: string;
 }

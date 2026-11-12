@@ -73,20 +73,24 @@ html[data-ab-theme='nuit'] .accueil {
 .accueil__pastille--gratuit { background: #dcfce7; color: #166534; }
 /* Très petits écrans ou BIG au maximum : une tuile par ligne, pour garder de gros textes lisibles. */
 @media (max-width: 22rem) { .accueil__tuiles { grid-template-columns: 1fr; } }
-/* Téléphone : une application par ligne, pictogramme à gauche, pour des textes larges et lisibles. */
+/* Deux colonnes partout (demande de Valentin). Sur téléphone, la description est un peu plus petite. */
 @media (max-width: 480px) {
-  .accueil__tuiles { grid-template-columns: 1fr; }
-  .accueil__tuile { display: grid; grid-template-columns: 3rem minmax(0, 1fr); column-gap: 0.85rem; align-items: start; }
-  .accueil__icone { grid-row: 1 / span 3; margin: 0; }
-  .accueil__tuile > :not(.accueil__icone) { grid-column: 2; }
+  .accueil__tuiles { gap: 0.6rem; }
+  .accueil__tuile { padding: 0.8rem; border-radius: 1rem; }
+  .accueil__tuile strong { font-size: 1.1rem; }
+  .accueil__desc { font-size: 0.9rem; }
+  /* BIG au maximum sur un petit écran : une seule colonne, sinon les mots sont coupés. */
+  html[data-ab-density='large'] .accueil__tuiles { grid-template-columns: 1fr; }
 }
 @media (min-width: 48rem) {
   .accueil__haut { padding-top: 3rem; }
   .accueil__titre { font-size: 3.5rem; max-width: 56rem; }
   .accueil__phrase { font-size: 1.5rem; }
-  .accueil__tuiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .accueil__tuiles { gap: 1rem; max-width: 60rem; }
+  .accueil__tuile { padding: 1.25rem; }
+  .accueil__tuile strong { font-size: 1.5rem; }
+  .accueil__desc { font-size: 1.125rem; }
 }
-@media (min-width: 72rem) { .accueil__tuiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 /* Les anciennes sections (atelier IA, tarifs, engagements, pied de page) ne connaissent
    que le thème clair : en mode Nuit, on les inverse d'un bloc plutôt que de laisser

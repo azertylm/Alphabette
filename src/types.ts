@@ -155,6 +155,10 @@ export interface RegistryApp {
   description?: string;
   createdAt: string;
   updatedAt: string;
+  /** Rang sur la page d'accueil (1 = en premier). */
+  ordre?: number;
+  /** Regroupement (ex. « petits-jeux ») : pas de tuile propre sur l'accueil. */
+  groupe?: string;
 }
 
 export interface RegistrySnapshot {
