@@ -34,9 +34,10 @@
       "url": "https://bonplan.alphabette.fr",
       "subdomain": "bonplan",
       "createdAt": "2026-10-20T08:55:00.000Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "updatedAt": "2026-11-12T09:14:47.000Z",
       "gratuit": true,
-      "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres."
+      "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres.",
+      "ordre": 7
     },
     {
       "id": "ecobatisol",
@@ -59,8 +60,9 @@
       "url": "https://frigoplacard.alphabette.fr",
       "subdomain": "frigoplacard",
       "createdAt": "2026-10-19T11:34:35.505Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
-      "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées.",
+      "ordre": 10
     },
     {
       "id": "goat-chevre-the-king",
@@ -72,9 +74,10 @@
       "url": "https://goatchevretheking.alphabette.fr",
       "subdomain": "goatchevretheking",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "updatedAt": "2026-11-12T09:14:47.000Z",
       "gratuit": true,
-      "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres."
+      "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres.",
+      "groupe": "petits-jeux"
     },
     {
       "id": "iadebat",
@@ -85,8 +88,9 @@
       "badge": "Populaire",
       "url": "https://iadebat.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z",
-      "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux.",
+      "ordre": 4
     },
     {
       "id": "infos-perso",
@@ -97,8 +101,9 @@
       "badge": "Populaire",
       "url": "https://infosperso.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z",
-      "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements.",
+      "ordre": 1
     },
     {
       "id": "oeil-atelier",
@@ -109,8 +114,9 @@
       "badge": "Populaire",
       "url": "https://atelier.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z",
-      "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché.",
+      "ordre": 5
     },
     {
       "id": "dico-loufoque",
@@ -122,7 +128,8 @@
       "url": "https://alphabette.fr/dico-loufoque/",
       "description": "Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.",
       "createdAt": "2026-11-11T12:34:30.000Z",
-      "updatedAt": "2026-11-11T12:34:30.000Z"
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "groupe": "petits-jeux"
     },
     {
       "id": "juste-chiffre",
@@ -134,7 +141,8 @@
       "url": "https://alphabette.fr/juste-chiffre/",
       "description": "Devinez un chiffre réel au plus près : hauteurs, dates, distances. Chaque réponse cite sa source.",
       "createdAt": "2026-11-11T12:34:30.000Z",
-      "updatedAt": "2026-11-11T12:34:30.000Z"
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "groupe": "petits-jeux"
     },
     {
       "id": "memo-meninges",
@@ -146,7 +154,8 @@
       "url": "https://alphabette.fr/memo-meninges/",
       "description": "Cinq minutes de petits jeux de mémoire et de calcul par jour, avec de gros boutons et sans chronomètre.",
       "createdAt": "2026-11-11T12:34:30.000Z",
-      "updatedAt": "2026-11-11T12:34:30.000Z"
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "groupe": "petits-jeux"
     },
     {
       "id": "orbit",
@@ -158,7 +167,21 @@
       "url": "https://alphabette.fr/orbit/",
       "description": "Vos vidéos YouTube, TikTok, Facebook et Instagram réunies : fil, listes, Panthéon et propositions selon vos goûts.",
       "createdAt": "2026-11-11T21:28:12.000Z",
-      "updatedAt": "2026-11-11T21:28:12.000Z"
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "ordre": 12
+    },
+    {
+      "id": "petits-jeux",
+      "name": "PETITS JEUX",
+      "slug": "petits-jeux",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/petits-jeux/",
+      "description": "Des petits jeux pour s'amuser et apprendre : mots rares, chiffres à deviner, mémoire, légendes du football.",
+      "createdAt": "2026-11-12T09:14:47.000Z",
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "ordre": 11
     },
     {
       "id": "promptmagic",
@@ -169,8 +192,9 @@
       "url": "https://promptmagic.alphabette.fr",
       "subdomain": "promptmagic",
       "createdAt": "2026-10-22T08:36:42.482Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
-      "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire.",
+      "ordre": 9
     },
     {
       "id": "proxilien",
@@ -181,8 +205,9 @@
       "badge": "Populaire",
       "url": "https://proxilien.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T14:35:00.000Z",
-      "description": "Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision."
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "description": "Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision.",
+      "ordre": 2
     },
     {
       "id": "revolution",
@@ -207,9 +232,10 @@
       "url": "https://bonplansenior.alphabette.fr",
       "subdomain": "bonplansenior",
       "createdAt": "2026-10-19T11:25:14.881Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "updatedAt": "2026-11-12T09:14:47.000Z",
       "gratuit": true,
-      "description": "Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans."
+      "description": "Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans.",
+      "ordre": 8
     },
     {
       "id": "france-service",
@@ -220,9 +246,10 @@
       "badge": "Populaire",
       "url": "https://franceservice.alphabette.fr",
       "createdAt": "2026-10-17T00:00:00.000Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "updatedAt": "2026-11-12T09:14:47.000Z",
       "subdomain": "franceservice",
-      "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement."
+      "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement.",
+      "ordre": 6
     },
     {
       "id": "wikicom",
@@ -234,7 +261,8 @@
       "url": "https://alphabette.fr/wikicom/",
       "description": "L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux.",
       "createdAt": "2026-11-10T22:52:30.000Z",
-      "updatedAt": "2026-11-10T22:52:30.000Z"
+      "updatedAt": "2026-11-12T09:14:47.000Z",
+      "ordre": 3
     }
   ]
 }

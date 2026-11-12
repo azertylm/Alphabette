@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petits Jeux · s'amuser et apprendre</title>
+<meta name="description" content="Des petits jeux gratuits pour s'amuser et apprendre : mots rares, chiffres à deviner, mémoire, légendes du football.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#be185d; }
+  @media (prefers-color-scheme: dark) { :root { --fond:#170d13; --carte:#22141c; --encre:#fdf2f8; --doux:#f9a8d4; --trait:#3d2433; --acc:#f472b6; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 22px; }
+  .jeux { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .jeu { display: flex; flex-direction: column; gap: 6px; background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 18px; box-shadow: 0 2px 0 var(--trait); color: inherit; text-decoration: none; min-width: 0; }
+  .jeu:hover { border-color: var(--acc); transform: translateY(-2px); }
+  .jeu:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .ico { font-size: 44px; line-height: 1; }
+  .jeu strong { font-size: 24px; line-height: 1.15; font-weight: 900; overflow-wrap: anywhere; }
+  .jeu span.desc { color: var(--doux); font-size: 18px; overflow-wrap: anywhere; }
+  .jouer { margin-top: auto; padding-top: 10px; color: var(--acc); font-weight: 800; }
+  .pied { margin-top: 28px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  @media (max-width: 480px) { .jeux { gap: 10px; } .jeu { padding: 14px; } .jeu strong { font-size: 20px; } .jeu span.desc { font-size: 16px; } .ico { font-size: 38px; }
+    html[data-ab-taille="tres-grand"] .jeux { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="petits-jeux" data-nom="Petits Jeux" data-sous-titre="S'amuser et apprendre" data-accent="#be185d"></script>
+<main>
+  <h1>Des petits jeux, <em>pour s'amuser et apprendre.</em></h1>
+  <p class="intro">Quelques minutes suffisent. Choisissez un jeu :</p>
+  <div class="jeux" id="jeux"></div>
+  <p class="pied">D'autres jeux arrivent bientôt.<br>Une rubrique de l'écosystème <a href="https://alphabette.fr">Alphabette</a>.</p>
+</main>
+<script>
+(function () {
+  // Les jeux viennent du registre d'alphabette.fr : toute application qui porte
+  // « groupe : petits-jeux » apparaît ici toute seule. La liste ci-dessous ne sert
+  // que si le registre ne répond pas, et donne un pictogramme à chaque jeu connu.
+  const PICTOS = { 'dico-loufoque': '📖', 'juste-chiffre': '🎯', 'memo-meninges': '🧠', goat: '⚽' };
+  const SECOURS = [
+    { slug: 'dico-loufoque', name: 'Le Dico Loufoque', url: '/dico-loufoque/', description: 'Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.' },
+    { slug: 'juste-chiffre', name: 'Le Juste Chiffre', url: '/juste-chiffre/', description: 'Devinez un chiffre réel au plus près : hauteurs, dates, distances.' },
+    { slug: 'memo-meninges', name: 'Mémo-Méninges', url: '/memo-meninges/', description: 'Cinq minutes de petits jeux de mémoire et de calcul, sans chronomètre.' },
+    { slug: 'goat', name: 'Goat Chèvre The King', url: 'https://goatchevretheking.alphabette.fr', description: 'Élisez vos légendes du football et classez-les en pyramide.' },
+  ];
+  const lisible = (nom) => (nom !== nom.toUpperCase() ? nom : nom.toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()));
+
+  function afficher(liste) {
+    const zone = document.getElementById('jeux'); zone.textContent = '';
+    liste.forEach((j) => {
+      if (!j.url || !/^(https?:\/\/|\/)/.test(j.url)) return;
+      const a = document.createElement('a'); a.className = 'jeu'; a.href = j.url;
+      const ico = document.createElement('span'); ico.className = 'ico'; ico.setAttribute('aria-hidden', 'true'); ico.textContent = PICTOS[j.slug] || '🎲';
+      const nom = document.createElement('strong'); nom.textContent = lisible(j.name);
+      const desc = document.createElement('span'); desc.className = 'desc'; desc.textContent = j.description || '';
+      const jouer = document.createElement('span'); jouer.className = 'jouer'; jouer.textContent = 'Jouer →';
+      a.append(ico, nom, desc, jouer); zone.appendChild(a);
+    });
+  }
+
+  afficher(SECOURS);
+  fetch('/api/apps').then((r) => r.json()).then((d) => {
+    const jeux = ((d && d.apps) || []).filter((a) => a.groupe === 'petits-jeux');
+    if (jeux.length) afficher(jeux);
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>
