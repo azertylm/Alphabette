@@ -7,7 +7,7 @@
 <meta name="description" content="Devinez un chiffre réel au plus près : hauteurs, dates, distances. Plus vous êtes proche, plus vous marquez. Chaque réponse cite sa source.">
 <style>
   :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#c2410c; --ok:#15803d; }
-  @media (prefers-color-scheme: dark) { :root { --fond:#16110d; --carte:#211a14; --encre:#fff7ed; --doux:#fdba74; --trait:#3b2f24; --acc:#fb923c; --ok:#86efac; } }
+  :root[data-ab-theme="nuit"] { --fond:#16110d; --carte:#211a14; --encre:#fff7ed; --doux:#fdba74; --trait:#3b2f24; --acc:#fb923c; --ok:#86efac; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
   main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
@@ -111,7 +111,7 @@
     { q: "En quelle année est votée la loi de séparation des Églises et de l'État ?", r: 1905, u: "", min: 1789, max: 1950, pas: 1, s: "Loi du 9 décembre 1905" },
     { q: "En quelle année les Françaises obtiennent-elles le droit de vote ?", r: 1944, u: "", min: 1850, max: 1981, pas: 1, s: "Ordonnance du 21 avril 1944", n: "Elles votent pour la première fois en 1945." },
     { q: "En quelle année l'être humain marche-t-il pour la première fois sur la Lune ?", r: 1969, u: "", min: 1957, max: 2000, pas: 1, s: "NASA (mission Apollo 11, juillet 1969)" },
-    { q: "En quelle année La Grande-Motte devient-elle une commune ?", r: 1974, u: "", min: 1900, max: 2000, pas: 1, s: "Ville de La Grande-Motte (1er octobre 1974)" },
+    { q: "En quelle année la tour Eiffel a-t-elle été inaugurée ?", r: 1889, u: "", min: 1800, max: 1950, pas: 1, s: "Exposition universelle de Paris (31 mars 1889)" },
     { q: "En quelle année le TGV entre-t-il en service entre Paris et Lyon ?", r: 1981, u: "", min: 1950, max: 1993, pas: 1, s: "SNCF (septembre 1981)" },
     { q: "En quelle année tombe le mur de Berlin ?", r: 1989, u: "", min: 1950, max: 2004, pas: 1, s: "9 novembre 1989" },
     { q: "En quelle année les pièces et billets en euros arrivent-ils dans nos porte-monnaie ?", r: 2002, u: "", min: 1980, max: 2011, pas: 1, s: "Banque de France (1er janvier 2002)" }

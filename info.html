@@ -882,6 +882,11 @@ function applyTheme(){
   document.body.dataset.theme = state.theme;
   document.getElementById("themeBtn").textContent = state.theme==="dark" ? "◐" : "◑";
 }
+// Le bouton ☀️/🌙 de la double barre pilote aussi le thème d'Info.
+window.addEventListener("alphabette:theme",(e)=>{
+  const voulu = e.detail==="nuit" ? "dark" : "light";
+  if(state.theme!==voulu){ state.theme = voulu; applyTheme(); savePrefs(); }
+});
 document.getElementById("themeBtn").onclick = ()=>{
   state.theme = state.theme==="dark" ? "light" : "dark";
   applyTheme(); savePrefs();

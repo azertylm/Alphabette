@@ -16,6 +16,11 @@
         --border: #232941; --text: #e8ebf4; --text-dim: #9aa3b8; --text-faint: #6b7490;
         --accent: #6c8cff; --accent-2: #a06cff; --accent-3: #ff6ca8;
       }
+      :root[data-theme="light"] {
+        --bg: #f7f5f0; --bg-soft: #efece4; --card: #ffffff; --card-hover: #f3f0e8;
+        --border: #ddd8cc; --text: #1c1917; --text-dim: #4a4540; --text-faint: #6b655d;
+        --accent: #0d9488; --accent-2: #7c3aed; --accent-3: #be185d;
+      }
       :root[data-theme="onyx"] {
         --bg: #000000; --bg-soft: #080808; --card: #121212; --card-hover: #1a1a1a;
         --border: #222222; --text: #ffffff; --text-dim: #a0a0a0; --text-faint: #555555;
@@ -253,6 +258,7 @@
           <a onclick="go('guide')">Guide interactif</a>
           <a onclick="go('contribuer')">Contribuer</a>
           <select class="theme-select" onchange="changerTheme(this.value)" id="theme-selector" title="Choisir le thème">
+            <option value="light">☀️ Jour</option>
             <option value="dark">🌙 Nuit</option>
             <option value="onyx">🖤 Onyx AMOLED</option>
             <option value="cyber">⚡ Cyber Neon</option>
@@ -878,6 +884,12 @@
         document.documentElement.setAttribute("data-theme", theme);
         localStorage.setItem("wikicom_theme", theme);
       }
+
+      // Le bouton ☀️/🌙 de la double barre pilote aussi le thème : jour = clair, nuit = sombre.
+      window.addEventListener("alphabette:theme", (e) => {
+        const voulu = e.detail === "nuit" ? (currentTheme === "light" ? "dark" : currentTheme) : "light";
+        if (voulu !== currentTheme) { changerTheme(voulu); const sel = document.getElementById("theme-selector"); if (sel) sel.value = voulu; }
+      });
 
       function basculerVue(vue) {
         currentView = vue;

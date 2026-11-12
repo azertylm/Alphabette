@@ -7,7 +7,7 @@
 <meta name="description" content="Trois petits jeux par jour pour faire travailler sa mémoire et sa logique, avec de gros boutons et sans chronomètre.">
 <style>
   :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#0f766e; --okf:#dcfce7; --ok:#15803d; --nonf:#fee2e2; --non:#b91c1c; }
-  @media (prefers-color-scheme: dark) { :root { --fond:#0c1614; --carte:#13211e; --encre:#f0fdfa; --doux:#99f6e4; --trait:#234039; --acc:#2dd4bf; --okf:#14532d; --ok:#86efac; --nonf:#7f1d1d; --non:#fca5a5; } }
+  :root[data-ab-theme="nuit"] { --fond:#0c1614; --carte:#13211e; --encre:#f0fdfa; --doux:#99f6e4; --trait:#234039; --acc:#2dd4bf; --okf:#14532d; --ok:#86efac; --nonf:#7f1d1d; --non:#fca5a5; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
   main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
@@ -20,7 +20,7 @@
   .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
   .consigne { color: var(--doux); margin: 6px 0 16px; }
   .gros { font: inherit; width: 100%; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; margin-top: 16px; }
-  @media (prefers-color-scheme: dark) { .gros { color: #04211d; } }
+  :root[data-ab-theme="nuit"] .gros { color: #04211d; }
   .gros.clair { background: transparent; color: var(--acc); }
   button:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
   .menu { display: grid; gap: 12px; margin-top: 14px; }
