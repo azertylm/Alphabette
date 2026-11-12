@@ -182,3 +182,13 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 - **Quiz musique** : les 49 anecdotes relues ; 47 confirmées, 2 corrigées après recherche (Makeba, Gilberto Gil). Prêt à être mis en avant.
 - **Orbit** (`ab94182`) : une vidéo que personne n'a notée affiche « ☆ Noter » au lieu d'une note tirée au hasard ; une nouvelle vidéo part avec 0 avis (au lieu de 4). Les propositions automatiques sans serveur affichent un message clair. Vérifié en ligne : titre réel, auteur, « Noter » (vidéo de test retirée ensuite).
 - **ChipJourney** : la fiche « Orbit by Alphabette » est publiée dans l'annuaire. FreeNoSignup : relecture manuelle en cours.
+
+## 12/11 (22 h) — Podcasts beaucoup plus personnalisable
+Demande de Valentin : « pas assez personnalisable ». Ajouts dans `public/podcasts/index.html` (une seule page, rien à installer) :
+- **File d'écoute « À écouter ensuite »** : + sur chaque épisode, ordre modifiable (↑ ↓), bouton « ⏭ Suivant » dans le lecteur.
+- **Fin d'un épisode** au choix : s'arrêter, lire le suivant de la file, ou l'épisode suivant du même podcast.
+- **Par podcast** : ★ favori (toujours en tête), vitesse propre, « passer le générique » (10 s à 2 min), nom affiché modifiable.
+- **Mes podcasts** : tri (ordre d'ajout, A à Z, dernière sortie), vue vignettes ou liste ; « Dernières sorties » sur 30 podcasts, 1 à 3 épisodes chacun.
+- **Épisodes** : plus récents ou plus anciens d'abord, masquer les épisodes écoutés, marquer écouté / non écouté.
+- **Réglages** : vitesse habituelle (×0,5 à ×3), petit et grand sauts (5 s à 2 min), sujets de recherche à soi, rubriques de « Notre sélection » à cocher/décocher, **sauvegarde complète** dans un fichier pour tout retrouver sur un autre appareil.
+- Testé (navigateur sans tête, flux factice, 360 et 375 px) : tout fonctionne, aucun débordement.

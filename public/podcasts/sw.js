@@ -1,6 +1,6 @@
 // Service worker des Podcasts : garde la page et les icônes pour pouvoir ouvrir l'appli sans réseau.
 // Le relais (flux.php), le son et les images des podcasts ne sont jamais mis en cache ici.
-const VERSION = 'podcasts-v1';
+const VERSION = 'podcasts-v2';
 const FICHIERS = ['/podcasts/', '/podcasts/manifest.webmanifest', '/podcasts/icone-192.png', '/podcasts/icone-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(FICHIERS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((k) => Promise.all(k.filter((n) => n !== VERSION).map((n) => caches.delete(n)))).then(() => self.clients.claim())); });
