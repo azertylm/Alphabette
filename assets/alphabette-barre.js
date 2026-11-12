@@ -69,7 +69,11 @@
   var indexTaille = Math.max(0, TAILLES.findIndex(function (t) { return t.cle === prefs.density; }));
   function appliquerTaille() {
     var t = TAILLES[indexTaille], r = document.documentElement;
-    r.style.zoom = t.zoom === 1 ? '' : String(t.zoom); r.style.setProperty('--ab-zoom', String(t.zoom));
+    // data-big="police" : pour les applis plein écran (vidéo…), on agrandit la police de la page plutôt que de zoomer.
+    var parPolice = d.big === 'police';
+    r.style.zoom = parPolice || t.zoom === 1 ? '' : String(t.zoom);
+    r.style.fontSize = parPolice && t.zoom !== 1 ? String(t.zoom * 100) + '%' : '';
+    r.style.setProperty('--ab-zoom', parPolice ? '1' : String(t.zoom));
     r.dataset.abDensity = t.cle; r.dataset.abTaille = t.ancien; // « abTaille » : ancien nom, encore lu par certaines pages
     var b = document.getElementById('ab-big');
     if (b) {
