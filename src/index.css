@@ -80,7 +80,7 @@ html[data-ab-theme='nuit'] .accueil {
   .accueil__tuile strong { font-size: 1.1rem; }
   .accueil__desc { font-size: 0.9rem; }
   /* BIG au maximum sur un petit écran : une seule colonne, sinon les mots sont coupés. */
-  html[data-ab-density='large'] .accueil__tuiles { grid-template-columns: 1fr; }
+  html[data-ab-density='large'] .accueil__tuiles, html[data-ab-density='xlarge'] .accueil__tuiles { grid-template-columns: 1fr; }
 }
 @media (min-width: 48rem) {
   .accueil__haut { padding-top: 3rem; }

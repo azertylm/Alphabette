@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </span>
                 </div>
                 <span className="text-xs text-slate-500 font-medium">
-                  Solutions Souveraines · La Grande-Motte
+                  Solutions Souveraines
                 </span>
               </div>
             </a>

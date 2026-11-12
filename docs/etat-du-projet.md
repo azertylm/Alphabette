@@ -75,7 +75,7 @@ Pages HTML du hub (`public/<clé>/index.html`), double barre + BIG, sans serveur
 - **Le Dico Loufoque** (`/dico-loufoque/`) : 40 mots rares réels, une vraie définition et trois inventées. Pour ajouter des mots : tableau `MOTS` en haut du script.
 - **Le Juste Chiffre** (`/juste-chiffre/`) : 33 questions chiffrées avec source, curseur + boutons de réglage fin. Barème : 100 points pile dessus, 0 au-delà d'un cinquième de l'étendue ; les bornes sont décentrées pour que « valider sans réfléchir » rapporte 0. Tableau `QUESTIONS`. Valeurs datées à revoir de temps en temps (population 2024, hauteur de la tour Eiffel, mont Blanc 2023).
 - **Mémo-Méninges** (`/memo-meninges/`) : séance du jour en trois jeux (paires, suite à répéter, calcul), sans chronomètre, série de jours. Mention « pas un test médical ».
-- Autres idées proposées, non faites : Vrai ou Faux du jour, Chrono-Frise, Où c'est ?, Trois Kifs, Le Défi du jour, La Mouette de La Grande-Motte, Quiz en famille.
+- Autres idées proposées, non faites : Vrai ou Faux du jour, Chrono-Frise, Où c'est ?, Trois Kifs, Le Défi du jour, Quiz en famille.
 
 ## 11/11 : Orbit 5 (version légale, sans serveur)
 - Dépôt créé par Valentin : **`azertylm/orbitvideo-`** (privé). Orbit-v4 reste intact et non publié.
@@ -130,3 +130,9 @@ Lidarsol, Osolar, serveur ProxiLien, domaines Orbit et Info Perso.
 
 ## Façon de travailler
 Valentin n'est pas développeur : faire le maximum seul, demander le minimum, réponses courtes. Priorité : contenu honnête, conseils sûrs, chiffres à jour, lisible sur téléphone. Notification téléphone aux étapes importantes.
+
+## 12/11 — Nouvelle double barre, préférences partagées, confidentialité
+- **Double barre** (shell 0.4.0 + `public/assets/alphabette-barre.js`) : logo « alphabette » petit → www.alphabette.fr, ⭐ S'abonner, ▦ toutes les applis, 🆕 nouveautés, favoris (3 max), BIG (3 tailles), ☀️/🌙, 🔊 lecture à voix haute, menu ⋯ (🧘 mode simple, 📲 installer, 💬 avis, 🖨️ imprimer, 🌍 langue). Chaque pictogramme affiche son nom au survol / focus / toucher.
+- **Préférences partagées** : cookie `ab_prefs` (.alphabette.fr, 1 an) + copie localStorage : thème, taille, langue, mode simple, favoris.
+- **Limites** : 🌍 traduit la barre (le contenu passe par Google Traduction) ; Service France n'a pas de mode nuit (bouton masqué) ; apps à barre propre non migrées : Info Perso, IA Débat, ProxiLien, Bon Plan, Orbit.
+- **Règle de confidentialité** : ne jamais indiquer où habite Valentin ni où les applis sont faites (ni La Grande-Motte, ni autre lieu). Adresse de domiciliation bancaire retirée. ProxiLien garde son contenu « pilote » (fonctionnel). Projet Lidaros (en pause) contient encore des mentions ; l'historique git ne peut pas être réécrit.

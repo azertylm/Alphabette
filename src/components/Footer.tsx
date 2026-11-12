@@ -74,17 +74,13 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div>
                 <span className="text-xl font-extrabold text-white tracking-tight">ALPHABETTE</span>
-                <span className="block text-[11px] text-emerald-400 font-medium">Des applications utiles, conçues à La Grande-Motte</span>
+                <span className="block text-[11px] text-emerald-400 font-medium">Des applications utiles pour la vie de tous les jours</span>
               </div>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-md">
-              Établi à <strong>La Grande-Motte</strong>. Des applications simples pour la vie de tous les jours, sans publicité. Quand elles utilisent l'IA, elles privilégient <strong>Mistral AI</strong> (France) ou la clé de votre choix.
+              Des applications simples pour la vie de tous les jours, sans publicité. Quand elles utilisent l'IA, elles privilégient <strong>Mistral AI</strong> (France) ou la clé de votre choix.
             </p>
             <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
-              <span className="flex items-center gap-1 text-emerald-400">
-                <MapPin className="w-3.5 h-3.5" /> La Grande-Motte (Hérault)
-              </span>
-              <span>•</span>
               <span className="flex items-center gap-1 text-blue-400">
                 <ShieldCheck className="w-3.5 h-3.5" /> Hébergé en France
               </span>
@@ -160,7 +156,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom copyright line */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
           <div>
-            © {new Date().getFullYear()} ALPHABETTE — Établi à La Grande-Motte. Tous droits réservés.
+            © {new Date().getFullYear()} ALPHABETTE. Tous droits réservés.
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-slate-400 cursor-pointer">Souveraineté des Données</span>

@@ -81,8 +81,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           Des applications simples, <em>pour mieux vivre au quotidien.</em>
         </h1>
         <p className="accueil__phrase">
-          {apps.length ? apps.filter((app) => app.slug !== 'petits-jeux').length : appsCount} applications faites à La
-          Grande-Motte. Sans publicité.
+          {apps.length ? apps.filter((app) => app.slug !== 'petits-jeux').length : appsCount} applications utiles. Sans publicité.
           {gratuites > 0 && ` ${gratuites} sont gratuites, définitivement.`}
         </p>
 

@@ -51,7 +51,7 @@ export const Hero: React.FC<HeroProps> = ({
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-slate-700 font-normal leading-relaxed">
-            Le hub central <strong className="text-slate-900 font-semibold">ALPHABETTE</strong> réunit les <strong className="text-emerald-800 font-bold">{appsCount} applications</strong> de la suite, conçues à La Grande-Motte pour rendre la vie plus simple. Beaucoup fonctionnent sans intelligence artificielle ; les autres utilisent <strong>Mistral AI</strong>, hébergée en France, ou la clé IA de votre choix.
+            Le hub central <strong className="text-slate-900 font-semibold">ALPHABETTE</strong> réunit les <strong className="text-emerald-800 font-bold">{appsCount} applications</strong> de la suite, conçues pour rendre la vie plus simple. Beaucoup fonctionnent sans intelligence artificielle ; les autres utilisent <strong>Mistral AI</strong>, hébergée en France, ou la clé IA de votre choix.
           </p>
 
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-medium">

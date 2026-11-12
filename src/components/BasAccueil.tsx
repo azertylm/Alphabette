@@ -62,7 +62,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
             fonctionnent sans.
           </li>
           <li>
-            <strong>Fait à La Grande-Motte</strong> par un développeur indépendant.
+            <strong>Fait par un développeur indépendant</strong>.
           </li>
         </ul>
       </section>
@@ -77,7 +77,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
 
       <footer className="accueil__pied">
         <p>
-          © {new Date().getFullYear()} Alphabette · La Grande-Motte ·{' '}
+          © {new Date().getFullYear()} Alphabette ·{' '}
           <a href="mailto:contact@alphabette.fr">contact@alphabette.fr</a>
         </p>
         <p>
