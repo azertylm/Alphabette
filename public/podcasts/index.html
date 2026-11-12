@@ -246,6 +246,34 @@
       { nom: 'Binge Audio', q: 'Binge Audio', cle: 'binge', desc: 'Podcasts de société, de culture et d’idées.' },
       { nom: 'Là-bas si j’y suis', q: 'Là-bas si j’y suis', cle: 'la bas', desc: 'Reportages et révoltes, à la radio.' },
       { nom: 'Le Monde diplomatique', q: 'Le Monde diplomatique', cle: 'diplomatique', desc: 'Analyses et enquêtes internationales.' }] },
+    { titre: 'Culture et ARTE', note: 'Littérature, idées, arts et cinéma.', items: [
+      { nom: 'ARTE Radio', q: 'ARTE Radio', cle: 'arte radio', desc: 'Documentaires sonores et créations d’ARTE.' },
+      { nom: 'Le Masque et la Plume', q: 'Le Masque et la Plume', cle: 'masque et la plume', desc: 'Cinéma, livres, théâtre : critiques et débats.' },
+      { nom: 'Les Chemins de la philosophie', q: 'Les Chemins de la philosophie', cle: 'chemins de la philosophie', desc: 'Une grande question de philosophie, expliquée.' },
+      { nom: 'La Grande Table', q: 'La Grande Table', cle: 'grande table', desc: 'Entretiens sur la culture et les idées.' },
+      { nom: 'Le Book Club', q: 'Le Book Club France Culture', cle: 'book club', desc: 'On parle de livres entre passionnés.' }] },
+    { titre: 'Sciences et nature', note: 'Comprendre le monde, sans jargon.', items: [
+      { nom: 'La Méthode scientifique', q: 'La Méthode scientifique', cle: 'methode scientifique', desc: 'Un sujet de science par jour, avec des chercheurs.' },
+      { nom: 'La Science, CQFD', q: 'La Science CQFD', cle: 'cqfd', desc: 'Les sciences racontées simplement.' },
+      { nom: 'Sur les épaules de Darwin', q: 'Sur les épaules de Darwin', cle: 'epaules de darwin', desc: 'Jean-Claude Ameisen, entre science et poésie.' },
+      { nom: 'Choses à Savoir', q: 'Choses à Savoir Sciences', cle: 'choses a savoir', desc: 'Une question, une réponse en deux minutes.' },
+      { nom: 'Le Journal du CNRS', q: 'CNRS Le Journal', cle: 'cnrs', desc: 'La recherche française, à portée de tous.' }] },
+    { titre: 'Histoire', note: 'Des récits pour comprendre le passé.', items: [
+      { nom: 'La Fabrique de l’Histoire', q: 'La Fabrique de l’Histoire', cle: 'fabrique de l histoire', desc: 'L’histoire se fait et se raconte.' },
+      { nom: 'Le Cours de l’Histoire', q: 'Le Cours de l’Histoire', cle: 'cours de l histoire', desc: 'Une grande question d’histoire chaque jour.' },
+      { nom: 'Concordance des temps', q: 'Concordance des temps', cle: 'concordance des temps', desc: 'Jean-Noël Jeanneney et ses invités.' },
+      { nom: 'Au cœur de l’histoire', q: 'Au cœur de l’histoire', cle: 'coeur de l histoire', desc: 'Des récits d’histoire racontés en une heure.' },
+      { nom: 'Passion Médiévistes', q: 'Passion Médiévistes', cle: 'medievistes', desc: 'Le Moyen Âge, vu par ceux qui l’étudient.' }] },
+    { titre: 'Géographie et monde', note: 'Cartes, voyages et géopolitique.', items: [
+      { nom: 'Le Dessous des cartes', q: 'Le Dessous des cartes', cle: 'dessous des cartes', desc: 'Le monde expliqué par les cartes (ARTE).' },
+      { nom: 'Affaires étrangères', q: 'Affaires étrangères', cle: 'affaires etrangeres', desc: 'Les grands sujets internationaux.' },
+      { nom: 'Les Enjeux internationaux', q: 'Les Enjeux internationaux', cle: 'enjeux internationaux', desc: 'Un tour du monde de l’actualité.' },
+      { nom: 'Géopolitique, le débat', q: 'Géopolitique le débat RFI', cle: 'geopolitique', desc: 'Un thème, des spécialistes, un débat clair.' },
+      { nom: 'Le Grand Reportage', q: 'Le Grand Reportage RFI', cle: 'grand reportage', desc: 'Des reportages dans le monde entier.' }] },
+    { titre: 'Humour et culture à la française', note: 'Pour rire, et en savoir plus.', items: [
+      { nom: 'Par Jupiter !', q: 'Par Jupiter', cle: 'par jupiter', desc: 'La radio qui prend l’actualité à la rigolade.' },
+      { nom: 'La Drôle d’Humeur de Marina Rollman', q: 'Marina Rollman', cle: 'marina rollman', desc: 'Chroniques drôles et décalées.' },
+      { nom: 'Les Idées claires', q: 'Les Idées claires', cle: 'idees claires', desc: 'Démêler le vrai du faux, avec humour.' }] },
     { titre: 'Radio publique', note: 'Radio France.', items: [
       { nom: 'France Inter', q: 'France Inter', cle: 'france inter', desc: 'Chroniques, débats et grands entretiens.' },
       { nom: 'franceinfo', q: 'franceinfo', cle: 'franceinfo', desc: 'L’information en continu.' },
@@ -276,32 +304,41 @@
       g.items.forEach((it) => {
         const img = pochette(''), boutons = h('div', { class: 'actions' });
         const info = h('div', { class: 'meta' }, 'Recherche du podcast…');
-        l.append(h('article', { class: 'ligne' }, img, h('div', null, h('h3', null, it.nom), h('p', { class: 'desc' }, it.desc), info, boutons)));
-        aResoudre.push({ it, img, info, boutons });
+        const carte = h('article', { class: 'ligne' }, img, h('div', null, h('h3', null, it.nom), h('p', { class: 'desc' }, it.desc), info, boutons));
+        l.append(carte);
+        aResoudre.push({ it, img, info, boutons, carte });
       });
       z.append(l);
     });
-    let i = 0;
-    Promise.all([0, 1, 2].map(async () => {
-      while (i < aResoudre.length) {
-        const { it, img, info, boutons } = aResoudre[i++];
-        const r = await retrouver(it);
-        if (!info.isConnected) continue;
-        boutons.textContent = '';
-        if (r.feed) {
-          if (sur(r.image)) img.src = https(r.image);
-          info.textContent = r.titre;
-          const b = h('button', { class: 'bouton', type: 'button' });
-          const rafr = () => { b.textContent = abonne(r.feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(r.feed) ? 'bouton clair' : 'bouton'; };
-          b.addEventListener('click', () => { abonne(r.feed) ? desabonner(r.feed) : sabonner(r.feed, r.titre, r.image); rafr(); });
-          rafr();
-          boutons.append(b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(r.feed) }, 'Voir les épisodes'));
-        } else {
-          info.textContent = r.erreur ? 'Recherche indisponible pour le moment.' : 'Pas trouvé automatiquement.';
-          boutons.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => { aller('chercher'); $('q').value = it.q; chercher(it.q); } }, 'Chercher « ' + it.nom + ' »'));
-        }
+    // Chaque podcast n'est cherché que lorsqu'il apparaît à l'écran (et au plus deux à la fois) :
+    // l'annuaire limite le nombre de recherches, et la plupart des visiteurs ne verront pas toute la liste.
+    const file = []; let actifs = 0;
+    const pomper = () => { while (actifs < 2 && file.length) { actifs++; file.shift()().then(() => { actifs--; pomper(); }); } };
+    const resoudre = async (x) => {
+      const { it, img, info, boutons, carte } = x;
+      const r = await retrouver(it);
+      if (!info.isConnected) return;
+      boutons.textContent = '';
+      if (r.feed) {
+        if (sur(r.image)) img.src = https(r.image);
+        info.textContent = r.titre;
+        const b = h('button', { class: 'bouton', type: 'button' });
+        const rafr = () => { b.textContent = abonne(r.feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(r.feed) ? 'bouton clair' : 'bouton'; };
+        b.addEventListener('click', () => { abonne(r.feed) ? desabonner(r.feed) : sabonner(r.feed, r.titre, r.image); rafr(); });
+        rafr();
+        boutons.append(b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(r.feed) }, 'Voir les épisodes'));
+      } else {
+        info.textContent = r.erreur ? 'Recherche indisponible pour le moment.' : 'Pas trouvé automatiquement.';
+        boutons.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => { aller('chercher'); $('q').value = it.q; chercher(it.q); } }, 'Chercher « ' + it.nom + ' »'));
       }
-    }));
+    };
+    const planifier = (x) => { file.push(() => resoudre(x)); pomper(); };
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+        if (!e.isIntersecting) return; obs.unobserve(e.target); planifier(e.target.__x);
+      }), { rootMargin: '200px' });
+      aResoudre.forEach((x) => { x.carte.__x = x; obs.observe(x.carte); });
+    } else aResoudre.forEach(planifier);
   }
 
   // ---------- Mes podcasts ----------

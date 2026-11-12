@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz en famille · cinéma et culture à la française</title>
+<meta name="description" content="Un quiz loufoque à plusieurs sur un seul écran : cinéma, humour et culture française. Chacun son tour, des anecdotes à chaque réponse. Gratuit, sans compte.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#be123c; --accfond:#ffe4e6; --ok:#15803d; --okfond:#dcfce7; --ko:#b91c1c; --kofond:#fee2e2; }
+  :root[data-ab-theme="nuit"] { --fond:#1a0d12; --carte:#27141b; --encre:#fff1f2; --doux:#fda4af; --trait:#4a2431; --acc:#fb7185; --accfond:#3b1a24; --ok:#86efac; --okfond:#12301d; --ko:#fca5a5; --kofond:#3b1414; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  label { display: block; font-weight: 800; margin: 14px 0 6px; }
+  label:first-child { margin-top: 0; }
+  .joueurs { display: grid; gap: 8px; }
+  .joueurs input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--trait); background: var(--fond); }
+  .rang { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .petit { font-weight: 800; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .petit:hover { border-color: var(--acc); }
+  .gros { font: inherit; width: 100%; margin-top: 16px; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .gros { color: #2b0a13; }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
+  .tour { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accfond); color: var(--acc); font-weight: 900; margin-bottom: 10px; }
+  .question { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
+  .choix { display: grid; gap: 10px; }
+  .choix button { text-align: left; font-weight: 700; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; min-height: 56px; }
+  .choix button:hover:not([disabled]) { border-color: var(--acc); }
+  .choix button.bon { border-color: var(--ok); background: var(--okfond); }
+  .choix button.mauvais { border-color: var(--ko); background: var(--kofond); }
+  .choix button[disabled] { cursor: default; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--accfond); }
+  .verdict strong { display: block; font-size: 24px; }
+  .verdict p { margin-top: 4px; }
+  .score { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 16px; }
+  .score span { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+  .score span.actif { border-color: var(--acc); color: var(--acc); }
+  .classement { list-style: none; display: grid; gap: 8px; margin: 12px 0; }
+  .classement li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--trait); background: var(--fond); font-weight: 800; }
+  .classement li:first-child { border-color: var(--acc); background: var(--accfond); }
+  .titre-final { font-size: 28px; font-weight: 900; text-align: center; margin: 6px 0; }
+  .pied { margin-top: 24px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .question { font-size: 22px; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="quiz-famille" data-nom="Quiz en famille" data-sous-titre="Cinéma et culture à la française" data-accent="#be123c"></script>
+<main>
+  <h1>Quiz en famille. <em>Le cinéma à la française.</em></h1>
+  <p class="intro">Un seul écran, chacun son tour. Des films cultes, des humoristes, des répliques… et une anecdote à chaque réponse.</p>
+
+  <section class="carte" id="depart">
+    <label for="nb">Combien de joueurs ?</label>
+    <select id="nb"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <label>Les prénoms</label>
+    <div class="joueurs" id="prenoms"></div>
+    <label for="tours">Combien de tours ?</label>
+    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option></select>
+    <button class="gros" id="go" type="button">C'est parti !</button>
+  </section>
+
+  <section class="carte" id="jeu" hidden aria-live="polite">
+    <div class="suivi"><span id="num"></span><span id="theme"></span></div>
+    <div class="tour" id="tourDe"></div>
+    <p class="question" id="q"></p>
+    <div class="choix" id="choix"></div>
+    <div class="verdict" id="verdict" hidden></div>
+    <div class="score" id="score"></div>
+    <button class="gros" id="suite" type="button" hidden>Question suivante</button>
+  </section>
+
+  <section class="carte" id="fin" hidden>
+    <p class="titre-final" id="gagnant"></p>
+    <ol class="classement" id="classement"></ol>
+    <p id="blague" style="text-align:center;color:var(--doux)"></p>
+    <button class="gros" id="rejouer" type="button">Rejouer avec les mêmes joueurs</button>
+    <button class="gros" id="changer" type="button" style="background:var(--carte);color:var(--acc)">Changer de joueurs</button>
+  </section>
+
+  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Quiz fait pour s'amuser : si une réponse vous semble discutable, on en rit.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  // [thème, question, [bonne réponse, 3 mauvaises], anecdote]
+  const BANQUE = [
+    ['Cinéma', "Qui joue Serge Karamazov dans « La Cité de la peur » ?", ['Alain Chabat', 'Dominique Farrugia', 'Gérard Jugnot', 'Un yéti en costume'], "La Cité de la peur (1994) est un film des Nuls : Alain Chabat, Chantal Lauby, Dominique Farrugia et Bruno Carette."],
+    ['Cinéma', "« C'est arrivé près de chez vous » (1992) est un film venu de quel pays ?", ['La Belgique', 'La Suisse', 'Le Canada', 'Le Luxembourg, mais personne ne l\'a su'], "Le faux documentaire belge avec Benoît Poelvoorde a marqué le festival de Cannes en 1992. À réserver aux adultes : humour très noir."],
+    ['Cinéma', "Qui a réalisé « Bernie » (1996) et joue le personnage principal ?", ['Albert Dupontel', 'Dany Boon', 'Jean Dujardin', 'Bernard Tapie'], "« Bernie » est le premier film réalisé par Albert Dupontel, un humour noir et décalé."],
+    ['Humour', "Qui a dit « On peut rire de tout, mais pas avec tout le monde » ?", ['Pierre Desproges', 'Coluche', 'Raymond Devos', 'Mon beau-frère au repas de Noël'], "La formule est restée célèbre grâce à Pierre Desproges, roi de l'humour noir."],
+    ['Humour', "À quelle élection Coluche a-t-il annoncé sa candidature en 1980 ?", ['La présidentielle', 'Les municipales de Paris', 'Miss France', 'Le concours de la meilleure baguette'], "Coluche s'est retiré de la course en 1981. Il a créé les Restos du Cœur en 1985."],
+    ['Humour', "Qu'a fondé Coluche en 1985 ?", ['Les Restos du Cœur', 'Une école de clowns', 'Un parti de rigolos', 'Une chaîne de sandwichs'], "Les Restos du Cœur servent encore chaque hiver des repas gratuits à des centaines de milliers de personnes."],
+    ['Télé', "Avec quel acteur Fred Testot formait-il un duo célèbre à la télévision ?", ['Omar Sy', 'Jamel Debbouze', 'Kad Merad', 'Un perroquet très bavard'], "« Omar et Fred » ont fait rire la télé avec leurs sketchs du « SAV » sur Canal+."],
+    ['Humour', "Pierre-Emmanuel Barré est surtout connu comme…", ['Humoriste à l\'humour très noir', 'Chef pâtissier', 'Pilote de rallye', 'Champion de pétanque'], "Son humour grinçant divise : certains adorent, d'autres s'étouffent. À vous de voir."],
+    ['Télé', "Dans « Kaamelott », comment s'appelle le roi ?", ['Arthur', 'Lancelot', 'Perceval', 'Kevin'], "La série d'Alexandre Astier (2005-2009) est devenue un film en 2021."],
+    ['Cinéma', "Dans « Les Visiteurs » (1993), dans quel siècle vit Godefroy de Montmirail ?", ['Le XIIe', 'Le XVe', 'Le XVIIIe', 'Le siècle des soldes'], "Jean Reno et Christian Clavier voyagent du Moyen Âge (1123) à aujourd'hui."],
+    ['Cinéma', "Qui joue François Pignon dans « Le Dîner de cons » ?", ['Jacques Villeret', 'Thierry Lhermitte', 'Bourvil', 'Un ami de Jacques'], "Jacques Villeret joue le « champion du monde des cons » face à Thierry Lhermitte."],
+    ['Cinéma', "Quelle troupe a créé « Les Bronzés » et « Le Père Noël est une ordure » ?", ['Le Splendid', 'Les Nuls', 'Les Inconnus', 'Les Charlots'], "Le Splendid : Michel Blanc, Josiane Balasko, Gérard Jugnot, Christian Clavier, Thierry Lhermitte, Marie-Anne Chazel."],
+    ['Cinéma', "Qui forme un duo avec Bourvil dans « La Grande Vadrouille » ?", ['Louis de Funès', 'Jean Gabin', 'Lino Ventura', 'Un parachute'], "Ce film de 1966 a dépassé les 17 millions d'entrées et est resté longtemps le plus vu en France."],
+    ['Cinéma', "Dans « Bienvenue chez les Ch'tis », où est muté Philippe Abrams ?", ['Dans le Nord', 'En Provence', 'En Bretagne', 'À la Réunion'], "Le film de Dany Boon (2008) est tourné à Bergues, dans le Nord. Plus de 20 millions d'entrées."],
+    ['Cinéma', "Qui joue OSS 117 dans « Le Caire, nid d'espions » ?", ['Jean Dujardin', 'Gad Elmaleh', 'Dany Boon', 'James Bond en vacances'], "Michel Hazanavicius a réalisé la série de films OSS 117, parodie des films d'espionnage."],
+    ['Cinéma', "Qui a réalisé « Astérix et Obélix : Mission Cléopâtre » ?", ['Alain Chabat', 'Claude Zidi', 'Gérard Oury', 'Panoramix'], "Sorti en 2002, avec Jamel Debbouze et Monica Bellucci, c'est une comédie très citée."],
+    ['Cinéma', "Où se passent « Les Bronzés font du ski » ?", ['À Val-d\'Isère', 'À Chamonix', 'À Biarritz', 'Au Sahara'], "Le film de 1979 a été tourné à Val-d'Isère, avec ses répliques devenues proverbiales."],
+    ['Cinéma', "Quel acteur joue Driss dans « Intouchables » ?", ['Omar Sy', 'Fred Testot', 'Kad Merad', 'Un cousin de Driss'], "Omar Sy a reçu le César du meilleur acteur en 2012 pour ce rôle."],
+    ['Cinéma', "Dans quel quartier de Paris vit Amélie Poulain ?", ['Montmartre', 'Le Marais', 'Le Quartier latin', 'Belleville-sur-Mer'], "« Le Fabuleux Destin d'Amélie Poulain » (2001), de Jean-Pierre Jeunet, avec Audrey Tautou."],
+    ['Musique', "Qui a écrit « La Javanaise » ?", ['Serge Gainsbourg', 'Jacques Brel', 'Georges Brassens', 'Un orchestre de java'], "Gainsbourg l'a écrite en 1963 pour Juliette Gréco."],
+    ['Musique', "De quel pays vient Jacques Brel ?", ['La Belgique', 'La France', 'Le Québec', 'L\'Islande'], "Né à Bruxelles, Brel a chanté « Ne me quitte pas », « Amsterdam » ou « Le Plat Pays »."],
+    ['Humour', "Raymond Devos est célèbre pour ses sketchs pleins de…", ['Jeux de mots', 'Cascades', 'Imitations de voitures', 'Courses de haies'], "Il jouait avec les mots jusqu'à l'absurde : « Sens dessus dessous », « Parler pour ne rien dire »…"],
+    ['Cinéma', "Combien de membres compte le trio des Inconnus ?", ['Trois', 'Deux', 'Quatre', 'Beaucoup trop'], "Didier Bourdon, Bernard Campan et Pascal Légitimus. Leur film « Les Trois Frères » date de 1995."],
+    ['Télé', "Sur quelle chaîne passe l'émission « Groland » ?", ['Canal+', 'TF1', 'France 3', 'La chaîne Météo'], "Le pays imaginaire Groland et son « Grand Journal » ont installé leur humour décalé sur Canal+."],
+    ['Radio', "Sur quelle radio Pierre Desproges tenait-il « La Chronique de la haine ordinaire » ?", ['France Inter', 'Europe 1', 'RTL', 'Radio Nova'], "Il y exerçait aussi son humour au « Tribunal des flagrants délires »."],
+    ['Cinéma', "Qui a réalisé « La Haine » (1995) ?", ['Mathieu Kassovitz', 'Luc Besson', 'Jacques Audiard', 'Jean-Pierre Jeunet'], "« Jusqu'ici tout va bien… » : un film noir et blanc sur la banlieue qui marque toujours."],
+    ['Cinéma', "Qui joue Fernand Naudin dans « Les Tontons flingueurs » ?", ['Lino Ventura', 'Bourvil', 'Jean Gabin', 'Louis de Funès'], "Les dialogues de Michel Audiard sont devenus des citations qu'on se répète en famille."],
+    ['BD', "Qui a dessiné « Le Petit Nicolas » ?", ['Sempé', 'Uderzo', 'Hergé', 'Franquin'], "Goscinny écrivait les histoires, Sempé dessinait. Goscinny a aussi inventé Astérix."],
+    ['BD', "Qui a créé Astérix ?", ['Goscinny et Uderzo', 'Hergé', 'Morris et Goscinny', 'Obélix tout seul'], "Astérix est né en 1959 dans le journal « Pilote »."],
+    ['Cinéma', "Dans quelle ville se passe « Le Gendarme de Saint-Tropez » ?", ['Saint-Tropez', 'Marseille', 'Bordeaux', 'Saint-Tropez-les-Bains-de-Mer'], "Louis de Funès y joue le gendarme Cruchot, dans une série de comédies des années 60-70."],
+    ['Cinéma', "Quel acteur français a remporté l'Oscar du meilleur acteur en 2012 ?", ['Jean Dujardin', 'Gérard Depardieu', 'Omar Sy', 'Jean Reno'], "Il a été récompensé pour « The Artist », film muet en noir et blanc."],
+    ['Cinéma', "Quel acteur belge joue dans « C'est arrivé près de chez vous » ?", ['Benoît Poelvoorde', 'Albert Dupontel', 'Jean-Claude Van Damme', 'Tintin'], "Il est devenu une star avec ce film, puis « Podium » ou « Le Vélo de Ghislain Lambert »."],
+    ['Télé', "Qui a écrit et joue dans « Kaamelott » ?", ['Alexandre Astier', 'Kad Merad', 'Franck Dubosc', 'Merlin lui-même'], "Alexandre Astier écrit, réalise, joue et compose la musique de la série."]
+  ];
+  const $ = (id) => document.getElementById(id);
+  let joueurs = [], scores = [], questions = [], pos = 0, repondu = false;
+  try { joueurs = JSON.parse(localStorage.getItem('quizFamille_joueurs') || '[]'); } catch (e) {}
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  function dessinerPrenoms() {
+    const n = +$('nb').value, z = $('prenoms'); z.textContent = '';
+    for (let i = 0; i < n; i++) {
+      const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 18; inp.setAttribute('aria-label', 'Prénom du joueur ' + (i + 1));
+      inp.placeholder = 'Joueur ' + (i + 1); inp.value = joueurs[i] || ''; z.appendChild(inp);
+    }
+  }
+  if (joueurs.length) $('nb').value = String(Math.min(6, Math.max(1, joueurs.length)));
+  $('nb').addEventListener('change', () => { joueurs = [...$('prenoms').querySelectorAll('input')].map((i) => i.value.trim()); dessinerPrenoms(); });
+  dessinerPrenoms();
+
+  function lancer() {
+    const champs = [...$('prenoms').querySelectorAll('input')];
+    joueurs = champs.map((c, i) => c.value.trim() || 'Joueur ' + (i + 1));
+    try { localStorage.setItem('quizFamille_joueurs', JSON.stringify(joueurs)); } catch (e) {}
+    partie();
+  }
+  function partie() {
+    const n = joueurs.length, tours = +$('tours').value;
+    questions = melanger(BANQUE).slice(0, Math.min(BANQUE.length, n * tours));
+    scores = joueurs.map(() => 0); pos = 0;
+    $('depart').hidden = true; $('fin').hidden = true; $('jeu').hidden = false; afficher();
+  }
+  function afficher() {
+    repondu = false;
+    const [theme, q, rep, ] = questions[pos], n = joueurs.length, qui = pos % n;
+    $('num').textContent = `Question ${pos + 1} sur ${questions.length}`; $('theme').textContent = theme;
+    $('tourDe').textContent = n > 1 ? `À ${joueurs[qui]} de jouer` : `À vous de jouer, ${joueurs[0]}`;
+    $('q').textContent = q;
+    const ordre = melanger(rep.map((t, i) => ({ t, bon: i === 0 })));
+    const z = $('choix'); z.textContent = '';
+    ordre.forEach((o) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = o.t; b.dataset.bon = o.bon ? '1' : '0'; b.addEventListener('click', () => repondre(b)); z.appendChild(b); });
+    $('verdict').hidden = true; $('suite').hidden = true; majScore();
+  }
+  function majScore() {
+    const z = $('score'); z.textContent = '';
+    if (joueurs.length < 2) { const s = document.createElement('span'); s.textContent = `Score : ${scores[0]}`; z.appendChild(s); return; }
+    joueurs.forEach((p, i) => { const s = document.createElement('span'); if (i === pos % joueurs.length) s.className = 'actif'; s.textContent = `${p} : ${scores[i]}`; z.appendChild(s); });
+  }
+  function repondre(b) {
+    if (repondu) return; repondu = true;
+    const bon = b.dataset.bon === '1', qui = pos % joueurs.length;
+    if (bon) scores[qui]++;
+    $('choix').querySelectorAll('button').forEach((x) => { x.disabled = true; if (x.dataset.bon === '1') x.classList.add('bon'); else if (x === b) x.classList.add('mauvais'); });
+    const v = $('verdict'); v.textContent = '';
+    const s = document.createElement('strong'); s.textContent = bon ? ['Bravo !', 'En plein dans le mille !', 'Quel cinéphile !'][pos % 3] : ['Raté… mais joli effort !', 'Pas cette fois !', 'Ça arrive aux meilleurs.'][pos % 3];
+    const p = document.createElement('p'); p.textContent = questions[pos][3];
+    v.append(s, p); v.hidden = false; majScore();
+    $('suite').hidden = false; $('suite').textContent = pos + 1 < questions.length ? 'Question suivante' : 'Voir le classement'; $('suite').focus({ preventScroll: true });
+  }
+  function suite() { pos++; if (pos < questions.length) afficher(); else terminer(); }
+  function terminer() {
+    $('jeu').hidden = true; $('fin').hidden = false;
+    const classes = joueurs.map((p, i) => ({ p, s: scores[i] })).sort((a, b) => b.s - a.s);
+    const max = classes[0].s, ex = classes.filter((c) => c.s === max);
+    $('gagnant').textContent = joueurs.length < 2 ? `${scores[0]} bonne${scores[0] > 1 ? 's' : ''} réponse${scores[0] > 1 ? 's' : ''} sur ${questions.length}` : ex.length > 1 ? 'Égalité ! ' + ex.map((c) => c.p).join(' et ') : `🏆 ${classes[0].p} gagne !`;
+    const l = $('classement'); l.textContent = '';
+    classes.forEach((c) => { const li = document.createElement('li'); const a = document.createElement('span'); a.textContent = c.p; const b = document.createElement('span'); b.textContent = `${c.s} point${c.s > 1 ? 's' : ''}`; li.append(a, b); l.appendChild(li); });
+    const part = max / Math.max(1, Math.ceil(questions.length / joueurs.length));
+    $('blague').textContent = part > .8 ? 'Autant de culture, ça mérite un César.' : part > .5 ? 'Une très bonne soirée télé en perspective.' : part > .25 ? 'Il reste de belles soirées cinéma à vivre ensemble.' : 'Le plus important, c’était de rire. Mission accomplie !';
+    $('rejouer').focus({ preventScroll: true });
+  }
+  $('go').addEventListener('click', lancer);
+  $('suite').addEventListener('click', suite);
+  $('rejouer').addEventListener('click', partie);
+  $('changer').addEventListener('click', () => { $('fin').hidden = true; $('depart').hidden = false; dessinerPrenoms(); });
+})();
+</script>
+</body>
+</html>

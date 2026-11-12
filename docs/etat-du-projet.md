@@ -147,3 +147,7 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 - Thème : la barre commande le thème de chaque appli (et l'inverse) — Info Perso (clair/sombre), ProxiLien (Or & Nacre / sombre), Orbit (Alabaster / Onyx). IA Débat est sombre uniquement : le bouton ☀️/🌙 n'y change que la barre.
 - Orbit : BIG agrandit la police de la page (`data-big="police"`) pour ne pas casser le lecteur plein écran. Copie construite du hub (`public/orbit/`) mise à jour.
 - Le script expose `--ab-hauteur` et `--ab-zoom` pour les applis à hauteur d'écran fixe (Info Perso).
+
+## 12/11 (nuit) — Quiz en famille, sélection de podcasts élargie
+- **Quiz en famille** (`/quiz-famille/`, groupe petits-jeux) : 1 à 6 joueurs sur un seul écran, chacun son tour, 34 questions sur le cinéma et la culture à la française (Desproges, Coluche, Fred Testot, Pierre-Emmanuel Barré, « C'est arrivé près de chez vous », « Bernie », Kaamelott, Les Nuls, Le Splendid…), une anecdote par réponse. Questions à relire par Valentin avant de les promouvoir ; « C'est arrivé près de chez vous » est signalé comme réservé aux adultes.
+- **Podcasts** : sélection élargie (Culture et ARTE, Sciences, Histoire, Géographie et monde, Humour). Chaque podcast n'est cherché dans l'annuaire que lorsqu'il apparaît à l'écran ; le relais garde les recherches 24 h pour ne pas dépasser les limites de l'annuaire.

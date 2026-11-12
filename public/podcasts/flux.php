@@ -81,9 +81,14 @@ header('Cache-Control: public, max-age=300');
 if (isset($_GET['q'])) {
     $mots = trim((string) $_GET['q']);
     if ($mots === '' || strlen($mots) > 120) fin(400, 'Recherche vide ou trop longue.');
+    // Les recherches sont gardées 24 h (l'annuaire limite le nombre de requêtes). Si le dossier
+    // temporaire n'est pas accessible, on interroge simplement l'annuaire à chaque fois.
+    $cache = sys_get_temp_dir() . '/alphabette-podcasts-' . md5(mb_strtolower($mots)) . '.json';
+    header('Content-Type: application/json; charset=utf-8');
+    if (is_file($cache) && time() - (int) @filemtime($cache) < 86400) { readfile($cache); exit; }
     $url = 'https://itunes.apple.com/search?media=podcast&entity=podcast&country=FR&limit=24&term=' . rawurlencode($mots);
     [$corps] = recuperer($url, 'application/json');
-    header('Content-Type: application/json; charset=utf-8');
+    if (json_decode($corps) !== null) { @file_put_contents($cache, $corps, LOCK_EX); }
     echo $corps;
     exit;
 }
