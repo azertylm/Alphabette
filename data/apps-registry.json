@@ -524,6 +524,20 @@
       "updatedAt": "2026-11-12T13:00:00.000Z",
       "groupe": "petits-jeux",
       "gratuit": true
+    },
+    {
+      "id": "quiz-musique",
+      "name": "QUIZ MUSIQUE",
+      "slug": "quiz-musique",
+      "icon": "Music",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/quiz-musique/",
+      "description": "Années 60 à 90 : Amérique, France, monde entier. Des histoires vraies d'artistes engagés, à plusieurs sur un seul écran.",
+      "createdAt": "2026-11-12T14:00:00.000Z",
+      "updatedAt": "2026-11-12T14:00:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
     }
   ]
 }

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz musique · anecdotes de chanteurs, 1960-1990</title>
+<meta name="description" content="Un quiz loufoque à plusieurs sur la musique des années 60 à 90 : Amérique, France, monde entier. Des histoires vraies d'artistes engagés, à chaque réponse. Gratuit, sans compte.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#4338ca; --accfond:#e0e7ff; --ok:#15803d; --okfond:#dcfce7; --ko:#b91c1c; --kofond:#fee2e2; }
+  :root[data-ab-theme="nuit"] { --fond:#10102a; --carte:#1a1a3d; --encre:#eef2ff; --doux:#a5b4fc; --trait:#33336b; --acc:#a5b4fc; --accfond:#25255a; --ok:#86efac; --okfond:#12301d; --ko:#fca5a5; --kofond:#3b1414; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  label { display: block; font-weight: 800; margin: 14px 0 6px; }
+  label:first-child { margin-top: 0; }
+  .joueurs { display: grid; gap: 8px; }
+  .joueurs input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--trait); background: var(--fond); }
+  .rang { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .petit { font-weight: 800; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .petit:hover { border-color: var(--acc); }
+  .gros { font: inherit; width: 100%; margin-top: 16px; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .gros { color: #10102a; }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
+  .tour { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accfond); color: var(--acc); font-weight: 900; margin-bottom: 10px; }
+  .question { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
+  .choix { display: grid; gap: 10px; }
+  .choix button { text-align: left; font-weight: 700; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; min-height: 56px; }
+  .choix button:hover:not([disabled]) { border-color: var(--acc); }
+  .choix button.bon { border-color: var(--ok); background: var(--okfond); }
+  .choix button.mauvais { border-color: var(--ko); background: var(--kofond); }
+  .choix button[disabled] { cursor: default; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--accfond); }
+  .verdict strong { display: block; font-size: 24px; }
+  .verdict p { margin-top: 4px; }
+  .score { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 16px; }
+  .score span { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+  .score span.actif { border-color: var(--acc); color: var(--acc); }
+  .classement { list-style: none; display: grid; gap: 8px; margin: 12px 0; }
+  .classement li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--trait); background: var(--fond); font-weight: 800; }
+  .classement li:first-child { border-color: var(--acc); background: var(--accfond); }
+  .titre-final { font-size: 28px; font-weight: 900; text-align: center; margin: 6px 0; }
+  .pied { margin-top: 24px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .question { font-size: 22px; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="quiz-musique" data-nom="Quiz musique" data-sous-titre="Histoires d'artistes, 1960-1990" data-accent="#4338ca"></script>
+<main>
+  <h1>Quiz musique. <em>Les vies cachées des artistes.</em></h1>
+  <p class="intro">Un seul écran, chacun son tour. Les années 60 à 90, en Amérique, en France et dans le monde. Des histoires vraies d'artistes, souvent engagés, et un titre à écouter à chaque réponse.</p>
+
+  <section class="carte" id="depart">
+    <label for="nb">Combien de joueurs ?</label>
+    <select id="nb"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <label>Les prénoms</label>
+    <div class="joueurs" id="prenoms"></div>
+    <label for="partie">Quelle partie ?</label>
+    <select id="partie"><option value="mix" selected>Un peu de tout (Amérique, France, monde)</option><option value="A">🇺🇸 Amérique</option><option value="F">🇫🇷 France</option><option value="M">🌍 Monde entier</option></select>
+    <label for="tours">Combien de tours ?</label>
+    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option></select>
+    <button class="gros" id="go" type="button">C'est parti !</button>
+  </section>
+
+  <section class="carte" id="jeu" hidden aria-live="polite">
+    <div class="suivi"><span id="num"></span><span id="theme"></span></div>
+    <div class="tour" id="tourDe"></div>
+    <p class="question" id="q"></p>
+    <div class="choix" id="choix"></div>
+    <div class="verdict" id="verdict" hidden></div>
+    <div class="score" id="score"></div>
+    <button class="gros" id="suite" type="button" hidden>Question suivante</button>
+  </section>
+
+  <section class="carte" id="fin" hidden>
+    <p class="titre-final" id="gagnant"></p>
+    <ol class="classement" id="classement"></ol>
+    <p id="blague" style="text-align:center;color:var(--doux)"></p>
+    <button class="gros" id="rejouer" type="button">Rejouer avec les mêmes joueurs</button>
+    <button class="gros" id="changer" type="button" style="background:var(--carte);color:var(--acc)">Changer de joueurs</button>
+  </section>
+
+  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Anecdotes tirées de la vie des artistes : si un détail vous semble discutable, on en rit… et on se renseigne.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  // [partie (A, F, M), question, [bonne réponse, 3 mauvaises], anecdote, à écouter]
+  const BANQUE = [
+    // ---------------- AMÉRIQUE ----------------
+    ['A', "Dans quelle prison Johnny Cash a-t-il enregistré un célèbre album en public en 1968 ?", ['Folsom', 'Alcatraz', 'Sing Sing', 'Fort Knox'], "« At Folsom Prison » a été un énorme succès. Cash n'a jamais purgé de longue peine : il a seulement passé quelques nuits en cellule. En 1972, il a témoigné devant le Congrès américain pour demander une réforme des prisons.", "Folsom Prison Blues"],
+    ['A', "Quel est le vrai nom de Bob Dylan ?", ['Robert Zimmerman', 'Robert Dylanovitch', 'Bobby Mississippi', 'Dylan Thomas Junior'], "Il a reçu le prix Nobel de littérature en 2016, le premier chanteur à l'obtenir. Il n'a pas pu venir à la cérémonie et a envoyé un discours.", "Blowin' in the Wind"],
+    ['A', "Quel métier rêvait d'exercer Nina Simone avant de devenir chanteuse ?", ['Pianiste classique', 'Avocate', 'Danseuse', 'Pilote de ligne'], "Née Eunice Waymon, elle voulait devenir pianiste classique. Refusée en 1951 par un grand conservatoire de Philadelphie, elle pensa que c'était à cause de sa couleur de peau. Son engagement pour les droits civiques a ensuite inspiré « Mississippi Goddam » (1964).", "Mississippi Goddam"],
+    ['A', "En 1980, Stevie Wonder chante « Happy Birthday » pour obtenir quoi ?", ["Un jour férié en l'honneur de Martin Luther King", 'Un jour férié pour la musique', 'La fin de la guerre froide', "Un anniversaire national pour lui-même"], "Il a fait campagne en chanson et en concerts. La loi a été votée en 1983 et le « Martin Luther King Day » a été fêté pour la première fois en 1986.", "Happy Birthday (Stevie Wonder)"],
+    ['A', "Où Elvis Presley a-t-il fait son service militaire en 1958 ?", ['En Allemagne', 'À Hawaï', 'En Corée', 'Au Groenland'], "Au sommet de sa gloire, il est parti deux ans comme simple soldat. C'est en Allemagne qu'il a rencontré Priscilla, qu'il a épousée en 1967.", "Heartbreak Hotel"],
+    ['A', "Jimi Hendrix était gaucher. Que faisait-il de sa guitare ?", ['Il retournait une guitare de droitier', 'Il jouait avec les pieds', 'Il la tenait en l\'air sans la toucher', 'Il en faisait fabriquer en or'], "Il jouait sur une guitare de droitier retournée, avec les cordes dans l'ordre inverse. Avant d'être une star, il avait servi dans les parachutistes de l'armée américaine, en 1961.", "Purple Haze"],
+    ['A', "Qui a écrit « Respect », la chanson rendue immortelle par Aretha Franklin ?", ['Otis Redding', 'Aretha elle-même', 'James Brown', 'Marvin Gaye'], "Otis Redding l'a écrite et chantée en 1965. En 1967, Aretha lui donne un autre sens, et ajoute le fameux « R-E-S-P-E-C-T » : la chanson devient un cri pour les droits des femmes et des Afro-Américains.", "Respect"],
+    ['A', "Pourquoi Bruce Springsteen est-il surnommé « The Boss » ?", ['Selon la légende, il distribuait la paie du groupe après les concerts', 'Il possède une usine de guitares', 'Il est maire de sa ville', 'Il dirige une chaîne de restaurants'], "Il dit ne pas aimer ce surnom. Né dans le New Jersey, il chante la vie des ouvriers et des petites gens.", "Thunder Road"],
+    ['A', "Pourquoi Prince a-t-il remplacé son nom par un symbole en 1993 ?", ['Pour protester contre sa maison de disques', 'Pour échapper au fisc', 'Parce que son nom portait malheur', 'Pour participer à un jeu télévisé'], "En conflit avec la maison de disques Warner, il voulait posséder sa musique. Il s'est même écrit « slave » (esclave) sur la joue. La presse l'appelait « l'artiste anciennement connu sous le nom de Prince ».", "Purple Rain"],
+    ['A', "Louis Armstrong disait être né un jour très symbolique. Lequel ?", ['Le 4 juillet', 'Le 14 juillet', 'Le 25 décembre', 'Le 1er janvier'], "Il fêtait son anniversaire le 4 juillet 1900, fête nationale américaine. On a retrouvé son acte de naissance : il est né le 4 août 1901 à La Nouvelle-Orléans.", "What a Wonderful World"],
+    ['A', "Quelle phrase Woody Guthrie avait-il écrite sur sa guitare ?", ['« Cette machine tue les fascistes »', '« Cette guitare est à vendre »', '« Chantez ou taisez-vous »', '« Prière de ne pas toucher »'], "Il chantait pour les ouvriers et les migrants pendant la grande crise des années 30. Il a écrit « This Land Is Your Land » en 1940 et a beaucoup inspiré Bob Dylan.", "This Land Is Your Land"],
+    ['A', "Pourquoi Ray Charles a-t-il été interdit de concert en Géorgie dans les années 60 ?", ['Il avait refusé de jouer devant un public séparé selon la couleur de peau', 'Il avait cassé un piano', 'Il avait oublié ses lunettes', 'Il chantait trop fort'], "En 1961, il annule un concert à Augusta parce que le public était séparé. En 1979, la Géorgie s'est excusée publiquement et a fait de « Georgia on My Mind » sa chanson officielle.", "Georgia on My Mind"],
+    ['A', "Que fait la fondation de Dolly Parton pour les enfants depuis 1995 ?", ['Elle leur envoie un livre gratuit chaque mois', 'Elle leur offre un jouet par an', 'Elle leur donne des billets de concert', 'Elle leur offre une guitare'], "L'« Imagination Library » vise à donner le goût de lire. Elle a commencé en pensant à son père, qui ne savait pas lire. Des dizaines de millions de livres ont été offerts.", "9 to 5"],
+    ['A', "Quelle chanson de Bob Dylan a inspiré Sam Cooke pour « A Change Is Gonna Come » ?", ["Blowin' in the Wind", 'Like a Rolling Stone', 'Hurricane', "Mr. Tambourine Man"], "Cooke fut ému qu'un jeune artiste blanc écrive un tel chant sur les droits civiques. Il a écrit la sienne en 1963-1964. Il est mort en décembre 1964, juste avant sa sortie.", "A Change Is Gonna Come"],
+
+    // ---------------- FRANCE ----------------
+    ['F', "Qui a écrit la chanson « Les Restos du Cœur » pour les Enfoirés ?", ['Jean-Jacques Goldman', 'Michel Sardou', 'Francis Cabrel', 'Coluche lui-même'], "Coluche lance l'idée des Restos du Cœur à la radio le 26 septembre 1985. Après sa mort en 1986, les artistes continuent : la chanson de Goldman est devenue l'hymne des Restos.", "Les Restos du Cœur"],
+    ['F', "Quel score Coluche atteignait-il dans certains sondages quand il s'est présenté à la présidentielle de 1981 ?", ['Environ 16 %', 'Moins de 1 %', 'Environ 50 %', 'Exactement 0 %'], "Il s'est lancé « pour rigoler » en 1980 et a séduit beaucoup de monde. Il a finalement renoncé en 1981, après des pressions et des menaces.", "C'est l'histoire d'un mec (Coluche)"],
+    ['F', "Quel est le vrai nom de Michel Berger ?", ['Michel Hamburger', 'Michel Bergerac', 'Michel Berkowitz', 'Michel Starmania'], "Son père, Jean Hamburger, était un grand professeur de médecine. Michel a pris un nom de scène plus court. Il a composé pour France Gall, et créé la comédie musicale « Starmania » en 1978 avec Luc Plamondon.", "Seras-tu là ?"],
+    ['F', "Pour quel pays France Gall a-t-elle gagné l'Eurovision en 1965 ?", ['Le Luxembourg', 'La France', 'La Suisse', 'La Belgique'], "Elle gagne avec « Poupée de cire, poupée de son », écrite par Serge Gainsbourg. Elle racontera plus tard qu'elle n'avait pas compris les sous-entendus d'une autre chanson de lui, « Les Sucettes » (1966).", "Poupée de cire, poupée de son"],
+    ['F', "À qui Michel Berger et France Gall rendent-ils hommage dans « Ella, elle l'a » ?", ['Ella Fitzgerald', "Une amie d'enfance", 'Une chanteuse de rock', "La reine d'Angleterre"], "La chanson de 1987 salue la grande chanteuse de jazz Ella Fitzgerald et son talent rare. Michel Berger est mort en 1992, à 44 ans.", "Ella, elle l'a"],
+    ['F', "Face à quel homme politique, futur président, Daniel Balavoine a-t-il parlé au nom des jeunes en 1980 ?", ['François Mitterrand', 'Le Pape', 'Jacques Chirac', 'Un général'], "Balavoine avait 28 ans et il a dit sa colère face au chômage des jeunes. Il est mort en 1986 au Mali, dans un accident d'hélicoptère pendant le Paris-Dakar, alors qu'il préparait des projets de puits pour les villages.", "L'Aziza"],
+    ['F', "Dans quel village Francis Cabrel organise-t-il les Rencontres pour jeunes auteurs ?", ['Astaffort', 'Agen', 'Villeneuve-sur-Lot', 'Tombouctou-sur-Garonne'], "Il vit à Astaffort, dans le Lot-et-Garonne, et y accueille chaque année de jeunes auteurs-compositeurs pour travailler avec des artistes confirmés. Il a écrit « Petite Marie » pour sa femme, Mariette.", "Petite Marie"],
+    ["F", "Qu'a fait Jean-Jacques Goldman avant de devenir un chanteur célèbre ?", ['Il a géré un magasin de sport', 'Il a été facteur', 'Il a été footballeur', 'Il a été notaire'], "Il a écrit tout l'album « D'eux » de Céline Dion (1995), l'un des albums les plus vendus de la chanson francophone. Très discret, il soutient depuis des années les Restos du Cœur.", "Il suffira d'un signe"],
+    ['F', "Qui a hébergé Brassens pendant plus de vingt ans, impasse Florimont à Paris ?", ['Jeanne et Marcel Planche', 'Édith Piaf', 'Léo Ferré', 'Un cousin de Sète'], "Arrivé en 1944, il est resté chez eux 22 ans. Il leur a dédié « La Cane de Jeanne ». Né à Sète, il est resté célèbre pour sa moustache, sa pipe et ses chansons libertaires.", "La Cane de Jeanne"],
+    ['F', "Quel scandale Serge Gainsbourg provoque-t-il en 1979 ?", ['Une version reggae de La Marseillaise', 'Un duo avec le Premier ministre', 'Un disque sans paroles', 'Une chanson en latin'], "« Aux armes et cætera » a été enregistré à Kingston, en Jamaïque, avec Sly & Robbie. Des anciens combattants ont été choqués. Son vrai nom : Lucien Ginsburg.", "Aux armes et cætera"],
+    ['F', "Quelle ville allemande a inspiré une chanson de réconciliation à Barbara en 1964 ?", ['Göttingen', 'Berlin', 'Munich', 'Hambourg'], "Elle y avait chanté et avait été très touchée par l'accueil. Une vingtaine d'années après la guerre, elle y chante l'amitié entre les peuples. Son vrai nom : Monique Serf.", "Göttingen"],
+    ['F', "Quel idéal politique Léo Ferré chantait-il dans « Les Anarchistes » (1969) ?", ["L'anarchie", 'Le royalisme', 'Le libéralisme', 'Le végétarisme'], "Il a mis en musique des poèmes de Verlaine, Rimbaud, Baudelaire et Aragon. Il a toujours refusé de rentrer dans les cases.", "Les Anarchistes"],
+    ['F', "Dans « Nuit et brouillard » (1963), de quoi Jean Ferrat parle-t-il ?", ['De la déportation dans les camps nazis', "D'une tempête en mer", "D'une soirée d'hiver", "D'un film d'horreur"], "Son propre père, juif d'origine russe, a été déporté en 1942 et est mort à Auschwitz. Plus tard, Ferrat a choisi de vivre en Ardèche, à Antraigues, loin de la vie parisienne.", "Nuit et brouillard"],
+    ['F', "À qui pense Renaud dans « Mistral gagnant » ?", ['À sa fille Lolita', 'À son chien', 'À sa grand-mère', 'À un confiseur'], "Il y parle à sa fille, née en 1980 : le « mistral gagnant » est un bonbon d'enfance. Renaud a aussi chanté l'engagement et la révolte, comme dans « Hexagone ».", "Mistral gagnant"],
+    ['F', "D'où vient le nom « Hallyday » de Jean-Philippe Smet ?", ["D'un artiste américain, Lee Halliday, ami de la famille", "D'un village anglais", "D'un champion de golf", "D'un bateau"], "Lee Halliday, artiste américain marié à une cousine, lui a fait connaître le rock'n'roll. Jean-Philippe Smet est devenu « Johnny Hallyday » au début des années 1960.", "Que je t'aime"],
+    ['F', "Où est née Dalida ?", ['Au Caire, en Égypte', 'À Rome', 'À Marseille', 'À Montmartre'], "Iolanda Gigliotti, d'une famille italienne vivant au Caire, est élue Miss Égypte en 1954 avant de tenter sa chance à Paris. Elle a chanté dans une dizaine de langues.", "Gigi l'amoroso"],
+    ["F", "Quelle célèbre chanson américaine est née d'une chanson de Claude François, « Comme d'habitude » ?", ['« My Way »', '« Yesterday »', '« Imagine »', '« New York, New York »'], "Paul Anka a acheté les droits et écrit de nouvelles paroles. Frank Sinatra l'a enregistrée en 1969 : « My Way » est devenue l'une des chansons les plus reprises au monde.", "Comme d'habitude"],
+    ['F', "Où est né Joe Dassin ?", ['À New York', 'À Paris', 'À Montréal', 'À Marseille'], "Son père, le cinéaste américain Jules Dassin, a été chassé d'Hollywood par la chasse aux sorcières du maccarthysme et s'est installé en Europe. « Les Champs-Élysées » (1969) est l'adaptation d'une chanson anglaise, « Waterloo Road ».", "Les Champs-Élysées"],
+    ['F', "En hommage à qui Georges Moustaki a-t-il pris le prénom Georges ?", ['Georges Brassens', 'Georges Pompidou', 'Georges Clooney', 'Georges le chat de sa grand-mère'], "Né Giuseppe Mustacchi à Alexandrie, en Égypte, il a choisi Georges par admiration pour Brassens. Il a écrit « Milord » pour Édith Piaf, puis « Le Métèque » (1969) qui parle de lui.", "Le Métèque"],
+    ['F', "Quel âge avait Vanessa Paradis quand « Joe le taxi » est devenu un tube en 1987 ?", ['14 ans', '25 ans', '9 ans', '40 ans'], "Les paroles sont d'Étienne Roda-Gil, fils de républicains espagnols exilés, qui écrivait aussi pour Julien Clerc. La musique est de Franck Langolff.", "Joe le taxi"],
+    ['F', "Quel chanteur a créé le rôle de Johnny Rockfort dans « Starmania » (1978) ?", ['Daniel Balavoine', 'Michel Sardou', 'Johnny Hallyday', 'Francis Cabrel'], "« Starmania » : musique de Michel Berger, textes de Luc Plamondon. Balavoine y chante « SOS d'un terrien en détresse ».", "SOS d'un terrien en détresse"],
+
+    // ---------------- MONDE ENTIER ----------------
+    ['M', "Que fait Bob Marley deux jours après avoir été blessé par balles en 1976 ?", ['Il monte sur scène pour un grand concert pour la paix', 'Il part en vacances', 'Il annule tout', 'Il fait une sieste de 48 heures'], "C'était le « Smile Jamaica Concert ». En 1978, au « One Love Peace Concert », il réussit à réunir sur scène, main dans la main, les deux chefs politiques rivaux de la Jamaïque.", "Redemption Song"],
+    ['M', "Avec quelle chanson ABBA a-t-il gagné l'Eurovision en 1974 ?", ['Waterloo', 'Dancing Queen', 'Fernando', 'Mamma Mia'], "ABBA vient des initiales d'Agnetha, Björn, Benny et Anni-Frid. Les deux garçons avaient d'abord demandé l'autorisation à une entreprise suédoise de conserves de poisson qui s'appelait déjà Abba.", "Waterloo"],
+    ['M', "Que font John Lennon et Yoko Ono en 1969 pour demander la paix ?", ['Ils restent une semaine au lit devant les journalistes', 'Ils marchent jusqu\'à Moscou', 'Ils jeûnent sur une montagne', 'Ils font la grève de la musique'], "Ils ont fait deux « bed-in » : à Amsterdam, puis à Montréal où ils ont enregistré « Give Peace a Chance » dans la chambre d'hôtel.", "Give Peace a Chance"],
+    ['M', "Où les Beatles ont-ils donné leur dernier concert public en 1969 ?", ['Sur le toit de leur studio à Londres', 'Au stade de Wembley', 'À Liverpool', 'Sur un bateau'], "Le 30 janvier 1969, ils ont joué sur le toit de l'immeuble d'Apple, à Londres, pendant environ 40 minutes, jusqu'à ce que la police demande de baisser le son.", "Get Back"],
+    ['M', "Quel talent Freddie Mercury a-t-il mis au service de Queen en plus du chant ?", ['Il a dessiné le logo du groupe', 'Il a fabriqué les guitares', 'Il a construit la scène', 'Il cuisinait pour tout le monde'], "Né Farrokh Bulsara à Zanzibar, il avait étudié le graphisme. L'emblème de Queen reprend les signes astrologiques des membres du groupe.", "Bohemian Rhapsody"],
+    ['M', "Comment Fela Kuti a-t-il appelé sa communauté, qu'il déclara indépendante du Nigeria ?", ['La République de Kalakuta', 'Le Royaume de Lagos', 'La Cité du Soleil', 'Fela-land'], "En 1977, des soldats ont attaqué Kalakuta. Sa mère, militante, a été jetée par une fenêtre et en est morte. Il a répondu par une chanson, « Coffin for Head of State », et a déposé un cercueil devant la caserne du général.", "Zombie"],
+    ['M', "Pourquoi Miriam Makeba n'a-t-elle pas pu rentrer chez elle pendant près de 30 ans ?", ["Elle avait dénoncé l'apartheid devant l'ONU", 'Elle avait perdu son passeport au Congo', 'Elle avait refusé de chanter pour un roi', 'Elle préférait la neige'], "Après son discours à l'ONU en 1963, l'Afrique du Sud lui a retiré son passeport. Elle n'est revenue qu'en 1990, après la libération de Nelson Mandela.", "Pata Pata"],
+    ['M', "Quel compositeur grec, auteur de la musique de « Zorba le Grec », a été emprisonné par la dictature des colonels ?", ['Mikis Theodorakis', 'Nana Mouskouri', 'Vangelis', 'Zorba lui-même'], "Arrêté après le coup d'État de 1967, sa musique est interdite. Il est libéré en 1970 grâce à une campagne internationale d'artistes et d'intellectuels.", "Zorba le Grec (danse)"],
+    ['M', "Qui a organisé les concerts Live Aid de 1985 contre la famine en Éthiopie ?", ['Bob Geldof', 'Sting', 'Bono', 'Elton John'], "Le chanteur irlandais avait lancé fin 1984 le disque « Do They Know It's Christmas? », avec des dizaines d'artistes. Live Aid (Londres et Philadelphie, le 13 juillet 1985) a été suivi par des centaines de millions de téléspectateurs.", "Do They Know It's Christmas?"],
+    ['M', "Pour qui Peter Gabriel a-t-il écrit la chanson « Biko » (1980) ?", ['Un militant anti-apartheid mort en prison en 1977', "Un ami d'enfance", 'Un chien', 'Un footballeur'], "Steve Biko est mort en détention policière en Afrique du Sud. La chanson a fait connaître son nom dans le monde entier. Gabriel a ensuite chanté pour Amnesty International.", "Biko"],
+    ['M', "De quel pays vient « Sukiyaki », numéro 1 aux États-Unis en 1963 ?", ['Le Japon', 'La Chine', 'La Corée', 'Le Vietnam'], "Kyu Sakamoto la chantait en japonais. Pour l'exportation, on l'a rebaptisée « Sukiyaki », le nom d'un plat sans rapport avec les paroles ! C'est l'une des rares chansons en japonais à avoir été numéro 1 aux États-Unis.", "Sukiyaki"],
+    ['M', "Quel musicien indien a appris le sitar à George Harrison ?", ['Ravi Shankar', 'Zakir Hussain', 'Rabindranath Tagore', 'Un fakir de Katmandou'], "Harrison a découvert le sitar en 1965, puis est devenu élève de Ravi Shankar. En 1971, ils organisent ensemble le « Concert for Bangladesh » pour aider les réfugiés.", "Concert for Bangladesh"],
+    ['M', "Pourquoi Cesária Évora chantait-elle pieds nus ?", ['En solidarité avec les enfants pauvres de son pays', 'Pour éviter de glisser', 'Parce que ses chaussures étaient trop chères', 'Pour être plus près du sol'], "Surnommée la « diva aux pieds nus » du Cap-Vert, elle ne connaît le succès en Europe qu'à près de 50 ans, après un séjour à Paris. Sa musique, la morna, parle de nostalgie.", "Sodade"],
+    ['M', "Quelle fonction officielle a occupé le chanteur Gilberto Gil de 2003 à 2008 ?", ['Ministre de la Culture du Brésil', 'Maire de Rio', 'Gardien de but', 'Ambassadeur à Paris'], "Arrêté en 1969 par la dictature militaire brésilienne, il a vécu en exil à Londres avec son ami Caetano Veloso, avant de revenir au Brésil.", "Aquele Abraço"]
+  ];
+  const $ = (id) => document.getElementById(id);
+  let joueurs = [], scores = [], questions = [], pos = 0, repondu = false;
+  try { joueurs = JSON.parse(localStorage.getItem('quizMusique_joueurs') || '[]'); } catch (e) {}
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  function dessinerPrenoms() {
+    const n = +$('nb').value, z = $('prenoms'); z.textContent = '';
+    for (let i = 0; i < n; i++) {
+      const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 18; inp.setAttribute('aria-label', 'Prénom du joueur ' + (i + 1));
+      inp.placeholder = 'Joueur ' + (i + 1); inp.value = joueurs[i] || ''; z.appendChild(inp);
+    }
+  }
+  if (joueurs.length) $('nb').value = String(Math.min(6, Math.max(1, joueurs.length)));
+  $('nb').addEventListener('change', () => { joueurs = [...$('prenoms').querySelectorAll('input')].map((i) => i.value.trim()); dessinerPrenoms(); });
+  dessinerPrenoms();
+
+  function lancer() {
+    const champs = [...$('prenoms').querySelectorAll('input')];
+    joueurs = champs.map((c, i) => c.value.trim() || 'Joueur ' + (i + 1));
+    try { localStorage.setItem('quizMusique_joueurs', JSON.stringify(joueurs)); } catch (e) {}
+    partie();
+  }
+  function partie() {
+    const n = joueurs.length, tours = +$('tours').value;
+    const choix = $('partie').value;
+    let pool;
+    if (choix === 'mix') {
+      const par = ['A', 'F', 'M'].map((p) => melanger(BANQUE.filter((q) => q[0] === p)));
+      pool = []; for (let i = 0; par.some((l) => i < l.length); i++) par.forEach((l) => { if (i < l.length) pool.push(l[i]); });
+    } else pool = melanger(BANQUE.filter((q) => q[0] === choix));
+    questions = pool.slice(0, Math.min(pool.length, n * tours));
+    if (choix === 'mix') questions = melanger(questions);
+    scores = joueurs.map(() => 0); pos = 0;
+    $('depart').hidden = true; $('fin').hidden = true; $('jeu').hidden = false; afficher();
+  }
+  function afficher() {
+    repondu = false;
+    const [partieQ, q, rep] = questions[pos], n = joueurs.length, qui = pos % n, theme = { A: '🇺🇸 Amérique', F: '🇫🇷 France', M: '🌍 Monde' }[partieQ];
+    $('num').textContent = `Question ${pos + 1} sur ${questions.length}`; $('theme').textContent = theme;
+    $('tourDe').textContent = n > 1 ? `À ${joueurs[qui]} de jouer` : `À vous de jouer, ${joueurs[0]}`;
+    $('q').textContent = q;
+    const ordre = melanger(rep.map((t, i) => ({ t, bon: i === 0 })));
+    const z = $('choix'); z.textContent = '';
+    ordre.forEach((o) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = o.t; b.dataset.bon = o.bon ? '1' : '0'; b.addEventListener('click', () => repondre(b)); z.appendChild(b); });
+    $('verdict').hidden = true; $('suite').hidden = true; majScore();
+  }
+  function majScore() {
+    const z = $('score'); z.textContent = '';
+    if (joueurs.length < 2) { const s = document.createElement('span'); s.textContent = `Score : ${scores[0]}`; z.appendChild(s); return; }
+    joueurs.forEach((p, i) => { const s = document.createElement('span'); if (i === pos % joueurs.length) s.className = 'actif'; s.textContent = `${p} : ${scores[i]}`; z.appendChild(s); });
+  }
+  function repondre(b) {
+    if (repondu) return; repondu = true;
+    const bon = b.dataset.bon === '1', qui = pos % joueurs.length;
+    if (bon) scores[qui]++;
+    $('choix').querySelectorAll('button').forEach((x) => { x.disabled = true; if (x.dataset.bon === '1') x.classList.add('bon'); else if (x === b) x.classList.add('mauvais'); });
+    const v = $('verdict'); v.textContent = '';
+    const s = document.createElement('strong'); s.textContent = bon ? ['Bravo !', 'En plein dans le mille !', 'Quelle oreille !'][pos % 3] : ['Raté… mais joli effort !', 'Pas cette fois !', 'Ça arrive aux meilleurs.'][pos % 3];
+    const p = document.createElement('p'); p.textContent = questions[pos][3];
+    const e = document.createElement('p'); e.textContent = '🎧 À écouter : ' + questions[pos][4]; e.style.fontWeight = '700';
+    v.append(s, p, e); v.hidden = false; majScore();
+    $('suite').hidden = false; $('suite').textContent = pos + 1 < questions.length ? 'Question suivante' : 'Voir le classement'; $('suite').focus({ preventScroll: true });
+  }
+  function suite() { pos++; if (pos < questions.length) afficher(); else terminer(); }
+  function terminer() {
+    $('jeu').hidden = true; $('fin').hidden = false;
+    const classes = joueurs.map((p, i) => ({ p, s: scores[i] })).sort((a, b) => b.s - a.s);
+    const max = classes[0].s, ex = classes.filter((c) => c.s === max);
+    $('gagnant').textContent = joueurs.length < 2 ? `${scores[0]} bonne${scores[0] > 1 ? 's' : ''} réponse${scores[0] > 1 ? 's' : ''} sur ${questions.length}` : ex.length > 1 ? 'Égalité ! ' + ex.map((c) => c.p).join(' et ') : `🏆 ${classes[0].p} gagne !`;
+    const l = $('classement'); l.textContent = '';
+    classes.forEach((c) => { const li = document.createElement('li'); const a = document.createElement('span'); a.textContent = c.p; const b = document.createElement('span'); b.textContent = `${c.s} point${c.s > 1 ? 's' : ''}`; li.append(a, b); l.appendChild(li); });
+    const part = max / Math.max(1, Math.ceil(questions.length / joueurs.length));
+    $('blague').textContent = part > .8 ? 'Autant de culture musicale, ça mérite un disque d\'or.' : part > .5 ? 'Une très bonne playlist en perspective.' : part > .25 ? 'Il reste de belles soirées d\'écoute à vivre ensemble.' : 'Le plus important, c’était de rire. Mission accomplie !';
+    $('rejouer').focus({ preventScroll: true });
+  }
+  $('go').addEventListener('click', lancer);
+  $('suite').addEventListener('click', suite);
+  $('rejouer').addEventListener('click', partie);
+  $('changer').addEventListener('click', () => { $('fin').hidden = true; $('depart').hidden = false; dessinerPrenoms(); });
+})();
+</script>
+</body>
+</html>

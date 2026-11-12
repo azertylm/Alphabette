@@ -174,3 +174,6 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 - **Service France** (`661c8a6`) : tuile « 7 jours offerts, clé Mistral fournie par Alphabette » (faux en ligne) remplacée par « Gratuit : guides, modèles, numéros utiles » ; tuile « Membre : prénom, accès offert » ou lien vers l'inscription.
 - **Orbit** (`b62d36e`, recopié dans `public/orbit/`) : « Membre alphabette : prénom · accès offert » à la place du gros bouton « S'enregistrer / Créer un compte » (la sauvegarde cloud reste proposée).
 - Chaque appli lit le cookie `ab_membre` avec une petite copie de `lireMembre()` (`src/utils/membreAlphabette.ts` ou `src/lib/…`).
+
+## 12/11 (nuit) — Quiz musique
+- **Quiz musique** (`/quiz-musique/`, groupe petits-jeux) : 49 questions sur des anecdotes de la vie d'artistes des années 60 à 90 — 14 Amérique, 21 France (Coluche et les Restos, Michel Berger, France Gall, Cabrel, Goldman, Balavoine, Brassens, Gainsbourg, Barbara, Ferré, Ferrat, Renaud, Hallyday, Dalida, Moustaki…), 14 monde entier (Marley, Fela Kuti, Makeba, Theodorakis, Geldof, Gabriel…). Une partie au choix ou un mélange ; un titre à écouter par réponse. **Faits à relire par Valentin avant promotion** (écrits de mémoire, sans accès à des sources en ligne ici).
