@@ -141,3 +141,9 @@ Valentin n'est pas développeur : faire le maximum seul, demander le minimum, r�
 - **Podcasts** (`/podcasts/`, inspiré d'AntennaPod) : recherche (annuaire iTunes), abonnement, ajout d'un flux RSS, import/export OPML, lecteur fixe (±10/30 s, vitesse 0,8→2, minuterie de sommeil, reprise automatique, commandes écran verrouillé). Tout reste dans le navigateur (localStorage). Les flux passent par `public/podcasts/flux.php` (relais PHP d'OVH, sans journal, http/https uniquement, adresses publiques uniquement). **À vérifier en ligne** : le relais n'a pu être testé que sur une copie locale (pas d'accès réseau ici).
 - **Où c'est ?** (`/ou-cest/`, groupe petits-jeux) : 10 lieux étonnants tirés parmi 25, carte du monde (Natural Earth, domaine public) intégrée, zoom/glisser/clavier, score selon la distance.
 - Idée suivante : « Où c'est ? » version France, Vrai ou Faux du jour, Chrono-Frise.
+
+## 12/11 (soir) — Double barre étendue aux 5 applis restantes
+- **Bon Plan, IA Débat, Info Perso, ProxiLien, Orbit** utilisent maintenant la même double barre que les autres (via `https://alphabette.fr/assets/alphabette-barre.js`) : BIG, ☀️/🌙, 🔊, favoris, 🌍, 📲, etc. Leurs barres maison et leurs boutons BIG ont été retirés ; ce qui est propre à chaque appli (compte, clés API, réglages, ville, modes) reste dans une petite barre sous la double barre.
+- Thème : la barre commande le thème de chaque appli (et l'inverse) — Info Perso (clair/sombre), ProxiLien (Or & Nacre / sombre), Orbit (Alabaster / Onyx). IA Débat est sombre uniquement : le bouton ☀️/🌙 n'y change que la barre.
+- Orbit : BIG agrandit la police de la page (`data-big="police"`) pour ne pas casser le lecteur plein écran. Copie construite du hub (`public/orbit/`) mise à jour.
+- Le script expose `--ab-hauteur` et `--ab-zoom` pour les applis à hauteur d'écran fixe (Info Perso).
