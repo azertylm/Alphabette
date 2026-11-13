@@ -2,6 +2,7 @@ import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { LegalPage, pageLegale } from './legal/LegalPage';
 
 /**
  * Vitrine alphabette.fr — hub central de l'écosystème.
@@ -21,9 +22,13 @@ const BasePreview = lazy(() =>
 
 const isBasePreview = window.location.pathname.replace(/\/+$/, '') === '/base';
 
+const isLegal = Boolean(pageLegale(window.location.pathname));
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {isBasePreview ? (
+    {isLegal ? (
+      <LegalPage chemin={window.location.pathname} />
+    ) : isBasePreview ? (
       <Suspense fallback={null}>
         <BasePreview />
       </Suspense>
