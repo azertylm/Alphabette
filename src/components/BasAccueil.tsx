@@ -89,6 +89,14 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
         </p>
         <p>
           <a href="/50-idees-logiciels-decouverte.html">50 idées d'applications</a>
+        </p>
+        <p className="accueil__legal">
+          <a href="/mentions-legales">Mentions légales</a>
+          <a href="/confidentialite">Confidentialité</a>
+          <a href="/cookies">Cookies</a>
+          <a href="/conditions-de-vente">Conditions de vente</a>
+        </p>
+        <p>
           <a href="/admin" className="accueil__discret">
             Administration
           </a>

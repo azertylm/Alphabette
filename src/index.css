@@ -133,3 +133,27 @@ html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180d
   .accueil__prix { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
   .accueil__sous-titre { font-size: 2.25rem; }
 }
+
+/* ===================== Pages légales ===================== */
+.accueil__legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.95rem; }
+.accueil__legal a { font-weight: 400; color: var(--acc-doux); opacity: 0.85; }
+.legal { min-height: 60vh; }
+.legal__page { max-width: 46rem; margin: 0 auto; padding: 1.25rem 1.125rem 2rem; overflow-wrap: anywhere; }
+.legal__retour a, .legal__nav a, .legal__page article a, .legal__page p a, .legal__page li a { color: var(--acc); font-weight: 700; text-decoration: underline; }
+.legal__titre { font-size: 2rem; line-height: 1.15; font-weight: 900; letter-spacing: -0.02em; margin: 0.75rem 0 0.5rem; }
+.legal__page h2 { font-size: 1.3rem; font-weight: 800; margin: 1.75rem 0 0.5rem; }
+.legal__page h3 { font-size: 1.1rem; font-weight: 800; margin: 1.25rem 0 0.4rem; color: var(--acc); }
+.legal__page p, .legal__page li { font-size: 1.05rem; line-height: 1.55; color: var(--acc-doux); }
+.legal__page p { margin: 0.5rem 0; }
+.legal__page ul { list-style: disc; padding-left: 1.25rem; display: grid; gap: 0.4rem; margin: 0.5rem 0; }
+.legal__page strong { color: var(--acc-encre); }
+.legal__page code { font-size: 0.9em; background: var(--acc-trait); padding: 0 0.25rem; border-radius: 0.25rem; }
+.legal__maj { font-size: 0.9rem !important; opacity: 0.8; }
+.legal__completer { background: #fde68a; color: #1c1917; padding: 0 0.2rem; border-radius: 0.2rem; }
+.legal__encart, .legal__brouillon { border: 2px solid var(--acc); border-radius: 0.75rem; padding: 0.75rem 1rem; background: var(--acc-carte); }
+.legal__brouillon { font-weight: 800; color: var(--acc-encre) !important; }
+.legal__tableau { overflow-x: auto; border: 1px solid var(--acc-trait); border-radius: 0.75rem; margin: 1rem 0; }
+.legal__tableau table { border-collapse: collapse; min-width: 34rem; width: 100%; font-size: 0.9rem; }
+.legal__tableau th, .legal__tableau td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--acc-trait); color: var(--acc-doux); overflow-wrap: anywhere; }
+.legal__tableau th { color: var(--acc-encre); background: var(--acc-carte); }
+.legal__nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--acc-trait); }
