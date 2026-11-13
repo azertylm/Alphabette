@@ -41,7 +41,7 @@
   // Les jeux viennent du registre d'alphabette.fr : toute application qui porte
   // « groupe : petits-jeux » apparaît ici toute seule. La liste ci-dessous ne sert
   // que si le registre ne répond pas, et donne un pictogramme à chaque jeu connu.
-  const PICTOS = { 'dico-loufoque': '📖', 'juste-chiffre': '🎯', 'memo-meninges': '🧠', 'ou-cest': '🌍', 'ou-cest-france': '🗺️', 'quiz-famille': '🎬', 'quiz-musique': '🎵', 'quiz-extraordinaires': '🌟', goat: '⚽' };
+  const PICTOS = { 'dico-loufoque': '📖', 'juste-chiffre': '🎯', 'memo-meninges': '🧠', 'ou-cest': '🌍', 'ou-cest-france': '🗺️', 'quiz-famille': '🎬', 'quiz-musique': '🎵', 'quiz-extraordinaires': '🌟', 'quiz-femmes': '👩', goat: '⚽' };
   const SECOURS = [
     { slug: 'dico-loufoque', name: 'Le Dico Loufoque', url: '/dico-loufoque/', description: 'Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.' },
     { slug: 'juste-chiffre', name: 'Le Juste Chiffre', url: '/juste-chiffre/', description: 'Devinez un chiffre réel au plus près : hauteurs, dates, distances.' },
@@ -51,6 +51,7 @@
     { slug: 'quiz-famille', name: 'Quiz en famille', url: '/quiz-famille/', description: 'Cinéma et culture à la française, chacun son tour sur un seul écran.' },
     { slug: 'quiz-musique', name: 'Quiz musique', url: '/quiz-musique/', description: 'Années 60 à 90 : des histoires vraies d\'artistes, en Amérique, en France et dans le monde.' },
     { slug: 'quiz-extraordinaires', name: 'Gens extraordinaires', url: '/quiz-extraordinaires/', description: 'De Gaulle, Mitterrand, Martin Luther King, Bourvil… des anecdotes que presque personne ne connaît.' },
+    { slug: 'quiz-femmes', name: 'Femmes extraordinaires', url: '/quiz-femmes/', description: 'Plus de 300 questions sur les femmes qui ont changé le monde.' },
     { slug: 'goat', name: 'Goat Chèvre The King', url: 'https://goatchevretheking.alphabette.fr', description: 'Élisez vos légendes du football et classez-les en pyramide.' },
   ];
   const lisible = (nom) => (nom !== nom.toUpperCase() ? nom : nom.toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()));

@@ -63,9 +63,9 @@
     <label>Les prénoms</label>
     <div class="joueurs" id="prenoms"></div>
     <label for="partie">Quelle partie ?</label>
-    <select id="partie"><option value="mix" selected>Un peu de tout</option><option value="P">🏛️ Histoire et politique</option><option value="E">✊ Engagés et courageux</option><option value="C">🎬 Cinéma et spectacle</option><option value="S">🔬 Sciences et inventions</option></select>
+    <select id="partie"></select>
     <label for="tours">Combien de tours ?</label>
-    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option></select>
+    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option><option value="8">8 questions chacun</option><option value="10">10 questions chacun</option></select>
     <button class="gros" id="go" type="button">C'est parti !</button>
   </section>
 
@@ -89,6 +89,7 @@
 
   <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Anecdotes tirées des biographies : si un détail vous semble discutable, on se renseigne ensemble.</p>
 </main>
+<script src="plus.js"></script>
 <script>
 (function () {
   'use strict';
@@ -140,12 +141,18 @@
     ['S', "Quelle fonction Einstein a-t-il refusée en 1952 ?", ["Président d'Israël", 'Président des États-Unis', 'Maire de Princeton', 'Roi de Suède'], "Après la mort du premier président, David Ben Gourion lui propose le poste. Il répond qu'il n'a ni l'expérience ni l'aptitude pour gérer les hommes, et préfère la physique. Il a aussi lutté contre le racisme aux États-Unis.", "Sa lettre à Roosevelt (1939)"],
     ['S', "Quel détail surprenant sur Louis Pasteur et le premier vaccin contre la rage (1885) ?", ["Il n'était pas médecin", 'Il détestait les chiens', 'Il était pharmacien', "Il avait peur des aiguilles"], "Chimiste de formation, il n'avait pas le droit de pratiquer la médecine : ce sont des médecins qui ont injecté le vaccin à Joseph Meister, 9 ans, mordu par un chien enragé. L'enfant a survécu.", "Joseph Meister et l'Institut Pasteur"],
     ['S', "Quelle invention l'actrice Hedy Lamarr a-t-elle brevetée en 1942 ?", ['Un système de saut de fréquences pour guider les torpilles', 'Un peigne', 'Un four à micro-ondes', 'Un parachute'], "Avec le compositeur George Antheil, elle invente un système pour éviter le brouillage des torpilles radioguidées. L'armée ne l'a pas utilisé à l'époque, mais le principe du saut de fréquences a inspiré plus tard des technologies sans fil.", "George Antheil, compositeur du « Ballet mécanique »"]
-  ];
+  ].concat(window.BANQUE_PLUS || []);
+  const CATS = { P: '🏛️ Histoire et politique', E: '✊ Engagés et courageux', C: '🎬 Cinéma, arts et spectacle', S: '🔬 Sciences et exploits' };
   const $ = (id) => document.getElementById(id);
   let joueurs = [], scores = [], questions = [], pos = 0, repondu = false;
   try { joueurs = JSON.parse(localStorage.getItem('quizExtra_joueurs') || '[]'); } catch (e) {}
   const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
+  (function () {
+    const sel = document.getElementById('partie');
+    const o = document.createElement('option'); o.value = 'mix'; o.textContent = `Un peu de tout (${BANQUE.length} questions)`; sel.appendChild(o);
+    Object.keys(CATS).forEach((c) => { const n = BANQUE.filter((q) => q[0] === c).length; if (!n) return; const op = document.createElement('option'); op.value = c; op.textContent = `${CATS[c]} (${n})`; sel.appendChild(op); });
+  })();
   function dessinerPrenoms() {
     const n = +$('nb').value, z = $('prenoms'); z.textContent = '';
     for (let i = 0; i < n; i++) {
@@ -168,7 +175,7 @@
     const choix = $('partie').value;
     let pool;
     if (choix === 'mix') {
-      const par = ['P', 'E', 'C', 'S'].map((p) => melanger(BANQUE.filter((q) => q[0] === p)));
+      const par = Object.keys(CATS).map((p) => melanger(BANQUE.filter((q) => q[0] === p)));
       pool = []; for (let i = 0; par.some((l) => i < l.length); i++) par.forEach((l) => { if (i < l.length) pool.push(l[i]); });
     } else pool = melanger(BANQUE.filter((q) => q[0] === choix));
     questions = pool.slice(0, Math.min(pool.length, n * tours));
@@ -178,7 +185,7 @@
   }
   function afficher() {
     repondu = false;
-    const [partieQ, q, rep] = questions[pos], n = joueurs.length, qui = pos % n, theme = { P: '🏛️ Histoire', E: '✊ Engagés', C: '🎬 Spectacle', S: '🔬 Sciences' }[partieQ];
+    const [partieQ, q, rep] = questions[pos], n = joueurs.length, qui = pos % n, theme = CATS[partieQ];
     $('num').textContent = `Question ${pos + 1} sur ${questions.length}`; $('theme').textContent = theme;
     $('tourDe').textContent = n > 1 ? `À ${joueurs[qui]} de jouer` : `À vous de jouer, ${joueurs[0]}`;
     $('q').textContent = q;

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Femmes qui ont changé le monde · quiz de 300 questions</title>
+<meta name="description" content="Un quiz à plusieurs sur les femmes qui ont changé le monde : science, arts, droits, résistance, sport. Plus de 300 questions, des anecdotes vraies à chaque réponse. Gratuit, sans compte.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#be185d; --accfond:#fce7f3; --ok:#15803d; --okfond:#dcfce7; --ko:#b91c1c; --kofond:#fee2e2; }
+  :root[data-ab-theme="nuit"] { --fond:#1f0d17; --carte:#2e1422; --encre:#fdf2f8; --doux:#f9a8d4; --trait:#52223b; --acc:#f472b6; --accfond:#40172c; --ok:#86efac; --okfond:#12301d; --ko:#fca5a5; --kofond:#3b1414; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  label { display: block; font-weight: 800; margin: 14px 0 6px; }
+  label:first-child { margin-top: 0; }
+  .joueurs { display: grid; gap: 8px; }
+  .joueurs input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--trait); background: var(--fond); }
+  .rang { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .petit { font-weight: 800; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .petit:hover { border-color: var(--acc); }
+  .gros { font: inherit; width: 100%; margin-top: 16px; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .gros { color: #1f0d17; }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
+  .tour { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accfond); color: var(--acc); font-weight: 900; margin-bottom: 10px; }
+  .question { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
+  .choix { display: grid; gap: 10px; }
+  .choix button { text-align: left; font-weight: 700; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; min-height: 56px; }
+  .choix button:hover:not([disabled]) { border-color: var(--acc); }
+  .choix button.bon { border-color: var(--ok); background: var(--okfond); }
+  .choix button.mauvais { border-color: var(--ko); background: var(--kofond); }
+  .choix button[disabled] { cursor: default; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--accfond); }
+  .verdict strong { display: block; font-size: 24px; }
+  .verdict p { margin-top: 4px; }
+  .score { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 16px; }
+  .score span { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+  .score span.actif { border-color: var(--acc); color: var(--acc); }
+  .classement { list-style: none; display: grid; gap: 8px; margin: 12px 0; }
+  .classement li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--trait); background: var(--fond); font-weight: 800; }
+  .classement li:first-child { border-color: var(--acc); background: var(--accfond); }
+  .titre-final { font-size: 28px; font-weight: 900; text-align: center; margin: 6px 0; }
+  .pied { margin-top: 24px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .question { font-size: 22px; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="quiz-femmes" data-nom="Femmes extraordinaires" data-sous-titre="Elles ont changé le monde" data-accent="#be185d"></script>
+<main>
+  <h1>Femmes extraordinaires. <em>Elles ont changé le monde.</em></h1>
+  <p class="intro">Un seul écran, chacun son tour. Marie Curie, Simone Veil, Joséphine Baker, Rosa Parks, Nadia Comăneci… Plus de 300 questions sur des femmes qui ont osé, et une anecdote vraie à chaque réponse.</p>
+
+  <section class="carte" id="depart">
+    <label for="nb">Combien de joueurs ?</label>
+    <select id="nb"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <label>Les prénoms</label>
+    <div class="joueurs" id="prenoms"></div>
+    <label for="partie">Quelle partie ?</label>
+    <select id="partie"></select>
+    <label for="tours">Combien de tours ?</label>
+    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option><option value="8">8 questions chacun</option><option value="10">10 questions chacun</option></select>
+    <button class="gros" id="go" type="button">C'est parti !</button>
+  </section>
+
+  <section class="carte" id="jeu" hidden aria-live="polite">
+    <div class="suivi"><span id="num"></span><span id="theme"></span></div>
+    <div class="tour" id="tourDe"></div>
+    <p class="question" id="q"></p>
+    <div class="choix" id="choix"></div>
+    <div class="verdict" id="verdict" hidden></div>
+    <div class="score" id="score"></div>
+    <button class="gros" id="suite" type="button" hidden>Question suivante</button>
+  </section>
+
+  <section class="carte" id="fin" hidden>
+    <p class="titre-final" id="gagnant"></p>
+    <ol class="classement" id="classement"></ol>
+    <p id="blague" style="text-align:center;color:var(--doux)"></p>
+    <button class="gros" id="rejouer" type="button">Rejouer avec les mêmes joueurs</button>
+    <button class="gros" id="changer" type="button" style="background:var(--carte);color:var(--acc)">Changer de joueurs</button>
+  </section>
+
+  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Anecdotes tirées des biographies : si un détail vous semble discutable, on se renseigne ensemble.</p>
+</main>
+<script src="questions.js"></script>
+<script>
+(function () {
+  'use strict';
+  const BANQUE = window.BANQUE_FEMMES || [];
+  const CATS = { S: '🔬 Sciences', L: '🎨 Lettres et arts', D: '⚖️ Droits et politique', R: '🕊️ Résistance et courage', X: '🏅 Sport et exploits', M: '🌍 Femmes du monde' };
+  const $ = (id) => document.getElementById(id);
+  let joueurs = [], scores = [], questions = [], pos = 0, repondu = false;
+  try { joueurs = JSON.parse(localStorage.getItem('quizFemmes_joueurs') || '[]'); } catch (e) {}
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  (function () {
+    const sel = document.getElementById('partie');
+    const o = document.createElement('option'); o.value = 'mix'; o.textContent = `Un peu de tout (${BANQUE.length} questions)`; sel.appendChild(o);
+    Object.keys(CATS).forEach((c) => { const n = BANQUE.filter((q) => q[0] === c).length; if (!n) return; const op = document.createElement('option'); op.value = c; op.textContent = `${CATS[c]} (${n})`; sel.appendChild(op); });
+  })();
+  function dessinerPrenoms() {
+    const n = +$('nb').value, z = $('prenoms'); z.textContent = '';
+    for (let i = 0; i < n; i++) {
+      const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 18; inp.setAttribute('aria-label', 'Prénom du joueur ' + (i + 1));
+      inp.placeholder = 'Joueur ' + (i + 1); inp.value = joueurs[i] || ''; z.appendChild(inp);
+    }
+  }
+  if (joueurs.length) $('nb').value = String(Math.min(6, Math.max(1, joueurs.length)));
+  $('nb').addEventListener('change', () => { joueurs = [...$('prenoms').querySelectorAll('input')].map((i) => i.value.trim()); dessinerPrenoms(); });
+  dessinerPrenoms();
+
+  function lancer() {
+    const champs = [...$('prenoms').querySelectorAll('input')];
+    joueurs = champs.map((c, i) => c.value.trim() || 'Joueur ' + (i + 1));
+    try { localStorage.setItem('quizFemmes_joueurs', JSON.stringify(joueurs)); } catch (e) {}
+    partie();
+  }
+  function partie() {
+    const n = joueurs.length, tours = +$('tours').value;
+    const choix = $('partie').value;
+    let pool;
+    if (choix === 'mix') {
+      const par = Object.keys(CATS).map((p) => melanger(BANQUE.filter((q) => q[0] === p)));
+      pool = []; for (let i = 0; par.some((l) => i < l.length); i++) par.forEach((l) => { if (i < l.length) pool.push(l[i]); });
+    } else pool = melanger(BANQUE.filter((q) => q[0] === choix));
+    questions = pool.slice(0, Math.min(pool.length, n * tours));
+    if (choix === 'mix') questions = melanger(questions);
+    scores = joueurs.map(() => 0); pos = 0;
+    $('depart').hidden = true; $('fin').hidden = true; $('jeu').hidden = false; afficher();
+  }
+  function afficher() {
+    repondu = false;
+    const [partieQ, q, rep] = questions[pos], n = joueurs.length, qui = pos % n, theme = CATS[partieQ];
+    $('num').textContent = `Question ${pos + 1} sur ${questions.length}`; $('theme').textContent = theme;
+    $('tourDe').textContent = n > 1 ? `À ${joueurs[qui]} de jouer` : `À vous de jouer, ${joueurs[0]}`;
+    $('q').textContent = q;
+    const ordre = melanger(rep.map((t, i) => ({ t, bon: i === 0 })));
+    const z = $('choix'); z.textContent = '';
+    ordre.forEach((o) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = o.t; b.dataset.bon = o.bon ? '1' : '0'; b.addEventListener('click', () => repondre(b)); z.appendChild(b); });
+    $('verdict').hidden = true; $('suite').hidden = true; majScore();
+  }
+  function majScore() {
+    const z = $('score'); z.textContent = '';
+    if (joueurs.length < 2) { const s = document.createElement('span'); s.textContent = `Score : ${scores[0]}`; z.appendChild(s); return; }
+    joueurs.forEach((p, i) => { const s = document.createElement('span'); if (i === pos % joueurs.length) s.className = 'actif'; s.textContent = `${p} : ${scores[i]}`; z.appendChild(s); });
+  }
+  function repondre(b) {
+    if (repondu) return; repondu = true;
+    const bon = b.dataset.bon === '1', qui = pos % joueurs.length;
+    if (bon) scores[qui]++;
+    $('choix').querySelectorAll('button').forEach((x) => { x.disabled = true; if (x.dataset.bon === '1') x.classList.add('bon'); else if (x === b) x.classList.add('mauvais'); });
+    const v = $('verdict'); v.textContent = '';
+    const s = document.createElement('strong'); s.textContent = bon ? ['Bravo !', 'En plein dans le mille !', 'Quelle mémoire !'][pos % 3] : ['Raté… mais joli effort !', 'Pas cette fois !', 'Ça arrive aux meilleurs.'][pos % 3];
+    const p = document.createElement('p'); p.textContent = questions[pos][3];
+    v.append(s, p);
+    if (questions[pos][4]) { const e = document.createElement('p'); e.textContent = '🔎 Pour creuser : ' + questions[pos][4]; e.style.fontWeight = '700'; v.append(e); }
+    void 0; v.hidden = false; majScore();
+    $('suite').hidden = false; $('suite').textContent = pos + 1 < questions.length ? 'Question suivante' : 'Voir le classement'; $('suite').focus({ preventScroll: true });
+  }
+  function suite() { pos++; if (pos < questions.length) afficher(); else terminer(); }
+  function terminer() {
+    $('jeu').hidden = true; $('fin').hidden = false;
+    const classes = joueurs.map((p, i) => ({ p, s: scores[i] })).sort((a, b) => b.s - a.s);
+    const max = classes[0].s, ex = classes.filter((c) => c.s === max);
+    $('gagnant').textContent = joueurs.length < 2 ? `${scores[0]} bonne${scores[0] > 1 ? 's' : ''} réponse${scores[0] > 1 ? 's' : ''} sur ${questions.length}` : ex.length > 1 ? 'Égalité ! ' + ex.map((c) => c.p).join(' et ') : `🏆 ${classes[0].p} gagne !`;
+    const l = $('classement'); l.textContent = '';
+    classes.forEach((c) => { const li = document.createElement('li'); const a = document.createElement('span'); a.textContent = c.p; const b = document.createElement('span'); b.textContent = `${c.s} point${c.s > 1 ? 's' : ''}`; li.append(a, b); l.appendChild(li); });
+    const part = max / Math.max(1, Math.ceil(questions.length / joueurs.length));
+    $('blague').textContent = part > .8 ? 'Vous méritez une place au Panthéon des curieux.' : part > .5 ? 'Une très bonne soirée de discussions en perspective.' : part > .25 ? 'Il reste de belles histoires à découvrir ensemble.' : 'Le plus important, c’était de rire. Mission accomplie !';
+    $('rejouer').focus({ preventScroll: true });
+  }
+  $('go').addEventListener('click', lancer);
+  $('suite').addEventListener('click', suite);
+  $('rejouer').addEventListener('click', partie);
+  $('changer').addEventListener('click', () => { $('fin').hidden = true; $('depart').hidden = false; dessinerPrenoms(); });
+})();
+</script>
+</body>
+</html>
