@@ -538,6 +538,20 @@
       "updatedAt": "2026-11-12T14:00:00.000Z",
       "groupe": "petits-jeux",
       "gratuit": true
+    },
+    {
+      "id": "quiz-extraordinaires",
+      "name": "GENS EXTRAORDINAIRES",
+      "slug": "quiz-extraordinaires",
+      "icon": "Star",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/quiz-extraordinaires/",
+      "description": "Quiz à plusieurs : de Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès… Des anecdotes vraies que presque personne ne connaît.",
+      "createdAt": "2026-11-13T09:00:00.000Z",
+      "updatedAt": "2026-11-13T09:00:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
     }
   ]
 }

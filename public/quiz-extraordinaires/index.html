@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz des gens extraordinaires · anecdotes que presque personne ne connaît</title>
+<meta name="description" content="Un quiz à plusieurs sur des personnages extraordinaires : de Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès… Des anecdotes vraies que presque personne ne connaît. Gratuit, sans compte.">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#b45309; --accfond:#fef3c7; --ok:#15803d; --okfond:#dcfce7; --ko:#b91c1c; --kofond:#fee2e2; }
+  :root[data-ab-theme="nuit"] { --fond:#1c1409; --carte:#2a1e0d; --encre:#fffbeb; --doux:#fcd34d; --trait:#4d3a17; --acc:#fbbf24; --accfond:#3d2d0f; --ok:#86efac; --okfond:#12301d; --ko:#fca5a5; --kofond:#3b1414; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 20px; padding: 20px; box-shadow: 0 2px 0 var(--trait); }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  label { display: block; font-weight: 800; margin: 14px 0 6px; }
+  label:first-child { margin-top: 0; }
+  .joueurs { display: grid; gap: 8px; }
+  .joueurs input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--trait); background: var(--fond); }
+  .rang { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .petit { font-weight: 800; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .petit:hover { border-color: var(--acc); }
+  .gros { font: inherit; width: 100%; margin-top: 16px; text-align: center; font-weight: 800; font-size: 22px; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .gros { color: #1c1409; }
+  .suivi { display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--doux); font-size: 17px; margin-bottom: 10px; }
+  .tour { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accfond); color: var(--acc); font-weight: 900; margin-bottom: 10px; }
+  .question { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
+  .choix { display: grid; gap: 10px; }
+  .choix button { text-align: left; font-weight: 700; padding: 16px 18px; border-radius: 16px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; min-height: 56px; }
+  .choix button:hover:not([disabled]) { border-color: var(--acc); }
+  .choix button.bon { border-color: var(--ok); background: var(--okfond); }
+  .choix button.mauvais { border-color: var(--ko); background: var(--kofond); }
+  .choix button[disabled] { cursor: default; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--accfond); }
+  .verdict strong { display: block; font-size: 24px; }
+  .verdict p { margin-top: 4px; }
+  .score { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 16px; }
+  .score span { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+  .score span.actif { border-color: var(--acc); color: var(--acc); }
+  .classement { list-style: none; display: grid; gap: 8px; margin: 12px 0; }
+  .classement li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--trait); background: var(--fond); font-weight: 800; }
+  .classement li:first-child { border-color: var(--acc); background: var(--accfond); }
+  .titre-final { font-size: 28px; font-weight: 900; text-align: center; margin: 6px 0; }
+  .pied { margin-top: 24px; font-size: 16px; color: var(--doux); text-align: center; }
+  .pied a { color: var(--acc); font-weight: 700; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .question { font-size: 22px; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="quiz-extraordinaires" data-nom="Gens extraordinaires" data-sous-titre="Anecdotes que personne ne connaît" data-accent="#b45309"></script>
+<main>
+  <h1>Gens extraordinaires. <em>Ce que les livres n'ont pas dit.</em></h1>
+  <p class="intro">Un seul écran, chacun son tour. De Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès, Simone Veil… Des anecdotes vraies et croustillantes que presque personne ne connaît, et une piste pour creuser à chaque réponse.</p>
+
+  <section class="carte" id="depart">
+    <label for="nb">Combien de joueurs ?</label>
+    <select id="nb"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <label>Les prénoms</label>
+    <div class="joueurs" id="prenoms"></div>
+    <label for="partie">Quelle partie ?</label>
+    <select id="partie"><option value="mix" selected>Un peu de tout</option><option value="P">🏛️ Histoire et politique</option><option value="E">✊ Engagés et courageux</option><option value="C">🎬 Cinéma et spectacle</option><option value="S">🔬 Sciences et inventions</option></select>
+    <label for="tours">Combien de tours ?</label>
+    <select id="tours"><option value="2">2 questions chacun</option><option value="3" selected>3 questions chacun</option><option value="4">4 questions chacun</option><option value="5">5 questions chacun</option></select>
+    <button class="gros" id="go" type="button">C'est parti !</button>
+  </section>
+
+  <section class="carte" id="jeu" hidden aria-live="polite">
+    <div class="suivi"><span id="num"></span><span id="theme"></span></div>
+    <div class="tour" id="tourDe"></div>
+    <p class="question" id="q"></p>
+    <div class="choix" id="choix"></div>
+    <div class="verdict" id="verdict" hidden></div>
+    <div class="score" id="score"></div>
+    <button class="gros" id="suite" type="button" hidden>Question suivante</button>
+  </section>
+
+  <section class="carte" id="fin" hidden>
+    <p class="titre-final" id="gagnant"></p>
+    <ol class="classement" id="classement"></ol>
+    <p id="blague" style="text-align:center;color:var(--doux)"></p>
+    <button class="gros" id="rejouer" type="button">Rejouer avec les mêmes joueurs</button>
+    <button class="gros" id="changer" type="button" style="background:var(--carte);color:var(--acc)">Changer de joueurs</button>
+  </section>
+
+  <p class="pied"><a href="/petits-jeux/">← Tous les petits jeux</a> · Anecdotes tirées des biographies : si un détail vous semble discutable, on se renseigne ensemble.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  // [catégorie (P, E, C, S), question, [bonne réponse, 3 mauvaises], anecdote, pour creuser]
+  const BANQUE = [
+    // ---------------- HISTOIRE ET POLITIQUE ----------------
+    ['P', "Prisonnier de guerre en 1916, combien de fois le capitaine de Gaulle a-t-il tenté de s'évader ?", ['Cinq fois', 'Une seule fois', 'Jamais, il était trop grand', 'Cinquante fois'], "Blessé et capturé à Verdun, il a tenté de s'évader cinq fois et a été puni à chaque fois. Avec 1,96 m, il était difficile de passer inaperçu ! En captivité, il a aussi donné des conférences sur la guerre à ses camarades.", "Le livre « Le Fil de l'épée » (1932)"],
+    ['P', "Après l'attentat du Petit-Clamart (1962), quelle phrase de Gaulle aurait-il lancée ?", ['« Ils tirent comme des cochons »', '« Qui a oublié de fermer la fenêtre ? »', '« Appelez la presse ! »', '« Vive la France, j\'ai faim »'], "Plus de cent balles ont été tirées sur la DS présidentielle. Les pneus étaient crevés, mais la voiture a continué à rouler, et le chauffeur a été félicité. De Gaulle aurait échappé à une trentaine de tentatives d'attentat.", "Le roman « Chacal » de Frederick Forsyth"],
+    ['P', "Que sait-on de l'enregistrement de l'Appel du 18 juin 1940 ?", ["Aucun enregistrement n'a été conservé", 'Il a été enregistré en couleur', 'Il dure une heure', 'Il a été chanté'], "Très peu de Français l'ont entendu en direct. L'appel est devenu célèbre grâce aux journaux et au souvenir des auditeurs, plus que par un enregistrement.", "Les discours de de Gaulle à la BBC"],
+    ['P', "Quelle peine le régime de Vichy a-t-il prononcée contre de Gaulle en août 1940 ?", ['La peine de mort, par contumace', 'Un simple blâme', 'Une amende', 'Une médaille'], "Le tribunal militaire de Clermont-Ferrand l'a condamné à mort le 2 août 1940. Quatre ans plus tard, il dirige le gouvernement provisoire à la Libération. Il avait 49 ans quand il est parti à Londres.", "Le tribunal militaire de Clermont-Ferrand"],
+    ['P', "Combien d'évasions François Mitterrand a-t-il tentées pendant la guerre ?", ['Trois, la troisième a réussi', 'Une seule', 'Dix', 'Aucune'], "Prisonnier en juin 1940, il s'évade en décembre 1941 à la troisième tentative. Il rejoint ensuite la Résistance sous le pseudonyme de « Morland ».", "Le pseudonyme « Morland »"],
+    ['P', "Quel plat interdit Mitterrand aurait-il mangé à son dernier réveillon, en décembre 1995 ?", ["Des ortolans, de petits oiseaux protégés", 'Du foie de dinosaure', 'Un steak de baleine', 'Des cuisses de grenouille géantes'], "Selon plusieurs témoignages, après les huîtres et le foie gras, il a mangé des ortolans, un oiseau protégé. Il est mort le 8 janvier 1996.", "Son dernier repas dans les Landes, à Latché"],
+    ['P', "Le 21 mai 1981, que fait François Mitterrand au Panthéon, rose à la main ?", ['Il dépose une rose sur les tombes de Jean Moulin, Jean Jaurès et Victor Schœlcher', 'Il plante un rosier', 'Il offre des roses à la foule', 'Il offre une rose à Marianne'], "Après son investiture, il descend au Panthéon pour honorer le résistant Jean Moulin, le socialiste Jean Jaurès et l'abolitionniste Victor Schœlcher. La scène est restée célèbre.", "La cérémonie du 21 mai 1981"],
+    ['P', "Quel avocat, devenu ministre, a fait abolir la peine de mort en France en 1981 ?", ['Robert Badinter', 'Jacques Chirac', 'Jack Lang', 'Pierre Mendès France'], "Il avait défendu Patrick Henry en 1977 et obtenu qu'il échappe à la guillotine. La dernière exécution en France date de 1977. La loi d'abolition est promulguée le 9 octobre 1981.", "Son discours du 17 septembre 1981"],
+    ['P', "Quel verdict a reçu en 1919 Raoul Villain, l'assassin de Jean Jaurès ?", ["Il a été acquitté", 'Il a été condamné à mort', 'Il a été condamné à 10 ans', 'Il a été nommé député'], "Jaurès est tué le 31 juillet 1914, au Café du Croissant, à Paris. Les jurés acquittent Villain en 1919, et la veuve de Jaurès est même condamnée à payer les frais du procès. Villain a été tué en 1936 à Ibiza, par des républicains espagnols.", "Le Café du Croissant, rue Montmartre"],
+    ['P', "Quel paradoxe dans le gouvernement de Léon Blum en 1936 ?", ['Trois femmes y entrent alors que les femmes ne votent pas encore', "Aucun ministre n'est de gauche", 'Tous portent un chapeau rouge', 'Il est dirigé par un chat'], "Irène Joliot-Curie, Cécile Brunschvicg et Suzanne Lacore sont sous-secrétaires d'État. Les Françaises ne voteront qu'en 1945.", "Les femmes et le vote en France (1944-1945)"],
+    ['P', "Combien de jours de congés payés obtiennent les salariés en juin 1936 ?", ['15 jours', '3 jours', '60 jours', '1 jour'], "Deux semaines : beaucoup de familles découvrent la mer et le train, avec un billet à prix réduit. Léon Blum est le premier socialiste, et le premier juif, à diriger le gouvernement français.", "Le « billet de congé annuel » de 1936"],
+    ['P', "Quelle boisson Pierre Mendès France a-t-il voulu offrir aux écoliers en 1954 ?", ['Du lait', "Du jus d'orange", "De l'eau minérale", 'Du chocolat chaud'], "Il a lancé le verre de lait à l'école pour lutter contre l'alcoolisme et améliorer la santé des enfants. Les producteurs d'alcool ont protesté. La même année, il met fin à la guerre d'Indochine.", "Les accords de Genève (1954)"],
+    ['P', "Quelle couverture Jean Moulin utilisait-il à Nice pendant l'Occupation ?", ['Une galerie d\'art', 'Une boulangerie', 'Un cirque', 'Un hôtel de luxe'], "Il tenait la galerie Romanin, du nom sous lequel il signait ses dessins. Dès 1940, préfet d'Eure-et-Loir, il avait tenté de se suicider plutôt que de signer un faux document accusant des soldats africains.", "Jean Moulin dessinateur, sous le nom de « Romanin »"],
+    ['P', "Pourquoi Churchill avait-il un papier médical lui autorisant à boire de l'alcool aux États-Unis ?", ["La Prohibition y était en vigueur", "Il était allergique à l'eau", 'Il était sommelier', 'Il avait gagné un pari'], "Renversé par une voiture à New York en 1931, il obtient une ordonnance déclarant l'alcool « absolument nécessaire » à son rétablissement, malgré l'interdiction de l'alcool de l'époque.", "La Prohibition aux États-Unis (1920-1933)"],
+
+    // ---------------- ENGAGÉS ET COURAGEUX ----------------
+    ['E', "Quel prénom portait Martin Luther King à sa naissance ?", ['Michael', 'Martin', 'Luther', 'Malcolm'], "Il s'appelait Michael King Jr. Son père, pasteur, a changé les deux prénoms en Martin Luther, en hommage au réformateur allemand, après un voyage en Europe en 1934. L'état civil n'a été modifié qu'en 1957.", "Martin Luther et la Réforme protestante"],
+    ['E', "Qui a lancé « Raconte-leur ton rêve, Martin ! » pendant son discours de 1963 ?", ['La chanteuse Mahalia Jackson', 'Rosa Parks', 'Joan Baez', 'Un policier'], "Au Lincoln Memorial, Martin Luther King suivait un texte écrit. Mahalia Jackson, derrière lui, lui lance : « Tell them about the dream, Martin ! ». Il met alors son texte de côté et improvise le passage « I have a dream ».", "La marche sur Washington du 28 août 1963"],
+    ['E', "Pourquoi un simple éternuement aurait-il pu tuer Martin Luther King en 1958 ?", ["Un coupe-papier était planté près de son cœur", 'Il avait une dent en or', 'Il tenait une bombe', 'Il était sur une corde raide'], "Lors d'une dédicace à New York, une femme lui plante un coupe-papier dans la poitrine. La lame frôlait l'aorte : selon les médecins, un éternuement aurait pu le tuer. Plus tard, il a dit être heureux de ne pas avoir éternué.", "Sa « Lettre de la prison de Birmingham » (1963)"],
+    ['E', "Qui avait refusé de céder sa place dans un bus de Montgomery neuf mois avant Rosa Parks ?", ['Claudette Colvin, 15 ans', 'Coretta Scott King', 'Ella Fitzgerald', 'Une inconnue qui n\'a jamais existé'], "Claudette Colvin a refusé de céder sa place le 2 mars 1955. Les militants ont choisi Rosa Parks comme symbole, en décembre 1955. Claudette Colvin a ensuite témoigné dans le procès qui a mis fin à la ségrégation dans les bus.", "Le procès Browder contre Gayle (1956)"],
+    ['E', "Gandhi a-t-il reçu le prix Nobel de la paix ?", ['Non, jamais, malgré plusieurs nominations', 'Oui, en 1937', 'Oui, en 1948', 'Il l\'a refusé en public'], "Il a été nommé cinq fois, entre 1937 et 1948, mais ne l'a jamais obtenu. En 1948, après son assassinat, le comité n'a attribué aucun prix, expliquant qu'il n'y avait pas de candidat vivant approprié.", "La marche du sel (1930)"],
+    ['E', "Jusqu'à quelle année Nelson Mandela a-t-il figuré sur une liste de surveillance terroriste américaine ?", ['2008', '1968', '1990', '2020'], "Longtemps classé comme « terroriste » à cause de l'ANC, il devait obtenir une dérogation pour entrer aux États-Unis, même après son prix Nobel de la paix en 1993. La loi a été changée en 2008.", "Ses 27 années de prison"],
+    ['E', "Pourquoi Louise Michel s'est-elle livrée à la police en 1871 ?", ['Pour faire libérer sa mère, arrêtée à sa place', 'Par fatigue', 'Pour toucher une prime', 'Pour fuir un mariage'], "Après la Commune de Paris, la police arrête sa mère à sa place ; Louise Michel se livre pour la faire libérer. Déportée en Nouvelle-Calédonie, elle se range du côté des Kanak lors de la révolte de 1878 et donne des cours aux enfants.", "Louise Michel en Nouvelle-Calédonie"],
+    ['E', "Quelle première Simone Veil réalise-t-elle en 1979 ?", ['Première femme présidente du Parlement européen', 'Première astronaute française', 'Première cheffe du gouvernement', 'Première joueuse de tennis pro'], "Rescapée d'Auschwitz à 16 ans, elle fait voter la loi sur l'IVG en 1975, sous les insultes. Elle est entrée au Panthéon en 2018 avec son mari.", "Les débats de 1974 sur l'IVG"],
+    ['E', "Quel procès de 1972 a préparé la loi sur l'IVG ?", ['Le procès de Bobigny', 'Le procès de Nuremberg', 'Le procès de Riom', 'Le procès de Toulouse'], "L'avocate Gisèle Halimi défend Marie-Claire, une adolescente de 16 ans jugée pour avoir avorté après un viol. Elle est relaxée, et le procès change l'opinion publique.", "Gisèle Halimi, avocate de Djamila Boupacha"],
+    ["E", "En quelle année l'abbé Pierre lance-t-il son appel « Mes amis, au secours » ?", ['1954', '1969', '1982', '1936'], "Le 1er février 1954, par grand froid, il lance l'appel à la radio. Résistant et ancien député, il voit les dons affluer de toute la France.", "Les Compagnons d'Emmaüs"],
+    ['E', "Quelle voiture Thomas Sankara a-t-il imposée à ses ministres, à la place des grosses berlines ?", ['La Renault 5', 'La Mercedes', 'Le vélo', 'La Rolls'], "Président du Burkina Faso de 1983 à 1987, il a rebaptisé son pays, l'ancienne Haute-Volta, « pays des hommes intègres ». Il est assassiné en 1987, à 37 ans. Il jouait aussi de la guitare dans un groupe.", "Le nom « Burkina Faso »"],
+    ['E', "Quelle loi porte le nom de Coluche ?", ['Celle qui permet de déduire des impôts une part des dons aux associations', 'Celle sur la durée du travail', 'Celle qui interdit le nez rouge', 'Celle sur le cirque'], "Adoptée en 1988, deux ans après sa mort, elle donne un avantage fiscal à ceux qui font un don aux associations d'aide aux plus démunis, comme les Restos du Cœur.", "Les Restos du Cœur (1985)"],
+    ['E', "Quel corbillard Victor Hugo avait-il demandé pour ses funérailles ?", ['Le corbillard des pauvres', 'Un char doré', 'Un bateau', 'Un train'], "Il laisse 50 000 francs aux pauvres et demande leur corbillard. À sa mort en 1885, la République lui offre pourtant des funérailles nationales : environ deux millions de personnes suivent le cortège. Il avait été exilé 19 ans à Jersey puis à Guernesey.", "Son exil à Guernesey"],
+
+    // ---------------- CINÉMA ET SPECTACLE ----------------
+    ['C', "D'où vient le nom de scène « Bourvil » ?", ['Du village normand de Bourville', "D'une marque de vin", "D'une erreur d'imprimeur", "D'un surnom de son chien"], "Il s'appelait André Raimbourg. Fils de paysans normands, il a choisi Bourvil d'après le village de Bourville, en Seine-Maritime.", "« La Traversée de Paris » (1956)"],
+    ['C', "Quelle fonction Bourvil a-t-il exercée dans le village de Prétot-Vicquemare ?", ['Maire', 'Boulanger', 'Facteur', 'Garde champêtre'], "Il a été maire de ce petit village normand de 1965 à sa mort en 1970. Atteint d'une maladie du sang, il est resté discret sur son état et a tourné « Le Cercle rouge » (1970) malgré tout.", "« Le Cercle rouge » (1970)"],
+    ['C', "Que faisait Louis de Funès avant d'être célèbre ?", ['Pianiste de bar et de cabaret', 'Chauffeur de taxi', 'Policier', 'Boxeur'], "Il a fait mille petits métiers avant le succès et a joué du piano dans des bars, notamment à Pigalle. Il avait plus de 40 ans quand il est devenu une vedette.", "La pièce puis le film « Pouic-Pouic »"],
+    ['C', "Quelle passion cultivait Louis de Funès dans son château ?", ['Les roses', 'Les cactus', 'Les abeilles', 'Les escargots'], "Il vivait au château de Clermont, au Cellier, en Loire-Atlantique, et adorait le jardinage. Son père était un avocat d'origine espagnole.", "Le château de Clermont, au Cellier"],
+    ['C', "Pourquoi Charlie Chaplin n'a-t-il pas pu revenir aux États-Unis en 1952 ?", ['Il était soupçonné de sympathies communistes', 'Il avait perdu son passeport au Japon', 'Il devait de l\'argent à Disney', 'Il refusait de parler anglais'], "Pendant le maccarthysme, il est accusé d'être trop à gauche. Il s'installe en Suisse. En 1972, il revient pour recevoir un Oscar d'honneur : l'ovation dure plus de douze minutes.", "« Le Dictateur » (1940)"],
+    ['C', "Où Jean Gabin s'engage-t-il en 1943 ?", ['Dans les Forces navales françaises libres', "Dans l'armée allemande", 'Dans un cirque', 'Chez les pompiers'], "Star du cinéma, il quitte Hollywood pour rejoindre la France libre. Il combat ensuite comme chef de char dans la 2e division blindée, et reçoit la Croix de guerre et la Médaille militaire.", "« La Grande Illusion » (1937)"],
+    ['C', "Comment Joséphine Baker cachait-elle des messages secrets pendant la guerre ?", ['À l\'encre invisible sur ses partitions', 'Dans ses chaussures', 'Dans un perroquet', 'Dans son chapeau'], "Artiste célèbre, elle servait d'agent pour la Résistance. Elle a ensuite adopté douze enfants de toutes origines, sa « tribu arc-en-ciel », et pris la parole lors de la marche sur Washington en 1963. Elle est entrée au Panthéon en 2021.", "Les Milandes, en Dordogne"],
+
+    // ---------------- SCIENCES ET INVENTIONS ----------------
+    ['S', "Pourquoi ne consulte-t-on les cahiers de Marie Curie qu'en signant une décharge ?", ['Ils sont encore radioactifs', "Ils sont écrits à l'encre secrète", 'Ils sont trop lourds', 'Ils sont en latin'], "Ses carnets, conservés à la Bibliothèque nationale dans des boîtes doublées de plomb, restent radioactifs pour des siècles. Elle est la seule personne à avoir reçu deux prix Nobel dans deux sciences différentes, la physique (1903) et la chimie (1911).", "Les « petites Curies »"],
+    ['S', "Que sont les « petites Curies » pendant la guerre de 1914 ?", ['Des camions équipés de radiologie', 'Des chats savants', 'Des petites pièces de monnaie', 'Des chants de soldats'], "Marie Curie équipe des voitures d'appareils de radiographie pour soigner les blessés près du front. Elle passe son permis de conduire pour les conduire, et sa fille Irène, 17 ans, l'aide. Plus d'un million de blessés sont examinés.", "Irène Joliot-Curie, Nobel de chimie 1935"],
+    ['S', "Quelle fonction Einstein a-t-il refusée en 1952 ?", ["Président d'Israël", 'Président des États-Unis', 'Maire de Princeton', 'Roi de Suède'], "Après la mort du premier président, David Ben Gourion lui propose le poste. Il répond qu'il n'a ni l'expérience ni l'aptitude pour gérer les hommes, et préfère la physique. Il a aussi lutté contre le racisme aux États-Unis.", "Sa lettre à Roosevelt (1939)"],
+    ['S', "Quel détail surprenant sur Louis Pasteur et le premier vaccin contre la rage (1885) ?", ["Il n'était pas médecin", 'Il détestait les chiens', 'Il était pharmacien', "Il avait peur des aiguilles"], "Chimiste de formation, il n'avait pas le droit de pratiquer la médecine : ce sont des médecins qui ont injecté le vaccin à Joseph Meister, 9 ans, mordu par un chien enragé. L'enfant a survécu.", "Joseph Meister et l'Institut Pasteur"],
+    ['S', "Quelle invention l'actrice Hedy Lamarr a-t-elle brevetée en 1942 ?", ['Un système de saut de fréquences pour guider les torpilles', 'Un peigne', 'Un four à micro-ondes', 'Un parachute'], "Avec le compositeur George Antheil, elle invente un système pour éviter le brouillage des torpilles radioguidées. L'armée ne l'a pas utilisé à l'époque, mais le principe du saut de fréquences a inspiré plus tard des technologies sans fil.", "George Antheil, compositeur du « Ballet mécanique »"]
+  ];
+  const $ = (id) => document.getElementById(id);
+  let joueurs = [], scores = [], questions = [], pos = 0, repondu = false;
+  try { joueurs = JSON.parse(localStorage.getItem('quizExtra_joueurs') || '[]'); } catch (e) {}
+  const melanger = (t) => { const a = t.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  function dessinerPrenoms() {
+    const n = +$('nb').value, z = $('prenoms'); z.textContent = '';
+    for (let i = 0; i < n; i++) {
+      const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 18; inp.setAttribute('aria-label', 'Prénom du joueur ' + (i + 1));
+      inp.placeholder = 'Joueur ' + (i + 1); inp.value = joueurs[i] || ''; z.appendChild(inp);
+    }
+  }
+  if (joueurs.length) $('nb').value = String(Math.min(6, Math.max(1, joueurs.length)));
+  $('nb').addEventListener('change', () => { joueurs = [...$('prenoms').querySelectorAll('input')].map((i) => i.value.trim()); dessinerPrenoms(); });
+  dessinerPrenoms();
+
+  function lancer() {
+    const champs = [...$('prenoms').querySelectorAll('input')];
+    joueurs = champs.map((c, i) => c.value.trim() || 'Joueur ' + (i + 1));
+    try { localStorage.setItem('quizExtra_joueurs', JSON.stringify(joueurs)); } catch (e) {}
+    partie();
+  }
+  function partie() {
+    const n = joueurs.length, tours = +$('tours').value;
+    const choix = $('partie').value;
+    let pool;
+    if (choix === 'mix') {
+      const par = ['P', 'E', 'C', 'S'].map((p) => melanger(BANQUE.filter((q) => q[0] === p)));
+      pool = []; for (let i = 0; par.some((l) => i < l.length); i++) par.forEach((l) => { if (i < l.length) pool.push(l[i]); });
+    } else pool = melanger(BANQUE.filter((q) => q[0] === choix));
+    questions = pool.slice(0, Math.min(pool.length, n * tours));
+    if (choix === 'mix') questions = melanger(questions);
+    scores = joueurs.map(() => 0); pos = 0;
+    $('depart').hidden = true; $('fin').hidden = true; $('jeu').hidden = false; afficher();
+  }
+  function afficher() {
+    repondu = false;
+    const [partieQ, q, rep] = questions[pos], n = joueurs.length, qui = pos % n, theme = { P: '🏛️ Histoire', E: '✊ Engagés', C: '🎬 Spectacle', S: '🔬 Sciences' }[partieQ];
+    $('num').textContent = `Question ${pos + 1} sur ${questions.length}`; $('theme').textContent = theme;
+    $('tourDe').textContent = n > 1 ? `À ${joueurs[qui]} de jouer` : `À vous de jouer, ${joueurs[0]}`;
+    $('q').textContent = q;
+    const ordre = melanger(rep.map((t, i) => ({ t, bon: i === 0 })));
+    const z = $('choix'); z.textContent = '';
+    ordre.forEach((o) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = o.t; b.dataset.bon = o.bon ? '1' : '0'; b.addEventListener('click', () => repondre(b)); z.appendChild(b); });
+    $('verdict').hidden = true; $('suite').hidden = true; majScore();
+  }
+  function majScore() {
+    const z = $('score'); z.textContent = '';
+    if (joueurs.length < 2) { const s = document.createElement('span'); s.textContent = `Score : ${scores[0]}`; z.appendChild(s); return; }
+    joueurs.forEach((p, i) => { const s = document.createElement('span'); if (i === pos % joueurs.length) s.className = 'actif'; s.textContent = `${p} : ${scores[i]}`; z.appendChild(s); });
+  }
+  function repondre(b) {
+    if (repondu) return; repondu = true;
+    const bon = b.dataset.bon === '1', qui = pos % joueurs.length;
+    if (bon) scores[qui]++;
+    $('choix').querySelectorAll('button').forEach((x) => { x.disabled = true; if (x.dataset.bon === '1') x.classList.add('bon'); else if (x === b) x.classList.add('mauvais'); });
+    const v = $('verdict'); v.textContent = '';
+    const s = document.createElement('strong'); s.textContent = bon ? ['Bravo !', 'En plein dans le mille !', 'Quelle mémoire !'][pos % 3] : ['Raté… mais joli effort !', 'Pas cette fois !', 'Ça arrive aux meilleurs.'][pos % 3];
+    const p = document.createElement('p'); p.textContent = questions[pos][3];
+    const e = document.createElement('p'); e.textContent = '🔎 Pour creuser : ' + questions[pos][4]; e.style.fontWeight = '700';
+    v.append(s, p, e); v.hidden = false; majScore();
+    $('suite').hidden = false; $('suite').textContent = pos + 1 < questions.length ? 'Question suivante' : 'Voir le classement'; $('suite').focus({ preventScroll: true });
+  }
+  function suite() { pos++; if (pos < questions.length) afficher(); else terminer(); }
+  function terminer() {
+    $('jeu').hidden = true; $('fin').hidden = false;
+    const classes = joueurs.map((p, i) => ({ p, s: scores[i] })).sort((a, b) => b.s - a.s);
+    const max = classes[0].s, ex = classes.filter((c) => c.s === max);
+    $('gagnant').textContent = joueurs.length < 2 ? `${scores[0]} bonne${scores[0] > 1 ? 's' : ''} réponse${scores[0] > 1 ? 's' : ''} sur ${questions.length}` : ex.length > 1 ? 'Égalité ! ' + ex.map((c) => c.p).join(' et ') : `🏆 ${classes[0].p} gagne !`;
+    const l = $('classement'); l.textContent = '';
+    classes.forEach((c) => { const li = document.createElement('li'); const a = document.createElement('span'); a.textContent = c.p; const b = document.createElement('span'); b.textContent = `${c.s} point${c.s > 1 ? 's' : ''}`; li.append(a, b); l.appendChild(li); });
+    const part = max / Math.max(1, Math.ceil(questions.length / joueurs.length));
+    $('blague').textContent = part > .8 ? 'Vous méritez une place au Panthéon des curieux.' : part > .5 ? 'Une très bonne soirée de discussions en perspective.' : part > .25 ? 'Il reste de belles histoires à découvrir ensemble.' : 'Le plus important, c’était de rire. Mission accomplie !';
+    $('rejouer').focus({ preventScroll: true });
+  }
+  $('go').addEventListener('click', lancer);
+  $('suite').addEventListener('click', suite);
+  $('rejouer').addEventListener('click', partie);
+  $('changer').addEventListener('click', () => { $('fin').hidden = true; $('depart').hidden = false; dessinerPrenoms(); });
+})();
+</script>
+</body>
+</html>
