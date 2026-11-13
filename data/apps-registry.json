@@ -547,9 +547,23 @@
       "status": "actif",
       "badge": "Nouveau",
       "url": "https://alphabette.fr/quiz-extraordinaires/",
-      "description": "Quiz à plusieurs : de Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès… Des anecdotes vraies que presque personne ne connaît.",
+      "description": "Quiz à plusieurs : de Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès… 239 anecdotes vraies que presque personne ne connaît.",
       "createdAt": "2026-11-13T09:00:00.000Z",
       "updatedAt": "2026-11-13T09:00:00.000Z",
+      "groupe": "petits-jeux",
+      "gratuit": true
+    },
+    {
+      "id": "quiz-femmes",
+      "name": "FEMMES EXTRAORDINAIRES",
+      "slug": "quiz-femmes",
+      "icon": "Heart",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "https://alphabette.fr/quiz-femmes/",
+      "description": "Plus de 300 questions sur les femmes qui ont changé le monde : science, arts, droits, résistance, sport. À plusieurs sur un seul écran.",
+      "createdAt": "2026-11-13T12:00:00.000Z",
+      "updatedAt": "2026-11-13T12:00:00.000Z",
       "groupe": "petits-jeux",
       "gratuit": true
     }

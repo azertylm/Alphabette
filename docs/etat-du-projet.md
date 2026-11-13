@@ -196,3 +196,9 @@ Demande de Valentin : « pas assez personnalisable ». Ajouts dans `public/podca
 
 ## 13/11 — Quiz des gens extraordinaires
 - **Gens extraordinaires** (`/quiz-extraordinaires/`, groupe petits-jeux) : 39 questions d'anecdotes peu connues — Histoire et politique (de Gaulle, Mitterrand, Badinter, Jaurès, Blum, Mendès France, Jean Moulin, Churchill), Engagés (Martin Luther King, Rosa Parks/Claudette Colvin, Gandhi, Mandela, Louise Michel, Simone Veil, Gisèle Halimi, l'abbé Pierre, Sankara, Coluche, Victor Hugo), Spectacle (Bourvil, de Funès, Chaplin, Gabin, Joséphine Baker), Sciences (Curie, Einstein, Pasteur, Hedy Lamarr). Chaque réponse donne une piste pour creuser. **Faits écrits de mémoire, à relire avant promotion.**
+
+## 13/11 (suite) — Femmes extraordinaires (301 questions) et 200 questions de plus pour Gens extraordinaires
+- **Femmes extraordinaires** (`/quiz-femmes/`) : 301 questions en six rubriques (Sciences 51, Lettres et arts 52, Droits et politique 51, Résistance et courage 39, Sport et exploits 39, Femmes du monde 69). Les questions sont dans `public/quiz-femmes/questions.js`.
+- **Gens extraordinaires** : 200 questions ajoutées (239 au total, rubriques Histoire/politique 68, Engagés 55, Spectacle 53, Sciences 63), dans `public/quiz-extraordinaires/plus.js`.
+- **Écrit de mémoire, sans accès à des sources en ligne : à faire relire avant toute promotion** (dates, chiffres, citations). Aucun doublon de question, quatre réponses distinctes à chacune (vérifié par script).
+- Décision de Valentin : on laisse de côté les « applications utiles » pour l'instant.
