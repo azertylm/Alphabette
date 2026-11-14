@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-12T09:14:47.000Z",
+  "updatedAt": "2026-11-14T01:15:00.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -288,11 +288,11 @@
       "name": "ACCORD",
       "slug": "accord",
       "icon": "Sparkles",
-      "status": "actif",
+      "status": "brouillon",
       "url": "https://accord.alphabette.fr",
       "subdomain": "accord",
       "createdAt": "2026-10-21T15:45:42.673Z",
-      "updatedAt": "2026-11-10T13:40:00.000Z",
+      "updatedAt": "2026-11-14T01:15:00.000Z",
       "description": "Neuf extraits de cinq secondes pour trouver les sons qui vous font du bien, et la playlist qui va avec."
     },
     {

@@ -1,5 +1,8 @@
 # État du projet Alphabette — 11 novembre 2026
 
+## Retirée (14/11/2026)
+- **Accord** retirée à la demande de Valentin (pas assez efficace ni fonctionnelle) : statut `brouillon` dans `data/apps-registry.json`, plus dans `data/apps-sources.json`, texte promo supprimé. `accord.alphabette.fr` et `/apps/accord/` affichent « Accord n'est plus disponible » (`public/apps/accord/index.html`). Le dépôt `azertylm/accord-alphabette.fr` est conservé. Pour la remettre : statut `actif`, ligne dans `apps-sources.json`, supprimer `public/apps/accord/`.
+
 ## En ligne
 - alphabette.fr sur OVH (hébergement Perso, statique). 15 applications, chacune sur `<clé>.alphabette.fr`, plus proxilien.fr et proxilien.eu.
 - Publication : dépôt `azertylm/Alphabette`, workflow `deploy-ovh.yml` (à relancer après chaque correction d'une appli). Dernière publication réussie et vérifiée par le workflow : 10/11/2026 à 19 h 38.
