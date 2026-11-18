@@ -13,6 +13,8 @@
  * Barre 2 : nom de l'appli · ♥ don · BIG · ☀️/🌙 · 🔊 · ⋯ (favori, mode simple,
  *           installer, avis, imprimer, langue).
  *
+ * Option data-masquer="defilement" : les barres se masquent quand on descend dans le contenu.
+ *
  * Chaque pictogramme affiche son nom au survol, au clavier et au doigt.
  * Les réglages (taille BIG, jour/nuit, langue, favoris) sont mémorisés dans un petit
  * cookie partagé par tous les sites alphabette.fr : on les règle une seule fois.
@@ -145,8 +147,8 @@
     '.ab-density__bar{width:4px;border-radius:1px;background:rgba(255,255,255,.4);}',
     '.ab-density__bar:nth-child(1){height:6px;}.ab-density__bar:nth-child(2){height:10px;}.ab-density__bar:nth-child(3){height:14px;}',
     '.ab-density__bar--on{background:#fff;}',
-    '.ab-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:70;width:min(340px,calc(100vw - 16px));padding:10px;border:1px solid var(--ab-bar-trait);border-radius:16px;background:var(--ab-bar-fond);box-shadow:0 18px 50px rgba(0,0,0,.35);display:grid;grid-template-columns:1fr 1fr;gap:8px;}',
-    '.ab-menu__item{display:flex;align-items:center;gap:9px;min-height:52px;padding:8px 10px;border:1px solid var(--ab-bar-trait);border-radius:12px;background:var(--ab-chip);color:var(--ab-bar-encre);font:inherit;font-size:14px;font-weight:700;line-height:1.15;text-align:left;cursor:pointer;}',
+    '.ab-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:70;width:min(340px,calc((100vw - 16px) / var(--ab-zoom,1)));max-height:calc((100dvh - 130px) / var(--ab-zoom,1));overflow-y:auto;overscroll-behavior:contain;padding:10px;border:1px solid var(--ab-bar-trait);border-radius:16px;background:var(--ab-bar-fond);box-shadow:0 18px 50px rgba(0,0,0,.35);display:grid;grid-template-columns:1fr 1fr;gap:8px;}',
+    '.ab-menu__item{display:flex;align-items:center;gap:9px;min-width:0;min-height:52px;padding:8px 10px;border:1px solid var(--ab-bar-trait);border-radius:12px;background:var(--ab-chip);color:var(--ab-bar-encre);font:inherit;font-size:14px;font-weight:700;line-height:1.15;text-align:left;cursor:pointer;overflow-wrap:anywhere;}',
     '.ab-menu__item:hover{background:var(--ab-chip-h);}.ab-menu__item[aria-pressed="true"]{border-color:var(--ab-accent);}',
     '.ab-menu__emoji{font-size:24px;line-height:1;flex:none;}',
     '.ab-tip{position:fixed;z-index:2147483600;max-width:min(288px,calc(100vw - 16px));padding:7px 11px;border-radius:10px;background:#0f172a;color:#fff;font:600 14px/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.35);transform:translateX(-50%);}',
@@ -173,6 +175,11 @@
     'html[data-ab-simple] aside,html[data-ab-simple] [data-ab-secondaire]{display:none!important;}',
     'html[data-ab-simple] main{max-width:760px;margin-inline:auto;line-height:1.7;}',
     '@media print{#ab-barres,.ab-modale-fond,.ab-tip{display:none!important;}html{zoom:1!important;}}',
+    ':root[data-ab-density="large"] .ab-menu,:root[data-ab-density="xlarge"] .ab-menu{grid-template-columns:1fr;}',
+    // Barres masquées au défilement (data-masquer="defilement") : elles remontent hors de l'écran.
+    '#ab-barres{transition:margin-top .25s ease;}:root[data-ab-barres="cachees"] #ab-barres{margin-top:calc(-1 * var(--ab-hauteur-barres,0px));}',
+    '@media (prefers-reduced-motion:reduce){#ab-barres{transition:none;}}',
+    '@media (max-width:480px){:root[data-ab-density="xlarge"] .ab-bar{gap:6px;padding:6px 8px;}:root[data-ab-density="xlarge"] .ab-bar__actions{gap:3px;}:root[data-ab-density="xlarge"] .ab-pico{min-width:32px;height:34px;padding:0 4px;font-size:17px;}}',
     '@media (max-width:760px){.ab-eco__favoris{display:none;}.ab-menu{grid-template-columns:1fr;}.ab-bar__nom{font-size:18px;}.ab-pico{min-width:36px;height:36px;padding:0 6px;}.ab-bar__actions{gap:4px;}}',
   ].join('\n');
   var style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
@@ -436,11 +443,45 @@
     if (parseFloat(cs.paddingTop) || parseFloat(cs.paddingLeft) || parseFloat(cs.paddingRight)) racine.style.margin = '-' + cs.paddingTop + ' -' + cs.paddingRight + ' ' + cs.paddingTop + ' -' + cs.paddingLeft;
     appliquerTaille(); appliquerTheme(false); majLecture();
     // Hauteur des deux barres, pour les applications à hauteur d'écran fixe : height: calc(100dvh - var(--ab-hauteur, 0px)).
-    function hauteur() { if (racine) document.documentElement.style.setProperty('--ab-hauteur', racine.offsetHeight + 'px'); }
+    function hauteur() {
+      if (!racine) return;
+      var r = document.documentElement;
+      r.style.setProperty('--ab-hauteur-barres', racine.offsetHeight + 'px');
+      r.style.setProperty('--ab-hauteur', r.dataset.abBarres === 'cachees' ? '0px' : racine.offsetHeight + 'px');
+    }
+    window.__abHauteur = hauteur;
     hauteur(); window.addEventListener('resize', hauteur);
     if (window.ResizeObserver) new ResizeObserver(hauteur).observe(document.body);
   }
   if (document.body) poser(); else document.addEventListener('DOMContentLoaded', poser);
+
+  // ------------------------------------------------------------ Barres masquées au défilement
+  // <script … data-masquer="defilement"> : en descendant dans le contenu, les barres remontent hors
+  // de l'écran (toute la hauteur pour lire) ; elles reviennent dès qu'on remonte ou en haut de page.
+  // L'appli peut masquer ses propres bandeaux avec html[data-ab-barres="cachees"] (événement alphabette:barres).
+  if (d.masquer === 'defilement') {
+    var derniers = new WeakMap(), pause = 0;
+    function montrerBarres(cachees) {
+      var r = document.documentElement, avant = r.dataset.abBarres === 'cachees';
+      if (avant === cachees || (cachees && menuOuvert)) return;
+      if (cachees) r.dataset.abBarres = 'cachees'; else delete r.dataset.abBarres;
+      pause = Date.now() + 350; // le changement de hauteur provoque lui-même un défilement : on l'ignore
+      if (window.__abHauteur) window.__abHauteur();
+      window.dispatchEvent(new CustomEvent('alphabette:barres', { detail: { cachees: cachees } }));
+    }
+    document.addEventListener('scroll', function (e) {
+      var cible = e.target === document ? document.scrollingElement || document.documentElement : e.target;
+      if (!cible || !cible.clientHeight || (cible.closest && cible.closest('#ab-barres,.ab-modale-fond'))) return;
+      // Seuls les grands blocs de lecture comptent (pas une liste déroulante ni un menu latéral étroit).
+      if (cible !== document.scrollingElement && cible.clientHeight < window.innerHeight / (parseFloat(getComputedStyle(document.documentElement).zoom) || 1) * 0.45) return;
+      var pos = cible.scrollTop, avant = derniers.has(cible) ? derniers.get(cible) : pos;
+      derniers.set(cible, pos);
+      if (Date.now() < pause) return;
+      if (pos < 12) montrerBarres(false);
+      else if (pos - avant > 6 && pos > 48) montrerBarres(true);
+      else if (avant - pos > 10) montrerBarres(false);
+    }, true);
+  }
   function relireMembre() { var m = lireMembre(); if (JSON.stringify(m) !== JSON.stringify(membre)) { membre = m; if (racine) reconstruire(); } }
   window.addEventListener('focus', relireMembre);
   window.addEventListener('alphabette:membre', relireMembre);
