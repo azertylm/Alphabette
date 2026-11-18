@@ -12,7 +12,9 @@
  * Sortie : un rapport JSON (schéma `RapportChaos`, docs/labo/AGENT-CHAOS.md), rangé chaque nuit sur la branche
  * labo-donnees par .github/workflows/labo-chaos.yml, où les agents du Laboratoire le lisent comme des tickets.
  */
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+// Playwright est installé à part (NODE_PATH), pas dans les dépendances du site.
+const { chromium } = createRequire(import.meta.url)('playwright');
 
 const BASE = (process.argv[2] || 'https://alphabette.eu').replace(/\/$/, '');
 const ECRANS = [{ largeur: 320, hauteur: 568 }, { largeur: 280, hauteur: 653 }];

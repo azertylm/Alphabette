@@ -27,9 +27,11 @@ jobs:
           node-version: 22
       - name: Installer Playwright
         run: |
-          npm install --no-save --no-package-lock playwright@1
-          npx playwright install --with-deps chromium
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
       - name: Audit
+        env:
+          NODE_PATH: /tmp/pw/node_modules
         run: node scripts/labo/chaos.mjs https://alphabette.eu > chaos.json
       - name: Ranger le rapport sur labo-donnees
         run: |
