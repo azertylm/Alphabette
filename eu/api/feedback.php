@@ -11,6 +11,8 @@
  *   POST {action:"avis", app_id, rating, category, comment, version_tested, telemetry, site_web}
  *   POST {action:"plus1", id}
  *   POST {action:"ab", app_id, choix:"actuelle"|"beta"}
+ *   POST {action:"ab", app_id, test_id, ticket_id?, choix:"A"|"B"}   (barre « Bac à sable A/B » en direct)
+ *   POST {action:"avis", …, source:"voix", urgence:1-5}              (retour vocal structuré dans le navigateur)
  *
  * Données : un fichier JSON rangé HORS du dossier publié (le dépôt Git d'OVH ne le touche pas).
  * Vie privée : aucune adresse IP n'est conservée. Seule une empreinte salée, changée chaque jour,
@@ -186,6 +188,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['etat'])) {
         repondre(200, array('ok' => true, 'stockage' => $LIEU, 'nb_avis' => count($tous), 'php' => PHP_VERSION));
     }
+    if (isset($_GET['test'])) {
+        $t = (string) $_GET['test'];
+        $r = isset($donnees['ab_tests'][$t]) ? $donnees['ab_tests'][$t] : null;
+        repondre(200, array('test' => $r ? array('A' => $r['A'], 'B' => $r['B']) : array('A' => 0, 'B' => 0)));
+    }
     if (isset($_GET['ouverts'])) {
         $app = (string) $_GET['ouverts'];
         $liste = array();
@@ -198,7 +205,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         repondre(200, array('tickets' => array_slice($liste, 0, 100)));
     }
     if (isset($_GET['export'])) {
-        repondre(200, array('genere_le' => gmdate('c'), 'feedbacks' => $tous, 'ab' => isset($donnees['ab']) ? $donnees['ab'] : (object) array()));
+        repondre(200, array('genere_le' => gmdate('c'), 'feedbacks' => $tous, 'ab' => isset($donnees['ab']) ? $donnees['ab'] : (object) array(),
+            'ab_tests' => isset($donnees['ab_tests']) ? $donnees['ab_tests'] : (object) array()));
     }
 
     $apps = array();
@@ -253,7 +261,8 @@ if ($action === 'avis') {
     if ($note !== null && ($note < 1 || $note > 5)) $note = null;
     $categorie = isset($entree['category']) && in_array($entree['category'], CATEGORIES, true) ? $entree['category'] : 'Autre';
     $commentaire = masquer(isset($entree['comment']) ? $entree['comment'] : '', MAX_COMMENTAIRE);
-    $source = isset($entree['source']) && $entree['source'] === 'sondage' ? 'sondage' : 'formulaire';
+    $source = isset($entree['source']) && in_array($entree['source'], array('sondage', 'voix'), true) ? $entree['source'] : 'formulaire';
+    $urgence = isset($entree['urgence']) && is_numeric($entree['urgence']) ? max(1, min(5, (int) $entree['urgence'])) : null;
     $declencheur = $source === 'sondage' ? masquer(isset($entree['declencheur']) ? $entree['declencheur'] : '', 60) : null;
     if ($source === 'sondage' && $note === null) erreur(400, 'Choisissez une note.');
     if ($note === null && (function_exists('mb_strlen') ? mb_strlen($commentaire, 'UTF-8') : strlen($commentaire)) < 5) {
@@ -293,6 +302,7 @@ if ($action === 'avis') {
         'timestamp' => gmdate('Y-m-d\TH:i:s\Z'),
         'source' => $source,
         'declencheur' => $declencheur,
+        'urgence' => $urgence,
         'telemetry' => $telemetrie,
         'status' => 'pending',
         'ai_analysis' => array('relevance_score' => null, 'intervention_level' => null, 'reasoning' => null, 'proposed_fix' => null),
@@ -321,6 +331,38 @@ if ($action === 'plus1') {
     });
     if ($n === null) erreur(404, 'Avis introuvable.');
     repondre(200, array('ok' => true, 'upvotes' => $n));
+}
+
+if ($action === 'ab' && isset($entree['test_id'])) {
+    $app = isset($entree['app_id']) ? (string) $entree['app_id'] : '';
+    $connues = applis_connues();
+    if (!isset($connues[$app])) erreur(400, 'Application inconnue.');
+    $test = (string) $entree['test_id'];
+    if (!preg_match('/^[a-z0-9_-]{1,60}$/', $test)) erreur(400, 'Test inconnu.');
+    $ticket = isset($entree['ticket_id']) && preg_match('/^fb_\d+_[a-f0-9]{4}$/', (string) $entree['ticket_id']) ? (string) $entree['ticket_id'] : null;
+    $choix = isset($entree['choix']) && $entree['choix'] === 'B' ? 'B' : 'A';
+    $limite = compter($DOSSIER, 'ab', VOTES_PAR_JOUR, $app . '#' . $test);
+    if ($limite === 'trop') erreur(429, "Beaucoup de votes aujourd'hui : revenez demain.");
+    if ($limite === 'deja') erreur(409, 'Vous avez déjà voté pour ce test.');
+    $res = modifier($FICHIER, function (&$d) use ($app, $test, $ticket, $choix) {
+        if (!isset($d['ab_tests'])) $d['ab_tests'] = array();
+        if (!isset($d['ab_tests'][$test])) $d['ab_tests'][$test] = array('app_id' => $app, 'ticket_id' => $ticket, 'A' => 0, 'B' => 0);
+        if ($d['ab_tests'][$test]['app_id'] !== $app) return null;
+        $d['ab_tests'][$test][$choix]++;
+        // Le vote est aussi inscrit sur le ticket concerné, pour les agents.
+        if ($ticket !== null) {
+            foreach ($d['avis'] as &$a) {
+                if ($a['id'] === $ticket) {
+                    if (!isset($a['ab'])) $a['ab'] = array('test_id' => $test, 'A' => 0, 'B' => 0);
+                    $a['ab'][$choix]++;
+                    break;
+                }
+            }
+        }
+        return $d['ab_tests'][$test];
+    });
+    if ($res === null) erreur(400, 'Ce test appartient à une autre application.');
+    repondre(200, array('ok' => true, 'test' => $res));
 }
 
 if ($action === 'ab') {
