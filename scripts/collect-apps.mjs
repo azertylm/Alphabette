@@ -95,8 +95,12 @@ async function redirection(cle) {
   await writeFile(
     path.join(cible, '.htaccess'),
     `# Généré par scripts/collect-apps.mjs : application en test sur le Laboratoire.
+# Ce .htaccess remplace les règles de la racine pour ce dossier (mod_rewrite n'hérite pas) :
+# il doit donc lui-même servir alphabette.eu depuis eu/, sinon boucle de redirection.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
+  RewriteRule ^(.*)$ /eu/apps/${cle}/$1 [L]
   RewriteRule ^(.*)$ ${adresse}$1 [R=302,L]
 </IfModule>
 `,
