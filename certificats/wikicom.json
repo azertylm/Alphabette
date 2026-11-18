@@ -1,0 +1,57 @@
+{
+  "type": "Certificat d'Audit Réseau — Alphabette",
+  "version_format": 1,
+  "app_id": "wikicom",
+  "nom": "WIKICOM",
+  "url": "https://alphabette.fr/wikicom/",
+  "audite_le": "2026-11-18T18:53:28.254Z",
+  "empreinte_page_sha256": "d3cc7889eef835cf949ae7c95dd8f01590ebee0c4fd028f82c04933813137cf2",
+  "methode": {
+    "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
+    "canaris": {
+      "localStorage": 3,
+      "champs_remplis": 6,
+      "boutons_actives": 1,
+      "valeurs_de_l_appli": 0
+    },
+    "ecoute": [
+      "fetch",
+      "XMLHttpRequest",
+      "sendBeacon",
+      "ressources",
+      "WebSocket",
+      "service workers"
+    ],
+    "autorises": [
+      "generativelanguage.googleapis.com",
+      "api.mistral.ai",
+      "api.anthropic.com",
+      "api.openai.com",
+      "api.deepseek.com",
+      "api.x.ai"
+    ],
+    "limite": "Une donnée chiffrée ou hachée par l'appli avant l'envoi n'est pas reconnaissable par cette méthode."
+  },
+  "destinations": [
+    {
+      "hote": "alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 4,
+      "bloquees": 0,
+      "types": [
+        "document",
+        "script",
+        "fetch"
+      ]
+    }
+  ],
+  "resultat": {
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
+    "envois_autorises": [],
+    "tiers_contactes": []
+  },
+  "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
+  "empreinte_certificat_sha256": "2e55b8d2d36297390c717e08f2d94339fbf33a555b51873f6e39537c2d13dfcf"
+}

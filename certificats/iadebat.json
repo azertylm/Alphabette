@@ -1,0 +1,78 @@
+{
+  "type": "Certificat d'Audit Réseau — Alphabette",
+  "version_format": 1,
+  "app_id": "iadebat",
+  "nom": "IADÉBAT",
+  "url": "https://iadebat.alphabette.fr/",
+  "audite_le": "2026-11-18T18:52:13.505Z",
+  "empreinte_page_sha256": "601702f0d30f9a88f45daf607013ccf5d3bfff10c0a9caf54cacf5957cc7c81f",
+  "methode": {
+    "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
+    "canaris": {
+      "localStorage": 3,
+      "champs_remplis": 1,
+      "boutons_actives": 1,
+      "valeurs_de_l_appli": 12
+    },
+    "ecoute": [
+      "fetch",
+      "XMLHttpRequest",
+      "sendBeacon",
+      "ressources",
+      "WebSocket",
+      "service workers"
+    ],
+    "autorises": [
+      "generativelanguage.googleapis.com",
+      "api.mistral.ai",
+      "api.anthropic.com",
+      "api.openai.com",
+      "api.deepseek.com",
+      "api.x.ai"
+    ],
+    "limite": "Une donnée chiffrée ou hachée par l'appli avant l'envoi n'est pas reconnaissable par cette méthode."
+  },
+  "destinations": [
+    {
+      "hote": "iadebat.alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 5,
+      "bloquees": 0,
+      "types": [
+        "document",
+        "script",
+        "stylesheet"
+      ]
+    },
+    {
+      "hote": "alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 5,
+      "bloquees": 0,
+      "types": [
+        "script",
+        "fetch"
+      ]
+    },
+    {
+      "hote": "fonts.googleapis.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "stylesheet"
+      ]
+    }
+  ],
+  "resultat": {
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
+    "envois_autorises": [],
+    "tiers_contactes": [
+      "fonts.googleapis.com"
+    ]
+  },
+  "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
+  "empreinte_certificat_sha256": "e8245631dc4977b9d030ab2302c99dcb16e62bfdd9ab8e8e016c4bf39a727787"
+}

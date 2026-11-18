@@ -1,0 +1,24 @@
+{
+  "apps": {
+    "iadebat": {
+      "conforme": true,
+      "audite_le": "2026-11-18T18:52:13.505Z",
+      "empreinte": "e8245631dc4977b9d030ab2302c99dcb16e62bfdd9ab8e8e016c4bf39a727787"
+    },
+    "infos-perso": {
+      "conforme": false,
+      "audite_le": "2026-11-18T18:52:42.559Z",
+      "empreinte": "9aa5ae35db2c000222e71137c75973ea87d7a9ab0ea867359bcf8487ceb4568b"
+    },
+    "france-service": {
+      "conforme": true,
+      "audite_le": "2026-11-18T18:53:02.669Z",
+      "empreinte": "4665c5eeaa499a57368b2c7a374c7f5526e8a42f3dad0c9592a71456aa97995a"
+    },
+    "wikicom": {
+      "conforme": true,
+      "audite_le": "2026-11-18T18:53:28.254Z",
+      "empreinte": "2e55b8d2d36297390c717e08f2d94339fbf33a555b51873f6e39537c2d13dfcf"
+    }
+  }
+}
