@@ -9,7 +9,7 @@
  *      « beta » : { "branch": "…" } publie aussi alphabette.eu/apps/<clé>/beta/.
  *  - dist-static/apps/<clé>/     → alphabette.fr/apps/<clé>/ et <clé>.alphabette.fr (vitrine) :
  *      « vitrine » : { "ref": "<commit>" } → version FIGÉE à ce commit ;
- *      sans « vitrine » → page et .htaccess de redirection vers alphabette.eu
+ *      sans « vitrine » → page de redirection vers alphabette.eu (le .htaccess du hub redirige le reste)
  *      (sauf une appli qui a son propre nom de domaine, ex. proxilien.fr : elle y reste servie).
  *
  * Source : data/apps-sources.json  →  { "apps": { "<clé>": { "repo": "owner/nom", "branch"?, "dir"?, "vitrine"?, "beta"? } } }
@@ -92,15 +92,9 @@ async function redirection(cle) {
   const adresse = `https://alphabette.eu/apps/${cle}/`;
   await rm(cible, { recursive: true, force: true });
   await mkdir(cible, { recursive: true });
-  await writeFile(
-    path.join(cible, '.htaccess'),
-    `# Généré par scripts/collect-apps.mjs : application en test sur le Laboratoire.
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^(.*)$ ${adresse}$1 [R=302,L]
-</IfModule>
-`,
-  );
+  // Pas de .htaccess ici : il empêcherait le .htaccess du hub d'envoyer alphabette.eu/apps/<clé>/
+  // vers eu/apps/<clé>/ (boucle de redirection). Les adresses alphabette.fr/apps/<clé>/… sont
+  // redirigées par le .htaccess du hub ; le sous-domaine <clé>.alphabette.fr par cette page.
   await writeFile(
     path.join(cible, 'index.html'),
     `<!doctype html>
