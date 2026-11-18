@@ -20,7 +20,7 @@
  * Une application de la VITRINE en échec arrête tout : alphabette.fr garde alors sa version en ligne.
  */
 import { execFileSync } from 'node:child_process';
-import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -86,8 +86,26 @@ async function injecterCapteur(fichier) {
   await writeFile(fichier, html);
 }
 
+/**
+ * Service worker « interrupteur » : remplace celui d'une appli installée (PWA) sur son ancienne adresse .fr.
+ * Il se désinscrit et recharge la page, qui redirige alors vers alphabette.eu (sinon l'ancienne copie
+ * enregistrée dans le navigateur resterait affichée).
+ */
+const SW_INTERRUPTEUR = `/* Généré par scripts/collect-apps.mjs : cette appli a rejoint le Laboratoire alphabette.eu. */
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', (e) => {
+  e.waitUntil((async () => {
+    const cles = await caches.keys();
+    await Promise.all(cles.map((c) => caches.delete(c)));
+    await self.registration.unregister();
+    const fenetres = await self.clients.matchAll({ type: 'window' });
+    fenetres.forEach((f) => f.navigate(f.url));
+  })());
+});
+`;
+
 /** Sur alphabette.fr : l'application est au Laboratoire, on y envoie le visiteur (jamais une 404). */
-async function redirection(cle) {
+async function redirection(cle, dossierApp) {
   const cible = path.join(sortieFr, cle);
   const adresse = `https://alphabette.eu/apps/${cle}/`;
   await rm(cible, { recursive: true, force: true });
@@ -115,6 +133,12 @@ async function redirection(cle) {
 </html>
 `,
   );
+  // Même nom que le service worker de l'appli (bonplan_sw.js, sw.js…) : l'ancien est remplacé puis effacé.
+  if (dossierApp) {
+    for (const nom of await readdir(dossierApp).catch(() => [])) {
+      if (/(^|[-_.])(sw|service-?worker)\.js$/i.test(nom)) await writeFile(path.join(cible, nom), SW_INTERRUPTEUR);
+    }
+  }
 }
 
 for (const [cle, src] of Object.entries(apps)) {
@@ -158,7 +182,7 @@ for (const [cle, src] of Object.entries(apps)) {
       await publier(principal.dossier, path.join(sortieFr, cle));
       console.log(`✔ .fr  ${cle}  (domaine propre : ${src.domains.join(', ')})`);
     } else {
-      await redirection(cle);
+      await redirection(cle, principal?.dossier);
       console.log(`↪ .fr  ${cle}  →  alphabette.eu/apps/${cle}/`);
     }
   } catch (err) {
