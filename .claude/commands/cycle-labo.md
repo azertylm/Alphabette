@@ -14,8 +14,10 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
    puis agent `qa-verifier` sur ce diff. Veto → retour à `code-builder` (2 fois au plus, ensuite `needs_human_review`).
    Seul un « OK pour publier » de `qa-verifier` autorise le push sur `main` du dépôt de l'appli (= alphabette.eu).
 5. Agent `maturity-curator` : statuts `implemented`, badge « Dernière évolution IA », score de maturité, alerte à 85/100.
+5 bis. Difficultés d'usage : `node scripts/labo/tutos.mjs frictions /tmp/feedbacks.json` ; pour chaque friction retenue,
+   écris un micro-tuto (3 étapes, sélecteurs vérifiés sur la page .eu) dans `data/labo/tutos.json` (sans `vitrine`).
 6. Agent `agent-graduation` : `node scripts/labo/graduation.mjs eligibles /tmp/feedbacks.json /tmp/chaos.json` ; pour chaque appli
-   éligible, demande à Valentin s'il veut la transférer (rien d'autre sans son « oui »). Lors d'un transfert : `redacteur-notes`.
+   éligible, demande à Valentin s'il veut la transférer (rien d'autre sans son « oui »). Sur son « oui », `preparer` lance l'Agent Gardien : une régression bloque le transfert. Lors d'un transfert : `redacteur-notes`.
 7. Agent `meta-improver` : règles apprises dans `RULES_AND_MEMORY.md` (section 8).
 8. Commit du hub (« Labo : cycle du <date> ») et push sur `main` : alphabette.eu se met à jour ; alphabette.fr ne change pas.
 9. Rendu à Valentin, court : ce qui a été corrigé, ce qui a été rejeté (combien), et chaque demande de Niveau 2 ou transfert

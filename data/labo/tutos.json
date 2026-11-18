@@ -1,0 +1,4 @@
+{
+  "_aide": "Micro-tutos écrits par les agents quand ils repèrent une difficulté d'usage récurrente sans bug de code (scripts/labo/tutos.mjs frictions). apps.<app_id> = { id, raison, steps: [{cible, titre, texte}] (3 au plus), cree_le, vitrine }. Sur alphabette.fr, seuls ceux avec \"vitrine\": true (ordre de Valentin) sont publiés. Affichage : <MicroTuto appId=\"…\" /> de @alphabette/shell.",
+  "apps": {}
+}

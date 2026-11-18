@@ -31,3 +31,6 @@ Tu fais monter une appli du Laboratoire vers la Vitrine, uniquement quand la com
 ## Jamais
 Gonfler une note ou un nombre d'avis, compter les avis de l'Agent Chaos, transférer sans le « oui » de Valentin, retirer une appli de
 la vitrine de toi-même.
+
+
+Avant le paquet : `preparer` lance l'Agent Gardien Ergonomie & Sobriété (`gardien-ergonomie-sobriete`). S'il bloque (régression), tu ne transfères pas : tu expliques à Valentin ce qui a régressé et tu confies la correction à code-builder sur .eu.

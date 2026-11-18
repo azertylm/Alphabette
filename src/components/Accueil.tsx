@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
-import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerResumes, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
+import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerEcoScores, chargerResumes, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
 import { LaboAvis } from '../labo/LaboAvis';
 
 /**
@@ -66,6 +66,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   const [serveurAvis, setServeurAvis] = useState<boolean | null>(null);
   const [donnees, setDonnees] = useState<DonneesLabo>({ evolutions: {}, notes: {}, maturite: {}, betas: {} });
   const [notesFr, setNotesFr] = useState<Record<string, NoteVersion[]>>({});
+  const [eco, setEco] = useState<Record<string, EcoScore>>({});
   const [carteOuverte, setCarteOuverte] = useState<string | null>(null);
   const chargerAvis = () =>
     chargerResumes()
@@ -77,6 +78,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   useEffect(() => {
     if (!MODE_LABO) {
       chargerNotesCitoyennes().then(setNotesFr);
+      chargerEcoScores().then(setEco);
       return;
     }
     chargerAvis();
@@ -175,6 +177,12 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                 {Boolean((app as { certifie?: unknown }).certifie) && (
                   <span className="accueil__pastilles">
                     <span className="accueil__pastille accueil__pastille--certifie">✓ Certifié par la communauté</span>
+                    {!MODE_LABO && eco[app.id] && (
+                      <span className={`accueil__pastille accueil__pastille--eco accueil__pastille--eco-${eco[app.id].note_sobriete}`}
+                        title={`Sobriété numérique ${eco[app.id].note_sobriete} (EcoIndex ${eco[app.id].ecoindex.score}/100, ${eco[app.id].poids_transfere_ko} Ko au chargement)`}>
+                        🌱 Sobriété {eco[app.id].note_sobriete}
+                      </span>
+                    )}
                   </span>
                 )}
                 {(app.gratuit || app.badge === 'Nouveau') && (

@@ -82,3 +82,7 @@ export { useContextualFeedback, MicroSondage, type OptionsSondage } from './labo
 export { envoyerAvisLabo, soutenirTicket, ticketsOuverts, API_AVIS, type NouvelAvis, type TicketOuvert, type CategorieAvis } from './labo/avis';
 export { nettoyerTexte, clesStockageSures, contexteTechnique, plateformeSimple, cheminCourant, surLeLaboratoire, type ContexteTechnique } from './labo/confidentialite';
 export { similarite, doublonsProbables, normaliser } from './labo/similarite';
+export { ABTestToggle, useABTest, appDepuisAdresse, type ABTestToggleProps, type VarianteAB } from './labo/ABTestToggle';
+export { useVoiceFeedback, BoutonMicro, moteurDisponible, type Voix, type MoteurVocal, type EtatVocal } from './labo/useVoiceFeedback';
+export { structurerAvisVocal, categorieDuType, type AvisVocal, type TypeAvisVocal } from './labo/structurerAvisVocal';
+export { InteractiveSpotlight, MicroTuto, useMicroTuto, type EtapeSpotlight, type InteractiveSpotlightProps, type TutoAgent } from './labo/InteractiveSpotlight';

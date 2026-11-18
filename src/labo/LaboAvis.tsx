@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { doublonsProbables, ticketsOuverts, type TicketOuvert } from '@alphabette/shell';
+import { BoutonMicro, categorieDuType, doublonsProbables, ticketsOuverts, useVoiceFeedback, type TicketOuvert } from '@alphabette/shell';
 import {
   AVIS_PAR_JOUR,
   CATEGORIES,
@@ -53,6 +53,16 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
   const [commentaire, setCommentaire] = useState('');
   const [version, setVersion] = useState<'main' | 'beta'>('main');
   const [piege, setPiege] = useState('');
+  // Retour vocal : la dictée remplit catégorie, commentaire et urgence ; le visiteur relit avant d'envoyer.
+  const [urgence, setUrgence] = useState<number | null>(null);
+  const voix = useVoiceFeedback({
+    onResultat: ({ avis }) => {
+      setCategorie(categorieDuType(avis.type));
+      setCommentaire(avis.resume);
+      setUrgence(avis.urgence);
+      setDifferent(false);
+    },
+  });
   const [etat, setEtat] = useState<'repos' | 'envoi' | 'merci' | 'erreur'>('repos');
   const [message, setMessage] = useState('');
   const [votes, setVotes] = useState<Record<string, number>>({});
@@ -113,11 +123,13 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
         version_tested: version,
         chemin: version === 'beta' && beta ? beta.chemin : chemin,
         site_web: piege,
+        ...(urgence !== null ? { source: 'voix' as const, urgence } : {}),
       });
       setEtat('merci');
       setMessage('Merci ! Votre avis est enregistré. Il sera lu et, s’il est retenu, l’appli sera améliorée.');
       setNote(null);
       setCommentaire('');
+      setUrgence(null);
       setDifferent(false);
       tickets.current = null;
       onMaj();
@@ -265,6 +277,20 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
               placeholder={AIDE[categorie]}
             />
           </label>
+
+          <BoutonMicro voix={voix} />
+          {urgence !== null && (
+            <label className="labo__champ">
+              <span>Urgence (estimée d'après votre dictée, à corriger si besoin)</span>
+              <select value={urgence} onChange={(e) => setUrgence(Number(e.target.value))}>
+                <option value={1}>1 · Simple suggestion</option>
+                <option value={2}>2 · Gêne légère</option>
+                <option value={3}>3 · Gênant</option>
+                <option value={4}>4 · Bloque une fonction</option>
+                <option value={5}>5 · Bloque tout ou perte de données</option>
+              </select>
+            </label>
+          )}
 
           {doublons.length > 0 && !different && (
             <div className="labo__doublons" role="status">

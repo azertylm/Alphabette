@@ -8,6 +8,7 @@
  *         registre « vitrine » + « certifie », version figée (vitrine.ref = commit testé sur .eu) ou copie
  *         de la page dans vitrine/, entrée data/labo/graduation.json. La publication sur .fr n'a lieu
  *         qu'après la fusion, sur ordre explicite de Valentin.
+ *         Avant tout, l'Agent Gardien (gardien.mjs) audite l'appli : une régression bloque le transfert.
  *
  * Conditions (cahier des charges de Valentin) :
  *   1. note moyenne ≥ 4,5/5 ;
@@ -16,7 +17,7 @@
  *      ou anomalie critique de l'Agent Chaos de la dernière nuit).
  * Au pré-rendu (scripts/labo/seo.mjs), la note et le nombre d'avis enregistrés ici alimentent le JSON-LD.
  */
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { cpSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 const lireJson = (p, d) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return d; } };
@@ -75,6 +76,18 @@ if (commande === 'eligibles') {
     console.error(`${app.name} ne remplit pas les conditions :`, JSON.stringify(b.conditions));
     process.exit(2);
   }
+  // Agent Gardien Ergonomie & Sobriété : passe obligatoire, sans contournement possible.
+  // Il compare la version de .eu à la précédente (dernier transfert, sinon la version en ligne sur .fr).
+  const gardien = spawnSync(process.execPath, ['scripts/labo/gardien.mjs', 'audit', appId, '--enregistrer', '--sortie', `/tmp/eco-score-${appId}.json`],
+    { stdio: ['ignore', 'ignore', 'inherit'], env: { NODE_PATH: '/tmp/pw/node_modules', ...process.env } });
+  if (gardien.status !== 0) {
+    console.error(gardien.status === 1
+      ? `⛔ Transfert de ${app.name} bloqué par l'Agent Gardien (régression d'accessibilité ou de sobriété) : à corriger sur .eu d'abord.`
+      : `⛔ L'Agent Gardien n'a pas pu auditer ${app.name} (Playwright installé ? npm i playwright dans /tmp/pw). Transfert bloqué.`);
+    process.exit(3);
+  }
+  const ecos = lireJson('data/labo/eco_scores.json', { apps: {} });
+  if (ecos.apps[appId]) { ecos.apps[appId].vitrine = true; ecrireJson('data/labo/eco_scores.json', ecos); }
   const date = new Date().toISOString();
   let hote = '';
   try { hote = new URL(app.url).hostname.replace(/^www\./, ''); } catch {}

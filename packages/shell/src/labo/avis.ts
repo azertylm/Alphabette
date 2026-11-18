@@ -26,7 +26,9 @@ export interface NouvelAvis {
   comment: string;
   version_tested?: 'main' | 'beta';
   /** « formulaire » (carte du Laboratoire) ou « sondage » (micro-sondage après une action réussie). */
-  source?: 'formulaire' | 'sondage';
+  source?: 'formulaire' | 'sondage' | 'voix';
+  /** Urgence estimée de 1 à 5 (retour vocal structuré, modifiable par le visiteur). */
+  urgence?: number;
   /** Nom de l'action réussie qui a déclenché le micro-sondage. */
   declencheur?: string;
   /** Champ piège invisible : un humain le laisse vide. */

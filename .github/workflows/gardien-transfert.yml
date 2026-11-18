@@ -1,0 +1,62 @@
+# Agent « Gardien Ergonomie & Sobriété » : passe obligatoire avant tout transfert vers alphabette.fr.
+# Sur chaque Pull Request qui fait entrer ou évoluer une appli dans la vitrine (registre, vitrine.ref,
+# dossier vitrine/), l'appli est auditée sur alphabette.eu et comparée à sa version précédente.
+# Une régression d'accessibilité seniors ou de sobriété fait échouer la vérification : on ne fusionne pas.
+name: Gardien Ergonomie & Sobriété
+
+on:
+  pull_request:
+    paths:
+      - 'data/apps-registry.json'
+      - 'data/apps-sources.json'
+      - 'vitrine/**'
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: "Appli à auditer (id du registre)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  gardien:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Installer Playwright (à part des dépendances du site)
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
+      - name: Applis concernées
+        id: liste
+        run: |
+          if [ -n "${{ inputs.app_id }}" ]; then echo "${{ inputs.app_id }}" > /tmp/apps.txt
+          else node scripts/labo/gardien-transferts.mjs "origin/${{ github.base_ref }}" > /tmp/apps.txt; fi
+          echo "Applis à auditer :"; cat /tmp/apps.txt
+      - name: Audit et verrou anti-régression
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          echo "## Agent Gardien Ergonomie & Sobriété" >> "$GITHUB_STEP_SUMMARY"
+          bloque=0
+          while read -r app; do
+            [ -z "$app" ] && continue
+            if node scripts/labo/gardien.mjs audit "$app" --sortie "eco-score-$app.json" > "gardien-$app.json"; then etat="✅ autorisé"; else etat="⛔ bloqué"; bloque=1; fi
+            node -e "const r=require('./gardien-$app.json'),e=require('./eco-score-$app.json');console.log('- **'+r.app_id+'** : $etat — seniors '+r.senior.score+'/100, sobriété '+e.note_sobriete+' (EcoIndex '+e.ecoindex.score+', '+e.poids_transfere_ko+' Ko)'+(r.comparaison.regressions.length?' — '+r.comparaison.regressions.join(' ; '):''))" >> "$GITHUB_STEP_SUMMARY" || true
+          done < /tmp/apps.txt
+          exit $bloque
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rapports-gardien
+          path: |
+            gardien-*.json
+            eco-score-*.json
+          if-no-files-found: ignore

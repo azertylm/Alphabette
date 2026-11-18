@@ -24,6 +24,7 @@ import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promi
 import os from 'node:os';
 import path from 'node:path';
 import { preRendre } from './labo/seo.mjs';
+import { compresserSvgDossier } from './labo/sobriete.mjs';
 
 const racine = process.cwd();
 const sortieFr = path.join(racine, 'dist-static', 'apps');
@@ -188,6 +189,9 @@ for (const [cle, src] of Object.entries(apps)) {
         const index = path.join(sortieFr, cle, 'index.html');
         await writeFile(index, preRendre(await readFile(index, 'utf8'), fiche, fiche.certifie));
         console.log(`  ✓ pré-rendu SEO (${fiche.certifie.moyenne}/5, ${fiche.certifie.avis} avis)`);
+        // Cure d'amaigrissement (Agent Gardien) : SVG allégés sans perte, seulement pour les applis transférées par graduation.
+        const svg = await compresserSvgDossier(path.join(sortieFr, cle));
+        if (svg.gain_o > 0) console.log(`  ✓ SVG allégés : ${svg.fichiers} fichiers, −${Math.round(svg.gain_o / 1024)} Ko`);
       }
       console.log(`✔ .fr  ${cle}  ←  version figée ${src.vitrine.ref.slice(0, 7)}`);
     } else if (domainePropre && principal) {

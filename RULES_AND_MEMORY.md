@@ -28,6 +28,10 @@ Seuls aussi (décision de Valentin du 18/11/2026), par l'`agent-correcteur` :
   l'adopter sur `main` reste un Niveau 2 (accord de Valentin).
 
 Agent Chaos (robot nocturne) : ses rapports vivent sur la branche `labo-donnees` (`chaos/`), jamais dans la base d'avis publique.
+Agent Gardien Ergonomie & Sobriété : passe obligatoire avant chaque transfert vers .fr ; toute régression (accessibilité
+seniors, sobriété, hors ligne) bloque le transfert, sans contournement (`docs/labo/AGENT-GARDIEN.md`).
+Micro-tutos : seulement pour une difficulté d'usage récurrente sans bug de code (`scripts/labo/tutos.mjs frictions`), 3 étapes max ;
+publiés sur .fr uniquement avec `"vitrine": true` sur ordre de Valentin.
 Agent de Graduation : propose un transfert vers .fr (note ≥ 4,5, ≥ 20 avis vérifiés, 0 bug critique depuis 7 jours) ; ne prépare
 le paquet qu'après le « oui » de Valentin, et la fusion (= mise en ligne sur .fr) reste son ordre.
 

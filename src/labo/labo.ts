@@ -153,11 +153,14 @@ export interface NouvelAvis {
   chemin: string;
   /** Champ piège invisible : un humain le laisse vide. */
   site_web: string;
+  /** « voix » si l'avis a été dicté ; urgence 1-5 estimée puis relue par le visiteur. */
+  source?: 'formulaire' | 'voix';
+  urgence?: number;
 }
 
 export async function envoyerAvis(avis: NouvelAvis) {
   const { chemin, ...reste } = avis;
-  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', ...reste, source: 'formulaire', comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
+  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', source: 'formulaire', ...reste, comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
   const l = lireLimites();
   l.avis[avis.app_id] = (l.avis[avis.app_id] ?? 0) + 1;
   ecrireLimites(l);
@@ -196,6 +199,18 @@ export async function chargerNotesCitoyennes(): Promise<Record<string, NoteVersi
   try {
     const r = await fetch('/api/labo/notes_version.json', { cache: 'no-store' });
     return ((await r.json()) as { apps?: Record<string, NoteVersion[]> }).apps ?? {};
+  } catch {
+    return {};
+  }
+}
+
+export interface EcoScore { note_sobriete: string; poids_transfere_ko: number; ecoindex: { score: number }; accessibilite_seniors: number; audite_le: string }
+
+/** Éco-scores des applis transférées sur alphabette.fr (Agent Gardien). Vide → rien d'affiché. */
+export async function chargerEcoScores(): Promise<Record<string, EcoScore>> {
+  try {
+    const r = await fetch('/api/labo/eco_scores.json', { cache: 'no-store' });
+    return ((await r.json()) as { apps?: Record<string, EcoScore> }).apps ?? {};
   } catch {
     return {};
   }
