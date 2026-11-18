@@ -16,7 +16,19 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # Laboratoire : alphabette.eu est servi depuis le dossier eu/
+  # Laboratoire : alphabette.eu est servi depuis le dossier eu/.
+  # Chez OVH, une réécriture vers eu/ ne repasse pas par eu/.htaccess quand la cible n'existe pas :
+  # les adresses de l'API figée pointent donc directement sur leur fichier.
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^api/apps/?$ eu/api/apps.json [L]
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^api/ai/config/?$ eu/api/ai/config.json [L]
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^api/health/?$ eu/api/health.json [L]
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^api/admin/session/?$ eu/api/admin-session.json [L]
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^api/donnees-privees - [F,L]
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
   RewriteCond %{REQUEST_URI} !^/eu/
   RewriteRule ^(.*)$ eu/$1 [L]
