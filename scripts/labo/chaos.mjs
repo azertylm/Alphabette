@@ -55,7 +55,9 @@ async function auditer(navigateur, app, ecran) {
   };
 
   try {
-    const r = await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+    // « load » + pause : les applis à flux continu (actualités, vidéos) n'atteignent jamais « networkidle ».
+    const r = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
+    await page.waitForTimeout(2500);
     if (!r || r.status() >= 400) noter('chargement', `Statut HTTP ${r ? r.status() : 'aucun'}`);
     await page.waitForTimeout(1500);
     await debordement();
