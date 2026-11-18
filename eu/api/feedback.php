@@ -13,6 +13,7 @@
  *   POST {action:"ab", app_id, choix:"actuelle"|"beta"}
  *   POST {action:"ab", app_id, test_id, ticket_id?, choix:"A"|"B"}   (barre « Bac à sable A/B » en direct)
  *   POST {action:"avis", …, source:"voix", urgence:1-5}              (retour vocal structuré dans le navigateur)
+ *   POST {action:"avis", …, incident_api:{fournisseur, type, statut}}  (routeur BYOK : « Incident API Tiers », jamais un bug)
  *
  * Données : un fichier JSON rangé HORS du dossier publié (le dépôt Git d'OVH ne le touche pas).
  * Vie privée : aucune adresse IP n'est conservée. Seule une empreinte salée, changée chaque jour,
@@ -262,6 +263,18 @@ if ($action === 'avis') {
     $categorie = isset($entree['category']) && in_array($entree['category'], CATEGORIES, true) ? $entree['category'] : 'Autre';
     $commentaire = masquer(isset($entree['comment']) ? $entree['comment'] : '', MAX_COMMENTAIRE);
     $source = isset($entree['source']) && in_array($entree['source'], array('sondage', 'voix'), true) ? $entree['source'] : 'formulaire';
+    // Incident d'un fournisseur d'IA signalé par le routeur BYOK : classé à part, jamais comme bug de l'appli.
+    $incident = null;
+    if (isset($entree['incident_api']) && is_array($entree['incident_api'])) {
+        $ia = $entree['incident_api'];
+        $f = isset($ia['fournisseur']) ? (string) $ia['fournisseur'] : '';
+        $ty = isset($ia['type']) ? (string) $ia['type'] : '';
+        if (in_array($f, array('gemini', 'mistral', 'claude', 'openai', 'deepseek', 'grok'), true)
+            && in_array($ty, array('quota', 'cle_invalide', 'panne', 'modele_inconnu', 'reseau'), true)) {
+            $incident = array('fournisseur' => $f, 'type' => $ty, 'statut' => isset($ia['statut']) && is_numeric($ia['statut']) ? (int) $ia['statut'] : null);
+        }
+    }
+    if ($incident && $categorie === 'Bug') $categorie = 'Autre';
     $urgence = isset($entree['urgence']) && is_numeric($entree['urgence']) ? max(1, min(5, (int) $entree['urgence'])) : null;
     $declencheur = $source === 'sondage' ? masquer(isset($entree['declencheur']) ? $entree['declencheur'] : '', 60) : null;
     if ($source === 'sondage' && $note === null) erreur(400, 'Choisissez une note.');
@@ -303,6 +316,8 @@ if ($action === 'avis') {
         'source' => $source,
         'declencheur' => $declencheur,
         'urgence' => $urgence,
+        'classement' => $incident ? 'incident_api_tiers' : null,
+        'incident_api' => $incident,
         'telemetry' => $telemetrie,
         'status' => 'pending',
         'ai_analysis' => array('relevance_score' => null, 'intervention_level' => null, 'reasoning' => null, 'proposed_fix' => null),
