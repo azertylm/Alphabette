@@ -130,7 +130,8 @@ const lsApp = await page.evaluate((exclus) => {
       const val = localStorage.getItem(k) ?? '';
       if (val.length >= 8 && val.length <= 4000) v.push({ cle: k, valeur: val });
       // Morceaux significatifs (≥ 8 caractères, pas de simples booléens / nombres / dates).
-      for (const m of val.match(/[^"{}\[\],:]{8,}/g) ?? []) if (!/^(true|false|null|\d+(\.\d+)?|\d{4}-\d\d-\d\d.*)$/.test(m.trim())) v.push({ cle: k, valeur: m.trim().slice(0, 200) });
+      for (const u of val.match(/https?:\/\/[^\s"'<>\\]+/g) ?? []) v.push({ cle: k, valeur: u.slice(0, 300) });
+      for (const m of val.replace(/https?:\/\/[^\s"'<>\\]+/g, ' ').match(/[^"{}\[\],:]{8,}/g) ?? []) if (!/^(true|false|null|\d+(\.\d+)?|\d{4}-\d\d-\d\d.*)$/.test(m.trim())) v.push({ cle: k, valeur: m.trim().slice(0, 200) });
     }
   } catch { /* rien */ }
   return v.slice(0, 300);
@@ -161,6 +162,11 @@ for (const r of requetes) {
   const tout = `${r.url}\n${r.entetes}\n${r.corps}`;
   for (const t of temoins) {
     if (classe === 'autorisee' && FOURNISSEURS_IA.some((d) => r.hote === d || r.hote.endsWith('.' + d)) && t.origine.includes('saisie')) continue; // le texte saisi part vers l'IA choisie : c'est le service
+    // Contenu public mis en cache par l'appli (ex. adresse d'une image d'article) chargé depuis son propre site :
+    // la donnée vient de ce tiers, elle n'est pas une fuite. Ne s'applique jamais aux canaris.
+    if (!t.origine.includes('canari') && /^https?:\/\//.test(t.valeur)) {
+      try { if (new URL(t.valeur).hostname === r.hote) continue; } catch { /* pas une adresse */ }
+    }
     if (variantes(t.valeur).some((v) => tout.includes(v))) {
       if (!fuites.some((f) => f.vers === r.hote && f.donnee === t.origine && f.type === r.type)) fuites.push({ vers: r.hote, classe, type: r.type, methode: r.methode, donnee: t.origine, interceptee: !!r.bloquee });
     }
