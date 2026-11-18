@@ -1,0 +1,46 @@
+# Conseil des Agents en moteur « api » (facultatif) : utilisable seulement si des clés d'IA ont été enregistrées par
+# Valentin comme secrets du dépôt (MISTRAL_API_KEY, GEMINI_API_KEY…). Sans clé, le Conseil se tient dans la session
+# Claude du Laboratoire (moteur relais, /cycle-labo). Le rapport est joint au run et résumé dans sa page.
+name: Conseil des Agents
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: "Appli à évaluer (id du registre)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  conseil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Avis du Laboratoire
+        run: git fetch -q --depth=1 origin labo-donnees && git show FETCH_HEAD:feedbacks.json > /tmp/feedbacks.json || echo '{"feedbacks":[]}' > /tmp/feedbacks.json
+      - name: Délibération
+        env:
+          GH_TOKEN: ${{ secrets.APPS_TOKEN || github.token }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+        run: |
+          set +e
+          bun scripts/labo/conseil/conseil.ts evaluer "${{ inputs.app_id }}" --moteur api --feedbacks /tmp/feedbacks.json
+          code=$?
+          f="data/labo/conseil/${{ inputs.app_id }}.json"
+          if [ -f "$f" ]; then node -e "const r=require('./$f');console.log('## Conseil des Agents — '+r.nom+'\n\n'+r.synthese_executive.map(l=>'- '+l).join('\n'))" >> "$GITHUB_STEP_SUMMARY"; fi
+          exit $code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rapport-conseil
+          path: data/labo/conseil/*.json
+          if-no-files-found: ignore

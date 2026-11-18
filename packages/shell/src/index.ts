@@ -86,3 +86,8 @@ export { ABTestToggle, useABTest, appDepuisAdresse, type ABTestToggleProps, type
 export { useVoiceFeedback, BoutonMicro, moteurDisponible, type Voix, type MoteurVocal, type EtatVocal } from './labo/useVoiceFeedback';
 export { structurerAvisVocal, categorieDuType, type AvisVocal, type TypeAvisVocal } from './labo/structurerAvisVocal';
 export { InteractiveSpotlight, MicroTuto, useMicroTuto, type EtapeSpotlight, type InteractiveSpotlightProps, type TutoAgent } from './labo/InteractiveSpotlight';
+export {
+  appelerIA, classerStatut, messagePedagogique, incidentRecent, ecouterIncidents, lireChaineIA, enregistrerChaineIA,
+  IncidentApiTiers, ErreurRequeteIA, MODELES_PAR_DEFAUT, NOMS_FOURNISSEURS, DOMAINES_FOURNISSEURS, MARQUEUR_INCIDENT,
+  type Fournisseur, type MaillonIA, type RequeteIA, type ReponseIA, type Bascule, type TypeIncident, type OptionsRouteur,
+} from './ia/routeurByok';

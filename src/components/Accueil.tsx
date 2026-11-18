@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
-import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerEcoScores, chargerResumes, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
+import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
 import { LaboAvis } from '../labo/LaboAvis';
 
 /**
@@ -67,6 +67,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   const [donnees, setDonnees] = useState<DonneesLabo>({ evolutions: {}, notes: {}, maturite: {}, betas: {} });
   const [notesFr, setNotesFr] = useState<Record<string, NoteVersion[]>>({});
   const [eco, setEco] = useState<Record<string, EcoScore>>({});
+  const [certs, setCerts] = useState<Record<string, CertificatReseau>>({});
   const [carteOuverte, setCarteOuverte] = useState<string | null>(null);
   const chargerAvis = () =>
     chargerResumes()
@@ -79,6 +80,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
     if (!MODE_LABO) {
       chargerNotesCitoyennes().then(setNotesFr);
       chargerEcoScores().then(setEco);
+      chargerCertificats().then(setCerts);
       return;
     }
     chargerAvis();
@@ -183,6 +185,14 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                         🌱 Sobriété {eco[app.id].note_sobriete}
                       </span>
                     )}
+                  </span>
+                )}
+                {!MODE_LABO && certs[app.id]?.conforme && (
+                  <span className="accueil__pastilles">
+                    <span className="accueil__pastille accueil__pastille--reseau"
+                      title={`Audit réseau du ${new Date(certs[app.id].audite_le).toLocaleDateString('fr-FR')} : aucune donnée de votre appareil envoyée à un tiers. Certificat signé : alphabette.fr/certificats/${app.id}.json (SHA-256 ${certs[app.id].empreinte.slice(0, 12)}…)`}>
+                      🔒 Zéro fuite vérifiée
+                    </span>
                   </span>
                 )}
                 {(app.gratuit || app.badge === 'Nouveau') && (

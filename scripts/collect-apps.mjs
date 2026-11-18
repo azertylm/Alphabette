@@ -83,6 +83,14 @@ async function publier(dossier, cible) {
   await cp(dossier, cible, { recursive: true, filter: (f) => !IGNORES.has(path.basename(f)) });
 }
 
+/** Sonde Sentinelle (alphabette.fr) : 100 premières sessions d'une version, anonyme. Voir labo/serveur/sentinelle.js. */
+async function injecterSentinelle(fichier, cle, version) {
+  const html = await readFile(fichier, 'utf8').catch(() => null);
+  if (!html || html.includes('sentinelle.js')) return;
+  const balise = `<script src="https://alphabette.fr/labo/sentinelle.js" data-app="${cle}" data-version="${version}"></script>`;
+  await writeFile(fichier, /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (m) => `${m}${balise}`) : balise + html);
+}
+
 /** Ajoute le capteur d'erreurs du laboratoire en tête de la page (copie .eu uniquement). */
 async function injecterCapteur(fichier) {
   let html;
@@ -193,7 +201,8 @@ for (const [cle, src] of Object.entries(apps)) {
         const svg = await compresserSvgDossier(path.join(sortieFr, cle));
         if (svg.gain_o > 0) console.log(`  ✓ SVG allégés : ${svg.fichiers} fichiers, −${Math.round(svg.gain_o / 1024)} Ko`);
       }
-      console.log(`✔ .fr  ${cle}  ←  version figée ${src.vitrine.ref.slice(0, 7)}`);
+      await injecterSentinelle(path.join(sortieFr, cle, 'index.html'), cle, src.vitrine.ref);
+      console.log(`✔ .fr  ${cle}  ←  version figée ${src.vitrine.ref.slice(0, 7)} (+ sentinelle)`);
     } else if (domainePropre && principal) {
       // Appli avec son propre domaine (proxilien.fr) : elle y reste servie ; ses adresses .fr vont au Laboratoire (.htaccess).
       await publier(principal.dossier, path.join(sortieFr, cle));

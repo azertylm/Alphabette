@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BoutonMicro, categorieDuType, doublonsProbables, ticketsOuverts, useVoiceFeedback, type TicketOuvert } from '@alphabette/shell';
+import { BoutonMicro, NOMS_FOURNISSEURS, categorieDuType, doublonsProbables, incidentRecent, ticketsOuverts, useVoiceFeedback, type TicketOuvert } from '@alphabette/shell';
 import {
   AVIS_PAR_JOUR,
   CATEGORIES,
@@ -124,6 +124,7 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
         chemin: version === 'beta' && beta ? beta.chemin : chemin,
         site_web: piege,
         ...(urgence !== null ? { source: 'voix' as const, urgence } : {}),
+        ...(incident ? { incident_api: { de: incident.de, type: incident.type, statut: incident.statut } } : {}),
       });
       setEtat('merci');
       setMessage('Merci ! Votre avis est enregistré. Il sera lu et, s’il est retenu, l’appli sera améliorée.');
@@ -160,6 +161,8 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
   };
 
   const etoilesAffichees = survol ?? note ?? 0;
+  // Un fournisseur d'IA vient d'échouer (quota, clé, panne) : ce n'est pas un bug de l'appli.
+  const incident = ouvert && categorie === 'Bug' ? incidentRecent() : null;
 
   return (
     <div className="labo">
@@ -278,6 +281,13 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
             />
           </label>
 
+          {incident && (
+            <p className="labo__message" role="status">
+              <strong>Incident API Tiers</strong> : {NOMS_FOURNISSEURS[incident.de]} a refusé ou n'a pas pu répondre il y a peu
+              ({incident.type === 'quota' ? 'quota atteint' : incident.type === 'cle_invalide' ? 'clé refusée' : incident.type === 'panne' ? 'panne du fournisseur' : incident.type === 'modele_inconnu' ? 'modèle inconnu' : 'pas de réponse'}).
+              Ce n'est pas un bug de l'application : votre message sera classé à part, pas comme un bug.
+            </p>
+          )}
           <BoutonMicro voix={voix} />
           {urgence !== null && (
             <label className="labo__champ">

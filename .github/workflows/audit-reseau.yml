@@ -1,0 +1,74 @@
+# Preuve « Zéro connaissance » : Certificat d'Audit Réseau des applis de alphabette.fr.
+# Chaque lundi, après chaque publication du hub, ou à la demande. Chaque certificat (JSON) et son badge (SVG)
+# sont signés par GitHub (attestation Sigstore liée à ce dépôt et à ce workflow), rangés sur la branche
+# labo-donnees (certificats/), puis publiés sur alphabette.fr/certificats/ à la publication suivante.
+# Vérifier : gh attestation verify <app>.json --repo azertylm/Alphabette
+name: Audit réseau zéro connaissance
+
+on:
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_run:
+    workflows: ['Publier alphabette.fr']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: "Une seule appli (id du registre) ; vide = toutes celles de alphabette.fr"
+        required: false
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: labo-donnees
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Installer Playwright (à part des dépendances du site)
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
+      - name: Applis de alphabette.fr
+        run: |
+          if [ -n "${{ inputs.app_id }}" ]; then echo "${{ inputs.app_id }}" > /tmp/apps.txt
+          else node -e "const r=require('./data/apps-registry.json');console.log(r.apps.filter(a=>a.vitrine&&a.status==='actif').map(a=>a.id).join('\n'))" > /tmp/apps.txt; fi
+          cat /tmp/apps.txt
+      - name: Reprendre les certificats existants
+        run: |
+          mkdir -p certificats
+          if git fetch -q --depth=1 origin labo-donnees; then git checkout FETCH_HEAD -- certificats 2>/dev/null || true; fi
+      - name: Audits
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          echo "## Certificats d'Audit Réseau" >> "$GITHUB_STEP_SUMMARY"
+          while read -r app; do
+            [ -z "$app" ] && continue
+            if node scripts/labo/audit-reseau.mjs "$app" --sortie certificats; then r="✅ conforme"; else r="⛔ NON conforme"; fi
+            echo "- $app : $r" >> "$GITHUB_STEP_SUMMARY"
+          done < /tmp/apps.txt
+      - name: Signature GitHub (Sigstore)
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'certificats/*.json, certificats/*.svg'
+      - name: Ranger sur labo-donnees
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q --depth=1 origin labo-donnees
+          git worktree add -q ../donnees FETCH_HEAD
+          mkdir -p ../donnees/certificats && cp certificats/* ../donnees/certificats/
+          cd ../donnees && git add certificats
+          git diff --cached --quiet || { git commit -qm "Certificats d'audit réseau — $(date -u +%F)"; git push -q origin HEAD:labo-donnees; }

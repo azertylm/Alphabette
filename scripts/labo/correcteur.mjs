@@ -47,7 +47,7 @@ function candidats(fichier) {
   const ouvert = (a) => ['pending', 'approved_auto'].includes(statut(a)) && !decisions[a.id]?.correcteur;
 
   let bugs = feedbacks
-    .filter((a) => a.category === 'Bug' && ouvert(a))
+    .filter((a) => a.category === 'Bug' && ouvert(a) && a.classement !== 'incident_api_tiers')
     .filter((a) => (a.telemetry?.console_errors?.length ?? 0) > 0 || a.upvotes >= SEUIL_PLUS1)
     .sort((x, y) => y.upvotes - x.upvotes)
     .map((a) => {

@@ -34,7 +34,7 @@ function bilan(appId, feedbacks, decisions, chaos) {
   const notes = humains.map((a) => a.rating).filter(Number.isInteger);
   const moyenne = notes.length ? Math.round((notes.reduce((s, n) => s + n, 0) / notes.length) * 100) / 100 : null;
   const il7j = Date.now() - JOURS_CALME * 86400 * 1000;
-  const critique = (a) => a.category === 'Bug' && ((a.telemetry?.console_errors?.length ?? 0) > 0 || a.upvotes > 5 || a.source === 'agent_chaos');
+  const critique = (a) => a.category === 'Bug' && a.classement !== 'incident_api_tiers' && ((a.telemetry?.console_errors?.length ?? 0) > 0 || a.upvotes > 5 || a.source === 'agent_chaos');
   const bugsOuverts = feedbacks.filter((a) => a.app_id === appId && critique(a) && OUVERTS.includes(statut(a)));
   const bugsRecents = feedbacks.filter((a) => a.app_id === appId && critique(a) && statut(a) !== 'rejected' && Date.parse(a.timestamp) > il7j);
   const chaosCritiques = (chaos.apps ?? []).find((x) => x.app_id === appId)?.anomalies?.filter((a) => CHAOS_CRITIQUE.includes(a.type)) ?? [];
@@ -86,6 +86,13 @@ if (commande === 'eligibles') {
       : `⛔ L'Agent Gardien n'a pas pu auditer ${app.name} (Playwright installé ? npm i playwright dans /tmp/pw). Transfert bloqué.`);
     process.exit(3);
   }
+  // Conseil des Agents : un GO récent (7 jours) sur la version candidate exacte est obligatoire.
+  const conseil = lireJson(`data/labo/conseil/${appId}.json`, null);
+  if (!conseil || conseil.verdict !== 'GO' || Date.now() - Date.parse(conseil.evalue_le) > 7 * 86400e3) {
+    console.error(`⛔ Transfert de ${app.name} bloqué : pas de GO récent du Conseil des Agents (bun scripts/labo/conseil/conseil.ts …).` +
+      (conseil ? ` Dernier verdict : ${conseil.verdict}, ${conseil.evalue_le.slice(0, 10)}.` : ''));
+    process.exit(5);
+  }
   const ecos = lireJson('data/labo/eco_scores.json', { apps: {} });
   if (ecos.apps[appId]) { ecos.apps[appId].vitrine = true; ecrireJson('data/labo/eco_scores.json', ecos); }
   const date = new Date().toISOString();
@@ -97,6 +104,20 @@ if (commande === 'eligibles') {
     // Le commit testé sur .eu (branche principale) devient la version figée de la vitrine.
     const src = sources.apps[cle];
     version = execFileSync('git', ['ls-remote', `https://github.com/${src.repo}.git`, `refs/heads/${src.branch || 'main'}`], { encoding: 'utf8' }).split('\t')[0];
+    if (conseil.version_candidate && conseil.version_candidate !== version) {
+      console.error(`⛔ Le Conseil a jugé la version ${conseil.version_candidate.slice(0, 7)}, mais .eu est maintenant en ${version.slice(0, 7)} : nouveau Conseil nécessaire.`);
+      process.exit(5);
+    }
+    // Historique des versions de .fr : l'actuelle devient N-1, cible d'un retour arrière de la Sentinelle.
+    const rel = lireJson('data/labo/releases.json', { apps: {} });
+    const histo = (rel.apps[cle] ??= []);
+    if (histo.some((r) => r.ref === version && r.statut === 'retiree')) {
+      console.error(`⛔ La version ${version.slice(0, 7)} a été retirée de .fr par la Sentinelle : elle doit être corrigée avant une nouvelle graduation.`);
+      process.exit(4);
+    }
+    for (const r of histo) if (r.statut === 'en_ligne') r.statut = 'stable';
+    histo.push({ ref: version, depuis: date.slice(0, 10), statut: 'en_ligne' });
+    ecrireJson('data/labo/releases.json', rel);
     src.vitrine = { ref: version, depuis: date.slice(0, 10) };
     ecrireJson('data/apps-sources.json', sources);
   } else {

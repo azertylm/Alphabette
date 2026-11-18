@@ -24,6 +24,8 @@
       .slice(0, 300);
   }
   function noter(message) {
+    // Incident d'un fournisseur d'IA (routeur BYOK) : pas un bug de l'appli, jamais gardé.
+    if (/\[Incident API Tiers\]|IncidentApiTiers/.test(String(message))) return;
     var propre = nettoyer(message);
     if (!propre || propre === dernier) return; // même erreur en boucle : une seule fois
     dernier = propre;

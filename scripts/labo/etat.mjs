@@ -54,3 +54,18 @@ for (const a of aTrier) {
   if (a.telemetry?.console_errors?.length) console.log(`   erreurs : ${a.telemetry.console_errors.join(' | ')}`);
   console.log(`   ${a.telemetry?.platform ?? ''} ${a.telemetry?.viewport ?? ''} · version ${a.version_tested}`);
 }
+
+// Tableau de bord d'administration : dernières décisions du Conseil des Agents et incidents de production.
+if (option !== '--json') {
+  const conseil = await lire('data/labo/conseil.json', { apps: {} });
+  const incidents = await lire('data/labo/incidents.json', { incidents: [] });
+  const decisionsConseil = Object.entries(conseil.apps ?? {});
+  if (decisionsConseil.length) {
+    console.log('\n=== Conseil des Agents ===');
+    for (const [id, d] of decisionsConseil) console.log(`\n${noms[id] ?? id} — ${d.evalue_le.slice(0, 10)}\n  ${d.synthese_executive.join('\n  ')}`);
+  }
+  if ((incidents.incidents ?? []).length) {
+    console.log('\n=== Incidents en production (Sentinelle) ===');
+    for (const i of incidents.incidents.slice(-5)) console.log(`- ${i.date.slice(0, 16)} ${i.app_id} : ${i.raisons.join(' ; ')} → ${i.retour_a ? 'retour à ' + i.retour_a.slice(0, 7) : 'pas de N-1'}`);
+  }
+}

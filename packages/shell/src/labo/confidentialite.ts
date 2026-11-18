@@ -80,7 +80,8 @@ export function erreursCapturees(chemin = cheminCourant()): string[] {
   try {
     const toutes = JSON.parse(localStorage.getItem('labo_erreurs_v1') || '{}') as Record<string, { t: number; m: string }[]>;
     const limite = Date.now() - 24 * 3600 * 1000;
-    return (toutes[chemin] ?? []).filter((e) => e.t > limite).slice(-10).map((e) => nettoyerTexte(e.m, 300));
+    // Les incidents de fournisseurs d'IA (quota, clé, panne) ne sont pas des bugs de l'appli : exclus.
+    return (toutes[chemin] ?? []).filter((e) => e.t > limite && !e.m.includes('[Incident API Tiers]') && !/IncidentApiTiers/.test(e.m)).slice(-10).map((e) => nettoyerTexte(e.m, 300));
   } catch {
     return [];
   }

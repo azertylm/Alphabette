@@ -237,3 +237,4 @@ html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180d
 .accueil__pastille--eco { background: #e6f4ea; color: #12512c; }
 .accueil__pastille--eco-C { background: #fdf6d8; color: #5b4a00; }
 .accueil__pastille--eco-D, .accueil__pastille--eco-E { background: #fde8e4; color: #7a1d0e; }
+.accueil__pastille--reseau { background: #e8eefc; color: #17306b; }

@@ -19,6 +19,7 @@
 import { spawn } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { existsSync } from 'node:fs';
 import { preRendre } from './labo/seo.mjs';
 
 const racine = process.cwd();
@@ -312,6 +313,20 @@ async function preparerLaboratoire() {
   // Notes de version « citoyennes » : aussi pour la vitrine .fr.
   await mkdir(path.join(sortie, 'api', 'labo'), { recursive: true });
   await writeFile(path.join(sortie, 'api', 'labo', 'notes_version.json'), await readFile(path.join(racine, 'data', 'labo', 'notes_version.json'), 'utf8').catch(() => '{"apps":{}}\n'));
+  // Sentinelle post-transfert (.fr) : sonde, service, et liste des versions surveillées.
+  await mkdir(path.join(sortie, 'labo'), { recursive: true });
+  await cp(path.join(racine, 'labo', 'serveur', 'sentinelle.js'), path.join(sortie, 'labo', 'sentinelle.js'));
+  await cp(path.join(racine, 'labo', 'serveur', 'sentinelle.php'), path.join(sortie, 'api', 'sentinelle.php'));
+  {
+    const sources = JSON.parse(await readFile(path.join(racine, 'data', 'apps-sources.json'), 'utf8'));
+    const versions = Object.fromEntries(Object.entries(sources.apps ?? {}).filter(([, s]) => s.vitrine?.ref).map(([c, s]) => [c, s.vitrine.ref]));
+    await writeFile(path.join(sortie, 'api', 'sentinelle-versions.json'), JSON.stringify(versions, null, 2) + '\n');
+  }
+  // Certificats d'Audit Réseau signés (workflow audit-reseau.yml, branche labo-donnees) : sur .fr et .eu.
+  const certs = path.join(racine, 'certificats');
+  if (existsSync(certs)) {
+    for (const cible of [path.join(sortie, 'certificats'), path.join(eu, 'certificats')]) await cp(certs, cible, { recursive: true });
+  }
   // Micro-tutos et éco-scores sur .fr : seulement ceux validés pour la vitrine (ordre de Valentin).
   for (const nom of ['tutos', 'eco_scores']) {
     const d = JSON.parse(await readFile(path.join(racine, 'data', 'labo', `${nom}.json`), 'utf8').catch(() => '{"apps":{}}'));

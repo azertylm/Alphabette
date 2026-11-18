@@ -5,6 +5,7 @@
  * Hors du Laboratoire, aucune requête n'est faite.
  */
 import { contexteTechnique, nettoyerTexte, surLeLaboratoire } from './confidentialite';
+import { incidentRecent } from '../ia/routeurByok';
 
 export const API_AVIS = '/api/feedback.php';
 export type CategorieAvis = 'Bug' | 'Idée' | 'Design' | 'Autre';
@@ -54,6 +55,8 @@ export async function envoyerAvisLabo(avis: NouvelAvis): Promise<{ ok: true; id:
     comment: nettoyerTexte(avis.comment, 1000),
     declencheur: avis.declencheur ? nettoyerTexte(avis.declencheur, 60) : undefined,
     telemetry: contexteTechnique(avis.chemin),
+    // Panne, quota ou clé refusée chez un fournisseur d'IA juste avant : « Incident API Tiers », pas un bug.
+    incident_api: avis.category === 'Bug' ? incidentRecent() ?? undefined : undefined,
   });
 }
 

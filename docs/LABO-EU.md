@@ -30,6 +30,7 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
 - Agent Correcteur (bug → Pull Request, prompts mal notés → A/B) : `docs/labo/AGENT-CORRECTEUR.md`.
 
 - Agent Chaos (nuit), Agent de Graduation, notes de version bilingues : `docs/labo/AGENT-CHAOS.md`.
+- Routeur BYOK, audit réseau signé, pollinisation, Sentinelle, Conseil des Agents : `docs/labo/SECURITE-DEVOPS.md`.
 - Bac à sable A/B, dictée d'avis, micro-tutos : `docs/labo/MODULES-INTERACTION.md`. Agent Gardien Ergonomie & Sobriété : `docs/labo/AGENT-GARDIEN.md`.
 - Micro-sondages branchés : IA Débat (« débat terminé »), Info Perso (« article lu », après 20 s de lecture).
 

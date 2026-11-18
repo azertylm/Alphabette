@@ -156,11 +156,13 @@ export interface NouvelAvis {
   /** « voix » si l'avis a été dicté ; urgence 1-5 estimée puis relue par le visiteur. */
   source?: 'formulaire' | 'voix';
   urgence?: number;
+  /** Incident d'un fournisseur d'IA (routeur BYOK) constaté juste avant. */
+  incident_api?: { de: string; type: string; statut: number | null };
 }
 
 export async function envoyerAvis(avis: NouvelAvis) {
   const { chemin, ...reste } = avis;
-  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', source: 'formulaire', ...reste, comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
+  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', source: 'formulaire', ...reste, incident_api: reste.incident_api ? { fournisseur: reste.incident_api.de, type: reste.incident_api.type, statut: reste.incident_api.statut } : undefined, comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
   const l = lireLimites();
   l.avis[avis.app_id] = (l.avis[avis.app_id] ?? 0) + 1;
   ecrireLimites(l);
@@ -211,6 +213,18 @@ export async function chargerEcoScores(): Promise<Record<string, EcoScore>> {
   try {
     const r = await fetch('/api/labo/eco_scores.json', { cache: 'no-store' });
     return ((await r.json()) as { apps?: Record<string, EcoScore> }).apps ?? {};
+  } catch {
+    return {};
+  }
+}
+
+export interface CertificatReseau { conforme: boolean; audite_le: string; empreinte: string }
+
+/** Certificats d'Audit Réseau publiés (alphabette.fr/certificats/index.json). Absent → rien d'affiché. */
+export async function chargerCertificats(): Promise<Record<string, CertificatReseau>> {
+  try {
+    const r = await fetch('/certificats/index.json', { cache: 'no-cache' });
+    return r.ok ? (((await r.json()) as { apps?: Record<string, CertificatReseau> }).apps ?? {}) : {};
   } catch {
     return {};
   }

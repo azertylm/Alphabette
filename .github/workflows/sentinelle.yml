@@ -1,0 +1,52 @@
+# Sentinelle post-transfert & retour arrière automatique (alphabette.fr).
+# Toutes les 20 minutes : lit les agrégats anonymes de la sonde (100 premières sessions de chaque version)
+# et, si plus de 2 % de sessions ont une erreur fatale ou si le premier rendu a doublé, remet la version
+# stable N-1 sur alphabette.fr, publie, rouvre les tickets sur alphabette.eu et ouvre un ticket GitHub.
+name: Sentinelle post-transfert
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: sentinelle
+  cancel-in-progress: false
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Avis du Laboratoire (pour rouvrir les tickets)
+        run: |
+          if git fetch -q --depth=1 origin labo-donnees; then git show FETCH_HEAD:feedbacks.json > /tmp/feedbacks.json 2>/dev/null || echo '{"feedbacks":[]}' > /tmp/feedbacks.json; else echo '{"feedbacks":[]}' > /tmp/feedbacks.json; fi
+      - name: Vérifier les 100 premières sessions
+        id: verif
+        run: |
+          node scripts/labo/sentinelle.mjs verifier --feedbacks /tmp/feedbacks.json --appliquer > /tmp/sentinelle.json
+          cat /tmp/sentinelle.json
+          n=$(node -e "console.log(require('/tmp/sentinelle.json').retours_arriere.length)")
+          echo "retours=$n" >> "$GITHUB_OUTPUT"
+      - name: Retour arrière (commit + publication)
+        if: steps.verif.outputs.retours != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apps-sources.json data/labo/releases.json data/labo/incidents.json data/labo/decisions.json
+          git commit -qm "Sentinelle : retour automatique à la version stable sur alphabette.fr ($(node -e "console.log(require('/tmp/sentinelle.json').retours_arriere.join(', '))"))"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          gh workflow run deploy-ovh.yml --ref main
+          gh issue create --title "⛔ Sentinelle : retour arrière sur alphabette.fr ($(date -u +%F' '%H:%M) UTC)" --body-file /tmp/sentinelle-rapport.md --label incident || \
+            gh issue create --title "⛔ Sentinelle : retour arrière sur alphabette.fr ($(date -u +%F' '%H:%M) UTC)" --body-file /tmp/sentinelle-rapport.md

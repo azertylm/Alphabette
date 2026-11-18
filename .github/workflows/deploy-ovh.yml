@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: 22
       - run: bun install --frozen-lockfile
+      - name: Certificats d'audit réseau (branche labo-donnees)
+        run: |
+          if git fetch -q --depth=1 origin labo-donnees; then git checkout FETCH_HEAD -- certificats 2>/dev/null || true; git reset -q; fi
       - run: bun run build:static
         env:
           APPS_TOKEN: ${{ secrets.APPS_TOKEN }}
