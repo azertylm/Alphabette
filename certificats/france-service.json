@@ -1,0 +1,78 @@
+{
+  "type": "Certificat d'Audit Réseau — Alphabette",
+  "version_format": 1,
+  "app_id": "france-service",
+  "nom": "SERVICE FRANCE",
+  "url": "https://franceservice.alphabette.fr/",
+  "audite_le": "2026-11-18T18:53:02.669Z",
+  "empreinte_page_sha256": "995f0afef8690dae64b625aff461b858ea58e40200b892b6aea672cbeff316c4",
+  "methode": {
+    "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
+    "canaris": {
+      "localStorage": 3,
+      "champs_remplis": 1,
+      "boutons_actives": 1,
+      "valeurs_de_l_appli": 1
+    },
+    "ecoute": [
+      "fetch",
+      "XMLHttpRequest",
+      "sendBeacon",
+      "ressources",
+      "WebSocket",
+      "service workers"
+    ],
+    "autorises": [
+      "generativelanguage.googleapis.com",
+      "api.mistral.ai",
+      "api.anthropic.com",
+      "api.openai.com",
+      "api.deepseek.com",
+      "api.x.ai"
+    ],
+    "limite": "Une donnée chiffrée ou hachée par l'appli avant l'envoi n'est pas reconnaissable par cette méthode."
+  },
+  "destinations": [
+    {
+      "hote": "alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 4,
+      "bloquees": 0,
+      "types": [
+        "script",
+        "fetch"
+      ]
+    },
+    {
+      "hote": "franceservice.alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 3,
+      "bloquees": 0,
+      "types": [
+        "document",
+        "script",
+        "stylesheet"
+      ]
+    },
+    {
+      "hote": "fonts.googleapis.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "stylesheet"
+      ]
+    }
+  ],
+  "resultat": {
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
+    "envois_autorises": [],
+    "tiers_contactes": [
+      "fonts.googleapis.com"
+    ]
+  },
+  "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
+  "empreinte_certificat_sha256": "4665c5eeaa499a57368b2c7a374c7f5526e8a42f3dad0c9592a71456aa97995a"
+}
