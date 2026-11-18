@@ -1,5 +1,5 @@
 {
-  "_aide": "Dossier publié (apps/<clé>/) → dépôt GitHub de l'application. Ajouter une ligne ici suffit pour qu'une application soit publiée avec le hub. Voir docs/PUBLIER-UNE-APP.md.",
+  "_aide": "Dossier publié (apps/<clé>/) → dépôt GitHub de l'application. Une ligne ici suffit pour qu'une application soit publiée sur le Laboratoire alphabette.eu (branche main). « vitrine » : version figée (commit exact) publiée sur alphabette.fr — ne changer que sur ordre de Valentin. « beta » : branche publiée sur alphabette.eu/apps/<clé>/beta/. Voir docs/PUBLIER-UNE-APP.md et docs/LABO-EU.md.",
   "apps": {
     "bonplan": {
       "repo": "azertylm/bonplan-alphabette.fr"
@@ -23,19 +23,31 @@
       "repo": "azertylm/bonplansenior-alphabette.fr"
     },
     "franceservice": {
-      "repo": "azertylm/Service-france"
+      "repo": "azertylm/Service-france",
+      "vitrine": {
+        "ref": "661c8a66369b33e72aea7f4d59e1282afe65cc01",
+        "depuis": "2026-11-18"
+      }
     },
     "infosperso": {
       "repo": "azertylm/Info-perso-2",
       "domains": [
         "infosperso.alphabette.fr"
-      ]
+      ],
+      "vitrine": {
+        "ref": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e",
+        "depuis": "2026-11-18"
+      }
     },
     "iadebat": {
       "repo": "azertylm/Il-y-a-des-bas-",
       "domains": [
         "iadebat.alphabette.fr"
-      ]
+      ],
+      "vitrine": {
+        "ref": "06806c0ee1cebd003e0def924c88987b6f57ac44",
+        "depuis": "2026-11-18"
+      }
     },
     "atelier": {
       "repo": "azertylm/L-oeil-de-l-atelier",

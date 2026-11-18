@@ -1,5 +1,9 @@
 # Publier une application sur alphabette.fr (hébergement OVH Perso)
 
+> **Depuis le 18 novembre 2026** : une application déclarée ici part d'abord sur le
+> **Laboratoire alphabette.eu** (`https://alphabette.eu/apps/<clé>/`, avis des visiteurs).
+> Elle n'apparaît sur alphabette.fr que sur ordre de Valentin (`"vitrine"`, voir `docs/LABO-EU.md`).
+
 L'hébergement n'autorise qu'un site relié à GitHub : c'est le hub qui publie tout.
 À chaque push sur `main`, GitHub construit le hub **et** les applications, puis
 OVH récupère la branche `ovh-deploy`.

@@ -110,9 +110,16 @@ Le hub et les applications vivent dans des dépôts distincts : toujours
 pousser chaque dossier dans LE bon dépôt. Ne jamais considérer une
 livraison terminée tant qu'elle n'est pas sur GitHub.
 
+## Règle nº 9 — Deux sites : le Laboratoire et la Vitrine
+
+- **alphabette.eu** (Laboratoire) : toutes les applications, branche `main`, avis des visiteurs.
+- **alphabette.fr** (Vitrine) : seulement les applications `"vitrine"`, figées sur un commit
+  (`data/apps-sources.json`) ou dans `vitrine/`. On n'y touche que sur ordre de Valentin.
+- Avant toute amélioration issue des avis : lire `RULES_AND_MEMORY.md`. Détails : `docs/LABO-EU.md`.
+
 ## Équipe d'agents
 
-20 agents spécialisés vivent dans `.claude/agents/` (chef de projet,
+25 agents spécialisés vivent dans `.claude/agents/` (dont les 5 du Laboratoire) (chef de projet,
 développeur, testeur mobile, vérificateur d'honnêteté, publieur…).
 Liste et mode d'emploi : `docs/EQUIPE-AGENTS.md`. Pour une demande large,
 commencer par `chef-de-projet`.

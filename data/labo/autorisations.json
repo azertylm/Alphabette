@@ -1,0 +1,4 @@
+{
+  "_aide": "Réponses de Valentin aux demandes de Niveau 2. Clé = id de l'avis : { decision: \"accepte\" | \"refuse\", date, note }. Écrit seulement quand Valentin a répondu lui-même.",
+  "autorisations": {}
+}

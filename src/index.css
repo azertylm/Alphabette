@@ -92,6 +92,96 @@ html[data-ab-theme='nuit'] .accueil {
   .accueil__desc { font-size: 1.125rem; }
 }
 
+/* ===================== Laboratoire alphabette.eu =====================
+   Module d'avis sous chaque application (src/labo/). En rem, comme le reste :
+   le bouton BIG agrandit tout. Une colonne sur téléphone pour garder le
+   formulaire lisible ; une carte ouverte prend toute la largeur. */
+.labo-bandeau {
+  display: inline-block; font-size: 0.95rem; font-weight: 900; letter-spacing: 0.02em; margin-bottom: 0.6rem;
+  padding: 0.25rem 0.75rem; border-radius: 999px; background: color-mix(in srgb, var(--acc) 14%, transparent); color: var(--acc);
+}
+.accueil__labo-lien { margin-top: 1.25rem; }
+.labo-carte {
+  display: flex; flex-direction: column; min-width: 0;
+  background: var(--acc-carte); border: 1px solid var(--acc-trait); border-radius: 1.25rem; box-shadow: 0 2px 0 var(--acc-trait);
+}
+.labo-carte > .accueil__tuile { border: 0; box-shadow: none; background: transparent; border-radius: 1.25rem 1.25rem 0 0; }
+.labo-carte > .accueil__tuile:hover { transform: none; }
+.labo-carte:hover { border-color: color-mix(in srgb, var(--acc) 50%, var(--acc-trait)); }
+.labo-carte--ouverte { grid-column: 1 / -1; border-color: var(--acc); }
+.labo { display: flex; flex-direction: column; gap: 0.55rem; padding: 0 1rem 1rem; border-top: 1px dashed var(--acc-trait); padding-top: 0.75rem; }
+.labo__evolution {
+  font-size: 0.9rem; line-height: 1.35; border-radius: 0.75rem; padding: 0.4rem 0.6rem;
+  background: color-mix(in srgb, #f59e0b 14%, transparent); color: var(--acc-encre);
+}
+.labo__ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.75rem; font-size: 1rem; }
+.labo__moyenne { font-weight: 900; color: #b45309; }
+html[data-ab-theme='nuit'] .labo__moyenne { color: #fbbf24; }
+.labo__moyenne small { font-weight: 600; color: var(--acc-doux); }
+.labo__moyenne--vide { font-weight: 600; color: var(--acc-doux); }
+.labo__maturite {
+  font-size: 0.85rem; font-weight: 800; border-radius: 999px; padding: 0.1rem 0.6rem;
+  background: color-mix(in srgb, var(--acc) 14%, transparent); color: var(--acc);
+}
+.labo__top { display: flex; flex-direction: column; gap: 0.4rem; }
+.labo__top li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.95rem; line-height: 1.35; }
+.labo__texte {
+  flex: 1; min-width: 0; color: var(--acc-doux); overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.labo-carte--ouverte .labo__texte { -webkit-line-clamp: unset; display: block; }
+.labo__plus1 {
+  flex: none; min-height: 2.25rem; min-width: 3.25rem; border-radius: 999px; padding: 0.15rem 0.6rem; font-weight: 900; font-size: 0.95rem;
+  border: 2px solid var(--acc); color: var(--acc); background: transparent; cursor: pointer;
+}
+.labo__plus1 small { font-weight: 700; }
+.labo__plus1:disabled { background: var(--acc); color: var(--acc-carte); cursor: default; }
+.labo__bouton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; min-height: 2.75rem; width: 100%;
+  border-radius: 0.9rem; padding: 0.5rem 0.9rem; font-size: 1rem; font-weight: 800; cursor: pointer; text-align: center;
+  border: 2px solid var(--acc); color: var(--acc); background: transparent;
+}
+.labo__bouton:hover { background: color-mix(in srgb, var(--acc) 10%, transparent); }
+.labo__bouton:focus-visible, .labo__plus1:focus-visible, .labo__puce:focus-within, .labo__etoile:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+.labo__bouton--envoyer { background: var(--acc); color: #fff; }
+html[data-ab-theme='nuit'] .labo__bouton--envoyer { color: #0b1220; }
+.labo__bouton--envoyer:hover { background: color-mix(in srgb, var(--acc) 85%, #000); }
+.labo__bouton--beta { border-style: dashed; }
+.labo__beta { display: flex; flex-direction: column; gap: 0.4rem; }
+.labo__ab, .labo__categories { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.labo__puce {
+  display: inline-flex; align-items: center; gap: 0.25rem; min-height: 2.5rem; padding: 0.3rem 0.8rem; border-radius: 999px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 1px solid var(--acc-trait); background: var(--acc-fond); color: var(--acc-encre);
+}
+.labo__puce:disabled { opacity: 0.6; cursor: default; }
+.labo__puce input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.labo__puce--choisie { border: 2px solid var(--acc); background: color-mix(in srgb, var(--acc) 14%, transparent); }
+.labo__form { display: flex; flex-direction: column; gap: 0.75rem; }
+.labo__form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.labo__form legend, .labo__champ > span { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.3rem; }
+.labo__etoiles { display: flex; flex-wrap: wrap; }
+.labo__etoiles legend { width: 100%; }
+.labo__etoile {
+  font-size: 2.1rem; line-height: 1; width: 2.9rem; height: 2.9rem; cursor: pointer; background: none; border: 0;
+  color: color-mix(in srgb, var(--acc-doux) 35%, transparent);
+}
+.labo__etoile--pleine { color: #f59e0b; }
+.labo__champ { display: flex; flex-direction: column; }
+.labo__champ textarea, .labo__champ select {
+  width: 100%; font: inherit; font-size: 1rem; border-radius: 0.75rem; padding: 0.6rem 0.75rem;
+  border: 1px solid var(--acc-trait); background: var(--acc-fond); color: var(--acc-encre);
+}
+.labo__champ textarea:focus, .labo__champ select:focus { outline: 3px solid var(--acc); outline-offset: 1px; }
+.labo__piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.labo__petit { font-size: 0.85rem; line-height: 1.4; color: var(--acc-doux); }
+.labo__message { font-size: 0.95rem; font-weight: 700; color: #166534; }
+html[data-ab-theme='nuit'] .labo__message { color: #86efac; }
+.labo__message--erreur { color: #b91c1c; }
+html[data-ab-theme='nuit'] .labo__message--erreur { color: #fca5a5; }
+@media (max-width: 600px) {
+  .accueil__tuiles--labo { grid-template-columns: 1fr; }
+}
+
 /* Les anciennes sections (atelier IA, tarifs, engagements, pied de page) ne connaissent
    que le thème clair : en mode Nuit, on les inverse d'un bloc plutôt que de laisser
    une moitié de page blanche. */

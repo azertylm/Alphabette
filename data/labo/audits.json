@@ -1,0 +1,4 @@
+{
+  "_aide": "Audit qualité de QA_Verifier, sur 30 par application (clé = id du registre) : { score, date, resume }. Sert au score de maturité.",
+  "apps": {}
+}
