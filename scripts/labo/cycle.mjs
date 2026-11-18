@@ -25,5 +25,7 @@ try {
 run('node', ['scripts/labo/etat.mjs', FICHIER]);
 console.log('');
 run('node', ['scripts/labo/maturite.mjs', FICHIER]);
+const cand = JSON.parse(lire('node', ['scripts/labo/correcteur.mjs', 'candidats', FICHIER]));
+console.log(`Agent Correcteur : ${cand.bugs.length} bug(s) à corriger, ${cand.prompts.length} prompt(s) à ajuster.`);
 const aTrier = JSON.parse(lire('node', ['scripts/labo/etat.mjs', FICHIER, '--json']));
 console.log(`\n${aTrier.length} avis à trier${aTrier.some((a) => a.priorite_haute) ? ' (dont PRIORITÉ HAUTE)' : ''}. Suite : /cycle-labo.`);

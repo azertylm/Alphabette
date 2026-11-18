@@ -172,6 +172,9 @@ html[data-ab-theme='nuit'] .labo__bouton--envoyer { color: #0b1220; }
   border: 1px solid var(--acc-trait); background: var(--acc-fond); color: var(--acc-encre);
 }
 .labo__champ textarea:focus, .labo__champ select:focus { outline: 3px solid var(--acc); outline-offset: 1px; }
+.labo__doublons { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.6rem; border-radius: 0.9rem; border: 2px dashed var(--acc); background: color-mix(in srgb, var(--acc) 6%, transparent); }
+.labo__doublon { display: flex; flex-direction: column; gap: 0.4rem; }
+.labo__doublon .labo__texte { -webkit-line-clamp: 3; color: var(--acc-encre); }
 .labo__piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .labo__petit { font-size: 0.85rem; line-height: 1.4; color: var(--acc-doux); }
 .labo__message { font-size: 0.95rem; font-weight: 700; color: #166534; }

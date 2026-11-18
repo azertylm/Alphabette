@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { doublonsProbables, ticketsOuverts, type TicketOuvert } from '@alphabette/shell';
 import {
   AVIS_PAR_JOUR,
   CATEGORIES,
@@ -56,6 +57,28 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
   const [message, setMessage] = useState('');
   const [votes, setVotes] = useState<Record<string, number>>({});
   const [ab, setAb] = useState(resume?.ab);
+  // Dédoublonnage en direct : tickets ouverts de l'appli, comparés au texte pendant la saisie.
+  const tickets = useRef<TicketOuvert[] | null>(null);
+  const [doublons, setDoublons] = useState<(TicketOuvert & { score: number })[]>([]);
+  const [different, setDifferent] = useState(false);
+  useEffect(() => {
+    if (!ouvert || tickets.current) return;
+    tickets.current = [];
+    ticketsOuverts(appId).then((t) => (tickets.current = t)).catch(() => undefined);
+  }, [ouvert, appId]);
+  useEffect(() => {
+    if (!ouvert || different) return;
+    const t = window.setTimeout(() => setDoublons(doublonsProbables(commentaire, tickets.current ?? [], 0.75)), 350);
+    return () => window.clearTimeout(t);
+  }, [commentaire, ouvert, different]);
+  const soutenirDoublon = async (id: string) => {
+    await voter(id);
+    setDoublons([]);
+    setCommentaire('');
+    setEtat('merci');
+    setMessage('Merci ! Votre « +1 » fait remonter ce problème : il sera traité en priorité.');
+    onOuvrir(false);
+  };
 
   const evolution = donnees.evolutions[appId]?.[0];
   const score = donnees.maturite[appId]?.score;
@@ -68,6 +91,11 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
     if (note === null && commentaire.trim().length < 5) {
       setEtat('erreur');
       setMessage('Choisissez une note ou écrivez quelques mots.');
+      return;
+    }
+    if (doublons.length && !different) {
+      setEtat('erreur');
+      setMessage('Ce point est déjà signalé : ajoutez votre « +1 » ci-dessus, ou dites-nous que c’est autre chose.');
       return;
     }
     if (avisRestants(appId) <= 0) {
@@ -90,6 +118,8 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
       setMessage('Merci ! Votre avis est enregistré. Il sera lu et, s’il est retenu, l’appli sera améliorée.');
       setNote(null);
       setCommentaire('');
+      setDifferent(false);
+      tickets.current = null;
       onMaj();
     } catch (err) {
       setEtat('erreur');
@@ -222,12 +252,29 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
             <span>Votre commentaire</span>
             <textarea
               value={commentaire}
-              onChange={(e) => setCommentaire(e.target.value)}
+              onChange={(e) => { setCommentaire(e.target.value); if (!e.target.value) setDifferent(false); }}
               maxLength={1000}
               rows={3}
               placeholder={AIDE[categorie]}
             />
           </label>
+
+          {doublons.length > 0 && !different && (
+            <div className="labo__doublons" role="status">
+              <p className="labo__petit"><strong>Déjà signalé ?</strong> Ce que vous écrivez ressemble à :</p>
+              {doublons.map((d) => (
+                <div key={d.id} className="labo__doublon">
+                  <p className="labo__texte">{ICONE[d.category] ?? '💬'} {d.comment}</p>
+                  <button type="button" className="labo__bouton labo__bouton--envoyer" onClick={() => soutenirDoublon(d.id)} disabled={dejaPlus1(d.id)}>
+                    {dejaPlus1(d.id) ? 'Déjà soutenu' : '+1 (J’ai aussi ce problème)'}
+                  </button>
+                </div>
+              ))}
+              <button type="button" className="labo__puce" onClick={() => { setDifferent(true); setDoublons([]); }}>
+                Non, c'est autre chose
+              </button>
+            </div>
+          )}
 
           {beta && (
             <label className="labo__champ">
@@ -246,8 +293,9 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
           </label>
 
           <p className="labo__petit">
-            Votre avis est public et anonyme. Pour aider à corriger, il emporte la taille de votre écran, le type d'appareil et les
-            dernières erreurs techniques de l'appli — rien d'autre.
+            Votre avis est public et anonyme. Pour aider à corriger, il emporte la taille de l'écran, le type d'appareil, les
+            dernières erreurs techniques de l'appli et le nom de quelques réglages d'affichage. Clés, e-mails, numéros et
+            adresses sont effacés avant l'envoi.
           </p>
 
           <button type="submit" className="labo__bouton labo__bouton--envoyer" disabled={etat === 'envoi'}>

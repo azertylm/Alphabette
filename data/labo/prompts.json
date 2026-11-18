@@ -1,0 +1,6 @@
+{
+  "_aide": "Applications à IA dont l'Agent Correcteur peut ajuster le prompt système (A/B sur alphabette.eu). Clé = id du registre. cle = dossier apps/<clé>/ ; fichier = fichier du dépôt qui contient le prompt ; repere = texte unique qui permet de le retrouver. Complété par l'Agent Correcteur la première fois qu'il travaille sur une appli, vérifié par qa-verifier.",
+  "apps": {
+    "iadebat": { "cle": "iadebat", "fichier": "server.ts", "repere": "LIBERTÉ TOTALE D'OPINION", "role": "Consigne commune à toutes les voix du débat (/api/debate/generate)" }
+  }
+}

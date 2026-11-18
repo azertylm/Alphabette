@@ -21,6 +21,12 @@ Seuls (Niveau 1, après accord de `qa-verifier`) :
 - modifier une page du hub côté laboratoire (`public/<page>/`), jamais sa copie `vitrine/` ;
 - écrire `data/labo/*.json` (décisions, évolutions, maturité, audits).
 
+Seuls aussi (décision de Valentin du 18/11/2026), par l'`agent-correcteur` :
+- préparer une branche `labo/fb_<id>` et une Pull Request pour un bug critique ou soutenu ; la fusionner seulement si c'est un
+  Niveau 1 et après l'« OK pour publier » de `qa-verifier` ;
+- déployer en **bêta** (`alphabette.eu/apps/<clé>/beta/`) une variante du prompt système d'une appli à IA notée sous 3/5 ;
+  l'adopter sur `main` reste un Niveau 2 (accord de Valentin).
+
 Jamais sans autorisation écrite de Valentin (`data/labo/autorisations.json`) — **Niveau 2** :
 - nouvelle fonctionnalité, refonte, changement de logique métier, de textes de fond, de prix ;
 - tout ce qui touche le hub lui-même (`src/`, `server/`, `scripts/`, `packages/shell/`, `labo/serveur/`, workflows) ;
@@ -31,7 +37,9 @@ une évolution, un score ; transférer une appli vers .fr.
 ## 3. Le relais strict
 1. `triage-analyst` lit les avis (`labo-donnees:feedbacks.json`, via `scripts/labo/etat.mjs`), rejette
    le spam et le hors-sujet, classe Niveau 1 / Niveau 2, écrit `data/labo/decisions.json`.
-2. `code-builder` applique les Niveau 1 (au plus **3 corrections par passage**) ou, après autorisation,
+2. `agent-correcteur` traite d'abord les bugs critiques (trace console) ou soutenus et les prompts mal notés :
+   localisation par cartes de sources, branche + Pull Request, variante de prompt en A/B (`docs/labo/AGENT-CORRECTEUR.md`).
+   `code-builder` applique les autres Niveau 1 (au plus **3 corrections par passage**) ou, après autorisation,
    crée la bêta d'un Niveau 2 (branche `labo-beta` du dépôt de l'appli + `"beta"` dans `apps-sources.json`).
 3. `qa-verifier` audite le diff : **veto** possible (retour à `code-builder`, 2 allers-retours au plus,
    ensuite `needs_human_review`). Rien n'est poussé sans son « OK ».
@@ -57,6 +65,7 @@ une évolution, un score ; transférer une appli vers .fr.
 | Score de maturité | `data/labo/maturity_index.json` (calculé, ne pas écrire à la main) |
 | Audits qualité (sur 30) | `data/labo/audits.json` |
 | Bêtas publiées | `data/labo/beta.json` + `"beta": {"branch": "labo-beta"}` dans `apps-sources.json` |
+| Prompts des applis à IA | `data/labo/prompts.json` (fichier + repère du prompt système) |
 | Appli ↔ dépôt | `data/apps-sources.json` ; id d'appli = `id` de `data/apps-registry.json` |
 Ces fichiers sont publiés sur alphabette.eu à chaque publication du hub (push sur `main`).
 

@@ -76,3 +76,9 @@ export {
   type Membre,
   type RoleMembre,
 } from './membre';
+
+// Laboratoire alphabette.eu : avis, micro-sondages, confidentialité, dédoublonnage.
+export { useContextualFeedback, MicroSondage, type OptionsSondage } from './labo/useContextualFeedback';
+export { envoyerAvisLabo, soutenirTicket, ticketsOuverts, API_AVIS, type NouvelAvis, type TicketOuvert, type CategorieAvis } from './labo/avis';
+export { nettoyerTexte, clesStockageSures, contexteTechnique, plateformeSimple, cheminCourant, surLeLaboratoire, type ContexteTechnique } from './labo/confidentialite';
+export { similarite, doublonsProbables, normaliser } from './labo/similarite';

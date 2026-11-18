@@ -22,6 +22,13 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
   erreurs JavaScript dans le navigateur du visiteur, jointes à son avis.
 - Badge « Dernière évolution IA », score de maturité, bêtas : `data/labo/*.json`, publiés dans `eu/api/labo/`.
 
+## Avis v2 (18/11/2026)
+- Filtre « zéro connaissance » commun au navigateur et au serveur : `packages/shell/src/labo/confidentialite.ts` et `masquer()` de `feedback.php`.
+- Capteur : 10 dernières erreurs (`window.onerror`, promesses rejetées, `console.error`) avec fichier:ligne:colonne.
+- Dédoublonnage en direct dans le formulaire (`packages/shell/src/labo/similarite.ts`, seuil 75 %) : « +1 (J'ai aussi ce problème) ».
+- Micro-sondages : `useContextualFeedback(action)` exporté par `@alphabette/shell`.
+- Agent Correcteur (bug → Pull Request, prompts mal notés → A/B) : `docs/labo/AGENT-CORRECTEUR.md`.
+
 ## Relier le domaine (une seule fois, chez OVH)
 1. Zone DNS de `alphabette.eu` : enregistrements `A` / `AAAA` de `@` et `www` identiques à ceux de `alphabette.fr`.
 2. Hébergement → Multisite → ajouter `alphabette.eu` et `www.alphabette.eu`, dossier racine **`alphabette`**

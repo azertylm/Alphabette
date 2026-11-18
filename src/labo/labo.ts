@@ -8,6 +8,8 @@
  * laboratoire (RULES_AND_MEMORY.md) : décisions, évolutions, maturité, bêtas.
  */
 
+import { cheminCourant, contexteTechnique, nettoyerTexte } from '@alphabette/shell';
+
 /** Vrai sur alphabette.eu (ou avec ?labo pour un essai en local). */
 export const MODE_LABO =
   typeof window !== 'undefined' &&
@@ -118,75 +120,15 @@ export const dejaVoteAb = (appId: string) => lireLimites().ab.includes(appId);
 
 /* ---------- Contexte technique (télémétrie silencieuse) ---------- */
 
-/** « Android / Chrome » : jamais l'identifiant complet du navigateur. */
-export function plateforme(ua = navigator.userAgent): string {
-  const os = /Android/i.test(ua)
-    ? 'Android'
-    : /iPhone|iPad|iPod/i.test(ua)
-      ? 'iOS'
-      : /Windows/i.test(ua)
-        ? 'Windows'
-        : /Mac OS X|Macintosh/i.test(ua)
-          ? 'macOS'
-          : /CrOS/i.test(ua)
-            ? 'ChromeOS'
-            : /Linux/i.test(ua)
-              ? 'Linux'
-              : 'Autre';
-  const nav = /SamsungBrowser/i.test(ua)
-    ? 'Samsung Internet'
-    : /Edg\//i.test(ua)
-      ? 'Edge'
-      : /OPR\/|Opera/i.test(ua)
-        ? 'Opera'
-        : /Firefox|FxiOS/i.test(ua)
-          ? 'Firefox'
-          : /Chrome|CriOS/i.test(ua)
-            ? 'Chrome'
-            : /Safari/i.test(ua)
-              ? 'Safari'
-              : 'Autre';
-  return `${os} / ${nav}`;
-}
-
-/** Retire ce qui pourrait ressembler à une clé ou à un jeton (paramètres d'adresse, longues suites). */
-export function nettoyer(texte: string): string {
-  return texte
-    .replace(/\?[^\s"')]*/g, '?…')
-    .replace(/\b(sk|pk|AIza|ghp|gho|xox[abp])[-_A-Za-z0-9]{8,}/g, '[masqué]')
-    .replace(/[A-Za-z0-9_\-]{28,}/g, '[masqué]')
-    .slice(0, 300);
-}
-
-/** Les 3 dernières erreurs vues dans l'application (capteur injecté dans chaque appli de .eu). */
-function erreursRecentes(chemin: string): string[] {
-  try {
-    const toutes = JSON.parse(localStorage.getItem('labo_erreurs_v1') || '{}') as Record<string, { t: number; m: string }[]>;
-    const limite = Date.now() - 24 * 3600 * 1000;
-    return (toutes[chemin] ?? [])
-      .filter((e) => e.t > limite)
-      .slice(-3)
-      .map((e) => nettoyer(e.m));
-  } catch {
-    return [];
-  }
-}
-
-export function telemetrie(chemin: string) {
-  return {
-    viewport: `${window.innerWidth}x${window.innerHeight} (dpr: ${Math.round((window.devicePixelRatio || 1) * 100) / 100})`,
-    platform: plateforme(),
-    console_errors: erreursRecentes(chemin),
-  };
-}
+/** Contexte technique et nettoyage : base commune (filtre zéro connaissance), voir packages/shell/src/labo/. */
+export { nettoyerTexte as nettoyer, plateformeSimple as plateforme } from '@alphabette/shell';
+export const telemetrie = (chemin: string) => contexteTechnique(chemin);
 
 /** Chemin d'une application sur .eu (« /apps/bonplan/ », « /wikicom/ ») : clé des erreurs capturées. */
 export function cheminApp(url?: string): string {
   if (!url) return '';
   try {
-    const { pathname } = new URL(url, window.location.origin);
-    const m = pathname.match(/^\/apps\/[^/]+\/|^\/[^/]+\/?/);
-    return m ? (m[0].endsWith('/') || m[0].endsWith('.html') ? m[0] : `${m[0]}/`) : pathname;
+    return cheminCourant(new URL(url, window.location.origin).pathname);
   } catch {
     return '';
   }
@@ -207,7 +149,7 @@ export interface NouvelAvis {
 
 export async function envoyerAvis(avis: NouvelAvis) {
   const { chemin, ...reste } = avis;
-  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', ...reste, telemetry: telemetrie(chemin) });
+  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', ...reste, source: 'formulaire', comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
   const l = lireLimites();
   l.avis[avis.app_id] = (l.avis[avis.app_id] ?? 0) + 1;
   ecrireLimites(l);
