@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-18T19:03:50.983Z",
-  "empreinte_page_sha256": "7e174cc6b91fe392e20ae3355a5a57f761ae1a701f2786a47e8f72045423ee44",
+  "audite_le": "2026-11-18T21:57:53.028Z",
+  "empreinte_page_sha256": "8e2cfec0f1fbd487888ca4a8f26613c7ad370a4281fede0adf1e3d601f7dc2bb",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1043,
-      "bloquees": 1043,
+      "requetes": 449,
+      "bloquees": 449,
       "types": [
         "image",
         "fetch"
@@ -69,8 +69,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 3,
+      "bloquees": 3,
       "types": [
         "image"
       ]
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -119,15 +119,6 @@
       "types": [
         "image"
       ]
-    },
-    {
-      "hote": "www.franceinfo.fr",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
     }
   ],
   "resultat": {
@@ -139,13 +130,12 @@
       "images.unsplash.com",
       "i.f1g.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "img.lemde.fr",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com",
-      "www.franceinfo.fr"
+      "www.google.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "05e233fff6d9ad58d101ba2fca6bf3726c748aaece8e73e92bc66fb8f7da47dc"
+  "empreinte_certificat_sha256": "ff4d086950bee693412e18e8f71727ecf1403a34092a81268f55df073aea5f84"
 }
