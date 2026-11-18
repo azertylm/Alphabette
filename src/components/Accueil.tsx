@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
-import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerResumes, type DonneesLabo, type Resumes } from '../labo/labo';
+import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerResumes, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
 import { LaboAvis } from '../labo/LaboAvis';
 
 /**
@@ -64,7 +64,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   // Laboratoire alphabette.eu : avis des visiteurs et fichiers des agents.
   const [resumes, setResumes] = useState<Resumes | null>(null);
   const [serveurAvis, setServeurAvis] = useState<boolean | null>(null);
-  const [donnees, setDonnees] = useState<DonneesLabo>({ evolutions: {}, maturite: {}, betas: {} });
+  const [donnees, setDonnees] = useState<DonneesLabo>({ evolutions: {}, notes: {}, maturite: {}, betas: {} });
+  const [notesFr, setNotesFr] = useState<Record<string, NoteVersion[]>>({});
   const [carteOuverte, setCarteOuverte] = useState<string | null>(null);
   const chargerAvis = () =>
     chargerResumes()
@@ -74,7 +75,10 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
       })
       .catch(() => setServeurAvis(false));
   useEffect(() => {
-    if (!MODE_LABO) return;
+    if (!MODE_LABO) {
+      chargerNotesCitoyennes().then(setNotesFr);
+      return;
+    }
     chargerAvis();
     chargerDonneesLabo().then(setDonnees);
   }, []);
@@ -165,6 +169,14 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                 </span>
                 <strong>{nomLisible(app.name)}</strong>
                 {app.description && <span className="accueil__desc">{app.description}</span>}
+                {!MODE_LABO && notesFr[app.id]?.[0]?.citoyenne?.[0] && (
+                  <span className="accueil__nouveau">Nouveau : {notesFr[app.id][0].citoyenne[0]}</span>
+                )}
+                {Boolean((app as { certifie?: unknown }).certifie) && (
+                  <span className="accueil__pastilles">
+                    <span className="accueil__pastille accueil__pastille--certifie">✓ Certifié par la communauté</span>
+                  </span>
+                )}
                 {(app.gratuit || app.badge === 'Nouveau') && (
                   <span className="accueil__pastilles">
                     {app.gratuit && <span className="accueil__pastille accueil__pastille--gratuit">Gratuit</span>}

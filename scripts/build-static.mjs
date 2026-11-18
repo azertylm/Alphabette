@@ -19,6 +19,7 @@
 import { spawn } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { preRendre } from './labo/seo.mjs';
 
 const racine = process.cwd();
 const dist = path.join(racine, 'dist');
@@ -288,6 +289,12 @@ async function preparerLaboratoire() {
       await rm(path.join(sortie, nom), { recursive: true, force: true });
       await cp(path.join(dossierVitrine, nom), path.join(sortie, nom), { recursive: true });
       console.log(`vitrine figée : ${nom}/`);
+      const fiche = vitrine.find((app) => { try { return new URL(app.url).pathname.replace(/^\/|\/$/g, '') === nom; } catch { return false; } });
+      const index = path.join(sortie, nom, 'index.html');
+      if (fiche?.certifie && (await stat(index).catch(() => null))) {
+        await writeFile(index, preRendre(await readFile(index, 'utf8'), fiche, fiche.certifie));
+        console.log(`  ✓ pré-rendu SEO de ${nom}/`);
+      }
     }
   } catch {}
 
@@ -296,12 +303,15 @@ async function preparerLaboratoire() {
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'capteur.js'), path.join(eu, 'labo', 'capteur.js'));
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
-  for (const nom of ['decisions', 'changelog_summary', 'maturity_index', 'beta']) {
+  for (const nom of ['decisions', 'changelog_summary', 'maturity_index', 'beta', 'notes_version']) {
     const src = path.join(racine, 'data', 'labo', `${nom}.json`);
     const contenu = await readFile(src, 'utf8').catch(() => '{"apps":{}}\n');
     await writeFile(path.join(eu, 'api', 'labo', `${nom}.json`), contenu);
   }
   await writeFile(path.join(eu, '.htaccess'), HTACCESS_EU);
+  // Notes de version « citoyennes » : aussi pour la vitrine .fr.
+  await mkdir(path.join(sortie, 'api', 'labo'), { recursive: true });
+  await writeFile(path.join(sortie, 'api', 'labo', 'notes_version.json'), await readFile(path.join(racine, 'data', 'labo', 'notes_version.json'), 'utf8').catch(() => '{"apps":{}}\n'));
 
   // 6. Capteur dans les pages du hub servies sur .eu (wikicom, quiz…), pas dans l'accueil.
   for (const nom of await readdir(eu)) {

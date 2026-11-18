@@ -29,6 +29,9 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
 - Micro-sondages : `useContextualFeedback(action)` exporté par `@alphabette/shell`.
 - Agent Correcteur (bug → Pull Request, prompts mal notés → A/B) : `docs/labo/AGENT-CORRECTEUR.md`.
 
+- Agent Chaos (nuit), Agent de Graduation, notes de version bilingues : `docs/labo/AGENT-CHAOS.md`.
+- Micro-sondages branchés : IA Débat (« débat terminé »), Info Perso (« article lu », après 20 s de lecture).
+
 ## Relier le domaine (une seule fois, chez OVH)
 1. Zone DNS de `alphabette.eu` : enregistrements `A` / `AAAA` de `@` et `www` identiques à ceux de `alphabette.fr`.
 2. Hébergement → Multisite → ajouter `alphabette.eu` et `www.alphabette.eu`, dossier racine **`alphabette`**

@@ -27,6 +27,10 @@ Seuls aussi (décision de Valentin du 18/11/2026), par l'`agent-correcteur` :
 - déployer en **bêta** (`alphabette.eu/apps/<clé>/beta/`) une variante du prompt système d'une appli à IA notée sous 3/5 ;
   l'adopter sur `main` reste un Niveau 2 (accord de Valentin).
 
+Agent Chaos (robot nocturne) : ses rapports vivent sur la branche `labo-donnees` (`chaos/`), jamais dans la base d'avis publique.
+Agent de Graduation : propose un transfert vers .fr (note ≥ 4,5, ≥ 20 avis vérifiés, 0 bug critique depuis 7 jours) ; ne prépare
+le paquet qu'après le « oui » de Valentin, et la fusion (= mise en ligne sur .fr) reste son ordre.
+
 Jamais sans autorisation écrite de Valentin (`data/labo/autorisations.json`) — **Niveau 2** :
 - nouvelle fonctionnalité, refonte, changement de logique métier, de textes de fond, de prix ;
 - tout ce qui touche le hub lui-même (`src/`, `server/`, `scripts/`, `packages/shell/`, `labo/serveur/`, workflows) ;

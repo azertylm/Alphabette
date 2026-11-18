@@ -157,6 +157,13 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
         </p>
       )}
 
+      {donnees.notes[appId]?.[0]?.technique?.length ? (
+        <details className="labo__notes">
+          <summary>Notes techniques · {ilYa(donnees.notes[appId][0].date)}</summary>
+          <ul>{donnees.notes[appId][0].technique.map((l) => <li key={l}>{l}</li>)}</ul>
+        </details>
+      ) : null}
+
       <p className="labo__ligne">
         {resume?.moyenne != null && resume.nb_notes > 0 ? (
           <span className="labo__moyenne" aria-label={`Note moyenne ${resume.moyenne.toLocaleString('fr-FR')} sur 5, ${resume.nb_notes} notes`}>

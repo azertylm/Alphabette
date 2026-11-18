@@ -23,11 +23,17 @@ import { execFileSync } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { preRendre } from './labo/seo.mjs';
 
 const racine = process.cwd();
 const sortieFr = path.join(racine, 'dist-static', 'apps');
 const sortieEu = path.join(racine, 'dist-static', 'eu', 'apps');
 const { apps } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-sources.json'), 'utf8'));
+const { apps: registre = [] } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-registry.json'), 'utf8'));
+/** Fiche du registre d'une appli (par son adresse), pour le pré-rendu des applis certifiées. */
+const ficheDe = (cle, src) => registre.find((a) => {
+  try { const h = new URL(a.url).hostname.replace(/^www\./, ''); return h === `${cle}.alphabette.fr` || (src.domains ?? []).includes(h); } catch { return false; }
+});
 const tmp = path.join(os.tmpdir(), 'alphabette-apps');
 const existe = (p) => stat(p).then(() => true, () => false);
 const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'inherit' });
@@ -176,6 +182,13 @@ for (const [cle, src] of Object.entries(apps)) {
       // Version figée : même commit que la branche principale → même construction, sinon on construit ce commit.
       const fige = principal && principal.sha === src.vitrine.ref ? principal : await construire(cle, src, src.vitrine.ref, `${cle}--vitrine`);
       await publier(fige.dossier, path.join(sortieFr, cle));
+      // Appli certifiée par la communauté (Agent de Graduation) : page pré-rendue, Open Graph, JSON-LD avec sa vraie note.
+      const fiche = ficheDe(cle, src);
+      if (fiche?.certifie) {
+        const index = path.join(sortieFr, cle, 'index.html');
+        await writeFile(index, preRendre(await readFile(index, 'utf8'), fiche, fiche.certifie));
+        console.log(`  ✓ pré-rendu SEO (${fiche.certifie.moyenne}/5, ${fiche.certifie.avis} avis)`);
+      }
       console.log(`✔ .fr  ${cle}  ←  version figée ${src.vitrine.ref.slice(0, 7)}`);
     } else if (domainePropre && principal) {
       // Appli avec son propre domaine (proxilien.fr) : elle y reste servie ; ses adresses .fr vont au Laboratoire (.htaccess).

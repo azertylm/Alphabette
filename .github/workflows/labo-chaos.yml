@@ -1,0 +1,45 @@
+# Agent Chaos (« Avocat du Diable ») : audit nocturne des applis d'alphabette.eu sur très petits écrans
+# (rage clicking, clés BYOK vides ou invalides, coupure réseau), à l'écoute des exceptions, promesses rejetées
+# et débordements. Rapport rangé sur la branche labo-donnees (chaos/dernier.json + chaos/<date>.json), lu par
+# les agents du Laboratoire comme des tickets « [Agent Chaos] » (voir docs/labo/AGENT-CHAOS.md).
+name: Laboratoire — Agent Chaos (nuit)
+
+on:
+  schedule:
+    - cron: '37 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: labo-donnees
+  cancel-in-progress: false
+
+jobs:
+  chaos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Installer Playwright
+        run: |
+          npm install --no-save --no-package-lock playwright@1
+          npx playwright install --with-deps chromium
+      - name: Audit
+        run: node scripts/labo/chaos.mjs https://alphabette.eu > chaos.json
+      - name: Ranger le rapport sur labo-donnees
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then git worktree add -q ../donnees FETCH_HEAD; else echo "::warning::branche labo-donnees absente"; exit 0; fi
+          cd ../donnees
+          mkdir -p chaos
+          cp "$GITHUB_WORKSPACE/chaos.json" chaos/dernier.json
+          cp "$GITHUB_WORKSPACE/chaos.json" "chaos/$(date -u +%Y-%m-%d).json"
+          ls chaos/20*.json | sort | head -n -14 | xargs -r git rm -q   # 14 nuits gardées
+          git add -A chaos
+          git diff --cached --quiet || { git commit -q -m "Agent Chaos — $(date -u +%Y-%m-%d) : $(jq .total chaos/dernier.json) anomalie(s)"; git push -q origin HEAD:labo-donnees; }

@@ -8,7 +8,7 @@
  * lancée à la main ou par la tâche planifiée quotidienne (docs/LABO-EU.md). Ce script ne modifie aucun code.
  */
 import { execFileSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const run = (cmd, args) => execFileSync(cmd, args, { stdio: 'inherit' });
 const lire = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
@@ -21,6 +21,13 @@ try {
 } catch {
   writeFileSync(FICHIER, JSON.stringify({ feedbacks: [] }));
   console.log("Pas encore de branche labo-donnees (aucun avis exporté) : rien à trier.\n");
+}
+try {
+  writeFileSync('/tmp/chaos.json', lire('git', ['show', 'FETCH_HEAD:chaos/dernier.json']));
+  const c = JSON.parse(readFileSync('/tmp/chaos.json', 'utf8'));
+  console.log(`Agent Chaos (${c.genere_le}) : ${c.total} anomalie(s) → /tmp/chaos.json\n`);
+} catch {
+  writeFileSync('/tmp/chaos.json', JSON.stringify({ apps: [] }));
 }
 run('node', ['scripts/labo/etat.mjs', FICHIER]);
 console.log('');

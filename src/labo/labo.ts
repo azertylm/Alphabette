@@ -45,8 +45,15 @@ export interface Evolution {
   message: string;
 }
 
+export interface NoteVersion {
+  date: string;
+  technique: string[];
+  citoyenne: string[];
+}
+
 export interface DonneesLabo {
   evolutions: Record<string, Evolution[]>;
+  notes: Record<string, NoteVersion[]>;
   maturite: Record<string, { score: number | null }>;
   betas: Record<string, { chemin: string; resume?: string; depuis?: string }>;
 }
@@ -65,9 +72,10 @@ export const chargerResumes = () => lireJson<Resumes>(API);
 /** Fichiers publiés par les agents : absents ou vides, le module n'affiche rien (aucun faux contenu). */
 export async function chargerDonneesLabo(): Promise<DonneesLabo> {
   const lire = (nom: string) => lireJson<{ apps?: Record<string, unknown> }>(`/api/labo/${nom}.json`).catch(() => ({ apps: {} }));
-  const [evolutions, maturite, betas] = await Promise.all([lire('changelog_summary'), lire('maturity_index'), lire('beta')]);
+  const [evolutions, maturite, betas, notes] = await Promise.all([lire('changelog_summary'), lire('maturity_index'), lire('beta'), lire('notes_version')]);
   return {
     evolutions: (evolutions.apps ?? {}) as DonneesLabo['evolutions'],
+    notes: (notes.apps ?? {}) as DonneesLabo['notes'],
     maturite: (maturite.apps ?? {}) as DonneesLabo['maturite'],
     betas: (betas.apps ?? {}) as DonneesLabo['betas'],
   };
@@ -181,4 +189,14 @@ export function ilYa(date: string): string {
   if (s < 86400) return `il y a ${Math.round(s / 3600)} h`;
   const j = Math.round(s / 86400);
   return j < 31 ? `il y a ${j} jour${j > 1 ? 's' : ''}` : `le ${new Date(t).toLocaleDateString('fr-FR')}`;
+}
+
+/** Notes de version « citoyennes » pour la vitrine .fr (vides tant qu'aucune mise à jour n'est passée). */
+export async function chargerNotesCitoyennes(): Promise<Record<string, NoteVersion[]>> {
+  try {
+    const r = await fetch('/api/labo/notes_version.json', { cache: 'no-store' });
+    return ((await r.json()) as { apps?: Record<string, NoteVersion[]> }).apps ?? {};
+  } catch {
+    return {};
+  }
 }

@@ -2,7 +2,7 @@
  * scripts/labo/correcteur.mjs — outils de l'Agent Correcteur (.claude/agents/agent-correcteur.md).
  * Schémas des données : docs/labo/AGENT-CORRECTEUR.md.
  *
- *   node scripts/labo/correcteur.mjs candidats /tmp/feedbacks.json
+ *   node scripts/labo/correcteur.mjs candidats /tmp/feedbacks.json [/tmp/chaos.json]
  *       → JSON { bugs: [BugAPatcher…], prompts: [PromptAAjuster…] } sur la sortie standard
  *   node scripts/labo/correcteur.mjs localiser <clé> "<fichier.js:ligne:colonne>" [dossier]
  *       → construit l'appli (branche main) avec cartes de sources et retrouve le fichier,
@@ -46,7 +46,7 @@ function candidats(fichier) {
   const statut = (a) => decisions[a.id]?.status ?? a.status ?? 'pending';
   const ouvert = (a) => ['pending', 'approved_auto'].includes(statut(a)) && !decisions[a.id]?.correcteur;
 
-  const bugs = feedbacks
+  let bugs = feedbacks
     .filter((a) => a.category === 'Bug' && ouvert(a))
     .filter((a) => (a.telemetry?.console_errors?.length ?? 0) > 0 || a.upvotes >= SEUIL_PLUS1)
     .sort((x, y) => y.upvotes - x.upvotes)
@@ -70,6 +70,26 @@ function candidats(fichier) {
         positions_a_localiser: [...new Set(positions)],
       };
     });
+
+  // Anomalies de l'Agent Chaos (nuit précédente) : mêmes bugs à corriger, signés « [Agent Chaos] ».
+  const chaos = lireJson(args[1] ?? '/tmp/chaos.json', { apps: [] });
+  const dejaTraites = new Set(Object.values(decisions).map((d) => d?.correcteur?.chaos).filter(Boolean));
+  for (const app of chaos.apps ?? []) {
+    for (const a of app.anomalies ?? []) {
+      const id = `chaos_${app.app_id}_${[...`${a.type}|${a.detail}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(16)}`;
+      if (dejaTraites.has(id)) continue;
+      const pos = String(a.pile || a.detail).match(/([\w.-]+\.js):(\d+):(\d+)/);
+      bugs.push({
+        type: 'bug_a_patcher', source: 'agent_chaos', ticket_id: id, app_id: app.app_id, cle: cleDe(app.app_id),
+        depot: cleDe(app.app_id) ? sources[cleDe(app.app_id)]?.repo ?? null : null,
+        priorite: ['exception', 'promesse_rejetee', 'ecran_blanc', 'pwa_hors_ligne'].includes(a.type) ? 'critique' : 'normale',
+        upvotes: 0, description: a.ticket, version_testee: 'main',
+        telemetrie: { viewport: a.ecran, platform: 'Agent Chaos / Chromium', console_errors: [a.detail], etape: a.etape, elements: a.elements ?? [] },
+        positions_a_localiser: pos ? [`${pos[1]}:${pos[2]}:${pos[3]}`] : [],
+      });
+    }
+  }
+  bugs.sort((x, y) => (y.priorite === 'critique') - (x.priorite === 'critique') || y.upvotes - x.upvotes);
 
   const limite = Date.now() - FENETRE_JOURS * 86400 * 1000;
   const parApp = new Map();
