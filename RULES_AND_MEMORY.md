@@ -50,7 +50,7 @@ une évolution, un score ; transférer une appli vers .fr.
 ## 5. Où sont les choses
 | Quoi | Où |
 |---|---|
-| Avis bruts (lecture seule) | branche `labo-donnees`, `feedbacks.json` (toutes les 3 h, `labo-avis.yml`) |
+| Avis bruts (lecture seule) | branche `labo-donnees`, `feedbacks.json` (toutes les 3 h, `labo-avis.yml`) — le statut d'un avis (`pending` → `implemented`…) s'écrit dans `decisions.json`, qui s'applique par-dessus |
 | Décisions des agents | `data/labo/decisions.json` (clé = id `fb_…`) |
 | Autorisations de Valentin | `data/labo/autorisations.json` |
 | Badge « Dernière évolution IA » | `data/labo/changelog_summary.json` (clé = id du registre) |
@@ -70,15 +70,26 @@ Ces fichiers sont publiés sur alphabette.eu à chaque publication du hub (push 
 - Applis en pause (ne pas toucher) : Lidarsol, Osolar, serveur ProxiLien, domaines Orbit et Info Perso.
 - Valentin n'est pas développeur : rapports courts, en français simple, une seule question à la fois.
 
-## 7. Préférences connues de Valentin (ergonomie)
-- Pas de fenêtres ou d'options imposées au démarrage : on arrive directement sur l'essentiel.
-- Libérer l'écran : les barres du haut se masquent quand on fait défiler.
-- Mettre en avant l'essentiel (le sujet, le bouton principal), réduire le secondaire (badges discrets).
-- Menus lisibles en mode BIG (contraste, taille, rien de coupé).
-- Accueil : deux colonnes de tuiles sur téléphone (vitrine).
+## 7. Règles d'or du design Alphabette (décidées par Valentin)
+1. **Ergonomie épurée au démarrage** : aucune fenêtre, visite guidée ou choix imposé à l'ouverture ;
+   on arrive directement sur l'essentiel. Une aide reste disponible sur demande (bouton).
+2. **Libération de l'écran au défilement** : quand on descend dans le contenu, la double barre et les
+   bandeaux du haut se masquent ; ils reviennent dès qu'on remonte. Mise en œuvre : `data-masquer="defilement"`
+   sur la balise de `alphabette-barre.js`, puis les bandeaux de l'appli suivent `html[data-ab-barres="cachees"]`
+   (exemples : classes `ip-masquable` d'Info Perso, `iad-masquable` d'IA Débat). Ne jamais casser ce masquage.
+3. **Menus lisibles dans les grands modes d'affichage** (BIG grande et très grande taille) : rien de coupé,
+   rien hors de l'écran, contraste suffisant. Avec le zoom BIG, toute largeur en `vw` se divise par
+   `var(--ab-zoom,1)`. Contrôle obligatoire à 360 px en très grande taille.
+4. **Architecture légère** : pas de dépendance nouvelle sans nécessité, pas de serveur (hébergement statique),
+   le plus petit changement qui règle le problème, rien de chargé « au cas où ».
+5. **L'essentiel d'abord** : le sujet ou l'action principale en grand, en haut ; le secondaire réduit
+   (badges et liens discrets, réglages repliés derrière « Tout ouvrir ») ; pas de bouton en double.
+6. Vitrine : deux colonnes de tuiles sur téléphone.
 
 ## 8. Règles apprises (tenues par meta-improver)
 Format : `- AAAA-MM-JJ — règle (origine : avis fb_…, veto QA, décision de Valentin)`. Une règle
 nouvelle remplace une ancienne contradictoire (barrer l'ancienne). Garder cette section sous 60 lignes.
 
 - 2026-11-18 — Une évolution n'est annoncée sur le badge public qu'une fois en ligne et vérifiée (origine : mise en place du laboratoire).
+- 2026-11-18 — Une clé IA « fournie par la plateforme » ne va jamais dans le code d'une appli statique : elle serait lisible par tous. Une seule clé du visiteur peut servir à toutes les voix (origine : débat IA seul d'IA Débat, étape 5).
+- 2026-11-18 — Quand une IA écrit à la place d'une autre (relais ou débat IA seul), la réplique l'indique toujours ; on ne fait pas jouer « ChatGPT » à Mistral (origine : débat IA seul).

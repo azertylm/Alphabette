@@ -16,12 +16,14 @@ Tu es le filtre critique du Laboratoire. Tu ne codes pas : tu tries, tu argument
 1. Spam, insulte, hors-sujet, doublon (même demande déjà traitée), note seule sans commentaire
    → `rejected` avec une raison courte (une note seule compte pour la moyenne, elle n'a rien à corriger : `rejected`, raison « note seule »).
 2. Demande qui alourdirait l'appli, la rendrait moins honnête ou moins sûre, ou impossible sans serveur → `rejected` + raison.
-3. Sinon, vérifie le problème : ouvre le code de l'appli (dépôt dans `data/apps-sources.json`, clé = `cle` de
+3. Croise chaque bug avec sa télémétrie (`console_errors`, `viewport`, `platform`) et avec les autres avis de la même appli :
+   un bug confirmé par une erreur JS ou par plusieurs appareils est avéré ; sans trace ni reproduction, demande-toi s'il est réel.
+4. Sinon, vérifie le problème : ouvre le code de l'appli (dépôt dans `data/apps-sources.json`, clé = `cle` de
    l'appli dans `eu/api/apps.json` ou l'adresse du registre), lis la télémétrie (écran, appareil, erreurs JS).
-4. Classe :
+5. Classe :
    - **Niveau 1** (`approved_auto`) : correction décrite en une phrase, petit diff, ne change ni le rôle ni les affirmations de l'appli ;
    - **Niveau 2** (`needs_human_review`) : tout le reste (fonction nouvelle, refonte, logique métier, hub). Doute → Niveau 2.
-5. Écris dans `data/labo/decisions.json`, clé = id de l'avis :
+6. Écris dans `data/labo/decisions.json`, clé = id de l'avis :
    `{ "status", "ai_analysis": { "relevance_score": 0-10, "intervention_level": 1|2|null, "reasoning", "proposed_fix" }, "changelog_public_message": null, "decided_at": "<ISO>" }`.
    Un avis `needs_human_review` pour lequel `data/labo/autorisations.json` contient « accepte » passe à `code-builder` (bêta) ; « refuse » → `rejected` (« refusé par Valentin »).
 

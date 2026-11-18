@@ -28,7 +28,12 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
    (le même que alphabette.fr), SSL activé.
 3. Contrôle : `https://alphabette.eu/` affiche « Le Laboratoire Alphabette », et `?etat=1` ci-dessus répond `"ok": true`.
 
-## La boucle d'amélioration (tâche planifiée, une fois par jour)
+## La boucle d'amélioration
+- **Sur demande** : dans une session Claude sur ce dépôt, la commande `/cycle-labo` (`.claude/commands/cycle-labo.md`)
+  enchaîne les 5 agents ; `bun run labo:cycle` seul récupère les avis et affiche le tableau de bord sans rien modifier.
+- **À intervalle régulier** : la tâche planifiée quotidienne ci-dessous fait la même chose.
+
+### Tâche planifiée (une fois par jour)
 Texte de la tâche :
 
 > Passage quotidien du Laboratoire alphabette.eu. Ajoute à la session le dépôt azertylm/alphabette (accès en
