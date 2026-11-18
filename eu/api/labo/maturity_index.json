@@ -1,0 +1,4 @@
+{
+  "_aide": "Score de maturité sur 100, calculé par scripts/labo/maturite.mjs (satisfaction 40 + stabilité 30 + audit qualité 30). score null = pas assez de données : rien n'est affiché.",
+  "apps": {}
+}

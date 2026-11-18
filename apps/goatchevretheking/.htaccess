@@ -1,0 +1,5 @@
+# Généré par scripts/collect-apps.mjs : application en test sur le Laboratoire.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(.*)$ https://alphabette.eu/apps/goatchevretheking/$1 [R=302,L]
+</IfModule>

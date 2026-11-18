@@ -16,6 +16,24 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+  # Laboratoire : alphabette.eu est servi depuis le dossier eu/
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteCond %{REQUEST_URI} !^/eu/
+  RewriteRule ^(.*)$ eu/$1 [L]
+
+  # Applications en test : leur adresse en .fr renvoie vers le Laboratoire (302 : provisoire)
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.fr$ [NC]
+  RewriteRule ^(info\.html|quiz-femmes|quiz-extraordinaires|dico-loufoque|juste-chiffre|memo-meninges|orbit|ou-cest|ou-cest-france|petits-jeux|podcasts|quiz-famille|quiz-musique)(/.*)?$ https://alphabette.eu/$1$2 [R=302,L]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.fr$ [NC]
+  RewriteRule ^apps/(bonplan|goatchevretheking|revolution|promptmagic|ecobatisol|frigoplacard|bonplansenior|atelier|proxilien)(/.*)?$ https://alphabette.eu/apps/$1$2 [R=302,L]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?atelier\.alphabette\.fr$ [NC]
+  RewriteRule ^(.*)$ https://alphabette.eu/apps/atelier/$1 [R=302,L]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?proxilien\.alphabette\.fr$ [NC]
+  RewriteRule ^(.*)$ https://alphabette.eu/apps/proxilien/$1 [R=302,L]
+
   # Domaines en redirection vers le domaine principal de leur application
   # proxilien : proxilien.eu → proxilien.fr
   RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.eu)$ [NC]
@@ -43,7 +61,7 @@ DirectoryIndex index.html
   RewriteRule ^(.*)$ apps/proxilien/$1 [L]
 
   # Continuité des anciennes adresses
-  RewriteRule ^goat(/.*)?$ https://goatchevretheking.alphabette.fr$1 [R=301,L]
+  RewriteRule ^goat(/.*)?$ https://alphabette.eu/apps/goatchevretheking$1 [R=302,L]
 
   # API publique figée au build
   RewriteRule ^api/apps/?$ api/apps.json [L]

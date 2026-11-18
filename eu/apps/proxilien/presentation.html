@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF6B00">
+    <title>ProxiLien · Présentation</title>
+    <meta name="description" content="ProxiLien : l'entraide entre voisins et entre générations à La Grande-Motte. Présentation du projet.">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           PALETTE & FONDATIONS
+        ======================================== */
+        :root {
+            --bg-outer: #E2E8F0;
+            --bg-app: #F8FAFC;
+            --bg-card: rgba(255,255,255,0.92);
+            --bg-card-solid: #FFFFFF;
+            --bg-nav: rgba(255,255,255,0.85); /* Plus transparent pour l'effet verre */
+            --texte: #0F172A;
+            --texte-clair: #475569;
+            --border: rgba(255,255,255,0.6);
+            --border-soft: #E2E8F0;
+            --primaire: #FF6B00;
+            --primaire-light: #FFF0E6;
+            --secondaire: #4F46E5;
+            --succes: #10B981;
+            --rouge: #EF4444;
+            --or: #F59E0B;
+            --ombre: 0 10px 30px -5px rgba(0,0,0,0.08);
+            --ombre-forte: 0 20px 40px -10px rgba(0,0,0,0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-outer: #0F172A;
+            --bg-app: #0B1120;
+            --bg-card: rgba(30,41,59,0.7);
+            --bg-card-solid: #1E293B;
+            --bg-nav: rgba(11,17,32,0.85);
+            --texte: #F8FAFC;
+            --texte-clair: #CBD5E1;
+            --border: rgba(255,255,255,0.05);
+            --border-soft: #1E293B;
+            --primaire: #FF8A30;
+            --primaire-light: rgba(255,107,0,0.15);
+            --secondaire: #6366F1;
+            --ombre: 0 10px 30px -5px rgba(0,0,0,0.4);
+            --ombre-forte: 0 20px 40px -10px rgba(0,0,0,0.6);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-app); color: var(--texte); font-family: 'Nunito', sans-serif; transition: background 0.35s ease, color 0.35s ease; line-height: 1.6; overflow-x: hidden; }
+        
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--texte); line-height: 1.2; }
+        h1 span { color: var(--primaire); }
+        p { color: var(--texte-clair); font-size: 1.1rem; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* ========================================
+           HEADER & NAVIGATION FIXE (Amélioré)
+        ======================================== */
+        header { 
+            position: sticky; top: 0; 
+            background: var(--bg-nav); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border-soft); 
+            z-index: 1000; padding: 12px 0; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg,#FF8A00,#FF6B00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; letter-spacing: -0.5px; }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-links a { color: var(--texte); font-weight: 800; text-decoration: none; font-size: 1rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--primaire); }
+        
+        .btn-idees-top { 
+            background: linear-gradient(135deg, var(--secondaire), #3b82f6); 
+            color: white !important; padding: 10px 18px; 
+            border-radius: 9999px; font-size: 0.95rem; font-weight: 800;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-idees-top:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4); }
+
+        /* Toggle Dark Mode intégré au header pour faire propre */
+        .dark-toggle { width: 48px; height: 28px; background: var(--bg-app); border-radius: 15px; cursor: pointer; border: 2px solid var(--border-soft); position: relative; display: flex; align-items: center; transition: background 0.3s; flex-shrink: 0; }
+        [data-theme="dark"] .dark-toggle { background: #4F46E5; border-color: #6366F1; }
+        .dark-toggle-thumb { position: absolute; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+        [data-theme="dark"] .dark-toggle-thumb { transform: translateX(20px); }
+
+        /* C'EST ICI QUE SE FAIT LA CORRECTION MOBILE */
+        @media (max-width: 768px) {
+            .hide-mobile { display: none !important; }
+            .logo { font-size: 1.5rem; }
+            .btn-idees-top { padding: 8px 14px; font-size: 0.85rem; }
+            .nav-links { gap: 10px; }
+        }
+
+        /* ========================================
+           ONGLET / BOÎTE À IDÉES (Plus doux et moderne)
+        ======================================== */
+        #boite-idees { 
+            background: linear-gradient(135deg, #4F46E5, #2563EB); 
+            color: white; padding: 50px 20px; text-align: center; 
+            position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] #boite-idees { background: linear-gradient(135deg, #3730A3, #1E1B4B); }
+        /* Forme décorative en fond */
+        #boite-idees::before { content: ''; position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        #boite-idees::after { content: ''; position: absolute; bottom: -80px; right: -20px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        
+        #boite-idees h2 { color: white; font-size: 2.2rem; margin-bottom: 12px; position: relative; z-index: 2; }
+        #boite-idees p { color: rgba(255,255,255,0.9); margin-bottom: 30px; position: relative; z-index: 2; font-size: 1.15rem; }
+        
+        .form-idee { 
+            display: flex; max-width: 650px; margin: 0 auto; gap: 12px; 
+            position: relative; z-index: 2; flex-direction: column; /* Colonne sur mobile */
+        }
+        @media (min-width: 600px) { .form-idee { flex-direction: row; } } /* Ligne sur PC */
+        
+        .form-idee input { 
+            flex: 1; padding: 18px 24px; border-radius: 9999px; 
+            border: none; font-size: 1rem; font-family: 'Nunito', sans-serif; 
+            outline: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+            transition: transform 0.2s;
+        }
+        .form-idee input:focus { transform: translateY(-2px); }
+        .form-idee button { 
+            background: linear-gradient(135deg, #FF8A00, #FF6B00); color: white; 
+            border: none; padding: 18px 35px; border-radius: 9999px; 
+            font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 1.1rem; 
+            cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 25px rgba(255,107,0,0.3); 
+            white-space: nowrap;
+        }
+        .form-idee button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,107,0,0.4); }
+
+        /* ========================================
+           HERO SECTION (La Grande-Motte)
+        ======================================== */
+        .hero { padding: 70px 20px 40px; text-align: center; animation: fadeUp 0.6s ease-out; }
+        .hero h1 { font-size: 3.8rem; margin-bottom: 20px; letter-spacing: -1px; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.8rem; } }
+        .hero-desc { font-size: 1.25rem; max-width: 750px; margin: 0 auto 40px; color: var(--texte-clair); }
+        
+        /* Badge amélioré avec effet lumineux */
+        .badge-gm { 
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(16,185,129,0.12); color: var(--succes); 
+            font-weight: 900; padding: 10px 20px; border-radius: 9999px; 
+            font-size: 0.95rem; margin-bottom: 25px; 
+            border: 1px solid rgba(16,185,129,0.3);
+            box-shadow: 0 4px 20px rgba(16,185,129,0.15);
+        }
+
+        /* ========================================
+           CARTES D'EXPLICATION (GLASSMORPHISM)
+        ======================================== */
+        .glass-card { 
+            background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 32px; padding: 40px 30px; 
+            box-shadow: var(--ombre); margin-bottom: 30px; transition: transform 0.3s, box-shadow 0.3s; 
+        }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: var(--ombre-forte); }
+        
+        .section-titre { text-align: center; font-size: 2.5rem; margin: 80px 0 50px; letter-spacing: -0.5px; }
+        @media (max-width: 768px) { .section-titre { font-size: 2rem; margin: 50px 0 30px; } }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        .feature-icon { 
+            font-size: 2.5rem; margin-bottom: 20px; display: inline-flex; 
+            align-items: center; justify-content: center;
+            width: 70px; height: 70px;
+            background: var(--bg-app); border-radius: 24px; 
+            border: 1px solid var(--border-soft); box-shadow: var(--ombre); 
+        }
+        .feature-titre { font-size: 1.4rem; margin-bottom: 12px; }
+
+        /* ========================================
+           APPEL À L'ACTION
+        ======================================== */
+        .cta-section { 
+            background: linear-gradient(135deg, #FF8A00, #FF6B00); 
+            padding: 70px 20px; text-align: center; border-radius: 40px; 
+            margin: 60px 0; color: white; box-shadow: 0 20px 40px rgba(255,107,0,0.3); 
+            position: relative; overflow: hidden;
+        }
+        .cta-section h2 { color: white; font-size: 2.8rem; margin-bottom: 15px; position: relative; z-index: 2; }
+        .cta-section p { color: rgba(255,255,255,0.95); font-size: 1.2rem; margin-bottom: 35px; position: relative; z-index: 2; }
+        .btn-blanc { 
+            background: white; color: var(--primaire); font-family: 'Outfit', sans-serif; 
+            font-weight: 900; font-size: 1.15rem; padding: 20px 45px; border-radius: 9999px; 
+            border: none; cursor: pointer; transition: all 0.2s; display: inline-block; 
+            text-decoration: none; position: relative; z-index: 2; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .btn-blanc:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .btn-contour { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.8); margin-left: 10px; }
+        @media (max-width: 600px) { .btn-blanc { display: block; margin: 10px auto 0; } .btn-contour { margin-left: auto; } }
+        .note-demo { background: var(--primaire-light); border: 1px solid rgba(255,107,0,0.3); color: var(--texte); border-radius: 20px; padding: 16px 20px; margin: 0 auto 30px; max-width: 750px; font-size: 1rem; text-align: left; }
+
+        /* TOASTS */
+        #toast-container { position:fixed; top:80px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; flex-direction:column; gap:10px; width:calc(100% - 40px); max-width:440px; pointer-events:none; }
+        .toast { background: var(--bg-card-solid); border-radius:24px; padding:16px 20px; display:flex; align-items:center; gap:14px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); border:1px solid var(--border-soft); pointer-events:all; position:relative; overflow:hidden; animation: toastIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards; transform:translateY(-40px); opacity:0; }
+        .toast.fermer { animation:toastOut 0.4s ease forwards; }
+        .toast-icone { font-size:2rem; flex-shrink:0; }
+        .toast-texte { flex:1; }
+        .toast-titre { font-family:'Outfit',sans-serif; font-weight:800; font-size:1rem; color:var(--texte); margin-bottom:2px; }
+        .toast-msg { font-size:0.9rem; color:var(--texte-clair); line-height:1.4; }
+        
+        @keyframes toastIn { to { transform:translateY(0); opacity:1; } }
+        @keyframes toastOut { to { transform:translateY(-30px); opacity:0; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<header>
+    <div class="container nav-content">
+        <a href="#" class="logo">ProxiLien</a>
+        <nav class="nav-links">
+            <a href="#concept" class="hide-mobile">Le Concept</a>
+            <a href="#fonctionnalites" class="hide-mobile">Fonctionnalités</a>
+            <a href="./" class="hide-mobile">Essayer</a>
+            <a href="#boite-idees" class="btn-idees-top">💡 Boîte à idées</a>
+            <div class="dark-toggle" onclick="toggleDark()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDark();}" role="button" tabindex="0" title="Mode sombre / clair" aria-label="Changer le thème">
+                <div class="dark-toggle-thumb" id="dark-thumb">☀️</div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section id="boite-idees">
+    <div class="container">
+        <h2>💡 La Boîte à Idées Grand-Mottoise</h2>
+        <p>ProxiLien est <strong>votre</strong> application. Vous avez une idée d'entraide spécifique pour les quartiers du Couchant ou du Point Zéro ? Proposez-la ici !</p>
+        <form class="form-idee" onsubmit="envoyerIdee(event)">
+            <input type="text" id="input-nouvelle-idee" aria-label="Votre idée" placeholder="Ex : un groupe pour nettoyer la plage du Grand Travers…" required>
+            <button type="submit">Envoyer mon idée</button>
+        </form>
+    </div>
+</section>
+
+<section class="hero container" id="concept">
+    <div class="badge-gm"><span style="font-size: 1.2rem;">📍</span> Projet pilote en préparation à La Grande-Motte</div>
+    <h1>L'entraide de quartier, <span>réinventée.</span></h1>
+    <p class="hero-desc">
+        Que vous soyez résident à l'année au Ponant, saisonnier, ou aîné cherchant de la compagnie, <strong>ProxiLien</strong> connecte les habitants de La Grande-Motte. De l'architecture visionnaire de Jean Balladur à l'innovation sociale d'aujourd'hui, construisons ensemble une ville plus solidaire.
+    </p>
+    <p class="note-demo"><strong>Où en est-on ?</strong> ProxiLien existe aujourd'hui en <strong>version de démonstration</strong> : vous pouvez l'essayer, mais ce que vous y saisissez reste sur votre appareil et n'est pas encore partagé avec les voisins. Le partage arrivera avec le pilote. <a href="./" style="color: var(--primaire); font-weight: 800;">Essayer la démonstration →</a></p>
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 32px; box-shadow: var(--ombre-forte); margin-bottom: 20px;">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Voisins solidaires" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+    </div>
+</section>
+
+<section class="container" style="margin-bottom: 80px;">
+    <div class="glass-card" style="text-align: center; padding: 60px 30px;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Comment ça marche ? C'est simple.</h2>
+        <p style="font-size: 1.15rem; max-width: 750px; margin: 0 auto; line-height: 1.8;">
+            ProxiLien s'adapte à vous. L'application possède <strong>deux visages</strong> : <br><br>
+            👵 <strong>Un Mode Aîné :</strong> Ultra-simplifié, écrit en gros, pilotable à la voix. Il permet de demander de l'aide en un clic (ex: "J'ai besoin d'aide pour porter mes courses depuis le marché").<br><br>
+            🧑 <strong>Un Mode Voisin :</strong> Pour les jeunes et actifs. Il transforme l'entraide en jeu (gagnez des points en aidant) et rassemble les demandes d'aide et les initiatives locales.
+        </p>
+    </div>
+</section>
+
+<section class="container" id="fonctionnalites">
+    <h2 class="section-titre">Tout un quartier <span>dans votre poche</span></h2>
+    <p style="text-align:center; margin: -30px auto 40px; max-width: 700px;">Ce que ProxiLien veut rendre possible avec le pilote. Certaines fonctions sont déjà visibles dans la démonstration, d'autres sont en projet.</p>
+
+    <div class="grid-2">
+        <div class="glass-card">
+            <div class="feature-icon">🤝</div>
+            <h3 class="feature-titre">Génération Ensemble & SOS</h3>
+            <p>Un aîné a besoin d'aide au quartier des Goélands ? Il le demande en un geste, et les voisins disponibles pourront venir l'aider. Le bouton SOS ne prévient personne automatiquement : il affiche les numéros d'urgence (15, 17, 18, 112, et 114 par SMS) et prépare un message pour un proche.</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="feature-icon">🛠️</div>
+            <h3 class="feature-titre">La Bricothèque (Prêts)</h3>
+            <p>Pourquoi acheter une perceuse pour s'en servir une fois ? Empruntez les outils de vos voisins. L'application aide à se souvenir de qui a emprunté quoi, pour que chacun récupère ses affaires sans gêne.</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="feature-icon">🧺</div>
+            <h3 class="feature-titre">Achats Groupés & Frigo Solidaire</h3>
+            <p>Regroupez-vous entre voisins pour acheter vos paniers bio directement aux producteurs locaux. Partagez vos surplus alimentaires dans les Frigos Solidaires virtuels pour éviter le gaspillage.</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="feature-icon">☕</div>
+            <h3 class="feature-titre">Café Surprise & Balades au Ponant</h3>
+            <p>Inscrivez-vous pour rencontrer un voisin au hasard autour d'un café pendant 15 minutes. Rejoignez ou proposez des balades à plusieurs le long de l'Étang du Ponant, idéales pour rompre l'isolement.</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-titre">Sondages & Mur des Mercis</h3>
+            <p>Prenez des décisions collectives avec vos voisins de rue. Prenez aussi le temps d'afficher votre gratitude publiquement sur le Mur des Mercis pour un voisin qui vous a rendu service.</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="feature-icon">🏆</div>
+            <h3 class="feature-titre">Défis & Boutiques Locales</h3>
+            <p>Transformez la solidarité en jeu sain ! « Aider 2 aînés cette semaine » vous rapporte des points. L'objectif : les échanger contre des avantages chez les commerçants de La Grande-Motte qui voudront s'associer au projet.</p>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="cta-section">
+        <h2>Prêt à dynamiser La Grande-Motte ?</h2>
+        <p>Essayez la démonstration, puis écrivez-nous pour devenir l'un des premiers testeurs du pilote.</p>
+        <a href="./" class="btn-blanc">Essayer la démonstration</a>
+        <a href="mailto:contact@alphabette.fr?subject=Je%20veux%20tester%20ProxiLien%20%C3%A0%20La%20Grande-Motte" class="btn-blanc btn-contour">Devenir testeur</a>
+    </div>
+</section>
+
+<footer style="text-align: center; padding: 40px 20px 60px; color: var(--texte-clair); font-weight: 700;">
+    <p>© 2026 ProxiLien, une application de l'écosystème <a href="https://alphabette.fr" style="color: var(--primaire);">Alphabette</a>. Conçue avec le cœur, pour La Grande-Motte.</p>
+</footer>
+
+<script>
+    // THEME SOMBRE
+    function toggleDark() {
+        const html = document.documentElement; 
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.getElementById('dark-thumb').textContent = isDark ? '☀️' : '🌙';
+        try { localStorage.setItem('proxilien-present-theme', isDark ? 'light' : 'dark'); } catch (e) {}
+    }
+
+    (function initTheme() {
+        let saved = null;
+        try { saved = localStorage.getItem('proxilien-present-theme'); } catch (e) {}
+        if (saved === 'dark') { 
+            document.documentElement.setAttribute('data-theme', 'dark'); 
+            document.getElementById('dark-thumb').textContent = '🌙'; 
+        }
+    })();
+
+    // TOASTS DE NOTIFICATION
+    function toast(titre, message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const icones = { succes: '✅', alerte: '🚨', info: 'ℹ️', or: '💡' };
+        const el = document.createElement('div'); el.className = 'toast toast-' + type;
+        el.innerHTML = `<div class="toast-icone">${icones[type] || 'ℹ️'}</div>
+                        <div class="toast-texte"><div class="toast-titre">${titre}</div><div class="toast-msg">${message}</div></div>`;
+        container.prepend(el);
+        setTimeout(() => {
+            el.classList.add('fermer');
+            setTimeout(() => el.remove(), 400);
+        }, 4000);
+    }
+
+    // GESTION DU FORMULAIRE "NOUVELLE IDÉE"
+    function envoyerIdee(event) {
+        event.preventDefault();
+        const input = document.getElementById('input-nouvelle-idee');
+        const idee = input.value.trim();
+        if (idee !== '') {
+            // Rien n'est enregistré ici : l'idée part par e-mail, depuis la messagerie du visiteur.
+            window.location.href = 'mailto:contact@alphabette.fr?subject=' + encodeURIComponent('Idée pour ProxiLien') + '&body=' + encodeURIComponent(idee);
+            toast('💡 Votre messagerie s\'ouvre', 'Envoyez l\'e-mail préparé pour nous transmettre votre idée. Merci !', 'or');
+        }
+    }
+</script>
+</body>
+</html>

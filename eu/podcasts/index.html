@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Podcasts · écoutez, sans pub ni compte</title>
+<meta name="description" content="Un lecteur de podcasts simple et gratuit : cherchez, abonnez-vous, créez votre file d'écoute, réglez vitesse, sauts et générique podcast par podcast, reprenez là où vous vous êtes arrêté. Sans publicité, sans compte, vos abonnements restent sur votre appareil.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6d28d9">
+<link rel="icon" type="image/svg+xml" href="icone.svg">
+<link rel="apple-touch-icon" href="icone-192.png">
+<style>
+  :root { --fond:#fbf8f3; --carte:#fff; --encre:#1c1917; --doux:#57534e; --trait:#e7e5e4; --acc:#6d28d9; --accfond:#ede9fe; --ok:#15803d; }
+  :root[data-ab-theme="nuit"] { --fond:#140f1f; --carte:#1e1630; --encre:#f5f3ff; --doux:#c4b5fd; --trait:#392b57; --acc:#a78bfa; --accfond:#2b2045; --ok:#86efac; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fond); color: var(--encre); font-size: 20px; line-height: 1.45; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 330px; }
+  h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  h2 { font-size: 24px; font-weight: 900; margin: 26px 0 10px; }
+  .intro { color: var(--doux); margin: 10px 0 18px; }
+  button, input, select { font: inherit; color: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, .pod:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+  .onglets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+  .onglets button { font-weight: 800; padding: 14px 6px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
+  .onglets button[aria-selected="true"] { border-color: var(--acc); background: var(--accfond); color: var(--acc); }
+  .bouton { font-weight: 800; padding: 12px 18px; border-radius: 14px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
+  :root[data-ab-theme="nuit"] .bouton { color: #1a1030; }
+  .bouton.clair { background: var(--carte); color: var(--acc); }
+  :root[data-ab-theme="nuit"] .bouton.clair { color: var(--acc); }
+  .bouton.danger { border-color: #b91c1c; color: #b91c1c; background: var(--carte); }
+  :root[data-ab-theme="nuit"] .bouton.danger { border-color: #f87171; color: #f87171; }
+  .rang { display: flex; gap: 10px; flex-wrap: wrap; }
+  .champ { display: flex; gap: 8px; margin: 8px 0 4px; }
+  .champ input { flex: 1; min-width: 0; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .pod { display: flex; flex-direction: column; gap: 8px; text-align: left; background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 12px; cursor: pointer; width: 100%; }
+  .pod:hover { border-color: var(--acc); }
+  .pod img, .pochette { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: var(--accfond); display: block; }
+  .pod strong { font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+  .liste { display: flex; flex-direction: column; gap: 10px; }
+  .ligne { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: start; background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 12px; }
+  .ligne .pochette { width: 72px; height: 72px; }
+  .ligne h3 { font-size: 19px; line-height: 1.25; overflow-wrap: anywhere; }
+  .meta { color: var(--doux); font-size: 16px; }
+  .desc { color: var(--doux); font-size: 17px; margin-top: 4px; overflow-wrap: anywhere; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .actions .bouton { padding: 10px 14px; font-size: 18px; }
+  .barre-prog { height: 6px; border-radius: 3px; background: var(--trait); margin-top: 6px; overflow: hidden; }
+  .barre-prog i { display: block; height: 100%; background: var(--acc); }
+  .vide, .etat { color: var(--doux); padding: 14px 4px; }
+  .puces { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .puces button { padding: 10px 16px; border-radius: 999px; border: 2px solid var(--trait); background: var(--carte); font-weight: 700; cursor: pointer; }
+  .puces button:hover { border-color: var(--acc); }
+  .tete { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; margin: 8px 0 12px; }
+  .tete .pochette { width: 120px; }
+  .tete h2 { margin: 0 0 4px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 16px; margin-top: 12px; }
+  .groupe-titre { font-size: 22px; font-weight: 900; margin: 22px 0 4px; }
+  .groupe-note { color: var(--doux); font-size: 16px; margin-bottom: 8px; }
+  .note { color: var(--doux); font-size: 16px; margin-top: 8px; }
+  .erreur { color: #b91c1c; font-weight: 700; }
+  :root[data-ab-theme="nuit"] .erreur { color: #fca5a5; }
+  /* Lecteur fixe en bas */
+  #lecteur { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--carte); border-top: 3px solid var(--acc); padding: 10px 14px 12px; box-shadow: 0 -6px 20px rgba(0,0,0,.12); }
+  #lecteur .int { max-width: 860px; margin: 0 auto; }
+  .titre-lect { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; }
+  .titre-lect .pochette { width: 52px; height: 52px; }
+  .titre-lect strong { display: block; font-size: 18px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .temps { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin: 6px 0; font-variant-numeric: tabular-nums; color: var(--doux); font-size: 16px; }
+  input[type=range] { width: 100%; height: 36px; accent-color: var(--acc); }
+  .commandes { display: grid; grid-template-columns: 1fr 1fr 1.3fr 1fr 1fr; gap: 8px; }
+  .commandes button, .reglages button, .reglages select { padding: 10px 4px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); font-weight: 800; cursor: pointer; min-height: 48px; }
+  .commandes button:hover, .reglages button:hover { border-color: var(--acc); }
+  .commandes .lire { background: var(--acc); border-color: var(--acc); color: #fff; font-size: 18px; }
+  :root[data-ab-theme="nuit"] .commandes .lire { color: #1a1030; }
+  .reglages { display: flex; gap: 8px; margin-top: 8px; }
+  .reglages > * { flex: 1 1 0; min-width: 0; }
+  .reglages select { appearance: auto; }
+  .msg-lect { margin-top: 6px; font-size: 16px; }
+  .msg-lect a { color: var(--acc); font-weight: 700; }
+  .outils { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 4px 0 12px; }
+  .reglage select { width: 100%; }
+  .outils select, .outils button, .reglage select { padding: 10px 12px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); font-weight: 700; cursor: pointer; min-height: 48px; max-width: 100%; }
+  .outils button[aria-pressed="true"] { border-color: var(--acc); background: var(--accfond); color: var(--acc); }
+  .bouton.mini { padding: 8px 12px; font-size: 16px; }
+  .pod .fav { color: #d97706; font-size: 16px; font-weight: 800; }
+  .reglage { display: grid; gap: 6px; margin: 14px 0; }
+  .reglage > label, .reglage > span { font-weight: 800; }
+  .case { display: flex; gap: 10px; align-items: center; margin: 8px 0; font-weight: 700; cursor: pointer; }
+  .case input { width: 24px; height: 24px; accent-color: var(--acc); flex: none; }
+  .sujets button { display: inline-flex; gap: 6px; align-items: center; }
+  .sujets button .x { font-weight: 900; color: var(--doux); }
+  .file-num { font-weight: 900; color: var(--acc); min-width: 1.6em; }
+  .listes { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 8px; margin: 4px 0 6px; scrollbar-width: thin; }
+  .listes button { flex: none; padding: 10px 14px; border-radius: 999px; border: 2px solid var(--trait); background: var(--carte); font-weight: 800; cursor: pointer; white-space: nowrap; }
+  .listes button[aria-pressed="true"] { border-color: var(--acc); background: var(--acc); color: #fff; }
+  :root[data-ab-theme="nuit"] .listes button[aria-pressed="true"] { color: #1a1030; }
+  .listes button.ajout { border-style: dashed; color: var(--acc); }
+  .form-liste { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 12px; }
+  .form-liste input { flex: 1 1 180px; min-width: 0; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); }
+  .form-liste select { padding: 10px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); font-size: 22px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 480px) { h1 { font-size: 28px; } .tete { grid-template-columns: 90px 1fr; } .tete .pochette { width: 90px; } .commandes button { font-size: 15px; } }
+  @media print { #lecteur { display: none; } }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="podcasts" data-nom="Podcasts" data-sous-titre="Écoutez, sans pub ni compte" data-accent="#6d28d9"></script>
+<main>
+  <h1>Podcasts. <em>Écoutez ce qui vous plaît.</em></h1>
+  <p class="intro">Sans publicité, sans compte. Vos abonnements restent sur votre appareil.</p>
+
+  <div class="onglets" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" id="t-abos" aria-selected="true">Mes podcasts</button>
+    <button type="button" role="tab" id="t-chercher" aria-selected="false">Chercher</button>
+    <button type="button" role="tab" id="t-reglages" aria-selected="false">Réglages</button>
+  </div>
+
+  <section id="v-abos" role="tabpanel" aria-labelledby="t-abos"></section>
+
+  <section id="v-chercher" role="tabpanel" aria-labelledby="t-chercher" hidden>
+    <form class="champ" id="f-chercher"><input id="q" type="search" placeholder="Un sujet, un nom de podcast…" aria-label="Chercher un podcast" autocomplete="off"><button class="bouton" type="submit">Chercher</button></form>
+    <div class="puces" id="idees"></div>
+    <div id="selection-chercher"></div>
+    <div id="resultats" aria-live="polite"></div>
+    <h2>Ou collez une adresse de flux (RSS)</h2>
+    <form class="champ" id="f-rss"><input id="rss" type="url" placeholder="https://…" aria-label="Adresse du flux RSS"><button class="bouton clair" type="submit">Ajouter</button></form>
+    <p class="note" id="msg-rss" aria-live="polite"></p>
+  </section>
+
+  <section id="v-reglages" role="tabpanel" aria-labelledby="t-reglages" hidden>
+    <div class="carte" id="perso"></div>
+    <div class="carte">
+      <h2 style="margin-top:0">Vos abonnements</h2>
+      <p class="meta">Exportez-les pour les garder ou les ouvrir dans une autre application de podcasts (fichier OPML), ou importez-en.</p>
+      <div class="actions"><button class="bouton clair" id="exporter" type="button">Exporter (OPML)</button><label class="bouton clair" style="cursor:pointer">Importer<input type="file" id="importer" accept=".opml,.xml,text/xml" hidden></label></div>
+      <p class="note" id="msg-import" aria-live="polite"></p>
+      <h2>Sauvegarde complète</h2>
+      <p class="meta">Tout dans un seul fichier : abonnements, favoris, file d'écoute, positions et réglages. Pratique pour retrouver votre appli à l'identique sur un autre téléphone ou ordinateur.</p>
+      <div class="actions"><button class="bouton clair" id="sauvegarder" type="button">Enregistrer ma sauvegarde</button><label class="bouton clair" style="cursor:pointer">Restaurer une sauvegarde<input type="file" id="restaurer" accept=".json,application/json" hidden></label></div>
+      <p class="note" id="msg-sauvegarde" aria-live="polite"></p>
+    </div>
+    <div class="carte">
+      <h2 style="margin-top:0">Vie privée</h2>
+      <p class="meta">Pas de compte, pas de publicité, pas de suivi. Abonnements, positions d'écoute et réglages sont enregistrés uniquement dans ce navigateur. Les flux passent par un petit relais d'Alphabette qui ne garde rien. Le son vient directement du site du podcast.</p>
+      <div class="actions"><button class="bouton danger" id="effacer" type="button">Tout effacer sur cet appareil</button></div>
+    </div>
+  </section>
+</main>
+
+<div id="lecteur" hidden>
+  <div class="int">
+    <div class="titre-lect"><img class="pochette" id="l-img" alt="" referrerpolicy="no-referrer"><div><strong id="l-titre"></strong><span class="meta" id="l-pod"></span></div></div>
+    <div class="temps"><span id="l-pos">0:00</span><input type="range" id="l-prog" min="0" max="0" step="1" value="0" aria-label="Position dans l'épisode"><span id="l-dur">0:00</span></div>
+    <div class="commandes">
+      <button type="button" id="l-m30" aria-label="Reculer de 30 secondes">−30 s</button>
+      <button type="button" id="l-m10" aria-label="Reculer de 10 secondes">−10 s</button>
+      <button type="button" class="lire" id="l-lire" aria-label="Lecture">▶ Lire</button>
+      <button type="button" id="l-p10" aria-label="Avancer de 10 secondes">+10 s</button>
+      <button type="button" id="l-p30" aria-label="Avancer de 30 secondes">+30 s</button>
+    </div>
+    <div class="reglages">
+      <select id="l-vit" aria-label="Vitesse de lecture"></select>
+      <select id="l-veille" aria-label="Minuterie de sommeil (arrêt automatique)"><option value="0">😴 Non</option><option value="15">😴 15 min</option><option value="30">😴 30 min</option><option value="60">😴 1 h</option><option value="fin">😴 Fin épisode</option></select>
+      <button type="button" id="l-suiv" aria-label="Épisode suivant de ma file" hidden>⏭ Suivant</button>
+    </div>
+    <p class="msg-lect" id="l-msg" aria-live="polite"></p>
+  </div>
+</div>
+<audio id="audio" preload="none"></audio>
+
+<script>
+(function () {
+  'use strict';
+  const RELAIS = 'flux.php';
+  const CLE = 'ab_podcasts';
+  const VITESSES = [0.5, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.8, 2, 2.5, 3];
+  const IDEES = ['Histoire', 'Sciences', 'Humour', 'Actualités', 'Santé', 'Musique', 'Nature', 'Cuisine'];
+  // Réglages personnels (tous modifiables dans l'onglet Réglages).
+  const PREFS0 = { listeActive: '', petit: 10, grand: 30, suite: 'non', tri: 'ajout', vue: 'grille', masquerEcoutes: false, ordreEps: 'recent', nbNouveautes: 1, sujets: IDEES.slice(), sectionsMasquees: [] };
+  const $ = (id) => document.getElementById(id);
+  const audio = $('audio');
+
+  const https = (u) => (typeof u === 'string' && /^http:\/\//i.test(u) ? 'https://' + u.slice(7) : u || '');
+  const sur = (u) => /^https?:\/\//i.test(u || '');
+
+  // ---------- Données locales ----------
+  const etatVide = () => ({ abos: [], pos: {}, vitesse: 1, dernier: null, file: [], listes: [], prefs: Object.assign({}, PREFS0, { sujets: IDEES.slice(), sectionsMasquees: [] }) });
+  function normaliser(x) {
+    const e = Object.assign(etatVide(), x || {});
+    e.abos = Array.isArray(e.abos) ? e.abos.filter((a) => a && sur(a.feed)) : [];
+    e.pos = e.pos && typeof e.pos === 'object' ? e.pos : {};
+    e.file = Array.isArray(e.file) ? e.file.filter((x) => x && sur(x.url) && sur(x.feed)) : [];
+    e.listes = Array.isArray(e.listes) ? e.listes.filter((l) => l && l.id && l.nom).map((l) => ({ id: String(l.id), nom: String(l.nom).slice(0, 40), emoji: String(l.emoji || '📂').slice(0, 4), feeds: Array.isArray(l.feeds) ? l.feeds.filter(sur) : [] })) : [];
+    e.prefs = Object.assign({}, PREFS0, e.prefs || {});
+    if (!Array.isArray(e.prefs.sujets)) e.prefs.sujets = IDEES.slice();
+    if (!Array.isArray(e.prefs.sectionsMasquees)) e.prefs.sectionsMasquees = [];
+    if (!VITESSES.includes(+e.vitesse)) e.vitesse = 1;
+    return e;
+  }
+  let etat = etatVide();
+  try { const s = JSON.parse(localStorage.getItem(CLE) || 'null'); if (s && Array.isArray(s.abos)) etat = normaliser(s); } catch (e) {}
+  const P = () => etat.prefs;
+  const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {} };
+
+  // ---------- Petits outils ----------
+  function h(tag, props, ...enfants) {
+    const e = document.createElement(tag);
+    if (props) for (const k in props) { if (k === 'class') e.className = props[k]; else if (k.startsWith('on')) e.addEventListener(k.slice(2), props[k]); else if (props[k] !== undefined && props[k] !== null) e.setAttribute(k, props[k]); }
+    enfants.flat().forEach((c) => { if (c !== null && c !== undefined && c !== false) e.append(c.nodeType ? c : document.createTextNode(String(c))); });
+    return e;
+  }
+  function pochette(url, classe) {
+    const i = h('img', { class: classe || 'pochette', alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' });
+    if (sur(url)) i.src = https(url); i.addEventListener('error', () => { i.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; }, { once: true });
+    return i;
+  }
+  function duree(s) { s = Math.max(0, Math.floor(s || 0)); const hh = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60), ss = s % 60; return hh ? `${hh}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}` : `${mm}:${String(ss).padStart(2, '0')}`; }
+  function dureeLongue(s) { if (!s) return ''; const m = Math.round(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}` : `${m} min`; }
+  function dateFr(d) { return d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''; }
+  function texte(html) { const d = new DOMParser().parseFromString(html || '', 'text/html'); return (d.body.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function secondes(v) { if (!v) return 0; v = String(v).trim(); if (/^\d+$/.test(v)) return +v; const p = v.split(':').map(Number); if (p.some(isNaN)) return 0; return p.reduce((a, n) => a * 60 + n, 0); }
+
+  // ---------- Flux ----------
+  const cacheFlux = new Map();
+  async function chargerFlux(url) {
+    if (cacheFlux.has(url)) return cacheFlux.get(url);
+    const p = (async () => {
+      const r = await fetch(`${RELAIS}?u=${encodeURIComponent(url)}`);
+      if (!r.ok) throw new Error(await r.text().catch(() => '') || 'Flux inaccessible.');
+      const doc = new DOMParser().parseFromString(await r.text(), 'application/xml');
+      if (doc.querySelector('parsererror')) throw new Error("Ce n'est pas un flux de podcast valide.");
+      const canal = doc.querySelector('channel');
+      if (!canal) throw new Error("Ce n'est pas un flux de podcast valide.");
+      const direct = (parent, nom) => { for (const c of parent.children) if (c.localName === nom) return c; return null; };
+      const imgItunes = (parent) => { for (const c of parent.children) if (c.localName === 'image' && c.getAttribute('href')) return c.getAttribute('href'); return ''; };
+      const titre = (direct(canal, 'title') || {}).textContent || url;
+      let image = imgItunes(canal); if (!image) { const im = direct(canal, 'image'); const u = im && direct(im, 'url'); image = u ? u.textContent.trim() : ''; }
+      const eps = [];
+      canal.querySelectorAll(':scope > item').forEach((it) => {
+        const enc = direct(it, 'enclosure'); const src = enc && enc.getAttribute('url'); if (!src) return;
+        let dur = 0; for (const c of it.children) if (c.localName === 'duration') dur = secondes(c.textContent);
+        const guid = direct(it, 'guid');
+        eps.push({ id: ((guid && guid.textContent.trim()) || src).slice(0, 300), titre: ((direct(it, 'title') || {}).textContent || 'Épisode').trim(), url: src.trim(), date: (direct(it, 'pubDate') || {}).textContent || '', duree: dur, desc: texte((direct(it, 'description') || {}).textContent || '').slice(0, 400), image: imgItunes(it) });
+      });
+      eps.forEach((e) => { e.t = Date.parse(e.date) || 0; });
+      eps.sort((a, b) => b.t - a.t);
+      return { feed: url, titre: titre.trim(), image, desc: texte((direct(canal, 'description') || {}).textContent || '').slice(0, 500), eps: eps.slice(0, 80) };
+    })();
+    cacheFlux.set(url, p); p.catch(() => cacheFlux.delete(url));
+    return p;
+  }
+  const abonne = (feed) => etat.abos.some((a) => a.feed === feed);
+  function sabonner(feed, titre, image) {
+    if (abonne(feed)) return;
+    etat.abos.unshift({ feed, titre: titre || feed, image: image || '' }); sauver();
+  }
+  function desabonner(feed) { etat.abos = etat.abos.filter((a) => a.feed !== feed); etat.listes.forEach((l) => { l.feeds = l.feeds.filter((f) => f !== feed); }); sauver(); }
+  // ---------- Listes thématiques (« Pour la voiture », « Pour s'endormir »…) ----------
+  const EMOJIS = ['📂', '🚗', '🌙', '☕', '🎓', '🏃', '🍳', '🧘', '😂', '📰', '🎧', '🌍', '👶', '❤️'];
+  const SUGGESTIONS = [['🚗', 'Pour la voiture'], ['🌙', 'Pour s’endormir'], ['☕', 'Le matin'], ['🎓', 'Pour apprendre']];
+  const listeDe = (id) => etat.listes.find((l) => l.id === id);
+  function creerListe(nom, emoji) {
+    nom = String(nom || '').trim().slice(0, 40); if (!nom) return null;
+    const ex = etat.listes.find((l) => norm(l.nom) === norm(nom)); if (ex) return ex;
+    const sug = SUGGESTIONS.find(([, n]) => norm(n) === norm(nom));
+    const l = { id: 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, emoji: emoji || (sug ? sug[0] : '📂'), feeds: [] };
+    etat.listes.push(l); sauver(); return l;
+  }
+  const dansListe = (l, feed) => l.feeds.includes(feed);
+  function basculerListe(l, feed, oui) { l.feeds = l.feeds.filter((f) => f !== feed); if (oui) l.feeds.push(feed); sauver(); }
+  // Abonnements visibles selon la liste choisie dans « Mes podcasts »
+  function abosVisibles() { const l = listeDe(P().listeActive); return l ? abosTries().filter((a) => dansListe(l, a.feed)) : abosTries(); }
+  // Met en tête de la file le dernier épisode pas encore écouté de chaque podcast de la liste, puis lance la lecture.
+  async function ecouterListe(l, bouton) {
+    const abos = etat.abos.filter((a) => dansListe(l, a.feed)); if (!abos.length) return;
+    if (bouton) { bouton.disabled = true; bouton.textContent = 'Préparation…'; }
+    const choisis = [];
+    await Promise.all(abos.map(async (a) => {
+      try { const f = await chargerFlux(a.feed); const e = f.eps.find((x) => !(etat.pos[cleEp(f, x)] || {}).fini); if (e) choisis.push({ f, e }); } catch (err) { /* flux en panne : ignoré */ }
+    }));
+    choisis.sort((x, y) => y.e.t - x.e.t);
+    if (!choisis.length) { if (bouton) { bouton.disabled = false; bouton.textContent = 'Rien de nouveau à écouter'; } return; }
+    const nouveaux = choisis.filter(({ f, e }) => !dansFile(f, e)).map(({ f, e }) => ({ feed: f.feed, ftitre: f.titre, fimage: f.image, id: e.id, titre: e.titre, url: e.url, image: e.image, duree: e.duree, date: e.date, t: e.t, desc: e.desc }));
+    etat.file = nouveaux.concat(etat.file); sauver(); majSuivant();
+    if (P().suite === 'non') { P().suite = 'file'; sauver(); } // pour enchaîner toute la liste
+    suivantDeFile(); montrerAbos();
+  }
+  const aboDe = (feed) => etat.abos.find((a) => a.feed === feed);
+  // File d'écoute (« À écouter ensuite »)
+  const dansFile = (f, e) => etat.file.some((x) => x.feed === f.feed && x.id === e.id);
+  function ajouterFile(f, e) {
+    if (dansFile(f, e)) return;
+    etat.file.push({ feed: f.feed, ftitre: f.titre, fimage: f.image, id: e.id, titre: e.titre, url: e.url, image: e.image, duree: e.duree, date: e.date, t: e.t, desc: e.desc });
+    sauver(); majSuivant();
+  }
+  function retirerFile(feed, id) { etat.file = etat.file.filter((x) => !(x.feed === feed && x.id === id)); sauver(); majSuivant(); }
+  const depuisFile = (x) => ({ f: { feed: x.feed, titre: x.ftitre, image: x.fimage }, e: { id: x.id, titre: x.titre, url: x.url, image: x.image, duree: x.duree, date: x.date, t: x.t, desc: x.desc } });
+
+  // ---------- Onglets ----------
+  const VUES = ['abos', 'chercher', 'reglages'];
+  function aller(v) {
+    VUES.forEach((n) => { $('v-' + n).hidden = n !== v; $('t-' + n).setAttribute('aria-selected', String(n === v)); });
+    if (v === 'abos') montrerAbos(); if (v === 'reglages') montrerPerso(); if (v === 'chercher') { if (!$('selection-chercher').childNodes.length) { const t = h('h2', null, 'Notre sélection'); $('selection-chercher').append(t); const zs = h('div'); $('selection-chercher').append(zs); montrerSelection(zs); } }
+  }
+  VUES.forEach((n) => $('t-' + n).addEventListener('click', () => aller(n)));
+
+
+  // ---------- Sélection d'Alphabette ----------
+  // Les flux sont retrouvés par nom dans l'annuaire (rien n'est figé : si un podcast change d'adresse, il est retrouvé).
+  const SELECTION = [
+    { titre: 'À la une', note: 'Radio et actualités du jour.', items: [
+      { nom: 'Radio Nova', q: 'Radio Nova', cle: 'nova', desc: 'La radio des musiques et des idées.' },
+      { nom: 'La Dernière', q: 'La Dernière Radio Nova', cle: 'derniere', desc: 'L’émission de fin de journée de Radio Nova.' },
+      { nom: 'La Matinale du Soir', q: 'La Matinale du Soir', cle: 'matinale', desc: 'Le rendez-vous du soir pour comprendre la journée.' },
+      { nom: 'HugoDécrypte', q: 'HugoDécrypte', cle: 'hugo', desc: 'L’actualité du jour, expliquée simplement.' }] },
+    { titre: 'Médias de gauche et indépendants', note: 'Une sélection de médias engagés à gauche ou indépendants, à compléter.', items: [
+      { nom: 'Mediapart', q: 'Mediapart', cle: 'mediapart', desc: 'Journal d’investigation indépendant.' },
+      { nom: 'Blast', q: 'Blast le souffle de l’info', cle: 'blast', desc: 'Média indépendant, enquêtes et entretiens.' },
+      { nom: 'Le Média', q: 'Le Média', cle: 'le media', desc: 'Média en ligne engagé à gauche.' },
+      { nom: 'Libération', q: 'Libération', cle: 'liberation', desc: 'Les podcasts du quotidien Libération.' },
+      { nom: 'L’Humanité', q: 'L’Humanité', cle: 'humanite', desc: 'Les podcasts du journal L’Humanité.' },
+      { nom: 'Politis', q: 'Politis', cle: 'politis', desc: 'Hebdomadaire de gauche : politique, société, écologie.' },
+      { nom: 'Regards', q: 'Regards', cle: 'regards', desc: 'Magazine de la gauche : débats et analyses.' },
+      { nom: 'Reporterre', q: 'Reporterre', cle: 'reporterre', desc: 'Le quotidien de l’écologie.' },
+      { nom: 'Basta !', q: 'Basta', cle: 'basta', desc: 'Média indépendant : social, écologie, droits.' },
+      { nom: 'Les Jours', q: 'Les Jours', cle: 'les jours', desc: 'Journal indépendant en « obsessions ».' },
+      { nom: 'Arrêt sur images', q: 'Arrêt sur images', cle: 'arret sur images', desc: 'Décryptage critique des médias.' },
+      { nom: 'Alternatives économiques', q: 'Alternatives économiques', cle: 'alternatives', desc: 'Économie et société, sans jargon.' },
+      { nom: 'Binge Audio', q: 'Binge Audio', cle: 'binge', desc: 'Podcasts de société, de culture et d’idées.' },
+      { nom: 'Là-bas si j’y suis', q: 'Là-bas si j’y suis', cle: 'la bas', desc: 'Reportages et révoltes, à la radio.' },
+      { nom: 'Le Monde diplomatique', q: 'Le Monde diplomatique', cle: 'diplomatique', desc: 'Analyses et enquêtes internationales.' }] },
+    { titre: 'Culture et ARTE', note: 'Littérature, idées, arts et cinéma.', items: [
+      { nom: 'ARTE Radio', q: 'ARTE Radio', cle: 'arte radio', desc: 'Documentaires sonores et créations d’ARTE.' },
+      { nom: 'Le Masque et la Plume', q: 'Le Masque et la Plume', cle: 'masque et la plume', desc: 'Cinéma, livres, théâtre : critiques et débats.' },
+      { nom: 'Les Chemins de la philosophie', q: 'Les Chemins de la philosophie', cle: 'chemins de la philosophie', desc: 'Une grande question de philosophie, expliquée.' },
+      { nom: 'La Grande Table', q: 'La Grande Table', cle: 'grande table', desc: 'Entretiens sur la culture et les idées.' },
+      { nom: 'Le Book Club', q: 'Le Book Club France Culture', cle: 'book club', desc: 'On parle de livres entre passionnés.' }] },
+    { titre: 'Sciences et nature', note: 'Comprendre le monde, sans jargon.', items: [
+      { nom: 'La Méthode scientifique', q: 'La Méthode scientifique', cle: 'methode scientifique', desc: 'Un sujet de science par jour, avec des chercheurs.' },
+      { nom: 'La Science, CQFD', q: 'La Science CQFD', cle: 'cqfd', desc: 'Les sciences racontées simplement.' },
+      { nom: 'Sur les épaules de Darwin', q: 'Sur les épaules de Darwin', cle: 'epaules de darwin', desc: 'Jean-Claude Ameisen, entre science et poésie.' },
+      { nom: 'Choses à Savoir', q: 'Choses à Savoir Sciences', cle: 'choses a savoir', desc: 'Une question, une réponse en deux minutes.' },
+      { nom: 'Le Journal du CNRS', q: 'CNRS Le Journal', cle: 'cnrs', desc: 'La recherche française, à portée de tous.' }] },
+    { titre: 'Histoire', note: 'Des récits pour comprendre le passé.', items: [
+      { nom: 'La Fabrique de l’Histoire', q: 'La Fabrique de l’Histoire', cle: 'fabrique de l histoire', desc: 'L’histoire se fait et se raconte.' },
+      { nom: 'Le Cours de l’Histoire', q: 'Le Cours de l’Histoire', cle: 'cours de l histoire', desc: 'Une grande question d’histoire chaque jour.' },
+      { nom: 'Concordance des temps', q: 'Concordance des temps', cle: 'concordance des temps', desc: 'Jean-Noël Jeanneney et ses invités.' },
+      { nom: 'Au cœur de l’histoire', q: 'Au cœur de l’histoire', cle: 'coeur de l histoire', desc: 'Des récits d’histoire racontés en une heure.' },
+      { nom: 'Passion Médiévistes', q: 'Passion Médiévistes', cle: 'medievistes', desc: 'Le Moyen Âge, vu par ceux qui l’étudient.' }] },
+    { titre: 'Géographie et monde', note: 'Cartes, voyages et géopolitique.', items: [
+      { nom: 'Le Dessous des cartes', q: 'Le Dessous des cartes', cle: 'dessous des cartes', desc: 'Le monde expliqué par les cartes (ARTE).' },
+      { nom: 'Affaires étrangères', q: 'Affaires étrangères', cle: 'affaires etrangeres', desc: 'Les grands sujets internationaux.' },
+      { nom: 'Les Enjeux internationaux', q: 'Les Enjeux internationaux', cle: 'enjeux internationaux', desc: 'Un tour du monde de l’actualité.' },
+      { nom: 'Géopolitique, le débat', q: 'Géopolitique le débat RFI', cle: 'geopolitique', desc: 'Un thème, des spécialistes, un débat clair.' },
+      { nom: 'Le Grand Reportage', q: 'Le Grand Reportage RFI', cle: 'grand reportage', desc: 'Des reportages dans le monde entier.' }] },
+    { titre: 'Humour et culture à la française', note: 'Pour rire, et en savoir plus.', items: [
+      { nom: 'Par Jupiter !', q: 'Par Jupiter', cle: 'par jupiter', desc: 'La radio qui prend l’actualité à la rigolade.' },
+      { nom: 'La Drôle d’Humeur de Marina Rollman', q: 'Marina Rollman', cle: 'marina rollman', desc: 'Chroniques drôles et décalées.' },
+      { nom: 'Les Idées claires', q: 'Les Idées claires', cle: 'idees claires', desc: 'Démêler le vrai du faux, avec humour.' }] },
+    { titre: 'Radio publique', note: 'Radio France.', items: [
+      { nom: 'France Inter', q: 'France Inter', cle: 'france inter', desc: 'Chroniques, débats et grands entretiens.' },
+      { nom: 'franceinfo', q: 'franceinfo', cle: 'franceinfo', desc: 'L’information en continu.' },
+      { nom: 'Affaires sensibles', q: 'Affaires sensibles', cle: 'affaires sensibles', desc: 'L’histoire racontée par de grands récits.' }] }
+  ];
+  const norm = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  let cacheSel = {}; try { cacheSel = JSON.parse(localStorage.getItem('ab_podcasts_sel') || '{}'); } catch (e) {}
+  const enAttente = new Map();
+  function retrouver(it) {
+    const c = cacheSel[it.nom]; if (c && Date.now() - c.t < 7 * 864e5) return Promise.resolve(c);
+    if (enAttente.has(it.nom)) return enAttente.get(it.nom);
+    const p = fetch(`${RELAIS}?q=${encodeURIComponent(it.q)}`).then((r) => r.json()).then((d) => {
+      const trouve = (d.results || []).find((x) => sur(x.feedUrl) && norm(x.collectionName + ' ' + x.artistName).includes(norm(it.cle)));
+      if (!trouve) return { introuvable: true, t: Date.now() };
+      const res = { feed: https(trouve.feedUrl), titre: trouve.collectionName, image: trouve.artworkUrl600 || trouve.artworkUrl100 || '', t: Date.now() };
+      cacheSel[it.nom] = res; try { localStorage.setItem('ab_podcasts_sel', JSON.stringify(cacheSel)); } catch (e) {}
+      return res;
+    }).catch(() => ({ erreur: true }));
+    enAttente.set(it.nom, p); p.then(() => enAttente.delete(it.nom));
+    return p;
+  }
+  function montrerSelection(z) {
+    z.textContent = '';
+    const aResoudre = [];
+    const visibles = SELECTION.filter((g) => !P().sectionsMasquees.includes(g.titre));
+    if (!visibles.length) z.append(h('p', { class: 'vide' }, 'Toutes les rubriques de la sélection sont masquées. Vous pouvez les réafficher dans Réglages.'));
+    visibles.forEach((g) => {
+      z.append(h('h2', { class: 'groupe-titre' }, g.titre), h('p', { class: 'groupe-note' }, g.note));
+      const l = h('div', { class: 'liste' });
+      g.items.forEach((it) => {
+        const img = pochette(''), boutons = h('div', { class: 'actions' });
+        const info = h('div', { class: 'meta' }, 'Recherche du podcast…');
+        const carte = h('article', { class: 'ligne' }, img, h('div', null, h('h3', null, it.nom), h('p', { class: 'desc' }, it.desc), info, boutons));
+        l.append(carte);
+        aResoudre.push({ it, img, info, boutons, carte });
+      });
+      z.append(l);
+    });
+    // Chaque podcast n'est cherché que lorsqu'il apparaît à l'écran (et au plus deux à la fois) :
+    // l'annuaire limite le nombre de recherches, et la plupart des visiteurs ne verront pas toute la liste.
+    const file = []; let actifs = 0;
+    const pomper = () => { while (actifs < 2 && file.length) { actifs++; file.shift()().then(() => { actifs--; pomper(); }); } };
+    const resoudre = async (x) => {
+      const { it, img, info, boutons, carte } = x;
+      const r = await retrouver(it);
+      if (!info.isConnected) return;
+      boutons.textContent = '';
+      if (r.feed) {
+        if (sur(r.image)) img.src = https(r.image);
+        info.textContent = r.titre;
+        const b = h('button', { class: 'bouton', type: 'button' });
+        const rafr = () => { b.textContent = abonne(r.feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(r.feed) ? 'bouton clair' : 'bouton'; };
+        b.addEventListener('click', () => { abonne(r.feed) ? desabonner(r.feed) : sabonner(r.feed, r.titre, r.image); rafr(); });
+        rafr();
+        boutons.append(b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(r.feed) }, 'Voir les épisodes'));
+      } else {
+        info.textContent = r.erreur ? 'Recherche indisponible pour le moment.' : 'Pas trouvé automatiquement.';
+        boutons.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => { aller('chercher'); $('q').value = it.q; chercher(it.q); } }, 'Chercher « ' + it.nom + ' »'));
+      }
+    };
+    const planifier = (x) => { file.push(() => resoudre(x)); pomper(); };
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+        if (!e.isIntersecting) return; obs.unobserve(e.target); planifier(e.target.__x);
+      }), { rootMargin: '200px' });
+      aResoudre.forEach((x) => { x.carte.__x = x; obs.observe(x.carte); });
+    } else aResoudre.forEach(planifier);
+  }
+
+  // ---------- Mes podcasts ----------
+  function abosTries() {
+    const l = etat.abos.slice();
+    const nomDe = (a) => norm(a.titre);
+    if (P().tri === 'alpha') l.sort((x, y) => nomDe(x).localeCompare(nomDe(y), 'fr'));
+    else if (P().tri === 'recent') l.sort((x, y) => (y.dernierT || 0) - (x.dernierT || 0));
+    l.sort((x, y) => (y.fav ? 1 : 0) - (x.fav ? 1 : 0)); // les favoris toujours en tête
+    return l;
+  }
+  function montrerAbos() {
+    const z = $('v-abos'); z.textContent = '';
+    if (!etat.abos.length && !etat.file.length) {
+      z.append(h('p', { class: 'vide' }, "Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner »."),
+        h('button', { class: 'bouton', type: 'button', onclick: () => aller('chercher') }, 'Chercher un podcast'));
+      const zs = h('div'); z.append(h('h2', null, 'Notre sélection'), zs); montrerSelection(zs);
+      return;
+    }
+    if (etat.file.length) {
+      z.append(h('h2', { style: 'margin-top:0' }, `À écouter ensuite (${etat.file.length})`));
+      const lf = h('div', { class: 'liste' });
+      etat.file.forEach((x, i) => {
+        const { f, e } = depuisFile(x);
+        const monter = h('button', { class: 'bouton clair mini', type: 'button', 'aria-label': 'Monter dans la file', onclick: () => { if (i > 0) { const t = etat.file[i - 1]; etat.file[i - 1] = etat.file[i]; etat.file[i] = t; sauver(); montrerAbos(); } } }, '↑');
+        const descendre = h('button', { class: 'bouton clair mini', type: 'button', 'aria-label': 'Descendre dans la file', onclick: () => { if (i < etat.file.length - 1) { const t = etat.file[i + 1]; etat.file[i + 1] = etat.file[i]; etat.file[i] = t; sauver(); montrerAbos(); } } }, '↓');
+        lf.append(h('article', { class: 'ligne' }, pochette(e.image || f.image),
+          h('div', null, h('div', { class: 'meta' }, h('span', { class: 'file-num' }, (i + 1) + '.'), ' ', f.titre), h('h3', null, e.titre),
+            h('div', { class: 'meta' }, [dateFr(e.date), dureeLongue(e.duree)].filter(Boolean).join(' · ')),
+            h('div', { class: 'actions' }, h('button', { class: 'bouton mini', type: 'button', onclick: () => jouer(f, e) }, '▶ Écouter'), monter, descendre,
+              h('button', { class: 'bouton clair mini', type: 'button', onclick: () => { retirerFile(x.feed, x.id); montrerAbos(); } }, '✕ Retirer')))));
+      });
+      z.append(lf);
+    }
+    if (!etat.abos.length) return;
+    z.append(h('h2', { style: etat.file.length ? '' : 'margin-top:0' }, 'Mes podcasts'));
+    // Barre des listes
+    if (P().listeActive && !listeDe(P().listeActive)) P().listeActive = '';
+    const barre = h('div', { class: 'listes', role: 'group', 'aria-label': 'Mes listes' });
+    const choisir = (id) => { P().listeActive = id; sauver(); montrerAbos(); };
+    barre.append(h('button', { type: 'button', 'aria-pressed': String(!P().listeActive), onclick: () => choisir('') }, `Tous (${etat.abos.length})`));
+    etat.listes.forEach((l) => barre.append(h('button', { type: 'button', 'aria-pressed': String(P().listeActive === l.id), onclick: () => choisir(l.id) }, `${l.emoji} ${l.nom} (${etat.abos.filter((a) => dansListe(l, a.feed)).length})`)));
+    const zoneForm = h('div');
+    const ouvrirForm = () => {
+      zoneForm.textContent = '';
+      const emo = h('select', { 'aria-label': 'Image de la liste' }); EMOJIS.forEach((x) => emo.append(h('option', { value: x }, x)));
+      const nom = h('input', { type: 'text', placeholder: 'Nom de la liste (ex. Pour la voiture)', 'aria-label': 'Nom de la nouvelle liste', maxlength: '40' });
+      const f = h('form', { class: 'form-liste' }, emo, nom, h('button', { class: 'bouton', type: 'submit' }, 'Créer'), h('button', { class: 'bouton clair', type: 'button', onclick: () => { zoneForm.textContent = ''; } }, 'Annuler'));
+      f.addEventListener('submit', (ev) => { ev.preventDefault(); const l = creerListe(nom.value, emo.value); if (l) { P().listeActive = l.id; sauver(); montrerAbos(); } });
+      zoneForm.append(f); nom.focus();
+    };
+    barre.append(h('button', { type: 'button', class: 'ajout', onclick: ouvrirForm }, '+ Nouvelle liste'));
+    z.append(barre, zoneForm);
+    if (!etat.listes.length) {
+      const sug = h('div', { class: 'actions' }, h('span', { class: 'meta' }, 'Idées de listes :'));
+      SUGGESTIONS.forEach(([em, n]) => sug.append(h('button', { class: 'bouton clair mini', type: 'button', onclick: () => { const l = creerListe(n, em); P().listeActive = l.id; sauver(); montrerAbos(); } }, em + ' ' + n)));
+      z.append(sug);
+    }
+    const active = listeDe(P().listeActive);
+    if (active) {
+      const nb = etat.abos.filter((a) => dansListe(active, a.feed)).length;
+      const bEcouter = h('button', { class: 'bouton', type: 'button' }, '▶ Écouter cette liste');
+      bEcouter.addEventListener('click', () => ecouterListe(active, bEcouter));
+      const outilsListe = h('div', { class: 'actions' });
+      if (nb) outilsListe.append(bEcouter);
+      outilsListe.append(
+        h('button', { class: 'bouton clair mini', type: 'button', onclick: () => { const n = prompt('Nouveau nom de la liste :', active.nom); if (n && n.trim()) { active.nom = n.trim().slice(0, 40); sauver(); montrerAbos(); } } }, 'Renommer'),
+        h('button', { class: 'bouton clair mini', type: 'button', onclick: () => { const i = EMOJIS.indexOf(active.emoji); active.emoji = EMOJIS[(i + 1) % EMOJIS.length]; sauver(); montrerAbos(); } }, 'Changer l’image ' + active.emoji),
+        h('button', { class: 'bouton danger mini', type: 'button', onclick: () => { if (confirm(`Supprimer la liste « ${active.nom} » ? Vos abonnements ne sont pas touchés.`)) { etat.listes = etat.listes.filter((l) => l.id !== active.id); P().listeActive = ''; sauver(); montrerAbos(); } } }, 'Supprimer la liste'));
+      z.append(outilsListe);
+      if (!nb) z.append(h('p', { class: 'vide' }, 'Cette liste est vide. Ouvrez un de vos podcasts ci-dessous (dans « Tous ») et cochez « ' + active.nom + ' » dans « Mes listes ».'));
+      if (nb) z.append(h('p', { class: 'note' }, '« Écouter cette liste » met le dernier épisode pas encore écouté de chaque podcast de la liste en tête de votre file, et les enchaîne.'));
+    }
+    const outils = h('div', { class: 'outils' });
+    const tri = h('select', { 'aria-label': 'Trier mes podcasts' });
+    [['ajout', "Tri : ordre d'ajout"], ['alpha', 'Tri : de A à Z'], ['recent', 'Tri : dernière sortie']].forEach(([v, t]) => { const o = h('option', { value: v }, t); if (P().tri === v) o.selected = true; tri.append(o); });
+    tri.addEventListener('change', () => { P().tri = tri.value; sauver(); montrerAbos(); });
+    const vue = h('button', { type: 'button', onclick: () => { P().vue = P().vue === 'grille' ? 'liste' : 'grille'; sauver(); montrerAbos(); } }, P().vue === 'grille' ? '☰ Afficher en liste' : '▦ Afficher en vignettes');
+    outils.append(tri, vue);
+    z.append(outils);
+    if (P().vue === 'liste') {
+      const l = h('div', { class: 'liste' });
+      abosVisibles().forEach((a) => l.append(h('article', { class: 'ligne' }, pochette(a.image),
+        h('div', null, h('h3', null, (a.fav ? '★ ' : '') + a.titre),
+          h('div', { class: 'meta' }, [a.vitesse ? 'vitesse ×' + String(a.vitesse).replace('.', ',') : '', a.intro ? 'générique passé (' + a.intro + ' s)' : ''].filter(Boolean).join(' · ')),
+          h('div', { class: 'actions' }, h('button', { class: 'bouton clair mini', type: 'button', onclick: () => detail(a.feed) }, 'Voir les épisodes'))))));
+      z.append(l);
+    } else {
+      const g = h('div', { class: 'grille' });
+      abosVisibles().forEach((a) => g.append(h('button', { class: 'pod', type: 'button', onclick: () => detail(a.feed) }, pochette(a.image), a.fav ? h('span', { class: 'fav' }, '★ Favori') : null, h('strong', null, a.titre))));
+      z.append(g);
+    }
+    const zone = h('div', { class: 'liste', id: 'dernieres' }, h('p', { class: 'etat' }, 'Recherche des derniers épisodes…'));
+    z.append(h('h2', null, active ? `Dernières sorties · ${active.emoji} ${active.nom}` : 'Dernières sorties'), zone);
+    derniers(zone);
+  }
+  async function derniers(zone) {
+    const abos = abosVisibles().slice(0, 30), res = [], n = Math.max(1, Math.min(3, +P().nbNouveautes || 1));
+    let i = 0;
+    await Promise.all([0, 1, 2].map(async () => {
+      while (i < abos.length) {
+        const a = abos[i++];
+        try {
+          const f = await chargerFlux(a.feed); majAbo(a, f);
+          f.eps.filter((e) => !(P().masquerEcoutes && (etat.pos[cleEp(f, e)] || {}).fini)).slice(0, n).forEach((e) => res.push({ f, e }));
+        } catch (e) { /* un flux en panne ne bloque pas les autres */ }
+      }
+    }));
+    if (!zone.isConnected) return;
+    zone.textContent = '';
+    res.sort((x, y) => y.e.t - x.e.t);
+    if (!res.length) { zone.append(h('p', { class: 'etat' }, P().masquerEcoutes ? 'Rien de nouveau : vous avez tout écouté, ou les épisodes ne se chargent pas pour l’instant.' : "Impossible de charger les épisodes pour l'instant. Vérifiez votre connexion et réessayez.")); return; }
+    res.forEach(({ f, e }) => zone.append(ligneEpisode(f, e, true)));
+  }
+  function majAbo(a, f) {
+    let change = false;
+    if (f.titre && !a.nomPerso && a.titre !== f.titre) { a.titre = f.titre; change = true; }
+    if (f.image && a.image !== f.image) { a.image = f.image; change = true; }
+    const t = f.eps[0] ? f.eps[0].t : 0; if (t && a.dernierT !== t) { a.dernierT = t; change = true; }
+    if (change) sauver();
+  }
+
+  // ---------- Page d'un podcast ----------
+  async function detail(feed, titreSecours, imageSecours) {
+    aller('abos'); const z = $('v-abos'); z.textContent = '';
+    z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'), h('p', { class: 'etat' }, 'Chargement…'));
+    try {
+      const f = await chargerFlux(feed);
+      z.textContent = '';
+      const dej = () => abonne(feed);
+      const bouton = h('button', { class: 'bouton', type: 'button' });
+      const perso = h('div');
+      const rafraichir = () => { bouton.textContent = dej() ? '✓ Abonné (retirer)' : "S'abonner"; bouton.className = dej() ? 'bouton clair' : 'bouton'; montrerPersoPodcast(perso, f); };
+      bouton.addEventListener('click', () => { dej() ? desabonner(feed) : sabonner(feed, f.titre, f.image); rafraichir(); });
+      rafraichir();
+      const a = aboDe(feed); if (a) majAbo(a, f);
+      z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'),
+        h('div', { class: 'tete' }, pochette(f.image), h('div', null, h('h2', null, f.titre), h('p', { class: 'desc' }, f.desc), h('div', { class: 'actions' }, bouton))), perso);
+      const titreEps = h('h2'), l = h('div', { class: 'liste' });
+      const outils = h('div', { class: 'outils' });
+      const ordre = h('select', { 'aria-label': 'Ordre des épisodes' });
+      [['recent', 'Les plus récents d’abord'], ['ancien', 'Les plus anciens d’abord']].forEach(([v, t]) => { const o = h('option', { value: v }, t); if (P().ordreEps === v) o.selected = true; ordre.append(o); });
+      const masquer = h('button', { type: 'button', 'aria-pressed': String(!!P().masquerEcoutes) }, 'Masquer les épisodes écoutés');
+      const remplir = () => {
+        l.textContent = '';
+        let eps = f.eps.slice(); if (P().ordreEps === 'ancien') eps.reverse();
+        const total = eps.length;
+        if (P().masquerEcoutes) eps = eps.filter((e) => !(etat.pos[cleEp(f, e)] || {}).fini);
+        titreEps.textContent = `Épisodes (${eps.length}${eps.length !== total ? ' sur ' + total : ''})`;
+        if (!eps.length) l.append(h('p', { class: 'etat' }, total ? 'Vous avez écouté tous les épisodes.' : 'Aucun épisode dans ce flux.'));
+        eps.forEach((e) => l.append(ligneEpisode(f, e, false)));
+      };
+      ordre.addEventListener('change', () => { P().ordreEps = ordre.value; sauver(); remplir(); });
+      masquer.addEventListener('click', () => { P().masquerEcoutes = !P().masquerEcoutes; masquer.setAttribute('aria-pressed', String(P().masquerEcoutes)); sauver(); remplir(); });
+      outils.append(ordre, masquer);
+      z.append(titreEps, outils, l); remplir();
+    } catch (err) {
+      z.textContent = '';
+      z.append(h('button', { class: 'bouton clair', type: 'button', onclick: () => aller('abos') }, '← Mes podcasts'), h('p', { class: 'erreur' }, 'Impossible de charger ce podcast : ' + (err.message || 'erreur inconnue')));
+    }
+  }
+  // Réglages propres à un podcast (seulement si on y est abonné) : favori, vitesse, générique.
+  function montrerPersoPodcast(zone, f) {
+    zone.textContent = '';
+    const a = aboDe(f.feed); if (!a) return;
+    const carte = h('div', { class: 'carte' }, h('h3', null, 'Mes réglages pour ce podcast'));
+    const fav = h('input', { type: 'checkbox' }); fav.checked = !!a.fav;
+    fav.addEventListener('change', () => { a.fav = fav.checked; sauver(); });
+    const vit = h('select', { 'aria-label': 'Vitesse pour ce podcast' });
+    vit.append(h('option', { value: '' }, 'Vitesse : comme les autres podcasts'));
+    VITESSES.forEach((v) => { const o = h('option', { value: String(v) }, 'Vitesse ×' + String(v).replace('.', ',')); if (a.vitesse === v) o.selected = true; vit.append(o); });
+    vit.addEventListener('change', () => { a.vitesse = vit.value ? +vit.value : undefined; sauver(); if (courant && courant.f.feed === f.feed) majVitesse(); });
+    const intro = h('select', { 'aria-label': 'Passer le générique' });
+    [0, 10, 15, 20, 30, 45, 60, 90, 120].forEach((v) => { const o = h('option', { value: String(v) }, v ? `Passer le générique : ${v} s` : 'Générique : ne rien passer'); if ((a.intro || 0) === v) o.selected = true; intro.append(o); });
+    intro.addEventListener('change', () => { a.intro = +intro.value || undefined; sauver(); });
+    const nom = h('input', { type: 'text', value: a.titre, 'aria-label': 'Nom affiché pour ce podcast', style: 'width:100%;padding:12px;border-radius:14px;border:2px solid var(--trait);background:var(--carte)' });
+    nom.addEventListener('change', () => { const v = nom.value.trim(); if (v) { a.titre = v; a.nomPerso = true; sauver(); } });
+    const zListes = h('div');
+    const majListes = () => {
+      zListes.textContent = '';
+      zListes.append(h('span', { style: 'font-weight:800' }, 'Mes listes'));
+      etat.listes.forEach((l) => { const c = h('input', { type: 'checkbox' }); c.checked = dansListe(l, f.feed); c.addEventListener('change', () => basculerListe(l, f.feed, c.checked)); zListes.append(h('label', { class: 'case' }, c, `${l.emoji} ${l.nom}`)); });
+      const nom = h('input', { type: 'text', placeholder: 'Nouvelle liste (ex. Pour la voiture)', 'aria-label': 'Créer une liste avec ce podcast', maxlength: '40' });
+      const fo = h('form', { class: 'form-liste' }, nom, h('button', { class: 'bouton clair', type: 'submit' }, '+ Créer et ajouter'));
+      fo.addEventListener('submit', (ev) => { ev.preventDefault(); const l = creerListe(nom.value); if (l) { basculerListe(l, f.feed, true); majListes(); } });
+      zListes.append(fo);
+    };
+    majListes();
+    carte.append(h('label', { class: 'case' }, fav, '★ Favori : toujours en tête de « Mes podcasts »'), zListes,
+      h('div', { class: 'reglage' }, vit), h('div', { class: 'reglage' }, intro),
+      h('div', { class: 'reglage' }, h('span', null, 'Nom affiché'), nom));
+    zone.append(carte);
+  }
+  const cleEp = (f, e) => f.feed + '|' + e.id;
+  function ligneEpisode(f, e, avecPodcast) {
+    const p = etat.pos[cleEp(f, e)] || {};
+    const total = e.duree || p.d || 0;
+    const pc = p.fini ? 100 : total ? Math.min(100, Math.round((p.t || 0) / total * 100)) : 0;
+    const reste = !p.fini && p.t > 10;
+    const meta = h('div', { class: 'meta' });
+    const majMeta = () => { const q = etat.pos[cleEp(f, e)] || {}; meta.textContent = [dateFr(e.date), dureeLongue(e.duree), q.fini ? '✓ écouté' : ''].filter(Boolean).join(' · '); };
+    majMeta();
+    const bFile = h('button', { class: 'bouton clair mini', type: 'button' });
+    const majFile = () => { bFile.textContent = dansFile(f, e) ? '✓ Dans ma file' : '+ À écouter ensuite'; };
+    bFile.addEventListener('click', () => { dansFile(f, e) ? retirerFile(f.feed, e.id) : ajouterFile(f, e); majFile(); });
+    majFile();
+    const bVu = h('button', { class: 'bouton clair mini', type: 'button' });
+    const majVu = () => { bVu.textContent = (etat.pos[cleEp(f, e)] || {}).fini ? 'Marquer non écouté' : 'Marquer écouté'; };
+    bVu.addEventListener('click', () => { const k = cleEp(f, e), q = etat.pos[k] || {}; if (q.fini) delete etat.pos[k]; else etat.pos[k] = { t: 0, d: q.d || e.duree || 0, fini: true }; sauver(); majVu(); majMeta(); });
+    majVu();
+    const l = h('article', { class: 'ligne' }, pochette(e.image || f.image),
+      h('div', null,
+        avecPodcast ? h('div', { class: 'meta' }, (aboDe(f.feed) || f).titre) : null,
+        h('h3', null, e.titre),
+        meta,
+        e.desc ? h('p', { class: 'desc' }, e.desc.length > 160 ? e.desc.slice(0, 157) + '…' : e.desc) : null,
+        pc ? h('div', { class: 'barre-prog' }, h('i', { style: `width:${pc}%` })) : null,
+        h('div', { class: 'actions' }, h('button', { class: 'bouton', type: 'button', onclick: () => jouer(f, e) }, reste ? `▶ Reprendre à ${duree(p.t)}` : '▶ Écouter'),
+          bFile, bVu,
+          avecPodcast ? h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(f.feed) }, 'Tous les épisodes') : null)));
+    return l;
+  }
+
+  // ---------- Recherche ----------
+  function montrerSujets() {
+    const z = $('idees'); z.textContent = '';
+    P().sujets.forEach((m) => z.append(h('button', { type: 'button', onclick: () => { $('q').value = m; chercher(m); } }, m)));
+  }
+  montrerSujets();
+  $('f-chercher').addEventListener('submit', (ev) => { ev.preventDefault(); chercher($('q').value.trim()); });
+  async function chercher(mots) {
+    const z = $('resultats'); if (!mots) return;
+    z.textContent = ''; z.append(h('p', { class: 'etat' }, 'Recherche en cours…'));
+    try {
+      const r = await fetch(`${RELAIS}?q=${encodeURIComponent(mots)}`);
+      if (!r.ok) throw new Error('La recherche ne répond pas.');
+      const d = await r.json();
+      const liste = (d.results || []).filter((x) => sur(x.feedUrl));
+      z.textContent = '';
+      if (!liste.length) { z.append(h('p', { class: 'vide' }, 'Aucun podcast trouvé. Essayez un autre mot.')); return; }
+      const l = h('div', { class: 'liste' });
+      liste.forEach((x) => {
+        const feed = https(x.feedUrl);
+        const b = h('button', { class: 'bouton', type: 'button' });
+        const rafr = () => { b.textContent = abonne(feed) ? '✓ Abonné' : "S'abonner"; b.className = abonne(feed) ? 'bouton clair' : 'bouton'; };
+        b.addEventListener('click', () => { abonne(feed) ? desabonner(feed) : sabonner(feed, x.collectionName, x.artworkUrl600 || x.artworkUrl100); rafr(); });
+        rafr();
+        l.append(h('article', { class: 'ligne' }, pochette(x.artworkUrl100 || x.artworkUrl600),
+          h('div', null, h('h3', null, x.collectionName || 'Podcast'), h('div', { class: 'meta' }, [x.artistName, x.primaryGenreName].filter(Boolean).join(' · ')),
+            h('div', { class: 'actions' }, b, h('button', { class: 'bouton clair', type: 'button', onclick: () => detail(feed, x.collectionName, x.artworkUrl600) }, 'Voir les épisodes')))));
+      });
+      z.append(l);
+    } catch (err) { z.textContent = ''; z.append(h('p', { class: 'erreur' }, err.message || 'Recherche impossible pour le moment.')); }
+  }
+  $('f-rss').addEventListener('submit', async (ev) => {
+    ev.preventDefault(); const u = $('rss').value.trim(); const m = $('msg-rss'); m.className = 'note';
+    if (!sur(u)) { m.textContent = "L'adresse doit commencer par http:// ou https://"; m.className = 'note erreur'; return; }
+    m.textContent = 'Vérification du flux…';
+    try { const f = await chargerFlux(https(u)); sabonner(f.feed, f.titre, f.image); m.textContent = `« ${f.titre} » ajouté à vos podcasts.`; $('rss').value = ''; }
+    catch (err) { m.textContent = 'Impossible d’ajouter ce flux : ' + (err.message || 'erreur'); m.className = 'note erreur'; }
+  });
+
+  // ---------- Réglages personnels ----------
+  function choix(label, valeur, options, auChangement) {
+    const sel = h('select', { 'aria-label': label });
+    options.forEach(([v, t]) => { const o = h('option', { value: String(v) }, t); if (String(valeur) === String(v)) o.selected = true; sel.append(o); });
+    sel.addEventListener('change', () => auChangement(sel.value));
+    return h('div', { class: 'reglage' }, h('label', null, label), sel);
+  }
+  function montrerPerso() {
+    const z = $('perso'); z.textContent = '';
+    z.append(h('h2', { style: 'margin-top:0' }, 'Personnaliser'),
+      h('p', { class: 'meta' }, 'Réglez l’appli à votre façon. Chaque podcast a aussi ses propres réglages (favori, vitesse, générique, nom) sur sa page.'));
+    z.append(choix('Vitesse de lecture habituelle', etat.vitesse, VITESSES.map((v) => [v, '×' + String(v).replace('.', ',') + (v === 1 ? ' (normale)' : '')]), (v) => { etat.vitesse = +v; sauver(); majVitesse(); }));
+    z.append(choix('Petit saut (boutons du milieu)', P().petit, [5, 10, 15, 20].map((v) => [v, v + ' secondes']), (v) => { P().petit = +v; sauver(); majSauts(); }));
+    z.append(choix('Grand saut (boutons du bord)', P().grand, [30, 45, 60, 90, 120].map((v) => [v, v < 60 ? v + ' secondes' : (v / 60) + ' minute' + (v > 60 ? 's' : '')]), (v) => { P().grand = +v; sauver(); majSauts(); }));
+    z.append(choix('À la fin d’un épisode', P().suite, [['non', 'S’arrêter'], ['file', 'Lire le suivant de ma file « À écouter ensuite »'], ['podcast', 'Lire l’épisode suivant du même podcast']], (v) => { P().suite = v; sauver(); }));
+    z.append(choix('Dernières sorties : épisodes par podcast', P().nbNouveautes, [[1, '1 épisode'], [2, '2 épisodes'], [3, '3 épisodes']], (v) => { P().nbNouveautes = +v; sauver(); }));
+    const masq = h('input', { type: 'checkbox' }); masq.checked = !!P().masquerEcoutes;
+    masq.addEventListener('change', () => { P().masquerEcoutes = masq.checked; sauver(); });
+    z.append(h('label', { class: 'case' }, masq, 'Masquer les épisodes déjà écoutés'));
+
+    // Sujets proposés dans « Chercher »
+    z.append(h('h3', { style: 'margin-top:18px' }, 'Mes sujets'), h('p', { class: 'meta' }, 'Les raccourcis de l’onglet Chercher. Touchez un sujet pour le retirer.'));
+    const puces = h('div', { class: 'puces sujets' });
+    const majPuces = () => {
+      puces.textContent = '';
+      P().sujets.forEach((m, i) => puces.append(h('button', { type: 'button', 'aria-label': 'Retirer ' + m, onclick: () => { P().sujets.splice(i, 1); sauver(); majPuces(); montrerSujets(); } }, m, h('span', { class: 'x' }, '✕'))));
+      if (!P().sujets.length) puces.append(h('span', { class: 'meta' }, 'Aucun sujet.'));
+    };
+    majPuces();
+    const champ = h('input', { type: 'text', placeholder: 'Ajouter un sujet (ex. Jardinage)', 'aria-label': 'Nouveau sujet', maxlength: '40' });
+    const form = h('form', { class: 'champ' }, champ, h('button', { class: 'bouton clair', type: 'submit' }, 'Ajouter'));
+    form.addEventListener('submit', (ev) => { ev.preventDefault(); const v = champ.value.trim(); if (v && !P().sujets.some((x) => norm(x) === norm(v))) { P().sujets.push(v); sauver(); majPuces(); montrerSujets(); } champ.value = ''; });
+    z.append(puces, form, h('div', { class: 'actions' }, h('button', { class: 'bouton clair mini', type: 'button', onclick: () => { P().sujets = IDEES.slice(); sauver(); majPuces(); montrerSujets(); } }, 'Remettre les sujets d’origine')));
+
+    // Rubriques de « Notre sélection »
+    z.append(h('h3', { style: 'margin-top:18px' }, 'Rubriques de « Notre sélection »'), h('p', { class: 'meta' }, 'Décochez celles qui ne vous intéressent pas.'));
+    SELECTION.forEach((g) => {
+      const c = h('input', { type: 'checkbox' }); c.checked = !P().sectionsMasquees.includes(g.titre);
+      c.addEventListener('change', () => {
+        P().sectionsMasquees = P().sectionsMasquees.filter((t) => t !== g.titre); if (!c.checked) P().sectionsMasquees.push(g.titre);
+        sauver(); $('selection-chercher').textContent = '';
+      });
+      z.append(h('label', { class: 'case' }, c, g.titre));
+    });
+  }
+
+  // ---------- Sauvegarde complète (fichier) ----------
+  $('sauvegarder').addEventListener('click', () => {
+    sauverPosition();
+    const u = URL.createObjectURL(new Blob([JSON.stringify({ appli: 'alphabette-podcasts', version: 2, date: new Date().toISOString(), etat }, null, 1)], { type: 'application/json' }));
+    const a = h('a', { href: u, download: 'podcasts-sauvegarde.json' }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000);
+    $('msg-sauvegarde').className = 'note'; $('msg-sauvegarde').textContent = 'Sauvegarde enregistrée dans vos téléchargements.';
+  });
+  $('restaurer').addEventListener('change', async (ev) => {
+    const fichier = ev.target.files[0]; if (!fichier) return; const m = $('msg-sauvegarde');
+    try {
+      const d = JSON.parse(await fichier.text());
+      if (!d || d.appli !== 'alphabette-podcasts' || !d.etat || !Array.isArray(d.etat.abos)) throw new Error();
+      if (!confirm('Remplacer vos podcasts et réglages actuels par ceux de cette sauvegarde ?')) { ev.target.value = ''; return; }
+      etat = normaliser(d.etat); sauver(); majVitesse(); majSauts(); majSuivant(); montrerSujets(); montrerPerso(); $('selection-chercher').textContent = '';
+      m.className = 'note'; m.textContent = `Sauvegarde restaurée : ${etat.abos.length} podcast${etat.abos.length > 1 ? 's' : ''}.`;
+    } catch (e) { m.className = 'note erreur'; m.textContent = 'Ce fichier n’est pas une sauvegarde de Podcasts.'; }
+    ev.target.value = '';
+  });
+
+  // ---------- Réglages : OPML, effacement ----------
+  $('exporter').addEventListener('click', () => {
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<opml version="2.0"><head><title>Mes podcasts</title></head><body>\n' + etat.abos.map((a) => `<outline type="rss" text="${esc(a.titre)}" xmlUrl="${esc(a.feed)}"/>`).join('\n') + '\n</body></opml>';
+    const u = URL.createObjectURL(new Blob([xml], { type: 'text/x-opml' }));
+    const a = h('a', { href: u, download: 'mes-podcasts.opml' }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000);
+  });
+  $('importer').addEventListener('change', async (ev) => {
+    const fichier = ev.target.files[0]; if (!fichier) return; const m = $('msg-import');
+    try {
+      const doc = new DOMParser().parseFromString(await fichier.text(), 'application/xml'); let n = 0;
+      doc.querySelectorAll('outline[xmlUrl], outline[xmlurl]').forEach((o) => { const u = https(o.getAttribute('xmlUrl') || o.getAttribute('xmlurl')); if (sur(u) && !abonne(u)) { etat.abos.push({ feed: u, titre: o.getAttribute('text') || o.getAttribute('title') || u, image: '' }); n++; } });
+      sauver(); m.className = 'note'; m.textContent = n ? `${n} podcast${n > 1 ? 's' : ''} importé${n > 1 ? 's' : ''}.` : 'Aucun nouveau podcast dans ce fichier.';
+    } catch (e) { m.className = 'note erreur'; m.textContent = 'Fichier illisible.'; }
+    ev.target.value = '';
+  });
+  $('effacer').addEventListener('click', () => {
+    if (!confirm('Effacer tous vos abonnements, votre file d’écoute, vos positions et vos réglages sur cet appareil ?')) return;
+    etat = etatVide(); sauver(); audio.pause(); $('lecteur').hidden = true; majVitesse(); majSauts(); majSuivant(); montrerSujets(); aller('abos');
+  });
+
+  // ---------- Lecteur ----------
+  let courant = null, minuteur = null, finEpisode = false, derniereSauve = 0;
+  const msg = (t, html) => { const m = $('l-msg'); m.textContent = t || ''; if (html) m.append(' ', html); };
+  VITESSES.forEach((v) => $('l-vit').append(h('option', { value: String(v) }, '⏩ ×' + String(v).replace('.', ','))));
+  // Vitesse : celle du podcast s'il en a une, sinon la vitesse habituelle.
+  const vitesseCourante = () => { const a = courant && aboDe(courant.f.feed); return (a && a.vitesse) || etat.vitesse; };
+  function majVitesse() { const v = vitesseCourante(); audio.defaultPlaybackRate = audio.playbackRate = v; $('l-vit').value = String(v); }
+  function majSauts() {
+    const p = P().petit, g = P().grand, t = (n) => (n >= 60 && n % 60 === 0 ? (n / 60) + ' min' : n + ' s');
+    $('l-m30').textContent = '−' + t(g); $('l-m30').setAttribute('aria-label', `Reculer de ${t(g)}`);
+    $('l-m10').textContent = '−' + t(p); $('l-m10').setAttribute('aria-label', `Reculer de ${t(p)}`);
+    $('l-p10').textContent = '+' + t(p); $('l-p10').setAttribute('aria-label', `Avancer de ${t(p)}`);
+    $('l-p30').textContent = '+' + t(g); $('l-p30').setAttribute('aria-label', `Avancer de ${t(g)}`);
+  }
+  function majSuivant() { const b = $('l-suiv'); b.hidden = !etat.file.length; b.textContent = `⏭ Suivant (${etat.file.length})`; }
+  function suivantDeFile() { const x = etat.file[0]; if (!x) return false; const { f, e } = depuisFile(x); jouer(f, e); return true; }
+  async function suivantDuPodcast() {
+    if (!courant) return false;
+    try {
+      const f = await chargerFlux(courant.f.feed);
+      const i = f.eps.findIndex((e) => e.id === courant.e.id);
+      const e = i > 0 ? f.eps[i - 1] : null; // la liste est triée du plus récent au plus ancien : le suivant est juste avant
+      if (!e) return false; jouer(f, e); return true;
+    } catch (err) { return false; }
+  }
+  function jouer(f, e) {
+    if (courant && audio.currentTime) sauverPosition();
+    courant = { f, e, cle: cleEp(f, e) }; finEpisode = false;
+    if (dansFile(f, e)) retirerFile(f.feed, e.id);
+    const p = etat.pos[courant.cle];
+    $('lecteur').hidden = false;
+    const img = $('l-img'); img.removeAttribute('src'); if (sur(e.image || f.image)) img.src = https(e.image || f.image);
+    $('l-titre').textContent = e.titre; $('l-pod').textContent = f.titre; msg('Chargement…');
+    audio.src = https(e.url); majVitesse();
+    const abo = aboDe(f.feed);
+    const reprise = p && !p.fini && p.t > 5 ? p.t : (abo && abo.intro ? abo.intro : 0);
+    audio.addEventListener('loadedmetadata', function une() { audio.removeEventListener('loadedmetadata', une); if (reprise) audio.currentTime = reprise; }, { once: true });
+    audio.play().catch(() => msg("Touchez ▶ pour lancer l'écoute."));
+    etat.dernier = { feed: f.feed, id: e.id }; sauver(); metaSession();
+  }
+  function sauverPosition() {
+    if (!courant) return; const d = audio.duration && isFinite(audio.duration) ? audio.duration : courant.e.duree;
+    etat.pos[courant.cle] = Object.assign(etat.pos[courant.cle] || {}, { t: audio.currentTime || 0, d: d || 0 });
+    const cles = Object.keys(etat.pos); if (cles.length > 400) delete etat.pos[cles[0]];
+    sauver();
+  }
+  audio.addEventListener('playing', () => { $('l-lire').textContent = 'Pause'; $('l-lire').setAttribute('aria-label', 'Pause'); msg(''); });
+  audio.addEventListener('pause', () => { $('l-lire').textContent = '▶ Lire'; $('l-lire').setAttribute('aria-label', 'Lecture'); sauverPosition(); });
+  audio.addEventListener('waiting', () => msg('Chargement…'));
+  audio.addEventListener('loadedmetadata', () => { $('l-prog').max = Math.floor(audio.duration || 0); $('l-dur').textContent = duree(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    $('l-prog').value = Math.floor(audio.currentTime); $('l-pos').textContent = duree(audio.currentTime);
+    if (Date.now() - derniereSauve > 5000) { derniereSauve = Date.now(); sauverPosition(); }
+  });
+  audio.addEventListener('ended', () => {
+    if (courant) { etat.pos[courant.cle] = { t: 0, d: audio.duration || 0, fini: true }; sauver(); }
+    if (finEpisode) { finEpisode = false; $('l-veille').value = '0'; return; }
+    if (P().suite === 'file') { if (!suivantDeFile()) msg('Votre file d’écoute est vide.'); }
+    else if (P().suite === 'podcast') { suivantDuPodcast().then((ok) => { if (!ok) msg('C’était le dernier épisode de ce podcast.'); }); }
+  });
+  audio.addEventListener('error', () => {
+    if (!courant) return;
+    msg('Impossible de lire cet épisode ici.', h('a', { href: courant.e.url, target: '_blank', rel: 'noopener noreferrer' }, "Ouvrir sur le site du podcast"));
+  });
+  const pas = (s) => { audio.currentTime = Math.max(0, Math.min(audio.duration || 1e9, audio.currentTime + s)); };
+  $('l-m30').onclick = () => pas(-P().grand); $('l-m10').onclick = () => pas(-P().petit); $('l-p10').onclick = () => pas(P().petit); $('l-p30').onclick = () => pas(P().grand);
+  $('l-suiv').onclick = () => { if (courant && audio.currentTime) sauverPosition(); suivantDeFile(); };
+  $('l-lire').onclick = () => { if (!courant) return; audio.paused ? audio.play().catch(() => {}) : audio.pause(); };
+  $('l-prog').addEventListener('input', (ev) => { audio.currentTime = +ev.target.value; });
+  $('l-vit').addEventListener('change', () => {
+    const v = +$('l-vit').value, a = courant && aboDe(courant.f.feed);
+    if (a && a.vitesse) a.vitesse = v; else etat.vitesse = v; // garde la vitesse propre au podcast s'il en a une
+    sauver(); majVitesse();
+  });
+  $('l-veille').addEventListener('change', (ev) => {
+    clearTimeout(minuteur); finEpisode = false; const v = ev.target.value;
+    if (v === 'fin') { finEpisode = true; msg("L'écoute s'arrêtera à la fin de l'épisode."); }
+    else if (v !== '0') { minuteur = setTimeout(() => { audio.pause(); $('l-veille').value = '0'; msg('Minuterie terminée : bonne nuit !'); }, +v * 60000); msg(`Arrêt automatique dans ${v} minutes.`); }
+    else msg('');
+  });
+  audio.addEventListener('timeupdate', () => { if (finEpisode && audio.duration && audio.duration - audio.currentTime < 0.6) { audio.pause(); } });
+  function metaSession() {
+    if (!('mediaSession' in navigator) || !courant) return;
+    try {
+      const art = sur(courant.e.image || courant.f.image) ? [{ src: https(courant.e.image || courant.f.image) }] : [];
+      navigator.mediaSession.metadata = new MediaMetadata({ title: courant.e.titre, artist: courant.f.titre, artwork: art });
+      navigator.mediaSession.setActionHandler('play', () => audio.play()); navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+      navigator.mediaSession.setActionHandler('seekbackward', () => pas(-P().petit)); navigator.mediaSession.setActionHandler('seekforward', () => pas(P().grand));
+      navigator.mediaSession.setActionHandler('nexttrack', etat.file.length ? () => suivantDeFile() : null);
+    } catch (e) {}
+  }
+  window.addEventListener('pagehide', sauverPosition);
+
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js', { scope: './' }).catch(() => {});
+  majVitesse(); majSauts(); majSuivant(); montrerAbos();
+})();
+</script>
+</body>
+</html>

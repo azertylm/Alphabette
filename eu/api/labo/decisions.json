@@ -1,0 +1,4 @@
+{
+  "_aide": "Écrit par les agents du Laboratoire (RULES_AND_MEMORY.md). Clé = id de l'avis (fb_…). status : pending, approved_auto, needs_human_review, implemented, rejected. Publié dans alphabette.eu/api/labo/decisions.json : un avis rejected ou implemented sort du top 3.",
+  "decisions": {}
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "fr.alphabette.infoperso",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:48:38:62:38:53:77:E2:B0:96:A2:3B:56:45:94:DA:63:F7:83:8E:22:96:06:54:6F:09:A6:49:1C:18"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "fr.alphabette.iadebat",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:48:38:62:38:53:77:E2:B0:96:A2:3B:56:45:94:DA:63:F7:83:8E:22:96:06:54:6F:09:A6:49:1C:18"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "fr.alphabette.oeildelatelier",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:48:38:62:38:53:77:E2:B0:96:A2:3B:56:45:94:DA:63:F7:83:8E:22:96:06:54:6F:09:A6:49:1C:18"
+      ]
+    }
+  }
+]
