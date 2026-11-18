@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-18T18:52:42.559Z",
-  "empreinte_page_sha256": "ac21c582df240e231a6ecf667d4147635092dc04ede394fab2c26628a146737d",
+  "audite_le": "2026-11-18T19:03:50.983Z",
+  "empreinte_page_sha256": "7e174cc6b91fe392e20ae3355a5a57f761ae1a701f2786a47e8f72045423ee44",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1004,
-      "bloquees": 1004,
+      "requetes": 1043,
+      "bloquees": 1043,
       "types": [
         "image",
         "fetch"
@@ -131,34 +131,9 @@
     }
   ],
   "resultat": {
-    "conforme": false,
-    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
-    "fuites_tierces": [
-      {
-        "vers": "i.f1g.fr",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      },
-      {
-        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      },
-      {
-        "vers": "img.lemde.fr",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      }
-    ],
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
@@ -172,5 +147,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "9aa5ae35db2c000222e71137c75973ea87d7a9ab0ea867359bcf8487ceb4568b"
+  "empreinte_certificat_sha256": "05e233fff6d9ad58d101ba2fca6bf3726c748aaece8e73e92bc66fb8f7da47dc"
 }
