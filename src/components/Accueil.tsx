@@ -3,6 +3,8 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
+import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerResumes, type DonneesLabo, type Resumes } from '../labo/labo';
+import { LaboAvis } from '../labo/LaboAvis';
 
 /**
  * @file Accueil.tsx
@@ -59,6 +61,24 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   };
   useEffect(charger, []);
 
+  // Laboratoire alphabette.eu : avis des visiteurs et fichiers des agents.
+  const [resumes, setResumes] = useState<Resumes | null>(null);
+  const [serveurAvis, setServeurAvis] = useState<boolean | null>(null);
+  const [donnees, setDonnees] = useState<DonneesLabo>({ evolutions: {}, maturite: {}, betas: {} });
+  const [carteOuverte, setCarteOuverte] = useState<string | null>(null);
+  const chargerAvis = () =>
+    chargerResumes()
+      .then((r) => {
+        setResumes(r);
+        setServeurAvis(true);
+      })
+      .catch(() => setServeurAvis(false));
+  useEffect(() => {
+    if (!MODE_LABO) return;
+    chargerAvis();
+    chargerDonneesLabo().then(setDonnees);
+  }, []);
+
   const gratuites = apps.filter((app) => app.gratuit).length;
 
   const visibles = useMemo(() => {
@@ -77,9 +97,22 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   return (
     <div className="accueil">
       <section className="accueil__haut">
+        {MODE_LABO ? (
+          <>
+            <p className="labo-bandeau">🧪 Le Laboratoire Alphabette</p>
+            <h1 className="accueil__titre">
+              Toutes nos applications en test. <em>Votre avis les améliore.</em>
+            </h1>
+            <p className="accueil__phrase">
+              Notez, signalez un bug, proposez une idée : chaque avis est lu, et les applis évoluent. Les plus abouties
+              rejoignent <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a>.
+            </p>
+          </>
+        ) : (
         <h1 className="accueil__titre">
           Des applications simples, <em>pour mieux vivre au quotidien.</em>
         </h1>
+        )}
         <p className="accueil__phrase">
           {apps.length ? apps.filter((app) => app.slug !== 'petits-jeux').length : appsCount} applications utiles. Sans publicité.
           {gratuites > 0 && ` ${gratuites} sont gratuites, définitivement.`}
@@ -123,23 +156,49 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           </p>
         )}
 
-        <div className="accueil__tuiles">
-          {visibles.map((app) => (
-            <a key={app.id} className="accueil__tuile" href={app.url || '#'}>
-              <span className="accueil__icone" aria-hidden="true">
-                <RegistryIcon name={app.icon} />
-              </span>
-              <strong>{nomLisible(app.name)}</strong>
-              {app.description && <span className="accueil__desc">{app.description}</span>}
-              {(app.gratuit || app.badge === 'Nouveau') && (
-                <span className="accueil__pastilles">
-                  {app.gratuit && <span className="accueil__pastille accueil__pastille--gratuit">Gratuit</span>}
-                  {app.badge === 'Nouveau' && <span className="accueil__pastille">Nouveau</span>}
+        <div className={MODE_LABO ? 'accueil__tuiles accueil__tuiles--labo' : 'accueil__tuiles'}>
+          {visibles.map((app) => {
+            const tuile = (
+              <a key={app.id} className="accueil__tuile" href={app.url || '#'}>
+                <span className="accueil__icone" aria-hidden="true">
+                  <RegistryIcon name={app.icon} />
                 </span>
-              )}
-            </a>
-          ))}
+                <strong>{nomLisible(app.name)}</strong>
+                {app.description && <span className="accueil__desc">{app.description}</span>}
+                {(app.gratuit || app.badge === 'Nouveau') && (
+                  <span className="accueil__pastilles">
+                    {app.gratuit && <span className="accueil__pastille accueil__pastille--gratuit">Gratuit</span>}
+                    {app.badge === 'Nouveau' && <span className="accueil__pastille">Nouveau</span>}
+                  </span>
+                )}
+              </a>
+            );
+            if (!MODE_LABO) return tuile;
+            return (
+              <div key={app.id} className={carteOuverte === app.id ? 'labo-carte labo-carte--ouverte' : 'labo-carte'}>
+                {tuile}
+                <LaboAvis
+                  appId={app.id}
+                  nom={nomLisible(app.name)}
+                  chemin={cheminApp(app.url)}
+                  resume={resumes?.apps[app.id]}
+                  donnees={donnees}
+                  serveurOk={serveurAvis !== false}
+                  ouvert={carteOuverte === app.id}
+                  onOuvrir={(ouvert) => setCarteOuverte(ouvert ? app.id : null)}
+                  onMaj={chargerAvis}
+                />
+              </div>
+            );
+          })}
         </div>
+
+        {!MODE_LABO && etat === 'ok' && (
+          <p className="accueil__message accueil__labo-lien">
+            🧪 D'autres applications sont en test sur le Laboratoire :{' '}
+            <a className="accueil__lien" href="https://alphabette.eu">alphabette.eu</a> — essayez-les et donnez votre avis.
+          </p>
+        )}
       </section>
     </div>
   );

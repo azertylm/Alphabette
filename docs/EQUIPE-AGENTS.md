@@ -38,3 +38,18 @@ Circuit type d'une nouvelle appli : `inventeur-idees` → `chef-de-projet` →
 
 Ajouter un agent : créer `.claude/agents/<nom>.md` avec un en-tête `name`,
 `description` (quand l'utiliser) et `model`, puis ses consignes en dessous.
+
+## Le Laboratoire alphabette.eu (5 agents de plus)
+
+Ils améliorent les applis à partir des avis des visiteurs, en relais strict, selon `RULES_AND_MEMORY.md` :
+
+| Agent | Rôle |
+|---|---|
+| `triage-analyst` | Trie les avis : rejet, Niveau 1 (autonome) ou Niveau 2 (accord de Valentin) |
+| `code-builder` | Corrige (Niveau 1) ou crée la bêta (Niveau 2 autorisé) |
+| `qa-verifier` | Audit avant mise en ligne, droit de veto, note qualité sur 30 |
+| `maturity-curator` | Statuts, badge « Dernière évolution IA », score de maturité, alerte à 85/100 |
+| `meta-improver` | Ajoute les leçons apprises à `RULES_AND_MEMORY.md` |
+
+Mode d'emploi : `docs/LABO-EU.md`.
+

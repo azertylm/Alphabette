@@ -1,0 +1,56 @@
+# Récupère les avis du Laboratoire (alphabette.eu/api/feedback.php?export=1) et les
+# range sur la branche `labo-donnees` (fichier feedbacks.json) : c'est là que les
+# agents du laboratoire les lisent (voir RULES_AND_MEMORY.md). Sert aussi de sauvegarde.
+# Les avis sont publics et anonymes (aucune adresse IP, appareil résumé en « Android / Chrome »).
+name: Laboratoire — récupérer les avis
+
+on:
+  schedule:
+    - cron: '41 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: labo-avis
+  cancel-in-progress: false
+
+jobs:
+  avis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Télécharger l'export
+        id: export
+        run: |
+          if ! curl -fsS --retry 3 --max-time 30 "https://alphabette.eu/api/feedback.php?export=1&t=$(date +%s)" -o export.json \
+             || ! jq -e '.feedbacks | type == "array"' export.json >/dev/null 2>&1; then
+            echo "::warning::alphabette.eu ne renvoie pas encore les avis (domaine pas encore relié ou PHP indisponible)."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+            echo "Avis : $(jq '.feedbacks | length' export.json)"
+          fi
+      - name: Ranger sur la branche labo-donnees
+        if: steps.export.outputs.ok == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then
+            git worktree add -q ../donnees FETCH_HEAD
+            cd ../donnees
+          else
+            git worktree add -q --detach ../donnees
+            cd ../donnees
+            git switch -q --orphan labo-donnees
+            printf '# Données du Laboratoire alphabette.eu\n\nfeedbacks.json : export des avis, mis à jour toutes les 3 h par .github/workflows/labo-avis.yml (branche main).\n' > README.md
+          fi
+          jq 'del(.genere_le)' "$GITHUB_WORKSPACE/export.json" > feedbacks.json
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Aucun nouvel avis."
+          else
+            git commit -q -m "Avis du laboratoire — $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push -q origin HEAD:labo-donnees
+          fi

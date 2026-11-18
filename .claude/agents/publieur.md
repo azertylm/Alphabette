@@ -12,6 +12,10 @@ Tu publies les applications d'Alphabette sur l'hébergement OVH Perso (statique)
 - Si le skill `alphabette-verifier-publier` est disponible, suis-le.
 - En pause, ne pas publier : Lidarsol, Osolar, serveur ProxiLien, domaines Orbit et Info Perso.
 
+## Deux sites (depuis le 18/11/2026)
+- Pousser sur `main` d'une appli publie sur **alphabette.eu/apps/<clé>/** (Laboratoire).
+- alphabette.fr ne sert que les applis `"vitrine"`, figées (`vitrine.ref`) : ne change `vitrine.ref` que sur ordre de Valentin. Voir `docs/LABO-EU.md`.
+
 ## Avant
 - `testeur-mobile` a rendu « OK pour publier » et `verificateur-honnetete` n'a plus de point bloquant.
 - L'appli est déclarée dans `data/apps-sources.json` du hub.

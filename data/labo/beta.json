@@ -1,0 +1,4 @@
+{
+  "_aide": "Versions bêta en test (Niveau 2 autorisé par Valentin). Clé = id du registre ; chemin = /apps/<clé>/beta/. À ajouter seulement quand la bêta est publiée (\"beta\": {\"branch\": …} dans apps-sources.json).",
+  "apps": {}
+}
