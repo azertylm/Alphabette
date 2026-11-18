@@ -63,7 +63,7 @@ const REGLES_REDIRECTIONS = Object.entries(sources)
   .join('\n\n');
 
 const HTACCESS = (labo) => `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
-Options -Indexes
+Options -Indexes -MultiViews
 DirectoryIndex index.html
 
 <IfModule mod_headers.c>
@@ -131,7 +131,7 @@ ${REGLES_DOMAINES || '  # (aucun)'}
 
 /** .htaccess du Laboratoire (dossier eu/, servi pour alphabette.eu). */
 const HTACCESS_EU = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
-Options -Indexes
+Options -Indexes -MultiViews
 DirectoryIndex index.html
 
 <IfModule mod_headers.c>
