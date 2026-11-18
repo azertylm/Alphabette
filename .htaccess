@@ -1,5 +1,5 @@
 # Généré par scripts/build-static.mjs — ne pas modifier à la main.
-Options -Indexes
+Options -Indexes -MultiViews
 DirectoryIndex index.html
 
 <IfModule mod_headers.c>
