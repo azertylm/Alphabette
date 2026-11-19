@@ -16,6 +16,10 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+  # Une seule adresse pour le Laboratoire (référencement) : www.alphabette.eu → alphabette.eu
+  RewriteCond %{HTTP_HOST} ^www\.alphabette\.eu$ [NC]
+  RewriteRule ^(.*)$ https://alphabette.eu/$1 [R=301,L]
+
   # Laboratoire : alphabette.eu est servi depuis le dossier eu/.
   # Chez OVH, une réécriture vers eu/ ne repasse pas par eu/.htaccess quand la cible n'existe pas :
   # les adresses de l'API figée pointent donc directement sur leur fichier.
