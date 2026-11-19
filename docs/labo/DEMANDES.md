@@ -3,7 +3,10 @@
 Écrites par le cycle du laboratoire (`/cycle-labo`) : demandes de Niveau 2 et propositions de transfert vers
 alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… » ou « non pour fb_… (raison) ».
 
-## 19/11/2026 — Accès aux dépôts des applis (à faire une fois)
+## ✅ 19/11/2026 — FAIT : accès en écriture aux 12 dépôts, tâche planifiée recréée, correctifs appliqués (base commune incluse)
+Voir `docs/labo/correctifs/README.md`. Désormais le Laboratoire agit sans demander et informe seulement.
+
+## (Historique) 19/11/2026 — Accès aux dépôts des applis (à faire une fois)
 - **Résumé** : 5 applis ont des correctifs prêts et testés (Frigo-Placard, Goat, Révolution, PromptMagic, Bon Plan,
   voir `docs/labo/correctifs/`), mais la tâche planifiée n'a le droit d'écrire que dans le hub.
 - **Mon avis critique** : sans cet accès, le Laboratoire ne peut corriger aucune appli, seulement les pages du hub.

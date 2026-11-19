@@ -5,12 +5,14 @@ description: Lance un cycle complet du Laboratoire alphabette.eu (5 agents en re
 Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par toute la chaîne.
 
 1. Lis `RULES_AND_MEMORY.md` en entier, puis lance `bun run labo:cycle` (avis → `/tmp/feedbacks.json`, rapport de l'Agent Chaos → `/tmp/chaos.json`, tableau de bord, maturité).
-   « 0 avis à trier » et aucune autorisation nouvelle dans `data/labo/autorisations.json` : termine en une ligne.
+   « 0 avis à trier », aucune anomalie dans `/tmp/chaos.json` et aucune autorisation nouvelle dans `data/labo/autorisations.json` : termine en une ligne.
+1 bis. Anomalies de l'Agent Chaos (`/tmp/chaos.json`) : chacune devient un correctif de Niveau 1 (`code-builder` → `qa-verifier`),
+   en plus des 3 corrections d'avis, critiques d'abord (exception, promesse rejetée, écran blanc, PWA hors ligne).
 2. Agent `triage-analyst` : rejette, classe Niveau 1 / Niveau 2, écrit `data/labo/decisions.json`, rédige les demandes de Niveau 2.
 3. Agent `agent-correcteur` : `node scripts/labo/correcteur.mjs candidats /tmp/feedbacks.json` ; bugs critiques ou soutenus →
    localisation + branche + Pull Request ; prompts mal notés → variante en bêta A/B (2 bugs et 1 prompt au plus).
    Chaque diff passe par `qa-verifier`.
-4. Pour chaque autre Niveau 1 retenu (3 au plus) et chaque Niveau 2 autorisé : agent `code-builder` (diff sur une branche locale),
+4. Pour chaque autre Niveau 1 retenu (3 au plus) et chaque Niveau 2 (bêta d'abord, sans attendre d'autorisation, sauf ce qui touche alphabette.fr) : agent `code-builder` (diff sur une branche locale),
    puis agent `qa-verifier` sur ce diff. Veto → retour à `code-builder` (2 fois au plus, ensuite `needs_human_review`).
    Seul un « OK pour publier » de `qa-verifier` autorise le push sur `main` du dépôt de l'appli (= alphabette.eu).
 5. Agent `maturity-curator` : statuts `implemented`, badge « Dernière évolution IA », score de maturité, alerte à 85/100.
@@ -27,8 +29,9 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
    b. `preparer` (graduation) lance l'Agent Gardien et exige le GO du Conseil sur la même version : sinon, transfert bloqué. Lors d'un transfert : `redacteur-notes`.
 7. Agent `meta-improver` : règles apprises dans `RULES_AND_MEMORY.md` (section 8).
 8. Commit du hub (« Labo : cycle du <date> ») et push sur `main` : alphabette.eu se met à jour ; alphabette.fr ne change pas.
-9. Rendu à Valentin, court : ce qui a été corrigé, ce qui a été rejeté (combien), et chaque demande de Niveau 2 ou transfert
-   sous la forme « Résumé · Mon avis critique · Solution · Je le fais ? oui / non » (Priorité haute en premier).
-   Écris aussi ces demandes dans `docs/labo/DEMANDES.md`.
+9. Rendu à Valentin, court, avec des liens cliquables (commits, pages .eu) : ce qui a été corrigé, ce qui a été rejeté (combien),
+   et chaque Niveau 2 sous la forme « Résumé · Mon avis critique · Ce que j'ai fait » (Priorité haute en premier).
+   Seul ce qui touche alphabette.fr attend son ordre : correctif prêt dans `docs/labo/correctifs/`, et la phrase exacte à me dire.
+   Écris aussi ces comptes rendus dans `docs/labo/DEMANDES.md`.
 
 Jamais : toucher à `vitrine`, `vitrine.ref`, `vitrine/` ; saisir une clé ou un mot de passe ; inventer un avis, un vote ou un score.
