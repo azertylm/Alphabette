@@ -4,8 +4,8 @@
   "app_id": "france-service",
   "nom": "SERVICE FRANCE",
   "url": "https://franceservice.alphabette.fr/",
-  "audite_le": "2026-11-19T09:38:59.756Z",
-  "empreinte_page_sha256": "b3f0a36243cf5b47473dab8506574bd2af5316453f9c5c4eff5e4b634439b50e",
+  "audite_le": "2026-11-19T10:03:18.742Z",
+  "empreinte_page_sha256": "52929f082010576eb399d38a2a4b073fc3d9e6182232f65b47fa6661fa189f14",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -74,5 +74,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "762ada107527ad0a4d9deb68befcab2a7aebd9cb5088e8b9d27ffad63884ddb8"
+  "empreinte_certificat_sha256": "0e2310ae532f51b39978e315c1fa08697ffda4878cee2d6fca7f7be7cfbdcc33"
 }
