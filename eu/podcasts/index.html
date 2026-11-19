@@ -22,7 +22,10 @@
   .intro { color: var(--doux); margin: 10px 0 18px; }
   button, input, select { font: inherit; color: inherit; }
   button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, .pod:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
-  .onglets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+  .onglets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 18px; }
+  /* Petits téléphones : les 3 onglets tiennent sans défilement de côté (320 px : 2 + 1). */
+  @media (max-width: 380px) { .onglets button { font-size: 17px; padding: 12px 4px; } }
+  @media (max-width: 330px) { .onglets { grid-template-columns: 1fr 1fr; } .onglets button:last-child { grid-column: 1 / -1; } }
   .onglets button { font-weight: 800; padding: 14px 6px; border-radius: 14px; border: 2px solid var(--trait); background: var(--carte); cursor: pointer; }
   .onglets button[aria-selected="true"] { border-color: var(--acc); background: var(--accfond); color: var(--acc); }
   .bouton { font-weight: 800; padding: 12px 18px; border-radius: 14px; border: 2px solid var(--acc); background: var(--acc); color: #fff; cursor: pointer; }
