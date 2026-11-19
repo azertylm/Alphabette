@@ -1,4 +1,17 @@
 {
   "_aide": "Badge « Dernière évolution IA » de chaque carte sur alphabette.eu. Clé = id du registre (apps-registry.json). Plus récent en premier. Une ligne = un vrai changement publié, jamais d'annonce anticipée.",
-  "apps": {}
+  "apps": {
+    "podcasts": [
+      {
+        "date": "2026-11-19T08:50:38Z",
+        "message": "Les onglets tiennent sur les petits téléphones, suite au contrôle automatique de nuit"
+      }
+    ],
+    "orbit": [
+      {
+        "date": "2026-11-19T08:50:38Z",
+        "message": "La recherche est de nouveau visible sur téléphone, suite au contrôle automatique de nuit"
+      }
+    ]
+  }
 }

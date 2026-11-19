@@ -1,4 +1,292 @@
 {
   "_aide": "Score de maturité sur 100, calculé par scripts/labo/maturite.mjs (satisfaction 40 + stabilité 30 + audit qualité 30). score null = pas assez de données : rien n'est affiché.",
-  "apps": {}
+  "apps": {
+    "goat-chevre-the-king": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "proxilien": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "iadebat": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "infos-perso": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "oeil-atelier": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "france-service": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "revolution": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "bonplansenior": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "frigoplacard": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "bonplan": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "ecobatisol": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "promptmagic": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "info": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "wikicom": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "dico-loufoque": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "juste-chiffre": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "memo-meninges": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "orbit": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "petits-jeux": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "ou-cest": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "podcasts": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "ou-cest-france": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "quiz-famille": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "quiz-musique": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "quiz-extraordinaires": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    },
+    "quiz-femmes": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
+    }
+  },
+  "calcule_le": "2026-11-19T09:00:54.058Z"
 }
