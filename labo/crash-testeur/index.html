@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr" data-ab-theme="nuit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le Crash-Testeur — votre appli testée en 10 secondes | Alphabette</title>
+<meta name="description" content="Déposez une capture d'écran ou une adresse : l'IA teste votre application web comme 3 vrais visiteurs et vous donne un score, 3 corrections prioritaires et un prompt prêt à coller. Gratuit, sans inscription.">
+<link rel="canonical" href="https://alphabette.eu/crash-testeur/">
+<meta property="og:title" content="Le Crash-Testeur — Alphabette">
+<meta property="og:description" content="Votre appli web testée en 10 secondes par 3 testeurs virtuels. Gratuit, sans inscription.">
+<style>
+  :root { --acc: #fb7185; --acc2: #5eead4; --fond: #0b1220; --carte: #111a2e; --carte2: #0d1526; --encre: #f1f5f9; --doux: #cbd5e1; --pale: #94a3b8; --trait: #24324d; --ok: #86efac; --moyen: #fbbf24; --ko: #fca5a5; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--fond); color: var(--encre); }
+  body { font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  h1 { font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.1; margin: .4rem 0 .5rem; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--acc); }
+  h2 { font-size: 1.2rem; margin: 0 0 .6rem; }
+  p { margin: .4rem 0; }
+  .doux { color: var(--doux); }
+  .petit { font-size: .85rem; color: var(--pale); }
+  .bandeau { display: inline-block; font-weight: 900; font-size: .9rem; padding: .2rem .7rem; border-radius: 999px; background: color-mix(in srgb, var(--acc) 15%, transparent); color: var(--acc); }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 1.2rem; padding: 1rem; margin-top: 1rem; }
+  .depot { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; min-height: 11rem; padding: 1rem; text-align: center;
+    border: 2px dashed color-mix(in srgb, var(--acc) 55%, var(--trait)); border-radius: 1rem; background: var(--carte2); cursor: pointer; }
+  .depot:hover, .depot.survol { background: color-mix(in srgb, var(--acc) 8%, var(--carte2)); }
+  .depot:focus-visible { outline: 3px solid var(--acc); outline-offset: 3px; }
+  .depot strong { font-size: 1.05rem; }
+  .depot img { max-width: 100%; max-height: 16rem; border-radius: .6rem; }
+  .ou { text-align: center; color: var(--pale); font-weight: 700; margin: .8rem 0 .5rem; }
+  label.champ { display: flex; flex-direction: column; gap: .3rem; font-weight: 700; font-size: .95rem; margin-top: .6rem; }
+  input[type=url], input[type=text] { width: 100%; font: inherit; font-size: 1rem; min-height: 3rem; border-radius: .8rem; padding: .55rem .8rem; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--acc2); outline-offset: 2px; }
+  .choix { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; padding: .3rem; border-radius: 1rem; background: var(--fond); border: 1px solid var(--trait); }
+  .choix button { min-height: 3rem; border-radius: .75rem; border: 0; background: transparent; color: var(--doux); font: 800 .95rem system-ui, sans-serif; cursor: pointer; }
+  .choix button small { display: block; font-weight: 600; font-size: .75rem; opacity: .85; }
+  .choix button[aria-checked="true"] { background: var(--acc); color: #1a0b10; }
+  .choix--mode button[aria-checked="true"] { background: var(--acc2); color: #04201b; }
+  .ligne2 { display: grid; gap: .8rem; margin-top: .9rem; }
+  @media (min-width: 640px) { .ligne2 { grid-template-columns: 1fr 1fr; } }
+  .titrechoix { font-weight: 800; font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--pale); margin-bottom: .35rem; }
+  .bouton { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 3rem; padding: .6rem 1.1rem; border-radius: .9rem; font: 800 1rem system-ui, sans-serif; cursor: pointer; border: 2px solid var(--acc2); background: transparent; color: var(--acc2); text-decoration: none; }
+  .bouton--plein { background: var(--acc); border-color: var(--acc); color: #1a0b10; width: 100%; font-size: 1.1rem; min-height: 3.4rem; margin-top: 1rem; }
+  .bouton:disabled { opacity: .5; cursor: default; }
+  .lien { background: none; border: 0; color: var(--acc2); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0; }
+  #erreur { color: var(--ko); font-weight: 700; }
+  .attente { display: none; text-align: center; padding: 1.5rem 1rem; }
+  .attente.visible { display: block; }
+  .roue { width: 3rem; height: 3rem; margin: 0 auto .7rem; border-radius: 50%; border: 4px solid var(--trait); border-top-color: var(--acc); animation: tourne 0.9s linear infinite; }
+  @keyframes tourne { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .roue { animation: none; } }
+  #rapport { display: none; }
+  #rapport.visible { display: block; }
+  .score { display: flex; align-items: center; gap: 1rem; }
+  .score__cercle { flex: none; width: 6.5rem; height: 6.5rem; border-radius: 50%; display: grid; place-items: center; }
+  .score__interieur { width: 78%; height: 78%; border-radius: 50%; background: var(--carte); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; font-weight: 900; font-size: 1.7rem; }
+  .score__interieur small { font-size: .8rem; font-weight: 700; color: var(--pale); margin-top: .35rem; }
+  .testeurs { display: grid; gap: .7rem; }
+  @media (min-width: 720px) { .testeurs { grid-template-columns: repeat(3, 1fr); } }
+  .testeur { background: var(--carte2); border: 1px solid var(--trait); border-radius: 1rem; padding: .8rem; }
+  .testeur b { display: block; margin-bottom: .2rem; }
+  ol.corrections { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  ol.corrections li { display: flex; gap: .7rem; background: var(--carte2); border: 1px solid var(--trait); border-radius: 1rem; padding: .8rem; }
+  .num { flex: none; width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-weight: 900; background: var(--acc); color: #1a0b10; }
+  .impact { font-size: .75rem; font-weight: 800; border-radius: 999px; padding: .05rem .5rem; margin-left: .3rem; background: color-mix(in srgb, var(--moyen) 18%, transparent); color: var(--moyen); }
+  .impact--fort { background: color-mix(in srgb, var(--ko) 18%, transparent); color: var(--ko); }
+  .pastilles { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .pastille { display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: .9rem; border-radius: 999px; padding: .35rem .8rem; background: var(--carte2); border: 1px solid var(--trait); }
+  .pastille--ok { color: var(--ok); } .pastille--a_ameliorer { color: var(--moyen); } .pastille--probleme { color: var(--ko); }
+  pre.prompt { white-space: pre-wrap; word-break: break-word; background: var(--fond); border: 1px solid var(--trait); border-radius: .9rem; padding: .9rem; font: 500 .9rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--encre); max-height: 18rem; overflow: auto; margin: .5rem 0; }
+  .actions { display: grid; gap: .6rem; grid-template-columns: 1fr 1fr; margin-top: 1rem; }
+  .statut { min-height: 1.4em; color: var(--ok); font-weight: 700; }
+  footer { margin-top: 2.5rem; text-align: center; }
+  .cache { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="crash-testeur" data-nom="Le Crash-Testeur" data-sous-titre="Votre appli testée en 10 secondes" data-accent="#fb7185"></script>
+<main>
+  <span class="bandeau">💥 Le Crash-Testeur</span>
+  <h1>Votre appli testée <em>en 10 secondes.</em></h1>
+  <p class="doux">Déposez une capture d'écran ou une adresse : 3 testeurs virtuels la découvrent comme de vrais visiteurs. Vous recevez un score, 3 corrections prioritaires et un prompt prêt à coller dans Claude Code ou Cursor. Gratuit, sans inscription.</p>
+
+  <section class="carte" aria-labelledby="t-depot">
+    <h2 id="t-depot">1. Votre application</h2>
+    <div id="depot" class="depot" role="button" tabindex="0" aria-describedby="aide-depot">
+      <span aria-hidden="true" style="font-size:2rem">📸</span>
+      <strong>Déposez une capture d'écran</strong>
+      <span id="aide-depot" class="petit">Touchez pour choisir · glissez-déposez · ou Ctrl+V</span>
+    </div>
+    <input id="fichier" class="cache" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choisir une capture d'écran">
+    <p id="retirer" hidden style="text-align:center"><button type="button" class="lien" id="btn-retirer">Retirer la capture</button></p>
+    <p class="ou">et / ou</p>
+    <label class="champ">Adresse de votre appli
+      <input id="url" type="url" inputmode="url" placeholder="https://…" autocomplete="url">
+    </label>
+    <label class="champ">Décrivez votre appli en 1 phrase (facultatif)
+      <input id="phrase" type="text" maxlength="300" placeholder="Ex. : une liste de courses partagée pour les colocs">
+    </label>
+
+    <div class="ligne2">
+      <div>
+        <p class="titrechoix" id="t-ton">Ton du verdict</p>
+        <div class="choix" role="radiogroup" aria-labelledby="t-ton" data-groupe="ton">
+          <button type="button" role="radio" aria-checked="true" data-valeur="constructif">Constructif<small>bienveillant, pédagogique</small></button>
+          <button type="button" role="radio" aria-checked="false" data-valeur="sans_filtre">Sans filtre<small>direct, mordant, utile</small></button>
+        </div>
+      </div>
+      <div>
+        <p class="titrechoix" id="t-mode">Modèle d'IA</p>
+        <div class="choix choix--mode" role="radiogroup" aria-labelledby="t-mode" data-groupe="mode">
+          <button type="button" role="radio" aria-checked="true" data-valeur="gratuit">Gratuit<small id="reste-gratuit">0 €</small></button>
+          <button type="button" role="radio" aria-checked="false" data-valeur="premium">Premium<small id="reste-premium">modèles avancés</small></button>
+        </div>
+      </div>
+    </div>
+
+    <button id="lancer" type="button" class="bouton bouton--plein">💥 Lancer le crash-test</button>
+    <p id="erreur" role="alert"></p>
+    <p class="petit">Votre capture est envoyée au modèle d'IA puis oubliée : rien n'est stocké sur nos serveurs. Votre adresse IP n'est pas conservée.</p>
+  </section>
+
+  <section id="attente" class="carte attente" aria-live="polite">
+    <div class="roue" aria-hidden="true"></div>
+    <p id="etape"><strong>Le Pressé ouvre votre appli sur son téléphone…</strong></p>
+    <p class="petit">10 à 20 secondes</p>
+  </section>
+
+  <section id="rapport" aria-labelledby="t-rapport">
+    <div class="carte">
+      <h2 id="t-rapport" class="cache">Verdict du crash-test</h2>
+      <div class="score">
+        <div id="cercle" class="score__cercle" role="img"></div>
+        <div>
+          <p class="titrechoix">Test des 10 secondes</p>
+          <p id="resume" style="font-weight:700;font-size:1.05rem"></p>
+          <p id="source" class="petit"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="carte">
+      <h2>Les 3 testeurs</h2>
+      <div id="testeurs" class="testeurs"></div>
+    </div>
+
+    <div class="carte">
+      <h2>Les 3 corrections prioritaires</h2>
+      <ol id="corrections" class="corrections"></ol>
+    </div>
+
+    <div class="carte">
+      <h2>Charte Alphabette</h2>
+      <div id="charte" class="pastilles"></div>
+      <p style="margin-top:.7rem"><a class="lien" href="/#proposer">Soumettre mon appli au collectif Alphabette →</a></p>
+    </div>
+
+    <div class="carte">
+      <h2>Le prompt de correction</h2>
+      <p class="petit">À coller dans Claude Code, Cursor ou votre assistant de code : il applique les 3 corrections.</p>
+      <pre id="prompt" class="prompt"></pre>
+      <button type="button" class="bouton" id="copier-prompt" style="width:100%">📋 Copier le prompt</button>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="bouton" id="copier-md">Copier en Markdown</button>
+      <button type="button" class="bouton" id="image">Image à partager</button>
+    </div>
+    <p id="statut" class="statut" role="status"></p>
+    <p style="text-align:center"><button type="button" class="lien" id="refaire">Faire un nouveau crash-test</button></p>
+  </section>
+
+  <footer class="petit">
+    Le Crash-Testeur est un outil du <a class="lien" href="/">Collectif Alphabette</a> · IA via OpenRouter · <span id="modele"></span>
+  </footer>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  const API = '/api/crash-test.php';
+  const $ = (id) => document.getElementById(id);
+  const etat = { image: '', ton: 'constructif', mode: 'gratuit', rapport: null, entree: null, modele: '' };
+
+  /* ── Choix (ton, mode) ── */
+  document.querySelectorAll('.choix').forEach((g) => g.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    g.querySelectorAll('button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    etat[g.dataset.groupe] = b.dataset.valeur;
+  }));
+
+  /* ── Quotas ── */
+  fetch(API + '?etat', { cache: 'no-store' }).then((r) => r.json()).then((d) => {
+    if (!d.actif) return;
+    $('reste-gratuit').textContent = `0 € · ${d.gratuit.restants}/${d.gratuit.quota} aujourd'hui`;
+    $('reste-premium').textContent = d.premium.restants > 0 ? `${d.premium.restants} offert aujourd'hui` : 'offert utilisé';
+  }).catch(() => {});
+
+  /* ── Capture : choix, glisser-déposer, coller ── */
+  const depot = $('depot');
+  const ouvrir = () => $('fichier').click();
+  depot.addEventListener('click', ouvrir);
+  depot.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); } });
+  $('fichier').addEventListener('change', (e) => e.target.files[0] && prendre(e.target.files[0]));
+  depot.addEventListener('dragover', (e) => { e.preventDefault(); depot.classList.add('survol'); });
+  depot.addEventListener('dragleave', () => depot.classList.remove('survol'));
+  depot.addEventListener('drop', (e) => { e.preventDefault(); depot.classList.remove('survol'); const f = e.dataTransfer.files[0]; if (f) prendre(f); });
+  document.addEventListener('paste', (e) => {
+    const f = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith('image/'))?.getAsFile();
+    if (f) { e.preventDefault(); prendre(f); }
+  });
+  $('btn-retirer').addEventListener('click', () => { etat.image = ''; afficherDepot(); $('fichier').value = ''; });
+
+  function afficherDepot() {
+    depot.innerHTML = etat.image
+      ? `<img src="${etat.image}" alt="Votre capture d'écran"><span class="petit">Touchez pour changer</span>`
+      : '<span aria-hidden="true" style="font-size:2rem">📸</span><strong>Déposez une capture d\'écran</strong><span class="petit">Touchez pour choisir · glissez-déposez · ou Ctrl+V</span>';
+    $('retirer').hidden = !etat.image;
+  }
+
+  /** Réduit la capture dans le navigateur (1280 px de large au plus, JPEG) : plus rapide, plus sobre. */
+  function prendre(fichier) {
+    if (!/^image\/(png|jpeg|webp)$/.test(fichier.type)) return erreur('Format non pris en charge : PNG, JPEG ou WebP.');
+    const img = new Image();
+    img.onload = () => {
+      const echelle = Math.min(1, 1280 / img.width, 2400 / img.height);
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * echelle); c.height = Math.round(img.height * echelle);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      let q = 0.82, data = c.toDataURL('image/jpeg', q);
+      while (data.length > 2_400_000 && q > 0.4) { q -= 0.12; data = c.toDataURL('image/jpeg', q); }
+      URL.revokeObjectURL(img.src);
+      etat.image = data; erreur(''); afficherDepot();
+    };
+    img.onerror = () => erreur('Cette image ne peut pas être lue.');
+    img.src = URL.createObjectURL(fichier);
+  }
+
+  function erreur(t) { $('erreur').textContent = t; }
+
+  /* ── Lancement ── */
+  const ETAPES = ['Le Pressé ouvre votre appli sur son téléphone…', 'Le Novice cherche à quoi elle sert…', 'Le Designer inspecte les contrastes…', 'Le jury rédige les corrections…'];
+  $('lancer').addEventListener('click', async () => {
+    const url = $('url').value.trim(), phrase = $('phrase').value.trim();
+    if (!etat.image && !url && phrase.length < 10) return erreur("Ajoutez une capture d'écran, une adresse ou une phrase de description.");
+    if (url && !/^https:\/\//i.test(url)) return erreur("L'adresse doit commencer par https://");
+    erreur('');
+    $('lancer').disabled = true;
+    $('rapport').classList.remove('visible');
+    $('attente').classList.add('visible');
+    let i = 0;
+    const minuteur = setInterval(() => { i = Math.min(i + 1, ETAPES.length - 1); $('etape').innerHTML = `<strong>${ETAPES[i]}</strong>`; }, 3500);
+    $('etape').innerHTML = `<strong>${ETAPES[0]}</strong>`;
+    etat.entree = { url, phrase };
+    try {
+      let r, d;
+      for (let essai = 0; essai < 2; essai++) {
+        r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: etat.mode, ton: etat.ton, image: etat.image || undefined, url: url || undefined, phrase: phrase || undefined }) });
+        d = await r.json().catch(() => ({}));
+        if (r.status === 503 && d.sature && essai === 0) { $('etape').innerHTML = '<strong>Serveur gratuit momentanément saturé, nouvelle tentative…</strong>'; await new Promise((ok) => setTimeout(ok, 2500)); continue; }
+        break;
+      }
+      if (!r.ok || !d.rapport) throw new Error(d.erreur || 'Le crash-test a échoué. Réessayez.');
+      etat.rapport = d.rapport; etat.modele = d.modele || '';
+      afficherRapport(d);
+    } catch (e) {
+      erreur(e.message);
+    } finally {
+      clearInterval(minuteur);
+      $('attente').classList.remove('visible');
+      $('lancer').disabled = false;
+    }
+  });
+
+  /* ── Rapport ── */
+  const PROFILS = { presse: ['📱', 'Le Pressé sur mobile'], novice: ['🙋', 'Le Novice total'], designer: ['🎨', 'Le Designer exigeant'] };
+  const CHARTE = [['clarte', 'Clarté immédiate'], ['mobile', 'Ergonomie mobile'], ['acces', 'Accès sans friction']];
+  const ICONES = { ok: '✅', a_ameliorer: '⚠️', probleme: '⛔' };
+  const echapper = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const couleurScore = (s) => (s >= 7 ? 'var(--ok)' : s >= 4.5 ? 'var(--moyen)' : 'var(--ko)');
+  const nomModele = (id) => !id || id === 'openrouter/free' ? 'modèle gratuit' : id.replace(/:free$/, ' (gratuit)');
+
+  function afficherRapport(d) {
+    const r = d.rapport, s = Math.round(Number(r.score) * 10) / 10;
+    const c = $('cercle');
+    c.innerHTML = `<span class="score__interieur">${s.toLocaleString('fr-FR')}<small>/10</small></span>`;
+    c.style.background = `conic-gradient(${couleurScore(s)} ${s * 36}deg, var(--trait) 0)`;
+    c.setAttribute('aria-label', `Score ${s} sur 10`);
+    $('resume').textContent = r.resume || '';
+    $('source').textContent = (d.source === 'capture' ? 'Analyse de votre capture d\'écran.' : d.source === 'page' ? 'Analyse du texte et de la structure de la page (sans capture, l\'apparence n\'est pas vue).' : 'Analyse de votre description seulement : ajoutez une capture pour un vrai test.') + (d.avertissement ? ` ${d.avertissement}` : '');
+    $('testeurs').innerHTML = (r.testeurs || []).map((t) => {
+      const [ic, nom] = PROFILS[t.profil] || ['👤', t.profil];
+      return `<div class="testeur"><b>${ic} ${echapper(nom)}</b><span class="doux">${echapper(t.reaction)}</span></div>`;
+    }).join('');
+    $('corrections').innerHTML = (r.corrections || []).map((k, i) =>
+      `<li><span class="num">${i + 1}</span><div><b>${echapper(k.titre)}</b><span class="impact ${k.impact === 'fort' ? 'impact--fort' : ''}">impact ${echapper(k.impact || 'moyen')}</span><p class="doux" style="margin:.25rem 0 0">${echapper(k.detail)}</p></div></li>`).join('');
+    $('charte').innerHTML = CHARTE.map(([k, nom]) => {
+      const v = ['ok', 'a_ameliorer', 'probleme'].includes(r.charte?.[k]) ? r.charte[k] : 'a_ameliorer';
+      return `<span class="pastille pastille--${v}">${ICONES[v]} ${nom}</span>`;
+    }).join('');
+    $('prompt').textContent = promptCorrection();
+    $('modele').textContent = `Dernier test : ${nomModele(etat.modele)}`;
+    $('rapport').classList.add('visible');
+    $('statut').textContent = '';
+    $('rapport').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function promptCorrection() {
+    const r = etat.rapport, e = etat.entree;
+    return [
+      `Tu travailles sur mon application web${e.url ? ` (${e.url})` : ''}${e.phrase ? ` : ${e.phrase}` : ''}.`,
+      'Un crash-test d\'ergonomie a relevé 3 corrections prioritaires. Applique-les dans le code, sans rien casser d\'autre :',
+      '',
+      ...(r.corrections || []).map((k, i) => `${i + 1}. ${k.titre} — ${k.detail}`),
+      '',
+      'Contraintes :',
+      '- garde le design général et toutes les fonctionnalités existantes ;',
+      '- vérifie le rendu sur téléphone (390 px de large) et le contraste des textes ;',
+      '- à la fin, résume ce que tu as modifié, fichier par fichier.',
+    ].join('\n');
+  }
+
+  function markdown() {
+    const r = etat.rapport, e = etat.entree;
+    const nom = (p) => (PROFILS[p] || ['', p])[1];
+    return [
+      `## 💥 Crash-test${e.url ? ` — ${e.url}` : ''}`,
+      '',
+      `**Test des 10 secondes : ${r.score}/10** — ${r.resume || ''}`,
+      '',
+      '### Les 3 testeurs',
+      ...(r.testeurs || []).map((t) => `- **${nom(t.profil)}** : ${t.reaction}`),
+      '',
+      '### Corrections prioritaires',
+      ...(r.corrections || []).map((k, i) => `${i + 1}. **${k.titre}** (impact ${k.impact || 'moyen'}) — ${k.detail}`),
+      '',
+      '### Charte Alphabette',
+      ...CHARTE.map(([k, n]) => `- ${ICONES[r.charte?.[k]] || '⚠️'} ${n}`),
+      '',
+      `_Le Crash-Testeur — Alphabette · https://alphabette.eu/crash-testeur/ · ${nomModele(etat.modele)}_`,
+    ].join('\n');
+  }
+
+  async function copier(texte, message) {
+    try { await navigator.clipboard.writeText(texte); $('statut').textContent = message; }
+    catch { $('statut').textContent = 'Copie impossible ici : sélectionnez le texte et copiez-le.'; }
+  }
+  $('copier-prompt').addEventListener('click', () => copier(promptCorrection(), '✅ Prompt copié : collez-le dans Claude Code ou Cursor.'));
+  $('copier-md').addEventListener('click', () => copier(markdown(), '✅ Rapport copié en Markdown.'));
+  $('refaire').addEventListener('click', () => { $('rapport').classList.remove('visible'); window.scrollTo({ top: 0 }); });
+
+  /* ── Image carrée à partager ── */
+  function lignes(ctx, texte, largeur) {
+    const mots = String(texte).split(/\s+/), out = []; let l = '';
+    for (const m of mots) { const t = l ? `${l} ${m}` : m; if (ctx.measureText(t).width > largeur && l) { out.push(l); l = m; } else l = t; }
+    if (l) out.push(l); return out;
+  }
+  $('image').addEventListener('click', async () => {
+    const r = etat.rapport, T = 1080, c = document.createElement('canvas');
+    c.width = T; c.height = T;
+    const x = c.getContext('2d'), police = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+    x.fillStyle = '#0b1220'; x.fillRect(0, 0, T, T);
+    const halo = x.createRadialGradient(T * .85, T * .12, 30, T * .85, T * .12, T * .8);
+    halo.addColorStop(0, '#fb718566'); halo.addColorStop(1, '#0b122000'); x.fillStyle = halo; x.fillRect(0, 0, T, T);
+    x.fillStyle = '#fb7185'; x.font = `900 40px ${police}`; x.fillText('💥 LE CRASH-TESTEUR', 80, 120);
+    // Score
+    const s = Number(r.score), cx = 220, cy = 380;
+    x.lineWidth = 34; x.strokeStyle = '#24324d'; x.beginPath(); x.arc(cx, cy, 130, 0, Math.PI * 2); x.stroke();
+    x.strokeStyle = s >= 7 ? '#86efac' : s >= 4.5 ? '#fbbf24' : '#fca5a5';
+    x.beginPath(); x.arc(cx, cy, 130, -Math.PI / 2, -Math.PI / 2 + (s / 10) * Math.PI * 2); x.stroke();
+    x.fillStyle = '#f1f5f9'; x.textAlign = 'center'; x.font = `900 92px ${police}`; x.fillText(String(Math.round(s * 10) / 10).replace('.', ','), cx, cy + 22);
+    x.font = `700 30px ${police}`; x.fillStyle = '#94a3b8'; x.fillText('/10', cx, cy + 66); x.textAlign = 'left';
+    x.fillStyle = '#cbd5e1'; x.font = `800 34px ${police}`; x.fillText('Test des', 420, 340); x.fillText('10 secondes', 420, 385);
+    // Meilleure remarque
+    x.fillStyle = '#ffffff';
+    let taille = 52, ls = [];
+    for (; taille >= 30; taille -= 4) { x.font = `800 ${taille}px ${police}`; ls = lignes(x, `« ${r.meilleure_remarque || r.resume || ''} »`, T - 160); if (ls.length * taille * 1.25 <= 380) break; }
+    ls.forEach((l, i) => x.fillText(l, 80, 600 + i * taille * 1.25));
+    x.fillStyle = '#5eead4'; x.font = `900 38px ${police}`; x.fillText('ALPHABETTE', 80, 1000);
+    x.fillStyle = '#94a3b8'; x.font = `500 26px ${police}`; x.textAlign = 'right'; x.fillText('alphabette.eu/crash-testeur', T - 80, 1000);
+    c.toBlob(async (b) => {
+      const f = new File([b], 'crash-test.png', { type: 'image/png' });
+      if (navigator.canShare?.({ files: [f] })) { try { await navigator.share({ files: [f], text: 'Mon crash-test — Le Crash-Testeur Alphabette' }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'crash-test.png'; document.body.appendChild(a); a.click(); a.remove();
+      $('statut').textContent = '✅ Image téléchargée.';
+    }, 'image/png');
+  });
+})();
+</script>
+</body>
+</html>
