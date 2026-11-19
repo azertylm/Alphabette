@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-11-19T08:50:38.822Z",
+  "genere_le": "2026-11-19T09:29:45.078Z",
   "base": "https://alphabette.eu",
   "agent": "Agent Chaos",
   "apps": [
@@ -13,20 +13,7 @@
       "app_id": "bonplan",
       "nom": "BON PLAN",
       "url": "https://alphabette.eu/apps/bonplan/",
-      "anomalies": [
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 40px à 320px de large",
-          "elements": [
-            "div.disc (357px)",
-            "div.tip-count-badge (360px)",
-            "div.disc-label (359px)"
-          ],
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] BON PLAN — debordement (chargement, 320x568) : Défilement horizontal de 40px à 320px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "ecobatisol",
@@ -44,25 +31,7 @@
       "app_id": "frigoplacard",
       "nom": "FRIGO-PLACARD",
       "url": "https://alphabette.eu/apps/frigoplacard/",
-      "anomalies": [
-        {
-          "type": "console_error",
-          "etape": "chargement",
-          "detail": "The script has an unsupported MIME type ('text/html').",
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] FRIGO-PLACARD — console error (chargement, 320x568) : The script has an unsupported MIME type ('text/html')."
-        },
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 19px à 280px de large",
-          "elements": [
-            "button.ab-pico (299px)"
-          ],
-          "ecran": "280x653",
-          "ticket": "[Agent Chaos] FRIGO-PLACARD — debordement (chargement, 280x653) : Défilement horizontal de 19px à 280px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "quiz-extraordinaires",
@@ -74,15 +43,7 @@
       "app_id": "goat-chevre-the-king",
       "nom": "Goat Chèvre The King",
       "url": "https://alphabette.eu/apps/goatchevretheking/",
-      "anomalies": [
-        {
-          "type": "console_error",
-          "etape": "chargement",
-          "detail": "The script has an unsupported MIME type ('text/html').",
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] Goat Chèvre The King — console error (chargement, 320x568) : The script has an unsupported MIME type ('text/html')."
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "iadebat",
@@ -154,20 +115,7 @@
       "app_id": "promptmagic",
       "nom": "PROMPT MAGIC",
       "url": "https://alphabette.eu/apps/promptmagic/",
-      "anomalies": [
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 19px à 280px de large",
-          "elements": [
-            "button.ab-pico (299px)",
-            "button.pm-idee (294px)",
-            "button.pm-idee (294px)"
-          ],
-          "ecran": "280x653",
-          "ticket": "[Agent Chaos] PROMPT MAGIC — debordement (chargement, 280x653) : Défilement horizontal de 19px à 280px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "proxilien",
@@ -191,26 +139,7 @@
       "app_id": "revolution",
       "nom": "RÉVOLUTION",
       "url": "https://alphabette.eu/apps/revolution/",
-      "anomalies": [
-        {
-          "type": "console_error",
-          "etape": "chargement",
-          "detail": "The script has an unsupported MIME type ('text/html').",
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] RÉVOLUTION — console error (chargement, 320x568) : The script has an unsupported MIME type ('text/html')."
-        },
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 37px à 280px de large",
-          "elements": [
-            "button.shrink-0 (317px)",
-            "span.text-xl (290px)"
-          ],
-          "ecran": "280x653",
-          "ticket": "[Agent Chaos] RÉVOLUTION — debordement (chargement, 280x653) : Défilement horizontal de 37px à 280px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "bonplansenior",
@@ -231,5 +160,5 @@
       "anomalies": []
     }
   ],
-  "total": 7
+  "total": 0
 }
