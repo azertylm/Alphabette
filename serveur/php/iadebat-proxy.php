@@ -252,7 +252,8 @@ function fournisseur_de(string $modele): string {
 
 /* ───────────────────────────── installation de la clé ───────────────────────────── */
 
-if (isset($_GET['installer'])) {
+// OpenRouter renvoie sur l'adresse de retour SANS « ?installer » (il remplace la requête par ?code=…).
+if (isset($_GET['installer']) || (isset($_GET['code']) && ($_SERVER['REQUEST_METHOD'] ?? '') === 'GET')) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $e = json_decode((string) file_get_contents('php://input'), true) ?: array();
         $jeton = (string) ($e['jeton'] ?? '');
