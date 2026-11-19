@@ -7,23 +7,29 @@
  * répliques vers OpenRouter, qui sert les 6 IA (ChatGPT, Claude, Gemini, DeepSeek,
  * Mistral, Llama) avec une seule clé.
  *
- *   GET  ?etat                         → { actif, quota, debats_restants }
- *   POST { action:"debut", sujet }      → { ticket, debats_restants }   (compte 1 débat)
- *   POST { action:"generer", ticket, orateur, systeme, prompt, max_tokens, temperature, divers? }
+ * Deux modes :
+ *   - GRATUIT : uniquement les modèles « :free » d'OpenRouter (ou son routeur gratuit) — coût nul ;
+ *   - PREMIUM : les 6 modèles économiques (GPT mini, Claude Haiku, Gemini Flash…), 1 débat offert par jour.
+ * Le mode est inscrit dans le ticket signé : un ticket gratuit ne peut JAMAIS déclencher un modèle payant.
+ *
+ *   GET  ?etat                         → { actif, gratuit:{quota,restants}, premium:{quota,restants} }
+ *   POST { action:"debut", sujet, mode } → { ticket, debats_restants }   (compte 1 débat du mode)
+ *   POST { action:"generer", ticket, orateur, rang, systeme, prompt, max_tokens, temperature, divers? }
  *                                       → { texte, modele, fournisseur }
  *   GET/POST ?installer                → installation de la clé (lien à jeton secret, connexion OpenRouter)
  *
- * Coûts maîtrisés : 3 débats par jour et par adresse IP, 40 répliques par débat,
- * 100 débats par jour au total, réponses plafonnées, modèles économiques choisis ici
+ * Coûts maîtrisés : 10 débats gratuits + 1 débat premium par jour et par adresse IP, 40 répliques
+ * par débat, 50 débats premium par jour au total, réponses plafonnées, modèles choisis ici
  * (le navigateur ne choisit jamais le modèle). Vie privée : l'adresse IP n'est pas
  * gardée, seulement une empreinte qui change chaque jour (fichiers effacés après 2 jours).
  */
 declare(strict_types=1);
 
-const QUOTA_DEBATS_JOUR = 3;
+const QUOTA_GRATUIT_JOUR = 10;          // débats en Mode Gratuit (modèles :free, coût nul)
+const QUOTA_PREMIUM_JOUR = 1;           // débat Premium offert (modèles payants économiques)
 const APPELS_PAR_DEBAT = 40;
-const QUOTA_DIVERS_JOUR = 6;            // sujets suggérés, etc. hors débat
-const PLAFOND_DEBATS_TOTAL_JOUR = 100;  // garde-fou global du budget
+const QUOTA_DIVERS_JOUR = 10;           // sujets suggérés, etc. hors débat (toujours en gratuit)
+const PLAFOND_PREMIUM_TOTAL_JOUR = 50;  // garde-fou global du budget premium
 const MAX_TOKENS = 2000;
 const MAX_CARACTERES = 24000;
 const PRIX_MAX_ENTREE = 0.000003;       // $ par jeton (3 $ le million) : gammes économiques seulement
@@ -162,6 +168,32 @@ function modeles_pour(string $orateur, bool $gratuits): array {
     return array_map(function ($m) { return $m['id']; }, $candidats);
 }
 
+/** Préfixe des modèles ouverts du même fournisseur (ex. Gemma pour Gemini) quand ils existent en gratuit. */
+const PARENTS_GRATUITS = array('gemini' => 'google/', 'llama' => 'meta-llama/', 'deepseek' => 'deepseek/', 'mistral' => 'mistralai/', 'chatgpt' => 'openai/', 'claude' => 'anthropic/');
+const EXCLUS_GRATUITS = '/(image|audio|tts|embed|guard|omni|reasoning|code|lyria|1\.7b|-[0-9.]+b-a[0-9.]+b-reason)/i';
+
+/**
+ * Mode Gratuit : modèles « :free » actifs sur OpenRouter, variés d'un orateur à l'autre (rang),
+ * le même fournisseur d'abord quand il en propose un ; le routeur gratuit d'OpenRouter en dernier.
+ */
+function modeles_gratuits(string $orateur, int $rang): array {
+    $pool = array();
+    foreach (catalogue() as $m) {
+        if (substr($m['id'], -5) === ':free' && !preg_match(EXCLUS_GRATUITS, $m['id'])) $pool[] = $m;
+    }
+    usort($pool, function ($a, $b) { return $b['cree'] <=> $a['cree']; });
+    $ids = array_map(function ($m) { return $m['id']; }, $pool);
+    $parent = PARENTS_GRATUITS[$orateur] ?? '';
+    $memes = array_values(array_filter($ids, function ($id) use ($parent) { return $parent !== '' && strpos($id, $parent) === 0; }));
+    $autres = array_values(array_diff($ids, $memes));
+    if ($autres) { $d = $rang % count($autres); $autres = array_merge(array_slice($autres, $d), array_slice($autres, 0, $d)); }
+    $liste = array_slice(array_merge($memes, $autres), 0, 4);
+    $liste[] = 'openrouter/free';
+    return array_values(array_unique($liste));
+}
+
+function est_gratuit(string $id): bool { return substr($id, -5) === ':free' || $id === 'openrouter/free'; }
+
 /** Secours : un modèle économique d'un autre fournisseur, si celui de l'orateur est saturé. */
 function secours(string $orateur, bool $gratuits): array {
     $ids = array();
@@ -204,16 +236,21 @@ function message_erreur(string $corps): string {
 }
 
 /** Essaie les modèles dans l'ordre ; bascule sur 429 / 5xx / modèle introuvable ; 402 (plus de crédit) → modèles gratuits. */
-function generer(array $cfg, string $orateur, string $systeme, string $prompt, int $maxTokens, float $temperature): array {
-    $gratuits = false;
+function generer(array $cfg, string $orateur, string $systeme, string $prompt, int $maxTokens, float $temperature, bool $modeGratuit, int $rang): array {
+    $gratuits = $modeGratuit;
     for ($passe = 0; $passe < 2; $passe++) {
-        $liste = array_values(array_unique(array_merge(array_slice(modeles_pour($orateur, $gratuits), 0, 2), secours($orateur, $gratuits))));
+        $liste = $gratuits
+            ? modeles_gratuits($orateur, $rang)
+            : array_values(array_unique(array_merge(array_slice(modeles_pour($orateur, false), 0, 2), secours($orateur, false))));
+        // Verrou : en Mode Gratuit (ou après épuisement du crédit), aucun modèle payant ne passe.
+        if ($gratuits) $liste = array_values(array_filter($liste, 'est_gratuit'));
         if (!$liste) break;
         $derniere = '';
         foreach ($liste as $i => $modele) {
+            if ($gratuits && !est_gratuit($modele)) continue;
             $corps = array(
                 'model' => $modele,
-                'models' => array_slice($liste, $i, 3),   // secours automatique côté OpenRouter
+                'models' => array_slice($liste, $i, 3),   // secours automatique côté OpenRouter (tous gratuits si $gratuits)
                 'messages' => array(array('role' => 'system', 'content' => $systeme), array('role' => 'user', 'content' => $prompt)),
                 'max_tokens' => $maxTokens,
                 'temperature' => $temperature,
@@ -239,9 +276,10 @@ function generer(array $cfg, string $orateur, string $systeme, string $prompt, i
             if ($r['code'] === 401 || $r['code'] === 403) repondre(503, array('erreur' => 'Le Mode Découverte est en maintenance. Connectez OpenRouter ou ajoutez votre clé (Mode Expert).'));
             // 429, 5xx, 404, 400 « model » : modèle suivant
         }
-        if (isset($r) && $r['code'] !== 402) break;
+        if ($gratuits || (isset($r) && $r['code'] !== 402)) break;
         $gratuits = true;
     }
+    if ($gratuits) repondre(503, array('erreur' => 'Serveur gratuit momentanément saturé (' . ($derniere ?? 'aucun modèle') . '). Nouvelle tentative dans un instant.', 'sature' => true));
     repondre(502, array('erreur' => ORATEURS[$orateur]['nom'] . ' est momentanément indisponible (' . ($derniere ?? 'aucun modèle') . '). Réessayez dans un instant.'));
 }
 
@@ -335,10 +373,14 @@ $actif = !empty($cfg['cle']) && !empty($cfg['secret']);
 $jour = gmdate('Y-m-d');
 
 if (isset($_GET['etat'])) {
-    if (!$actif) repondre(200, array('actif' => false, 'quota' => QUOTA_DEBATS_JOUR, 'debats_restants' => 0));
+    if (!$actif) repondre(200, array('actif' => false, 'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => 0,
+        'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => 0), 'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => 0)));
     $q = lire_json(fichier_jour($jour), array());
-    $n = (int) ($q['ip'][empreinte($cfg, $jour)]['debats'] ?? 0);
-    repondre(200, array('actif' => true, 'quota' => QUOTA_DEBATS_JOUR, 'debats_restants' => max(0, QUOTA_DEBATS_JOUR - $n)));
+    $moi = $q['ip'][empreinte($cfg, $jour)] ?? array();
+    $g = max(0, QUOTA_GRATUIT_JOUR - (int) ($moi['debats_g'] ?? 0));
+    $p = ((int) ($q['total_p'] ?? 0) >= PLAFOND_PREMIUM_TOTAL_JOUR) ? 0 : max(0, QUOTA_PREMIUM_JOUR - (int) ($moi['debats_p'] ?? 0));
+    repondre(200, array('actif' => true, 'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
+        'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => $g), 'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => $p)));
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') repondre(405, array('erreur' => 'Méthode non prise en charge.'));
@@ -349,20 +391,24 @@ if (!is_array($e)) repondre(400, array('erreur' => 'Demande illisible.'));
 $action = (string) ($e['action'] ?? '');
 $ip = empreinte($cfg, $jour);
 $fichier = fichier_jour($jour);
-$MSG_QUOTA = 'Vous avez utilisé vos ' . QUOTA_DEBATS_JOUR . ' débats gratuits du jour. Pour continuer : « Se connecter avec OpenRouter » (1 clic) ou vos clés en Mode Expert. Nouveaux débats gratuits demain.';
+$MSG_QUOTA = 'Vous avez utilisé vos ' . QUOTA_GRATUIT_JOUR . ' débats gratuits du jour. Nouveaux débats gratuits demain, ou passez en Premium (OpenRouter en 1 clic ou vos clés).';
+$MSG_QUOTA_PREMIUM = 'Votre débat Premium offert du jour est utilisé. Pour continuer en Premium : « Se connecter avec OpenRouter » (1 clic) ou vos clés en Mode Expert. Le Mode Gratuit reste disponible.';
 
 if ($action === 'debut') {
-    $res = modifier($fichier, function (&$q) use ($ip) {
-        $n = (int) ($q['ip'][$ip]['debats'] ?? 0);
-        if ($n >= QUOTA_DEBATS_JOUR) return array('refus' => 'quota');
-        if ((int) ($q['total'] ?? 0) >= PLAFOND_DEBATS_TOTAL_JOUR) return array('refus' => 'plafond');
-        $q['ip'][$ip]['debats'] = $n + 1;
-        $q['total'] = (int) ($q['total'] ?? 0) + 1;
-        return array('restants' => QUOTA_DEBATS_JOUR - $n - 1);
+    $premium = ($e['mode'] ?? '') === 'premium';
+    $res = modifier($fichier, function (&$q) use ($ip, $premium) {
+        $cle = $premium ? 'debats_p' : 'debats_g';
+        $quota = $premium ? QUOTA_PREMIUM_JOUR : QUOTA_GRATUIT_JOUR;
+        $n = (int) ($q['ip'][$ip][$cle] ?? 0);
+        if ($n >= $quota) return array('refus' => 'quota');
+        if ($premium && (int) ($q['total_p'] ?? 0) >= PLAFOND_PREMIUM_TOTAL_JOUR) return array('refus' => 'plafond');
+        $q['ip'][$ip][$cle] = $n + 1;
+        if ($premium) $q['total_p'] = (int) ($q['total_p'] ?? 0) + 1;
+        return array('restants' => $quota - $n - 1);
     });
-    if (($res['refus'] ?? '') === 'quota') repondre(429, array('erreur' => $MSG_QUOTA, 'quota' => true, 'debats_restants' => 0));
-    if (($res['refus'] ?? '') === 'plafond') repondre(429, array('erreur' => 'Le Mode Découverte est très demandé aujourd\'hui : réessayez demain, ou connectez OpenRouter en 1 clic.', 'quota' => true));
-    $donnees = b64url(json_encode(array('j' => $jour, 'h' => $ip, 'n' => b64url(random_bytes(9)))));
+    if (($res['refus'] ?? '') === 'quota') repondre(429, array('erreur' => $premium ? $MSG_QUOTA_PREMIUM : $MSG_QUOTA, 'quota' => true, 'premium' => $premium, 'debats_restants' => 0));
+    if (($res['refus'] ?? '') === 'plafond') repondre(429, array('erreur' => 'Les débats Premium offerts sont épuisés pour aujourd\'hui. Le Mode Gratuit reste disponible, ou connectez OpenRouter en 1 clic.', 'quota' => true, 'premium' => true));
+    $donnees = b64url(json_encode(array('j' => $jour, 'h' => $ip, 'm' => $premium ? 'p' : 'g', 'n' => b64url(random_bytes(9)))));
     repondre(200, array('ticket' => $donnees . '.' . signer($cfg, $donnees), 'debats_restants' => $res['restants']));
 }
 
@@ -377,18 +423,21 @@ if ($action === 'generer') {
 
     $ticket = (string) ($e['ticket'] ?? '');
     $divers = !empty($e['divers']);
+    $rang = max(0, min(20, (int) ($e['rang'] ?? 0)));
+    $modeGratuit = true;   // par défaut : gratuit ; seul un ticket premium signé ouvre les modèles payants
     $refus = '';
     if ($ticket !== '') {
         $p = explode('.', $ticket);
         $t = count($p) === 2 && hash_equals(signer($cfg, $p[0]), $p[1]) ? json_decode(base64_decode(strtr($p[0], '-_', '+/')), true) : null;
         if (!is_array($t) || ($t['j'] ?? '') !== $jour || ($t['h'] ?? '') !== $ip) repondre(401, array('erreur' => 'Ticket expiré.', 'ticket' => true));
+        $modeGratuit = ($t['m'] ?? 'g') !== 'p';
         $refus = modifier($fichier, function (&$q) use ($t) {
             $n = (int) ($q['tickets'][$t['n']] ?? 0);
             if ($n >= APPELS_PAR_DEBAT) return 'debat';
             $q['tickets'][$t['n']] = $n + 1;
             return '';
         });
-        if ($refus === 'debat') repondre(429, array('erreur' => 'Ce débat gratuit a atteint sa longueur maximale (' . APPELS_PAR_DEBAT . ' répliques). Lancez un nouveau débat, ou connectez OpenRouter pour continuer sans limite.', 'quota' => true, 'fin_debat' => true));
+        if ($refus === 'debat') repondre(429, array('erreur' => 'Ce débat a atteint sa longueur maximale (' . APPELS_PAR_DEBAT . ' répliques). Lancez un nouveau débat, ou connectez OpenRouter pour continuer sans limite.', 'quota' => true, 'fin_debat' => true));
     } elseif ($divers) {
         $refus = modifier($fichier, function (&$q) use ($ip) {
             $n = (int) ($q['ip'][$ip]['divers'] ?? 0);
@@ -400,7 +449,7 @@ if ($action === 'generer') {
     } else {
         repondre(401, array('erreur' => 'Ticket manquant.', 'ticket' => true));
     }
-    repondre(200, generer($cfg, $orateur, $systeme, $prompt, $maxTokens, $temperature));
+    repondre(200, generer($cfg, $orateur, $systeme, $prompt, $maxTokens, $temperature, $modeGratuit, $rang));
 }
 
 repondre(400, array('erreur' => 'Action inconnue.'));
