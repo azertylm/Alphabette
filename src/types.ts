@@ -159,6 +159,13 @@ export interface RegistryApp {
   ordre?: number;
   /** Regroupement (ex. « petits-jeux ») : pas de tuile propre sur l'accueil. */
   groupe?: string;
+  /** Publiée sur alphabette.fr (validée). */
+  vitrine?: boolean;
+  /** Application d'un créateur indépendant du Collectif (alphabette.eu seulement). */
+  communaute?: boolean;
+  /** Nom ou pseudo du créateur (Collectif). */
+  createur?: string;
+  categorie?: string;
 }
 
 export interface RegistrySnapshot {

@@ -5,6 +5,20 @@ import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
 import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
 import { LaboAvis } from '../labo/LaboAvis';
+import { ProposerApp } from '../labo/ProposerApp';
+import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
+
+type FiltreCollectif = 'toutes' | 'officiel' | 'communaute' | 'nouveautes' | 'test';
+const FILTRES: { id: FiltreCollectif; nom: string }[] = [
+  { id: 'toutes', nom: 'Toutes' },
+  { id: 'officiel', nom: 'Officiel' },
+  { id: 'communaute', nom: 'Communauté' },
+  { id: 'nouveautes', nom: 'Nouveautés' },
+  { id: 'test', nom: 'En test' },
+];
+/** « Nouveauté » : ajoutée il y a moins de 60 jours, ou marquée Nouveau dans le registre. */
+const estNouvelle = (app: RegistryApp) =>
+  app.badge === 'Nouveau' || (Boolean(app.createdAt) && Date.now() - new Date(app.createdAt).getTime() < 60 * 86_400_000);
 
 /**
  * @file Accueil.tsx
@@ -76,6 +90,22 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         setServeurAvis(true);
       })
       .catch(() => setServeurAvis(false));
+  // Collectif (alphabette.eu) : filtres, soutiens, proposition d'application.
+  const [filtre, setFiltre] = useState<FiltreCollectif>('toutes');
+  const [soutiens, setSoutiens] = useState<Record<string, number>>({});
+  const [messageSoutien, setMessageSoutien] = useState<{ id: string; texte: string } | null>(null);
+  const [proposerOuvert, setProposerOuvert] = useState(false);
+  useEffect(() => {
+    if (!MODE_LABO) return;
+    chargerSoutiens().then(setSoutiens);
+    if (window.location.hash === '#proposer') setProposerOuvert(true);
+  }, []);
+  const soutenirApp = async (id: string) => {
+    const r = await soutenir(id);
+    if (r.ok && typeof r.soutiens === 'number') setSoutiens((s) => ({ ...s, [id]: r.soutiens as number }));
+    setMessageSoutien({ id, texte: r.ok ? 'Merci pour votre soutien !' : r.message ?? '' });
+  };
+
   useEffect(() => {
     if (!MODE_LABO) {
       chargerNotesCitoyennes().then(setNotesFr);
@@ -93,28 +123,41 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
     const q = sansAccent(recherche.trim());
     // Sans recherche : les jeux sont regroupés derrière la tuile « Petits Jeux ».
     // Avec une recherche, on cherche partout, jeux compris.
-    const liste = q
-      ? apps.filter((app) => sansAccent(`${app.name} ${app.description ?? ''}`).includes(q))
+    let liste = q
+      ? apps.filter((app) => sansAccent(`${app.name} ${app.description ?? ''} ${app.createur ?? ''}`).includes(q))
       : apps.filter((app) => !app.groupe);
+    if (MODE_LABO && filtre !== 'toutes') {
+      liste = liste.filter((app) =>
+        filtre === 'officiel' ? !app.communaute
+        : filtre === 'communaute' ? Boolean(app.communaute)
+        : filtre === 'nouveautes' ? estNouvelle(app)
+        : !app.vitrine);
+    }
     // Ordre choisi dans le registre (champ « ordre »), puis les autres par ordre alphabétique.
     return [...liste].sort(
       (a, b) => (a.ordre ?? 999) - (b.ordre ?? 999) || a.name.localeCompare(b.name, 'fr'),
     );
-  }, [apps, recherche]);
+  }, [apps, recherche, filtre]);
 
   return (
     <div className="accueil">
       <section className="accueil__haut">
         {MODE_LABO ? (
           <>
-            <p className="labo-bandeau">🧪 Le Laboratoire Alphabette</p>
+            <p className="labo-bandeau">🤝 Le Collectif Alphabette</p>
             <h1 className="accueil__titre">
-              Toutes nos applications en test. <em>Votre avis les améliore.</em>
+              Alphabette — <em>l'atelier collectif des applications utiles et indépendantes.</em>
             </h1>
             <p className="accueil__phrase">
-              Notez, signalez un bug, proposez une idée : chaque avis est lu, et les applis évoluent. Les plus abouties
-              rejoignent <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a>.
+              Publiez votre application, améliorez-la grâce aux retours de la communauté et profitez d'une visibilité
+              partagée. Les plus abouties rejoignent la vitrine <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a>.
             </p>
+            <div className="collectif-actions">
+              <button type="button" className="labo__bouton labo__bouton--envoyer" onClick={() => setProposerOuvert(true)}>
+                ＋ Proposer une application
+              </button>
+              <a className="labo__bouton" href="/rejoindre/">Rejoindre le réseau (badge)</a>
+            </div>
           </>
         ) : (
         <h1 className="accueil__titre">
@@ -141,8 +184,18 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
       <section id="nos-applications" className="accueil__applis" aria-label="Nos applications">
         <h2 className="accueil__rubrique">
-          {recherche.trim() ? `${visibles.length} résultat${visibles.length > 1 ? 's' : ''}` : 'Nos applications'}
+          {recherche.trim() ? `${visibles.length} résultat${visibles.length > 1 ? 's' : ''}` : MODE_LABO ? 'Les applications du collectif' : 'Nos applications'}
         </h2>
+        {MODE_LABO && (
+          <div className="collectif-filtres" role="group" aria-label="Filtrer les applications">
+            {FILTRES.map((f) => (
+              <button key={f.id} type="button" aria-pressed={filtre === f.id}
+                className={filtre === f.id ? 'labo__puce labo__puce--choisie' : 'labo__puce'} onClick={() => setFiltre(f.id)}>
+                {f.nom}
+              </button>
+            ))}
+          </div>
+        )}
 
         {etat === 'chargement' && <p className="accueil__message">Chargement des applications…</p>}
 
@@ -167,7 +220,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         <div className={MODE_LABO ? 'accueil__tuiles accueil__tuiles--labo' : 'accueil__tuiles'}>
           {visibles.map((app) => {
             const tuile = (
-              <a key={app.id} className="accueil__tuile" href={app.url || '#'}>
+              <a key={app.id} className="accueil__tuile" href={app.url || '#'} {...(app.communaute ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                 <span className="accueil__icone" aria-hidden="true">
                   <RegistryIcon name={app.icon} />
                 </span>
@@ -207,6 +260,25 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             return (
               <div key={app.id} className={carteOuverte === app.id ? 'labo-carte labo-carte--ouverte' : 'labo-carte'}>
                 {tuile}
+                <div className="collectif-fiche">
+                  <p className="collectif-fiche__meta">
+                    <span>par <strong>{app.communaute ? app.createur || 'un créateur du collectif' : 'Alphabette'}</strong></span>
+                    <span className={app.vitrine ? 'collectif-statut collectif-statut--validee' : 'collectif-statut'}>
+                      {app.vitrine ? '✓ Validée' : '🧪 En test'}
+                    </span>
+                    {app.communaute && <span className="collectif-statut collectif-statut--communaute">Communauté</span>}
+                  </p>
+                  <div className="collectif-fiche__actions">
+                    <a className="labo__bouton labo__bouton--envoyer" href={app.url || '#'} {...(app.communaute ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                      ▶ Tester en 1 clic
+                    </a>
+                    <button type="button" className="labo__bouton" disabled={dejaSoutenu(app.id)} onClick={() => soutenirApp(app.id)}
+                      aria-label={`Soutenir ${nomLisible(app.name)} (${soutiens[app.id] ?? 0} soutiens)`}>
+                      ♥ Soutenir <span className="collectif-compteur">{soutiens[app.id] ?? 0}</span>
+                    </button>
+                  </div>
+                  {messageSoutien?.id === app.id && messageSoutien.texte && <p className="labo__petit" role="status">{messageSoutien.texte}</p>}
+                </div>
                 <LaboAvis
                   appId={app.id}
                   nom={nomLisible(app.name)}
@@ -222,6 +294,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             );
           })}
         </div>
+
+        {MODE_LABO && <ProposerApp ouvert={proposerOuvert} onFermer={() => setProposerOuvert(false)} />}
 
         {!MODE_LABO && etat === 'ok' && (
           <p className="accueil__message accueil__labo-lien">

@@ -336,7 +336,21 @@ async function preparerLaboratoire() {
     const cle = cleDepuisUrl(app);
     return { ...app, url: cheminEu(app), ...(cle ? { cle } : {}) };
   });
-  await writeFile(path.join(eu, 'api', 'apps.json'), JSON.stringify({ apps: appsEu, labo: true }, null, 2) + '\n');
+  // 2 bis. Collectif : applications de créateurs indépendants validées (data/apps-communaute.json), .eu seulement.
+  let communaute = [];
+  try {
+    const { apps = [] } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-communaute.json'), 'utf8'));
+    communaute = apps
+      .filter((a) => a && /^c-[a-z0-9-]+$/.test(a.id) && /^https:\/\//.test(a.url) && a.name)
+      .map((a) => ({
+        id: a.id, name: a.name, slug: a.id, icon: 'Sparkles', status: 'actif', badge: a.badge ?? null,
+        url: a.url, description: a.description ?? '', createdAt: a.createdAt ?? new Date().toISOString(),
+        updatedAt: a.updatedAt ?? a.createdAt ?? new Date().toISOString(), communaute: true,
+        createur: a.createur ?? '', categorie: a.categorie ?? '',
+      }));
+  } catch { /* pas encore de fichier : aucune appli de la communauté */ }
+  await writeFile(path.join(eu, 'api', 'apps.json'), JSON.stringify({ apps: [...appsEu, ...communaute], labo: true }, null, 2) + '\n');
+  console.log(`collectif : ${communaute.length} application(s) de la communauté`);
 
   // 3. Vitrine .fr : seulement les applications « vitrine ».
   const vitrine = actives.filter((app) => app.vitrine === true);
@@ -362,6 +376,13 @@ async function preparerLaboratoire() {
 
   // 5. Service des avis, capteur d'erreurs et fichiers des agents.
   await cp(path.join(racine, 'labo', 'serveur', 'feedback.php'), path.join(eu, 'api', 'feedback.php'));
+  // Collectif : soutiens et propositions (collectif.php), badge d'entraide et ses deux pages (.eu seulement).
+  await cp(path.join(racine, 'labo', 'serveur', 'collectif.php'), path.join(eu, 'api', 'collectif.php'));
+  await cp(path.join(racine, 'labo', 'collectif', 'badge.js'), path.join(eu, 'badge.js'));
+  for (const [source, dossier] of [['au-hasard.html', 'au-hasard'], ['rejoindre.html', 'rejoindre']]) {
+    await mkdir(path.join(eu, dossier), { recursive: true });
+    await cp(path.join(racine, 'labo', 'collectif', source), path.join(eu, dossier, 'index.html'));
+  }
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'capteur.js'), path.join(eu, 'labo', 'capteur.js'));
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
