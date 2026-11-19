@@ -1,0 +1,38 @@
+diff --git a/packages/shell/package.json b/packages/shell/package.json
+index ddeac5b..dfc170c 100644
+--- a/packages/shell/package.json
++++ b/packages/shell/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "@alphabette/shell",
+-  "version": "0.4.1",
++  "version": "0.4.2",
+   "private": true,
+   "type": "module",
+   "description": "Base commune de toutes les applications de l'écosystème alphabette.fr : barre écosystème, en-tête d'application, thème jour/nuit, densité, plein écran.",
+diff --git a/packages/shell/src/shell.css b/packages/shell/src/shell.css
+index 554935a..9fcabe8 100644
+--- a/packages/shell/src/shell.css
++++ b/packages/shell/src/shell.css
+@@ -1039,6 +1039,21 @@ html[data-ab-simple] .ab-content { max-width: 48rem; margin-inline: auto; line-h
+   .ab-menu { grid-template-columns: 1fr; }
+ }
+ 
++/* Très petits téléphones (320 px, écran plié 280 px) : les deux barres tiennent sans défilement de côté.
++   Barre 1 : seul le « α » reste du logo ; barre 2 : boutons resserrés, nom de l'appli masqué sous 300 px. */
++@media (max-width: 340px) {
++  .ab-eco { gap: 0.35rem; padding: 0 0.5rem; }
++  .ab-eco__logo > span:not(.ab-eco__brand-mark) { display: none; }
++  .ab-abonner { padding: 0 0.6rem; }
++  .ab-bar { gap: 0.25rem; padding: 0.45rem 0.35rem; }
++  .ab-bar__actions { gap: 0.2rem; }
++  .ab-pico { min-width: 2.15rem; padding: 0 0.3rem; }
++  .ab-pico--big { font-size: 0.8rem; letter-spacing: 0; }
++}
++@media (max-width: 300px) {
++  .ab-bar__identity { display: none; }
++}
++
+ /* ---------- Laboratoire : bac à sable A/B ---------- */
+ .ab-test { position: fixed; box-sizing: border-box; z-index: 2147483000; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; max-width: calc(100vw - 16px);

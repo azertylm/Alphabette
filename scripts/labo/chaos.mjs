@@ -44,9 +44,13 @@ async function auditer(navigateur, app, ecran) {
   const debordement = async () => {
     const d = await page.evaluate(() => {
       const largeur = document.documentElement.clientWidth;
+      // Un élément dans un parent qui défile ou qui coupe (overflow ≠ visible) ne fait pas défiler la page :
+      // on ne le désigne pas, pour que l'Agent Correcteur aille droit au vrai fautif.
+      const coupe = (e) => { for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) if (getComputedStyle(a).overflowX !== 'visible') return true; return false; };
+      const deborde = (e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.right > largeur + 1 && getComputedStyle(e).position !== 'fixed' && !coupe(e); };
       const fautifs = [...document.querySelectorAll('body *')]
-        .filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.right > largeur + 1 && getComputedStyle(e).position !== 'fixed'; })
-        .filter((e) => ![...e.children].some((c) => c.getBoundingClientRect().right > largeur + 1))
+        .filter(deborde)
+        .filter((e) => ![...e.children].some(deborde))
         .slice(0, 3)
         .map((e) => `${e.tagName.toLowerCase()}${e.id ? '#' + e.id : ''}${e.classList[0] ? '.' + e.classList[0] : ''} (${Math.round(e.getBoundingClientRect().right)}px)`);
       return { exces: document.documentElement.scrollWidth - largeur, fautifs };

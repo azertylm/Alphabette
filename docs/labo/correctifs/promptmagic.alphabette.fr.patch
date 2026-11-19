@@ -1,0 +1,25 @@
+From e5934d7176e99d5b970090fbfb49a643b3c5b760 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 19 Nov 2026 08:29:00 +0000
+Subject: [PATCH] Labo : correctifs de l'Agent Chaos du 19/11/2026
+
+---
+ src/promptmagic/app.css | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/promptmagic/app.css b/src/promptmagic/app.css
+index 6ae7dbe..018c492 100644
+--- a/src/promptmagic/app.css
++++ b/src/promptmagic/app.css
+@@ -172,7 +172,7 @@
+ /* Cartes d'idées */
+ .pm-idees {
+   display: grid;
+-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
++  grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+   gap: 0.9rem;
+ }
+ .pm-idee {
+-- 
+2.43.0
+

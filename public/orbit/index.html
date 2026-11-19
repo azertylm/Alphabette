@@ -121,6 +121,15 @@
     </script>
     <script type="module" crossorigin src="./assets/index-C-UdU8ZT.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Gn1WiuzI.css">
+    <style>
+      /* Laboratoire (19/11/2026) : sur téléphone, la barre de recherche était écrasée (largeur 0) et « Publier »
+         dépassait de l'écran. On passe à la ligne : boutons en haut, recherche pleine largeur dessous.
+         À reporter dans le code source d'Orbit à la prochaine reconstruction (sélecteurs Tailwind du bundle). */
+      @media (max-width: 520px) {
+        main header > div.flex.items-center.gap-2.w-full { flex-wrap: wrap; row-gap: .5rem; }
+        main header > div.flex.items-center.gap-2.w-full > form { order: 9; flex: 1 1 100%; }
+      }
+    </style>
   </head>
   <body style="background-color: #090A0F; color: #FFFFFF; margin: 0;">
     <script src="https://alphabette.fr/assets/alphabette-barre.js" data-cle="orbit" data-nom="Orbit" data-sous-titre="Toutes les vidéos, simplement" data-accent="#7c5cff" data-big="police"></script>
