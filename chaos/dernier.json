@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-11-18T18:01:09.775Z",
+  "genere_le": "2026-11-19T08:50:38.822Z",
   "base": "https://alphabette.eu",
   "agent": "Agent Chaos",
   "apps": [
@@ -19,9 +19,9 @@
           "etape": "chargement",
           "detail": "Défilement horizontal de 40px à 320px de large",
           "elements": [
-            "div.hero-glow (460px)",
-            "span (340px)",
-            "div.disc-shine (357px)"
+            "div.disc (357px)",
+            "div.tip-count-badge (360px)",
+            "div.disc-label (359px)"
           ],
           "ecran": "320x568",
           "ticket": "[Agent Chaos] BON PLAN — debordement (chargement, 320x568) : Défilement horizontal de 40px à 320px de large"
@@ -57,7 +57,6 @@
           "etape": "chargement",
           "detail": "Défilement horizontal de 19px à 280px de large",
           "elements": [
-            "button.ab-abonner (327px)",
             "button.ab-pico (299px)"
           ],
           "ecran": "280x653",
@@ -95,15 +94,7 @@
       "app_id": "infos-perso",
       "nom": "INFOS PERSO",
       "url": "https://alphabette.eu/apps/infosperso/",
-      "anomalies": [
-        {
-          "type": "audit_interrompu",
-          "etape": "chargement",
-          "detail": "page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://alphabette.eu/apps/infosperso/\", waiting until \"networkidle\"\n",
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] INFOS PERSO — audit interrompu (chargement, 320x568) : page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://alphabette.eu/apps/infosperso/\", waiting until \"networkidle\"\n"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "oeil-atelier",
@@ -133,15 +124,7 @@
       "app_id": "orbit",
       "nom": "ORBIT",
       "url": "https://alphabette.eu/orbit/",
-      "anomalies": [
-        {
-          "type": "audit_interrompu",
-          "etape": "chargement",
-          "detail": "page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://alphabette.eu/orbit/\", waiting until \"networkidle\"\n",
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] ORBIT — audit interrompu (chargement, 320x568) : page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://alphabette.eu/orbit/\", waiting until \"networkidle\"\n"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "ou-cest",
@@ -165,18 +148,7 @@
       "app_id": "podcasts",
       "nom": "PODCASTS",
       "url": "https://alphabette.eu/podcasts/",
-      "anomalies": [
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 66px à 320px de large",
-          "elements": [
-            "button#t-reglages (386px)"
-          ],
-          "ecran": "320x568",
-          "ticket": "[Agent Chaos] PODCASTS — debordement (chargement, 320x568) : Défilement horizontal de 66px à 320px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "promptmagic",
@@ -188,9 +160,9 @@
           "etape": "chargement",
           "detail": "Défilement horizontal de 19px à 280px de large",
           "elements": [
-            "button.ab-abonner (327px)",
             "button.ab-pico (299px)",
-            "span.pm-puce-compteur (359px)"
+            "button.pm-idee (294px)",
+            "button.pm-idee (294px)"
           ],
           "ecran": "280x653",
           "ticket": "[Agent Chaos] PROMPT MAGIC — debordement (chargement, 280x653) : Défilement horizontal de 19px à 280px de large"
@@ -232,9 +204,8 @@
           "etape": "chargement",
           "detail": "Défilement horizontal de 37px à 280px de large",
           "elements": [
-            "button.ab-abonner (319px)",
             "button.shrink-0 (317px)",
-            "button.shrink-0 (330px)"
+            "span.text-xl (290px)"
           ],
           "ecran": "280x653",
           "ticket": "[Agent Chaos] RÉVOLUTION — debordement (chargement, 280x653) : Défilement horizontal de 37px à 280px de large"
@@ -260,5 +231,5 @@
       "anomalies": []
     }
   ],
-  "total": 10
+  "total": 7
 }
