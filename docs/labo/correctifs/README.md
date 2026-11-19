@@ -1,4 +1,21 @@
-# Correctifs prêts, en attente d'accès aux dépôts (19/11/2026)
+# ✅ Correctifs appliqués et poussés le 19/11/2026 (sur ordre de Valentin)
+
+| Dépôt | Commit sur `main` |
+|---|---|
+| hub `azertylm/alphabette` (base commune 0.4.2) | [5588689](https://github.com/azertylm/alphabette/commit/5588689) |
+| `azertylm/frigoplacard-alphabette.fr` | [03f3e5f](https://github.com/azertylm/frigoplacard-alphabette.fr/commit/03f3e5f) |
+| `azertylm/goatchevretheking.alphabette.fr` | [065189e](https://github.com/azertylm/goatchevretheking.alphabette.fr/commit/065189e) |
+| `azertylm/revolution.alphabette.fr` | [6d280ed](https://github.com/azertylm/revolution.alphabette.fr/commit/6d280ed) |
+| `azertylm/promptmagic.alphabette.fr` | [fe84be5](https://github.com/azertylm/promptmagic.alphabette.fr/commit/fe84be5) |
+| `azertylm/bonplan-alphabette.fr` | [04f614a](https://github.com/azertylm/bonplan-alphabette.fr/commit/04f614a) |
+
+Vérifié avant envoi : `tsc` et `build` sans erreur ; aucun défilement de côté à 280, 320 et 390 px ; Frigo-Placard,
+Goat Chèvre the King et Révolution restent utilisables hors ligne (service worker prêt, page rechargée sans réseau).
+Les fichiers `.patch` ci-dessous sont gardés pour l'historique : **ne pas les réappliquer**.
+
+---
+
+# (Historique) Correctifs prêts, en attente d'accès aux dépôts (19/11/2026)
 
 Trouvés par l'Agent Chaos (nuit du 18/11), corrigés et testés à 320 et 280 px, mais pas encore poussés :
 la session qui les a préparés n'avait le droit d'écrire que dans `azertylm/alphabette`.
