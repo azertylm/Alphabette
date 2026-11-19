@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-19T10:02:59.428Z",
-  "empreinte_page_sha256": "0350a6395eb0fd279d0680a565604e77b6082343cabc12e65d94ea9a734f5257",
+  "audite_le": "2026-11-19T14:27:31.703Z",
+  "empreinte_page_sha256": "ff3355ae3cb8046366acbafc6b407810d3a1fc17be648dba0bfe12c6bfeb2bcc",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 469,
-      "bloquees": 469,
+      "requetes": 465,
+      "bloquees": 465,
       "types": [
         "image",
         "fetch"
@@ -69,23 +69,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "www.franceinfo.fr",
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -119,6 +110,33 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "www.franceinfo.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "media.lesechos.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -129,13 +147,15 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "www.franceinfo.fr",
+      "img.lemde.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "www.franceinfo.fr",
+      "media.lesechos.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "fea155e9ce518df76f7400e96a373a4d567b77651b9c5fb2ad6a7f6a4dfed7bc"
+  "empreinte_certificat_sha256": "67eaeb99dedd517ba2651faa46f191992e70d0850f7e6a77cc631a3d916f7545"
 }
