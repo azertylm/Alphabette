@@ -378,6 +378,10 @@ async function preparerLaboratoire() {
   await mkdir(path.join(sortie, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'sentinelle.js'), path.join(sortie, 'labo', 'sentinelle.js'));
   await cp(path.join(racine, 'labo', 'serveur', 'sentinelle.php'), path.join(sortie, 'api', 'sentinelle.php'));
+  // IA Débat — Mode Découverte : relais OpenRouter avec la clé d'Alphabette rangée hors du site (.fr et .eu).
+  for (const cible of [path.join(sortie, 'api'), path.join(eu, 'api')]) {
+    await cp(path.join(racine, 'serveur', 'php', 'iadebat-proxy.php'), path.join(cible, 'iadebat-proxy.php'));
+  }
   {
     const sources = JSON.parse(await readFile(path.join(racine, 'data', 'apps-sources.json'), 'utf8'));
     const versions = Object.fromEntries(Object.entries(sources.apps ?? {}).filter(([, s]) => s.vitrine?.ref).map(([c, s]) => [c, s.vitrine.ref]));
