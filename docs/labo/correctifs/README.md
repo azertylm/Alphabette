@@ -7,7 +7,7 @@
 | `azertylm/goatchevretheking.alphabette.fr` | [065189e](https://github.com/azertylm/goatchevretheking.alphabette.fr/commit/065189e) |
 | `azertylm/revolution.alphabette.fr` | [6d280ed](https://github.com/azertylm/revolution.alphabette.fr/commit/6d280ed) |
 | `azertylm/promptmagic.alphabette.fr` | [fe84be5](https://github.com/azertylm/promptmagic.alphabette.fr/commit/fe84be5) |
-| `azertylm/bonplan-alphabette.fr` | [04f614a](https://github.com/azertylm/bonplan-alphabette.fr/commit/04f614a) |
+| `azertylm/bonplan-alphabette.fr` | [04f614a](https://github.com/azertylm/bonplan-alphabette.fr/commit/04f614a) + [10afa0c](https://github.com/azertylm/bonplan-alphabette.fr/commit/10afa0c) (hors ligne : « Unexpected token '<' », trouvé au contrôle) |
 
 Vérifié avant envoi : `tsc` et `build` sans erreur ; aucun défilement de côté à 280, 320 et 390 px ; Frigo-Placard,
 Goat Chèvre the King et Révolution restent utilisables hors ligne (service worker prêt, page rechargée sans réseau).
