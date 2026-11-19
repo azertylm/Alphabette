@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-19T16:58:42.532Z",
-  "empreinte_page_sha256": "d49e0ea15ea36bae10e32b90f064d28d2dc9707a098918a32946e374da5ee49c",
+  "audite_le": "2026-11-19T17:13:20.078Z",
+  "empreinte_page_sha256": "0b117480b8c7ac685d1e3c22ea6950620102bac37aa2a0689e05ce3bd4e17468",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 811,
-      "bloquees": 811,
+      "requetes": 233,
+      "bloquees": 233,
       "types": [
         "image",
         "fetch"
@@ -131,18 +131,9 @@
     }
   ],
   "resultat": {
-    "conforme": false,
-    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
-    "fuites_tierces": [
-      {
-        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      }
-    ],
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
@@ -156,5 +147,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "66e8cbff9c694231497196e8675b849915702da02021d9e71bac9285bf40af47"
+  "empreinte_certificat_sha256": "a8aaf3d80bef6af9372a11a416ba87b5ed4f79bba4379a6e4327c4c89cc35e9f"
 }
