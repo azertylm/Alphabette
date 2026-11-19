@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rejoindre le réseau — Badge du Collectif Alphabette</title>
+<meta name="description" content="Une ligne à copier en bas de votre application pour rejoindre le réseau d'entraide du Collectif Alphabette : chacun fait découvrir les créations des autres.">
+<link rel="canonical" href="https://alphabette.eu/rejoindre/">
+<style>
+  :root { --acc: #5eead4; --fond: #0b1220; --carte: #111a2e; --encre: #f1f5f9; --doux: #cbd5e1; --trait: #24324d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fond); color: var(--encre); font: 18px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
+  .retour { color: var(--acc); font-weight: 800; text-decoration: none; display: inline-block; min-height: 44px; padding-top: .6rem; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: .6rem 0 .4rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
+  p, li { color: var(--doux); }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 1.1rem; padding: 1rem; }
+  pre { margin: 0; white-space: pre-wrap; word-break: break-all; font: 600 .95rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--encre); }
+  button { margin-top: .75rem; min-height: 48px; padding: .6rem 1.1rem; border-radius: .9rem; border: 0; background: var(--acc); color: #0b1220; font: 800 1rem system-ui, sans-serif; cursor: pointer; }
+  .apercu { margin-top: .5rem; border-radius: .9rem; overflow: hidden; border: 1px solid var(--trait); }
+  ol { padding-left: 1.3rem; }
+  #copie { min-height: 1.5em; color: #86efac; font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← Le Collectif Alphabette</a>
+  <h1>Rejoindre le réseau</h1>
+  <p>Chaque application du collectif fait découvrir les autres. Placez ce petit bandeau en bas de votre application : vos visiteurs découvrent une autre création du collectif, et les visiteurs des autres découvrent la vôtre.</p>
+
+  <h2>1. Copiez cette ligne</h2>
+  <div class="carte">
+    <pre id="code">&lt;script src="https://alphabette.eu/badge.js" defer&gt;&lt;/script&gt;</pre>
+    <button type="button" data-copier="code">Copier la ligne</button>
+  </div>
+
+  <h2>2. Collez-la juste avant &lt;/body&gt;</h2>
+  <p>Le bandeau s'adapte au thème clair ou sombre de l'appareil. Pour l'imposer : <code>data-theme="sombre"</code> ou <code>data-theme="clair"</code> dans la balise.</p>
+  <p>Aperçu :</p>
+  <div class="apercu" id="apercu"></div>
+
+  <h2>Sans JavaScript ?</h2>
+  <div class="carte">
+    <pre id="html">&lt;p style="text-align:center;font:600 14px system-ui,sans-serif"&gt;Membre du collectif &lt;a href="https://alphabette.eu/"&gt;Alphabette&lt;/a&gt; — &lt;a href="https://alphabette.eu/au-hasard/"&gt;Découvrir une autre application&lt;/a&gt;&lt;/p&gt;</pre>
+    <button type="button" data-copier="html">Copier le HTML</button>
+  </div>
+  <p id="copie" role="status"></p>
+
+  <h2>Ce que fait le badge</h2>
+  <ol>
+    <li>Il affiche « Membre du collectif Alphabette — Découvrir une autre application ».</li>
+    <li>Le lien mène vers une application du collectif tirée au hasard, jamais la vôtre.</li>
+    <li>Aucun cookie, aucun suivi, aucune donnée de vos visiteurs n'est envoyée : c'est un simple lien.</li>
+  </ol>
+  <p>Votre application n'est pas encore dans le collectif ? <a class="retour" href="/#proposer">Proposez-la</a>.</p>
+</main>
+<script>
+  document.querySelectorAll('[data-copier]').forEach((b) => b.addEventListener('click', async () => {
+    const texte = document.getElementById(b.dataset.copier).textContent;
+    try { await navigator.clipboard.writeText(texte); document.getElementById('copie').textContent = '✅ Copié. Collez-le dans votre page.'; }
+    catch { document.getElementById('copie').textContent = 'Sélectionnez le texte et copiez-le (Ctrl+C).'; }
+  }));
+  // Aperçu du vrai badge, dans un cadre isolé.
+  const f = document.createElement('iframe');
+  f.title = 'Aperçu du badge';
+  f.style.cssText = 'width:100%;height:64px;border:0;display:block';
+  f.srcdoc = '<!doctype html><body style="margin:0;background:#111a2e"><script src="/badge.js" data-theme="sombre"><\/script></body>';
+  document.getElementById('apercu').appendChild(f);
+</script>
+</body>
+</html>

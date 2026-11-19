@@ -1,0 +1,4 @@
+{
+  "info": "Applications du Collectif Alphabette (créateurs indépendants), validées par Valentin. Affichées seulement sur alphabette.eu. Champs : id (unique, commence par c-), name, description, url (https), createur, categorie, createdAt.",
+  "apps": []
+}
