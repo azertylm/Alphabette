@@ -4,7 +4,7 @@
  * - Google Fonts : cache-first (les polices restent disponibles hors-ligne)
  * - Externes (QR api.qrserver.com…) : réseau d'abord, repli sur le cache
  */
-const VERSION = 'bonplan-v1.0.0';
+const VERSION = 'bonplan-v1.0.1';
 const CORE = ['./', './bonplan_manifest.json', './bonplan_icon.svg', './bonplan_icon_maskable.svg'];
 const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
@@ -60,7 +60,13 @@ async function staleWhileRevalidate(req) {
     if (res && res.ok) c.put(req, res.clone());
     return res;
   }).catch(() => null);
-  return hit || (await fresh) || (await c.match('./')) || offline();
+  if (hit) return hit;
+  const res = await fresh;
+  if (res) return res;
+  // Hors ligne : la page d'accueil ne remplace qu'une page, jamais un script ou un JSON
+  // (sinon « SyntaxError: Unexpected token '<' », ex. /labo/capteur.js sur alphabette.eu).
+  if (req.mode === 'navigate') return (await c.match('./')) || offline();
+  return offline();
 }
 
 function offline() {
