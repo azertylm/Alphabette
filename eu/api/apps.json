@@ -365,6 +365,19 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 3,
       "vitrine": true
+    },
+    {
+      "id": "crash-testeur",
+      "name": "Le Crash-Testeur",
+      "slug": "crash-testeur",
+      "icon": "Zap",
+      "status": "actif",
+      "badge": "Nouveau",
+      "url": "/crash-testeur/",
+      "gratuit": true,
+      "createdAt": "2026-11-19T00:00:00.000Z",
+      "updatedAt": "2026-11-19T00:00:00.000Z",
+      "description": "Votre appli web testée en 10 secondes par 3 testeurs virtuels : score, 3 corrections et un prompt prêt à coller."
     }
   ],
   "labo": true
