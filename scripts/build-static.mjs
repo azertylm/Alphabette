@@ -82,6 +82,10 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+  # Une seule adresse pour le Laboratoire (référencement) : www.alphabette.eu → alphabette.eu
+  RewriteCond %{HTTP_HOST} ^www\\.alphabette\\.eu$ [NC]
+  RewriteRule ^(.*)$ https://alphabette.eu/$1 [R=301,L]
+
   # Laboratoire : alphabette.eu est servi depuis le dossier eu/.
   # Chez OVH, une réécriture vers eu/ ne repasse pas par eu/.htaccess quand la cible n'existe pas :
   # les adresses de l'API figée pointent donc directement sur leur fichier.
@@ -223,6 +227,63 @@ console.log(`\nSite statique prêt : ${path.relative(racine, sortie)}/ (alphabet
 
 /* ============================ Laboratoire .eu ============================ */
 
+function echapperHtml(t) {
+  return String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Référencement d'alphabette.eu : page d'accueil distincte de .fr, robots.txt et sitemap.xml. */
+async function referencerLaboratoire(eu, appsEu) {
+  const ORIGINE_EU = 'https://alphabette.eu';
+  const TITRE_EU = 'Le Laboratoire Alphabette — applications gratuites à tester et à noter';
+  const DESCRIPTION_EU =
+    "Testez en avant-première les applications d'Alphabette (IA Débat, Info Perso, France Service, jeux et outils du quotidien), " +
+    'donnez votre avis en un clic et aidez à les améliorer. Gratuit, sans inscription.';
+  const index = path.join(eu, 'index.html');
+  let html = await readFile(index, 'utf8');
+  const meta = (attr, nom, contenu) => {
+    const re = new RegExp(`<meta\\s+${attr}="${nom}"[^>]*>`, 'i');
+    const balise = `<meta ${attr}="${nom}" content="${echapperHtml(contenu)}" />`;
+    html = re.test(html) ? html.replace(re, balise) : html.replace(/<\/head>/i, `  ${balise}\n  </head>`);
+  };
+  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${echapperHtml(TITRE_EU)}</title>`);
+  meta('name', 'description', DESCRIPTION_EU);
+  meta('property', 'og:title', TITRE_EU);
+  meta('property', 'og:description', DESCRIPTION_EU);
+  meta('property', 'og:url', `${ORIGINE_EU}/`);
+  meta('property', 'og:site_name', 'Alphabette');
+  html = html.replace(/<link\s+rel="canonical"[^>]*>\s*/i, '');
+  html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${ORIGINE_EU}/" />\n  </head>`);
+
+  // Applis du Laboratoire (adresses relatives au site) : texte lisible sans JavaScript + sitemap.
+  const vus = new Set();
+  const liens = appsEu
+    .filter((a) => typeof a.url === 'string' && a.url.startsWith('/') && a.name)
+    .map((a) => ({ nom: a.name, desc: a.description || '', chemin: a.url.split('?')[0].split('#')[0] }))
+    .filter((l) => (vus.has(l.chemin) ? false : vus.add(l.chemin)));
+  const noscript = `<noscript>
+      <h1>Le Laboratoire Alphabette</h1>
+      <p>${echapperHtml(DESCRIPTION_EU)}</p>
+      <ul>
+${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHtml(l.nom)}</a>${l.desc ? ` — ${echapperHtml(l.desc)}` : ''}</li>`).join('\n')}
+      </ul>
+      <p>Les versions validées sont sur <a href="https://alphabette.fr/">alphabette.fr</a>.</p>
+    </noscript>`;
+  html = html.replace(/<noscript>[\s\S]*?<\/noscript>\s*/i, '');
+  html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
+  await writeFile(index, html);
+
+  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
+  const jour = new Date().toISOString().slice(0, 10);
+  const urls = ['/', ...liens.map((l) => l.chemin)];
+  await writeFile(
+    path.join(eu, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      urls.map((u) => `  <url><loc>${echapperHtml(ORIGINE_EU + u)}</loc><lastmod>${jour}</lastmod></url>`).join('\n') +
+      `\n</urlset>\n`
+  );
+  console.log(`référencement .eu : titre propre, canonical, robots.txt, sitemap (${urls.length} adresses)`);
+}
+
 /** Clé de publication (apps/<clé>/) d'une application du registre, d'après son adresse. */
 function cleDepuisUrl(app) {
   let u;
@@ -341,6 +402,10 @@ async function preparerLaboratoire() {
     if (st.isFile() && nom.endsWith('.html') && nom !== 'index.html') await injecterCapteur(p);
     if (st.isDirectory() && !['api', 'assets', 'apps', 'labo'].includes(nom)) await injecterCapteur(path.join(p, 'index.html'));
   }
+
+  // 6 bis. Référencement du Laboratoire : titre et description propres (sinon Google le prend pour
+  // une copie d'alphabette.fr), adresse canonique, contenu lisible sans JavaScript, robots.txt, sitemap.
+  await referencerLaboratoire(eu, appsEu);
 
   // 7. Règles .htaccess de la vitrine : adresses .fr des applications du laboratoire → .eu.
   const pagesHub = actives
