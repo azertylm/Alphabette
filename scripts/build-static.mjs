@@ -336,6 +336,12 @@ async function preparerLaboratoire() {
     const cle = cleDepuisUrl(app);
     return { ...app, url: cheminEu(app), ...(cle ? { cle } : {}) };
   });
+  // Outils du hub propres au Laboratoire (.eu seulement) : ils apparaissent dans la galerie du collectif.
+  appsEu.push({
+    id: 'crash-testeur', name: 'Le Crash-Testeur', slug: 'crash-testeur', icon: 'Zap', status: 'actif', badge: 'Nouveau',
+    url: '/crash-testeur/', gratuit: true, createdAt: '2026-11-19T00:00:00.000Z', updatedAt: '2026-11-19T00:00:00.000Z',
+    description: "Votre appli web testée en 10 secondes par 3 testeurs virtuels : score, 3 corrections et un prompt prêt à coller.",
+  });
   // 2 bis. Collectif : applications de créateurs indépendants validées (data/apps-communaute.json), .eu seulement.
   let communaute = [];
   try {
@@ -383,6 +389,10 @@ async function preparerLaboratoire() {
     await mkdir(path.join(eu, dossier), { recursive: true });
     await cp(path.join(racine, 'labo', 'collectif', source), path.join(eu, dossier, 'index.html'));
   }
+  // Le Crash-Testeur (.eu seulement) : la page et son service (clé OpenRouter du relais IA Débat, rien n'est stocké).
+  await cp(path.join(racine, 'serveur', 'php', 'crash-test.php'), path.join(eu, 'api', 'crash-test.php'));
+  await mkdir(path.join(eu, 'crash-testeur'), { recursive: true });
+  await cp(path.join(racine, 'labo', 'crash-testeur', 'index.html'), path.join(eu, 'crash-testeur', 'index.html'));
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'capteur.js'), path.join(eu, 'labo', 'capteur.js'));
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
