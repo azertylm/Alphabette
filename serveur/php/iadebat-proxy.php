@@ -5,7 +5,7 @@
  * Ce petit service tourne sur l'hébergement OVH (PHP). Il garde la clé OpenRouter
  * d'Alphabette HORS du dossier web (jamais envoyée au navigateur) et relaie les
  * répliques vers OpenRouter, qui sert les 6 IA (ChatGPT, Claude, Gemini, DeepSeek,
- * Mistral, Grok) avec une seule clé.
+ * Mistral, Llama) avec une seule clé.
  *
  *   GET  ?etat                         → { actif, quota, debats_restants }
  *   POST { action:"debut", sujet }      → { ticket, debats_restants }   (compte 1 débat)
@@ -39,9 +39,9 @@ const ORATEURS = array(
     'gemini'   => array('prefixe' => 'google/',    'nom' => 'Gemini',   'fournisseur' => 'gemini',    'gammes' => array('/flash(?!-lite)/', '/flash-lite/', '/./')),
     'deepseek' => array('prefixe' => 'deepseek/',  'nom' => 'DeepSeek', 'fournisseur' => 'deepseek',  'gammes' => array('/deepseek-chat/', '/v[0-9]/', '/./')),
     'mistral'  => array('prefixe' => 'mistralai/', 'nom' => 'Mistral',  'fournisseur' => 'mistral',   'gammes' => array('/mistral-small/', '/mistral-medium/', '/./')),
-    'grok'     => array('prefixe' => 'x-ai/',      'nom' => 'Grok',     'fournisseur' => 'grok',      'gammes' => array('/fast|mini/', '/./')),
+    'llama'    => array('prefixe' => 'meta-llama/', 'nom' => 'Llama',   'fournisseur' => 'llama',     'gammes' => array('/llama-4-scout/', '/llama-3\.3-70b/', '/70b/', '/./')),
 );
-const EXCLUS = '/(:free|:extended|:beta|:thinking|:online|image|vision|audio|search|online|guard|embed|tts|realtime|preview|exp-|codex|oss|gemma|codestral|devstral|pixtral|distill|prover|nano|deep-research)/i';
+const EXCLUS = '/(:free|:batch|:extended|:beta|:thinking|:online|omni|image|vision|audio|search|online|guard|embed|tts|realtime|preview|exp-|codex|oss|gemma|codestral|devstral|pixtral|distill|prover|nano|deep-research)/i';
 
 /* ───────────────────────────── utilitaires ───────────────────────────── */
 
@@ -171,6 +171,8 @@ function secours(string $orateur, bool $gratuits): array {
         if ($l) $ids[] = $l[0];
         if (count($ids) >= 2) break;
     }
+    // Aucun modèle gratuit chez nos 6 fournisseurs : routeur gratuit d'OpenRouter (la réplique dit lequel a écrit).
+    if ($gratuits && !$ids) $ids[] = 'openrouter/free';
     return $ids;
 }
 
