@@ -13,6 +13,7 @@
  * Le mode est inscrit dans le ticket signé : un ticket gratuit ne peut JAMAIS déclencher un modèle payant.
  *
  *   GET  ?etat                         → { actif, gratuit:{quota,restants}, premium:{quota,restants} }
+ *   GET  ?sante                        → chiffres du jour + état du crédit (pour l'Économe, sans IP ni clé)
  *   POST { action:"debut", sujet, mode } → { ticket, debats_restants }   (compte 1 débat du mode)
  *   POST { action:"generer", ticket, orateur, rang, systeme, prompt, max_tokens, temperature, divers? }
  *                                       → { texte, modele, fournisseur }
@@ -381,6 +382,41 @@ if (isset($_GET['etat'])) {
     $p = ((int) ($q['total_p'] ?? 0) >= PLAFOND_PREMIUM_TOTAL_JOUR) ? 0 : max(0, QUOTA_PREMIUM_JOUR - (int) ($moi['debats_p'] ?? 0));
     repondre(200, array('actif' => true, 'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
         'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => $g), 'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => $p)));
+}
+
+/*
+ * Santé globale du relais, lue chaque jour par l'Économe (scripts/labo/concierge.mjs) : chiffres du jour et état
+ * du crédit OpenRouter (vérifié au plus toutes les 30 minutes). Jamais d'adresse IP, d'empreinte ni de clé.
+ */
+if (isset($_GET['sante'])) {
+    if (!$actif) repondre(200, array('actif' => false));
+    $q = lire_json(fichier_jour($jour), array());
+    $g = 0; $p = 0; $visiteurs = 0;
+    foreach (($q['ip'] ?? array()) as $v) { $visiteurs++; $g += (int) ($v['debats_g'] ?? 0); $p += (int) ($v['debats_p'] ?? 0); }
+    $f = dossier() . '/sante-credit.json';
+    $c = lire_json($f, array());
+    if ((int) ($c['t'] ?? 0) < time() - 1800) {
+        $cle = http('GET', OPENROUTER . '/api/v1/key', null, array('Authorization' => 'Bearer ' . $cfg['cle']));
+        $cred = http('GET', OPENROUTER . '/api/v1/credits', null, array('Authorization' => 'Bearer ' . $cfg['cle']));
+        $k = $cle['code'] === 200 ? (json_decode($cle['corps'], true)['data'] ?? array()) : array();
+        $r = $cred['code'] === 200 ? (json_decode($cred['corps'], true)['data'] ?? array()) : array();
+        $c = array('t' => time(), 'code' => $cle['code'], 'restant_cle' => $k['limit_remaining'] ?? null, 'compte_gratuit' => $k['is_free_tier'] ?? null,
+            'solde' => (isset($r['total_credits'], $r['total_usage']) && is_numeric($r['total_credits']) && is_numeric($r['total_usage'])) ? round((float) $r['total_credits'] - (float) $r['total_usage'], 2) : null);
+        ecrire_json($f, $c);
+    }
+    $etat = 'inconnu';
+    if ((int) ($c['code'] ?? 0) === 200) {
+        $etat = 'ok';
+        if (is_numeric($c['solde'] ?? null)) $etat = $c['solde'] <= 0 ? 'epuise' : ($c['solde'] < 1 ? 'bas' : 'ok');
+        if (is_numeric($c['restant_cle'] ?? null) && $c['restant_cle'] <= 0) $etat = 'plafond_cle';
+    } elseif ((int) ($c['code'] ?? 0) === 401) {
+        $etat = 'cle_refusee';
+    }
+    repondre(200, array(
+        'actif' => true, 'jour' => $jour, 'visiteurs' => $visiteurs, 'debats_gratuits' => $g, 'debats_premium' => $p,
+        'premium_total' => (int) ($q['total_p'] ?? 0), 'plafond_premium' => PLAFOND_PREMIUM_TOTAL_JOUR,
+        'credit' => array('etat' => $etat, 'compte_gratuit' => $c['compte_gratuit'] ?? null, 'verifie' => gmdate('c', (int) ($c['t'] ?? time()))),
+    ));
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') repondre(405, array('erreur' => 'Méthode non prise en charge.'));

@@ -1,0 +1,52 @@
+# Le Concierge et L'Économe (scripts/labo/concierge.mjs) : chaque soir, certificats HTTPS, expiration des noms
+# de domaine, sauvegarde des avis, et crédit / quotas de l'IA partagée (IA Débat, Crash-Testeur).
+# Rapport sur la branche labo-donnees (concierge/) ; ticket GitHub seulement pour un point nouveau et sérieux.
+name: Laboratoire — Concierge et Économe (chaque soir)
+
+on:
+  schedule:
+    - cron: '41 21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+# Groupe à part : un passage en attente du groupe « labo-donnees » (avis, Chaos…) ne doit jamais être annulé
+# par ce robot fréquent ; l'envoi se recale tout seul si un autre robot a poussé entre-temps.
+concurrency:
+  group: labo-concierge
+  cancel-in-progress: false
+
+jobs:
+  concierge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Contrôler
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then git worktree add -q ../donnees FETCH_HEAD; else echo "::warning::branche labo-donnees absente"; exit 0; fi
+          node scripts/labo/concierge.mjs --sortie ../donnees/concierge
+          cat ../donnees/concierge/resume.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Ticket pour un point nouveau
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=$(jq '.alertes | length' ../donnees/concierge/alertes.json)
+          [ "$n" -gt 0 ] || exit 0
+          { echo "Points nouveaux relevés ce soir :"; echo; jq -r '.alertes[] | "- **\(.titre)**\(if .detail != "" then " — \(.detail)" else "" end)\n  \(.correction)"' ../donnees/concierge/alertes.json; } > /tmp/corps.md
+          gh label create concierge --color 8a5a00 --force >/dev/null 2>&1 || true
+          gh issue create --title "⚠️ Concierge : $n point(s) à surveiller ($(date -u +%F))" --body-file /tmp/corps.md --label concierge || \
+            gh issue create --title "⚠️ Concierge : $n point(s) à surveiller ($(date -u +%F))" --body-file /tmp/corps.md
+      - name: Ranger
+        run: |
+          cd ../donnees && git add concierge
+          git diff --cached --quiet || { git commit -q -m "Concierge — $(date -u +%F)" && "$GITHUB_WORKSPACE/scripts/labo/pousser-donnees.sh" .; }
