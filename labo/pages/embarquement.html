@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La Salle d'embarquement — proposer son application au Laboratoire Alphabette</title>
+<meta name="description" content="Créateur indépendant : faites tester votre application par le Laboratoire Alphabette. Contrôles de sécurité et anti-traceurs, hébergement et test sur alphabette.eu, zéro pub, zéro revente de données.">
+<link rel="canonical" href="https://alphabette.eu/embarquement/">
+<link rel="stylesheet" href="/labo/pages.css">
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>La Salle d'embarquement</h1>
+  <p class="chapeau">Vous avez créé une application utile ? Le Laboratoire la teste, vous renvoie un rapport avec les corrections à faire, puis la fait découvrir à ses visiteurs.</p>
+
+  <form id="f" novalidate>
+    <fieldset class="carte carte--acc">
+      <legend>Les règles du Labo, à lire avant d'envoyer</legend>
+      <p class="petit">Cochez chaque règle pour ouvrir le formulaire.</p>
+      <label class="case"><input type="checkbox" class="regle"><span><strong>1. Contrôles obligatoires.</strong> Mon application passe devant les filtres de sécurité et anti-traceurs du Laboratoire (Douanier, Atelier qualité) avant toute publication, puis chaque nuit. Le rapport est public.</span></label>
+      <label class="case"><input type="checkbox" class="regle"><span><strong>2. alphabette.eu seulement.</strong> Mon application est hébergée et testée uniquement sur alphabette.eu. Elle n'est <strong>jamais</strong> transférée sur alphabette.fr, réservé aux applications d'Alphabette.</span></label>
+      <label class="case"><input type="checkbox" class="regle"><span><strong>3. Zéro pub, zéro revente de données.</strong> Ni publicité, ni traceur publicitaire, ni collecte cachée, ni revente des données des visiteurs.</span></label>
+      <label class="case"><input type="checkbox" class="regle"><span><strong>4. La charte.</strong> J'ai lu et j'accepte la <a href="/charte-createurs" target="_blank" rel="noopener">charte des créateurs</a> (contrôles automatiques, rapport public, bouton Signaler).</span></label>
+    </fieldset>
+
+    <fieldset id="champs" class="carte" disabled>
+      <legend>Votre application</legend>
+      <label class="champ">Nom de l'application
+        <input id="nom" required maxlength="60" autocomplete="off">
+      </label>
+      <label class="champ">Adresse ou dépôt GitHub
+        <span class="aide">https://mon-appli.fr — ou, sans hébergement, un dépôt GitHub public avec les fichiers déjà construits : pseudo/mon-appli (Alphabette l'héberge alors dans un cadre isolé).</span>
+        <input id="adresse" required maxlength="300" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://… ou pseudo/depot">
+      </label>
+      <label class="champ">Description en 2 phrases
+        <span class="aide">À quoi sert-elle, et pour qui ? <span id="compteur">0</span>/280</span>
+        <textarea id="description" required maxlength="280" rows="3"></textarea>
+      </label>
+      <label class="champ">Votre pseudo de créateur <span class="aide">Affiché sur la fiche de l'application.</span>
+        <input id="pseudo" required maxlength="40" autocomplete="nickname">
+      </label>
+      <label class="champ">Contact pour vous répondre <span class="aide">Facultatif, jamais affiché ni partagé (e-mail, réseau social…).</span>
+        <input id="contact" maxlength="120" autocomplete="email">
+      </label>
+      <label class="piege" aria-hidden="true">Ne pas remplir <input id="site_web" tabindex="-1" autocomplete="off"></label>
+      <p class="petit">Votre demande attend dans une file privée (jamais affichée, jamais indexée). Rien n'est publié tant que les contrôles ne sont pas passés et que le Laboratoire ne l'a pas validée. Votre adresse IP n'est pas conservée.</p>
+      <button type="submit" id="envoyer">Embarquer mon application</button>
+      <p class="message" id="m" role="status"></p>
+    </fieldset>
+  </form>
+
+  <div id="ok" class="carte carte--acc cache" role="status">
+    <h2 style="margin-top:0">✅ Embarquement enregistré</h2>
+    <p id="ok-texte"></p>
+    <ol>
+      <li>L'Atelier qualité contrôle votre application (sécurité, traceurs, téléphone, lisibilité) au prochain passage.</li>
+      <li>Vous recevez le rapport avec les corrections éventuelles et un texte prêt à coller dans votre IA.</li>
+      <li>Une fois validée, elle rejoint le collectif sur alphabette.eu, avec son <a href="/badge/">badge « Passé au Crash-Test »</a>.</li>
+    </ol>
+  </div>
+
+  <h2>Et après ?</h2>
+  <p>Les applications validées reçoivent le <a href="/badge/">badge « Passé au Crash-Test • Alphabette.eu »</a> à mettre sur leur site ou leur GitHub. En attendant, testez-la vous-même avec <a href="/crash-testeur/">le Crash-Testeur</a>.</p>
+  <footer class="pied">
+    <a href="/charte-createurs">Charte des créateurs</a>
+    <a href="/rejoindre/">Le réseau d'entraide</a>
+    <a href="/#tableau-honneur">Tableau d'Honneur</a>
+  </footer>
+</main>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var debut = Date.now();
+  var regles = Array.prototype.slice.call(document.querySelectorAll('.regle'));
+  function majRegles() { $('champs').disabled = !regles.every(function (r) { return r.checked; }); }
+  regles.forEach(function (r) { r.addEventListener('change', majRegles); });
+  $('description').addEventListener('input', function () { $('compteur').textContent = this.value.length; });
+
+  /** « https://… » → lien ; « pseudo/depot » ou « github.com/pseudo/depot(/tree/main/dist) » → dépôt hébergé par Alphabette. */
+  function lireAdresse(v) {
+    v = v.trim();
+    var g = v.match(/^(?:https?:\/\/)?(?:www\.)?github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?(?:\/tree\/[^/]+\/(.+?))?\/?$/i);
+    if (g) return { depot: g[1] + '/' + g[2], dossier: g[3] || '' };
+    if (/^[A-Za-z0-9][A-Za-z0-9-]{0,38}\/[A-Za-z0-9_.-]{1,100}$/.test(v)) return { depot: v, dossier: '' };
+    if (/^https:\/\/[^\s/$.?#].[^\s]*$/i.test(v)) return { url: v };
+    return null;
+  }
+
+  $('f').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var m = $('m'); m.className = 'message err';
+    if (!regles.every(function (r) { return r.checked; })) { m.textContent = 'Cochez les 4 règles du Labo.'; return; }
+    var adr = lireAdresse($('adresse').value);
+    if ($('nom').value.trim().length < 2) { m.textContent = "Indiquez le nom de l'application."; $('nom').focus(); return; }
+    if (!adr) { m.textContent = "L'adresse doit commencer par https:// (ou être un dépôt GitHub : pseudo/depot)."; $('adresse').focus(); return; }
+    if ($('description').value.trim().length < 15) { m.textContent = 'Décrivez votre application en une ou deux phrases.'; $('description').focus(); return; }
+    if ($('pseudo').value.trim().length < 2) { m.textContent = 'Indiquez votre pseudo de créateur.'; $('pseudo').focus(); return; }
+    m.className = 'message'; m.textContent = 'Envoi…'; $('envoyer').disabled = true;
+    var corps = {
+      action: 'proposer', formulaire: 'embarquement', regles: regles.map(function (r) { return r.checked; }), duree: Date.now() - debut,
+      nom: $('nom').value, url: adr.url || '', depot: adr.depot || '', dossier: adr.dossier || '', description: $('description').value,
+      categorie: 'Autre', pseudo: $('pseudo').value, contact: $('contact').value, site_web: $('site_web').value
+    };
+    try {
+      var r = await fetch('/api/collectif.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corps) });
+      var d = await r.json().catch(function () { return {}; });
+      if (!r.ok) { m.className = 'message err'; m.textContent = d.erreur || 'Envoi impossible pour le moment.'; $('envoyer').disabled = false; return; }
+      $('f').classList.add('cache'); $('ok').classList.remove('cache');
+      $('ok-texte').textContent = '« ' + $('nom').value.trim() + ' » est dans la file d’attente' + (d.id && d.id !== 'ignore' ? ' (n° ' + d.id + ')' : '') + '. Merci !';
+      $('ok').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      m.className = 'message err'; m.textContent = 'Pas de connexion : réessayez.'; $('envoyer').disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

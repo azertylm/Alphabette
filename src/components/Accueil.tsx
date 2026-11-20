@@ -9,7 +9,6 @@ import { AvantApres } from '../labo/AvantApres';
 import { TableauHonneur } from '../labo/TableauHonneur';
 import { BoiteIdees } from '../labo/BoiteIdees';
 import { LaboAvis } from '../labo/LaboAvis';
-import { ProposerApp } from '../labo/ProposerApp';
 import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
 
@@ -99,7 +98,6 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   const [filtre, setFiltre] = useState<FiltreCollectif>('toutes');
   const [soutiens, setSoutiens] = useState<Record<string, number>>({});
   const [messageSoutien, setMessageSoutien] = useState<{ id: string; texte: string } | null>(null);
-  const [proposerOuvert, setProposerOuvert] = useState(false);
   // Atelier qualité (notes de la nuit, badge « Testé au Labo ») et signalements (Le Parapluie).
   const [atelier, setAtelier] = useState<DonneesAtelier>({ apps: {}, jury: {} });
   const [aSignaler, setASignaler] = useState<{ id: string; nom: string } | null>(null);
@@ -112,7 +110,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
     chargerSoutiens().then(setSoutiens);
     chargerAtelier().then(setAtelier);
     chargerChangelogLabo().then(setChangelog);
-    if (window.location.hash === '#proposer') setProposerOuvert(true);
+    // Ancienne adresse du formulaire : la Salle d'embarquement la remplace.
+    if (window.location.hash === '#proposer') window.location.replace('/embarquement/');
   }, []);
   const soutenirApp = async (id: string) => {
     const r = await soutenir(id);
@@ -165,12 +164,13 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             </h1>
             <p className="accueil__phrase">
               Publiez votre application, améliorez-la grâce aux retours de la communauté et profitez d'une visibilité
-              partagée. Les plus abouties rejoignent la vitrine <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a>.
+              partagée. Les applications des créateurs vivent ici, sur alphabette.eu ; la vitrine{' '}
+              <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a> est réservée à celles d'Alphabette.
             </p>
             <div className="collectif-actions">
-              <button type="button" className="labo__bouton labo__bouton--envoyer" onClick={() => setProposerOuvert(true)}>
+              <a className="labo__bouton labo__bouton--envoyer" href="/embarquement/">
                 ＋ Proposer une application
-              </button>
+              </a>
               <a className="labo__bouton" href="/rejoindre/">Rejoindre le réseau (badge)</a>
             </div>
             <p className="collectif-raccourcis">
@@ -317,6 +317,11 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                         🔧 Atelier : {atelier.apps[app.id].note}/100
                       </a>
                     )}
+                    {app.communaute && (
+                      <a href={`/badge/?app=${encodeURIComponent(app.id)}`} title="Badge « Passé au Crash-Test » à intégrer sur son site ou GitHub">
+                        🏅 Badge Crash-Test
+                      </a>
+                    )}
                     <button type="button" onClick={() => setASignaler({ id: app.id, nom: nomLisible(app.name) })}>⚑ Signaler</button>
                   </p>
                 </div>
@@ -336,7 +341,6 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           })}
         </div>
 
-        {MODE_LABO && <ProposerApp ouvert={proposerOuvert} onFermer={() => setProposerOuvert(false)} />}
         {MODE_LABO && <Signaler appId={aSignaler?.id ?? null} nom={aSignaler?.nom ?? ''} onFermer={() => setASignaler(null)} />}
         {MODE_LABO && <AvantApres app={avantApres} passage={avantApres ? changelog[avantApres.id] : undefined} onFermer={() => setAvantApres(null)} />}
 

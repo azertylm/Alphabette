@@ -70,7 +70,7 @@ const canarisLS = {
 const canariSaisie = `CANARI-SAISIE-${jeton()}`;
 
 const requetes = [];
-const navigateur = await chromium.launch({ args: ['--disable-extensions'] });
+const navigateur = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}), args: ['--disable-extensions'] });
 const ctx = await navigateur.newContext({ viewport: { width: 390, height: 844 }, locale: 'fr-FR', serviceWorkers: 'allow' });
 await ctx.addInitScript((c) => { try { for (const [k, v] of Object.entries(c)) localStorage.setItem(k, v); } catch { /* rien */ } }, canarisLS);
 

@@ -34,6 +34,11 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
 - Bac à sable A/B, dictée d'avis, micro-tutos : `docs/labo/MODULES-INTERACTION.md`. Agent Gardien Ergonomie & Sobriété : `docs/labo/AGENT-GARDIEN.md`.
 - Micro-sondages branchés : IA Débat (« débat terminé »), Info Perso (« article lu », après 20 s de lecture).
 
+## Embarquement, badge, Pass et Mécènes (20/11/2026)
+
+Salle d'embarquement `/embarquement/`, badge « Passé au Crash-Test » `/badge/`, Pass Découverte 48 h, Pass Cadeau,
+crédits IA Débat et Mécènes du Labo (Tableau d'Honneur) : voir `docs/COLLECTIF.md` et `docs/labo/PAIEMENTS.md`.
+
 ## Atelier qualité (20/11/2026)
 Chaque nuit, sept agents contrôlent chaque appli (Douanier, Pouce, Opticien, Poids Plume, Phare, Parapluie, Témoin),
 le Jury donne le badge « Testé au Labo », le Parrain publie un rapport par appli sur `alphabette.eu/atelier/`. Le Veilleur

@@ -14,7 +14,10 @@
  *
  *   GET  ?etat                         → { actif, gratuit:{quota,restants}, premium:{quota,restants} }
  *   GET  ?sante                        → chiffres du jour + état du crédit (pour l'Économe, sans IP ni clé)
- *   POST { action:"debut", sujet, mode } → { ticket, debats_restants }   (compte 1 débat du mode)
+ *   POST { action:"debut", sujet, mode, pass?, credits? } → { ticket, debats_restants, source, credits_restants }
+ *        Premium : d'abord le débat offert du jour, puis le Pass (Écosystème, IA Débat ou Découverte 48 h :
+ *        quelques débats par jour, data/paiements.json), puis les crédits achetés (1 crédit = 1 débat).
+ *        Pass et crédits viennent de api/paiement.php (jeton signé, porte-monnaie « PM-… »).
  *   POST { action:"generer", ticket, orateur, rang, systeme, prompt, max_tokens, temperature, divers? }
  *                                       → { texte, modele, fournisseur }
  *   GET/POST ?installer                → installation de la clé (lien à jeton secret, connexion OpenRouter)
@@ -31,6 +34,7 @@ const QUOTA_PREMIUM_JOUR = 1;           // débat Premium offert (modèles payan
 const APPELS_PAR_DEBAT = 40;
 const QUOTA_DIVERS_JOUR = 10;           // sujets suggérés, etc. hors débat (toujours en gratuit)
 const PLAFOND_PREMIUM_TOTAL_JOUR = 50;  // garde-fou global du budget premium
+const PLAFOND_PASS_TOTAL_JOUR = 300;    // garde-fou global des débats Premium inclus dans les Pass (les crédits achetés n'ont pas de plafond)
 const MAX_TOKENS = 2000;
 const MAX_CARACTERES = 24000;
 const PRIX_MAX_ENTREE = 0.000003;       // $ par jeton (3 $ le million) : gammes économiques seulement
@@ -211,7 +215,7 @@ function secours(string $orateur, bool $gratuits): array {
 
 /* ───────────────────────────── appel OpenRouter ───────────────────────────── */
 
-function http(string $methode, string $url, ?array $corps, array $entetes): array {
+function http(string $methode, string $url, ?array $corps, array $entetes, int $delai = 60): array {
     $c = curl_init($url);
     $h = array('Accept: application/json');
     foreach ($entetes as $k => $v) $h[] = $k . ': ' . $v;
@@ -220,8 +224,8 @@ function http(string $methode, string $url, ?array $corps, array $entetes): arra
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => $methode,
         CURLOPT_HTTPHEADER => $h,
-        CURLOPT_TIMEOUT => 60,
-        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_TIMEOUT => $delai,
+        CURLOPT_CONNECTTIMEOUT => min(10, $delai),
     ));
     if ($corps !== null) curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($corps, JSON_UNESCAPED_UNICODE));
     $r = curl_exec($c);
@@ -358,13 +362,81 @@ if (isset($_GET['installer']) || (isset($_GET['code']) && ($_SERVER['REQUEST_MET
 
 /* ───────────────────────────── service ───────────────────────────── */
 
+/* ─────────────── Pass Alphabette et crédits IA Débat (service api/paiement.php) ─────────────── */
+
+/** Dossier du service des paiements (Pass signés, porte-monnaie de crédits), hors du site. */
+function dossier_paiements(): string {
+    $maison = getenv('HOME') ?: dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? __DIR__));
+    return rtrim($maison, '/') . '/alphabette-paiements';
+}
+
+/** Réglages publics des paiements (data/paiements.json, publié à côté de ce fichier). */
+function reglage_paiement(string $groupe, string $cle, int $defaut): int {
+    $p = lire_json(__DIR__ . '/paiements.json', array());
+    return max(0, (int) ($p[$groupe][$cle] ?? $defaut));
+}
+
+/** Pass valide pour IA Débat (Écosystème, Pass « iadebat » ou Pass Découverte 48 h), signé par paiement.php. */
+function pass_iadebat(string $jeton): ?array {
+    if ($jeton === '' || strlen($jeton) > 600) return null;
+    $secret = lire_json(dossier_paiements() . '/secret.json', array())['secret'] ?? '';
+    if (!is_string($secret) || strlen($secret) < 32) return null;
+    $p = explode('.', $jeton);
+    if (count($p) !== 2 || !hash_equals(b64url(hash_hmac('sha256', 'pass.' . $p[0], $secret, true)), $p[1])) return null;
+    $d = json_decode((string) base64_decode(strtr($p[0], '-_', '+/')), true);
+    if (!is_array($d) || (int) ($d['f'] ?? 0) <= time() || empty($d['i'])) return null;
+    $o = (string) ($d['o'] ?? '');
+    if ($o !== 'ecosysteme' && $o !== 'decouverte' && !($o === 'app' && ($d['a'] ?? '') === 'iadebat')) return null;
+    return $d;
+}
+function quota_pass(array $pass): int {
+    return ($pass['o'] ?? '') === 'decouverte' ? reglage_paiement('decouverte', 'premium_par_jour', 3) : reglage_paiement('pass', 'premium_par_jour', 5);
+}
+
+/** Porte-monnaie de crédits (« PM-… ») : empreinte SHA-256, jamais le code lui-même. */
+function porte_iadebat(string $jeton): ?string {
+    return preg_match('/^PM-[0-9A-Z]{32}$/', $jeton) ? hash('sha256', $jeton) : null;
+}
+function fichier_porte_monnaie(): string { return dossier_paiements() . '/porte-monnaie.json'; }
+
+/**
+ * Crédit OpenRouter d'Alphabette : vérifié au plus toutes les 30 minutes (cache partagé avec ?sante).
+ * « epuise », « plafond_cle » ou « cle_refusee » : les débats Premium payés (Pass, crédits) ne démarrent pas,
+ * pour ne jamais décompter un crédit qui ne pourrait pas servir.
+ */
+function credit_openrouter(array $cfg): array {
+    $f = dossier() . '/sante-credit.json';
+    $c = lire_json($f, array());
+    if ((int) ($c['t'] ?? 0) < time() - 1800) {
+        $cle = http('GET', OPENROUTER . '/api/v1/key', null, array('Authorization' => 'Bearer ' . $cfg['cle']), 6);
+        $cred = http('GET', OPENROUTER . '/api/v1/credits', null, array('Authorization' => 'Bearer ' . $cfg['cle']), 6);
+        $k = $cle['code'] === 200 ? (json_decode($cle['corps'], true)['data'] ?? array()) : array();
+        $r = $cred['code'] === 200 ? (json_decode($cred['corps'], true)['data'] ?? array()) : array();
+        $c = array('t' => time(), 'code' => $cle['code'], 'restant_cle' => $k['limit_remaining'] ?? null, 'compte_gratuit' => $k['is_free_tier'] ?? null,
+            'solde' => (isset($r['total_credits'], $r['total_usage']) && is_numeric($r['total_credits']) && is_numeric($r['total_usage'])) ? round((float) $r['total_credits'] - (float) $r['total_usage'], 2) : null);
+        ecrire_json($f, $c);
+    }
+    $etat = 'inconnu';
+    if ((int) ($c['code'] ?? 0) === 200) {
+        $etat = 'ok';
+        if (is_numeric($c['solde'] ?? null)) $etat = $c['solde'] <= 0 ? 'epuise' : ($c['solde'] < 1 ? 'bas' : 'ok');
+        if (is_numeric($c['restant_cle'] ?? null) && $c['restant_cle'] <= 0) $etat = 'plafond_cle';
+    } elseif ((int) ($c['code'] ?? 0) === 401) {
+        $etat = 'cle_refusee';
+    }
+    return array('c' => $c, 'etat' => $etat);
+}
+function premium_payant_possible(array $cfg): bool {
+    return !in_array(credit_openrouter($cfg)['etat'], array('epuise', 'plafond_cle', 'cle_refusee'), true);
+}
+
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
 $origine = (string) ($_SERVER['HTTP_ORIGIN'] ?? '');
 if (preg_match('#^https://([a-z0-9-]+\.)?alphabette\.(fr|eu)$#', $origine)) {
     header('Access-Control-Allow-Origin: ' . $origine);
     header('Vary: Origin');
-    header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Allow-Headers: Content-Type, X-Alphabette-Pass, X-Alphabette-Credits');
     header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 }
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') repondre(204, array());
@@ -380,8 +452,26 @@ if (isset($_GET['etat'])) {
     $moi = $q['ip'][empreinte($cfg, $jour)] ?? array();
     $g = max(0, QUOTA_GRATUIT_JOUR - (int) ($moi['debats_g'] ?? 0));
     $p = ((int) ($q['total_p'] ?? 0) >= PLAFOND_PREMIUM_TOTAL_JOUR) ? 0 : max(0, QUOTA_PREMIUM_JOUR - (int) ($moi['debats_p'] ?? 0));
-    repondre(200, array('actif' => true, 'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
-        'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => $g), 'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => $p)));
+    // Pass (Écosystème, IA Débat, Découverte 48 h) et crédits achetés : envoyés par l'appli dans les en-têtes.
+    $pass = pass_iadebat((string) ($_SERVER['HTTP_X_ALPHABETTE_PASS'] ?? ''));
+    $porte = porte_iadebat((string) ($_SERVER['HTTP_X_ALPHABETTE_CREDITS'] ?? ''));
+    $infoPass = null;
+    $credits = null;
+    $payant = ($pass || $porte) ? premium_payant_possible($cfg) : true;
+    if ($pass) {
+        $infoPass = array('offre' => $pass['o'], 'fin' => (int) $pass['f'] * 1000, 'quota' => quota_pass($pass),
+            'restants' => max(0, quota_pass($pass) - (int) ($q['pass'][(string) $pass['i']] ?? 0)));
+    }
+    if ($porte) $credits = (int) (lire_json(fichier_porte_monnaie(), array())[$porte]['solde'] ?? 0);
+    $total = $p + ($payant ? (int) ($infoPass['restants'] ?? 0) + (int) $credits : 0);
+    // Offre de lancement : l'appli affiche « gratuit jusqu'au … » au lieu de proposer des crédits.
+    $gratuitJusquAu = (string) (lire_json(__DIR__ . '/paiements.json', array())['gratuit_jusqu_au'] ?? '');
+    $finGratuit = preg_match('/^\d{4}-\d{2}-\d{2}$/', $gratuitJusquAu) ? DateTime::createFromFormat('Y-m-d H:i:s', $gratuitJusquAu . ' 23:59:59', new DateTimeZone('Europe/Paris')) : false;
+    repondre(200, array('actif' => true, 'gratuit_jusqu_au' => ($finGratuit && $finGratuit->getTimestamp() >= time()) ? $gratuitJusquAu : null,
+        'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
+        'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => $g),
+        // « restants » = le débat offert du jour (compatibilité) ; « total » = offert + Pass + crédits.
+        'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => $p, 'total' => $total, 'pass' => $infoPass, 'credits' => $credits, 'disponible' => $payant)));
 }
 
 /*
@@ -393,25 +483,9 @@ if (isset($_GET['sante'])) {
     $q = lire_json(fichier_jour($jour), array());
     $g = 0; $p = 0; $visiteurs = 0;
     foreach (($q['ip'] ?? array()) as $v) { $visiteurs++; $g += (int) ($v['debats_g'] ?? 0); $p += (int) ($v['debats_p'] ?? 0); }
-    $f = dossier() . '/sante-credit.json';
-    $c = lire_json($f, array());
-    if ((int) ($c['t'] ?? 0) < time() - 1800) {
-        $cle = http('GET', OPENROUTER . '/api/v1/key', null, array('Authorization' => 'Bearer ' . $cfg['cle']));
-        $cred = http('GET', OPENROUTER . '/api/v1/credits', null, array('Authorization' => 'Bearer ' . $cfg['cle']));
-        $k = $cle['code'] === 200 ? (json_decode($cle['corps'], true)['data'] ?? array()) : array();
-        $r = $cred['code'] === 200 ? (json_decode($cred['corps'], true)['data'] ?? array()) : array();
-        $c = array('t' => time(), 'code' => $cle['code'], 'restant_cle' => $k['limit_remaining'] ?? null, 'compte_gratuit' => $k['is_free_tier'] ?? null,
-            'solde' => (isset($r['total_credits'], $r['total_usage']) && is_numeric($r['total_credits']) && is_numeric($r['total_usage'])) ? round((float) $r['total_credits'] - (float) $r['total_usage'], 2) : null);
-        ecrire_json($f, $c);
-    }
-    $etat = 'inconnu';
-    if ((int) ($c['code'] ?? 0) === 200) {
-        $etat = 'ok';
-        if (is_numeric($c['solde'] ?? null)) $etat = $c['solde'] <= 0 ? 'epuise' : ($c['solde'] < 1 ? 'bas' : 'ok');
-        if (is_numeric($c['restant_cle'] ?? null) && $c['restant_cle'] <= 0) $etat = 'plafond_cle';
-    } elseif ((int) ($c['code'] ?? 0) === 401) {
-        $etat = 'cle_refusee';
-    }
+    $credit = credit_openrouter($cfg);
+    $c = $credit['c'];
+    $etat = $credit['etat'];
     repondre(200, array(
         'actif' => true, 'jour' => $jour, 'visiteurs' => $visiteurs, 'debats_gratuits' => $g, 'debats_premium' => $p,
         'premium_total' => (int) ($q['total_p'] ?? 0), 'plafond_premium' => PLAFOND_PREMIUM_TOTAL_JOUR,
@@ -428,7 +502,7 @@ $action = (string) ($e['action'] ?? '');
 $ip = empreinte($cfg, $jour);
 $fichier = fichier_jour($jour);
 $MSG_QUOTA = 'Vous avez utilisé vos ' . QUOTA_GRATUIT_JOUR . ' débats gratuits du jour. Nouveaux débats gratuits demain, ou passez en Premium (OpenRouter en 1 clic ou vos clés).';
-$MSG_QUOTA_PREMIUM = 'Votre débat Premium offert du jour est utilisé. Pour continuer en Premium : « Se connecter avec OpenRouter » (1 clic) ou vos clés en Mode Expert. Le Mode Gratuit reste disponible.';
+$MSG_QUOTA_PREMIUM = 'Votre débat Premium offert du jour est utilisé. Pour continuer en Premium : Pass Découverte 48 h gratuit, crédits IA Débat (sans abonnement), « Se connecter avec OpenRouter » (1 clic) ou vos clés en Mode Expert. Le Mode Gratuit reste disponible.';
 
 if ($action === 'debut') {
     $premium = ($e['mode'] ?? '') === 'premium';
@@ -442,10 +516,43 @@ if ($action === 'debut') {
         if ($premium) $q['total_p'] = (int) ($q['total_p'] ?? 0) + 1;
         return array('restants' => $quota - $n - 1);
     });
+    $source = 'offert';
+    $creditsRestants = null;
+    // Premium au-delà du débat offert : d'abord le Pass (débats du jour), puis les crédits achetés (1 crédit = 1 débat).
+    if ($premium && isset($res['refus'])) {
+        $pass = pass_iadebat((string) ($e['pass'] ?? ''));
+        $porte = porte_iadebat((string) ($e['credits'] ?? ''));
+        if ($pass || $porte) {
+            if (!premium_payant_possible($cfg)) repondre(503, array('erreur' => 'Les débats Premium sont momentanément indisponibles (crédit IA du site à recharger). Votre Pass et vos crédits sont conservés ; le Mode Gratuit reste ouvert.', 'premium' => true, 'indisponible' => true));
+            if ($pass) {
+                $ok = modifier($fichier, function (&$q) use ($pass) {
+                    $id = (string) $pass['i'];
+                    if ((int) ($q['pass'][$id] ?? 0) >= quota_pass($pass)) return false;
+                    if ((int) ($q['total_pass'] ?? 0) >= PLAFOND_PASS_TOTAL_JOUR) return false;
+                    $q['pass'][$id] = (int) ($q['pass'][$id] ?? 0) + 1;
+                    $q['total_pass'] = (int) ($q['total_pass'] ?? 0) + 1;
+                    return true;
+                });
+                if ($ok) { $res = array('restants' => 0); $source = 'pass'; }
+            }
+            if ($source === 'offert' && $porte) {
+                $reste = modifier(fichier_porte_monnaie(), function (&$pm) use ($porte) {
+                    $n = (int) ($pm[$porte]['solde'] ?? 0);
+                    if ($n <= 0) return null;
+                    $pm[$porte]['solde'] = $n - 1;
+                    $pm[$porte]['maj'] = gmdate('c');
+                    return $n - 1;
+                });
+                if ($reste !== null) { $res = array('restants' => 0); $source = 'credits'; $creditsRestants = $reste; }
+                elseif (!$pass) repondre(429, array('erreur' => 'Vos crédits IA Débat sont épuisés. Rechargez-les (pack sans abonnement) ou continuez en Mode Gratuit.', 'quota' => true, 'premium' => true, 'credits_restants' => 0, 'debats_restants' => 0));
+            }
+            if ($source === 'offert') repondre(429, array('erreur' => 'Vos débats Premium du Pass sont utilisés pour aujourd\'hui' . ($porte ? ' et vos crédits sont épuisés' : '') . '. Nouveaux débats demain, ou rechargez des crédits. Le Mode Gratuit reste ouvert.', 'quota' => true, 'premium' => true, 'debats_restants' => 0));
+        }
+    }
     if (($res['refus'] ?? '') === 'quota') repondre(429, array('erreur' => $premium ? $MSG_QUOTA_PREMIUM : $MSG_QUOTA, 'quota' => true, 'premium' => $premium, 'debats_restants' => 0));
     if (($res['refus'] ?? '') === 'plafond') repondre(429, array('erreur' => 'Les débats Premium offerts sont épuisés pour aujourd\'hui. Le Mode Gratuit reste disponible, ou connectez OpenRouter en 1 clic.', 'quota' => true, 'premium' => true));
     $donnees = b64url(json_encode(array('j' => $jour, 'h' => $ip, 'm' => $premium ? 'p' : 'g', 'n' => b64url(random_bytes(9)))));
-    repondre(200, array('ticket' => $donnees . '.' . signer($cfg, $donnees), 'debats_restants' => $res['restants']));
+    repondre(200, array('ticket' => $donnees . '.' . signer($cfg, $donnees), 'debats_restants' => $res['restants'], 'source' => $premium ? $source : 'gratuit', 'credits_restants' => $creditsRestants));
 }
 
 if ($action === 'generer') {
