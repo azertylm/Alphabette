@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { chargerTableauHonneur, moisParis, titreHonneur, type ContributionHonneur } from './labo';
+import { MecenesDuLabo } from './MecenesDuLabo';
 
 /**
  * @file TableauHonneur.tsx
@@ -70,6 +71,7 @@ export const TableauHonneur: React.FC<{ noms: Record<string, string> }> = ({ nom
           })}
         </ol>
       )}
+      <MecenesDuLabo />
     </section>
   );
 };

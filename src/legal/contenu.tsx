@@ -113,7 +113,16 @@ export const ConditionsVente: React.FC = () => (
       <li><strong>Pass Application (annuel) — 15 € / an :</strong> accès complet pendant 12 mois à une application de l'écosystème Alphabette, sans publicité.</li>
       <li><strong>Pass Écosystème complet (annuel) — 40 € / an :</strong> accès complet pendant 12 mois à l'ensemble des applications de l'écosystème, sans publicité.</li>
       <li><strong>Essai :</strong> 7 jours d'essai offerts.</li>
-      <li><strong>Packs de crédits IA Débat :</strong> achat ponctuel de crédits pour des débats avancés ou en mode Premium sur <em>IA Débat</em>, au-delà du quota gratuit quotidien.</li>
+      {MODE_LABO ? (
+        <>
+        <li><strong>Pass Découverte — gratuit, 48 heures :</strong> sur alphabette.eu, accès découverte aux fonctions Premium (notamment quelques débats Premium par jour sur <em>IA Débat</em>) pendant exactement 48 heures sur l'appareil où il est ouvert, sans carte bancaire. Il s'arrête seul et ne devient jamais payant.</li>
+        <li><strong>Pass Cadeau (15 € ou 40 €) :</strong> le même Pass annuel, payé par le Client pour un tiers. Le Client reçoit un code et une carte cadeau à imprimer. Le code s'active dans les 12 mois suivant l'achat ; les 12 mois du Pass commencent le jour de l'activation.</li>
+        <li><strong>Packs de crédits IA Débat :</strong> achat ponctuel, sans abonnement, de crédits pour des débats en mode Premium sur <em>IA Débat</em>, au-delà du quota gratuit quotidien (par exemple 5 € pour 50 débats Premium ; 1 crédit est décompté par débat Premium lancé). Les crédits n'expirent pas tant que le service est exploité.</li>
+        <li><strong>Soutien « Mécène du Labo » :</strong> don ponctuel par carte (montant au choix), sans contrepartie ni abonnement.</li>
+        </>
+      ) : (
+        <li><strong>Packs de crédits IA Débat :</strong> achat ponctuel de crédits pour des débats avancés ou en mode Premium sur <em>IA Débat</em>, au-delà du quota gratuit quotidien.</li>
+      )}
       <li><strong>Prestation Site Vitrine — 390 € :</strong> création d'un site web vitrine clé en main selon le cahier des charges validé au préalable par devis ou échange écrit (hors coûts tiers de nom de domaine ou d'hébergement, sauf mention contraire).</li>
       <li><strong>Offres pour les professionnels et structures</strong> (par exemple structures seniors pour ProxiLien / Senior Bon Plan) : tarifs et modalités sur devis.</li>
       <li>Les applications déclarées gratuites le restent.</li>
@@ -140,7 +149,14 @@ export const ConditionsVente: React.FC = () => (
 
     <h2>Article 4 — Accès aux services et livraison</h2>
     <ul>
-      <li><strong>Pass annuels et packs de crédits :</strong> activés immédiatement après confirmation du paiement par Stripe.</li>
+      {MODE_LABO ? (
+        <>
+          <li><strong>Pass annuels et packs de crédits :</strong> activés immédiatement après confirmation du paiement par Stripe, sur l'appareil de l'achat ; un code envoyé par e-mail permet d'utiliser le Pass sur 3 appareils au plus, ou de retrouver ses crédits.</li>
+          <li><strong>Pass Cadeau :</strong> code et carte cadeau remis immédiatement après le paiement (page de confirmation et e-mail).</li>
+        </>
+      ) : (
+        <li><strong>Pass annuels et packs de crédits :</strong> activés immédiatement après confirmation du paiement par Stripe.</li>
+      )}
       <li><strong>Prestation Site Vitrine :</strong> délais de réalisation et de livraison précisés lors de la validation du projet.</li>
     </ul>
 
@@ -229,7 +245,9 @@ export const ConditionsVente: React.FC = () => (
 
     <h2>Dons et statut « Membre fondateur »</h2>
     <p>
-      Les dons se font par virement bancaire, sans paiement en ligne. Un don est volontaire et n'est pas une vente. Le
+      {MODE_LABO
+        ? "Les dons se font par virement bancaire, ou par carte via Stripe avec le bouton « Mécène du Labo » (paiement unique, jamais renouvelé). Un don est volontaire et n'est pas une vente. Le Mécène peut choisir d'afficher un pseudo dans le Tableau d'Honneur (jamais le montant) et peut demander à tout moment qu'il soit retiré."
+        : "Les dons se font par virement bancaire, sans paiement en ligne. Un don est volontaire et n'est pas une vente."}{' '}Le
       statut « Membre fondateur » (places limitées) et ses contreparties sont décrits dans l'espace ♥ DON ; elles valent
       pour la durée d'exploitation du service. Aucun reçu fiscal n'est délivré.
     </p>
@@ -251,6 +269,9 @@ const TRAITEMENTS: Array<[string, string, string, string]> = [
 
 /** Traitements propres au Laboratoire (alphabette.eu), ajoutés le 20 novembre 2026. */
 const TRAITEMENTS_LABO: Array<[string, string, string, string]> = [
+  ['Pass, Pass Découverte, Pass Cadeau et crédits IA Débat', 'Sur votre appareil : le Pass signé et sa date de fin, le code de votre porte-monnaie de crédits. Chez Alphabette (hors du site web) : le produit acheté, la date, l\'empreinte des codes et le solde de crédits, une empreinte anonyme du jour de l\'adresse IP (limite d\'un Pass Découverte par jour). L\'e-mail transmis par Stripe sert seulement à vous envoyer votre code ; il n\'est pas enregistré par Alphabette', 'Délivrer et vérifier le Pass, décompter les crédits, éviter les abus', 'Exécution du contrat / Intérêt légitime'],
+  ['Mécène du Labo (soutien par carte)', 'Montant (traité par Stripe) ; pseudo publié dans le Tableau d\'Honneur seulement si vous cochez la case', 'Remercier, comptabilité, Tableau d\'Honneur', 'Consentement (pseudo) / Obligation légale'],
+  ['Proposition d\'application (Salle d\'embarquement)', 'Nom de l\'application, adresse ou dépôt, description, pseudo, contact facultatif (jamais affiché) ; empreinte anonyme du jour de l\'adresse IP', 'Examiner la proposition, répondre au créateur, limiter les abus', 'Mesures précontractuelles / Intérêt légitime'],
   ['Tableau d\'Honneur (alphabette.eu)', 'Pseudo facultatif saisi avec un avis (les e-mails, adresses et numéros sont refusés) ; affiché seulement si l\'avis a conduit à une amélioration mise en ligne', 'Remercier publiquement les contributeurs du mois', 'Consentement (champ facultatif)'],
   ['Boîte à idées et votes (alphabette.eu)', 'Titre et phrase de l\'idée (publics) ; empreinte anonyme du jour calculée à partir de l\'adresse IP pour limiter les abus (l\'IP elle-même n\'est pas conservée) ; liste des idées votées gardée sur votre appareil', 'Choisir les prochaines applications, empêcher le spam et les votes multiples', 'Intérêt légitime'],
 ];
@@ -359,6 +380,8 @@ const COOKIES: Array<[string, string, string, string]> = [
 
 /** Stockage local du Laboratoire (alphabette.eu seulement). */
 const COOKIES_LABO: Array<[string, string, string, string]> = [
+  ['alphabette_decouverte, alphabette_pass, alphabette_credits_iadebat (alphabette.eu)', 'Pass Découverte 48 h (gardé après la fin pour ne pas le rouvrir par erreur), Pass 12 mois signé et code de votre porte-monnaie de crédits IA Débat', 'Jusqu\'à effacement (le Pass s\'arrête seul à sa date de fin)', 'Fonction demandée'],
+  ['alphabette_session_paiement (alphabette.eu, session)', 'Numéro du paiement Stripe pendant l\'affichage de la page « merci »', 'Fermeture de l\'onglet', 'Fonction demandée'],
   ['labo_limites_v1, alphabette_soutiens, alphabette_idees_votees, labo_pseudo (alphabette.eu)', 'Avis déjà donnés aujourd\'hui, soutiens, idées pour lesquelles vous avez voté, et le pseudo que vous avez choisi pour le Tableau d\'Honneur (pour ne pas le retaper)', 'Jusqu\'à effacement', 'Fonction demandée'],
 ];
 
@@ -410,8 +433,13 @@ export const CharteCreateurs: React.FC = () => (
     <p className="legal__maj">Dernière mise à jour : 20 novembre 2026</p>
     <p>
       Le <strong>Collectif Alphabette</strong> présente sur <strong>alphabette.eu</strong> des applications créées par des
-      créateurs indépendants. Cette charte dit ce que chacun s'engage à faire. En proposant une application, vous
-      l'acceptez (cinquième case du formulaire).
+      créateurs indépendants. Cette charte dit ce que chacun s'engage à faire. En proposant une application dans la{' '}
+      <a href="/embarquement/">Salle d'embarquement</a>, vous l'acceptez (dernière case du formulaire).
+    </p>
+    <p className="legal__encart">
+      <strong>alphabette.eu seulement.</strong> Les applications des créateurs sont hébergées, testées et présentées
+      uniquement sur alphabette.eu (le Laboratoire). Elles ne sont jamais transférées sur alphabette.fr, réservé aux
+      applications d'Alphabette. <strong>Zéro publicité, zéro revente de données.</strong>
     </p>
 
     <h2>Deux façons de publier</h2>
@@ -430,6 +458,7 @@ export const CharteCreateurs: React.FC = () => (
     <h2>Vos engagements</h2>
     <ol>
       <li><strong>Utile et en état de marche</strong> : l'application fait ce qu'elle annonce et s'ouvre sur téléphone, sans inscription obligatoire pour l'essayer.</li>
+      <li><strong>Zéro publicité, zéro revente de données</strong> : ni publicité dans l'application, ni revente ou cession des données de vos visiteurs.</li>
       <li><strong>Vie privée</strong> : aucun traceur publicitaire ni outil de mesure d'audience tiers, aucun cookie tiers sans accord du visiteur, et seulement les données vraiment nécessaires. Si vous en recueillez, dites lesquelles, pourquoi et où elles vont.</li>
       <li><strong>Honnêteté</strong> : pas de faux avis, faux chiffres, faux témoignages, fausses urgences ni paiement trompeur. Les réponses d'une intelligence artificielle sont présentées comme telles, avec un avertissement : elles peuvent contenir des erreurs.</li>
       <li><strong>Contenu légal</strong> : rien d'illicite, de haineux, de dangereux, de trompeur (arnaque, hameçonnage) ni d'atteinte aux droits d'autrui (droit d'auteur, image, marque, vie privée).</li>
@@ -454,6 +483,11 @@ export const CharteCreateurs: React.FC = () => (
         <strong>Le badge « Testé au Labo »</strong> signale qu'à la date indiquée les contrôles automatiques n'ont rien
         relevé de bloquant pendant au moins trois jours sur sept. Ce n'est ni une certification, ni une garantie de
         sécurité ou d'exactitude : c'est le résultat de contrôles automatiques à une date donnée.
+      </li>
+      <li>
+        <strong>Le badge « Passé au Crash-Test • Alphabette.eu »</strong> est proposé aux applications validées, avec
+        un code HTML (sans script) et un code Markdown pour GitHub, sur <a href="/badge/">alphabette.eu/badge</a>. Il renvoie
+        vers une page qui vérifie, à tout moment, que l'application est toujours validée.
       </li>
       <li>Votre contact n'est jamais affiché ni transmis : il sert seulement à vous répondre.</li>
       <li>La publication de chaque application est validée par Alphabette.</li>

@@ -32,6 +32,19 @@ function lireDonation(): Record<string, unknown> | undefined {
   }
 }
 
+/**
+ * Liens de paiement Stripe des Pass : data/paiements.json (liens.pass_app, liens.pass_ecosysteme).
+ * Vides tant que le paiement n'est pas ouvert : la base n'affiche alors aucun bouton de paiement.
+ */
+function lireLiensPaiement(): { perApp: string; ecosystem: string } {
+  try {
+    const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "paiements.json"), "utf-8").replace(/^\uFEFF/, ""));
+    return { perApp: String(d?.liens?.pass_app ?? ""), ecosystem: String(d?.liens?.pass_ecosysteme ?? "") };
+  } catch {
+    return { perApp: "", ecosystem: "" };
+  }
+}
+
 // Configuration commerciale centrale en mémoire (mise à jour instantanée sans redémarrage)
 let commercialConfig = {
   hubUrl: "https://alphabette.fr",
@@ -50,11 +63,8 @@ let commercialConfig = {
     description: "-15% immédiats sur l'Écosystème complet avec le code SOUVERAIN15",
     couponCode: "SOUVERAIN15",
   },
-  stripePaymentLinks: {
-    // À remplir avec les vrais liens Stripe quand le paiement en ligne ouvrira.
-    perApp: "",
-    ecosystem: "",
-  },
+  // Liens de paiement Stripe (publics, sans abonnement) : un seul endroit, data/paiements.json.
+  stripePaymentLinks: lireLiensPaiement(),
   aiPolicy: {
     provider: "Mistral AI (Exclusif)",
     headquarters: "Paris, France",

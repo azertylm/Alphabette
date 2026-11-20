@@ -275,9 +275,9 @@ ${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHt
   html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
   await writeFile(index, html);
 
-  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
+  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
   const jour = new Date().toISOString().slice(0, 10);
-  const urls = ['/', ...liens.map((l) => l.chemin)];
+  const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/'];
   await writeFile(
     path.join(eu, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -397,6 +397,17 @@ async function preparerLaboratoire() {
     await mkdir(path.join(eu, dossier), { recursive: true });
     await cp(path.join(racine, 'labo', 'collectif', source), path.join(eu, dossier, 'index.html'));
   }
+  // Salle d'embarquement, badge « Passé au Crash-Test », Pass (Découverte 48 h, cadeau, crédits IA Débat) et page « merci »
+  // après Stripe (.eu seulement) + leur service api/paiement.php (clé Stripe rangée hors du site). Les Mécènes s'affichent
+  // dans le Tableau d'Honneur de l'accueil (.eu).
+  await mkdir(path.join(eu, 'labo'), { recursive: true });
+  for (const nom of ['pages.css', 'pass.js']) await cp(path.join(racine, 'labo', 'pages', nom), path.join(eu, 'labo', nom));
+  for (const page of ['embarquement', 'badge', 'pass', 'merci']) {
+    await mkdir(path.join(eu, page), { recursive: true });
+    await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, page, 'index.html'));
+  }
+  await cp(path.join(racine, 'labo', 'pages', 'badge'), path.join(eu, 'badge'), { recursive: true });
+  await cp(path.join(racine, 'serveur', 'php', 'paiement.php'), path.join(eu, 'api', 'paiement.php'));
   // Le Crash-Testeur (.eu seulement) : la page et son service (clé OpenRouter du relais IA Débat, rien n'est stocké).
   await cp(path.join(racine, 'serveur', 'php', 'crash-test.php'), path.join(eu, 'api', 'crash-test.php'));
   await mkdir(path.join(eu, 'crash-testeur'), { recursive: true });
@@ -428,6 +439,8 @@ async function preparerLaboratoire() {
   // IA Débat — Mode Découverte : relais OpenRouter avec la clé d'Alphabette rangée hors du site (.fr et .eu).
   for (const cible of [path.join(sortie, 'api'), path.join(eu, 'api')]) {
     await cp(path.join(racine, 'serveur', 'php', 'iadebat-proxy.php'), path.join(cible, 'iadebat-proxy.php'));
+    // Réglages publics des Pass et crédits (aucune clé) : lus par le relais et par paiement.php.
+    await cp(path.join(racine, 'data', 'paiements.json'), path.join(cible, 'paiements.json'));
   }
   {
     const sources = JSON.parse(await readFile(path.join(racine, 'data', 'apps-sources.json'), 'utf8'));
@@ -451,7 +464,7 @@ async function preparerLaboratoire() {
     const p = path.join(eu, nom);
     const st = await stat(p);
     if (st.isFile() && nom.endsWith('.html') && nom !== 'index.html') await injecterCapteur(p);
-    if (st.isDirectory() && !['api', 'assets', 'apps', 'labo', 'createurs', 'atelier'].includes(nom)) await injecterCapteur(path.join(p, 'index.html'));
+    if (st.isDirectory() && !['api', 'assets', 'apps', 'labo', 'createurs', 'atelier', 'merci'].includes(nom)) await injecterCapteur(path.join(p, 'index.html'));
   }
 
   // 6 bis. Référencement du Laboratoire : titre et description propres (sinon Google le prend pour
