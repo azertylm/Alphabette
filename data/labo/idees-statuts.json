@@ -1,0 +1,4 @@
+{
+  "_aide": "Boîte à idées « Quelle prochaine appli ? » (alphabette.eu). Les idées et les votes sont rangés hors du site (api/collectif.php). Ce fichier, publié dans eu/api/labo/, permet aux agents (ou à Valentin) de modérer : clé = id de l'idée (idee_…), valeur = masquee (spam, hors sujet, propos blessant, donnée personnelle : n'est plus affichée), retenue (« Retenue par le Labo ») ou realisee (« Réalisée », avec « lien » facultatif). Lire les idées : https://alphabette.eu/api/collectif.php?idees=1",
+  "statuts": {}
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MODE_LABO } from '../labo/labo';
 
 /**
  * Texte des pages légales d'alphabette.fr et alphabette.eu.
@@ -6,13 +7,15 @@ import React from 'react';
  * complétée par ce que fait réellement le code (relais IA Débat, dictée vocale,
  * Google Fonts, GitHub, Firebase, inscription par code, dons par virement).
  * Ce n'est pas un avis juridique : à faire relire avant l'ouverture du paiement.
+ * Les ajouts du 20 novembre 2026 (Tableau d'Honneur, boîte à idées) ne s'affichent que sur alphabette.eu
+ * (MODE_LABO), seul site où ces fonctions existent : les pages d'alphabette.fr ne changent pas.
  */
 
 const AC: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <mark className="legal__completer">[{children}]</mark>
 );
 
-const MAJ = 'Dernière mise à jour : 19 novembre 2026';
+const MAJ = `Dernière mise à jour : ${MODE_LABO ? '20' : '19'} novembre 2026`;
 const MAIL = 'azertylm@gmail.com';
 const Mail = () => <a href={`mailto:${MAIL}`}>{MAIL}</a>;
 
@@ -190,6 +193,40 @@ export const ConditionsVente: React.FC = () => (
       <AC>en cours de désignation — coordonnées indiquées ici avant toute vente à un consommateur</AC>
     </p>
 
+    {MODE_LABO && (
+      <>
+        <h2>Article 10 — Contributions gratuites des visiteurs (alphabette.eu)</h2>
+        <p>
+          Sur alphabette.eu, chacun peut, gratuitement et sans compte, donner un avis, y ajouter un pseudo facultatif,
+          proposer une idée d'application et voter. Ces contributions ne sont ni une vente ni une prestation : elles ne
+          donnent lieu à aucun paiement, dans un sens comme dans l'autre.
+        </p>
+        <ul>
+          <li>
+            <strong>Tableau d'Honneur :</strong> le pseudo d'un avis qui a conduit à une amélioration mise en ligne peut
+            être affiché au Tableau d'Honneur du mois, avec un titre honorifique (« Œil de lynx », « Voix du labo »,
+            « Dompteur de bugs ») sans valeur marchande ni avantage associé. Un pseudo n'est pas réservé : un autre
+            visiteur peut choisir le même. N'utilisez ni votre nom complet ni votre adresse e-mail.
+          </li>
+          <li>
+            <strong>Idées :</strong> une idée publiée est visible de tous. En la publiant, vous acceptez qu'Alphabette ou
+            un créateur du Collectif puisse s'en inspirer ou la réaliser librement, sans rémunération ni exclusivité. Une
+            idée est une suggestion, pas une commande : Alphabette ne s'engage pas à la réaliser.
+          </li>
+          <li>
+            <strong>Votes :</strong> un vote par idée et par appareil. Les votes automatisés ou en masse sont annulés.
+          </li>
+          <li>
+            <strong>Modération :</strong> Alphabette peut masquer sans préavis une contribution illicite, blessante,
+            publicitaire, hors sujet ou contenant des données personnelles.
+          </li>
+          <li>
+            <strong>Retrait :</strong> pour faire retirer un pseudo, un avis ou une idée, écrivez à <Mail />.
+          </li>
+        </ul>
+      </>
+    )}
+
     <h2>Dons et statut « Membre fondateur »</h2>
     <p>
       Les dons se font par virement bancaire, sans paiement en ligne. Un don est volontaire et n'est pas une vente. Le
@@ -210,6 +247,12 @@ const TRAITEMENTS: Array<[string, string, string, string]> = [
   ['Applications avec compte (Info Perso, IA Débat, Révolution)', 'Selon l\'application : e-mail, nom affiché, photo Google, préférences, articles lus, ou identifiant anonyme et réponses. Les articles et commentaires proposés dans Info Perso sont publics', 'Fournir le service demandé', 'Exécution du service / Consentement (connexion Google)'],
   ['Contact par e-mail', 'Adresse e-mail et contenu du message', 'Répondre aux demandes d\'assistance ou de devis', 'Intérêt légitime / Mesures précontractuelles'],
   ['Sécurité et journaux techniques', 'Adresse IP et journaux du serveur (OVHcloud)', 'Sécurité, prévention des abus, bon fonctionnement', 'Intérêt légitime'],
+];
+
+/** Traitements propres au Laboratoire (alphabette.eu), ajoutés le 20 novembre 2026. */
+const TRAITEMENTS_LABO: Array<[string, string, string, string]> = [
+  ['Tableau d\'Honneur (alphabette.eu)', 'Pseudo facultatif saisi avec un avis (les e-mails, adresses et numéros sont refusés) ; affiché seulement si l\'avis a conduit à une amélioration mise en ligne', 'Remercier publiquement les contributeurs du mois', 'Consentement (champ facultatif)'],
+  ['Boîte à idées et votes (alphabette.eu)', 'Titre et phrase de l\'idée (publics) ; empreinte anonyme du jour calculée à partir de l\'adresse IP pour limiter les abus (l\'IP elle-même n\'est pas conservée) ; liste des idées votées gardée sur votre appareil', 'Choisir les prochaines applications, empêcher le spam et les votes multiples', 'Intérêt légitime'],
 ];
 
 export const Confidentialite: React.FC = () => (
@@ -238,7 +281,7 @@ export const Confidentialite: React.FC = () => (
           <tr><th>Situation</th><th>Données</th><th>Finalité</th><th>Base légale</th></tr>
         </thead>
         <tbody>
-          {TRAITEMENTS.map(([cas, donnees, but, base]) => (
+          {(MODE_LABO ? [...TRAITEMENTS, ...TRAITEMENTS_LABO] : TRAITEMENTS).map(([cas, donnees, but, base]) => (
             <tr key={cas}>
               <td><strong>{cas}</strong></td><td>{donnees}</td><td>{but}</td><td>{base}</td>
             </tr>
@@ -277,6 +320,8 @@ export const Confidentialite: React.FC = () => (
       <li><strong>Commandes, factures et dons :</strong> 10 ans (obligation comptable).</li>
       <li><strong>Échanges par e-mail :</strong> 3 ans après le dernier contact.</li>
       <li><strong>Avis sur alphabette.eu :</strong> le temps nécessaire à l'amélioration des applications, ou supprimés sur simple demande.</li>
+      {MODE_LABO && <li><strong>Tableau d'Honneur :</strong> le mois en cours et le précédent (2 mois au plus), ou retiré sur simple demande.</li>}
+      {MODE_LABO && <li><strong>Idées et votes :</strong> tant que l'idée reste utile au choix des prochaines applications, ou supprimés sur simple demande ; empreintes anonymes du jour : 2 jours.</li>}
       <li><strong>Comptes des applications :</strong> tant que le compte existe.</li>
       <li><strong>Clés API (BYOK) :</strong> uniquement dans votre navigateur, supprimables à tout moment.</li>
       <li><strong>Journaux techniques du serveur :</strong> 12 mois maximum.</li>
@@ -309,7 +354,12 @@ const COOKIES: Array<[string, string, string, string]> = [
   ['iadebat_openrouter_key, iadebat_mode_acces', 'Votre clé OpenRouter si vous vous connectez en 1 clic, et le mode choisi dans IA Débat', 'Jusqu\'à effacement', 'Fonction demandée'],
   ['alphabette-info:cle-claude', 'Votre clé Claude, si vous en saisissez une dans Alphabette Info', 'Jusqu\'à effacement', 'Fonction demandée'],
   ['Stockage Firebase (IndexedDB / localStorage)', 'Session de connexion d\'Info Perso, IA Débat et Révolution', 'Jusqu\'à déconnexion', 'Authentification'],
-  ['alphabette_admin (cookie)', 'Session de la console d\'administration, réservée à l\'éditeur', 'Session', 'Sécurité, jamais déposé aux visiteurs'],
+    ['alphabette_admin (cookie)', 'Session de la console d\'administration, réservée à l\'éditeur', 'Session', 'Sécurité, jamais déposé aux visiteurs'],
+];
+
+/** Stockage local du Laboratoire (alphabette.eu seulement). */
+const COOKIES_LABO: Array<[string, string, string, string]> = [
+  ['labo_limites_v1, alphabette_soutiens, alphabette_idees_votees, labo_pseudo (alphabette.eu)', 'Avis déjà donnés aujourd\'hui, soutiens, idées pour lesquelles vous avez voté, et le pseudo que vous avez choisi pour le Tableau d\'Honneur (pour ne pas le retaper)', 'Jusqu\'à effacement', 'Fonction demandée'],
 ];
 
 export const Cookies: React.FC = () => (
@@ -327,7 +377,7 @@ export const Cookies: React.FC = () => (
           <tr><th>Nom</th><th>À quoi ça sert</th><th>Durée</th><th>Catégorie</th></tr>
         </thead>
         <tbody>
-          {COOKIES.map(([nom, role, duree, cat]) => (
+          {(MODE_LABO ? [...COOKIES, ...COOKIES_LABO] : COOKIES).map(([nom, role, duree, cat]) => (
             <tr key={nom}>
               <td>{nom}</td><td>{role}</td><td>{duree}</td><td>{cat}</td>
             </tr>

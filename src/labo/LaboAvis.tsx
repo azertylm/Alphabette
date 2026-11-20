@@ -33,6 +33,18 @@ const AIDE: Record<Categorie, string> = {
 
 const ICONE: Record<string, string> = { Bug: '🐞', Idée: '💡', Design: '🎨', Autre: '💬' };
 
+/** Pseudo du Tableau d'Honneur, gardé sur cet appareil seulement pour ne pas le retaper. */
+const CLE_PSEUDO = 'labo_pseudo';
+const pseudoGarde = () => { try { return localStorage.getItem(CLE_PSEUDO) ?? ''; } catch { return ''; } };
+/** Même règle que feedback.php (pseudo_propre) : '' = valable. */
+export function refusPseudo(p: string): string {
+  const t = p.trim();
+  if (!t) return '';
+  if (/@|https?:|www\.|\.(fr|com|eu|net|org)\b|\d{5,}/iu.test(t)) return 'Le pseudo ne doit contenir ni e-mail, ni adresse, ni numéro.';
+  if (!/^[\p{L}\p{N} ._'’-]{2,24}$/u.test(t)) return 'Le pseudo : 2 à 24 lettres ou chiffres (espaces, points, tirets permis).';
+  return '';
+}
+
 interface Props {
   appId: string;
   nom: string;
@@ -53,6 +65,7 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
   const [commentaire, setCommentaire] = useState('');
   const [version, setVersion] = useState<'main' | 'beta'>('main');
   const [piege, setPiege] = useState('');
+  const [pseudo, setPseudo] = useState(pseudoGarde);
   // Retour vocal : la dictée remplit catégorie, commentaire et urgence ; le visiteur relit avant d'envoyer.
   const [urgence, setUrgence] = useState<number | null>(null);
   const voix = useVoiceFeedback({
@@ -108,6 +121,12 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
       setMessage('Ce point est déjà signalé : ajoutez votre « +1 » ci-dessus, ou dites-nous que c’est autre chose.');
       return;
     }
+    const refus = refusPseudo(pseudo);
+    if (refus) {
+      setEtat('erreur');
+      setMessage(refus);
+      return;
+    }
     if (avisRestants(appId) <= 0) {
       setEtat('erreur');
       setMessage(`Merci ! Vous avez déjà donné ${AVIS_PAR_JOUR} avis aujourd'hui sur ${nom}. Revenez demain.`);
@@ -123,11 +142,15 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
         version_tested: version,
         chemin: version === 'beta' && beta ? beta.chemin : chemin,
         site_web: piege,
+        ...(pseudo.trim() ? { pseudo: pseudo.trim() } : {}),
         ...(urgence !== null ? { source: 'voix' as const, urgence } : {}),
         ...(incident ? { incident_api: { de: incident.de, type: incident.type, statut: incident.statut } } : {}),
       });
+      try { if (pseudo.trim()) localStorage.setItem(CLE_PSEUDO, pseudo.trim()); else localStorage.removeItem(CLE_PSEUDO); } catch { /* rien */ }
       setEtat('merci');
-      setMessage('Merci ! Votre avis est enregistré. Il sera lu et, s’il est retenu, l’appli sera améliorée.');
+      setMessage(pseudo.trim()
+        ? `Merci ${pseudo.trim()} ! Votre avis est enregistré. S’il déclenche une amélioration, vous apparaîtrez au Tableau d’Honneur du mois.`
+        : 'Merci ! Votre avis est enregistré. Il sera lu et, s’il est retenu, l’appli sera améliorée.');
       setNote(null);
       setCommentaire('');
       setUrgence(null);
@@ -328,6 +351,15 @@ export const LaboAvis: React.FC<Props> = ({ appId, nom, chemin, resume, donnees,
               </select>
             </label>
           )}
+
+          <label className="labo__champ">
+            <span>Pseudo (pour apparaître au Tableau d'Honneur si ton avis est retenu)</span>
+            <input value={pseudo} onChange={(e) => setPseudo(e.target.value)} maxLength={24} autoComplete="off" spellCheck={false}
+              placeholder="Facultatif, ex. : Mouette34" aria-describedby={`pseudo-aide-${appId}`} />
+            <small id={`pseudo-aide-${appId}`} className="labo__petit">
+              Facultatif et public. Ne mets pas ton nom complet ni ton e-mail : un surnom suffit.
+            </small>
+          </label>
 
           {/* Piège à robots : invisible pour un humain, laissé vide. */}
           <label className="labo__piege" aria-hidden="true">

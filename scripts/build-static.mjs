@@ -23,6 +23,7 @@ import { existsSync } from 'node:fs';
 import { preRendre } from './labo/seo.mjs';
 import { ficheValide, publierHebergees } from './labo/bac-a-sable.mjs';
 import { publierAtelier } from './labo/parrain.mjs';
+import { avecSentinelle } from './labo/meteo.mjs';
 
 const racine = process.cwd();
 const dist = path.join(racine, 'dist');
@@ -403,10 +404,18 @@ async function preparerLaboratoire() {
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'capteur.js'), path.join(eu, 'labo', 'capteur.js'));
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
-  for (const nom of ['decisions', 'changelog_summary', 'maturity_index', 'beta', 'notes_version', 'tutos', 'eco_scores']) {
+  for (const nom of ['decisions', 'changelog_summary', 'maturity_index', 'beta', 'notes_version', 'tutos', 'eco_scores',
+    // Météo du Labo (bouton Avant / Après, Tableau d'Honneur, modération de la boîte à idées) : docs/labo/METEO-HONNEUR-IDEES.md
+    'changelog-labo', 'tableau-honneur', 'idees-statuts']) {
     const src = path.join(racine, 'data', 'labo', `${nom}.json`);
     const contenu = await readFile(src, 'utf8').catch(() => '{"apps":{}}\n');
     await writeFile(path.join(eu, 'api', 'labo', `${nom}.json`), contenu);
+  }
+  // Météo du Labo : le bloc « sentinelle » est recalculé à chaque publication depuis les vrais retours arrière.
+  {
+    const lireLabo = async (nom, defaut) => JSON.parse(await readFile(path.join(racine, 'data', 'labo', `${nom}.json`), 'utf8').catch(() => JSON.stringify(defaut)));
+    const statut = avecSentinelle(await lireLabo('status-labo', {}), (await lireLabo('incidents', { incidents: [] })).incidents);
+    await writeFile(path.join(eu, 'api', 'labo', 'status-labo.json'), JSON.stringify(statut, null, 2) + '\n');
   }
   await writeFile(path.join(eu, '.htaccess'), HTACCESS_EU);
   // Notes de version « citoyennes » : aussi pour la vitrine .fr.

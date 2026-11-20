@@ -3,7 +3,11 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
-import { MODE_LABO, cheminApp, chargerAtelier, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type DonneesAtelier, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
+import { MODE_LABO, cheminApp, chargerAtelier, chargerChangelogLabo, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type DonneesAtelier, type EcoScore, type DonneesLabo, type NoteVersion, type PassageApp, type Resumes } from '../labo/labo';
+import { MeteoLabo } from '../labo/MeteoLabo';
+import { AvantApres } from '../labo/AvantApres';
+import { TableauHonneur } from '../labo/TableauHonneur';
+import { BoiteIdees } from '../labo/BoiteIdees';
 import { LaboAvis } from '../labo/LaboAvis';
 import { ProposerApp } from '../labo/ProposerApp';
 import { Signaler } from '../labo/Signaler';
@@ -99,10 +103,15 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   // Atelier qualité (notes de la nuit, badge « Testé au Labo ») et signalements (Le Parapluie).
   const [atelier, setAtelier] = useState<DonneesAtelier>({ apps: {}, jury: {} });
   const [aSignaler, setASignaler] = useState<{ id: string; nom: string } | null>(null);
+  // Bouton « Avant / Après » : dernier passage des agents par appli (api/labo/changelog-labo.json).
+  const [changelog, setChangelog] = useState<Record<string, PassageApp>>({});
+  const [avantApres, setAvantApres] = useState<{ id: string; nom: string } | null>(null);
+  const noms = useMemo(() => Object.fromEntries(apps.map((a) => [a.id, nomLisible(a.name)])), [apps]);
   useEffect(() => {
     if (!MODE_LABO) return;
     chargerSoutiens().then(setSoutiens);
     chargerAtelier().then(setAtelier);
+    chargerChangelogLabo().then(setChangelog);
     if (window.location.hash === '#proposer') setProposerOuvert(true);
   }, []);
   const soutenirApp = async (id: string) => {
@@ -147,6 +156,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   return (
     <div className="accueil">
       <section className="accueil__haut">
+        {MODE_LABO && <MeteoLabo fileAttente={resumes?.file_attente} serveurAvis={serveurAvis} noms={noms} />}
         {MODE_LABO ? (
           <>
             <p className="labo-bandeau">🤝 Le Collectif Alphabette</p>
@@ -163,6 +173,10 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
               </button>
               <a className="labo__bouton" href="/rejoindre/">Rejoindre le réseau (badge)</a>
             </div>
+            <p className="collectif-raccourcis">
+              <a href="#tableau-honneur">🏆 Tableau d'Honneur</a>
+              <a href="#idees">💡 Quelle prochaine appli ?</a>
+            </p>
           </>
         ) : (
         <h1 className="accueil__titre">
@@ -288,6 +302,13 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                       aria-label={`Soutenir ${nomLisible(app.name)} (${soutiens[app.id] ?? 0} soutiens)`}>
                       ♥ Soutenir <span className="collectif-compteur">{soutiens[app.id] ?? 0}</span>
                     </button>
+                    {changelog[app.id] && (
+                      <button type="button" className="labo__bouton collectif-fiche__avant-apres" aria-haspopup="dialog"
+                        onClick={() => setAvantApres({ id: app.id, nom: nomLisible(app.name) })}
+                        aria-label={`Avant / Après : ce qui a changé sur ${nomLisible(app.name)} au dernier passage des agents`}>
+                        ↔ Avant / Après
+                      </button>
+                    )}
                   </div>
                   {messageSoutien?.id === app.id && messageSoutien.texte && <p className="labo__petit" role="status">{messageSoutien.texte}</p>}
                   <p className="collectif-fiche__liens">
@@ -317,6 +338,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
         {MODE_LABO && <ProposerApp ouvert={proposerOuvert} onFermer={() => setProposerOuvert(false)} />}
         {MODE_LABO && <Signaler appId={aSignaler?.id ?? null} nom={aSignaler?.nom ?? ''} onFermer={() => setASignaler(null)} />}
+        {MODE_LABO && <AvantApres app={avantApres} passage={avantApres ? changelog[avantApres.id] : undefined} onFermer={() => setAvantApres(null)} />}
 
         {!MODE_LABO && etat === 'ok' && (
           <p className="accueil__message accueil__labo-lien">
@@ -325,6 +347,13 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           </p>
         )}
       </section>
+
+      {MODE_LABO && (
+        <div className="accueil__applis communaute__zone">
+          <TableauHonneur noms={noms} />
+          <BoiteIdees />
+        </div>
+      )}
     </div>
   );
 };
