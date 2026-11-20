@@ -4,7 +4,12 @@
     "heure": "21:13",
     "fuseau": "Europe/Paris"
   },
-  "dernier_passage": null,
+  "dernier_passage": {
+    "date": "2026-11-20T20:31:08.661Z",
+    "avis_lus": 0,
+    "corrections": 1,
+    "rejets": 0
+  },
   "sentinelle": {
     "retours_arriere_total": 0,
     "interventions": []

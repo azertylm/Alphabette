@@ -12,6 +12,12 @@
         "date": "2026-11-19T08:50:38Z",
         "message": "La recherche est de nouveau visible sur téléphone, suite au contrôle automatique de nuit"
       }
+    ],
+    "iadebat": [
+      {
+        "date": "2026-11-20T20:30:00Z",
+        "message": "Le bouton « Intervenir » tient sur les petits téléphones et en mode BIG, suite au contrôle automatique de nuit"
+      }
     ]
   }
 }
