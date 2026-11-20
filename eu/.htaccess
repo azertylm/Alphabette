@@ -27,8 +27,8 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
-  # Applications et fichiers du laboratoire : servis tels quels
-  RewriteRule ^(apps|labo)/ - [L]
+  # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
+  RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
 
   # Application monopage : toute autre adresse renvoie index.html
   RewriteCond %{REQUEST_FILENAME} !-f
