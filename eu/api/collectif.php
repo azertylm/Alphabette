@@ -12,6 +12,11 @@
  *        url   : l'appli a sa propre adresse https ;
  *        depot : « pseudo/depot » GitHub public avec les fichiers déjà construits → hébergée et isolée par
  *                Alphabette (bac à sable, voir docs/labo/ATELIER-QUALITE.md).
+ *   GET  ?idees=1                      → { idees: [{ id, titre, phrase, votes, date, statut }] }  (boîte à idées, triées par votes)
+ *   POST { action:"idee", titre, phrase, site_web }   → { ok, idee }   (« Quelle prochaine appli ? », publiée tout de suite,
+ *                                                                      filtre anti-spam ; modération : api/labo/idees-statuts.json)
+ *   POST { action:"voter_idee", id }   → { ok, votes }   (1 vote par idée et par appareil via localStorage ; ici, par empreinte
+ *                                                         du jour : 5 votes au plus pour une même idée, 60 en tout)
  *   POST { action:"signaler", app_id, motif, details, contact?, adresse?, site_web }
  *                                      → { ok }   (e-mail immédiat à Valentin : mécanisme de signalement de l'hébergeur)
  *
@@ -33,6 +38,15 @@ const MOTIFS_SIGNALEMENT = array('illicite' => 'Contenu illicite ou dangereux', 
 const POINTS_CHARTE = 5;
 const CATEGORIES_COLLECTIF = array('Quotidien', 'Santé & bien-être', 'Éducation', 'Culture', 'Outils', 'Jeux', 'Citoyen', 'Autre');
 const DESTINATAIRE = 'azertylm@gmail.com';
+const IDEES_PAR_JOUR = 3;              // par visiteur
+const VOTES_IDEES_PAR_JOUR = 60;       // par visiteur, toutes idées confondues
+// Le « 1 vote par idée » est tenu par l'appareil (localStorage) : une même connexion (famille, box, réseau mobile
+// partagé) peut voter quelques fois pour la même idée, pas plus.
+const VOTES_MEME_IDEE_PAR_JOUR = 5;
+const MAX_IDEES = 1000;
+/** Mots qui font refuser une idée d'office (le reste est modéré par les agents chaque soir). */
+const MOTS_REFUSES = array('connard', 'connasse', 'salope', 'encule', 'enculé', 'pute', 'nique', 'batard', 'bâtard', 'pd', 'nazi',
+    'viagra', 'casino', 'crypto', 'bitcoin', 'porn', 'porno', 'xxx', 'escort');
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -122,8 +136,57 @@ $D = dossier();
 $SOUTIENS = $D . '/soutiens.json';
 $PROPOSITIONS = $D . '/propositions.json';
 $SIGNALEMENTS = $D . '/signalements.json';
+$IDEES = $D . '/idees.json';
+
+/** Statuts posés par les agents ou Valentin (masquee, retenue, realisee) : api/labo/idees-statuts.json. */
+function statuts_idees(): array {
+    $d = lire_json(__DIR__ . '/labo/idees-statuts.json', array());
+    return isset($d['statuts']) && is_array($d['statuts']) ? $d['statuts'] : array();
+}
+
+/** Forme simplifiée d'un texte (sans accents ni ponctuation) : détecte les doublons et les mots refusés. */
+function simplifier(string $t): string {
+    $t = mb_strtolower($t, 'UTF-8');
+    $t = strtr($t, array('à' => 'a', 'â' => 'a', 'ä' => 'a', 'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e', 'î' => 'i', 'ï' => 'i',
+        'ô' => 'o', 'ö' => 'o', 'ù' => 'u', 'û' => 'u', 'ü' => 'u', 'ç' => 'c', 'œ' => 'oe', 'æ' => 'ae', 'ÿ' => 'y'));
+    return trim(preg_replace('/[^a-z0-9]+/', ' ', $t) ?? '');
+}
+
+/** Filtre anti-spam d'une idée : '' si elle passe, sinon le message d'erreur à afficher. */
+function refus_idee(string $titre, string $phrase): string {
+    $l_titre = mb_strlen($titre, 'UTF-8');
+    $l_phrase = mb_strlen($phrase, 'UTF-8');
+    if ($l_titre < 3 || $l_titre > 60) return 'Le titre doit faire entre 3 et 60 caractères.';
+    if ($l_phrase < 10 || $l_phrase > 160) return 'Décrivez votre idée en une phrase (10 à 160 caractères).';
+    $tout = $titre . ' ' . $phrase;
+    if (preg_match('#https?://|www\.|\b[a-z0-9-]+\.(com|fr|eu|net|org|io|ly|xyz|ru|info)\b#i', $tout)) return 'Pas de lien dans une idée : décrivez-la simplement.';
+    if (preg_match('/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/', $tout)) return "Pas d'adresse e-mail dans une idée : elle est publique.";
+    if (preg_match('/(?:\d[\s.-]?){8,}/', $tout)) return 'Pas de numéro de téléphone dans une idée : elle est publique.';
+    if (preg_match('/(.)\1{5,}/u', $tout)) return 'Le texte contient trop de caractères répétés.';
+    $lettres = preg_replace('/[^\p{L}]/u', '', $tout) ?? '';
+    $majuscules = preg_replace('/[^\p{Lu}]/u', '', $tout) ?? '';
+    if (mb_strlen($lettres, 'UTF-8') >= 12 && mb_strlen($majuscules, 'UTF-8') > 0.6 * mb_strlen($lettres, 'UTF-8')) return 'Merci d\'écrire sans tout en majuscules.';
+    $mots = explode(' ', simplifier($tout));
+    foreach (MOTS_REFUSES as $m) if (in_array(simplifier($m), $mots, true)) return 'Cette idée ne peut pas être publiée telle quelle.';
+    return '';
+}
+
+/** Idées publiques (sans les masquées), triées par votes décroissants puis les plus récentes. */
+function idees_publiques(string $fichier): array {
+    $statuts = statuts_idees();
+    $liste = array();
+    foreach (lire_json($fichier, array())['idees'] ?? array() as $i) {
+        $st = (string) ($statuts[$i['id']] ?? '');
+        if ($st === 'masquee') continue;
+        $liste[] = array('id' => $i['id'], 'titre' => $i['titre'], 'phrase' => $i['phrase'], 'votes' => (int) $i['votes'],
+            'date' => $i['date'], 'statut' => in_array($st, array('retenue', 'realisee'), true) ? $st : null);
+    }
+    usort($liste, function ($a, $b) { return $b['votes'] <=> $a['votes'] ?: strcmp($b['date'], $a['date']); });
+    return $liste;
+}
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET') {
+    if (isset($_GET['idees'])) repondre(200, array('idees' => idees_publiques($IDEES)));
     if (isset($_GET['soutiens'])) repondre(200, array('soutiens' => (object) lire_json($SOUTIENS, array())));
     if (isset($_GET['propositions'])) {
         $sans_contact = array_map(function ($p) { unset($p['contact']); return $p; }, lire_json($PROPOSITIONS, array())['propositions'] ?? array());
@@ -211,6 +274,49 @@ if ($action === 'proposer') {
             "From: collectif@alphabette.eu\r\nContent-Type: text/plain; charset=UTF-8");
     }
     repondre(200, array('ok' => true, 'id' => $id));
+}
+
+if ($action === 'idee') {
+    $titre = texte((string) ($e['titre'] ?? ''), 80);
+    $phrase = texte((string) ($e['phrase'] ?? ''), 200);
+    $refus = refus_idee($titre, $phrase);
+    if ($refus !== '') erreur(400, $refus);
+    $cle = simplifier($titre);
+    foreach (lire_json($IDEES, array())['idees'] ?? array() as $i) {
+        if (simplifier((string) $i['titre']) === $cle) erreur(409, 'Cette idée est déjà proposée : votez pour elle dans la liste.');
+    }
+    $l = limite($D, 'idee', IDEES_PAR_JOUR);
+    if ($l === 'trop') erreur(429, "Merci ! Vous avez déjà proposé " . IDEES_PAR_JOUR . " idées aujourd'hui : revenez demain.");
+    $id = 'idee_' . time() . '_' . bin2hex(random_bytes(2));
+    $idee = array('id' => $id, 'titre' => $titre, 'phrase' => $phrase, 'votes' => 1, 'date' => gmdate('c'));
+    $ok = modifier($IDEES, function (&$d) use ($idee, $cle) {
+        $liste = $d['idees'] ?? array();
+        if (count($liste) >= MAX_IDEES) return 'plein';
+        foreach ($liste as $i) if (simplifier((string) $i['titre']) === $cle) return 'double';
+        $liste[] = $idee;
+        $d['idees'] = $liste;
+        return true;
+    });
+    if ($ok === 'double') erreur(409, 'Cette idée est déjà proposée : votez pour elle dans la liste.');
+    if ($ok !== true) erreur(503, 'La boîte à idées est pleine pour le moment : revenez bientôt.');
+    // L'auteur a voté pour sa propre idée (le « 1 » de départ) : son appareil le retient (localStorage).
+    repondre(201, array('ok' => true, 'idee' => $idee + array('statut' => null)));
+}
+
+if ($action === 'voter_idee') {
+    $id = (string) ($e['id'] ?? '');
+    if (!preg_match('/^idee_\d+_[a-f0-9]{4}$/', $id)) erreur(400, 'Idée inconnue.');
+    if ((string) (statuts_idees()[$id] ?? '') === 'masquee') erreur(404, 'Idée introuvable.');
+    if (limite($D, 'vote_idee:' . $id, VOTES_MEME_IDEE_PAR_JOUR) === 'trop') erreur(409, 'Cette idée a déjà reçu vos votes aujourd\'hui depuis cette connexion.');
+    if (limite($D, 'votes_idees', VOTES_IDEES_PAR_JOUR) === 'trop') erreur(429, "Beaucoup de votes aujourd'hui : revenez demain.");
+    $n = modifier($IDEES, function (&$d) use ($id) {
+        foreach ($d['idees'] ?? array() as $k => $i) {
+            if ($i['id'] === $id) { $d['idees'][$k]['votes'] = (int) $i['votes'] + 1; return $d['idees'][$k]['votes']; }
+        }
+        return null;
+    });
+    if ($n === null) erreur(404, 'Idée introuvable.');
+    repondre(200, array('ok' => true, 'votes' => $n));
 }
 
 if ($action === 'signaler') {
