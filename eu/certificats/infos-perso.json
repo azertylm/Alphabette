@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-19T23:37:37.353Z",
-  "empreinte_page_sha256": "04196b6de1fcdc4f076cf2ec03ccce49f4d81cf097f9d230fcffb378ae0d7525",
+  "audite_le": "2026-11-20T09:57:16.498Z",
+  "empreinte_page_sha256": "533be684296950161e42bc16fbcd27979793fa88d869cf9283e4c51d9b6e4fa0",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,27 +59,18 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 193,
-      "bloquees": 193,
+      "requetes": 453,
+      "bloquees": 453,
       "types": [
         "image",
         "fetch"
       ]
     },
     {
-      "hote": "img.lemde.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
@@ -137,7 +128,6 @@
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
-      "img.lemde.fr",
       "i.f1g.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
@@ -147,5 +137,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "3bbd7b5e210ff6aa5ac4d2b4b555e69cbf49f8f1e8d69e95192baa5332ba600c"
+  "empreinte_certificat_sha256": "e2c5d5be3963696c17714a3990eff925f4dfeb5663d7ac002236bf550cfb3dce"
 }
