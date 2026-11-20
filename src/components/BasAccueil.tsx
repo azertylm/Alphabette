@@ -151,10 +151,17 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
         <p>
           <a href="/50-idees-logiciels-decouverte.html">50 idées d'applications</a>
         </p>
+        {/* Pages de la vitrine (elles n'existent que sur alphabette.fr) */}
+        <p>
+          <a href={`${MODE_LABO ? 'https://alphabette.fr' : ''}/manifeste/`}>Pourquoi zéro pub et zéro compte ?</a> ·{' '}
+          <a href={`${MODE_LABO ? 'https://alphabette.fr' : ''}/kit-seniors/`}>Kit Mairie &amp; Résidence Senior</a> ·{' '}
+          <a href={`${MODE_LABO ? 'https://alphabette.fr' : ''}/site-vitrine/`}>Site vitrine à 390 €</a>
+        </p>
         {MODE_LABO && (
           <p>
             ♥ <a href="#soutenir">Soutenir le laboratoire (hébergement OVH &amp; crédits IA)</a> : 5 €, 10 € ou le montant de votre choix,
-            sans abonnement · <a href="#tableau-honneur">Tableau d'Honneur</a> · <a href="/embarquement/">Proposer une application</a>
+            sans abonnement · <a href="#tableau-honneur">Tableau d'Honneur</a> · <a href="/embarquement/">Proposer une application</a> ·{' '}
+            <a href="/en-direct/">📱 21 h 13 en direct</a>
           </p>
         )}
         <p className="accueil__legal">

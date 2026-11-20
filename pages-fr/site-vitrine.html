@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site vitrine clé en main à 390 € — commerçants, artisans, associations | Alphabette</title>
+<meta name="description" content="Un site vitrine clair, rapide, lisible sur téléphone, sans publicité ni traceur, pour 390 €. Commerçants, artisans et associations de La Grande-Motte, Montpellier et alentours.">
+<link rel="canonical" href="https://alphabette.fr/site-vitrine/">
+<link rel="stylesheet" href="/assets/pages.css">
+<style>
+  .prix-gros { font-size: 3rem; font-weight: 900; color: var(--encre); line-height: 1; margin: .3rem 0; }
+  .liste { display: grid; gap: .45rem; padding: 0; margin: .5rem 0 0; list-style: none; }
+  .liste li { padding-left: 1.8rem; position: relative; color: var(--encre); }
+  .liste li::before { content: '✓'; position: absolute; left: 0; color: var(--acc); font-weight: 900; font-size: 1.15rem; }
+  .gros { font-size: 1.15rem; min-height: 56px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← alphabette.fr</a>
+  <h1>Votre site vitrine, clé en main</h1>
+  <p class="chapeau">Pour les <strong>commerçants, artisans, associations</strong> de La Grande-Motte, Montpellier et alentours : un site clair qui donne envie de venir, lisible sur téléphone, sans publicité ni traceur.</p>
+
+  <section class="carte carte--vedette" aria-labelledby="t-offre">
+    <h2 id="t-offre" style="margin-top:0">Site Vitrine</h2>
+    <p class="prix-gros">390 €</p>
+    <p>Paiement en une fois ou selon l'échéancier convenu sur le devis.</p>
+    <ul class="liste">
+      <li>Conçu d'abord pour le <strong>téléphone</strong>, rapide à charger.</li>
+      <li>Vos infos utiles bien visibles : ce que vous faites, horaires, adresse, comment vous joindre.</li>
+      <li><strong>Sans publicité ni traceur</strong> : vos visiteurs ne sont pas pistés.</li>
+      <li>Titre et description soignés pour être bien présenté dans Google.</li>
+      <li>Contrôlé avant la livraison par <a href="https://alphabette.eu/crash-testeur/">le Crash-Testeur</a> (téléphone, vitesse, lisibilité, sécurité).</li>
+    </ul>
+    <p class="note">Le contenu exact est fixé ensemble, par devis ou par écrit, avant de commencer. Nom de domaine et hébergement ne sont pas compris, sauf mention contraire (<a href="/conditions-de-vente">CGV</a>). Délai précisé à la validation du projet.</p>
+    <div class="actions"><a class="bouton gros" id="devis" href="mailto:azertylm@gmail.com">📩 Demander un devis</a></div>
+  </section>
+
+  <section class="carte" aria-labelledby="t-test">
+    <h2 id="t-test" style="margin-top:0">Vous avez déjà un site ?</h2>
+    <p>Testez-le gratuitement en 30 secondes : note sur 100 et les 3 points à corriger en premier.</p>
+    <div class="actions"><a class="bouton secondaire" href="https://alphabette.eu/crash-testeur/">Tester mon site au Crash-Testeur</a></div>
+  </section>
+
+  <footer class="pied">
+    <a href="/manifeste/">Pourquoi zéro pub et zéro compte ?</a>
+    <a href="/kit-seniors/">Kit Mairie &amp; Résidence Senior</a>
+    <a href="/conditions-de-vente">CGV</a>
+  </footer>
+</main>
+<script>
+  (function () {
+    var corps = 'Bonjour,\n\nJe souhaite un site vitrine.\n\nActivité : \nVille : \nSite actuel (s’il y en a un) : \nCe que le site doit montrer en priorité : \nPersonne à contacter et téléphone : \n\nMerci !';
+    document.getElementById('devis').href = 'mailto:azertylm@gmail.com?subject=' + encodeURIComponent('Site vitrine 390 €') + '&body=' + encodeURIComponent(corps);
+  })();
+</script>
+</body>
+</html>

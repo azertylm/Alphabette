@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kit terrain — cartes et flyers avec QR code | Alphabette (interne)</title>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .reglages { display: grid; gap: .2rem; }
+  @media (min-width: 46rem) { .reglages { grid-template-columns: 1fr 1fr; gap: 0 1rem; } }
+  .planche { display: grid; gap: 4mm; margin-top: 1rem; }
+  .planche.cartes { grid-template-columns: repeat(2, 85mm); }
+  .planche.flyers { grid-template-columns: repeat(2, 1fr); }
+  .elem { background: #fff; color: #111; border: 1px dashed #9ca3af; border-radius: 3mm; padding: 4mm; display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: center; overflow: hidden; }
+  .cartes .elem { width: 85mm; height: 55mm; }
+  .flyers .elem { min-height: 140mm; grid-template-columns: 1fr; text-align: center; align-content: center; padding: 8mm; }
+  .elem * { color: #111; }
+  .elem .marque { font-weight: 900; letter-spacing: .1em; text-transform: uppercase; font-size: 8pt; color: #0f766e; }
+  .elem .titre { font-weight: 900; font-size: 13pt; line-height: 1.15; margin: 1mm 0; }
+  .elem .texte { font-size: 9pt; line-height: 1.3; margin: 0; }
+  .elem .adresse { font-size: 8pt; font-weight: 700; margin-top: 1.5mm; word-break: break-all; }
+  .elem .qr { width: 26mm; height: 26mm; }
+  .flyers .elem .qr { width: 55mm; height: 55mm; margin: 6mm auto; }
+  .flyers .elem .titre { font-size: 22pt; }
+  .flyers .elem .texte { font-size: 13pt; }
+  .flyers .elem .adresse { font-size: 12pt; }
+  .elem .qr svg { width: 100%; height: 100%; display: block; }
+  @media screen and (max-width: 40rem) { .planche.cartes { grid-template-columns: 1fr; justify-items: center; } .planche.flyers { grid-template-columns: 1fr; } }
+  @media print {
+    @page { size: A4 portrait; margin: 10mm; }
+    body { background: #fff; }
+    main { max-width: none; padding: 0; }
+    .ecran { display: none !important; }
+    .planche { margin: 0; }
+    .elem { break-inside: avoid; border-color: #d1d5db; }
+    .flyers .elem { height: 132mm; min-height: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="ecran">
+    <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+    <h1>Kit terrain</h1>
+    <p class="chapeau">Cartes de visite et flyers à imprimer, avec un QR code dessiné ici même (aucun service extérieur). Page interne, non référencée.</p>
+    <form class="carte" id="f" onsubmit="return false">
+      <div class="reglages">
+        <label class="champ">Modèle
+          <select id="modele">
+            <option value="labo">Le Laboratoire (alphabette.eu)</option>
+            <option value="vitrine">Site vitrine 390 € (commerçants)</option>
+            <option value="crash">Le Crash-Testeur</option>
+            <option value="seniors">Kit Mairie &amp; Résidence Senior</option>
+            <option value="libre">Personnalisé</option>
+          </select>
+        </label>
+        <label class="champ">Format
+          <select id="format">
+            <option value="cartes">Cartes de visite 85 × 55 mm (8 par A4)</option>
+            <option value="flyers">Petits flyers 93 × 132 mm (4 par A4)</option>
+          </select>
+        </label>
+        <label class="champ">Titre <input id="titre" maxlength="60"></label>
+        <label class="champ">Adresse du QR code <input id="adresse" maxlength="200" inputmode="url"></label>
+      </div>
+      <label class="champ">Texte <textarea id="texte" maxlength="200" rows="2"></textarea></label>
+      <div class="actions"><button type="button" onclick="window.print()">🖨️ Imprimer la planche</button></div>
+      <p class="note">Astuce : à l'impression, choisir « Taille réelle » (100 %) pour que les cartes fassent bien 85 × 55 mm.</p>
+    </form>
+  </div>
+  <div id="planche" class="planche cartes" aria-label="Aperçu de la planche"></div>
+</main>
+<script src="/assets/qrcode.js"></script>
+<script src="/assets/qr-alphabette.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var MODELES = {
+    labo: { titre: 'Des applis utiles, sans pub ni compte', texte: 'Testez-les gratuitement et donnez votre avis : le Laboratoire les améliore chaque soir à 21 h 13.', adresse: 'https://alphabette.eu' },
+    vitrine: { titre: 'Votre site vitrine, 390 € clé en main', texte: 'Commerçants, artisans, associations : un site clair, rapide sur téléphone et sans traceur.', adresse: 'https://alphabette.fr/site-vitrine/' },
+    crash: { titre: 'Votre site testé en 30 secondes', texte: 'Note sur 100 et les 3 points à corriger en premier. Gratuit, sans inscription.', adresse: 'https://alphabette.eu/crash-testeur/' },
+    seniors: { titre: 'Le numérique simple pour vos aînés', texte: 'EHPAD, résidences, CCAS, mairies : ProxiLien, Senior Bon Plan et Service France, sans publicité.', adresse: 'https://alphabette.fr/kit-seniors/' },
+    libre: { titre: '', texte: '', adresse: 'https://alphabette.eu' }
+  };
+  function remplir() {
+    var m = MODELES[$('modele').value];
+    $('titre').value = m.titre; $('texte').value = m.texte; $('adresse').value = m.adresse;
+    dessiner();
+  }
+  function dessiner() {
+    var format = $('format').value, n = format === 'cartes' ? 8 : 4;
+    var adresse = $('adresse').value.trim() || 'https://alphabette.eu';
+    var qr = window.qrSvg(adresse);
+    var p = $('planche'); p.className = 'planche ' + format; p.textContent = '';
+    for (var i = 0; i < n; i++) {
+      var e = document.createElement('div'); e.className = 'elem';
+      var bloc = document.createElement('div');
+      [['marque', 'Alphabette'], ['titre', $('titre').value], ['texte', $('texte').value], ['adresse', adresse.replace(/^https:\/\//, '').replace(/\/$/, '')]].forEach(function (x) {
+        var d = document.createElement(x[0] === 'texte' ? 'p' : 'div'); d.className = x[0]; d.textContent = x[1]; bloc.appendChild(d);
+      });
+      var q = document.createElement('div'); q.className = 'qr'; q.innerHTML = qr;
+      q.querySelector('svg').setAttribute('aria-label', 'QR code vers ' + adresse);
+      if (format === 'flyers') { bloc.insertBefore(q, bloc.querySelector('.adresse')); e.appendChild(bloc); } else { e.appendChild(bloc); e.appendChild(q); }
+      p.appendChild(e);
+    }
+  }
+  $('modele').addEventListener('change', remplir);
+  ['format', 'titre', 'texte', 'adresse'].forEach(function (id) { $(id).addEventListener('input', dessiner); });
+  remplir();
+})();
+</script>
+</body>
+</html>

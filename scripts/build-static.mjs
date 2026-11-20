@@ -138,6 +138,9 @@ ${REGLES_DOMAINES || '  # (aucun)'}
 </IfModule>
 `;
 
+/** Pages propres à la vitrine alphabette.fr (dossier pages-fr/) : jamais publiées sur .eu. */
+const PAGES_FR = ['kit-seniors', 'site-vitrine', 'manifeste'];
+
 /** .htaccess du Laboratoire (dossier eu/, servi pour alphabette.eu). */
 const HTACCESS_EU = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes -MultiViews
@@ -167,6 +170,9 @@ DirectoryIndex index.html
   RewriteRule ^api/admin/session/?$ api/admin-session.json [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
+
+  # Pages de la vitrine : elles n'existent que sur alphabette.fr
+  RewriteRule ^(${PAGES_FR.join('|')})(/.*)?$ https://alphabette.fr/$1/ [R=301,L]
 
   # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
   RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
@@ -275,7 +281,7 @@ ${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHt
   html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
   await writeFile(index, html);
 
-  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
+  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\nDisallow: /kit-terrain/\nDisallow: /en-direct/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
   const jour = new Date().toISOString().slice(0, 10);
   const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/'];
   await writeFile(
@@ -342,8 +348,8 @@ async function preparerLaboratoire() {
   // Outils du hub propres au Laboratoire (.eu seulement) : ils apparaissent dans la galerie du collectif.
   appsEu.push({
     id: 'crash-testeur', name: 'Le Crash-Testeur', slug: 'crash-testeur', icon: 'Zap', status: 'actif', badge: 'Nouveau',
-    url: '/crash-testeur/', gratuit: true, createdAt: '2026-11-19T00:00:00.000Z', updatedAt: '2026-11-19T00:00:00.000Z',
-    description: "Votre appli web testée en 10 secondes par 3 testeurs virtuels : score, 3 corrections et un prompt prêt à coller.",
+    url: '/crash-testeur/', gratuit: true, createdAt: '2026-11-19T00:00:00.000Z', updatedAt: '2026-11-20T00:00:00.000Z',
+    description: "N'importe quel site testé en 30 secondes : note sur 100 (téléphone, vitesse, accessibilité, sécurité) et les 3 points à corriger en premier.",
   });
   // 2 bis. Collectif : applications de créateurs indépendants validées (data/apps-communaute.json), .eu seulement.
   // Deux cas : l'appli a sa propre adresse https (lien externe), ou elle est hébergée et isolée par Alphabette
@@ -402,7 +408,8 @@ async function preparerLaboratoire() {
   // dans le Tableau d'Honneur de l'accueil (.eu).
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   for (const nom of ['pages.css', 'pass.js']) await cp(path.join(racine, 'labo', 'pages', nom), path.join(eu, 'labo', nom));
-  for (const page of ['embarquement', 'badge', 'pass', 'merci']) {
+  // + kit terrain (cartes et flyers à QR codes, interne, noindex) et vue verticale « 21 h 13 en direct ».
+  for (const page of ['embarquement', 'badge', 'pass', 'merci', 'kit-terrain', 'en-direct']) {
     await mkdir(path.join(eu, page), { recursive: true });
     await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, page, 'index.html'));
   }
@@ -410,6 +417,8 @@ async function preparerLaboratoire() {
   await cp(path.join(racine, 'serveur', 'php', 'paiement.php'), path.join(eu, 'api', 'paiement.php'));
   // Le Crash-Testeur (.eu seulement) : la page et son service (clé OpenRouter du relais IA Débat, rien n'est stocké).
   await cp(path.join(racine, 'serveur', 'php', 'crash-test.php'), path.join(eu, 'api', 'crash-test.php'));
+  // Audit express (sans IA) : n'importe quel site, note sur 100 ; bulletins publics gardés 90 jours hors du site.
+  await cp(path.join(racine, 'serveur', 'php', 'crash-audit.php'), path.join(eu, 'api', 'crash-audit.php'));
   await mkdir(path.join(eu, 'crash-testeur'), { recursive: true });
   await cp(path.join(racine, 'labo', 'crash-testeur', 'index.html'), path.join(eu, 'crash-testeur', 'index.html'));
   await mkdir(path.join(eu, 'labo'), { recursive: true });
@@ -472,8 +481,27 @@ async function preparerLaboratoire() {
   // Les applis du collectif hébergées par Alphabette (/createurs/<id>/) y figurent aussi.
   await referencerLaboratoire(eu, [...appsEu, ...communaute.filter((a) => a.heberge)]);
 
+  // 6 ter bis. Podcast du Labo : épisodes de la semaine (branche labo-donnees, podcast/episodes.json) → api/labo/podcast-labo.json.
+  // Sans épisode encore, le fichier n'existe pas et la page Podcasts n'affiche rien de plus.
+  try {
+    const episodes = JSON.parse(await readFile(path.join(racine, 'podcast', 'episodes.json'), 'utf8'));
+    if (Array.isArray(episodes.episodes) && episodes.episodes.length) {
+      await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
+      await writeFile(path.join(eu, 'api', 'labo', 'podcast-labo.json'), JSON.stringify({ episodes: episodes.episodes }) + '\n');
+    }
+  } catch { /* pas encore d'épisode */ }
+
   // 6 ter. Atelier qualité : rapports du Parrain (/atelier/), notes et badges « Testé au Labo » (api/labo/atelier.json).
   await publierAtelier(eu, path.join(racine, 'atelier'));
+
+  // 6 quater. Pages de la vitrine (alphabette.fr SEULEMENT, jamais copiées dans eu/) : Kit Mairie & Résidence Senior,
+  // offre Site vitrine 390 €, manifeste. Sur .eu, ces adresses renvoient vers .fr (.htaccess du laboratoire).
+  // Feuille de style commune et générateur de QR codes local (public/assets/qrcode.js, licence MIT).
+  await cp(path.join(racine, 'labo', 'pages', 'pages.css'), path.join(sortie, 'assets', 'pages.css'));
+  for (const page of PAGES_FR) {
+    await mkdir(path.join(sortie, page), { recursive: true });
+    await cp(path.join(racine, 'pages-fr', `${page}.html`), path.join(sortie, page, 'index.html'));
+  }
 
   // 7. Règles .htaccess de la vitrine : adresses .fr des applications du laboratoire → .eu.
   const pagesHub = actives

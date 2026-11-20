@@ -1,0 +1,41 @@
+# Laboratoire — « Le Podcast du Labo » : chaque dimanche soir, le script parlé de la semaine (3 minutes au plus),
+# écrit par scripts/labo/podcast-labo.mjs à partir des vraies données du Laboratoire (améliorations publiées,
+# passages sur alphabette.fr, Sentinelle). Rangé sur la branche labo-donnees (podcast/episodes.json), puis
+# publié par deploy-ovh.yml dans alphabette.eu/api/labo/podcast-labo.json (page Podcasts, voix de l'appareil).
+name: Laboratoire — Podcast du Labo
+
+on:
+  schedule:
+    - cron: '43 17 * * 0'   # dimanche 18 h 43 (Paris, hiver) / 19 h 43 (été)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: labo-podcast
+  cancel-in-progress: false
+
+jobs:
+  episode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Écrire l'épisode de la semaine et le ranger sur labo-donnees
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then git worktree add -q ../donnees FETCH_HEAD; else echo "::warning::branche labo-donnees absente"; exit 0; fi
+          node scripts/labo/podcast-labo.mjs --episodes ../donnees/podcast/episodes.json
+          jq empty ../donnees/podcast/episodes.json
+          cd ../donnees && git add -A podcast
+          git diff --cached --quiet || { git commit -q -m "Podcast du Labo — $(date -u +%F)" && "$GITHUB_WORKSPACE/scripts/labo/pousser-donnees.sh" .; }
+      - name: Publier sur alphabette.eu
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-ovh.yml --ref main || echo "::warning::publication à la prochaine mise en ligne planifiée"

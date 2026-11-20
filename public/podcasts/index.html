@@ -114,6 +114,19 @@
   <h1>Podcasts. <em>Écoutez ce qui vous plaît.</em></h1>
   <p class="intro">Sans publicité, sans compte. Vos abonnements restent sur votre appareil.</p>
 
+  <!-- Le Podcast du Labo (alphabette.eu seulement) : script de la semaine, lu par la voix de l'appareil. -->
+  <section id="labo-podcast" class="carte" hidden aria-labelledby="labo-podcast-titre">
+    <h2 id="labo-podcast-titre" style="margin-top:0">🎙️ Le Podcast du Labo</h2>
+    <p id="labo-podcast-ep" style="font-weight:800"></p>
+    <p class="intro" style="margin:4px 0 10px">Chaque dimanche : ce qui a vraiment changé au Laboratoire cette semaine, en 3 minutes au plus. Lu par la voix de synthèse de votre appareil.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button type="button" class="bouton" id="labo-podcast-lire">▶ Écouter</button>
+      <button type="button" class="bouton clair" id="labo-podcast-stop" hidden>■ Arrêter</button>
+    </div>
+    <details style="margin-top:10px"><summary style="cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700">Lire le texte</summary><div id="labo-podcast-texte"></div></details>
+    <details id="labo-podcast-anciens" hidden style="margin-top:6px"><summary style="cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700">Épisodes précédents</summary><ul id="labo-podcast-liste" style="padding-left:20px"></ul></details>
+  </section>
+
   <div class="onglets" role="tablist" aria-label="Sections">
     <button type="button" role="tab" id="t-abos" aria-selected="true">Mes podcasts</button>
     <button type="button" role="tab" id="t-chercher" aria-selected="false">Chercher</button>
@@ -173,6 +186,53 @@
 </div>
 <audio id="audio" preload="none"></audio>
 
+<script>
+/* Le Podcast du Labo : api/labo/podcast-labo.json (publié sur alphabette.eu seulement ; ailleurs, rien ne s'affiche). */
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  let episodes = [], courant = null;
+  const parler = 'speechSynthesis' in window;
+  function choisir(ep) {
+    courant = ep;
+    const min = Math.max(1, Math.round(ep.duree_estimee_s / 60));
+    $('labo-podcast-ep').textContent = `${ep.titre} · environ ${min} min`;
+    const t = $('labo-podcast-texte'); t.textContent = '';
+    ep.sections.forEach((s) => { const h = document.createElement('h3'); h.textContent = s.titre; h.style.margin = '12px 0 4px'; const p = document.createElement('p'); p.textContent = s.texte; p.style.margin = '0'; t.append(h, p); });
+  }
+  function arreter() { if (parler) speechSynthesis.cancel(); $('labo-podcast-stop').hidden = true; $('labo-podcast-lire').hidden = false; }
+  $('labo-podcast-lire').onclick = () => {
+    if (!courant) return;
+    if (!parler) { $('labo-podcast-texte').closest('details').open = true; return; }
+    speechSynthesis.cancel();
+    const voix = speechSynthesis.getVoices().find((v) => /^fr(-|_|$)/i.test(v.lang));
+    // Une phrase par énoncé : certains téléphones coupent les textes longs.
+    const phrases = courant.texte.match(/[^.!?…]+[.!?…]+/g) || [courant.texte];
+    phrases.forEach((ph, i) => {
+      const u = new SpeechSynthesisUtterance(ph.trim()); u.lang = 'fr-FR'; if (voix) u.voice = voix; u.rate = 1;
+      if (i === phrases.length - 1) u.onend = arreter;
+      speechSynthesis.speak(u);
+    });
+    $('labo-podcast-lire').hidden = true; $('labo-podcast-stop').hidden = false;
+  };
+  $('labo-podcast-stop').onclick = arreter;
+  fetch('/api/labo/podcast-labo.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).then((d) => {
+    episodes = (d && Array.isArray(d.episodes)) ? d.episodes : [];
+    if (!episodes.length) return;
+    $('labo-podcast').hidden = false;
+    choisir(episodes[0]);
+    if (episodes.length > 1) {
+      $('labo-podcast-anciens').hidden = false;
+      episodes.slice(1).forEach((ep) => {
+        const li = document.createElement('li'); const b = document.createElement('button');
+        b.type = 'button'; b.className = 'bouton clair'; b.style.margin = '4px 0'; b.textContent = ep.titre;
+        b.onclick = () => { arreter(); choisir(ep); $('labo-podcast').scrollIntoView({ block: 'start' }); };
+        li.append(b); $('labo-podcast-liste').append(li);
+      });
+    }
+  }).catch(() => {});
+})();
+</script>
 <script>
 (function () {
   'use strict';
