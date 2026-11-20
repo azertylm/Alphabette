@@ -15,6 +15,11 @@
   <p class="chapeau">Un paiement, 12 mois d'accès, <strong>aucun renouvellement automatique</strong>. Les applications gratuites restent gratuites.</p>
   <p><span id="indicateur" class="pastille cache" role="status"></span></p>
 
+  <div id="lancement" class="carte carte--vedette cache" role="status">
+    <h2 style="margin-top:0">🎉 Tout est gratuit jusqu'au <span class="date-gratuit"></span></h2>
+    <p>Offre de lancement : toutes les applications Alphabette sont gratuites jusqu'au <strong class="date-gratuit"></strong> inclus. <strong>Rien à payer</strong>, aucun Pass à prendre d'ici là. Ensuite : 15 € ou 40 € pour 12 mois, sans renouvellement automatique.</p>
+  </div>
+
   <!-- Fin de la découverte : on propose le Pass, sans pression -->
   <div id="fin-decouverte" class="carte carte--acc cache" role="status">
     <h2 style="margin-top:0">Vos 48 h de découverte sont terminées</h2>
@@ -111,6 +116,14 @@
   if (P.decouverteTerminee()) $('fin-decouverte').classList.remove('cache');
 
   var e = await P.etat();
+  var gratuit = e.gratuit_jusqu_au ? new Date(e.gratuit_jusqu_au + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  if (gratuit) {
+    $('lancement').classList.remove('cache');
+    document.querySelectorAll('.date-gratuit').forEach(function (n) { n.textContent = gratuit; });
+    $('fin-decouverte').classList.add('cache');
+    $('t-offres').textContent = 'Les Pass 12 mois, à partir du ' + new Date(new Date(e.gratuit_jusqu_au + 'T12:00:00').getTime() + 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    $('t-cadeau').textContent = 'Offrir un Pass à un proche (après l\u2019offre de lancement)';
+  }
   $('prix-app').textContent = e.prix.pass_app; $('prix-eco').textContent = e.prix.pass_ecosysteme;
   $('fin-prix-app').textContent = e.prix.pass_app + ' €'; $('fin-prix-eco').textContent = e.prix.pass_ecosysteme + ' €';
   $('prix-credits').textContent = e.prix.credits_iadebat; $('nb-credits').textContent = e.credits_par_pack;
@@ -149,8 +162,10 @@
     var r = await P.commander(cadeau.produit, { pour: 'cadeau', app: cadeau.app, message: $('message-cadeau').value });
     if (!r.ok) { m.className = 'message err'; m.textContent = r.message; this.disabled = false; }
   });
-  if (ferme) $('paiement-ferme').classList.remove('cache');
-  if (!e.ouvert || !e.ouvert.credits_iadebat) { $('m-credits').textContent = 'Le rechargement ouvre bientôt.'; }
+  if (gratuit) { $('paiement-ferme').textContent = 'Gratuit jusqu\u2019au ' + gratuit + ' inclus : ces Pass ne sont pas vendus d\u2019ici là.'; $('paiement-ferme').classList.remove('cache'); }
+  else if (ferme) $('paiement-ferme').classList.remove('cache');
+  if (gratuit) { $('m-credits').textContent = 'Pas de crédits à acheter avant le ' + gratuit + ' : le débat Premium offert revient chaque jour, et le Pass Découverte est gratuit.'; }
+  else if (!e.ouvert || !e.ouvert.credits_iadebat) { $('m-credits').textContent = 'Le rechargement ouvre bientôt.'; }
 
   // Pass Découverte
   var bd = $('b-decouverte'), md = $('m-decouverte');

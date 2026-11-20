@@ -4,7 +4,9 @@
  * Publié dans eu/api/paiement.php par scripts/build-static.mjs. Paiement par liens Stripe, SANS abonnement :
  * un paiement = un achat, jamais de prélèvement suivant (CGV, article 5).
  *
- *   GET  ?etat                                   → offres ouvertes, prix, Pass Découverte ouvert ou non
+ *   GET  ?etat                                   → offres ouvertes, prix, Pass Découverte ouvert ou non, gratuit_jusqu_au
+ *        Offre de lancement (data/paiements.json « gratuit_jusqu_au ») : jusqu'à cette date incluse, ni Pass ni crédits
+ *        ne sont vendus (« commander » refuse) ; le soutien Mécène reste possible.
  *   POST { action:"decouverte" }                 → { jeton, debut, fin }   48 h exactement, sans carte bancaire
  *   POST { action:"commander", produit, pour:"moi"|"cadeau", app?, pseudo?, afficher?, porte_monnaie? }
  *                                                → { lien }   lien Stripe + client_reference_id (la commande attend le paiement)
@@ -182,6 +184,18 @@ function produits(): array {
         'mecene_libre'    => array('nom' => 'Soutien au Laboratoire (montant libre)', 'prix' => 100, 'lien' => (string) ($l['mecene_libre'] ?? ''), 'type' => 'mecene'),
     );
 }
+/**
+ * Offre de lancement : tout est gratuit jusqu'à « gratuit_jusqu_au » inclus (heure de Paris). Retourne la date
+ * (AAAA-MM-JJ) tant qu'elle n'est pas passée, sinon null. Pendant ce temps, ni Pass ni crédits ne sont vendus.
+ */
+function gratuit_jusqu_au(): ?string {
+    $d = (string) (public_json('paiements.json')['gratuit_jusqu_au'] ?? '');
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $d)) return null;
+    $fin = DateTime::createFromFormat('Y-m-d H:i:s', $d . ' 23:59:59', new DateTimeZone('Europe/Paris'));
+    return $fin && $fin->getTimestamp() >= time() ? $d : null;
+}
+function payant(string $produit): bool { return in_array($produit, array('pass_app', 'pass_ecosysteme', 'credits_iadebat'), true); }
+
 function credits_par_pack(): int { return max(1, (int) (public_json('paiements.json')['credits']['debats_par_pack'] ?? 50)); }
 function activations_max(): int { return max(1, (int) (public_json('paiements.json')['pass']['appareils'] ?? 3)); }
 function heures_decouverte(): int { return max(1, (int) (public_json('paiements.json')['decouverte']['heures'] ?? 48)); }
@@ -463,9 +477,10 @@ if ($METHODE === 'OPTIONS') repondre(204, array());
 if ($METHODE === 'GET' && isset($_GET['etat'])) {
     $cle = !empty(config()['stripe_cle']);
     $ouvert = array();
-    foreach (produits() as $k => $p) $ouvert[$k] = $cle && lien_valide($p['lien']);
+    $gratuit = gratuit_jusqu_au();
+    foreach (produits() as $k => $p) $ouvert[$k] = $cle && lien_valide($p['lien']) && !($gratuit && payant($k));
     $prix = array_map(function ($p) { return $p['prix'] / 100; }, produits());
-    repondre(200, array('ouvert' => $ouvert, 'prix' => $prix, 'credits_par_pack' => credits_par_pack(), 'appareils' => activations_max(),
+    repondre(200, array('ouvert' => $ouvert, 'prix' => $prix, 'gratuit_jusqu_au' => $gratuit, 'credits_par_pack' => credits_par_pack(), 'appareils' => activations_max(),
         'decouverte' => array('ouverte' => decouverte_ouverte(), 'heures' => heures_decouverte(), 'premium_par_jour' => (int) (public_json('paiements.json')['decouverte']['premium_par_jour'] ?? 3)), 'applis_pass' => applis_pass()));
 }
 
@@ -534,6 +549,8 @@ if ($action === 'commander') {
     $produits = produits();
     $produit = (string) ($e['produit'] ?? '');
     if (!isset($produits[$produit])) erreur(400, 'Offre inconnue.');
+    $gratuit = gratuit_jusqu_au();
+    if ($gratuit && payant($produit)) erreur(403, 'Rien à payer : Alphabette est gratuit jusqu\'au ' . date_fr((int) strtotime($gratuit . ' 12:00:00')) . ' inclus.', array('gratuit_jusqu_au' => $gratuit));
     if (empty(config()['stripe_cle']) || !lien_valide($produits[$produit]['lien'])) erreur(503, "Le paiement en ligne n'est pas encore ouvert pour cette offre.", array('ferme' => true));
     if (!limite('commande', 30)) erreur(429, "Beaucoup d'essais aujourd'hui : revenez demain ou écrivez à " . DESTINATAIRE . '.');
     $type = $produits[$produit]['type'];

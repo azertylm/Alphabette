@@ -28,7 +28,7 @@
   async function etat() {
     if (etatCache) return etatCache;
     var r = await appeler(null, { requete: 'etat' });
-    etatCache = r.ok ? r.d : { ouvert: {}, prix: { pass_app: 15, pass_ecosysteme: 40, credits_iadebat: 5 }, credits_par_pack: 50, decouverte: { ouverte: false, heures: 48 }, applis_pass: {}, horsLigne: true };
+    etatCache = r.ok ? r.d : { gratuit_jusqu_au: null, ouvert: {}, prix: { pass_app: 15, pass_ecosysteme: 40, credits_iadebat: 5 }, credits_par_pack: 50, decouverte: { ouverte: false, heures: 48 }, applis_pass: {}, horsLigne: true };
     return etatCache;
   }
 

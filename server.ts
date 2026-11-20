@@ -34,11 +34,15 @@ function lireDonation(): Record<string, unknown> | undefined {
 
 /**
  * Liens de paiement Stripe des Pass : data/paiements.json (liens.pass_app, liens.pass_ecosysteme).
- * Vides tant que le paiement n'est pas ouvert : la base n'affiche alors aucun bouton de paiement.
+ * Vides tant que le paiement n'est pas ouvert ou pendant l'offre de lancement : la base n'affiche alors aucun bouton.
+ * (Le site est reconstruit plusieurs fois par jour : les boutons apparaissent seuls après la date.)
  */
 function lireLiensPaiement(): { perApp: string; ecosystem: string } {
   try {
     const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "paiements.json"), "utf-8").replace(/^\uFEFF/, ""));
+    // Offre de lancement : gratuit jusqu'à « gratuit_jusqu_au » inclus (Paris) → aucun bouton de paiement d'ici là.
+    const jusqua = /^\d{4}-\d{2}-\d{2}$/.test(String(d?.gratuit_jusqu_au ?? "")) ? Date.parse(`${d.gratuit_jusqu_au}T23:59:59+02:00`) : NaN;
+    if (!Number.isNaN(jusqua) && Date.now() <= jusqua) return { perApp: "", ecosystem: "" };
     return { perApp: String(d?.liens?.pass_app ?? ""), ecosystem: String(d?.liens?.pass_ecosysteme ?? "") };
   } catch {
     return { perApp: "", ecosystem: "" };

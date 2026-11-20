@@ -464,7 +464,11 @@ if (isset($_GET['etat'])) {
     }
     if ($porte) $credits = (int) (lire_json(fichier_porte_monnaie(), array())[$porte]['solde'] ?? 0);
     $total = $p + ($payant ? (int) ($infoPass['restants'] ?? 0) + (int) $credits : 0);
-    repondre(200, array('actif' => true, 'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
+    // Offre de lancement : l'appli affiche « gratuit jusqu'au … » au lieu de proposer des crédits.
+    $gratuitJusquAu = (string) (lire_json(__DIR__ . '/paiements.json', array())['gratuit_jusqu_au'] ?? '');
+    $finGratuit = preg_match('/^\d{4}-\d{2}-\d{2}$/', $gratuitJusquAu) ? DateTime::createFromFormat('Y-m-d H:i:s', $gratuitJusquAu . ' 23:59:59', new DateTimeZone('Europe/Paris')) : false;
+    repondre(200, array('actif' => true, 'gratuit_jusqu_au' => ($finGratuit && $finGratuit->getTimestamp() >= time()) ? $gratuitJusquAu : null,
+        'quota' => QUOTA_GRATUIT_JOUR, 'debats_restants' => $g,
         'gratuit' => array('quota' => QUOTA_GRATUIT_JOUR, 'restants' => $g),
         // « restants » = le débat offert du jour (compatibilité) ; « total » = offert + Pass + crédits.
         'premium' => array('quota' => QUOTA_PREMIUM_JOUR, 'restants' => $p, 'total' => $total, 'pass' => $infoPass, 'credits' => $credits, 'disponible' => $payant)));

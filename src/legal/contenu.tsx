@@ -115,6 +115,7 @@ export const ConditionsVente: React.FC = () => (
       <li><strong>Essai :</strong> 7 jours d'essai offerts.</li>
       {MODE_LABO ? (
         <>
+        <li><strong>Offre de lancement :</strong> toutes les applications de l'écosystème sont gratuites <strong>au moins jusqu'au 7 mai 2027 inclus</strong>. Aucun Pass ni pack de crédits n'est vendu avant cette date ; les dons restent possibles. Le Vendeur peut prolonger cette période, jamais la raccourcir.</li>
         <li><strong>Pass Découverte — gratuit, 48 heures :</strong> sur alphabette.eu, accès découverte aux fonctions Premium (notamment quelques débats Premium par jour sur <em>IA Débat</em>) pendant exactement 48 heures sur l'appareil où il est ouvert, sans carte bancaire. Il s'arrête seul et ne devient jamais payant.</li>
         <li><strong>Pass Cadeau (15 € ou 40 €) :</strong> le même Pass annuel, payé par le Client pour un tiers. Le Client reçoit un code et une carte cadeau à imprimer. Le code s'active dans les 12 mois suivant l'achat ; les 12 mois du Pass commencent le jour de l'activation.</li>
         <li><strong>Packs de crédits IA Débat :</strong> achat ponctuel, sans abonnement, de crédits pour des débats en mode Premium sur <em>IA Débat</em>, au-delà du quota gratuit quotidien (par exemple 5 € pour 50 débats Premium ; 1 crédit est décompté par débat Premium lancé). Les crédits n'expirent pas tant que le service est exploité.</li>

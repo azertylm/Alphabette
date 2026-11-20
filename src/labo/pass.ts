@@ -42,14 +42,20 @@ export function decouverteDejaOuverte(): boolean {
   return Boolean(lire('alphabette_decouverte'));
 }
 
-export async function decouverteOuverte(): Promise<boolean> {
+/** État des offres : Pass Découverte ouvert ? Offre de lancement (gratuit jusqu'au AAAA-MM-JJ inclus) ? */
+export async function etatOffres(): Promise<{ decouverte: boolean; gratuitJusquAu: string | null }> {
   try {
     const r = await fetch(`${API}?etat`, { cache: 'no-store' });
     const d = await r.json();
-    return Boolean(d?.decouverte?.ouverte);
+    return { decouverte: Boolean(d?.decouverte?.ouverte), gratuitJusquAu: typeof d?.gratuit_jusqu_au === 'string' ? d.gratuit_jusqu_au : null };
   } catch {
-    return false;
+    return { decouverte: false, gratuitJusquAu: null };
   }
+}
+
+/** « 2027-05-07 » → « 7 mai 2027 » */
+export function dateLongue(jour: string): string {
+  return new Date(`${jour}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 export async function lancerDecouverte(): Promise<{ ok: boolean; message?: string }> {

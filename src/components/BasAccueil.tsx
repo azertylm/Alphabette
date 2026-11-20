@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useShell } from '@alphabette/shell';
 import { MODE_LABO } from '../labo/labo';
-import { decouverteDejaOuverte, decouverteOuverte, decouverteTerminee, lancerDecouverte, passActif, tempsRestant } from '../labo/pass';
+import { dateLongue, decouverteDejaOuverte, decouverteTerminee, etatOffres, lancerDecouverte, passActif, tempsRestant } from '../labo/pass';
 
 /**
  * @file BasAccueil.tsx
@@ -24,10 +24,11 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
   const [pass, setPass] = useState(() => (MODE_LABO ? passActif() : null));
   const [finie, setFinie] = useState(() => MODE_LABO && decouverteTerminee());
   const [ouverte, setOuverte] = useState(false);
+  const [gratuitJusquAu, setGratuitJusquAu] = useState<string | null>(null);
   const [msgDecouverte, setMsgDecouverte] = useState('');
   useEffect(() => {
     if (!MODE_LABO) return;
-    decouverteOuverte().then(setOuverte);
+    etatOffres().then((e) => { setOuverte(e.decouverte); setGratuitJusquAu(e.gratuitJusquAu); });
     const t = setInterval(() => { setPass(passActif()); setFinie(decouverteTerminee()); }, 60000);
     return () => clearInterval(t);
   }, []);
@@ -60,6 +61,13 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
             <span>Toutes les applications, d'aujourd'hui et de demain.</span>
           </div>
         </div>
+        {MODE_LABO && gratuitJusquAu && (
+          <div className="accueil__carte accueil__carte--vedette accueil__decouverte" role="status">
+            <p>
+              🎉 <strong>Tout est gratuit jusqu'au {dateLongue(gratuitJusquAu)}</strong> : rien à payer, aucun Pass à prendre d'ici là.
+            </p>
+          </div>
+        )}
         {MODE_LABO && (
           <div className="accueil__carte accueil__decouverte">
             {pass ? (
@@ -68,6 +76,8 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
                   ? <>⏳ Pass Découverte : <strong>{tempsRestant(pass.fin)}</strong> restantes</>
                   : <>✅ {pass.offre === 'ecosysteme' ? 'Pass Écosystème' : `Pass ${pass.app_nom ?? 'Application'}`} actif</>}
               </p>
+            ) : finie && gratuitJusquAu ? (
+              <p role="status">Vos 48 h de découverte sont terminées. Le débat Premium offert revient chaque jour, et tout reste gratuit jusqu'au {dateLongue(gratuitJusquAu)}.</p>
             ) : finie ? (
               <p role="status">
                 Vos 48 h de découverte sont terminées. Pour continuer : Pass {config.perAppPerYear} € ou {config.ecosystemPerYear} € —{' '}
@@ -91,7 +101,9 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
         <p className="accueil__note">
           Prix TTC, avec {config.trialDays} jours d'essai.{' '}
           {MODE_LABO
-            ? `12 mois, aucun renouvellement automatique.${/^https:\/\/buy\.stripe\.com\//.test(config.paymentLinks.ecosystem) ? '' : ' Le paiement en ligne ouvre bientôt : en attendant, les applications s\'utilisent librement.'}`
+            ? gratuitJusquAu
+              ? `Offre de lancement : gratuit jusqu'au ${dateLongue(gratuitJusquAu)} inclus. Ensuite : 12 mois, aucun renouvellement automatique.`
+              : `12 mois, aucun renouvellement automatique.${/^https:\/\/buy\.stripe\.com\//.test(config.paymentLinks.ecosystem) ? '' : ' Le paiement en ligne ouvre bientôt : en attendant, les applications s\'utilisent librement.'}`
             : 'Le paiement en ligne n\'est pas encore ouvert : aujourd\'hui, les applications s\'utilisent librement.'}
         </p>
         <p className="accueil__note">

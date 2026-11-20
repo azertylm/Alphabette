@@ -1,5 +1,10 @@
 # Paiements du Laboratoire (alphabette.eu) — Pass, cadeaux, crédits, mécènes
 
+**Offre de lancement (décision de Valentin, 20/11/2026) : tout est gratuit jusqu'au 7 mai 2027 inclus.** Un seul
+réglage : `gratuit_jusqu_au` dans `data/paiements.json`. D'ici là, ni Pass ni crédits ne sont vendus (même liens posés),
+les pages affichent « gratuit jusqu'au 7 mai 2027 » ; le Pass Découverte et le soutien Mécène restent possibles.
+Pour prolonger : changer la date (les CGV disent « au moins jusqu'au 7 mai 2027 » : prolonger oui, raccourcir non).
+
 Tout passe par **des liens de paiement Stripe, sans abonnement** : un paiement = un achat, jamais de prélèvement
 suivant (CGV, article 5). Rien n'est vendu tant que la clé Stripe et les liens ne sont pas posés : les boutons
 restent cachés et les pages disent « le paiement en ligne ouvre bientôt ».

@@ -1,5 +1,7 @@
 {
   "info": "Paiements d'Alphabette (alphabette.eu) : liens de paiement Stripe PUBLICS, sans abonnement (un paiement = un achat, jamais de prélèvement suivant). Aucune clé secrète ici : la clé Stripe et le secret du webhook sont rangés hors du site (~/alphabette-paiements/config.json, via api/paiement.php?installer). Tant qu'un lien est vide, son bouton n'apparaît pas. Les prix des Pass viennent de server.ts (pricing.perApp / pricing.ecosystem). Chaque lien Stripe : « après paiement, rediriger vers » https://alphabette.eu/merci/?session_id={CHECKOUT_SESSION_ID}, et une métadonnée produit=<clé ci-dessous>. Mode d'emploi : docs/labo/PAIEMENTS.md.",
+  "gratuit_jusqu_au": "2027-05-07",
+  "_aide_gratuit": "Offre de lancement (décision de Valentin, 20/11/2026) : tout Alphabette est gratuit jusqu'à cette date INCLUSE (heure de Paris). D'ici là, aucun Pass ni pack de crédits n'est vendu, même si les liens Stripe sont posés ; le soutien « Mécène du Labo » reste possible. Pour prolonger : changer la date. Pour arrêter : mettre une date passée.",
   "liens": {
     "pass_app": "",
     "pass_ecosysteme": "",
@@ -8,7 +10,17 @@
     "mecene_10": "",
     "mecene_libre": ""
   },
-  "credits": { "prix": 5, "debats_par_pack": 50 },
-  "pass": { "premium_par_jour": 5, "appareils": 3 },
-  "decouverte": { "actif": true, "heures": 48, "premium_par_jour": 3 }
+  "credits": {
+    "prix": 5,
+    "debats_par_pack": 50
+  },
+  "pass": {
+    "premium_par_jour": 5,
+    "appareils": 3
+  },
+  "decouverte": {
+    "actif": true,
+    "heures": 48,
+    "premium_par_jour": 3
+  }
 }
