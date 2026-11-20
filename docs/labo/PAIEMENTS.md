@@ -37,7 +37,8 @@ les crédits. Si le crédit OpenRouter du site est épuisé, aucun crédit n'est
    `https://alphabette.eu/api/paiement.php?webhook` (événements `checkout.session.completed` et
    `checkout.session.async_payment_succeeded`).
 4. Les enregistrer hors du site avec le lien d'installation `https://alphabette.eu/api/paiement.php?installer#jeton=…`
-   (le jeton n'est pas dans le dépôt ; seule son empreinte SHA-256 y est).
+   (le jeton n'est gardé nulle part : au moment du branchement, en tirer un nouveau et mettre son empreinte SHA-256
+   dans `JETON_INSTALLATION_SHA256` de `serveur/php/paiement.php`).
 5. Tester avec une carte de test Stripe, puis passer les liens en mode réel.
 
 Chaque vente envoie un e-mail à l'acheteur (son code) et à Valentin (avec, pour un mécène, un lien de retrait du pseudo).
