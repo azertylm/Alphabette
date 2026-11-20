@@ -34,6 +34,13 @@ Règles des agents : `RULES_AND_MEMORY.md` (racine). Agents : `.claude/agents/tr
 - Bac à sable A/B, dictée d'avis, micro-tutos : `docs/labo/MODULES-INTERACTION.md`. Agent Gardien Ergonomie & Sobriété : `docs/labo/AGENT-GARDIEN.md`.
 - Micro-sondages branchés : IA Débat (« débat terminé »), Info Perso (« article lu », après 20 s de lecture).
 
+## Atelier qualité (20/11/2026)
+Chaque nuit, sept agents contrôlent chaque appli (Douanier, Pouce, Opticien, Poids Plume, Phare, Parapluie, Témoin),
+le Jury donne le badge « Testé au Labo », le Parrain publie un rapport par appli sur `alphabette.eu/atelier/`. Le Veilleur
+(toutes les heures), le Concierge et l'Économe (chaque soir) surveillent adresses, certificats, domaines, sauvegarde et
+crédit IA. Bouton « Signaler » sous chaque appli, charte des créateurs (`/charte-createurs`), et hébergement isolé
+des applis de créateurs sans hébergement (`/createurs/<id>/`, bac à sable). Tout : `docs/labo/ATELIER-QUALITE.md`.
+
 ## Relier le domaine (une seule fois, chez OVH)
 1. Zone DNS de `alphabette.eu` : enregistrements `A` / `AAAA` de `@` et `www` identiques à ceux de `alphabette.fr`.
 2. Hébergement → Multisite → ajouter `alphabette.eu` et `www.alphabette.eu`, dossier racine **`alphabette`**
