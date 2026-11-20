@@ -347,3 +347,83 @@ export const Cookies: React.FC = () => (
     </p>
   </>
 );
+
+/* ------------------------------------------------------------------ */
+/*
+ * Charte des créateurs du Collectif Alphabette (alphabette.eu), version du 20 novembre 2026.
+ * Écrite d'après ce que fait réellement le code : Atelier qualité (scripts/labo/atelier.mjs), bac à sable des
+ * applis hébergées (scripts/labo/bac-a-sable.mjs), bouton Signaler (labo/serveur/collectif.php).
+ * Ce n'est pas un avis juridique : à faire relire avec les autres pages.
+ */
+export const CharteCreateurs: React.FC = () => (
+  <>
+    <p className="legal__maj">Dernière mise à jour : 20 novembre 2026</p>
+    <p>
+      Le <strong>Collectif Alphabette</strong> présente sur <strong>alphabette.eu</strong> des applications créées par des
+      créateurs indépendants. Cette charte dit ce que chacun s'engage à faire. En proposant une application, vous
+      l'acceptez (cinquième case du formulaire).
+    </p>
+
+    <h2>Deux façons de publier</h2>
+    <ul>
+      <li><strong>Avec votre adresse</strong> : votre application est en ligne chez vous ; le collectif affiche un lien et l'ouvre dans un nouvel onglet. Vous en êtes l'éditeur et l'hébergeur.</li>
+      <li>
+        <strong>Hébergée par Alphabette</strong> : vous donnez un dépôt GitHub public qui contient les fichiers déjà
+        construits (HTML, CSS, JavaScript, images, sons…). Alphabette publie une version précise (un commit), sans
+        jamais lancer votre code sur ses serveurs, et l'affiche dans un <strong>cadre isolé</strong> : votre application ne
+        peut lire ni les données d'Alphabette ni celles des autres applications, et ne peut joindre que les services
+        que vous avez déclarés. Seuls les fichiers statiques sont acceptés (pas de PHP ni de script serveur), 25 Mo au plus.
+        Chaque mise à jour est contrôlée de nouveau avant d'être publiée. Vous restez l'éditeur ; Alphabette est l'hébergeur.
+      </li>
+    </ul>
+
+    <h2>Vos engagements</h2>
+    <ol>
+      <li><strong>Utile et en état de marche</strong> : l'application fait ce qu'elle annonce et s'ouvre sur téléphone, sans inscription obligatoire pour l'essayer.</li>
+      <li><strong>Vie privée</strong> : aucun traceur publicitaire ni outil de mesure d'audience tiers, aucun cookie tiers sans accord du visiteur, et seulement les données vraiment nécessaires. Si vous en recueillez, dites lesquelles, pourquoi et où elles vont.</li>
+      <li><strong>Honnêteté</strong> : pas de faux avis, faux chiffres, faux témoignages, fausses urgences ni paiement trompeur. Les réponses d'une intelligence artificielle sont présentées comme telles, avec un avertissement : elles peuvent contenir des erreurs.</li>
+      <li><strong>Contenu légal</strong> : rien d'illicite, de haineux, de dangereux, de trompeur (arnaque, hameçonnage) ni d'atteinte aux droits d'autrui (droit d'auteur, image, marque, vie privée).</li>
+      <li><strong>Vos droits</strong> : vous détenez les droits sur le code, les textes, les images et les sons de l'application, ou l'autorisation de les utiliser.</li>
+      <li><strong>Aucun secret dans le code</strong> : jamais de clé d'API, de mot de passe ni de jeton dans les fichiers publiés.</li>
+      <li><strong>Informations légales</strong> : avec votre propre adresse, votre application affiche ses mentions légales et sa politique de confidentialité. Hébergée par Alphabette, le cadre affiche celles du site et un lien de signalement.</li>
+      <li><strong>Visibilité partagée</strong> : vous ajoutez le badge du collectif en bas de votre application (<a href="/rejoindre/">une ligne à copier</a>).</li>
+    </ol>
+
+    <h2>Ce que fait Alphabette</h2>
+    <ul>
+      <li>
+        <strong>Contrôles automatiques</strong> (l'Atelier qualité) avant la publication puis chaque nuit : sécurité
+        (traceurs, secrets, appels non déclarés), usage sur téléphone, lisibilité, vitesse, référencement et cadre
+        légal. Les contrôles ouvrent l'application comme un visiteur, sans rien cliquer ni saisir.
+      </li>
+      <li>
+        <strong>Un rapport pour vous</strong>, publié sur <a href="/atelier/">alphabette.eu/atelier</a> (non indexé par
+        les moteurs de recherche) : chaque point relevé, comment le corriger et un texte prêt à coller dans votre outil d'IA.
+      </li>
+      <li>
+        <strong>Le badge « Testé au Labo »</strong> signale qu'à la date indiquée les contrôles automatiques n'ont rien
+        relevé de bloquant pendant au moins trois jours sur sept. Ce n'est ni une certification, ni une garantie de
+        sécurité ou d'exactitude : c'est le résultat de contrôles automatiques à une date donnée.
+      </li>
+      <li>Votre contact n'est jamais affiché ni transmis : il sert seulement à vous répondre.</li>
+      <li>La publication de chaque application est validée par Alphabette.</li>
+    </ul>
+
+    <h2>Droits accordés à Alphabette</h2>
+    <p>
+      Vous gardez tous vos droits. Vous autorisez seulement Alphabette, gratuitement et sans exclusivité, pendant la
+      durée de la publication, à héberger l'application (version hébergée), à l'afficher, à la présenter (nom,
+      description, captures d'écran faites par l'Atelier qualité) et à publier le rapport de ses contrôles.
+    </p>
+
+    <h2>Signalements, suspension et retrait</h2>
+    <ul>
+      <li>Chaque application a un bouton <strong>« Signaler »</strong>. Le signalement arrive aussitôt chez Alphabette, qui l'examine sans délai. Vous pouvez aussi écrire à <Mail />.</li>
+      <li>Alphabette peut suspendre ou retirer une application tout de suite en cas de contenu manifestement illicite, de risque pour les visiteurs ou de manquement grave à cette charte, et dans les autres cas après vous avoir demandé de corriger. Le motif vous est communiqué si vous avez laissé un contact ; vous pouvez y répondre pour contester.</li>
+      <li>Vous pouvez demander le retrait de votre application à tout moment par e-mail : il est fait sous 7 jours au plus.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>Alphabette SASU — <Mail />. Voir aussi les <a href="/mentions-legales">mentions légales</a> et la <a href="/confidentialite">politique de confidentialité</a>.</p>
+  </>
+);

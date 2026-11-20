@@ -3,9 +3,10 @@ import { Search } from 'lucide-react';
 import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
-import { MODE_LABO, cheminApp, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
+import { MODE_LABO, cheminApp, chargerAtelier, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type DonneesAtelier, type EcoScore, type DonneesLabo, type NoteVersion, type Resumes } from '../labo/labo';
 import { LaboAvis } from '../labo/LaboAvis';
 import { ProposerApp } from '../labo/ProposerApp';
+import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
 
 type FiltreCollectif = 'toutes' | 'officiel' | 'communaute' | 'nouveautes' | 'test';
@@ -95,9 +96,13 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   const [soutiens, setSoutiens] = useState<Record<string, number>>({});
   const [messageSoutien, setMessageSoutien] = useState<{ id: string; texte: string } | null>(null);
   const [proposerOuvert, setProposerOuvert] = useState(false);
+  // Atelier qualité (notes de la nuit, badge « Testé au Labo ») et signalements (Le Parapluie).
+  const [atelier, setAtelier] = useState<DonneesAtelier>({ apps: {}, jury: {} });
+  const [aSignaler, setASignaler] = useState<{ id: string; nom: string } | null>(null);
   useEffect(() => {
     if (!MODE_LABO) return;
     chargerSoutiens().then(setSoutiens);
+    chargerAtelier().then(setAtelier);
     if (window.location.hash === '#proposer') setProposerOuvert(true);
   }, []);
   const soutenirApp = async (id: string) => {
@@ -220,7 +225,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         <div className={MODE_LABO ? 'accueil__tuiles accueil__tuiles--labo' : 'accueil__tuiles'}>
           {visibles.map((app) => {
             const tuile = (
-              <a key={app.id} className="accueil__tuile" href={app.url || '#'} {...(app.communaute ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+              <a key={app.id} className="accueil__tuile" href={app.url || '#'} {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                 <span className="accueil__icone" aria-hidden="true">
                   <RegistryIcon name={app.icon} />
                 </span>
@@ -267,9 +272,16 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                       {app.vitrine ? '✓ Validée' : '🧪 En test'}
                     </span>
                     {app.communaute && <span className="collectif-statut collectif-statut--communaute">Communauté</span>}
+                    {app.heberge && <span className="collectif-statut" title="Hébergée par Alphabette dans un cadre isolé">🔒 Isolée</span>}
+                    {atelier.jury[app.id]?.teste_au_labo && (
+                      <span className="collectif-statut collectif-statut--validee"
+                        title={`Contrôles automatiques de l'Atelier qualité réussis (contrôle technique ${atelier.jury[app.id].controle_technique}/100) — ce n'est pas une certification`}>
+                        ✓ Testé au Labo
+                      </span>
+                    )}
                   </p>
                   <div className="collectif-fiche__actions">
-                    <a className="labo__bouton labo__bouton--envoyer" href={app.url || '#'} {...(app.communaute ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    <a className="labo__bouton labo__bouton--envoyer" href={app.url || '#'} {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                       ▶ Tester en 1 clic
                     </a>
                     <button type="button" className="labo__bouton" disabled={dejaSoutenu(app.id)} onClick={() => soutenirApp(app.id)}
@@ -278,6 +290,14 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                     </button>
                   </div>
                   {messageSoutien?.id === app.id && messageSoutien.texte && <p className="labo__petit" role="status">{messageSoutien.texte}</p>}
+                  <p className="collectif-fiche__liens">
+                    {atelier.apps[app.id] && (
+                      <a href={`/atelier/${app.id}/`} title="Rapport de l'Atelier qualité : sécurité, téléphone, lisibilité, vitesse">
+                        🔧 Atelier : {atelier.apps[app.id].note}/100
+                      </a>
+                    )}
+                    <button type="button" onClick={() => setASignaler({ id: app.id, nom: nomLisible(app.name) })}>⚑ Signaler</button>
+                  </p>
                 </div>
                 <LaboAvis
                   appId={app.id}
@@ -296,6 +316,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         </div>
 
         {MODE_LABO && <ProposerApp ouvert={proposerOuvert} onFermer={() => setProposerOuvert(false)} />}
+        {MODE_LABO && <Signaler appId={aSignaler?.id ?? null} nom={aSignaler?.nom ?? ''} onFermer={() => setASignaler(null)} />}
 
         {!MODE_LABO && etat === 'ok' && (
           <p className="accueil__message accueil__labo-lien">

@@ -42,6 +42,15 @@ publiés sur .fr uniquement avec `"vitrine": true` sur ordre de Valentin.
 Agent de Graduation : propose un transfert vers .fr (note ≥ 4,5, ≥ 20 avis vérifiés, 0 bug critique depuis 7 jours) ; ne prépare
 le paquet qu'après le « oui » de Valentin, et la fusion (= mise en ligne sur .fr) reste son ordre.
 
+Atelier qualité (`docs/labo/ATELIER-QUALITE.md`) : ses rapports (`labo-donnees:atelier/`) se lisent comme des tickets ;
+un point « bloquant » ou « important » d'une appli d'Alphabette se corrige comme une anomalie de l'Agent Chaos (Niveau 1),
+une appli du collectif ne se corrige jamais à la place de son créateur (son rapport lui suffit). Le badge « Testé au Labo »
+est calculé, jamais écrit à la main. Signalement urgent (illicite, arnaque, données, droits) sur une appli du collectif :
+ouvrir l'appli et vérifier ; si c'est manifestement fondé, retirer sa fiche de `data/apps-communaute.json` tout de suite et
+prévenir Valentin ; sinon, rapport à Valentin (un concurrent peut signaler à tort : jamais de retrait sur la seule foi d'un signalement).
+Bac à sable : on ne lance JAMAIS le code d'un créateur (ni install ni build) dans une chaîne qui a des accès ; seulement
+un commit figé, des fichiers statiques filtrés, et la publication après verdict conforme du Douanier.
+
 Jamais sans autorisation écrite de Valentin (`data/labo/autorisations.json`) — **Niveau 2** :
 - nouvelle fonctionnalité, refonte, changement de logique métier, de textes de fond, de prix ;
 - tout ce qui touche le hub lui-même (`src/`, `server/`, `scripts/`, `packages/shell/`, `labo/serveur/`, workflows) ;
@@ -126,3 +135,4 @@ nouvelle remplace une ancienne contradictoire (barrer l'ancienne). Garder cette 
 - 2026-11-19 — Plus de « Je le fais ? » pour alphabette.eu : Niveau 1 et Niveau 2 se font sans attendre (un Niveau 2 passe d'abord en bêta, puis sur `main` après l'« OK pour publier » de `qa-verifier`) ; Valentin est seulement informé, avec des liens cliquables. Restent sur son ordre explicite : alphabette.fr (`vitrine`, `vitrine/`, `packages/shell`, transfert), suppression de données, DNS / OVH / Firebase / clés — préparés en correctif dans `docs/labo/correctifs/` (origine : décision de Valentin).
 - 2026-11-19 — Service worker hors ligne : le repli sur la page d'accueil (`./`) est réservé aux navigations (`req.mode === 'navigate'`) ; un script ou un JSON absent du cache reçoit une erreur 503, jamais du HTML (origine : Agent Chaos, Bon Plan, /labo/capteur.js).
 - 2026-11-19 — La tâche planifiée a l'accès en écriture à tous les dépôts de `data/apps-sources.json` (origine : décision de Valentin).
+- 2026-11-20 — Une appli de créateur hébergée sur alphabette.eu n'a jamais l'origine d'alphabette.eu : en-tête `Content-Security-Policy: sandbox` + `<iframe sandbox>` sans `allow-same-origin`, sinon elle lirait les clés IA des visiteurs (localStorage d'IA Débat). Le Veilleur vérifie l'en-tête toutes les heures (origine : Atelier qualité, décision de Valentin).

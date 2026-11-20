@@ -1,0 +1,55 @@
+# Le Veilleur (scripts/labo/veilleur.mjs) : toutes les heures, chaque adresse d'Alphabette répond-elle ?
+# Une panne n'est signalée qu'après 2 échecs de suite ; un ticket GitHub s'ouvre (e-mail à Valentin) et se
+# referme tout seul au retour. L'état (compteurs) vit sur la branche labo-donnees (veilleur/etat.json).
+name: Laboratoire — Le Veilleur (toutes les heures)
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+# Groupe à part : un passage en attente du groupe « labo-donnees » (avis, Chaos…) ne doit jamais être annulé
+# par ce robot fréquent ; l'envoi se recale tout seul si un autre robot a poussé entre-temps.
+concurrency:
+  group: labo-veilleur
+  cancel-in-progress: false
+
+jobs:
+  veiller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Contrôler
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then git worktree add -q ../donnees FETCH_HEAD; else echo "::warning::branche labo-donnees absente"; exit 0; fi
+          node scripts/labo/veilleur.mjs --etat ../donnees/veilleur/etat.json --sortie /tmp/veilleur
+          cat /tmp/veilleur/rapport.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Tickets (panne ouverte, panne rétablie)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create veilleur --color b3261e --force >/dev/null 2>&1 || true
+          jq -c '.pannes[]' /tmp/veilleur/evenements.json | while read -r p; do
+            nom=$(echo "$p" | jq -r .nom); url=$(echo "$p" | jq -r .url); pb=$(echo "$p" | jq -r .probleme)
+            printf "**%s** ne répond plus depuis 2 contrôles (1 heure d'écart).\n\n- Adresse : %s\n- Problème : %s\n\nLe ticket se fermera tout seul au retour. Le passage quotidien du Laboratoire s'en occupe." "$nom" "$url" "$pb" > /tmp/corps.md
+            gh issue create --title "🔴 Veilleur : $nom" --body-file /tmp/corps.md --label veilleur || gh issue create --title "🔴 Veilleur : $nom" --body-file /tmp/corps.md
+          done
+          jq -r '.retablies[].nom' /tmp/veilleur/evenements.json | while read -r nom; do
+            gh issue list --label veilleur --state open --json number,title --jq ".[] | select(.title == \"🔴 Veilleur : $nom\") | .number" | while read -r n; do
+              gh issue close "$n" --comment "✅ Rétabli ($(date -u +'%F %H:%M') UTC)."
+            done
+          done
+      - name: Ranger l'état
+        run: |
+          cd ../donnees && git add veilleur
+          git diff --cached --quiet || { git commit -q -m "Veilleur — $(date -u +'%F %H:%M')" && "$GITHUB_WORKSPACE/scripts/labo/pousser-donnees.sh" .; }

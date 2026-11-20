@@ -116,6 +116,8 @@ livraison terminée tant qu'elle n'est pas sur GitHub.
 - **alphabette.fr** (Vitrine) : seulement les applications `"vitrine"`, figées sur un commit
   (`data/apps-sources.json`) ou dans `vitrine/`. On n'y touche que sur ordre de Valentin.
 - Avant toute amélioration issue des avis : lire `RULES_AND_MEMORY.md`. Détails : `docs/LABO-EU.md`.
+- Atelier qualité (contrôles de nuit, badge « Testé au Labo », rapports, Veilleur, Concierge, Économe, applis de
+  créateurs hébergées dans un bac à sable, bouton Signaler) : `docs/labo/ATELIER-QUALITE.md`.
 
 ## Équipe d'agents
 

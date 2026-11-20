@@ -229,3 +229,18 @@ export async function chargerCertificats(): Promise<Record<string, CertificatRes
     return {};
   }
 }
+
+export interface NoteAtelier { note: number; controle_technique: number; compte: { bloquant: number; important: number; conseil: number }; apte: boolean; date: string }
+export interface JuryAtelier { teste_au_labo: boolean; date: string | null; controle_technique: number; raison: string }
+export interface DonneesAtelier { apps: Record<string, NoteAtelier>; jury: Record<string, JuryAtelier> }
+
+/** Atelier qualité (alphabette.eu) : notes de la nuit et badges « Testé au Labo ». Absent → rien d'affiché. */
+export async function chargerAtelier(): Promise<DonneesAtelier> {
+  try {
+    const r = await fetch('/api/labo/atelier.json', { cache: 'no-cache' });
+    const d = r.ok ? ((await r.json()) as Partial<DonneesAtelier>) : {};
+    return { apps: d.apps ?? {}, jury: d.jury ?? {} };
+  } catch {
+    return { apps: {}, jury: {} };
+  }
+}

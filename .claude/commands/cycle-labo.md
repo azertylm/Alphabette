@@ -8,6 +8,21 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
    « 0 avis à trier », aucune anomalie dans `/tmp/chaos.json` et aucune autorisation nouvelle dans `data/labo/autorisations.json` : termine en une ligne.
 1 bis. Anomalies de l'Agent Chaos (`/tmp/chaos.json`) : chacune devient un correctif de Niveau 1 (`code-builder` → `qa-verifier`),
    en plus des 3 corrections d'avis, critiques d'abord (exception, promesse rejetée, écran blanc, PWA hors ligne).
+1 ter. Atelier qualité (`docs/labo/ATELIER-QUALITE.md`) : `git fetch -q --depth=1 origin labo-donnees` puis
+   `git show FETCH_HEAD:atelier/index.json`, `…:atelier/alertes.json`, `…:concierge/dernier.json`, `…:veilleur/etat.json`.
+   - Applis d'Alphabette : points « bloquant » puis « important » des rapports (`atelier/rapports/<id>.json`, champs `correction`
+     et `prompt`) → correctifs de Niveau 1 comme ceux de l'Agent Chaos (3 au plus par passage, les plus graves d'abord).
+   - Applis du collectif : rien à corriger à leur place ; leur rapport public suffit.
+   - Agent `le-plume` : relit les textes du premier écran des applis contrôlées cette nuit → `data/labo/plume.json`.
+   - Signalements : `curl -s https://alphabette.eu/api/collectif.php?signalements=1` ; urgent (illicite, arnaque, données,
+     droits) sur une appli du collectif → ouvrir l'appli et vérifier : manifestement fondé = retirer sa fiche de
+     `data/apps-communaute.json` tout de suite et prévenir Valentin ; douteux = rapport à Valentin (jamais de retrait sur
+     la seule foi d'un signalement).
+   - Propositions (`…/api/collectif.php?propositions=1`) : pour chaque nouvelle, préparer le rendu à Valentin (résumé,
+     lien, et pour une appli « heberge » le commit figé : `gh api repos/<depot>/commits/HEAD --jq .sha`). Sur son « oui » :
+     fiche dans `data/apps-communaute.json` (format dans ATELIER-QUALITE.md) ; le contrôle avant publication est automatique.
+   - Concierge / Économe / Veilleur : un point « bloquant » ou une panne en cours = notification courte à Valentin avec le
+     lien où cliquer ; le reste attend le rendu du soir.
 2. Agent `triage-analyst` : rejette, classe Niveau 1 / Niveau 2, écrit `data/labo/decisions.json`, rédige les demandes de Niveau 2.
 3. Agent `agent-correcteur` : `node scripts/labo/correcteur.mjs candidats /tmp/feedbacks.json` ; bugs critiques ou soutenus →
    localisation + branche + Pull Request ; prompts mal notés → variante en bêta A/B (2 bugs et 1 prompt au plus).

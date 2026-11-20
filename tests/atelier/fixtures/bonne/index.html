@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bonne appli — liste de courses simple</title>
+  <meta name="description" content="Une liste de courses simple et lisible pour téléphone, sans inscription, qui garde vos articles dans ce navigateur.">
+  <meta property="og:title" content="Bonne appli">
+  <meta property="og:description" content="Une liste de courses simple et lisible.">
+  <meta property="og:image" content="https://alphabette.eu/og-image.png">
+  <link rel="canonical" href="https://exemple.invalid/bonne/">
+  <style>
+    body { font: 18px/1.5 system-ui, sans-serif; margin: 0; padding: 16px; background: #fff; color: #111; }
+    @media (prefers-color-scheme: dark) { body { background: #111; color: #f2f2f2; } }
+    button, a.bouton { display: inline-flex; align-items: center; min-height: 48px; min-width: 48px; padding: 0 16px; margin: 6px 6px 6px 0; font-size: 18px; border-radius: 10px; border: 2px solid #333; background: #f3f3f3; color: #111; text-decoration: none; }
+    label { display: block; margin-top: 12px; }
+    input { min-height: 48px; font-size: 18px; width: 100%; box-sizing: border-box; }
+    footer a { display: inline-block; padding: 12px 4px; color: #0b4fb3; }
+  </style>
+</head>
+<body>
+  <h1>Ma liste de courses</h1>
+  <p>Ajoutez un article, il reste dans ce navigateur.</p>
+  <label for="article">Article</label>
+  <input id="article" autocomplete="off">
+  <button type="button" id="ajouter">Ajouter</button>
+  <button type="button" aria-label="Passer en mode nuit">🌙</button>
+  <ul id="liste"></ul>
+  <footer><a href="/mentions-legales">Mentions légales</a> · <a href="/confidentialite">Confidentialité</a></footer>
+  <script>
+    document.getElementById('ajouter').addEventListener('click', function () {
+      var v = document.getElementById('article').value.trim();
+      if (!v) return;
+      var li = document.createElement('li'); li.textContent = v; document.getElementById('liste').appendChild(li);
+    });
+  </script>
+</body>
+</html>

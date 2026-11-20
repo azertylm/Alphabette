@@ -206,6 +206,13 @@ html[data-ab-theme='nuit'] .collectif-statut--validee { color: #86efac; }
 html[data-ab-theme='nuit'] .collectif-statut--communaute { color: #c4b5fd; }
 .collectif-fiche__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 .collectif-fiche__actions .labo__bouton:disabled { opacity: 0.6; cursor: default; }
+/* Atelier qualité et signalement (Le Parapluie) : deux liens discrets sous les boutons, zones de 44 px. */
+.collectif-fiche__liens { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.75rem; margin: 0; font-size: 0.9rem; }
+.collectif-fiche__liens a, .collectif-fiche__liens button {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.25rem; color: var(--acc-doux);
+  background: none; border: 0; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+}
+.collectif-fiche__liens button { margin-left: auto; }
 .collectif-compteur { font-variant-numeric: tabular-nums; }
 .collectif-dialogue {
   width: min(36rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 1.5rem); overflow-y: auto; padding: 1rem 1.1rem 1.25rem;
@@ -219,6 +226,7 @@ html[data-ab-theme='nuit'] .collectif-dialogue { --acc: #5eead4; --acc-fond: #0b
 .collectif-charte { display: flex; flex-direction: column; gap: 0.4rem; }
 .collectif-charte__point { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.95rem; line-height: 1.4; min-height: 2.75rem; padding: 0.4rem 0.5rem; border-radius: 0.75rem; cursor: pointer; }
 .collectif-charte__point:hover { background: color-mix(in srgb, var(--acc, #0f766e) 8%, transparent); }
+.collectif-mode__titre { font-size: 0.95rem; font-weight: 800; }
 .collectif-charte__point input { width: 1.4rem; height: 1.4rem; flex: none; margin-top: 0.05rem; accent-color: var(--acc, #0f766e); }
 .collectif-champs { display: flex; flex-direction: column; gap: 0.7rem; }
 .collectif-champs:disabled { opacity: 0.45; }

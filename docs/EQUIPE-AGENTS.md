@@ -53,3 +53,10 @@ Ils améliorent les applis à partir des avis des visiteurs, en relais strict, s
 
 Mode d'emploi : `docs/LABO-EU.md`.
 
+
+## L'Atelier qualité (20/11/2026)
+
+Un agent de plus, `le-plume` (relecture des textes du premier écran, test des 5 secondes), et des robots sans IA
+qui tournent tout seuls sur GitHub : l'Atelier qualité (Douanier, Pouce, Opticien, Poids Plume, Phare, Parapluie,
+Témoin, Jury, Parrain), le Veilleur, le Concierge et l'Économe. Carte complète des 15 agents et de leurs fichiers :
+`docs/labo/ATELIER-QUALITE.md`.

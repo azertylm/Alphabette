@@ -21,6 +21,8 @@ import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promi
 import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { preRendre } from './labo/seo.mjs';
+import { ficheValide, publierHebergees } from './labo/bac-a-sable.mjs';
+import { publierAtelier } from './labo/parrain.mjs';
 
 const racine = process.cwd();
 const dist = path.join(racine, 'dist');
@@ -165,8 +167,8 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
-  # Applications et fichiers du laboratoire : servis tels quels
-  RewriteRule ^(apps|labo)/ - [L]
+  # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
+  RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
 
   # Application monopage : toute autre adresse renvoie index.html
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -343,18 +345,23 @@ async function preparerLaboratoire() {
     description: "Votre appli web testée en 10 secondes par 3 testeurs virtuels : score, 3 corrections et un prompt prêt à coller.",
   });
   // 2 bis. Collectif : applications de créateurs indépendants validées (data/apps-communaute.json), .eu seulement.
+  // Deux cas : l'appli a sa propre adresse https (lien externe), ou elle est hébergée et isolée par Alphabette
+  // (« heberge » : dépôt public + commit figé, publiée dans eu/createurs/<id>/ seulement si le Douanier a validé
+  // CE commit — atelier/prepublication/<id>.json, branche labo-donnees ; voir docs/labo/ATELIER-QUALITE.md).
   let communaute = [];
   try {
     const { apps = [] } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-communaute.json'), 'utf8'));
-    communaute = apps
-      .filter((a) => a && /^c-[a-z0-9-]+$/.test(a.id) && /^https:\/\//.test(a.url) && a.name)
+    const valides = apps.filter((a) => a && /^c-[a-z0-9-]+$/.test(a.id) && a.name && (a.heberge ? ficheValide(a) : /^https:\/\//.test(a.url ?? '')));
+    const hebergees = await publierHebergees(eu, valides.filter((a) => a.heberge), path.join(racine, 'atelier', 'prepublication'));
+    communaute = [...valides.filter((a) => !a.heberge), ...hebergees]
       .map((a) => ({
         id: a.id, name: a.name, slug: a.id, icon: 'Sparkles', status: 'actif', badge: a.badge ?? null,
         url: a.url, description: a.description ?? '', createdAt: a.createdAt ?? new Date().toISOString(),
         updatedAt: a.updatedAt ?? a.createdAt ?? new Date().toISOString(), communaute: true,
-        createur: a.createur ?? '', categorie: a.categorie ?? '',
+        createur: a.createur ?? '', categorie: a.categorie ?? '', reseau_autorise: a.reseau_autorise ?? [],
+        ...(a.heberge ? { heberge: true, url_app: a.url_app, ref: a.ref } : {}),
       }));
-  } catch { /* pas encore de fichier : aucune appli de la communauté */ }
+  } catch (err) { console.log(`collectif : ${err.code === 'ENOENT' ? 'aucune appli de la communauté' : err.message}`); }
   await writeFile(path.join(eu, 'api', 'apps.json'), JSON.stringify({ apps: [...appsEu, ...communaute], labo: true }, null, 2) + '\n');
   console.log(`collectif : ${communaute.length} application(s) de la communauté`);
 
@@ -435,12 +442,16 @@ async function preparerLaboratoire() {
     const p = path.join(eu, nom);
     const st = await stat(p);
     if (st.isFile() && nom.endsWith('.html') && nom !== 'index.html') await injecterCapteur(p);
-    if (st.isDirectory() && !['api', 'assets', 'apps', 'labo'].includes(nom)) await injecterCapteur(path.join(p, 'index.html'));
+    if (st.isDirectory() && !['api', 'assets', 'apps', 'labo', 'createurs', 'atelier'].includes(nom)) await injecterCapteur(path.join(p, 'index.html'));
   }
 
   // 6 bis. Référencement du Laboratoire : titre et description propres (sinon Google le prend pour
   // une copie d'alphabette.fr), adresse canonique, contenu lisible sans JavaScript, robots.txt, sitemap.
-  await referencerLaboratoire(eu, appsEu);
+  // Les applis du collectif hébergées par Alphabette (/createurs/<id>/) y figurent aussi.
+  await referencerLaboratoire(eu, [...appsEu, ...communaute.filter((a) => a.heberge)]);
+
+  // 6 ter. Atelier qualité : rapports du Parrain (/atelier/), notes et badges « Testé au Labo » (api/labo/atelier.json).
+  await publierAtelier(eu, path.join(racine, 'atelier'));
 
   // 7. Règles .htaccess de la vitrine : adresses .fr des applications du laboratoire → .eu.
   const pagesHub = actives
