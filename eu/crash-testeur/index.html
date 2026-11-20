@@ -4,8 +4,8 @@
     <script src="/labo/capteur.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Le Crash-Testeur — votre appli testée en 10 secondes | Alphabette</title>
-<meta name="description" content="Déposez une capture d'écran ou une adresse : l'IA teste votre application web comme 3 vrais visiteurs et vous donne un score, 3 corrections prioritaires et un prompt prêt à coller. Gratuit, sans inscription.">
+<title>Le Crash-Testeur — votre site testé en 30 secondes | Alphabette</title>
+<meta name="description" content="Collez l'adresse de n'importe quel site : téléphone, poids et vitesse, accessibilité, sécurité et traceurs. Une note sur 100 et les 3 points à corriger en premier, en 30 secondes. Gratuit, sans inscription.">
 <link rel="canonical" href="https://alphabette.eu/crash-testeur/">
 <meta property="og:title" content="Le Crash-Testeur — Alphabette">
 <meta property="og:description" content="Votre appli web testée en 10 secondes par 3 testeurs virtuels. Gratuit, sans inscription.">
@@ -74,14 +74,89 @@
   .statut { min-height: 1.4em; color: var(--ok); font-weight: 700; }
   footer { margin-top: 2.5rem; text-align: center; }
   .cache { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  /* Mode jour (bouton ☀ de la barre) */
+  html[data-ab-theme="jour"] { --acc: #be123c; --acc2: #0f766e; --fond: #fbf8f3; --carte: #ffffff; --carte2: #f5f5f4; --encre: #1c1917; --doux: #44403c; --pale: #57534e; --trait: #d6d3d1; --ok: #166534; --moyen: #92400e; --ko: #b91c1c; --sur-acc: #ffffff; }
+  :root { --sur-acc: #1a0b10; }
+  .bouton--plein, .num, .choix button[aria-checked="true"] { color: var(--sur-acc); }
+  html[data-ab-theme="jour"] .choix--mode button[aria-checked="true"] { color: #fff; }
+  /* Audit express */
+  .bulletin { display: none; }
+  .bulletin.visible { display: block; }
+  .cats { display: grid; gap: .6rem; margin: 1rem 0; }
+  @media (min-width: 640px) { .cats { grid-template-columns: 1fr 1fr; } }
+  .cat { background: var(--carte2); border: 1px solid var(--trait); border-radius: 1rem; padding: .7rem .8rem; }
+  .cat__haut { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; font-weight: 800; }
+  .cat__barre { height: .6rem; border-radius: 999px; background: var(--trait); margin: .45rem 0 .2rem; overflow: hidden; }
+  .cat__barre span { display: block; height: 100%; border-radius: 999px; }
+  .cat details summary { cursor: pointer; font-size: .9rem; color: var(--doux); min-height: 44px; display: flex; align-items: center; }
+  .cat ul { margin: .2rem 0 0; padding-left: 1.1rem; font-size: .9rem; color: var(--doux); }
+  .cat li.ko { color: var(--encre); }
+  .offre { margin-top: 1.2rem; border: 2px solid var(--acc2); border-radius: 1.1rem; padding: 1rem; background: color-mix(in srgb, var(--acc2) 10%, var(--carte)); }
+  .offre h3 { margin: 0 0 .3rem; font-size: 1.15rem; }
+  .partage { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-top: .8rem; }
+  .partage input { flex: 1 1 14rem; min-height: 3rem; }
+  .robot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .separateur { margin: 2.2rem 0 .4rem; font-size: 1.3rem; }
 </style>
 </head>
 <body>
-<script src="/assets/alphabette-barre.js" data-cle="crash-testeur" data-nom="Le Crash-Testeur" data-sous-titre="Votre appli testée en 10 secondes" data-accent="#fb7185"></script>
+<script src="/assets/alphabette-barre.js" data-cle="crash-testeur" data-nom="Le Crash-Testeur" data-sous-titre="Votre site testé en 30 secondes" data-accent="#fb7185"></script>
 <main>
   <span class="bandeau">💥 Le Crash-Testeur</span>
-  <h1>Votre appli testée <em>en 10 secondes.</em></h1>
-  <p class="doux">Déposez une capture d'écran ou une adresse : 3 testeurs virtuels la découvrent comme de vrais visiteurs. Vous recevez un score, 3 corrections prioritaires et un prompt prêt à coller dans Claude Code ou Cursor. Gratuit, sans inscription.</p>
+  <h1>Votre site testé <em>en 30 secondes.</em></h1>
+  <p class="doux">Collez l'adresse de n'importe quel site : téléphone, poids et vitesse, accessibilité, sécurité et traceurs. Une note sur 100 et les 3 points à corriger en premier. Gratuit, sans inscription.</p>
+
+  <section class="carte" aria-labelledby="t-audit" id="audit">
+    <h2 id="t-audit">⚡ Audit express</h2>
+    <form id="f-audit" novalidate>
+      <label class="champ">Adresse du site
+        <input id="audit-url" type="url" inputmode="url" placeholder="https://mon-site.fr" autocomplete="url" required>
+      </label>
+      <label class="robot" aria-hidden="true">Ne pas remplir <input id="audit-robot" tabindex="-1" autocomplete="off"></label>
+      <p class="titrechoix" id="t-visibilite" style="margin-top:.9rem">Résultat</p>
+      <div class="choix" role="radiogroup" aria-labelledby="t-visibilite" data-groupe="visibilite" id="visibilite">
+        <button type="button" role="radio" aria-checked="true" data-valeur="prive">🔒 Privé<small>rien n'est gardé</small></button>
+        <button type="button" role="radio" aria-checked="false" data-valeur="public">🔗 Public<small>lien à partager (90 jours)</small></button>
+      </div>
+      <button class="bouton bouton--plein" type="submit" id="audit-lancer">⚡ Lancer l'audit</button>
+      <p id="audit-erreur" role="alert" style="color:var(--ko);font-weight:700"></p>
+    </form>
+  </section>
+
+  <section id="audit-attente" class="carte attente" aria-live="polite">
+    <div class="roue" aria-hidden="true"></div>
+    <p><strong id="audit-etape">Lecture de la page…</strong></p>
+    <p class="petit">30 secondes au plus.</p>
+  </section>
+
+  <section id="bulletin" class="carte bulletin" aria-labelledby="t-bulletin">
+    <div class="score">
+      <div id="b-cercle" class="score__cercle" role="img"></div>
+      <div>
+        <h2 id="t-bulletin" style="margin:0">Bulletin de notes</h2>
+        <p id="b-site" class="doux" style="word-break:break-all"></p>
+        <p id="b-resume" style="font-weight:700"></p>
+      </div>
+    </div>
+    <div id="b-cats" class="cats"></div>
+    <h2>Les 3 points à corriger en premier</h2>
+    <ol id="b-priorites" class="corrections"></ol>
+    <p id="b-mesures" class="petit" style="margin-top:.8rem"></p>
+    <div id="b-partage" class="partage" hidden>
+      <input id="b-lien" readonly aria-label="Lien du bulletin public">
+      <button type="button" class="bouton" id="b-copier">Copier le lien</button>
+    </div>
+    <aside id="b-offre" class="offre" hidden aria-labelledby="t-offre">
+      <h3 id="t-offre">Et si on repartait sur de bonnes bases ?</h3>
+      <p>Alphabette crée des <strong>sites vitrines clairs, rapides sur téléphone et sans traceur</strong>, passés au Crash-Testeur avant livraison : <strong>390 € clé en main</strong>, pour les commerçants, artisans et associations.</p>
+      <a class="bouton" href="https://alphabette.fr/site-vitrine/">Voir l'offre Site vitrine</a>
+    </aside>
+    <p id="b-limites" class="petit" style="margin-top:1rem"></p>
+    <p style="text-align:center"><button type="button" class="lien" id="b-refaire">Tester un autre site</button></p>
+  </section>
+
+  <h2 class="separateur">Aller plus loin : l'avis de 3 testeurs IA</h2>
+  <p class="doux">Déposez une capture d'écran ou une adresse : 3 testeurs virtuels la découvrent comme de vrais visiteurs. Vous recevez un score, 3 corrections prioritaires et un prompt prêt à coller dans Claude Code ou Cursor.</p>
 
   <section class="carte" aria-labelledby="t-depot">
     <h2 id="t-depot">1. Votre application</h2>
@@ -387,6 +462,101 @@
       $('statut').textContent = '✅ Image téléchargée.';
     }, 'image/png');
   });
+})();
+</script>
+<script>
+/* ── Audit express (api/crash-audit.php) : note sur 100, 3 priorités, privé ou public ── */
+(() => {
+  'use strict';
+  const API = '/api/crash-audit.php';
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, texte) => { const n = document.createElement(tag); if (cls) n.className = cls; if (texte != null) n.textContent = texte; return n; };
+  const couleur = (part) => (part >= 0.8 ? 'var(--ok)' : part >= 0.5 ? 'var(--moyen)' : 'var(--ko)');
+  const etapes = ['Lecture de la page…', 'Mesure du poids et de la vitesse…', 'Contrôle sur téléphone…', 'Accessibilité : titres, images, contrastes…', 'Sécurité et traceurs…'];
+
+  // Choix privé / public au clavier (flèches), comme un vrai groupe de boutons radio.
+  const groupe = $('visibilite');
+  groupe.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    e.preventDefault();
+    const bs = [...groupe.querySelectorAll('button')], i = bs.findIndex((b) => b.getAttribute('aria-checked') === 'true');
+    const j = (i + (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : bs.length - 1)) % bs.length;
+    bs.forEach((b, k) => b.setAttribute('aria-checked', String(k === j))); bs[j].focus();
+  });
+
+  function afficher(b) {
+    const part = b.note / 100;
+    const c = $('b-cercle');
+    c.style.background = `conic-gradient(${couleur(part)} ${b.note * 3.6}deg, var(--trait) 0)`;
+    c.setAttribute('aria-label', `Note : ${b.note} sur 100`);
+    c.textContent = '';
+    const i = el('div', 'score__interieur', String(b.note)); i.appendChild(el('small', null, '/100')); c.appendChild(i);
+    $('b-site').textContent = b.url;
+    $('b-resume').textContent = b.note >= 80 ? 'Bon travail : quelques réglages et c\'est parfait.' : b.note >= 55 ? 'Correct, mais des points freinent vos visiteurs.' : 'Votre site perd des visiteurs : voici par où commencer.';
+    const cats = $('b-cats'); cats.textContent = '';
+    b.categories.forEach((k) => {
+      const d = el('div', 'cat');
+      const h = el('div', 'cat__haut'); h.appendChild(el('span', null, k.nom)); h.appendChild(el('span', null, `${k.note}/${k.max}`)); d.appendChild(h);
+      const barre = el('div', 'cat__barre'); const sp = el('span'); sp.style.width = `${Math.round((k.note / k.max) * 100)}%`; sp.style.background = couleur(k.note / k.max); barre.appendChild(sp); d.appendChild(barre);
+      const det = el('details'); det.appendChild(el('summary', null, 'Voir le détail'));
+      const ul = el('ul'); k.controles.forEach((x) => ul.appendChild(el('li', x.ok ? '' : 'ko', `${x.ok ? '✓' : '✗'} ${x.texte}`))); det.appendChild(ul); d.appendChild(det);
+      cats.appendChild(d);
+    });
+    const ol = $('b-priorites'); ol.textContent = '';
+    if (!b.priorites.length) ol.appendChild(el('li', null, 'Rien d\'important à corriger : bravo !'));
+    b.priorites.forEach((p, n) => {
+      const li = el('li'); li.appendChild(el('span', 'num', String(n + 1)));
+      const t = el('div'); const titre = el('strong', null, p.titre); t.appendChild(titre);
+      t.appendChild(el('span', 'impact' + (p.gain >= 6 ? ' impact--fort' : ''), `+${p.gain} pts`));
+      t.appendChild(el('p', 'doux', p.conseil)); li.appendChild(t); ol.appendChild(li);
+    });
+    const m = b.mesures;
+    $('b-mesures').textContent = `Réponse du serveur ${String(m.reponse_s).replace('.', ',')} s · poids estimé ${String(m.poids_mo).replace('.', ',')} Mo · ${m.fichiers} fichiers · ${m.domaines_tiers} domaine(s) extérieur(s)` + (b.traceurs.length ? ` · traceurs : ${b.traceurs.join(', ')}` : '') + ` · audité le ${new Date(b.date).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' })}`;
+    $('b-limites').textContent = b.limites;
+    $('b-offre').hidden = b.note >= 75;
+    $('b-partage').hidden = !b.id;
+    if (b.id) $('b-lien').value = `${location.origin}/crash-testeur/?r=${b.id}`;
+    $('bulletin').classList.add('visible');
+    $('bulletin').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    $('t-bulletin').setAttribute('tabindex', '-1'); $('t-bulletin').focus({ preventScroll: true });
+  }
+
+  $('f-audit').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = $('audit-url').value.trim();
+    $('audit-erreur').textContent = '';
+    if (!url) { $('audit-erreur').textContent = 'Collez l\'adresse du site à tester.'; $('audit-url').focus(); return; }
+    const publique = groupe.querySelector('[aria-checked="true"]')?.dataset.valeur === 'public';
+    $('audit-lancer').disabled = true; $('bulletin').classList.remove('visible'); $('audit-attente').classList.add('visible');
+    let n = 0; const minuteur = setInterval(() => { $('audit-etape').textContent = etapes[Math.min(++n, etapes.length - 1)]; }, 3500);
+    try {
+      const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, public: publique, site_web: $('audit-robot').value }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.erreur || 'L\'audit n\'a pas pu se faire.');
+      afficher(d);
+      if (d.id) history.replaceState(null, '', `?r=${d.id}`);
+    } catch (err) {
+      $('audit-erreur').textContent = err.message || 'Pas de connexion : réessayez.';
+    } finally {
+      clearInterval(minuteur); $('audit-attente').classList.remove('visible'); $('audit-lancer').disabled = false;
+    }
+  });
+
+  $('b-copier').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText($('b-lien').value); $('b-copier').textContent = '✅ Copié'; } catch { $('b-lien').select(); }
+  });
+  $('b-refaire').addEventListener('click', () => {
+    $('bulletin').classList.remove('visible'); history.replaceState(null, '', location.pathname);
+    $('audit-url').value = ''; $('audit-url').focus();
+  });
+
+  // Bulletin public partagé : /crash-testeur/?r=<id>
+  const r = new URLSearchParams(location.search).get('r');
+  if (r && /^[a-z0-9]{10}$/.test(r)) {
+    fetch(`${API}?r=${r}`).then((x) => x.json().then((d) => ({ ok: x.ok, d }))).then(({ ok, d }) => {
+      if (ok) afficher(d); else $('audit-erreur').textContent = d.erreur || 'Bulletin introuvable.';
+    }).catch(() => {});
+  }
 })();
 </script>
 </body>

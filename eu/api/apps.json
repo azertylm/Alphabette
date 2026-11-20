@@ -376,8 +376,8 @@
       "url": "/crash-testeur/",
       "gratuit": true,
       "createdAt": "2026-11-19T00:00:00.000Z",
-      "updatedAt": "2026-11-19T00:00:00.000Z",
-      "description": "Votre appli web testée en 10 secondes par 3 testeurs virtuels : score, 3 corrections et un prompt prêt à coller."
+      "updatedAt": "2026-11-20T00:00:00.000Z",
+      "description": "N'importe quel site testé en 30 secondes : note sur 100 (téléphone, vitesse, accessibilité, sécurité) et les 3 points à corriger en premier."
     }
   ],
   "labo": true

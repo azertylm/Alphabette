@@ -3,5 +3,7 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /merci/
+Disallow: /kit-terrain/
+Disallow: /en-direct/
 
 Sitemap: https://alphabette.eu/sitemap.xml
