@@ -14,7 +14,7 @@ import { AGENTS } from './atelier/analyse.mjs';
 
 const e = (t) => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const lire = async (f, d) => { try { return JSON.parse(await readFile(f, 'utf8')); } catch { return d; } };
-const dateFr = (d) => { try { return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' }); } catch { return ''; } };
+const dateFr = (d) => { if (!d) return ''; try { return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' }); } catch { return ''; } };
 const GRAVITES = { bloquant: ['⛔', 'Bloquant', 'à corriger avant tout'], important: ['⚠️', 'Important', 'à corriger vite'], conseil: ['💡', 'Conseil', 'pour aller plus loin'] };
 
 const STYLE = `:root{color-scheme:light dark;--f:#fff;--t:#1b1b1f;--d:#55555f;--b:#d9d9e1;--a:#4a2fe0;--c:#f5f5f8;--ok:#0d7a3e;--ko:#b3261e;--av:#8a5a00}
@@ -88,7 +88,7 @@ function indexHtml(index, jury) {
 <p>Chaque nuit, sept agents ouvrent chaque application comme un visiteur sur téléphone, sans rien cliquer ni saisir, et notent ce qu'ils voient.
 Les créateurs reçoivent un rapport avec la correction et un prompt prêt à coller dans leur IA.</p>
 <ul class="agents">${agents}<li><strong>Le Jury</strong> — badge « Testé au Labo » : aucun point bloquant, rien d'important côté sécurité ou légal, contrôle technique d'au moins 85/100, aucune erreur JavaScript, 3 jours de contrôle réussi sur les 7 derniers.</li></ul>
-<p class="doux">Dernier passage : ${e(dateFr(index.date))}.</p>
+<p class="doux">${index.date ? `Dernier passage : ${e(dateFr(index.date))}.` : 'Premier passage cette nuit (3 h 07).'}</p>
 <table><tr><th>Application</th><th>Note</th><th>Technique</th><th>Points</th></tr>${lignes || '<tr><td colspan="4">Premier passage de l\'atelier cette nuit.</td></tr>'}</table>`);
 }
 
