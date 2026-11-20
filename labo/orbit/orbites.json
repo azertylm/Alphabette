@@ -1,0 +1,10 @@
+{
+  "orbites": [
+    { "slug": "culture-generale", "nom": "Culture générale", "icone": "🧭", "couleur": "#0f766e", "mots_cles": ["histoire", "science", "nature", "art", "idées"], "active": true },
+    { "slug": "humour", "nom": "Humour", "icone": "😄", "couleur": "#c2410c", "mots_cles": ["sketch", "stand-up", "parodie"], "active": true },
+    { "slug": "tech-ia", "nom": "Tech & IA", "icone": "🛰️", "couleur": "#3b5bdb", "mots_cles": ["ia", "code", "informatique", "3d"], "active": true },
+    { "slug": "sport", "nom": "Sport", "icone": "🏃", "couleur": "#15803d", "mots_cles": ["sport", "escalade", "course"], "active": true },
+    { "slug": "musique-live", "nom": "Musique live", "icone": "🎸", "couleur": "#a21caf", "mots_cles": ["concert", "session", "musique"], "active": true },
+    { "slug": "bricolage", "nom": "Bricolage", "icone": "🔨", "couleur": "#a16207", "mots_cles": ["bois", "cuisine", "réparer", "fabriquer"], "active": true }
+  ]
+}
