@@ -30,7 +30,11 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
 4. Pour chaque autre Niveau 1 retenu (3 au plus) et chaque Niveau 2 (bêta d'abord, sans attendre d'autorisation, sauf ce qui touche alphabette.fr) : agent `code-builder` (diff sur une branche locale),
    puis agent `qa-verifier` sur ce diff. Veto → retour à `code-builder` (2 fois au plus, ensuite `needs_human_review`).
    Seul un « OK pour publier » de `qa-verifier` autorise le push sur `main` du dépôt de l'appli (= alphabette.eu).
-5. Agent `maturity-curator` : statuts `implemented`, badge « Dernière évolution IA », score de maturité, alerte à 85/100.
+5. Agent `maturity-curator` : statuts `implemented`, badge « Dernière évolution IA », fenêtre « Avant / Après »
+   (`data/labo/changelog-labo.json`), score de maturité, Tableau d'Honneur (`node scripts/labo/tableau-honneur.mjs /tmp/feedbacks.json`),
+   alerte à 85/100.
+5 ter. Boîte à idées : `curl -s https://alphabette.eu/api/collectif.php?idees=1` ; spam, hors sujet, propos blessant ou donnée
+   personnelle → `"masquee"` dans `data/labo/idees-statuts.json`. Les 3 idées les plus votées vont dans le rendu à Valentin.
 4 bis. Agent `pollinisateur` : pour chaque correctif structurel fusionné ce passage (stockage, thème, export, PWA),
    `node scripts/labo/pollinisation.mjs scanner --depuis <repo>@<sha>` puis PR préventives sur les applis sœurs (5 au plus).
 5 bis. Difficultés d'usage : `node scripts/labo/tutos.mjs frictions /tmp/feedbacks.json` ; pour chaque friction retenue,
@@ -43,7 +47,8 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
       la synthèse de 5 lignes va dans le rendu à Valentin.
    b. `preparer` (graduation) lance l'Agent Gardien et exige le GO du Conseil sur la même version : sinon, transfert bloqué. Lors d'un transfert : `redacteur-notes`.
 7. Agent `meta-improver` : règles apprises dans `RULES_AND_MEMORY.md` (section 8).
-8. Commit du hub (« Labo : cycle du <date> ») sur une branche `labo/cycle-<date>`, puis Pull Request avec l'étiquette
+8. Météo du Labo : `node scripts/labo/meteo.mjs passage --avis-lus <N> --corrections <N> --rejets <N>` (chiffres réels du passage).
+8 bis. Commit du hub (« Labo : cycle du <date> ») sur une branche `labo/cycle-<date>`, puis Pull Request avec l'étiquette
    `fusion-auto` (`gh api repos/azertylm/Alphabette/pulls …` puis `gh api repos/azertylm/Alphabette/issues/<n>/labels -f "labels[]=fusion-auto"`) :
    si elle ne change que le Laboratoire (règle : `scripts/labo/fusion-auto.mjs`), GitHub la fusionne et republie tout seul.
    Sinon elle attend le « fusionne » de Valentin (lui donner le lien de la PR).
