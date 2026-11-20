@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-20T15:30:52.825Z",
-  "empreinte_page_sha256": "abd7cc905ab8bf55c1910089b4a432ca5ac583b79c42587b1df561058829319a",
+  "audite_le": "2026-11-20T20:35:39.313Z",
+  "empreinte_page_sha256": "64887d1e6f1429f2e99ecfab6465b4b7740997e78947ed4cc9dca0ae2db8e3ac",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 670,
-      "bloquees": 670,
+      "requetes": 714,
+      "bloquees": 714,
       "types": [
         "image",
         "fetch"
@@ -69,14 +69,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 3,
+      "bloquees": 3,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "hote": "media.lesechos.com",
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -138,14 +138,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "media.lesechos.com"
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "e9481240faa9f2127b849bc8b0a05ca4e03461a610c49fd515e88fa64abbc3b2"
+  "empreinte_certificat_sha256": "1826154273225eba37189f468386c6acd04f7b0e19cf7570b6ff00c2221e4d0f"
 }
