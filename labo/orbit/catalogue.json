@@ -1,0 +1,260 @@
+{
+ "note": "Catalogue de départ d ORBIT : adresses seulement. Titres, auteurs, durées et sous-titres sont relus sur YouTube par api/orbit.php ; l orbite indicative est remplacée par celle de l analyse IA.",
+ "videos": [
+  {
+   "id": "yt:aircAruvnKk",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:wjZofJX0v4M",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:Ilg3gGewQ5U",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:zeJD6dqJ5lo",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:r6sGWTCMz2k",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:jfKfPfyJRdk",
+   "orbite_indicative": "musique-live",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:spUNpyF58BY",
+   "orbite_indicative": "musique-live",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:4xDzrJKXOOY",
+   "orbite_indicative": "musique-live",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:cyW5z-M2yzw",
+   "orbite_indicative": "musique-live",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:UXqq0ZvbOnk",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:WhWc3b3KhnY",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:mN0zPOpADL4",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:R6MlUcmOul8",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:d4EgbgTm0Bg",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:u9lj-c29dxI",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:EmKQsSDlaa4",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:-RdOwhmqP5s",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:2OSrvzNW9FE",
+   "orbite_indicative": "sport",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:zwAD6dRSVyI",
+   "orbite_indicative": "sport",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:brFHyOtTwH4",
+   "orbite_indicative": "sport",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:2FVfJTGpXnU",
+   "orbite_indicative": "bricolage",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:p_di4Zn4wz4",
+   "orbite_indicative": "bricolage",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:MBnnXbOM5S4",
+   "orbite_indicative": "bricolage",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:yWOqeyPIVRo",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:oKjFVBVGad0",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:JXeJANDKwDc",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:v68zYyaEmEA",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:sNhhvQGsMEc",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:CWu29PRCUvQ",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:JPYt10zrclQ",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:WUvTyaaNkzM",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:fNk_zzaMoSs",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:byHcYRpMgI4",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:Gjnup-PuquQ",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:n2Fluyr3lbc",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:U3aXWizDbQ4",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:gsZiJeaMO48",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:MMggqenxuZc",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:Tfh0ytz8S0k",
+   "orbite_indicative": "tech-ia",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:kYB8IZa5AuE",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:dehXioMIKg0",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:PFDu9oVAE-g",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:y8W96WaobOs",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:UpLcnAIpVRA",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:jvWncVbXfJ0",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:SkVqJ1SGeL0",
+   "orbite_indicative": "humour",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:Z4C82eyhwgU",
+   "orbite_indicative": "humour",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:Mus_vwhTCq0",
+   "orbite_indicative": "humour",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:arj7oStGLkU",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:8KkKuTCFvzI",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  },
+  {
+   "id": "yt:bMknfKXIFA8",
+   "orbite_indicative": "culture-generale",
+   "ajoute_le": "2026-11-20"
+  }
+ ]
+}

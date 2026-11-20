@@ -421,6 +421,16 @@ async function preparerLaboratoire() {
   await cp(path.join(racine, 'serveur', 'php', 'crash-audit.php'), path.join(eu, 'api', 'crash-audit.php'));
   await mkdir(path.join(eu, 'crash-testeur'), { recursive: true });
   await cp(path.join(racine, 'labo', 'crash-testeur', 'index.html'), path.join(eu, 'crash-testeur', 'index.html'));
+  // ORBIT « anti-algorithme » (.eu seulement) : remplace la copie compilée d'Orbit v4 ; .fr garde public/orbit/.
+  // Les icônes sont gardées ; sw.js devient un interrupteur qui désinstalle l'ancien service worker.
+  {
+    const orbitEu = path.join(eu, 'orbit');
+    await rm(path.join(orbitEu, 'assets'), { recursive: true, force: true });
+    await rm(path.join(orbitEu, 'manifest.json'), { force: true });
+    await mkdir(orbitEu, { recursive: true });
+    for (const nom of await readdir(path.join(racine, 'labo', 'orbit'))) await cp(path.join(racine, 'labo', 'orbit', nom), path.join(orbitEu, nom));
+    await cp(path.join(racine, 'serveur', 'php', 'orbit.php'), path.join(eu, 'api', 'orbit.php'));
+  }
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   await cp(path.join(racine, 'labo', 'serveur', 'capteur.js'), path.join(eu, 'labo', 'capteur.js'));
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
