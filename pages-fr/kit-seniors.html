@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kit Mairie &amp; Résidence Senior — le numérique simple pour vos aînés | Alphabette</title>
+<meta name="description" content="Pour les EHPAD, résidences autonomie, CCAS et mairies de La Grande-Motte et Montpellier : ProxiLien, Senior Bon Plan et Service France, sans publicité ni revente de données, grands boutons, prêts pour vos ateliers sur tablette.">
+<link rel="canonical" href="https://alphabette.fr/kit-seniors/">
+<link rel="stylesheet" href="/assets/pages.css">
+<style>
+  .entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .marque { font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--acc); font-size: .95rem; }
+  .apps { display: grid; gap: .75rem; }
+  @media (min-width: 46rem) { .apps { grid-template-columns: repeat(3, 1fr); } }
+  .app { display: flex; flex-direction: column; gap: .4rem; }
+  .app h3 { font-size: 1.25rem; margin: 0; color: var(--encre); }
+  .app p { margin: 0; }
+  .app .qr { width: 96px; height: 96px; margin-top: auto; }
+  .app .qr svg { width: 100%; height: 100%; display: block; }
+  .engagements { display: grid; gap: .4rem; padding: 0; margin: 0; list-style: none; }
+  .engagements li { padding-left: 1.8rem; position: relative; color: var(--encre); font-size: 1.05rem; }
+  .engagements li::before { content: '✓'; position: absolute; left: 0; color: var(--acc); font-weight: 900; font-size: 1.2rem; }
+  .demo { display: flex; flex-direction: column; gap: .5rem; }
+  .gros { font-size: 1.15rem; min-height: 56px; }
+  .imprimer-seul { display: none; }
+  @media print {
+    @page { size: A4 portrait; margin: 12mm; }
+    :root { --fond: #fff; --carte: #fff; --encre: #111; --doux: #333; --trait: #bbb; --acc: #0f766e; --acc-fond: #fff; }
+    body { font-size: 11.5pt; background: #fff; }
+    main { max-width: none; padding: 0; }
+    .ecran-seul, .retour, footer.pied { display: none !important; }
+    .imprimer-seul { display: block; }
+    h1 { font-size: 22pt; margin: 2mm 0; }
+    h2 { font-size: 13pt; margin: 4mm 0 2mm; }
+    .carte { padding: 3mm 4mm; margin: 2mm 0; break-inside: avoid; border-radius: 3mm; }
+    .apps { grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+    .app h3 { font-size: 13pt; }
+    .app .qr { width: 26mm; height: 26mm; }
+    .engagements li { font-size: 11pt; }
+    a { color: #111; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← alphabette.fr</a>
+  <div class="entete">
+    <span class="marque">Alphabette · Kit Mairie &amp; Résidence Senior</span>
+    <button type="button" class="secondaire ecran-seul" onclick="window.print()">🖨️ Imprimer cette page</button>
+  </div>
+  <h1>Le numérique simple, pour vos aînés</h1>
+  <p class="chapeau">Pour les <strong>directeurs d'EHPAD, résidences autonomie, CCAS et mairies</strong> de La Grande-Motte, Montpellier et alentours : trois applications pensées pour les seniors, à utiliser en atelier ou au quotidien, sur tablette, téléphone ou ordinateur.</p>
+
+  <div class="apps">
+    <section class="carte app" aria-labelledby="a-proxilien">
+      <h3 id="a-proxilien">ProxiLien</h3>
+      <p>Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision.</p>
+      <div class="qr" data-qr="https://proxilien.fr" data-qr-titre="ProxiLien"></div>
+      <p class="petit">proxilien.fr</p>
+    </section>
+    <section class="carte app" aria-labelledby="a-bonplan">
+      <h3 id="a-bonplan">Senior Bon Plan</h3>
+      <p>Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans. Gratuite.</p>
+      <div class="qr" data-qr="https://bonplansenior.alphabette.fr" data-qr-titre="Senior Bon Plan"></div>
+      <p class="petit">bonplansenior.alphabette.fr</p>
+    </section>
+    <section class="carte app" aria-labelledby="a-service">
+      <h3 id="a-service">Service France</h3>
+      <p>Les papiers expliqués simplement : points de permis, amendes et démarches.</p>
+      <div class="qr" data-qr="https://franceservice.alphabette.fr" data-qr-titre="Service France"></div>
+      <p class="petit">franceservice.alphabette.fr</p>
+    </section>
+  </div>
+  <p class="petit">Service France est une application indépendante d'Alphabette, sans lien avec le réseau public « France services ».</p>
+
+  <h2>Nos engagements</h2>
+  <ul class="engagements">
+    <li><strong>Zéro publicité</strong>, ni dans les applications, ni autour.</li>
+    <li><strong>Zéro revente de données</strong> et aucun traceur publicitaire.</li>
+    <li><strong>Grands boutons</strong> : le bouton BIG agrandit tout d'un geste ; mode jour / nuit.</li>
+    <li><strong>Prêt pour vos ateliers « Café Numérique »</strong> sur tablette : rien à installer, une adresse suffit.</li>
+    <li>Fait par un développeur indépendant de La Grande-Motte, joignable directement.</li>
+  </ul>
+
+  <section class="carte carte--acc demo" aria-labelledby="t-demo">
+    <h2 id="t-demo" style="margin-top:0">Une démonstration dans votre structure</h2>
+    <p>Je viens vous montrer les applications sur tablette, avec vous ou vos animateurs, et nous voyons ensemble comment les utiliser avec vos résidents.</p>
+    <a class="bouton gros ecran-seul" id="demo" href="mailto:azertylm@gmail.com">📩 Demander une démo sur tablette</a>
+    <p class="imprimer-seul"><strong>Demander une démo :</strong> azertylm@gmail.com — Alphabette, La Grande-Motte</p>
+  </section>
+
+  <footer class="pied">
+    <a href="/manifeste/">Pourquoi zéro pub et zéro compte ?</a>
+    <a href="/site-vitrine/">Site vitrine à 390 €</a>
+    <a href="/mentions-legales">Mentions légales</a>
+  </footer>
+</main>
+<script src="/assets/qrcode.js"></script>
+<script src="/assets/qr-alphabette.js"></script>
+<script>
+  // E-mail prêt à envoyer : la structure n'a plus qu'à compléter.
+  (function () {
+    var sujet = 'Démo sur tablette — Kit Mairie & Résidence Senior';
+    var corps = 'Bonjour,\n\nNous souhaitons une démonstration des applications Alphabette sur tablette.\n\n'
+      + 'Structure (EHPAD, résidence, CCAS, mairie…) : \nVille : \nNombre de résidents ou de bénéficiaires (environ) : \n'
+      + 'Créneaux qui nous conviennent : \nPersonne à contacter et téléphone : \n\nMerci !';
+    document.getElementById('demo').href = 'mailto:azertylm@gmail.com?subject=' + encodeURIComponent(sujet) + '&body=' + encodeURIComponent(corps);
+  })();
+</script>
+</body>
+</html>
