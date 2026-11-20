@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-20T10:26:10.380Z",
-  "empreinte_page_sha256": "6a1452768581dd448ff346f9a395457badef2937700c60f3773dd4212ce0a3c8",
+  "audite_le": "2026-11-20T13:39:57.451Z",
+  "empreinte_page_sha256": "0b47f5828a76e9a8f25c8858171d09a8d38da6cdca4549fbe1145fed852d9f95",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 788,
-      "bloquees": 788,
+      "requetes": 220,
+      "bloquees": 220,
       "types": [
         "image",
         "fetch"
@@ -69,8 +69,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 3,
+      "bloquees": 3,
       "types": [
         "image"
       ]
@@ -122,18 +122,9 @@
     }
   ],
   "resultat": {
-    "conforme": false,
-    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
-    "fuites_tierces": [
-      {
-        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      }
-    ],
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
@@ -146,5 +137,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "664b63e3ae096500a5bb39d7637172bef873c0d5d91f51e21f9f2ef81797ae7a"
+  "empreinte_certificat_sha256": "ae92ea5574401e26754b8745be2e87d2e32e5704cf98a4da89eef23c0952afd3"
 }
