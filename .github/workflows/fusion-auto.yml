@@ -1,0 +1,95 @@
+# Fusion automatique (décision de Valentin du 20/11/2026) : une Pull Request du hub portant l'étiquette
+# « fusion-auto » est fusionnée toute seule si elle ne change QUE le Laboratoire alphabette.eu, les données des
+# agents ou la documentation (liste fermée : scripts/labo/fusion-auto.mjs) et si le site se construit.
+# Tout ce qui peut changer alphabette.fr — et ce fichier lui-même — attend toujours le « fusionne » de Valentin.
+#
+# Sécurité : seules les branches de ce dépôt comptent (jamais une copie extérieure) ; la règle est lue dans la
+# version de main (une PR ne peut pas assouplir sa propre règle) ; le code de la PR est construit dans un job
+# sans aucun droit d'écriture ; le job qui fusionne ne lance aucun code de la PR.
+name: Fusion automatique (alphabette.eu seulement)
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fusion-auto-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verifier:
+    if: contains(github.event.pull_request.labels.*.name, 'fusion-auto') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      permise: ${{ steps.regle.outputs.permise }}
+      atelier: ${{ steps.regle.outputs.atelier }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: tete
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fichiers modifiés et règle de main
+        id: regle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMERO: ${{ github.event.pull_request.number }}
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${NUMERO}/files" --jq '.[] | .filename, (.previous_filename // empty)' | sort -u > /tmp/fichiers.txt
+          cat /tmp/fichiers.txt
+          if node base/scripts/labo/fusion-auto.mjs /tmp/fichiers.txt base tete | tee /tmp/regle.txt; then echo "permise=1" >> "$GITHUB_OUTPUT"; else echo "permise=0" >> "$GITHUB_OUTPUT"; fi
+          grep -qx 'data/apps-communaute.json' /tmp/fichiers.txt && echo "atelier=1" >> "$GITHUB_OUTPUT" || true
+          cat /tmp/regle.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: oven-sh/setup-bun@v2
+        if: steps.regle.outputs.permise == '1'
+      - name: Le site se construit (types + build)
+        if: steps.regle.outputs.permise == '1'
+        working-directory: tete
+        run: |
+          bun install --frozen-lockfile
+          bun run lint
+          bun run build
+          for f in data/labo/*.json data/apps-communaute.json; do [ -f "$f" ] && node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || true; done
+
+  fusionner:
+    needs: verifier
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Fusionner, ou expliquer pourquoi pas
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMERO: ${{ github.event.pull_request.number }}
+          TETE: ${{ github.event.pull_request.head.sha }}
+          PERMISE: ${{ needs.verifier.outputs.permise }}
+          ATELIER: ${{ needs.verifier.outputs.atelier }}
+        run: |
+          if [ "$PERMISE" != "1" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMERO}/comments" -f body="⏸️ Fusion automatique refusée : cette Pull Request peut changer alphabette.fr (ou les robots). Elle attend le « fusionne » de Valentin. Détail : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null
+            exit 0
+          fi
+          # sha = la version contrôlée : si la branche a bougé entre-temps, GitHub refuse et un nouveau passage recommence.
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pulls/${NUMERO}/merge" -f merge_method=merge -f sha="$TETE" \
+            -f commit_title="Fusion automatique #${NUMERO} (alphabette.eu seulement)" --jq '.message'
+          # Une fusion faite par le robot ne déclenche pas les autres workflows : on relance la publication nous-mêmes.
+          gh workflow run deploy-ovh.yml --ref main
+          [ "$ATELIER" = "1" ] && gh workflow run labo-atelier.yml --ref main || true

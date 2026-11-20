@@ -88,3 +88,14 @@ aux applis de Valentin, transférées sur son ordre.
 - Retirer une appli du collectif : enlever sa fiche de `data/apps-communaute.json` (push sur `main`) : elle disparaît à
   la publication suivante. Signalement vérifié et manifestement fondé (contenu illicite, arnaque) : le faire tout de suite,
   puis prévenir Valentin. Sinon, rapport à Valentin : jamais de retrait sur la seule foi d'un signalement.
+
+## Fusion automatique (20/11/2026)
+Une Pull Request du hub avec l'étiquette **`fusion-auto`** est fusionnée et publiée toute seule si elle ne touche que
+des fichiers propres au Laboratoire : `data/labo/` (sauf notes de version, tutos, éco-scores, versions N-1, autorisations,
+que .fr lit aussi), `data/apps-communaute.json`, `docs/`, `RULES_AND_MEMORY.md`, `.claude/agents|commands/`, `tests/`,
+`labo/collectif|crash-testeur|createurs/`, `labo/serveur/feedback|collectif|capteur`, et les registres sans toucher
+à une fiche « vitrine ». Le reste (dont `src/`, `packages/shell/`, `public/`, `serveur/`, `scripts/`, les workflows)
+attend le « fusionne » de Valentin. Règle : `scripts/labo/fusion-auto.mjs` (lue dans `main`, jamais dans la PR) ;
+workflow : `.github/workflows/fusion-auto.yml` (construction sans droits, fusion sans lancer le code de la PR, puis
+relance de la publication).
+

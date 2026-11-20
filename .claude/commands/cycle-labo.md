@@ -43,7 +43,10 @@ Cycle du Laboratoire alphabette.eu. Aucun code n'est modifié sans passer par to
       la synthèse de 5 lignes va dans le rendu à Valentin.
    b. `preparer` (graduation) lance l'Agent Gardien et exige le GO du Conseil sur la même version : sinon, transfert bloqué. Lors d'un transfert : `redacteur-notes`.
 7. Agent `meta-improver` : règles apprises dans `RULES_AND_MEMORY.md` (section 8).
-8. Commit du hub (« Labo : cycle du <date> ») et push sur `main` : alphabette.eu se met à jour ; alphabette.fr ne change pas.
+8. Commit du hub (« Labo : cycle du <date> ») sur une branche `labo/cycle-<date>`, puis Pull Request avec l'étiquette
+   `fusion-auto` (`gh api repos/azertylm/Alphabette/pulls …` puis `gh api repos/azertylm/Alphabette/issues/<n>/labels -f "labels[]=fusion-auto"`) :
+   si elle ne change que le Laboratoire (règle : `scripts/labo/fusion-auto.mjs`), GitHub la fusionne et republie tout seul.
+   Sinon elle attend le « fusionne » de Valentin (lui donner le lien de la PR).
 9. Rendu à Valentin, court, avec des liens cliquables (commits, pages .eu) : ce qui a été corrigé, ce qui a été rejeté (combien),
    et chaque Niveau 2 sous la forme « Résumé · Mon avis critique · Ce que j'ai fait » (Priorité haute en premier).
    Seul ce qui touche alphabette.fr attend son ordre : correctif prêt dans `docs/labo/correctifs/`, et la phrase exacte à me dire.
