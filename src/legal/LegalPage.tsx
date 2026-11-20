@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppShell, type AlphaAppConfig } from '@alphabette/shell';
 import '@alphabette/shell/style.css';
-import { MentionsLegales, Confidentialite, Cookies, ConditionsVente } from './contenu';
+import { MentionsLegales, Confidentialite, Cookies, ConditionsVente, CharteCreateurs } from './contenu';
 
 /**
  * Pages légales de la vitrine alphabette.fr (mentions légales, conditions générales de vente, confidentialité,
@@ -24,6 +24,7 @@ export const PAGES_LEGALES = [
   { chemin: '/confidentialite', titre: 'Confidentialité', Contenu: Confidentialite },
   { chemin: '/cookies', titre: 'Cookies et stockage local', Contenu: Cookies },
   { chemin: '/conditions-de-vente', titre: 'Conditions générales de vente', Contenu: ConditionsVente },
+  { chemin: '/charte-createurs', titre: 'Charte des créateurs du Collectif', Contenu: CharteCreateurs },
 ] as const;
 
 /** Page légale correspondant à l'adresse, ou undefined. */

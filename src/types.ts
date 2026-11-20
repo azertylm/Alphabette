@@ -166,6 +166,8 @@ export interface RegistryApp {
   /** Nom ou pseudo du créateur (Collectif). */
   createur?: string;
   categorie?: string;
+  /** Appli du Collectif hébergée et isolée par Alphabette (bac à sable, /createurs/<id>/). */
+  heberge?: boolean;
 }
 
 export interface RegistrySnapshot {
