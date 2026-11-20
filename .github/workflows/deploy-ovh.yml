@@ -28,13 +28,14 @@ jobs:
         with:
           node-version: 22
       - run: bun install --frozen-lockfile
-      - name: Certificats d'audit réseau et Atelier qualité (branche labo-donnees)
+      - name: Certificats d'audit réseau, Atelier qualité et Podcast du Labo (branche labo-donnees)
         # atelier/ : rapports, notes, badges « Testé au Labo », captures et verdicts du Douanier pour les applis
         # hébergées (une appli du collectif n'est publiée que si CE commit a été validé : prepublication/).
         run: |
           if git fetch -q --depth=1 origin labo-donnees; then
             git checkout FETCH_HEAD -- certificats 2>/dev/null || true
             git checkout FETCH_HEAD -- atelier 2>/dev/null || true
+            git checkout FETCH_HEAD -- podcast 2>/dev/null || true
             git reset -q
           fi
       - run: bun run build:static
