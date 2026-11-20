@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{NOM}} — par {{CREATEUR}} | Collectif Alphabette</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <link rel="canonical" href="https://alphabette.eu/createurs/{{ID}}/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Le Laboratoire Alphabette">
+  <meta property="og:title" content="{{NOM}} — par {{CREATEUR}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="https://alphabette.eu/createurs/{{ID}}/">
+  <meta property="og:image" content="https://alphabette.eu/og-image.png">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-src {{ORIGINE}}/createurs/{{ID}}/app/; form-action 'self'; base-uri 'none'; object-src 'none'">
+  <style>
+    :root { color-scheme: light dark; --fond: #ffffff; --texte: #1b1b1f; --doux: #55555f; --bord: #d6d6de; --accent: #5b3df5; --carte: #f5f5f8; }
+    @media (prefers-color-scheme: dark) { :root { --fond: #121216; --texte: #f1f1f4; --doux: #b8b8c4; --bord: #34343e; --accent: #a99bff; --carte: #1d1d24; } }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--fond); color: var(--texte); font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    body { display: flex; flex-direction: column; min-height: 100dvh; }
+    .barre { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-bottom: 1px solid var(--bord); min-height: 52px; }
+    .barre a, .barre button { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 10px; background: transparent; color: var(--texte); font: inherit; text-decoration: none; cursor: pointer; }
+    .barre a:focus-visible, .barre button:focus-visible, .infos a:focus-visible, .infos button:focus-visible, dialog :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .titre { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+    .titre strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .titre span { font-size: 14px; color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #b-signaler { padding: 0 10px; font-size: 15px; }
+    .infos { padding: 12px 16px; border-bottom: 1px solid var(--bord); background: var(--carte); font-size: 15px; }
+    .infos p { margin: 0 0 8px; }
+    .infos ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+    .infos a, .infos button { color: var(--accent); background: none; border: 0; font: inherit; padding: 10px 0; min-height: 44px; cursor: pointer; text-decoration: underline; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-size: 14px; }
+    iframe { flex: 1; width: 100%; border: 0; display: block; background: #fff; }
+    dialog { border: 1px solid var(--bord); border-radius: 14px; background: var(--fond); color: var(--texte); width: min(440px, calc(100vw - 24px)); padding: 18px; }
+    dialog::backdrop { background: rgba(0, 0, 0, .45); }
+    dialog h2 { margin: 0 0 10px; font-size: 20px; }
+    label { display: block; margin: 10px 0 4px; font-weight: 600; }
+    select, textarea, input { width: 100%; font: inherit; padding: 10px; border-radius: 10px; border: 1px solid var(--bord); background: var(--fond); color: var(--texte); min-height: 44px; }
+    .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+    .actions button { min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--bord); background: var(--carte); color: var(--texte); font: inherit; cursor: pointer; }
+    .actions .principal { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .petit { font-size: 14px; color: var(--doux); }
+    .piege { position: absolute; left: -9999px; }
+  </style>
+</head>
+<body>
+  <header class="barre">
+    <a href="/" aria-label="Retour au Laboratoire Alphabette">←</a>
+    <div class="titre"><strong>{{NOM}}</strong><span>par {{CREATEUR}} · Collectif Alphabette</span></div>
+    <button type="button" id="b-infos" aria-expanded="false" aria-controls="infos" aria-label="Informations sur cette application">ⓘ</button>
+    <button type="button" id="b-signaler">⚑ Signaler</button>
+  </header>
+  <section class="infos" id="infos" hidden>
+    <p>Application d'un créateur indépendant, <strong>isolée d'Alphabette</strong> : elle ne peut lire ni vos données ni celles des autres applications. Ses données restent dans ce navigateur.</p>
+    <p id="badge"></p>
+    <ul>
+      <li><a href="/atelier/{{ID}}/">Rapport de l'atelier</a></li>
+      <li><a href="/charte-createurs">Charte des créateurs</a></li>
+      <li><a href="/mentions-legales">Mentions légales</a></li>
+      <li><a href="/confidentialite">Confidentialité</a></li>
+      <li><button type="button" id="b-effacer">Effacer mes données de cette application</button></li>
+    </ul>
+  </section>
+  <dialog id="d-signaler" aria-labelledby="t-signaler">
+    <form id="f-signaler" method="dialog">
+      <h2 id="t-signaler">Signaler cette application</h2>
+      <p class="petit">Votre signalement part tout de suite chez Alphabette, qui l'examine sans délai. Votre adresse IP n'est pas conservée.</p>
+      <label for="motif">Motif</label>
+      <select id="motif" required>
+        <option value="illicite">Contenu illicite ou dangereux</option>
+        <option value="arnaque">Arnaque ou hameçonnage</option>
+        <option value="donnees">Collecte abusive de données personnelles</option>
+        <option value="droits">Atteinte à mes droits (auteur, image, marque)</option>
+        <option value="bug">Elle ne marche pas</option>
+        <option value="autre">Autre</option>
+      </select>
+      <label for="details">Ce qui pose problème</label>
+      <textarea id="details" rows="4" maxlength="1000" required></textarea>
+      <label for="contact">Pour vous répondre (facultatif)</label>
+      <input id="contact" maxlength="120" autocomplete="email">
+      <input class="piege" id="site_web" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="petit" id="r-signaler" role="status"></p>
+      <div class="actions">
+        <button type="button" id="b-annuler">Fermer</button>
+        <button type="submit" class="principal" id="b-envoyer">Envoyer</button>
+      </div>
+    </form>
+  </dialog>
+  <script>
+  (function () {
+    'use strict';
+    var APP = {{APP_JSON}};
+    var MARQUE = '__ab_coffre__';
+    var CLE = 'ab-coffre:' + APP.id;
+    var garde = '';
+    try { garde = localStorage.getItem(CLE) || ''; } catch (e) { garde = ''; }
+    var cadre = document.createElement('iframe');
+    cadre.title = APP.nom;
+    cadre.setAttribute('sandbox', 'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads');
+    cadre.setAttribute('referrerpolicy', 'no-referrer');
+    cadre.setAttribute('allow', 'clipboard-write; fullscreen');
+    cadre.name = MARQUE + (garde || '{}');
+    cadre.src = 'app/index.html';
+    document.body.appendChild(cadre);
+    window.addEventListener('message', function (e) {
+      if (e.source !== cadre.contentWindow || !e.data || e.data.type !== 'ab-coffre') return;
+      try {
+        var texte = JSON.stringify(e.data.donnees || {});
+        if (texte.length <= 2000000) localStorage.setItem(CLE, texte);
+      } catch (err) { /* stockage plein ou refusé : l'appli garde ses données le temps de la visite */ }
+    });
+
+    var infos = document.getElementById('infos');
+    var bInfos = document.getElementById('b-infos');
+    bInfos.addEventListener('click', function () {
+      infos.hidden = !infos.hidden;
+      bInfos.setAttribute('aria-expanded', String(!infos.hidden));
+    });
+    document.getElementById('b-effacer').addEventListener('click', function () {
+      if (!confirm('Effacer les données de « ' + APP.nom + ' » dans ce navigateur ?')) return;
+      try { localStorage.removeItem(CLE); } catch (e) { /* rien */ }
+      cadre.name = MARQUE + '{}';
+      cadre.src = 'app/index.html?' + Date.now();
+    });
+    fetch('/api/labo/atelier.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      var j = d && d.jury && d.jury[APP.id];
+      var b = document.getElementById('badge');
+      if (j && j.teste_au_labo) b.innerHTML = '<span class="badge">✓ Testé au Labo le ' + new Date(j.date).toLocaleDateString('fr-FR') + '</span> <span class="petit">contrôle technique ' + j.controle_technique + '/100</span>';
+      else b.textContent = 'Pas encore de badge « Testé au Labo » : voir le rapport de l\'atelier.';
+    }).catch(function () { /* rien */ });
+
+    var dlg = document.getElementById('d-signaler');
+    var res = document.getElementById('r-signaler');
+    document.getElementById('b-signaler').addEventListener('click', function () { res.textContent = ''; dlg.showModal(); });
+    document.getElementById('b-annuler').addEventListener('click', function () { dlg.close(); });
+    document.getElementById('f-signaler').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var details = document.getElementById('details').value.trim();
+      if (details.length < 5) { res.textContent = 'Décrivez le problème en quelques mots.'; return; }
+      var bouton = document.getElementById('b-envoyer');
+      bouton.disabled = true;
+      res.textContent = 'Envoi…';
+      fetch('/api/collectif.php', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'signaler', app_id: APP.id, motif: document.getElementById('motif').value, details: details, contact: document.getElementById('contact').value, adresse: location.href, site_web: document.getElementById('site_web').value }),
+      }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (x) { res.textContent = x.ok ? 'Merci : votre signalement est bien parti.' : (x.d.erreur || 'Envoi impossible pour le moment.'); })
+        .catch(function () { res.textContent = 'Pas de connexion : réessayez.'; })
+        .then(function () { bouton.disabled = false; });
+    });
+  })();
+  </script>
+</body>
+</html>

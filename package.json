@@ -16,7 +16,9 @@
     "lint": "tsc --noEmit",
     "new:app": "tsx scripts/create-app.ts",
     "sync:shell": "tsx scripts/sync-shell.ts",
-    "labo:cycle": "node scripts/labo/cycle.mjs"
+    "labo:cycle": "node scripts/labo/cycle.mjs",
+    "labo:atelier": "node scripts/labo/atelier.mjs controler",
+    "test:atelier": "node tests/atelier/test_atelier.mjs"
   },
   "dependencies": {
     "@alphabette/shell": "workspace:*",

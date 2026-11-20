@@ -1,0 +1,147 @@
+# Atelier qualité du Laboratoire (docs/labo/ATELIER-QUALITE.md) : chaque nuit, sept agents contrôlent chaque appli
+# d'alphabette.eu (Douanier, Pouce, Opticien, Poids Plume, Phare, Parapluie, Témoin), puis le Jury calcule le badge
+# « Testé au Labo ». Avant publication, une appli hébergée du collectif est contrôlée dans son bac à sable local :
+# son commit n'est publié que si le Douanier le valide (atelier/prepublication/<id>.json).
+#
+# Sécurité : le job « controle » ouvre des pages de tiers dans un navigateur : il n'a AUCUN droit d'écriture ni
+# secret. Le job « ranger » ne lance aucun code tiers : il vérifie que l'artefact ne contient que du JSON, du JPEG
+# et du Markdown, puis le range sur la branche labo-donnees.
+name: Laboratoire — Atelier qualité
+
+on:
+  schedule:
+    - cron: '7 2 * * *'
+  push:
+    branches: [main]
+    paths: ['data/apps-communaute.json']
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: "Une ou plusieurs applis (id, séparés par des virgules) ; vide = toutes"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: labo-atelier
+  cancel-in-progress: false
+
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Installer Playwright (à part des dépendances du site)
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
+      - name: Reprendre l'atelier précédent (labo-donnees)
+        run: |
+          mkdir -p atelier /tmp/captures-precedentes
+          if git fetch -q --depth=1 "https://github.com/${GITHUB_REPOSITORY}.git" labo-donnees; then
+            git checkout FETCH_HEAD -- atelier 2>/dev/null || true
+            git reset -q
+          fi
+          cp atelier/captures/*.jpg /tmp/captures-precedentes/ 2>/dev/null || true
+      - name: Applis hébergées à valider (bac à sable, avant publication)
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          node -e "
+            const fs = require('fs');
+            const { apps = [] } = JSON.parse(fs.readFileSync('data/apps-communaute.json', 'utf8'));
+            const ids = apps.filter((a) => a.heberge).filter((a) => {
+              try { const v = JSON.parse(fs.readFileSync('atelier/prepublication/' + a.id + '.json', 'utf8')); return v.ref !== a.heberge.ref; } catch { return true; }
+            }).map((a) => a.id);
+            fs.writeFileSync('/tmp/a-valider.txt', ids.join(','));
+          "
+          if [ -s /tmp/a-valider.txt ]; then
+            echo "À valider : $(cat /tmp/a-valider.txt)"
+            node scripts/labo/bac-a-sable.mjs preparer "$(cat /tmp/a-valider.txt)" --site /tmp/site --origine http://127.0.0.1:4173
+            node scripts/labo/serveur-statique.mjs /tmp/site 4173 & sleep 1
+            node scripts/labo/atelier.mjs controler --cibles /tmp/site/cibles.json --sortie /tmp/prepub || true
+            node scripts/labo/bac-a-sable.mjs verdicts /tmp/prepub /tmp/site/cibles.json --sortie atelier
+            # Le rapport du Parrain sert au créateur même si l'appli n'est pas encore publiée.
+            mkdir -p atelier/rapports && cp /tmp/prepub/rapports/*.json atelier/rapports/ 2>/dev/null || true
+          else
+            echo "Aucune appli hébergée à valider."
+          fi
+      - name: Contrôle des applis en ligne (alphabette.eu)
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+          APPS: ${{ inputs.app_id }}
+          EVENEMENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENEMENT" = "push" ]; then
+            APPS=$(node -e "const { apps = [] } = require('./data/apps-communaute.json'); console.log(apps.map((a) => a.id).join(','))")
+            [ -z "$APPS" ] && { echo "Aucune appli du collectif à contrôler."; exit 0; }
+          fi
+          node scripts/labo/atelier.mjs controler --base https://alphabette.eu ${APPS:+--app "$APPS"} --sortie atelier --precedent /tmp/captures-precedentes
+          node scripts/labo/atelier.mjs jury atelier
+          cat atelier/resume.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Garder 14 jours d'historique, seulement des données
+        run: |
+          ls atelier/historique/*.json 2>/dev/null | sort | head -n -14 | xargs -r rm -f
+          find atelier -type f ! -name '*.json' ! -name '*.jpg' ! -name '*.md' -delete
+      - uses: actions/upload-artifact@v4
+        with:
+          name: atelier
+          path: atelier/
+          retention-days: 3
+
+  ranger:
+    needs: controle
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: atelier
+          path: /tmp/atelier
+      - name: Vérifier l'artefact (aucun code, JSON valides)
+        run: |
+          if find /tmp/atelier -type f ! -name '*.json' ! -name '*.jpg' ! -name '*.md' | grep -q .; then echo "::error::fichier inattendu dans l'artefact"; exit 1; fi
+          if find /tmp/atelier -type l | grep -q .; then echo "::error::lien symbolique dans l'artefact"; exit 1; fi
+          find /tmp/atelier -name '*.json' -print0 | xargs -0 -r -n1 jq empty
+      - name: Ranger sur labo-donnees
+        id: ranger
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin labo-donnees; then git worktree add -q ../donnees FETCH_HEAD; else echo "::warning::branche labo-donnees absente"; exit 0; fi
+          avant=$(cat ../donnees/atelier/prepublication/*.json 2>/dev/null | sha256sum)
+          mkdir -p ../donnees/atelier
+          cp -a /tmp/atelier/. ../donnees/atelier/
+          ls ../donnees/atelier/historique/*.json 2>/dev/null | sort | head -n -14 | xargs -r rm -f
+          apres=$(cat ../donnees/atelier/prepublication/*.json 2>/dev/null | sha256sum)
+          [ "$avant" != "$apres" ] && echo "verdicts=1" >> "$GITHUB_OUTPUT"
+          cd ../donnees && git add -A atelier
+          git diff --cached --quiet || { git commit -q -m "Atelier qualité — $(date -u +%F)" && "$GITHUB_WORKSPACE/scripts/labo/pousser-donnees.sh" .; }
+      - name: Republier si une appli hébergée vient d'être validée
+        if: steps.ranger.outputs.verdicts == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-ovh.yml --ref main || echo "::warning::republication à la prochaine publication planifiée"
+      - name: Alerte (nouveaux points bloquants)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=$(jq '.alertes | length' /tmp/atelier/alertes.json 2>/dev/null || echo 0)
+          [ "$n" -gt 0 ] || exit 0
+          { echo "L'Atelier qualité a relevé de nouveaux points bloquants :"; echo; jq -r '.alertes[] | "- **\(.nom)** : \(.titre) — rapport : https://alphabette.eu/atelier/\(.id)/"' /tmp/atelier/alertes.json; echo; echo "Le passage quotidien du Laboratoire (21 h 13) s'en occupe ; rien à faire de votre côté."; } > /tmp/alerte.md
+          gh label create atelier --color 5b3df5 --force >/dev/null 2>&1 || true
+          gh issue create --title "⛔ Atelier qualité : $n nouveau(x) point(s) bloquant(s) ($(date -u +%F))" --body-file /tmp/alerte.md --label atelier || \
+            gh issue create --title "⛔ Atelier qualité : $n nouveau(x) point(s) bloquant(s) ($(date -u +%F))" --body-file /tmp/alerte.md
