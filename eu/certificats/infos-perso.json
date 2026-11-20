@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-20T14:16:03.041Z",
-  "empreinte_page_sha256": "603cbf11841851cc5c110074e76329406f34de6610a68ecb40f66782164b82f2",
+  "audite_le": "2026-11-20T15:30:52.825Z",
+  "empreinte_page_sha256": "abd7cc905ab8bf55c1910089b4a432ca5ac583b79c42587b1df561058829319a",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1259,
-      "bloquees": 1259,
+      "requetes": 670,
+      "bloquees": 670,
       "types": [
         "image",
         "fetch"
@@ -69,8 +69,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "media.lesechos.com",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -143,9 +143,9 @@
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "img.lemde.fr"
+      "media.lesechos.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "649770202ccf90940b15217d22e4403adcf1a740fd7aef66d363b53feede81db"
+  "empreinte_certificat_sha256": "e9481240faa9f2127b849bc8b0a05ca4e03461a610c49fd515e88fa64abbc3b2"
 }
