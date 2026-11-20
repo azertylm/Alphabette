@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Badge « Passé au Crash-Test • Alphabette.eu »</title>
+<meta name="description" content="Vérifier qu'une application a passé le Crash-Test du Laboratoire Alphabette, et intégrer son badge sur un site ou un dépôt GitHub (HTML ou Markdown, sans script).">
+<link rel="canonical" href="https://alphabette.eu/badge/">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .apercu { display: flex; align-items: center; justify-content: center; min-height: 84px; border-radius: .9rem; border: 1px solid var(--trait); padding: 1rem; }
+  .apercu--clair { background: #ffffff; }
+  .apercu--sombre { background: #0b1220; }
+  .apercu img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Badge « Passé au Crash-Test »</h1>
+
+  <div id="verification" class="carte" role="status"><p>Vérification…</p></div>
+
+  <section id="integrer" class="cache" aria-labelledby="t-integrer">
+    <h2 id="t-integrer">Intégrer le badge sur ton site ou GitHub</h2>
+    <fieldset>
+      <legend class="petit">Thème du badge</legend>
+      <div class="radios">
+        <label><input type="radio" name="theme" value="auto" checked> Automatique</label>
+        <label><input type="radio" name="theme" value="clair"> Clair</label>
+        <label><input type="radio" name="theme" value="sombre"> Sombre</label>
+      </div>
+    </fieldset>
+    <div class="grille grille--2">
+      <div class="apercu apercu--clair"><img id="apercu-clair" alt="Aperçu sur fond clair" width="312" height="36"></div>
+      <div class="apercu apercu--sombre"><img id="apercu-sombre" alt="Aperçu sur fond sombre" width="312" height="36"></div>
+    </div>
+
+    <h3 style="margin-top:1.2rem">Pour un site : code HTML</h3>
+    <p class="petit">Le dessin est dans le code (SVG intégré) : aucun script, aucun appel vers Alphabette, aucun traceur pour tes visiteurs. Un clic sur le badge ouvre la page de vérification.</p>
+    <div class="carte"><pre class="code" id="code-html"></pre></div>
+    <h3>Pour GitHub (README) : Markdown</h3>
+    <div class="carte"><pre class="code" id="code-md"></pre></div>
+    <div class="actions">
+      <button type="button" id="copier-html">Copier le code HTML</button>
+      <button type="button" class="secondaire" id="copier-md">Copier le Markdown</button>
+    </div>
+    <p class="message ok" id="m-copie" role="status"></p>
+  </section>
+
+  <section aria-labelledby="t-quoi">
+    <h2 id="t-quoi">Ce que veut dire le badge</h2>
+    <ul>
+      <li>L'application est passée par la <a href="/embarquement/">Salle d'embarquement</a> : contrôles de sécurité et anti-traceurs de l'Atelier qualité, puis validation par le Laboratoire.</li>
+      <li>Elle est testée sur alphabette.eu, sans publicité ni revente de données.</li>
+      <li>C'est un constat du Laboratoire à une date donnée, <strong>pas une certification officielle</strong>. Si l'application n'est plus validée, cette page le dit.</li>
+    </ul>
+    <h2>Applications qui ont le badge</h2>
+    <div class="carte"><ul class="liste-simple" id="liste"><li>Chargement…</li></ul></div>
+  </section>
+  <footer class="pied">
+    <a href="/embarquement/">Proposer une application</a>
+    <a href="/#tableau-honneur">Tableau d'Honneur</a>
+  </footer>
+</main>
+<script>
+(async function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var demande = new URLSearchParams(location.search).get('app') || '';
+  var apps = [];
+  try { apps = ((await (await fetch('/api/apps.json', { cache: 'no-store' })).json()).apps || []).filter(function (a) { return a.communaute && /^c-[a-z0-9-]+$/.test(a.id); }); } catch (e) { apps = []; }
+
+  var ul = $('liste'); ul.textContent = '';
+  if (!apps.length) { var li0 = document.createElement('li'); li0.textContent = 'Aucune pour l’instant : les premières applications de créateurs sont en cours de contrôle.'; ul.appendChild(li0); }
+  apps.forEach(function (a) {
+    var li = document.createElement('li'), l = document.createElement('a');
+    l.href = '/badge/?app=' + encodeURIComponent(a.id); l.textContent = a.name + (a.createur ? ' — par ' + a.createur : '');
+    li.appendChild(l); ul.appendChild(li);
+  });
+
+  var v = $('verification'); v.textContent = '';
+  function p(t) { var n = document.createElement('p'); n.textContent = t; v.appendChild(n); return n; }
+  var app = apps.find(function (a) { return a.id === demande; });
+  if (!demande) {
+    p('Le badge est réservé aux applications de créateurs validées par le Laboratoire. Choisissez la vôtre dans la liste plus bas pour obtenir son code.');
+    return;
+  }
+  if (!app) {
+    v.classList.add('carte--acc');
+    p('⚠️ Cette application n’a pas (ou plus) le badge du Laboratoire Alphabette.').style.fontWeight = '800';
+    p('Elle n’est pas dans la liste des applications validées sur alphabette.eu.');
+    return;
+  }
+  v.classList.add('carte--acc');
+  var t = p('✅ « ' + app.name + ' »' + (app.createur ? ' (par ' + app.createur + ')' : '') + ' a passé le Crash-Test du Laboratoire Alphabette.');
+  t.style.fontWeight = '800'; t.style.color = 'var(--encre)';
+  var quand = app.createdAt ? new Date(app.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  p('Contrôles de sécurité et anti-traceurs réussis, puis validation' + (quand ? ' le ' + quand : '') + '.');
+  var ouvrir = document.createElement('a'); ouvrir.className = 'bouton'; ouvrir.href = app.url; ouvrir.textContent = '▶ Ouvrir l’application';
+  if (!app.heberge) { ouvrir.target = '_blank'; ouvrir.rel = 'noopener noreferrer'; }
+  v.appendChild(ouvrir);
+
+  // Bloc d'intégration : le dessin vient des fichiers SVG publiés ici (une seule source).
+  $('integrer').classList.remove('cache');
+  var lienRetour = 'https://alphabette.eu/badge/?app=' + encodeURIComponent(app.id);
+  var svg = {};
+  for (var th of ['auto', 'clair', 'sombre']) {
+    var f = th === 'auto' ? 'crash-test.svg' : 'crash-test-' + th + '.svg';
+    try { svg[th] = (await (await fetch('/badge/' + f)).text()).trim(); } catch (e) { svg[th] = ''; }
+  }
+  $('apercu-clair').src = '/badge/crash-test-clair.svg'; $('apercu-sombre').src = '/badge/crash-test-sombre.svg';
+  function maj() {
+    var th = document.querySelector('input[name=theme]:checked').value;
+    var f = th === 'auto' ? 'crash-test.svg' : 'crash-test-' + th + '.svg';
+    $('apercu-clair').src = '/badge/' + (th === 'auto' ? 'crash-test-clair.svg' : f);
+    $('apercu-sombre').src = '/badge/' + (th === 'auto' ? 'crash-test-sombre.svg' : f);
+    $('code-html').textContent = '<a href="' + lienRetour + '" title="Vérifier sur alphabette.eu" rel="noopener" style="display:inline-block;line-height:0">' + svg[th] + '</a>';
+    $('code-md').textContent = '[![Passé au Crash-Test • Alphabette.eu](https://alphabette.eu/badge/' + f + ')](' + lienRetour + ')';
+  }
+  document.querySelectorAll('input[name=theme]').forEach(function (r) { r.addEventListener('change', maj); });
+  maj();
+  function copier(id, quoi) {
+    return async function () {
+      try { await navigator.clipboard.writeText($(id).textContent); $('m-copie').textContent = '✅ ' + quoi + ' copié. Collez-le dans votre page.'; }
+      catch (e) { $('m-copie').textContent = 'Sélectionnez le texte et copiez-le (Ctrl+C).'; }
+    };
+  }
+  $('copier-html').addEventListener('click', copier('code-html', 'Code HTML'));
+  $('copier-md').addEventListener('click', copier('code-md', 'Markdown'));
+})();
+</script>
+</body>
+</html>

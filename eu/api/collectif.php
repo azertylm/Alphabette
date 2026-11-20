@@ -9,6 +9,10 @@
  *   GET  ?signalements=1               → signalements SANS les contacts (lu par les agents, 200 derniers)
  *   POST { action:"proposer", nom, url | depot (+ dossier), description, categorie, pseudo, contact?, charte:[5 × true], site_web }
  *                                      → { ok, id }          (jamais publiée automatiquement)
+ *        Salle d'embarquement (alphabette.eu/embarquement/) : formulaire:"embarquement", regles:[4 × true] à la place
+ *        de charte (contrôles de sécurité/anti-traceurs, .eu seulement — jamais alphabette.fr —, zéro pub et zéro
+ *        revente de données, charte des créateurs), duree (ms passées sur le formulaire, piège à robots).
+ *        File d'attente privée : propositions.json, hors du site (jamais servie, jamais indexée).
  *        url   : l'appli a sa propre adresse https ;
  *        depot : « pseudo/depot » GitHub public avec les fichiers déjà construits → hébergée et isolée par
  *                Alphabette (bac à sable, voir docs/labo/ATELIER-QUALITE.md).
@@ -36,6 +40,8 @@ const MOTIFS_SIGNALEMENT = array('illicite' => 'Contenu illicite ou dangereux', 
     'donnees' => 'Collecte abusive de données personnelles', 'droits' => 'Atteinte à des droits (auteur, image, marque)',
     'bug' => 'Ne marche pas', 'autre' => 'Autre');
 const POINTS_CHARTE = 5;
+const REGLES_EMBARQUEMENT = array('controles_securite_anti_traceurs', 'alphabette_eu_seulement_jamais_fr', 'zero_pub_zero_revente', 'charte_createurs');
+const DUREE_MINIMUM_MS = 2500;         // un humain ne remplit pas le formulaire en moins de 2,5 s
 const CATEGORIES_COLLECTIF = array('Quotidien', 'Santé & bien-être', 'Éducation', 'Culture', 'Outils', 'Jeux', 'Citoyen', 'Autre');
 const DESTINATAIRE = 'azertylm@gmail.com';
 const IDEES_PAR_JOUR = 3;              // par visiteur
@@ -205,6 +211,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET') {
 }
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') erreur(405, 'Méthode non prise en charge.');
 
+// Seules les pages d'Alphabette écrivent ici (un autre site ne peut pas poster à la place d'un visiteur).
+$origine = (string) ($_SERVER['HTTP_ORIGIN'] ?? '');
+if ($origine !== '' && !preg_match('#^(https://(www\.)?alphabette\.(eu|fr)|http://(localhost|127\.0\.0\.1)(:\d+)?)$#', $origine)) erreur(403, 'Origine refusée.');
+if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 16384) erreur(413, 'Demande trop longue.');
 $e = json_decode((string) file_get_contents('php://input'), true);
 if (!is_array($e)) erreur(400, 'Demande illisible.');
 // Piège à robots : un humain ne voit pas ce champ.
@@ -222,8 +232,16 @@ if ($action === 'soutenir') {
 }
 
 if ($action === 'proposer') {
-    $charte = $e['charte'] ?? array();
-    if (!is_array($charte) || count(array_filter($charte, function ($v) { return $v === true; })) !== POINTS_CHARTE) erreur(400, 'Merci de cocher les ' . POINTS_CHARTE . ' points de la charte.');
+    $embarquement = ($e['formulaire'] ?? '') === 'embarquement';
+    if ($embarquement) {
+        // Salle d'embarquement : les 4 règles du Laboratoire, chacune cochée ; formulaire rempli trop vite = robot.
+        $regles = $e['regles'] ?? array();
+        if (!is_array($regles) || count($regles) !== count(REGLES_EMBARQUEMENT) || count(array_filter($regles, function ($v) { return $v === true; })) !== count(REGLES_EMBARQUEMENT)) erreur(400, 'Merci de cocher les ' . count(REGLES_EMBARQUEMENT) . ' règles du Laboratoire.');
+        if ((int) ($e['duree'] ?? 0) < DUREE_MINIMUM_MS) repondre(200, array('ok' => true, 'id' => 'ignore'));
+    } else {
+        $charte = $e['charte'] ?? array();
+        if (!is_array($charte) || count(array_filter($charte, function ($v) { return $v === true; })) !== POINTS_CHARTE) erreur(400, 'Merci de cocher les ' . POINTS_CHARTE . ' points de la charte.');
+    }
     $nom = texte((string) ($e['nom'] ?? ''), 60);
     $url = trim((string) ($e['url'] ?? ''));
     // Sans hébergement : dépôt GitHub public (fichiers déjà construits), hébergé et isolé par Alphabette.
@@ -244,12 +262,17 @@ if ($action === 'proposer') {
     if ($url !== '' && (!filter_var($url, FILTER_VALIDATE_URL) || stripos($url, 'https://') !== 0 || strlen($url) > 300)) erreur(400, "L'adresse doit commencer par https://");
     if (mb_strlen($description) < 15) erreur(400, 'Décrivez votre application en une ou deux phrases (15 caractères au moins).');
     if (mb_strlen($pseudo) < 2) erreur(400, 'Indiquez votre nom ou pseudo de créateur.');
+    // Anti-spam simple : pas de lien dans le nom ni le pseudo, un lien au plus dans la description.
+    if (preg_match('#https?://|www\.#i', $nom . ' ' . $pseudo)) erreur(400, 'Pas de lien dans le nom ni dans le pseudo.');
+    if (preg_match_all('#https?://|www\.#i', $description) > 1) erreur(400, 'Un seul lien au plus dans la description.');
     $l = limite($D, 'proposition', PROPOSITIONS_PAR_JOUR);
     if ($l === 'trop') erreur(429, "Vous avez déjà fait 3 propositions aujourd'hui : revenez demain.");
     $id = 'prop_' . time() . '_' . bin2hex(random_bytes(2));
     $p = array(
         'id' => $id, 'nom' => $nom, 'url' => $url, 'description' => $description, 'categorie' => $categorie,
-        'pseudo' => $pseudo, 'contact' => $contact, 'charte_acceptee' => true, 'charte_points' => POINTS_CHARTE,
+        'pseudo' => $pseudo, 'contact' => $contact, 'charte_acceptee' => true, 'charte_points' => $embarquement ? count(REGLES_EMBARQUEMENT) : POINTS_CHARTE,
+        'formulaire' => $embarquement ? 'embarquement' : 'proposer', 'regles_acceptees' => $embarquement ? REGLES_EMBARQUEMENT : array(),
+        'domaine' => 'alphabette.eu',
         'mode' => $depot !== '' ? 'heberge' : 'lien', 'depot' => $depot, 'dossier' => $sous_dossier,
         'statut' => 'en_attente', 'date' => gmdate('c'),
     );
@@ -269,7 +292,7 @@ if ($action === 'proposer') {
     // Prévenir Valentin (l'e-mail est le seul endroit où le contact est transmis).
     if (function_exists('mail')) {
         $ou = $depot !== '' ? "Dépôt GitHub (hébergée par Alphabette) : https://github.com/$depot" . ($sous_dossier !== '' ? " — dossier $sous_dossier" : '') . ($url !== '' ? "\nAdresse : $url" : '') : "Adresse : $url";
-        $corps = "Nouvelle proposition pour le Collectif Alphabette\n\nNom : $nom\n$ou\nCatégorie : $categorie\nCréateur : $pseudo\nContact : " . ($contact ?: '(non donné)') . "\n\n$description\n\nIdentifiant : $id\nL'Atelier qualité la contrôle au prochain passage. Rien n'est publié tant que vous ne l'avez pas validée.";
+        $corps = "Nouvelle proposition pour le Collectif Alphabette" . ($embarquement ? " (Salle d'embarquement)" : '') . "\n\nNom : $nom\n$ou\nCatégorie : $categorie\nCréateur : $pseudo\nContact : " . ($contact ?: '(non donné)') . "\n\n$description\n\nIdentifiant : $id\nL'Atelier qualité la contrôle au prochain passage. Rien n'est publié tant que vous ne l'avez pas validée.\nRègle : appli de créateur = alphabette.eu seulement, jamais transférée sur alphabette.fr.";
         @mail(DESTINATAIRE, '=?UTF-8?B?' . base64_encode('[Alphabette] Proposition : ' . $nom) . '?=', $corps,
             "From: collectif@alphabette.eu\r\nContent-Type: text/plain; charset=UTF-8");
     }

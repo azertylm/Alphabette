@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Les Pass Alphabette — essai gratuit 48 h, Pass cadeau, crédits IA Débat</title>
+<meta name="description" content="Essayez gratuitement 48 h sans carte bancaire, offrez un Pass Alphabette à un proche avec une carte cadeau à imprimer, ou rechargez des crédits IA Débat. 12 mois, aucun renouvellement automatique.">
+<link rel="canonical" href="https://alphabette.eu/pass/">
+<link rel="stylesheet" href="/labo/pages.css">
+</head>
+<body>
+<main>
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Les Pass Alphabette</h1>
+  <p class="chapeau">Un paiement, 12 mois d'accès, <strong>aucun renouvellement automatique</strong>. Les applications gratuites restent gratuites.</p>
+  <p><span id="indicateur" class="pastille cache" role="status"></span></p>
+
+  <div id="lancement" class="carte carte--vedette cache" role="status">
+    <h2 style="margin-top:0">🎉 Tout est gratuit jusqu'au <span class="date-gratuit"></span></h2>
+    <p>Offre de lancement : toutes les applications Alphabette sont gratuites jusqu'au <strong class="date-gratuit"></strong> inclus. <strong>Rien à payer</strong>, aucun Pass à prendre d'ici là. Ensuite : 15 € ou 40 € pour 12 mois, sans renouvellement automatique.</p>
+  </div>
+
+  <!-- Fin de la découverte : on propose le Pass, sans pression -->
+  <div id="fin-decouverte" class="carte carte--acc cache" role="status">
+    <h2 style="margin-top:0">Vos 48 h de découverte sont terminées</h2>
+    <p>Merci d'avoir essayé ! Pour continuer : le Pass <strong id="fin-prix-app">15 €</strong> (une application) ou le Pass <strong id="fin-prix-eco">40 €</strong> (toutes). <strong>12 mois, aucun renouvellement automatique.</strong> Le Mode Gratuit d'IA Débat reste ouvert.</p>
+    <div class="actions"><a class="bouton" href="#offres">Voir les Pass</a></div>
+  </div>
+
+  <section id="decouverte" aria-labelledby="t-decouverte">
+    <h2 id="t-decouverte">Pass Découverte : 48 h gratuites</h2>
+    <div class="carte">
+      <p>Pendant <strong>48 heures</strong>, les fonctions Premium s'ouvrent sur cet appareil, dont <strong>les débats Premium d'IA Débat</strong> (ChatGPT, Claude, Gemini… <span id="dec-quota">3</span> par jour). <strong>Sans carte bancaire</strong>, sans inscription, et rien ne se transforme en abonnement.</p>
+      <div class="actions"><button type="button" id="b-decouverte">Essayer gratuitement 48 h (sans carte bancaire)</button></div>
+      <p class="message" id="m-decouverte" role="status"></p>
+    </div>
+  </section>
+
+  <section id="offres" aria-labelledby="t-offres">
+    <h2 id="t-offres">Les Pass 12 mois</h2>
+    <p id="paiement-ferme" class="carte cache">Le paiement en ligne ouvre bientôt. Les applications s'utilisent librement en attendant, et le Pass Découverte reste possible.</p>
+    <div class="grille grille--2">
+      <div class="carte">
+        <h3>Une application</h3>
+        <p class="prix"><span id="prix-app">15</span> € <small>pour 12 mois</small></p>
+        <label class="champ">L'application
+          <select id="app-pass"></select>
+        </label>
+        <div class="actions">
+          <button type="button" data-commander="pass_app" data-pour="moi">Prendre ce Pass</button>
+          <button type="button" class="secondaire" data-commander="pass_app" data-pour="cadeau">🎁 Offrir en cadeau</button>
+        </div>
+      </div>
+      <div class="carte carte--vedette">
+        <h3>Tout l'écosystème</h3>
+        <p class="prix"><span id="prix-eco">40</span> € <small>pour 12 mois</small></p>
+        <p>Toutes les applications d'Alphabette, d'aujourd'hui et de demain.</p>
+        <div class="actions">
+          <button type="button" data-commander="pass_ecosysteme" data-pour="moi">Prendre ce Pass</button>
+          <button type="button" class="secondaire" data-commander="pass_ecosysteme" data-pour="cadeau">🎁 Offrir en cadeau</button>
+        </div>
+      </div>
+    </div>
+    <p class="message" id="m-offres" role="status"></p>
+    <p class="note">Paiement unique par carte (Stripe). <strong>12 mois, aucun renouvellement automatique</strong> : rien n'est prélevé à la fin. 14 jours pour changer d'avis (<a href="/conditions-de-vente">CGV</a>). Un Pass sert sur <span class="nb-appareils">3</span> appareils.</p>
+  </section>
+
+  <section id="cadeau" aria-labelledby="t-cadeau">
+    <h2 id="t-cadeau">Offrir un Pass à un proche</h2>
+    <div class="carte">
+      <p>Idéal pour un parent : vous payez, vous recevez <strong>une carte cadeau à imprimer</strong> avec un code (aussi envoyé par e-mail). La personne l'active quand elle veut ; ses 12 mois commencent ce jour-là.</p>
+      <p id="cadeau-choix" class="pastille cache" role="status"></p>
+      <label class="champ">Petit mot sur la carte <span class="aide">Facultatif, 140 caractères</span>
+        <input id="message-cadeau" maxlength="140" autocomplete="off" placeholder="Joyeux anniversaire Maman !">
+      </label>
+      <div class="actions"><button type="button" id="b-cadeau" class="cache">Continuer vers le paiement</button></div>
+      <p class="note" id="cadeau-aide">Choisissez le Pass plus haut et touchez « 🎁 Offrir en cadeau ». Infos Perso, IA Débat ou Service France avec le Pass 15 € ; tout avec le Pass 40 €. Senior Bon Plan est gratuite : rien à acheter.</p>
+      <p class="message" id="m-cadeau" role="status"></p>
+    </div>
+  </section>
+
+  <section id="code" aria-labelledby="t-code">
+    <h2 id="t-code">J'ai un code cadeau</h2>
+    <form class="carte" id="f-code">
+      <label class="champ">Votre code <span class="aide">Par exemple ALPHA-7K3M-Q9TD-2HXN (ou un code de crédits PM-…)</span>
+        <input id="code-cadeau" autocomplete="off" autocapitalize="characters" spellcheck="false" required maxlength="60">
+      </label>
+      <button type="submit">Activer mon Pass</button>
+      <p class="message" id="m-code" role="status"></p>
+    </form>
+  </section>
+
+  <section id="credits" aria-labelledby="t-credits">
+    <h2 id="t-credits">Crédits IA Débat, sans abonnement</h2>
+    <div class="carte">
+      <p>Pour aller au-delà des débats gratuits sans Pass ni compte OpenRouter : <strong><span id="prix-credits">5</span> € = <span id="nb-credits">50</span> débats Premium</strong>. 1 crédit est décompté par débat Premium lancé, après le débat offert du jour et ceux de votre Pass. Les crédits n'expirent pas.</p>
+      <p id="solde" class="pastille cache" role="status"></p>
+      <div class="actions"><button type="button" data-commander="credits_iadebat">Recharger des crédits IA Débat</button></div>
+      <p class="message" id="m-credits" role="status"></p>
+    </div>
+  </section>
+
+  <footer class="pied">
+    <a href="/apps/iadebat/">IA Débat</a>
+    <a href="/#soutenir">Soutenir le laboratoire</a>
+    <a href="/conditions-de-vente">CGV</a>
+    <a href="/confidentialite">Confidentialité</a>
+  </footer>
+</main>
+<script src="/labo/pass.js"></script>
+<script>
+(async function () {
+  var P = window.AlphabettePass;
+  var $ = function (id) { return document.getElementById(id); };
+  P.indicateur($('indicateur'));
+  if (P.decouverteTerminee()) $('fin-decouverte').classList.remove('cache');
+
+  var e = await P.etat();
+  var gratuit = e.gratuit_jusqu_au ? new Date(e.gratuit_jusqu_au + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  if (gratuit) {
+    $('lancement').classList.remove('cache');
+    document.querySelectorAll('.date-gratuit').forEach(function (n) { n.textContent = gratuit; });
+    $('fin-decouverte').classList.add('cache');
+    $('t-offres').textContent = 'Les Pass 12 mois, à partir du ' + new Date(new Date(e.gratuit_jusqu_au + 'T12:00:00').getTime() + 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    $('t-cadeau').textContent = 'Offrir un Pass à un proche (après l\u2019offre de lancement)';
+  }
+  $('prix-app').textContent = e.prix.pass_app; $('prix-eco').textContent = e.prix.pass_ecosysteme;
+  $('fin-prix-app').textContent = e.prix.pass_app + ' €'; $('fin-prix-eco').textContent = e.prix.pass_ecosysteme + ' €';
+  $('prix-credits').textContent = e.prix.credits_iadebat; $('nb-credits').textContent = e.credits_par_pack;
+  document.querySelectorAll('.nb-appareils').forEach(function (n) { n.textContent = e.appareils || 3; });
+  var sel = $('app-pass');
+  Object.keys(e.applis_pass || {}).forEach(function (slug) { var o = document.createElement('option'); o.value = slug; o.textContent = e.applis_pass[slug]; sel.appendChild(o); });
+  if (!sel.options.length) { var o = document.createElement('option'); o.textContent = 'Liste indisponible'; sel.appendChild(o); }
+  if (e.applis_pass && e.applis_pass.iadebat) sel.value = 'iadebat';
+
+  // Boutons de paiement : seulement si le lien Stripe et la vérification sont branchés.
+  var ferme = false;
+  document.querySelectorAll('[data-commander]').forEach(function (b) {
+    var p = b.getAttribute('data-commander');
+    if (!e.ouvert || !e.ouvert[p]) { b.classList.add('cache'); if (p !== 'credits_iadebat') ferme = true; }
+    b.addEventListener('click', async function () {
+      // Cadeau : d'abord le petit mot (carte), puis le paiement.
+      if (b.getAttribute('data-pour') === 'cadeau') {
+        cadeau = { produit: p, app: p === 'pass_app' ? sel.value : undefined };
+        var nom = p === 'pass_app' ? 'Pass ' + sel.options[sel.selectedIndex].text + ' (' + e.prix.pass_app + ' €)' : 'Pass Écosystème (' + e.prix.pass_ecosysteme + ' €)';
+        $('cadeau-choix').textContent = '🎁 Vous offrez : ' + nom; $('cadeau-choix').classList.remove('cache');
+        $('b-cadeau').classList.remove('cache'); $('cadeau-aide').textContent = 'La carte et son code s\u2019affichent juste après le paiement (et arrivent par e-mail).';
+        $('cadeau').scrollIntoView({ behavior: 'smooth', block: 'start' }); $('message-cadeau').focus({ preventScroll: true });
+        return;
+      }
+      var m = $(p === 'credits_iadebat' ? 'm-credits' : 'm-offres');
+      m.className = 'message'; m.textContent = 'Ouverture du paiement sécurisé…';
+      b.disabled = true;
+      var r = await P.commander(p, { pour: 'moi', app: p === 'pass_app' ? sel.value : undefined });
+      if (!r.ok) { m.className = 'message err'; m.textContent = r.message; b.disabled = false; }
+    });
+  });
+  var cadeau = null;
+  $('b-cadeau').addEventListener('click', async function () {
+    if (!cadeau) return;
+    var m = $('m-cadeau'); m.className = 'message'; m.textContent = 'Ouverture du paiement sécurisé…'; this.disabled = true;
+    var r = await P.commander(cadeau.produit, { pour: 'cadeau', app: cadeau.app, message: $('message-cadeau').value });
+    if (!r.ok) { m.className = 'message err'; m.textContent = r.message; this.disabled = false; }
+  });
+  if (gratuit) { $('paiement-ferme').textContent = 'Gratuit jusqu\u2019au ' + gratuit + ' inclus : ces Pass ne sont pas vendus d\u2019ici là.'; $('paiement-ferme').classList.remove('cache'); }
+  else if (ferme) $('paiement-ferme').classList.remove('cache');
+  if (gratuit) { $('m-credits').textContent = 'Pas de crédits à acheter avant le ' + gratuit + ' : le débat Premium offert revient chaque jour, et le Pass Découverte est gratuit.'; }
+  else if (!e.ouvert || !e.ouvert.credits_iadebat) { $('m-credits').textContent = 'Le rechargement ouvre bientôt.'; }
+
+  // Pass Découverte
+  var bd = $('b-decouverte'), md = $('m-decouverte');
+  $('dec-quota').textContent = (e.decouverte && e.decouverte.premium_par_jour) || 3;
+  function etatDecouverte() {
+    var d = P.lire('decouverte');
+    if (d && d.fin > Date.now()) { bd.disabled = true; bd.textContent = 'Pass Découverte ouvert'; md.className = 'message ok'; md.textContent = 'Encore ' + P.reste(d.fin) + '. Bon essai !'; }
+    else if (d) { bd.disabled = true; bd.textContent = 'Découverte déjà utilisée sur cet appareil'; }
+    else if (!e.decouverte || !e.decouverte.ouverte) { bd.disabled = true; md.className = 'message'; md.textContent = 'Le Pass Découverte ouvre très bientôt.'; }
+  }
+  etatDecouverte();
+  bd.addEventListener('click', async function () {
+    bd.disabled = true; md.className = 'message'; md.textContent = 'Ouverture…';
+    var r = await P.lancerDecouverte();
+    if (!r.ok) { md.className = 'message err'; md.textContent = r.message; if (!r.deja) bd.disabled = false; return; }
+    P.indicateur($('indicateur'));
+    etatDecouverte();
+  });
+
+  // Code cadeau
+  $('f-code').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    var m = $('m-code'); m.className = 'message'; m.textContent = 'Vérification…';
+    var r = await P.activer($('code-cadeau').value);
+    if (!r.ok) { m.className = 'message err'; m.textContent = r.message; return; }
+    m.className = 'message ok';
+    m.textContent = r.d.type === 'credits' ? '✅ Crédits retrouvés : ' + r.d.solde + ' débat(s) Premium.' : '✅ ' + P.nomOffre(r.d) + ' activé jusqu’au ' + P.dateFr(r.d.fin) + '. Bonne découverte !';
+    P.indicateur($('indicateur')); montrerSolde();
+  });
+
+  async function montrerSolde() {
+    var c = await P.credits();
+    if (c) { $('solde').classList.remove('cache'); $('solde').textContent = 'Vos crédits IA Débat : ' + c.solde; }
+  }
+  montrerSolde();
+})();
+</script>
+</body>
+</html>

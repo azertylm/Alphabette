@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin
+Disallow: /merci/
 
 Sitemap: https://alphabette.eu/sitemap.xml
