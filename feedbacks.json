@@ -1,5 +1,39 @@
 {
-  "feedbacks": [],
+  "feedbacks": [
+    {
+      "id": "fb_1795199847_24b2",
+      "app_id": "france-service",
+      "version_tested": "main",
+      "rating": 4,
+      "category": "Autre",
+      "comment": "Même en mode Big 3 quand c'est écrit en tout petit ça reste écrit en tout petit.",
+      "upvotes": 1,
+      "timestamp": "2026-11-20T18:37:27Z",
+      "source": "voix",
+      "declencheur": null,
+      "urgence": 3,
+      "pseudo": "Tintoon",
+      "classement": null,
+      "incident_api": null,
+      "telemetry": {
+        "viewport": "406x816 (dpr: 3)",
+        "platform": "Android / Chrome",
+        "console_errors": [],
+        "stockage_cles": [
+          "alphabette.prefs",
+          "labo_erreurs_v1"
+        ]
+      },
+      "status": "pending",
+      "ai_analysis": {
+        "relevance_score": null,
+        "intervention_level": null,
+        "reasoning": null,
+        "proposed_fix": null
+      },
+      "changelog_public_message": null
+    }
+  ],
   "ab": [],
   "ab_tests": {}
 }
