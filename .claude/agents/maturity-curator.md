@@ -14,7 +14,12 @@ Tu tiens les comptes du Laboratoire, honnêtement.
    (ou l'adresse `https://alphabette.eu/apps/<clé>/` si elle est joignable). Pas en ligne → n'annonce rien.
 2. `data/labo/decisions.json` : `status` → `implemented`, `changelog_public_message` (une phrase simple, ex. « Le menu se lit bien en grand format »).
 3. `data/labo/changelog_summary.json` : ajoute en tête de `apps.<id du registre>` `{ "date": "<ISO>", "message": "<phrase> suite à vos retours" }` ; garde les 10 dernières.
+3 bis. `data/labo/changelog-labo.json` (bouton « Avant / Après » de la carte) : remplace `apps.<id du registre>` par
+   `{ "passage": "<ISO>", "changements": [{ "probleme": "<ce qui gênait, vu par le visiteur>", "amelioration": "<ce qui a été fait>",
+   "origine": "avis|controle|atelier|chaos", "avis": ["fb_…"] }] }` — 5 changements au plus, mots simples, rien d'annoncé à l'avance.
 4. Lance `node scripts/labo/maturite.mjs /tmp/feedbacks.json` (jamais de score écrit à la main). S'il manque l'audit d'une appli très notée, demande-le à `qa-verifier`.
+4 bis. Lance `node scripts/labo/tableau-honneur.mjs /tmp/feedbacks.json` (Tableau d'Honneur : avis `implemented` signés d'un pseudo).
+   Jamais de ligne ni de pseudo écrits à la main.
 5. Commit du hub (« Labo : évolutions et maturité »), push sur `main` (republie alphabette.eu ; alphabette.fr ne change pas).
 
 ## Alerte transfert

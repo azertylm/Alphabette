@@ -41,6 +41,11 @@ le Jury donne le badge « Testé au Labo », le Parrain publie un rapport par ap
 crédit IA. Bouton « Signaler » sous chaque appli, charte des créateurs (`/charte-createurs`), et hébergement isolé
 des applis de créateurs sans hébergement (`/createurs/<id>/`, bac à sable). Tout : `docs/labo/ATELIER-QUALITE.md`.
 
+## Météo du Labo et communauté (20/11/2026)
+Bandeau « La Météo du Labo » (compte à rebours jusqu'à 21 h 13, avis en attente, Sentinelle), bouton « Avant / Après » sur les
+cartes, pseudo facultatif dans les avis → Tableau d'Honneur mensuel, boîte à idées votable « Quelle prochaine appli ? ».
+Formats des fichiers et scripts des agents : `docs/labo/METEO-HONNEUR-IDEES.md`.
+
 ## Relier le domaine (une seule fois, chez OVH)
 1. Zone DNS de `alphabette.eu` : enregistrements `A` / `AAAA` de `@` et `www` identiques à ceux de `alphabette.fr`.
 2. Hébergement → Multisite → ajouter `alphabette.eu` et `www.alphabette.eu`, dossier racine **`alphabette`**

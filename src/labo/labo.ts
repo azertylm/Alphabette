@@ -38,6 +38,8 @@ export interface ResumeApp {
 
 export interface Resumes {
   apps: Record<string, ResumeApp>;
+  /** Avis écrits encore à traiter (absent sur un ancien feedback.php). */
+  file_attente?: number;
 }
 
 export interface Evolution {
@@ -158,11 +160,13 @@ export interface NouvelAvis {
   urgence?: number;
   /** Incident d'un fournisseur d'IA (routeur BYOK) constaté juste avant. */
   incident_api?: { de: string; type: string; statut: number | null };
+  /** Pseudo facultatif : Tableau d'Honneur si l'avis déclenche une amélioration. */
+  pseudo?: string;
 }
 
 export async function envoyerAvis(avis: NouvelAvis) {
   const { chemin, ...reste } = avis;
-  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', source: 'formulaire', ...reste, incident_api: reste.incident_api ? { fournisseur: reste.incident_api.de, type: reste.incident_api.type, statut: reste.incident_api.statut } : undefined, comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
+  const res = await envoyer<{ ok: true; id: string }>({ action: 'avis', source: 'formulaire', ...reste, pseudo: reste.pseudo?.trim() || undefined, incident_api: reste.incident_api ? { fournisseur: reste.incident_api.de, type: reste.incident_api.type, statut: reste.incident_api.statut } : undefined, comment: nettoyerTexte(reste.comment, 1000), telemetry: telemetrie(chemin) });
   const l = lireLimites();
   l.avis[avis.app_id] = (l.avis[avis.app_id] ?? 0) + 1;
   ecrireLimites(l);
@@ -243,4 +247,98 @@ export async function chargerAtelier(): Promise<DonneesAtelier> {
   } catch {
     return { apps: {}, jury: {} };
   }
+}
+
+/* ---------- Météo du Labo, Avant / Après, Tableau d'Honneur (alphabette.eu) ---------- */
+
+export interface StatutLabo {
+  passage_quotidien?: { heure: string; fuseau: string };
+  dernier_passage: { date: string; avis_lus: number | null; corrections: number | null; rejets: number | null } | null;
+  sentinelle: { retours_arriere_total: number; interventions: { date: string; app_id: string | null; retour_arriere: boolean }[] };
+}
+
+/** status-labo.json (agents de 21 h 13 + Sentinelle). Absent → null : le bandeau n'invente rien. */
+export async function chargerStatutLabo(): Promise<StatutLabo | null> {
+  try {
+    const r = await fetch('/api/labo/status-labo.json', { cache: 'no-cache' });
+    if (!r.ok) return null;
+    const d = (await r.json()) as Partial<StatutLabo>;
+    if (!d.sentinelle || !Array.isArray(d.sentinelle.interventions)) return null;
+    return { passage_quotidien: d.passage_quotidien, dernier_passage: d.dernier_passage ?? null, sentinelle: d.sentinelle };
+  } catch {
+    return null;
+  }
+}
+
+export interface ChangementLabo { probleme: string; amelioration: string; origine?: string; avis?: string[] }
+export interface PassageApp { passage: string; changements: ChangementLabo[] }
+
+/** changelog-labo.json : dernier passage par appli (bouton « Avant / Après »). */
+export async function chargerChangelogLabo(): Promise<Record<string, PassageApp>> {
+  try {
+    const r = await fetch('/api/labo/changelog-labo.json', { cache: 'no-cache' });
+    const d = r.ok ? ((await r.json()) as { apps?: Record<string, PassageApp> }) : {};
+    const apps: Record<string, PassageApp> = {};
+    for (const [id, p] of Object.entries(d.apps ?? {})) {
+      const changements = (p?.changements ?? []).filter((c) => c && c.probleme && c.amelioration);
+      if (changements.length) apps[id] = { passage: p.passage, changements };
+    }
+    return apps;
+  } catch {
+    return {};
+  }
+}
+
+export interface ContributionHonneur { pseudo: string; app_id: string; avis_id: string; date: string }
+
+/** tableau-honneur.json : une ligne par avis signé et retenu (rempli par scripts/labo/tableau-honneur.mjs). */
+export async function chargerTableauHonneur(): Promise<ContributionHonneur[] | null> {
+  try {
+    const r = await fetch('/api/labo/tableau-honneur.json', { cache: 'no-cache' });
+    if (!r.ok) return null;
+    const d = (await r.json()) as { contributions?: ContributionHonneur[] };
+    return Array.isArray(d.contributions) ? d.contributions : [];
+  } catch {
+    return null;
+  }
+}
+
+/** Parties d'une date à l'heure de Paris (année, mois, jour, heure, minute, seconde). */
+export function partiesParis(date: Date): Record<'year' | 'month' | 'day' | 'hour' | 'minute' | 'second', number> {
+  const f = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+  });
+  const p = Object.fromEntries(f.formatToParts(date).filter((x) => x.type !== 'literal').map((x) => [x.type, Number(x.value)]));
+  return p as Record<'year' | 'month' | 'day' | 'hour' | 'minute' | 'second', number>;
+}
+
+/** Décalage de Paris par rapport à UTC à cet instant, en millisecondes (heure d'été comprise). */
+function decalageParis(t: number): number {
+  const p = partiesParis(new Date(t));
+  return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - Math.floor(t / 1000) * 1000;
+}
+
+/** Prochain passage des agents : tous les jours à 21 h 13, heure de Paris (heure d'été / d'hiver gérées). */
+export function prochainPassage(maintenant = new Date(), heure = 21, minute = 13): Date {
+  const p = partiesParis(maintenant);
+  for (let jour = 0; jour < 3; jour++) {
+    const murale = Date.UTC(p.year, p.month - 1, p.day + jour, heure, minute, 0);
+    let t = murale - decalageParis(murale);
+    t = murale - decalageParis(t);
+    if (t > maintenant.getTime()) return new Date(t);
+  }
+  return new Date(maintenant.getTime() + 86400e3);
+}
+
+/** Clé « 2026-11 » du mois en cours à Paris. */
+export const moisParis = (d = new Date()) => {
+  const p = partiesParis(d);
+  return `${p.year}-${String(p.month).padStart(2, '0')}`;
+};
+
+/** Titre décalé du Tableau d'Honneur selon le nombre de retours validés du mois. */
+export function titreHonneur(n: number): { titre: string; icone: string } {
+  if (n >= 5) return { titre: 'Dompteur de bugs', icone: '🦁' };
+  if (n >= 3) return { titre: 'Voix du labo', icone: '📣' };
+  return { titre: 'Œil de lynx', icone: '👁️' };
 }

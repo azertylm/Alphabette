@@ -1,0 +1,12 @@
+{
+  "_aide": "Météo du Labo (bandeau en haut d'alphabette.eu). Écrit par `node scripts/labo/meteo.mjs passage …` à la fin de chaque passage des agents de 21 h 13 (heure de Paris). Le bloc « sentinelle » est recalculé depuis data/labo/incidents.json (retours arrière réels de la Sentinelle) par ce script ET à chaque publication (scripts/build-static.mjs) : ne pas l'écrire à la main. Le nombre d'avis en file d'attente est lu en direct par le navigateur (api/feedback.php, champ file_attente). Le site compte lui-même les retours arrière des dernières 24 h à partir de « interventions » (10 dernières, plus récente en premier). Valeur inconnue = null : le bandeau n'affiche alors rien d'inventé.",
+  "passage_quotidien": {
+    "heure": "21:13",
+    "fuseau": "Europe/Paris"
+  },
+  "dernier_passage": null,
+  "sentinelle": {
+    "retours_arriere_total": 0,
+    "interventions": []
+  }
+}

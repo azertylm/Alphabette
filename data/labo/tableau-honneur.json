@@ -1,0 +1,4 @@
+{
+  "_aide": "Tableau d'Honneur mensuel d'alphabette.eu. Une ligne = un avis signé d'un pseudo (champ facultatif du formulaire) qui a déclenché une amélioration réellement en ligne (statut implemented dans decisions.json). Rempli automatiquement par `node scripts/labo/tableau-honneur.mjs /tmp/feedbacks.json` au passage de 21 h 13 : ne jamais ajouter une ligne à la main ni inventer un pseudo. Le site n'affiche que le mois en cours (heure de Paris) et calcule le titre : 1-2 retours « Œil de lynx », 3-4 « Voix du labo », 5 et plus « Dompteur de bugs ». Les lignes de plus de 2 mois sont supprimées par le script. Retrait sur simple demande : supprimer les lignes du pseudo.",
+  "contributions": []
+}

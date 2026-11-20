@@ -173,6 +173,7 @@ html[data-ab-theme='nuit'] .labo__bouton--envoyer { color: #0b1220; }
 }
 .labo__etoile--pleine { color: #f59e0b; }
 .labo__champ { display: flex; flex-direction: column; }
+.labo__champ > small { margin-top: 0.45rem; }
 .labo__champ textarea, .labo__champ select {
   width: 100%; font: inherit; font-size: 1rem; border-radius: 0.75rem; padding: 0.6rem 0.75rem;
   border: 1px solid var(--acc-trait); background: var(--acc-fond); color: var(--acc-encre);
@@ -235,6 +236,98 @@ html[data-ab-theme='nuit'] .collectif-dialogue { --acc: #5eead4; --acc-fond: #0b
   border: 1px solid var(--acc-trait); background: var(--acc-fond); color: var(--acc-encre);
 }
 .labo__champ input:focus { outline: 3px solid var(--acc); outline-offset: 1px; }
+
+/* ===================== Météo du Labo, Avant / Après, Tableau d'Honneur, idées (alphabette.eu) =====================
+   Mobile d'abord, tailles en rem (le bouton BIG agrandit tout), zones tactiles de 44 px au moins,
+   contrastes AA en Jour comme en Nuit (variables --acc-* de .accueil). */
+.meteo {
+  margin: 0 0 1.1rem; padding: 0.7rem 0.8rem 0.6rem; border-radius: 1.1rem;
+  border: 2px solid color-mix(in srgb, var(--acc) 45%, var(--acc-trait)); background: var(--acc-carte);
+}
+.meteo__titre { font-size: 1rem; font-weight: 900; margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.meteo__ciel { font-weight: 700; color: var(--acc-doux); }
+.meteo__grille { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
+.meteo__case {
+  display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; padding: 0.45rem 0.6rem; border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--acc) 8%, var(--acc-fond));
+}
+.meteo__case--chrono { grid-column: 1 / -1; }
+.meteo__valeur { font-size: 1.35rem; font-weight: 900; line-height: 1.15; color: var(--acc-encre); font-variant-numeric: tabular-nums; }
+.meteo__case--chrono .meteo__valeur { color: var(--acc); }
+.meteo__libelle { font-size: 0.85rem; line-height: 1.3; color: var(--acc-doux); overflow-wrap: anywhere; }
+.meteo__pied { margin: 0.5rem 0 0; font-size: 0.85rem; line-height: 1.4; color: var(--acc-doux); }
+@media (min-width: 46rem) {
+  .meteo__grille { grid-template-columns: 1.4fr 1fr 1fr; }
+  .meteo__case--chrono { grid-column: auto; }
+}
+.collectif-raccourcis { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin: 0 0 0.5rem; font-size: 1rem; }
+.collectif-raccourcis a {
+  display: inline-flex; align-items: center; min-height: 44px; font-weight: 800; color: var(--acc);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.collectif-raccourcis a:focus-visible, .idees__vote:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+.collectif-fiche__avant-apres { grid-column: 1 / -1; border-style: dashed; }
+
+.avant-apres__corps { display: flex; flex-direction: column; gap: 0.75rem; }
+.avant-apres__liste { display: flex; flex-direction: column; gap: 0.9rem; margin: 0; padding: 0; list-style: none; }
+.avant-apres__changement { display: flex; flex-direction: column; gap: 0.25rem; }
+.avant-apres__ligne {
+  display: flex; gap: 0.6rem; align-items: flex-start; margin: 0; padding: 0.55rem 0.7rem; border-radius: 0.8rem;
+  font-size: 1rem; line-height: 1.4; border: 1px solid var(--acc-trait);
+}
+.avant-apres__ligne--avant { background: color-mix(in srgb, #dc2626 8%, var(--acc-carte)); }
+.avant-apres__ligne--apres { background: color-mix(in srgb, #16a34a 10%, var(--acc-carte)); }
+.avant-apres__etiquette {
+  flex: none; min-width: 3.6rem; text-align: center; font-size: 0.8rem; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.04em; border-radius: 999px; padding: 0.15rem 0.5rem; color: #fff;
+}
+.avant-apres__ligne--avant .avant-apres__etiquette { background: #b91c1c; }
+.avant-apres__ligne--apres .avant-apres__etiquette { background: #166534; }
+.avant-apres__fleche { margin: 0; text-align: center; font-weight: 900; color: var(--acc-doux); line-height: 1; }
+
+.communaute__zone { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+.communaute { display: flex; flex-direction: column; gap: 0.75rem; scroll-margin-top: 1rem; }
+.communaute .accueil__rubrique { margin-bottom: 0; }
+.communaute__intro { font-size: 1rem; line-height: 1.45; color: var(--acc-doux); max-width: 46rem; }
+.communaute__intro strong { color: var(--acc-encre); }
+.communaute__vide {
+  font-size: 1rem; line-height: 1.45; padding: 0.8rem 0.9rem; border-radius: 1rem;
+  border: 2px dashed var(--acc-trait); color: var(--acc-doux);
+}
+.communaute__form {
+  padding: 0.9rem; border-radius: 1.1rem; border: 1px solid var(--acc-trait); background: var(--acc-carte); max-width: 46rem;
+}
+.honneur { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+.honneur__ligne {
+  display: flex; align-items: center; gap: 0.7rem; padding: 0.65rem 0.8rem; border-radius: 1rem;
+  border: 1px solid var(--acc-trait); background: var(--acc-carte);
+}
+.honneur__rang {
+  flex: none; width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: 999px; font-weight: 900;
+  background: color-mix(in srgb, #f59e0b 22%, transparent); color: var(--acc-encre);
+}
+.honneur__qui { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.honneur__pseudo { font-size: 1.1rem; overflow-wrap: anywhere; }
+.honneur__titre { font-size: 0.9rem; font-weight: 800; color: #b45309; }
+html[data-ab-theme='nuit'] .honneur__titre { color: #fbbf24; }
+.honneur__apps { font-size: 0.85rem; color: var(--acc-doux); overflow-wrap: anywhere; }
+.honneur__compte { flex: none; text-align: right; font-size: 1.4rem; font-weight: 900; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.honneur__compte small { display: block; font-size: 0.75rem; font-weight: 700; color: var(--acc-doux); }
+.idees { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; padding: 0; list-style: none; max-width: 46rem; }
+.idees__idee {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.6rem 0.6rem 0.9rem; border-radius: 1rem;
+  border: 1px solid var(--acc-trait); background: var(--acc-carte);
+}
+.idees__texte { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.95rem; line-height: 1.4; color: var(--acc-doux); overflow-wrap: anywhere; }
+.idees__texte strong { font-size: 1.05rem; color: var(--acc-encre); }
+.idees__texte .collectif-statut { align-self: flex-start; }
+.idees__vote {
+  flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 3.25rem; min-height: 3.25rem;
+  border-radius: 0.9rem; border: 2px solid var(--acc); background: transparent; color: var(--acc); font-weight: 900; font-size: 1rem; cursor: pointer;
+}
+.idees__vote:hover { background: color-mix(in srgb, var(--acc) 10%, transparent); }
+.idees__vote--fait, .idees__vote--fait:hover { background: var(--acc); color: var(--acc-carte); cursor: default; }
+.idees__nombre { font-variant-numeric: tabular-nums; }
 
 /* Les anciennes sections (atelier IA, tarifs, engagements, pied de page) ne connaissent
    que le thème clair : en mode Nuit, on les inverse d'un bloc plutôt que de laisser

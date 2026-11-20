@@ -114,3 +114,92 @@ export async function signaler(s: { app_id: string; motif: string; details: stri
     return { ok: false, message: 'Pas de connexion : réessayez.' };
   }
 }
+
+/* ---------- Boîte à idées « Quelle prochaine appli ? » ---------- */
+
+export interface Idee {
+  id: string;
+  titre: string;
+  phrase: string;
+  votes: number;
+  date: string;
+  /** Posé par les agents ou Valentin (api/labo/idees-statuts.json). */
+  statut: 'retenue' | 'realisee' | null;
+}
+
+const CLE_IDEES = 'alphabette_idees_votees';
+
+export async function chargerIdees(): Promise<Idee[] | null> {
+  try {
+    const r = await fetch(`${API}?idees=1`, { cache: 'no-store' });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return Array.isArray(d?.idees) ? (d.idees as Idee[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Idées déjà votées sur cet appareil (une fois pour toutes ; le serveur vérifie aussi). */
+export function ideesVotees(): string[] {
+  try {
+    const l = JSON.parse(localStorage.getItem(CLE_IDEES) || '[]');
+    return Array.isArray(l) ? l.filter((x) => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+function retenirVoteIdee(id: string) {
+  try {
+    const l = ideesVotees();
+    if (!l.includes(id)) localStorage.setItem(CLE_IDEES, JSON.stringify([...l, id].slice(-500)));
+  } catch {
+    /* navigation privée : le serveur limite quand même */
+  }
+}
+
+/** Même filtre que collectif.php (refus_idee), pour répondre tout de suite. '' = l'idée passe. */
+export function refusIdee(titre: string, phrase: string): string {
+  const t = titre.trim();
+  const p = phrase.trim();
+  if (t.length < 3 || t.length > 60) return 'Le titre doit faire entre 3 et 60 caractères.';
+  if (p.length < 10 || p.length > 160) return 'Décrivez votre idée en une phrase (10 à 160 caractères).';
+  const tout = `${t} ${p}`;
+  if (/https?:\/\/|www\.|\b[a-z0-9-]+\.(com|fr|eu|net|org|io|ly|xyz|ru|info)\b/i.test(tout)) return 'Pas de lien dans une idée : décrivez-la simplement.';
+  if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(tout)) return "Pas d'adresse e-mail dans une idée : elle est publique.";
+  if (/(?:\d[\s.-]?){8,}/.test(tout)) return 'Pas de numéro de téléphone dans une idée : elle est publique.';
+  if (/(.)\1{5,}/u.test(tout)) return 'Le texte contient trop de caractères répétés.';
+  const lettres = tout.replace(/[^\p{L}]/gu, '');
+  const majuscules = tout.replace(/[^\p{Lu}]/gu, '');
+  if (lettres.length >= 12 && majuscules.length > 0.6 * lettres.length) return "Merci d'écrire sans tout en majuscules.";
+  return '';
+}
+
+export async function proposerIdee(titre: string, phrase: string, site_web: string): Promise<{ ok: boolean; message: string; idee?: Idee }> {
+  try {
+    const r = await fetch(API, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'idee', titre: titre.trim(), phrase: phrase.trim(), site_web }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.idee) {
+      retenirVoteIdee(d.idee.id);
+      return { ok: true, message: 'Merci ! Votre idée est publiée : faites-la connaître pour qu’elle monte.', idee: d.idee };
+    }
+    return { ok: false, message: d.erreur || 'Envoi impossible pour le moment.' };
+  } catch {
+    return { ok: false, message: 'Pas de connexion : réessayez.' };
+  }
+}
+
+export async function voterIdee(id: string): Promise<{ ok: boolean; votes?: number; message?: string }> {
+  try {
+    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'voter_idee', id }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) { retenirVoteIdee(id); return { ok: true, votes: d.votes }; }
+    if (r.status === 409) retenirVoteIdee(id);
+    return { ok: false, message: d.erreur || 'Vote impossible pour le moment.' };
+  } catch {
+    return { ok: false, message: 'Pas de connexion : réessayez.' };
+  }
+}

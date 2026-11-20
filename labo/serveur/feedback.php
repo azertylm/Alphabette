@@ -4,6 +4,7 @@
  * Publié dans eu/api/feedback.php par scripts/build-static.mjs (hébergement OVH Perso : PHP).
  *
  *   GET                 → résumé public par application (moyenne, nombre de notes, top 3 des demandes, votes bêta)
+ *                         + file_attente : nombre d'avis écrits encore à traiter (bandeau « Météo du Labo »)
  *   GET ?export=1       → tous les avis (schéma complet, lu par les agents via le workflow labo-avis.yml)
  *   GET ?etat=1         → santé du service (lieu de stockage, nombre d'avis)
  *   GET ?ouverts=<app>  → tickets ouverts d'une appli (id, catégorie, texte, +1) pour le dédoublonnage
@@ -14,6 +15,7 @@
  *   POST {action:"ab", app_id, test_id, ticket_id?, choix:"A"|"B"}   (barre « Bac à sable A/B » en direct)
  *   POST {action:"avis", …, source:"voix", urgence:1-5}              (retour vocal structuré dans le navigateur)
  *   POST {action:"avis", …, incident_api:{fournisseur, type, statut}}  (routeur BYOK : « Incident API Tiers », jamais un bug)
+ *   POST {action:"avis", …, pseudo}   (facultatif : Tableau d'Honneur si l'avis est retenu ; 2-24 caractères, ni e-mail ni numéro)
  *
  * Données : un fichier JSON rangé HORS du dossier publié (le dépôt Git d'OVH ne le touche pas).
  * Vie privée : aucune adresse IP n'est conservée. Seule une empreinte salée, changée chaque jour,
@@ -114,6 +116,15 @@ function avec_decision($avis, $decisions) {
     return $avis;
 }
 
+/** Pseudo du Tableau d'Honneur : vide → null ; un surnom court, sans e-mail, adresse ni numéro → sinon « refus ». */
+function pseudo_propre($p) {
+    $p = texte_propre($p, 40);
+    if ($p === '') return null;
+    if (preg_match('/@|https?:|www\.|\.(fr|com|eu|net|org)\b|\d{5,}/iu', $p)) return 'refus';
+    if (!preg_match("/^[\p{L}\p{N} ._'’-]{2,24}$/u", $p)) return 'refus';
+    return $p;
+}
+
 function texte_propre($t, $max) {
     $t = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', (string) $t);
     $t = trim(preg_replace('/[ \t]+/u', ' ', $t));
@@ -211,7 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $apps = array();
+    $file_attente = 0;
     foreach ($tous as $a) {
+        if ($a['comment'] !== '' && in_array($a['status'], STATUTS_OUVERTS, true)) $file_attente++;
         $id = $a['app_id'];
         if (!isset($apps[$id])) $apps[$id] = array('somme' => 0, 'nb_notes' => 0, 'nb_avis' => 0, 'ouverts' => array());
         $apps[$id]['nb_avis']++;
@@ -240,7 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!isset($resume[$id])) $resume[$id] = array('moyenne' => null, 'nb_notes' => 0, 'nb_avis' => 0, 'top' => array());
         $resume[$id]['ab'] = $ab;
     }
-    repondre(200, array('maj' => gmdate('c'), 'apps' => (object) $resume));
+    repondre(200, array('maj' => gmdate('c'), 'file_attente' => $file_attente, 'apps' => (object) $resume));
 }
 
 /* ------------------------------- Écriture ------------------------------ */
@@ -282,6 +295,8 @@ if ($action === 'avis') {
         erreur(400, 'Choisissez une note ou écrivez quelques mots.');
     }
     $version = isset($entree['version_tested']) && $entree['version_tested'] === 'beta' ? 'beta' : 'main';
+    $pseudo = pseudo_propre(isset($entree['pseudo']) ? $entree['pseudo'] : '');
+    if ($pseudo === 'refus') erreur(400, 'Pseudo refusé : un surnom de 2 à 24 lettres ou chiffres, sans e-mail, adresse ni numéro.');
     $t = isset($entree['telemetry']) && is_array($entree['telemetry']) ? $entree['telemetry'] : array();
     $erreurs = array();
     foreach (array_slice(isset($t['console_errors']) && is_array($t['console_errors']) ? $t['console_errors'] : array(), -10) as $e) {
@@ -316,6 +331,7 @@ if ($action === 'avis') {
         'source' => $source,
         'declencheur' => $declencheur,
         'urgence' => $urgence,
+        'pseudo' => $pseudo,
         'classement' => $incident ? 'incident_api_tiers' : null,
         'incident_api' => $incident,
         'telemetry' => $telemetrie,

@@ -1,0 +1,27 @@
+{
+  "_aide": "Bouton « Avant / Après » des cartes d'alphabette.eu : ce qui a changé au DERNIER passage des agents, en français simple. Clé = id du registre (data/apps-registry.json). Une appli sans entrée n'a pas de bouton. Écrit par maturity-curator, seulement pour un changement réellement en ligne (jamais d'annonce anticipée). « passage » = date ISO du passage ; chaque changement : « probleme » (ce qui gênait, vu par le visiteur) → « amelioration » (ce qui a été fait), « origine » = avis | controle | atelier | chaos, « avis » = ids fb_… concernés (facultatif). 5 changements au plus par appli ; le passage suivant remplace l'entrée.",
+  "apps": {
+    "podcasts": {
+      "passage": "2026-11-19T08:50:38Z",
+      "changements": [
+        {
+          "probleme": "Sur les petits téléphones, les onglets dépassaient de l'écran.",
+          "amelioration": "Les onglets tiennent maintenant sur l'écran, même petit.",
+          "origine": "controle",
+          "avis": []
+        }
+      ]
+    },
+    "orbit": {
+      "passage": "2026-11-19T08:50:38Z",
+      "changements": [
+        {
+          "probleme": "Sur téléphone, la barre de recherche n'était plus visible.",
+          "amelioration": "La recherche est de nouveau visible sur téléphone.",
+          "origine": "controle",
+          "avis": []
+        }
+      ]
+    }
+  }
+}

@@ -68,7 +68,8 @@ une évolution, un score ; transférer une appli vers .fr.
 3. `qa-verifier` audite le diff : **veto** possible (retour à `code-builder`, 2 allers-retours au plus,
    ensuite `needs_human_review`). Rien n'est poussé sans son « OK ».
 4. `maturity-curator` passe l'avis en `implemented`, écrit le message public, met à jour
-   `changelog_summary.json`, lance `scripts/labo/maturite.mjs`, alerte Valentin à 85/100.
+   `changelog_summary.json` et `changelog-labo.json` (bouton « Avant / Après »), lance `scripts/labo/maturite.mjs`,
+   `scripts/labo/tableau-honneur.mjs` et `scripts/labo/meteo.mjs passage`, alerte Valentin à 85/100.
 5. `meta-improver` tire les leçons (vetos, refus de Valentin, bugs récurrents) et complète la section 8.
 
 ## 4. Niveau 1 ou Niveau 2 ?
@@ -91,10 +92,16 @@ une évolution, un score ; transférer une appli vers .fr.
 | Bêtas publiées | `data/labo/beta.json` + `"beta": {"branch": "labo-beta"}` dans `apps-sources.json` |
 | Prompts des applis à IA | `data/labo/prompts.json` (fichier + repère du prompt système) |
 | Appli ↔ dépôt | `data/apps-sources.json` ; id d'appli = `id` de `data/apps-registry.json` |
+| Météo du Labo (bandeau) | `data/labo/status-labo.json` (`meteo.mjs` ; bloc `sentinelle` calculé, jamais à la main) |
+| Avant / Après (dernier passage) | `data/labo/changelog-labo.json` (clé = id du registre) |
+| Tableau d'Honneur | `data/labo/tableau-honneur.json` (`tableau-honneur.mjs` seulement, jamais de pseudo ajouté à la main) |
+| Boîte à idées (modération) | `data/labo/idees-statuts.json` (`masquee`, `retenue`, `realisee`) ; idées : `alphabette.eu/api/collectif.php?idees=1` |
 Ces fichiers sont publiés sur alphabette.eu à chaque publication du hub (push sur `main`).
 
 ## 6. Règles permanentes d'Alphabette (héritées)
 - Honnêteté : aucun faux auteur, faux vote, faux témoignage, fausse alerte, fausse analyse, faux paiement.
+- Tableau d'Honneur et boîte à idées : jamais de faux pseudo, faux vote ni fausse idée ; un pseudo ne figure que si son
+  avis a réellement conduit à une amélioration en ligne ; retrait sur simple demande (`retraits`). Format : `docs/labo/METEO-HONNEUR-IDEES.md`.
 - Sécurité : vérifier par une recherche les numéros d'urgence, conseils santé / argent / droit, chiffres officiels.
 - Hébergement statique (OVH Perso) : pas de serveur Node ; IA avec la clé du visiteur ; sans clé, message clair.
 - Téléphone d'abord : vérifier à 390 px (et < 400 px), BIG, jour / nuit, aucune erreur console.
