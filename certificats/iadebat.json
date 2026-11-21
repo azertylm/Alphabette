@@ -4,8 +4,8 @@
   "app_id": "iadebat",
   "nom": "IADÉBAT",
   "url": "https://iadebat.alphabette.fr/",
-  "audite_le": "2026-11-20T21:50:47.315Z",
-  "empreinte_page_sha256": "977d57be9daa10c7aeaa5bf6db69a11d2cf20768ea4651a240f6614e20ddc572",
+  "audite_le": "2026-11-21T12:03:11.727Z",
+  "empreinte_page_sha256": "9883ef4a8ed7d6209e29b4718a48dc87385f5fc34e2a1bdd2afa82e61044cdc3",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -34,6 +34,16 @@
   },
   "destinations": [
     {
+      "hote": "alphabette.fr",
+      "classe": "premiere_partie",
+      "requetes": 6,
+      "bloquees": 0,
+      "types": [
+        "script",
+        "fetch"
+      ]
+    },
+    {
       "hote": "iadebat.alphabette.fr",
       "classe": "premiere_partie",
       "requetes": 5,
@@ -42,16 +52,6 @@
         "document",
         "script",
         "stylesheet"
-      ]
-    },
-    {
-      "hote": "alphabette.fr",
-      "classe": "premiere_partie",
-      "requetes": 5,
-      "bloquees": 0,
-      "types": [
-        "script",
-        "fetch"
       ]
     },
     {
@@ -74,5 +74,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "04bf6eae54b5462913c1b99a534df450ea897b1d046f9a41f0ddff3c5467112f"
+  "empreinte_certificat_sha256": "60225c172c2a843d00f255131c44f4286b3569536877721ee171a5c8044bdf97"
 }
