@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-21T12:00:36.194Z",
-  "empreinte_page_sha256": "5d1dd1cdfa99e1f3984d86bdc9b476bc375cdd9627716002dea709558d1f754e",
+  "audite_le": "2026-11-21T12:03:39.888Z",
+  "empreinte_page_sha256": "65d24b5fe358286906faa7ca0664fc439b97236ae07f4972ccbd7023821fb85f",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -49,7 +49,7 @@
     {
       "hote": "alphabette.fr",
       "classe": "premiere_partie",
-      "requetes": 5,
+      "requetes": 6,
       "bloquees": 0,
       "types": [
         "script",
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 306,
-      "bloquees": 306,
+      "requetes": 288,
+      "bloquees": 288,
       "types": [
         "image",
         "fetch"
@@ -137,5 +137,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "7b9c5dca3baa1417780d2f579144984d0cf1e50aa83a8df959ae0b6943eb3200"
+  "empreinte_certificat_sha256": "fe1956cda8242fd078a72b6d089453d6c6e3fe01df20082282e0f58037a3d559"
 }
