@@ -6,15 +6,19 @@
  *    et demande à la page elle-même ses textes lisibles (window.alphabetteAudio.textesAPrononcer :
  *    même découpage, mêmes empreintes que dans le navigateur des visiteurs).
  *    Ajoute les fichiers voix-textes.json des applis (liste de textes fixes à enregistrer).
- * 2. Enregistre les textes nouveaux avec la voix Gemini « Kore » (clé GEMINI_API_KEY du dépôt,
- *    quota GRATUIT de Google : on s'arrête poliment au premier « quota atteint », la suite au
- *    prochain passage). MP3 mono 48 kbit/s.
+ * 2. Enregistre les textes nouveaux, gratuitement :
+ *    - voix Gemini « Kore » si GEMINI_API_KEY existe (quota gratuit de Google : arrêt poliment au
+ *      premier « quota atteint », la suite au prochain passage) ;
+ *    - sinon, et pour tout ce que le quota ne couvre pas : voix neuronale libre Piper
+ *      « fr_FR-siwis-medium » (féminine, posée ; voix CC BY 4.0), sans compte ni limite.
+ *    Les enregistrements Piper sont ensuite remplacés par « Kore » dès que le quota le permet.
+ *    MP3 mono 48 kbit/s.
  * 3. Écrit voix/index.json (suivi), voix/index.js (lu par les navigateurs) et voix/.htaccess.
  *
  *   bun scripts/voix/generer-bibliotheque.ts --site dist-static --sortie ../voix-depot [--max 40]
  *
- * Variables : GEMINI_API_KEY (obligatoire pour enregistrer), PLAYWRIGHT_MODULE (chemin du module
- * playwright), VOIX_MAX (nombre maximal d'enregistrements par passage).
+ * Variables : GEMINI_API_KEY (facultative), PIPER_BIN + PIPER_MODEL (voix libre), PLAYWRIGHT_MODULE
+ * (chemin du module playwright), VOIX_MAX (nombre maximal d'enregistrements « Kore » par passage).
  */
 import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -35,9 +39,10 @@ const SORTIE = path.resolve(opt('sortie', '../voix-depot'), 'voix');
 const MAX = Number(process.env.VOIX_MAX || opt('max', '40'));
 const PORT = 4199;
 const OUBLI_JOURS = 60;
+const CREDITS = 'Voix « Kore » : Google Gemini TTS. Voix libre : Piper (rhasspy), modèle fr_FR-siwis-medium, base SIWIS (CC BY 4.0).';
 const aujourdhui = new Date().toISOString().slice(0, 10);
 
-interface Entree { texte: string; duree?: number; vu: string; source: string; essais?: number }
+interface Entree { texte: string; duree?: number; voix?: 'kore' | 'piper'; vu: string; source: string; essais?: number }
 interface Index { v: number; entrees: Record<string, Entree> }
 
 fs.mkdirSync(SORTIE, { recursive: true });
@@ -150,32 +155,80 @@ function enMp3(wav: Uint8Array, destination: string): number {
   return Math.round(((wav.length - 44) / (taux * 2)) * 10) / 10;
 }
 
+/** Voix libre Piper (aucun compte, aucune limite) : texte → WAV. */
+function enregistrerPiper(texte: string): Uint8Array | null {
+  const bin = process.env.PIPER_BIN;
+  const modele = process.env.PIPER_MODEL;
+  if (!bin || !modele) return null;
+  const sortie = path.join(os.tmpdir(), `ab-piper-${process.pid}.wav`);
+  const r = spawnSync(bin, ['--model', modele, '--output_file', sortie, '--length_scale', '1.12', '--sentence_silence', '0.35'], {
+    input: texte,
+    encoding: 'buffer',
+    timeout: 120000,
+  });
+  if (r.status !== 0 || !fs.existsSync(sortie)) {
+    console.log(`   piper → ${r.status} ${String(r.stderr).slice(0, 200)}`);
+    return null;
+  }
+  const wav = new Uint8Array(fs.readFileSync(sortie));
+  fs.rmSync(sortie, { force: true });
+  return wav;
+}
+
 async function enregistrerLesNouveaux() {
-  const cle = process.env.GEMINI_API_KEY;
-  if (!cle) return console.log('Pas de GEMINI_API_KEY : collecte seulement.');
-  const a_faire = Object.entries(index.entrees)
-    .filter(([h, e]) => !(e.duree && fs.existsSync(path.join(SORTIE, `${h}.mp3`))) && (e.essais ?? 0) < 5)
-    // Les plus courts d'abord : boutons et petites pages sortent vite.
+  const cle = process.env.GEMINI_API_KEY || '';
+  let quotaKore = cle ? MAX : 0;
+  const pret = (h: string, e: Entree) => !!e.duree && fs.existsSync(path.join(SORTIE, `${h}.mp3`));
+  const manquants = Object.entries(index.entrees)
+    .filter(([h, e]) => !pret(h, e) && (e.essais ?? 0) < 5)
+    .sort((a, b) => a[1].texte.length - b[1].texte.length); // boutons et petites pages d'abord
+  const ameliorables = Object.entries(index.entrees)
+    .filter(([h, e]) => pret(h, e) && e.voix !== 'kore')
     .sort((a, b) => a[1].texte.length - b[1].texte.length);
-  console.log(`À enregistrer : ${a_faire.length} (au plus ${MAX} aujourd'hui).`);
-  let faits = 0;
-  for (const [h, e] of a_faire.slice(0, MAX)) {
-    const r = await enregistrer(e.texte, cle);
+  console.log(`À enregistrer : ${manquants.length} · à passer en « Kore » : ${ameliorables.length} · clé Gemini : ${cle ? 'oui' : 'non'}.`);
+
+  let kore = 0, piper = 0;
+  const tenterKore = async (texte: string): Promise<Uint8Array | null> => {
+    if (quotaKore <= 0) return null;
+    const r = await enregistrer(texte, cle);
     if ('quota' in r) {
-      console.log('⏸️  Quota gratuit de Google atteint pour aujourd’hui : la suite au prochain passage.');
-      break;
+      console.log('⏸️  Quota gratuit de Google atteint : voix libre pour le reste, « Kore » au prochain passage.');
+      quotaKore = 0;
+      return null;
     }
-    if ('echec' in r) {
+    if ('echec' in r) return null;
+    quotaKore--;
+    await new Promise((res) => setTimeout(res, 6500)); // quota gratuit : quelques requêtes par minute
+    return r.wav;
+  };
+
+  for (const [h, e] of manquants) {
+    let wav = await tenterKore(e.texte);
+    let voix: Entree['voix'] = 'kore';
+    if (!wav) {
+      wav = enregistrerPiper(e.texte);
+      voix = 'piper';
+    }
+    if (!wav) {
       e.essais = (e.essais ?? 0) + 1;
       continue;
     }
-    e.duree = enMp3(r.wav, path.join(SORTIE, `${h}.mp3`));
+    e.duree = enMp3(wav, path.join(SORTIE, `${h}.mp3`));
+    e.voix = voix;
     delete e.essais;
-    faits++;
-    console.log(`🎙️  ${h}.mp3 (${e.duree} s) — ${e.texte.slice(0, 60)}…`);
-    await new Promise((res) => setTimeout(res, 6500)); // quota gratuit : quelques requêtes par minute
+    voix === 'kore' ? kore++ : piper++;
+    console.log(`🎙️  ${h}.mp3 [${voix}] (${e.duree} s) — ${e.texte.slice(0, 60)}…`);
   }
-  console.log(`Enregistrés ce passage : ${faits}.`);
+  for (const [h, e] of ameliorables) {
+    if (quotaKore <= 0) break;
+    const wav = await tenterKore(e.texte);
+    if (!wav) continue;
+    e.duree = enMp3(wav, path.join(SORTIE, `${h}.mp3`));
+    e.voix = 'kore';
+    kore++;
+    console.log(`✨ ${h}.mp3 passé en « Kore » — ${e.texte.slice(0, 60)}…`);
+  }
+  console.log(`Enregistrés ce passage : ${kore} en « Kore », ${piper} en voix libre.`);
 }
 
 /* ----------------------------------------------------------------- 3. Publication */
@@ -187,7 +240,7 @@ function publier() {
       fs.rmSync(path.join(SORTIE, `${h}.mp3`), { force: true });
     }
   }
-  fs.writeFileSync(cheminIndex, `${JSON.stringify(index, null, 1)}\n`);
+  fs.writeFileSync(cheminIndex, `${JSON.stringify({ ...index, credits: CREDITS }, null, 1)}\n`);
   const prets: Record<string, number> = {};
   for (const [h, e] of Object.entries(index.entrees)) if (e.duree && fs.existsSync(path.join(SORTIE, `${h}.mp3`))) prets[h] = e.duree;
   fs.writeFileSync(path.join(SORTIE, 'index.js'), `window.__abVoix=${JSON.stringify({ v: VERSION_BIBLIOTHEQUE, h: prets })};\n`);
