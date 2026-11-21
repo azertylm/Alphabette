@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { createAlphabetteAudioRouter } from "./server/alphabetteAudio";
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -133,6 +134,9 @@ const vipCodesStore: Map<string, VipCodeRecord> = new Map([
 
 async function startServer() {
   const app = express();
+
+  // Voix Alphabette (Gemini TTS « Kore ») + dictée — avant le JSON global (limite 15 Mo pour l'audio).
+  app.use("/api/alphabette", createAlphabetteAudioRouter());
 
   // Middleware JSON
   app.use(express.json());
