@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-21T12:52:42.900Z",
-  "empreinte_page_sha256": "c8d1a1284f5fd8aeda43a011ab6ed60a85c5b53caa9bbfb5e932007925a121ef",
+  "audite_le": "2026-11-21T13:09:06.631Z",
+  "empreinte_page_sha256": "cd3c0fa43a35fca3611b9eaa5d78f79c1b1759c8ccd3227674f0bb820d53704d",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 477,
-      "bloquees": 477,
+      "requetes": 650,
+      "bloquees": 650,
       "types": [
         "image",
         "fetch"
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -139,13 +139,13 @@
       "images.unsplash.com",
       "i.f1g.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "img.lemde.fr",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "www.franceinfo.fr"
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "7b265fb89bef931bf7948ecffe0338c19103aa42a2ff22c2abe0a9d1495f61da"
+  "empreinte_certificat_sha256": "c7f51cd3fa2696520e784db648acc4f67a6492fd474af392f5961c9c525f00c9"
 }
