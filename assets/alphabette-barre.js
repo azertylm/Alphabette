@@ -281,22 +281,49 @@
     ph.forEach(function (p) { var r = p.trim(); while (r.length > 200) { var c = r.lastIndexOf(' ', 200); c = c > 40 ? c : 200; out.push(r.slice(0, c)); r = r.slice(c).trim(); } if (r) out.push(r); });
     return out;
   }
-  function majLecture() { var b = document.getElementById('ab-lire'); if (!b) return; b.textContent = lectureEnCours ? '⏹️' : '🔊'; b.classList.toggle('ab-pico--actif', lectureEnCours); var m = T(lectureEnCours ? 'Arrêter la lecture' : 'Lire à voix haute'); b.dataset.abTip = m; b.setAttribute('aria-label', m); }
-  function basculerLecture() {
-    if (lectureEnCours) { jeton++; speechSynthesis.cancel(); lectureEnCours = false; return majLecture(); }
+  // Voix Alphabette unique (Gemini « Kore ») : alphabette-audio.js, chargé à côté de ce script.
+  // Repli sur la voix du téléphone tant qu'il n'est pas arrivé.
+  (function chargerVoix() {
+    if (window.alphabetteAudio || document.getElementById('ab-audio-js')) return;
+    var src = (script && script.src) ? script.src.replace(/alphabette-barre\.js(\?.*)?$/, 'alphabette-audio.js') : 'https://alphabette.fr/assets/alphabette-audio.js';
+    var s = document.createElement('script'); s.id = 'ab-audio-js'; s.src = src; s.async = true;
+    (document.head || document.documentElement).appendChild(s);
+  })();
+  function etatVoix() { var a = window.alphabetteAudio; return a ? a.lireEtat().etat : (lectureEnCours ? 'lecture' : 'repos'); }
+  function majLecture() {
+    var b = document.getElementById('ab-lire'); if (!b) return; var e = etatVoix();
+    b.textContent = e === 'preparation' ? '⏳' : e === 'lecture' ? '🔇' : '🔊';
+    b.classList.toggle('ab-pico--actif', e !== 'repos'); b.classList.toggle('ab-pico--audio-lecture', e === 'lecture');
+    b.setAttribute('aria-busy', String(e === 'preparation'));
+    var m = T(e === 'preparation' ? 'Préparation... (toucher pour annuler)' : e === 'lecture' ? 'Arrêter la lecture' : 'Lire à voix haute');
+    b.dataset.abTip = m; b.setAttribute('aria-label', m);
+  }
+  window.addEventListener('alphabette:audio', majLecture);
+  function texteDeLaPage() {
     var zone = document.querySelector('main') || document.body;
-    var barres = document.getElementById('ab-barres'); var phrases = decouper((zone.innerText || '').slice(0, 30000));
-    if (barres && zone === document.body) phrases = decouper((zone.innerText || '').replace(barres.innerText || '', '').slice(0, 30000));
+    var barres = document.getElementById('ab-barres'); var t = (zone.innerText || '');
+    if (barres && zone === document.body) t = t.replace(barres.innerText || '', '');
+    return t.slice(0, 30000);
+  }
+  function basculerLecture() {
+    var a = window.alphabetteAudio;
+    if (a) {
+      // Une lecture (ou une préparation) en cours n'importe où sur l'écran : on l'arrête.
+      if (a.actif) return a.stop();
+      return a.play(texteDeLaPage(), a.ID_BARRE, { langue: langue === 'en' ? 'en' : 'fr' });
+    }
+    if (lectureEnCours) { jeton++; speechSynthesis.cancel(); lectureEnCours = false; return majLecture(); }
+    var phrases = decouper(texteDeLaPage());
     if (!phrases.length) return;
     speechSynthesis.cancel(); var moi = ++jeton; lectureEnCours = true; majLecture();
     (function suivante(i) {
       if (jeton !== moi) return; if (i >= phrases.length) { lectureEnCours = false; return majLecture(); }
-      var u = new SpeechSynthesisUtterance(phrases[i]); u.lang = langue === 'en' ? 'en-GB' : 'fr-FR'; u.rate = 0.95;
+      var u = new SpeechSynthesisUtterance(phrases[i]); u.lang = langue === 'en' ? 'en-GB' : 'fr-FR'; u.rate = 0.94;
       u.onend = function () { suivante(i + 1); }; u.onerror = function () { if (jeton === moi) { lectureEnCours = false; majLecture(); } };
       speechSynthesis.speak(u);
     })(0);
   }
-  window.addEventListener('pagehide', function () { if ('speechSynthesis' in window) speechSynthesis.cancel(); });
+  window.addEventListener('pagehide', function () { if (window.alphabetteAudio) window.alphabetteAudio.stop(); else if ('speechSynthesis' in window) speechSynthesis.cancel(); });
 
   // ------------------------------------------------------------ Installer, avis, imprimer, langue
   var installation = null;
@@ -426,7 +453,7 @@
       big,
       el('button', { type: 'button', class: 'ab-pico', id: 'ab-theme', onclick: function () { theme = theme === 'nuit' ? 'jour' : 'nuit'; ecrirePrefs({ theme: theme }); appliquerTheme(true); } }),
     ]);
-    if ('speechSynthesis' in window) actions.appendChild(el('button', { type: 'button', class: 'ab-pico', id: 'ab-lire', onclick: basculerLecture }));
+    actions.appendChild(el('button', { type: 'button', class: 'ab-pico', id: 'ab-lire', onclick: basculerLecture }));
     actions.appendChild(tip(el('button', { type: 'button', class: 'ab-pico', text: '⋯', 'aria-haspopup': 'true', onclick: function (e) { e.stopPropagation(); menuOuvert ? fermerMenu() : ouvrirMenu(); } }), T('Plus d’options')));
     var titres = [el('span', { class: 'ab-bar__nom', text: app.nom })]; if (app.sousTitre) titres.push(el('span', { class: 'ab-bar__sous', text: app.sousTitre }));
     var barre = el('div', { class: 'ab-bar' }, [el('div', { class: 'ab-bar__titres' }, titres), actions]);
