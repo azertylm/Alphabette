@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-11-20T20:16:18.259Z",
+  "genere_le": "2026-11-21T08:44:26.980Z",
   "base": "https://alphabette.eu",
   "agent": "Agent Chaos",
   "apps": [
@@ -49,18 +49,7 @@
       "app_id": "iadebat",
       "nom": "IADÉBAT",
       "url": "https://alphabette.eu/apps/iadebat/",
-      "anomalies": [
-        {
-          "type": "debordement",
-          "etape": "chargement",
-          "detail": "Défilement horizontal de 16px à 280px de large",
-          "elements": [
-            "span (281px)"
-          ],
-          "ecran": "280x653",
-          "ticket": "[Agent Chaos] IADÉBAT — debordement (chargement, 280x653) : Défilement horizontal de 16px à 280px de large"
-        }
-      ]
+      "anomalies": []
     },
     {
       "app_id": "infos-perso",
@@ -177,5 +166,5 @@
       "anomalies": []
     }
   ],
-  "total": 1
+  "total": 0
 }
