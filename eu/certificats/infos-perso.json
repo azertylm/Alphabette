@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-21T13:19:04.329Z",
-  "empreinte_page_sha256": "c7ac051eb3efef2a69598f0658d955277fd923cff482ed002f006119cf909f98",
+  "audite_le": "2026-11-21T13:30:31.761Z",
+  "empreinte_page_sha256": "ecbaf3c04925569d438702143bba6dd8ce602f2e358e4567a1fb831d80562956",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 869,
-      "bloquees": 869,
+      "requetes": 833,
+      "bloquees": 833,
       "types": [
         "image",
         "fetch"
@@ -69,17 +69,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "www.franceinfo.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
@@ -94,7 +85,7 @@
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -138,14 +129,13 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "www.franceinfo.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "img.lemde.fr",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "56c6181da7d3cac783df68a62ed6b634a7dcfb03ea5e9dd6ce9c3889150c8082"
+  "empreinte_certificat_sha256": "28e09b84a4d92b617418f867a67aac55b9b1c67140ab7dded139ea5ccdb8e43b"
 }
