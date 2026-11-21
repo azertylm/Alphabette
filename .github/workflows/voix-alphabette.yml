@@ -42,13 +42,27 @@ jobs:
           cd /tmp/pw && npx playwright install --with-deps chromium
           command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
       - name: Installer la voix libre Piper (fr_FR-siwis-medium)
+        # piper-tts (PyPI, version actuelle) : compatible avec les voix publiées aujourd'hui.
         run: |
+          python3 -m pip install --quiet --user --break-system-packages piper-tts
           mkdir -p /tmp/piper && cd /tmp/piper
-          curl -fsSL https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz | tar xz
           base=https://huggingface.co/rhasspy/piper-voices/resolve/main/fr/fr_FR/siwis/medium
           curl -fsSL -o siwis.onnx "$base/fr_FR-siwis-medium.onnx"
           curl -fsSL -o siwis.onnx.json "$base/fr_FR-siwis-medium.onnx.json"
-          echo "Bonjour, ceci est un essai." | ./piper/piper --model siwis.onnx --output_file essai.wav && ls -l essai.wav
+          # Petit adaptateur : --model M --output_file F --length_scale L --sentence_silence S, texte sur l'entrée.
+          cat > dire <<'SCRIPT'
+          #!/usr/bin/env bash
+          set -e
+          while [ $# -gt 0 ]; do case "$1" in
+            --model) M="$2"; shift 2;; --output_file) F="$2"; shift 2;;
+            --length_scale) L="$2"; shift 2;; --sentence_silence) S="$2"; shift 2;; *) shift;; esac; done
+          T="$(cat)"
+          python3 -m piper -m "$M" -f "$F" --length-scale "${L:-1}" --sentence-silence "${S:-0.2}" -- "$T" 2>/dev/null \
+            || python3 -m piper -m "$M" -f "$F" -- "$T"
+          SCRIPT
+          sed -i 's/^          //' dire && chmod +x dire
+          echo "Bonjour, ceci est un essai." | ./dire --model siwis.onnx --output_file essai.wav --length_scale 1.12 --sentence_silence 0.35
+          ls -l essai.wav
       - name: Reprendre la bibliothèque (branche voix-alphabette)
         run: |
           git config user.name "github-actions[bot]"
@@ -64,7 +78,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PLAYWRIGHT_MODULE: /tmp/pw/node_modules/playwright/index.js
-          PIPER_BIN: /tmp/piper/piper/piper
+          PIPER_BIN: /tmp/piper/dire
           PIPER_MODEL: /tmp/piper/siwis.onnx
           VOIX_MAX: ${{ github.event.inputs.max || '40' }}
         run: bun scripts/voix/generer-bibliotheque.ts --site dist-static --sortie ../voix-depot
