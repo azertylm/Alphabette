@@ -1,0 +1,11 @@
+# Bibliothèque de voix Alphabette : lisible depuis tous les sous-domaines.
+<IfModule mod_headers.c>
+  Header always set Access-Control-Allow-Origin "*"
+  <FilesMatch "\.mp3$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "^index\.(js|json)$">
+    Header set Cache-Control "public, max-age=600"
+  </FilesMatch>
+</IfModule>
+AddType audio/mpeg .mp3
