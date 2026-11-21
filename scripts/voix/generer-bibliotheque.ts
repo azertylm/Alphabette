@@ -163,7 +163,6 @@ function enregistrerPiper(texte: string): Uint8Array | null {
   const sortie = path.join(os.tmpdir(), `ab-piper-${process.pid}.wav`);
   const r = spawnSync(bin, ['--model', modele, '--output_file', sortie, '--length_scale', '1.12', '--sentence_silence', '0.35'], {
     input: texte,
-    encoding: 'buffer',
     timeout: 120000,
   });
   if (r.status !== 0 || !fs.existsSync(sortie)) {
