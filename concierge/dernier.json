@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-21T02:49:58.569Z",
+  "points": [
+    {
+      "agent": "concierge",
+      "gravite": "important",
+      "titre": "Certificat HTTPS illisible : proxilien.eu",
+      "detail": "ECONNREFUSED",
+      "correction": "Vérifier dans l'espace OVH (Hébergement → Multisite) que le domaine est rattaché avec le SSL activé."
+    },
+    {
+      "agent": "econome",
+      "gravite": "important",
+      "titre": "Crédit OpenRouter épuisé",
+      "detail": "débats Premium offerts et Crash-Testeur Premium arrêtés ; le Mode Gratuit continue",
+      "correction": "Ajouter du crédit sur https://openrouter.ai/settings/credits (10 $ suffisent pour lever la limite des modèles gratuits)."
+    },
+    {
+      "agent": "econome",
+      "gravite": "conseil",
+      "titre": "Compte OpenRouter sans crédit acheté : 50 requêtes gratuites par jour pour tout le site",
+      "detail": "0 débat(s) gratuit(s) aujourd'hui (chaque débat = plusieurs requêtes)",
+      "correction": "Un premier achat de 10 $ fait passer la limite à 1 000 requêtes par jour."
+    }
+  ],
+  "domaines": [
+    {
+      "hote": "alphabette.eu",
+      "certificat_fin": "2027-02-16T12:49:33.000Z",
+      "certificat_jours": 87,
+      "emetteur": "Let's Encrypt",
+      "erreur": null,
+      "domaine_fin": null,
+      "domaine_jours": null,
+      "domaine_info": "registre RDAP inconnu"
+    },
+    {
+      "hote": "alphabette.fr",
+      "certificat_fin": "2026-12-28T08:04:29.000Z",
+      "certificat_jours": 37,
+      "emetteur": "Let's Encrypt",
+      "erreur": null,
+      "domaine_fin": "2029-09-29T08:41:42.851001Z",
+      "domaine_jours": 1043
+    },
+    {
+      "hote": "atelier.alphabette.fr",
+      "certificat_fin": "2027-02-08T12:49:06.000Z",
+      "certificat_jours": 79,
+      "emetteur": "Let's Encrypt",
+      "erreur": null
+    },
+    {
+      "hote": "iadebat.alphabette.fr",
+      "certificat_fin": "2027-02-08T12:49:05.000Z",
+      "certificat_jours": 79,
+      "emetteur": "Let's Encrypt",
+      "erreur": null
+    },
+    {
+      "hote": "infosperso.alphabette.fr",
+      "certificat_fin": "2027-02-08T12:49:06.000Z",
+      "certificat_jours": 79,
+      "emetteur": "Let's Encrypt",
+      "erreur": null
+    },
+    {
+      "hote": "proxilien.alphabette.fr",
+      "certificat_fin": "2027-02-08T12:49:19.000Z",
+      "certificat_jours": 79,
+      "emetteur": "Let's Encrypt",
+      "erreur": null
+    },
+    {
+      "hote": "proxilien.eu",
+      "certificat_fin": null,
+      "certificat_jours": null,
+      "erreur": "ECONNREFUSED",
+      "domaine_fin": null,
+      "domaine_jours": null,
+      "domaine_info": "registre RDAP inconnu"
+    },
+    {
+      "hote": "proxilien.fr",
+      "certificat_fin": "2027-02-08T12:31:05.000Z",
+      "certificat_jours": 79,
+      "emetteur": "Let's Encrypt",
+      "erreur": null,
+      "domaine_fin": "2029-09-29T08:41:53.921791Z",
+      "domaine_jours": 1043
+    }
+  ],
+  "sauvegarde": {
+    "derniere": "2026-11-20T20:41:49Z",
+    "heures": 6
+  },
+  "econome": {
+    "date": "2026-11-21T02:49:58.568Z",
+    "sante": {
+      "actif": true,
+      "jour": "2026-11-21",
+      "visiteurs": 0,
+      "debats_gratuits": 0,
+      "debats_premium": 0,
+      "premium_total": 0,
+      "plafond_premium": 50,
+      "credit": {
+        "etat": "epuise",
+        "compte_gratuit": true,
+        "verifie": "2026-11-21T02:49:58+00:00"
+      }
+    }
+  }
+}

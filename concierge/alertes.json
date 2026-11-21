@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-21T02:49:58.569Z",
+  "alertes": [
+    {
+      "agent": "concierge",
+      "gravite": "important",
+      "titre": "Certificat HTTPS illisible : proxilien.eu",
+      "detail": "ECONNREFUSED",
+      "correction": "Vérifier dans l'espace OVH (Hébergement → Multisite) que le domaine est rattaché avec le SSL activé."
+    },
+    {
+      "agent": "econome",
+      "gravite": "important",
+      "titre": "Crédit OpenRouter épuisé",
+      "detail": "débats Premium offerts et Crash-Testeur Premium arrêtés ; le Mode Gratuit continue",
+      "correction": "Ajouter du crédit sur https://openrouter.ai/settings/credits (10 $ suffisent pour lever la limite des modèles gratuits)."
+    }
+  ]
+}
