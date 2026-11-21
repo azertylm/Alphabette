@@ -127,9 +127,10 @@ direct, jamais un autre lecteur : les anciens appels `speechSynthesis.speak()`
 sont de toute façon redirigés vers lui.
 
 D'où vient la voix (tout est gratuit) :
-1. **Bibliothèque Alphabette** : les textes fixes sont enregistrés à l'avance en
-   voix Gemini **« Kore »** par la tâche GitHub `voix-alphabette.yml`
-   (`scripts/voix/generer-bibliotheque.ts`, quota gratuit de Google) et publiés en
+1. **Bibliothèque Alphabette** : les textes fixes sont enregistrés à l'avance par la
+   tâche GitHub `voix-alphabette.yml` (`scripts/voix/generer-bibliotheque.ts`) — voix
+   libre Piper « Siwis » tout de suite, remplacée par Gemini **« Kore »** dès qu'une clé
+   Gemini gratuite (secret `GEMINI_API_KEY`) et son quota le permettent — et publiés en
    MP3 sur `https://alphabette.fr/voix/`. Lecture immédiate, même voix pour tous.
 2. Route serveur `/api/alphabette/tts` (si un serveur existe un jour : `server/alphabetteAudio.ts`).
 3. Clé Gemini du visiteur (réglages IA), gardée en cache sur son appareil.

@@ -1,8 +1,8 @@
 # Bibliothèque de voix Alphabette — GRATUITE, sans serveur.
 # Chaque jour : construit le site, lit chaque page en largeur téléphone, enregistre les textes
-# nouveaux avec la voix Gemini « Kore » (clé GEMINI_API_KEY du dépôt, quota gratuit de Google :
-# arrêt automatique au premier « quota atteint »), puis range les MP3 sur la branche
-# voix-alphabette. deploy-ovh.yml les publie dans https://alphabette.fr/voix/.
+# nouveaux — voix Gemini « Kore » si le secret GEMINI_API_KEY existe (quota gratuit de Google),
+# sinon voix neuronale libre Piper « Siwis » (aucun compte, aucune limite) — puis range les MP3
+# sur la branche voix-alphabette. deploy-ovh.yml les publie dans https://alphabette.fr/voix/.
 name: Voix Alphabette — bibliothèque
 
 on:
@@ -41,6 +41,14 @@ jobs:
           mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
           cd /tmp/pw && npx playwright install --with-deps chromium
           command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+      - name: Installer la voix libre Piper (fr_FR-siwis-medium)
+        run: |
+          mkdir -p /tmp/piper && cd /tmp/piper
+          curl -fsSL https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz | tar xz
+          base=https://huggingface.co/rhasspy/piper-voices/resolve/main/fr/fr_FR/siwis/medium
+          curl -fsSL -o siwis.onnx "$base/fr_FR-siwis-medium.onnx"
+          curl -fsSL -o siwis.onnx.json "$base/fr_FR-siwis-medium.onnx.json"
+          echo "Bonjour, ceci est un essai." | ./piper/piper --model siwis.onnx --output_file essai.wav && ls -l essai.wav
       - name: Reprendre la bibliothèque (branche voix-alphabette)
         run: |
           git config user.name "github-actions[bot]"
@@ -56,6 +64,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PLAYWRIGHT_MODULE: /tmp/pw/node_modules/playwright/index.js
+          PIPER_BIN: /tmp/piper/piper/piper
+          PIPER_MODEL: /tmp/piper/siwis.onnx
           VOIX_MAX: ${{ github.event.inputs.max || '40' }}
         run: bun scripts/voix/generer-bibliotheque.ts --site dist-static --sortie ../voix-depot
       - name: Ranger et publier
