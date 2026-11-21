@@ -310,7 +310,7 @@
     if (a) {
       // Une lecture (ou une préparation) en cours n'importe où sur l'écran : on l'arrête.
       if (a.actif) return a.stop();
-      return a.play(texteDeLaPage(), a.ID_BARRE, { langue: langue === 'en' ? 'en' : 'fr' });
+      return a.play(a.texteDeLaPage ? a.texteDeLaPage() : texteDeLaPage(), a.ID_BARRE, { langue: langue === 'en' ? 'en' : 'fr' });
     }
     if (lectureEnCours) { jeton++; speechSynthesis.cancel(); lectureEnCours = false; return majLecture(); }
     var phrases = decouper(texteDeLaPage());

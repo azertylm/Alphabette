@@ -1,0 +1,71 @@
+# Bibliothèque de voix Alphabette — GRATUITE, sans serveur.
+# Chaque jour : construit le site, lit chaque page en largeur téléphone, enregistre les textes
+# nouveaux avec la voix Gemini « Kore » (clé GEMINI_API_KEY du dépôt, quota gratuit de Google :
+# arrêt automatique au premier « quota atteint »), puis range les MP3 sur la branche
+# voix-alphabette. deploy-ovh.yml les publie dans https://alphabette.fr/voix/.
+name: Voix Alphabette — bibliothèque
+
+on:
+  schedule:
+    - cron: '37 9 * * *'   # juste après la remise à zéro du quota Google (minuit, heure du Pacifique)
+  workflow_dispatch:
+    inputs:
+      max:
+        description: "Nombre maximal d'enregistrements (défaut 40)"
+        required: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: voix-alphabette
+  cancel-in-progress: false
+
+jobs:
+  bibliotheque:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run build:static
+        env:
+          APPS_TOKEN: ${{ secrets.APPS_TOKEN }}
+      - name: Installer Playwright et ffmpeg
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
+          command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+      - name: Reprendre la bibliothèque (branche voix-alphabette)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin voix-alphabette; then
+            git worktree add -q ../voix-depot FETCH_HEAD
+            cd ../voix-depot && git checkout -q -B voix-alphabette
+          else
+            git worktree add -q --detach ../voix-depot
+            cd ../voix-depot && git checkout -q --orphan voix-alphabette && git rm -rqf . && rm -rf -- * .github 2>/dev/null || true
+          fi
+      - name: Collecter et enregistrer
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PLAYWRIGHT_MODULE: /tmp/pw/node_modules/playwright/index.js
+          VOIX_MAX: ${{ github.event.inputs.max || '40' }}
+        run: bun scripts/voix/generer-bibliotheque.ts --site dist-static --sortie ../voix-depot
+      - name: Ranger et publier
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd ../voix-depot
+          git add -A voix
+          if git diff --cached --quiet; then echo "Bibliothèque inchangée."; exit 0; fi
+          git commit -q -m "Voix Alphabette — $(date -u +%F)"
+          git push -q origin HEAD:voix-alphabette
+          cd "$GITHUB_WORKSPACE"
+          gh workflow run deploy-ovh.yml --ref main || echo "::warning::publication à la prochaine mise en ligne planifiée"
