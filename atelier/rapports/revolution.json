@@ -1,0 +1,149 @@
+{
+  "id": "revolution",
+  "nom": "RÉVOLUTION",
+  "url": "https://alphabette.eu/apps/revolution/",
+  "communaute": false,
+  "heberge": false,
+  "date": "2026-11-21T09:42:28.384Z",
+  "scores": {
+    "douanier": 92,
+    "pouce": 62,
+    "opticien": 90,
+    "poids_plume": 87,
+    "phare": 80,
+    "parapluie": 96
+  },
+  "controle_technique": 80,
+  "note": 85,
+  "apte": false,
+  "compte": {
+    "bloquant": 0,
+    "important": 2,
+    "conseil": 7
+  },
+  "problemes": [
+    {
+      "agent": "pouce",
+      "gravite": "important",
+      "titre": "26 zones à toucher trop petites (moins de 44 px)",
+      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)",
+      "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 26 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "opticien",
+      "gravite": "important",
+      "titre": "43 textes plus petits que 12 px",
+      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 12 h · plusieurs fois  » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)",
+      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 43 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 12 h · plusieurs fois  » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "douanier",
+      "gravite": "conseil",
+      "titre": "Clé publique à restreindre (clé Google)",
+      "detail": "index-CGgJTlHe.js",
+      "correction": "Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer).",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-CGgJTlHe.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "douanier",
+      "gravite": "conseil",
+      "titre": "Appels vers 4 services tiers non déclarés",
+      "detail": "apis.google.com, gen-lang-client-0692358943.firebaseapp.com, googleapis.com, identitytoolkit.googleapis.com",
+      "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Appels vers 4 services tiers non déclarés (apis.google.com, gen-lang-client-0692358943.firebaseapp.com, googleapis.com, identitytoolkit.googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "pouce",
+      "gravite": "conseil",
+      "titre": "4 boutons trop serrés (moins de 8 px d'écart)",
+      "detail": "button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour » ; button.ab-pico « Passer en mode jour » ↔ button.ab-pico « Lire à voix haute »",
+      "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 4 boutons trop serrés (moins de 8 px d'écart) (button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour » ; button.ab-pico « Passer en mode jour » ↔ button.ab-pico « Lire à voix haute »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "poids_plume",
+      "gravite": "conseil",
+      "titre": "Fichiers texte envoyés sans compression",
+      "detail": "actu.json",
+      "correction": "Active la compression gzip ou brotli chez l'hébergeur.",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Fichiers texte envoyés sans compression (actu.json). Active la compression gzip ou brotli chez l'hébergeur. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Aperçu de partage incomplet",
+      "detail": "manque og:image",
+      "correction": "Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries.",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Aperçu de partage incomplet (manque og:image). Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Pas de grand titre (h1) visible",
+      "detail": "",
+      "correction": "Mets le nom ou l'action principale dans une balise <h1>.",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Pas de grand titre (h1) visible. Mets le nom ou l'action principale dans une balise <h1>. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Aucun lien vers les mentions légales ni la confidentialité",
+      "detail": "",
+      "correction": "Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont).",
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Aucun lien vers les mentions légales ni la confidentialité. Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont). Fais le plus petit changement possible et ne modifie rien d'autre."
+    }
+  ],
+  "mesures": {
+    "poids_ko": 541,
+    "js_ko": 448,
+    "requetes": 17,
+    "dom": 328,
+    "ecoindex": 78.9,
+    "chargement_ms": 1380,
+    "tiers": [
+      "apis.google.com",
+      "gen-lang-client-0692358943.firebaseapp.com",
+      "googleapis.com",
+      "identitytoolkit.googleapis.com"
+    ],
+    "traceurs": [],
+    "contraste_ok_pct": 99
+  },
+  "plume": {
+    "titre": "Révolution — alphabette.fr",
+    "h1": "",
+    "h2": [
+      "Ce matin, l’actualité"
+    ],
+    "boutons": [
+      "αalphabette",
+      "▦",
+      "🆕",
+      "⭐ S’abonner",
+      "♥",
+      "BIG",
+      "🌙",
+      "🔊",
+      "⋯",
+      "Comment ça marche ?",
+      "Choisir ma région et mes sujets",
+      "Plus tard",
+      "Pour toi",
+      "Ma région",
+      "National",
+      "Déjà répondu (0)",
+      "Lire l’article ↗",
+      "Beaucoup",
+      "Un peu",
+      "Pas du tout"
+    ],
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 🔊 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 12 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🏥 SANTÉ 🇫🇷 NATIONAL \"Des réductions extrêmement importantes des scores de douleur\" : les animaux au chevet des patients Faire entrer les animaux à l’hôpital pour apaiser les patients. C’est une initiative "
+  },
+  "temoin": {
+    "capture": "captures/revolution.jpg",
+    "changement": null,
+    "blanc": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ecobatisol",
+  "nom": "ÉCOBÂTISOL",
+  "url": "https://alphabette.eu/apps/ecobatisol/",
+  "communaute": false,
+  "heberge": false,
+  "date": "2026-11-21T09:40:32.312Z",
+  "scores": {
+    "douanier": 100,
+    "pouce": 62,
+    "opticien": 94,
+    "poids_plume": 93,
+    "phare": 80,
+    "parapluie": 96
+  },
+  "controle_technique": 83,
+  "note": 88,
+  "apte": false,
+  "compte": {
+    "bloquant": 0,
+    "important": 2,
+    "conseil": 3
+  },
+  "problemes": [
+    {
+      "agent": "pouce",
+      "gravite": "important",
+      "titre": "12 zones à toucher trop petites (moins de 44 px)",
+      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (95×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)",
+      "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
+      "prompt": "Mon application web « ÉCOBÂTISOL » a ce problème, relevé par un contrôle automatique : 12 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (95×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "opticien",
+      "gravite": "important",
+      "titre": "5 textes plus petits que 12 px",
+      "detail": "span « alphabette » (11.52 px) ; p.eb-epigraphe « Simulateur citoyen » (11.2 px) ; span.eb-sr « Comprendre : Surface de toiture » (11.84 px)",
+      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
+      "prompt": "Mon application web « ÉCOBÂTISOL » a ce problème, relevé par un contrôle automatique : 5 textes plus petits que 12 px (span « alphabette » (11.52 px) ; p.eb-epigraphe « Simulateur citoyen » (11.2 px) ; span.eb-sr « Comprendre : Surface de toiture » (11.84 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "pouce",
+      "gravite": "conseil",
+      "titre": "4 boutons trop serrés (moins de 8 px d'écart)",
+      "detail": "button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode nuit » ; button.ab-pico « Passer en mode nuit » ↔ button.ab-pico « Lire à voix haute »",
+      "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
+      "prompt": "Mon application web « ÉCOBÂTISOL » a ce problème, relevé par un contrôle automatique : 4 boutons trop serrés (moins de 8 px d'écart) (button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode nuit » ; button.ab-pico « Passer en mode nuit » ↔ button.ab-pico « Lire à voix haute »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Aperçu de partage incomplet",
+      "detail": "manque og:title, og:description, og:image",
+      "correction": "Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries.",
+      "prompt": "Mon application web « ÉCOBÂTISOL » a ce problème, relevé par un contrôle automatique : Aperçu de partage incomplet (manque og:title, og:description, og:image). Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Aucun lien vers les mentions légales ni la confidentialité",
+      "detail": "",
+      "correction": "Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont).",
+      "prompt": "Mon application web « ÉCOBÂTISOL » a ce problème, relevé par un contrôle automatique : Aucun lien vers les mentions légales ni la confidentialité. Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont). Fais le plus petit changement possible et ne modifie rien d'autre."
+    }
+  ],
+  "mesures": {
+    "poids_ko": 102,
+    "js_ko": 91,
+    "requetes": 6,
+    "dom": 361,
+    "ecoindex": 81.3,
+    "chargement_ms": 1380,
+    "tiers": [],
+    "traceurs": [],
+    "contraste_ok_pct": 96
+  },
+  "plume": {
+    "titre": "ÉcoBâtisol — alphabette.fr",
+    "h1": "Votre maison peut produire ce qu’elle consomme.",
+    "h2": [
+      "1 · Vos paramètres",
+      "2 · Ce que ça vous rapporte",
+      "3 · Votre plan d’action en trois paliers"
+    ],
+    "boutons": [
+      "αalphabette",
+      "▦",
+      "🆕",
+      "⭐ S’abonner",
+      "♥",
+      "BIG",
+      "☀️",
+      "🔊",
+      "⋯",
+      "🏠 Maison",
+      "🏢 Copropriété",
+      "🏭 Tertiaire",
+      "iComprendre : Surface de toiture",
+      "iComprendre : Facture d’électricité mensuelle",
+      "iComprendre : la zone climatique",
+      "Low-Tech & Comportement0 €▾",
+      "Optimisation & Petit ÉquipementMoins de 500 €▾",
+      "Investissement & AutonomiePlus de 2 000 €▾"
+    ],
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ÉcoBâtisol ♥ BIG ☀️ 🔊 ⋯ Aller aux résultats SIMULATEUR CITOYEN Votre maison peut produire ce qu’elle consomme. Renseignez trois paramètres : votre toiture, votre région, votre facture — de la maison individuelle à l’immeuble en copropriété (jusqu’à 5 000 m² de toit et 6 000 € par mois). Le simulateur chiffre en direct joule et goutte ce que l’autonomie vous rapporterait, puis construit un plan d’action en trois paliers budgétaires. 1 · Vos paramètres Exemples : 🏠 Maison 🏢 Copropriété 🏭 Tertiaire Votre toiture et votre facture Surface de toiture i Comprendre : Surface de toiture 80 m² Facture d’électricité mensuelle i Comprendre : Facture d’électricité mensue"
+  },
+  "temoin": {
+    "capture": "captures/ecobatisol.jpg",
+    "changement": null,
+    "blanc": false
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "id": "podcasts",
+  "nom": "PODCASTS",
+  "url": "https://alphabette.eu/podcasts/",
+  "communaute": false,
+  "heberge": false,
+  "date": "2026-11-21T09:42:03.508Z",
+  "scores": {
+    "douanier": 96,
+    "pouce": 65,
+    "opticien": 99,
+    "poids_plume": 90,
+    "phare": 73,
+    "parapluie": 92
+  },
+  "controle_technique": 85,
+  "note": 86,
+  "apte": false,
+  "compte": {
+    "bloquant": 0,
+    "important": 1,
+    "conseil": 7
+  },
+  "problemes": [
+    {
+      "agent": "pouce",
+      "gravite": "important",
+      "titre": "9 zones à toucher trop petites (moins de 44 px)",
+      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : 9 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "douanier",
+      "gravite": "conseil",
+      "titre": "Appels vers 1 service tiers non déclaré",
+      "detail": "is1-ssl.mzstatic.com",
+      "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : Appels vers 1 service tiers non déclaré (is1-ssl.mzstatic.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "pouce",
+      "gravite": "conseil",
+      "titre": "4 boutons trop serrés (moins de 8 px d'écart)",
+      "detail": "button.ab-pico « Faire un don » ↔ button#ab-big.ab-pico « BIG, Taille du texte : Normale » ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » ↔ button#ab-theme.ab-pico « Passer en mode nuit » ; button#ab-theme.ab-pico « Passer en mode nuit » ↔ button#ab-lire.ab-pico « Lire à voix haute »",
+      "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : 4 boutons trop serrés (moins de 8 px d'écart) (button.ab-pico « Faire un don » ↔ button#ab-big.ab-pico « BIG, Taille du texte : Normale » ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » ↔ button#ab-theme.ab-pico « Passer en mode nuit » ; button#ab-theme.ab-pico « Passer en mode nuit » ↔ button#ab-lire.ab-pico « Lire à voix haute »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "opticien",
+      "gravite": "conseil",
+      "titre": "1 texte plus petit que 12 px",
+      "detail": "span.ab-bar__sous « Écoutez, sans pub ni compte » (11 px)",
+      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : 1 texte plus petit que 12 px (span.ab-bar__sous « Écoutez, sans pub ni compte » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Description trop longue (260 caractères)",
+      "detail": "",
+      "correction": "Vise 50 à 160 caractères.",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : Description trop longue (260 caractères). Vise 50 à 160 caractères. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Aperçu de partage incomplet",
+      "detail": "manque og:title, og:description, og:image",
+      "correction": "Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries.",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : Aperçu de partage incomplet (manque og:title, og:description, og:image). Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Aucun lien vers les mentions légales ni la confidentialité",
+      "detail": "",
+      "correction": "Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont).",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : Aucun lien vers les mentions légales ni la confidentialité. Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Pas d'avertissement sur les réponses de l'IA",
+      "detail": "",
+      "correction": "Ajoute près des réponses : « Réponses générées par une IA : elles peuvent contenir des erreurs, vérifiez les informations importantes. »",
+      "prompt": "Mon application web « PODCASTS » a ce problème, relevé par un contrôle automatique : Pas d'avertissement sur les réponses de l'IA. Ajoute près des réponses : « Réponses générées par une IA : elles peuvent contenir des erreurs, vérifiez les informations importantes. » Fais le plus petit changement possible et ne modifie rien d'autre."
+    }
+  ],
+  "mesures": {
+    "poids_ko": 206,
+    "js_ko": 14,
+    "requetes": 9,
+    "dom": 496,
+    "ecoindex": 74.7,
+    "chargement_ms": 1052,
+    "tiers": [
+      "is1-ssl.mzstatic.com"
+    ],
+    "traceurs": [],
+    "contraste_ok_pct": 99
+  },
+  "plume": {
+    "titre": "Podcasts · écoutez, sans pub ni compte",
+    "h1": "Podcasts. Écoutez ce qui vous plaît.",
+    "h2": [
+      "Notre sélection",
+      "À la une",
+      "Médias de gauche et indépendants",
+      "Culture et ARTE",
+      "Sciences et nature"
+    ],
+    "boutons": [
+      "αalphabette",
+      "▦",
+      "🆕",
+      "⭐ S’abonner",
+      "♥",
+      "BIG",
+      "☀️",
+      "🔊",
+      "⋯",
+      "Mes podcasts",
+      "Chercher",
+      "Réglages",
+      "Chercher un podcast",
+      "S'abonner",
+      "Voir les épisodes"
+    ],
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Podcasts ÉCOUTEZ, SANS PUB NI COMPTE ♥ BIG ☀️ 🔊 ⋯ Podcasts. Écoutez ce qui vous plaît. Sans publicité, sans compte. Vos abonnements restent sur votre appareil. Mes podcasts Chercher Réglages Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner ». Chercher un podcast Notre sélection À la une Radio et actualités du jour. Radio Nova La radio des musiques et des idées. La dernière S'abonner Voir les épisodes La Dernière L’émission de fin de journée de Radio Nova. La dernière S'abonner Voir les épisodes La Matinale du Soir Le rendez-vous du soir pour comprendre la journée. Recherche du podcast… HugoDécrypte L’actualité du jou"
+  },
+  "temoin": {
+    "capture": "captures/podcasts.jpg",
+    "changement": null,
+    "blanc": false
+  }
+}
