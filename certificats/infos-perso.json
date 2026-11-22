@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-22T13:21:31.460Z",
-  "empreinte_page_sha256": "7a3a3e4af3e2443251b3daa0bfe20bd8fc489d02577b0ad7e994ae1918cca679",
+  "audite_le": "2026-11-22T20:47:06.512Z",
+  "empreinte_page_sha256": "35f3488a306db5242c8f77cfe49d95318599124a2e29159231bc085388f24520",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 988,
-      "bloquees": 988,
+      "requetes": 995,
+      "bloquees": 995,
       "types": [
         "image",
         "fetch"
@@ -69,14 +69,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 3,
+      "bloquees": 3,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -112,7 +112,7 @@
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -138,14 +138,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "www.franceinfo.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "c3a482b1b9a530a7d1d9b97eed4446890fcf9c16e412da8ee140a10c1f2e4623"
+  "empreinte_certificat_sha256": "e442d5791e226b08b41dba9e9c981ca3ea3442e35f9ee16e5cebda6fb497d95a"
 }

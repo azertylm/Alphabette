@@ -4,8 +4,8 @@
   "app_id": "iadebat",
   "nom": "IADÉBAT",
   "url": "https://iadebat.alphabette.fr/",
-  "audite_le": "2026-11-22T13:21:02.384Z",
-  "empreinte_page_sha256": "3067766a4ba2a84dde4e3691563bdf7091d0026e43687b52e0e2b041cbe08e6d",
+  "audite_le": "2026-11-22T20:46:37.762Z",
+  "empreinte_page_sha256": "a6ddcedb95105c941308669b9a47b7a23a0595330ddae3ca5c267fa41da93798",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -74,5 +74,5 @@
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "a38b45d5046ee57f670b278ece44f2096b4f8f85e28d7f72b2c69cfe1e61731b"
+  "empreinte_certificat_sha256": "29c6f85ae1bdc3cf845d93292a31656d9438b6aabbb40ff1ad219448dcbdc6c5"
 }
