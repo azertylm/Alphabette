@@ -1,0 +1,44 @@
+{
+  "_aide": "Le Podcast du Labo (alphabette.eu/podcasts/) : un script parlé par semaine, écrit par scripts/labo/podcast-labo.mjs à partir des vraies données du Laboratoire. 12 derniers épisodes.",
+  "episodes": [
+    {
+      "id": "2026-S47",
+      "semaine": {
+        "du": "2026-11-16",
+        "au": "2026-11-22"
+      },
+      "publie_le": "2026-11-22T22:45:27.815Z",
+      "titre": "Le Podcast du Labo — semaine du 16 novembre",
+      "duree_estimee_s": 69,
+      "mots": 173,
+      "sections": [
+        {
+          "titre": "Ouverture",
+          "texte": "Bonjour, et bienvenue dans le Podcast du Labo : la semaine du 16 novembre au 22 novembre sur alphabette.eu, le laboratoire où vos avis font évoluer les applications. En trois minutes au plus, ce qui a vraiment changé."
+        },
+        {
+          "titre": "Ce qui a été amélioré",
+          "texte": "Cette semaine, 3 améliorations ont été publiées. Dans Podcasts : les onglets tiennent sur les petits téléphones, suite au contrôle automatique de nuit. Dans Orbit : la recherche est de nouveau visible sur téléphone, suite au contrôle automatique de nuit. Dans IA Débat : le bouton « Intervenir » tient sur les petits téléphones et en mode BIG, suite au contrôle automatique de nuit."
+        },
+        {
+          "titre": "Sur la vitrine alphabette.fr",
+          "texte": "Côté vitrine, Service France, Infos Perso et IA Débat ont reçu une nouvelle version validée sur alphabette.fr."
+        },
+        {
+          "titre": "La Sentinelle",
+          "texte": "La Sentinelle, qui surveille alphabette.fr jour et nuit, n'a pas eu besoin d'intervenir."
+        },
+        {
+          "titre": "À vous",
+          "texte": "La suite dépend de vous : sous chaque application d'alphabette.eu, le bouton « Donner mon avis ». Chaque soir à 21 h 13, les agents les lisent, et les meilleures idées deviennent des corrections. Merci, et à la semaine prochaine !"
+        }
+      ],
+      "texte": "Bonjour, et bienvenue dans le Podcast du Labo : la semaine du 16 novembre au 22 novembre sur alphabette.eu, le laboratoire où vos avis font évoluer les applications. En trois minutes au plus, ce qui a vraiment changé.\n\nCette semaine, 3 améliorations ont été publiées. Dans Podcasts : les onglets tiennent sur les petits téléphones, suite au contrôle automatique de nuit. Dans Orbit : la recherche est de nouveau visible sur téléphone, suite au contrôle automatique de nuit. Dans IA Débat : le bouton « Intervenir » tient sur les petits téléphones et en mode BIG, suite au contrôle automatique de nuit.\n\nCôté vitrine, Service France, Infos Perso et IA Débat ont reçu une nouvelle version validée sur alphabette.fr.\n\nLa Sentinelle, qui surveille alphabette.fr jour et nuit, n'a pas eu besoin d'intervenir.\n\nLa suite dépend de vous : sous chaque application d'alphabette.eu, le bouton « Donner mon avis ». Chaque soir à 21 h 13, les agents les lisent, et les meilleures idées deviennent des corrections. Merci, et à la semaine prochaine !",
+      "sources": {
+        "ameliorations": 3,
+        "passages_fr": 4,
+        "interventions_sentinelle": 0
+      }
+    }
+  ]
+}
