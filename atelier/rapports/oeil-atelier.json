@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/atelier/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:16.753Z",
+  "date": "2026-11-22T09:42:08.347Z",
   "scores": {
     "douanier": 100,
     "pouce": 62,
@@ -80,12 +80,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 265,
-    "js_ko": 243,
-    "requetes": 6,
-    "dom": 180,
-    "ecoindex": 87.4,
-    "chargement_ms": 1704,
+    "poids_ko": 274,
+    "js_ko": 251,
+    "requetes": 7,
+    "dom": 185,
+    "ecoindex": 87,
+    "chargement_ms": 2219,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83
@@ -105,7 +105,7 @@
       "♥",
       "BIG",
       "☀️",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "🇫🇷FR",
       "Mode Clair",
@@ -119,11 +119,11 @@
       "Parcourir mes fichiers d'atelier",
       "Explorer des chefs-d'œuvre exemples (15)▼"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner L'Œil de l'Atelier ♥ BIG ☀️ 🔊 ⋯ LE PONT INTELLIGENT ENTRE ARTISTES, GALERIES & ACHETEURS L'Œil de l'Atelier 36 OUTILS IA POUR CRÉER, VALORISER, EXPOSER & VENDRE VOTRE ART 🇫🇷 FR MODE CLAIR PROFIL ARTISTE GUIDE ▼ 36 OUTILS IA SOUTENIR CARNET DE BORD DÉMARRAGE DIRECT DÉPOSEZ VOS PHOTOS OU FICHIERS IMAGES Glissez-déposez le visuel d'une création unique ou sélectionnez plusieurs toiles pour lancer les analyses. DÉPOSEZ L'ŒUVRE DE VOTRE CHOIX ICI FORMATS ACCEPTÉS : JPEG · PNG · WEBP (MAX 15 MO) PARCOURIR MES FICHIERS D'ATELIER EXPLORER DES CHEFS-D'ŒUVRE EXEMPLES (15) ▼ MA GALERIE (0/50) ▼ PROFIL ARTISTE (OPTIONNEL) 🏷️ CARTELS MURAUX, QR & LIVRE D'OR 🖨️ CARTEL D'E"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner L'Œil de l'Atelier ♥ BIG ☀️ ⋯ LE PONT INTELLIGENT ENTRE ARTISTES, GALERIES & ACHETEURS L'Œil de l'Atelier 36 OUTILS IA POUR CRÉER, VALORISER, EXPOSER & VENDRE VOTRE ART 🇫🇷 FR MODE CLAIR PROFIL ARTISTE GUIDE ▼ 36 OUTILS IA SOUTENIR CARNET DE BORD DÉMARRAGE DIRECT DÉPOSEZ VOS PHOTOS OU FICHIERS IMAGES Glissez-déposez le visuel d'une création unique ou sélectionnez plusieurs toiles pour lancer les analyses. DÉPOSEZ L'ŒUVRE DE VOTRE CHOIX ICI FORMATS ACCEPTÉS : JPEG · PNG · WEBP (MAX 15 MO) PARCOURIR MES FICHIERS D'ATELIER EXPLORER DES CHEFS-D'ŒUVRE EXEMPLES (15) ▼ MA GALERIE (0/50) ▼ PROFIL ARTISTE (OPTIONNEL) 🏷️ CARTELS MURAUX, QR & LIVRE D'OR 🖨️ CARTEL D'EXPO"
   },
   "temoin": {
     "capture": "captures/oeil-atelier.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

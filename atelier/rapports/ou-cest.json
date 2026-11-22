@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:48.661Z",
+  "date": "2026-11-22T09:42:34.816Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 50,
-    "js_ko": 14,
-    "requetes": 5,
-    "dom": 69,
-    "ecoindex": 92.4,
-    "chargement_ms": 1068,
+    "poids_ko": 62,
+    "js_ko": 26,
+    "requetes": 7,
+    "dom": 72,
+    "ecoindex": 91.8,
+    "chargement_ms": 1760,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -102,11 +102,11 @@
       "← Tous les petits jeux",
       "Version France"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point On l'appelle « le château de Dracula », même si Dracula n'y a jamais dormi à coup sûr. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une grande pyramide maya, où un battement de mains fait « chanter » l'escalier. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
   },
   "temoin": {
     "capture": "captures/ou-cest.jpg",
-    "changement": null,
+    "changement": 3,
     "blanc": false
   }
 }

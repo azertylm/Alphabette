@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/petits-jeux/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:58.255Z",
+  "date": "2026-11-22T09:42:44.869Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -64,12 +64,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 33,
-    "js_ko": 14,
-    "requetes": 6,
-    "dom": 97,
-    "ecoindex": 91.1,
-    "chargement_ms": 908,
+    "poids_ko": 45,
+    "js_ko": 26,
+    "requetes": 8,
+    "dom": 100,
+    "ecoindex": 90.7,
+    "chargement_ms": 1634,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 96
@@ -104,7 +104,7 @@
   },
   "temoin": {
     "capture": "captures/petits-jeux.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

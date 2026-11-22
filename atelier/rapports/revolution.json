@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/apps/revolution/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:28.384Z",
+  "date": "2026-11-22T09:43:16.026Z",
   "scores": {
     "douanier": 92,
     "pouce": 62,
     "opticien": 90,
-    "poids_plume": 87,
+    "poids_plume": 86,
     "phare": 80,
     "parapluie": 96
   },
-  "controle_technique": 80,
-  "note": 85,
+  "controle_technique": 79,
+  "note": 84,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -33,26 +33,26 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "43 textes plus petits que 12 px",
-      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 12 h · plusieurs fois  » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)",
+      "titre": "45 textes plus petits que 12 px",
+      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 13 h · plusieurs fois  » (11 px) ; span.inline-flex « 🗳️ Démocratie & institutions » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 43 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 12 h · plusieurs fois  » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 45 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 13 h · plusieurs fois  » (11 px) ; span.inline-flex « 🗳️ Démocratie & institutions » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Clé publique à restreindre (clé Google)",
-      "detail": "index-CGgJTlHe.js",
+      "detail": "index-CzA-qCa6.js",
       "correction": "Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer).",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-CGgJTlHe.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-CzA-qCa6.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Appels vers 4 services tiers non déclarés",
-      "detail": "apis.google.com, gen-lang-client-0692358943.firebaseapp.com, googleapis.com, identitytoolkit.googleapis.com",
+      "detail": "apis.google.com, gen-lang-client-0692358943.firebaseapp.com, identitytoolkit.googleapis.com, googleapis.com",
       "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Appels vers 4 services tiers non déclarés (apis.google.com, gen-lang-client-0692358943.firebaseapp.com, googleapis.com, identitytoolkit.googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : Appels vers 4 services tiers non déclarés (apis.google.com, gen-lang-client-0692358943.firebaseapp.com, identitytoolkit.googleapis.com, googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -96,17 +96,17 @@
     }
   ],
   "mesures": {
-    "poids_ko": 541,
-    "js_ko": 448,
-    "requetes": 17,
-    "dom": 328,
-    "ecoindex": 78.9,
-    "chargement_ms": 1380,
+    "poids_ko": 542,
+    "js_ko": 455,
+    "requetes": 18,
+    "dom": 333,
+    "ecoindex": 78.5,
+    "chargement_ms": 2123,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
-      "googleapis.com",
-      "identitytoolkit.googleapis.com"
+      "identitytoolkit.googleapis.com",
+      "googleapis.com"
     ],
     "traceurs": [],
     "contraste_ok_pct": 99
@@ -125,7 +125,7 @@
       "♥",
       "BIG",
       "🌙",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "Comment ça marche ?",
       "Choisir ma région et mes sujets",
@@ -139,11 +139,11 @@
       "Un peu",
       "Pas du tout"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 🔊 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 12 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🏥 SANTÉ 🇫🇷 NATIONAL \"Des réductions extrêmement importantes des scores de douleur\" : les animaux au chevet des patients Faire entrer les animaux à l’hôpital pour apaiser les patients. C’est une initiative "
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 13 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🗳️ DÉMOCRATIE & INSTITUTIONS ⚖️ SÉCURITÉ & JUSTICE 🇫🇷 NATIONAL Après l'abandon de François Ruffin, le candidat communiste à l'élection présidentielle Fabien Roussel pointe des \"convergences nombreuses\" avec l"
   },
   "temoin": {
     "capture": "captures/revolution.jpg",
-    "changement": null,
+    "changement": 4,
     "blanc": false
   }
 }

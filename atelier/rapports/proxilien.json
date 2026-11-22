@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/proxilien/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:13.766Z",
+  "date": "2026-11-22T09:43:00.740Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 334,
-    "js_ko": 241,
-    "requetes": 10,
-    "dom": 849,
-    "ecoindex": 62.1,
-    "chargement_ms": 1720,
+    "poids_ko": 346,
+    "js_ko": 253,
+    "requetes": 12,
+    "dom": 852,
+    "ecoindex": 61.7,
+    "chargement_ms": 1912,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -145,7 +145,7 @@
   },
   "temoin": {
     "capture": "captures/proxilien.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

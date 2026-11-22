@@ -4,16 +4,16 @@
   "url": "https://alphabette.eu/quiz-musique/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:23.731Z",
+  "date": "2026-11-22T09:43:11.151Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
     "opticien": 95,
-    "poids_plume": 97,
+    "poids_plume": 96,
     "phare": 73,
     "parapluie": 96
   },
-  "controle_technique": 86,
+  "controle_technique": 85,
   "note": 88,
   "apte": false,
   "compte": {
@@ -80,12 +80,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 30,
-    "js_ko": 14,
-    "requetes": 5,
-    "dom": 87,
-    "ecoindex": 91.6,
-    "chargement_ms": 916,
+    "poids_ko": 42,
+    "js_ko": 26,
+    "requetes": 7,
+    "dom": 90,
+    "ecoindex": 91.2,
+    "chargement_ms": 1642,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -111,7 +111,7 @@
   },
   "temoin": {
     "capture": "captures/quiz-musique.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

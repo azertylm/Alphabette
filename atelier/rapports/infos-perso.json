@@ -4,21 +4,21 @@
   "url": "https://alphabette.eu/apps/infosperso/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:03.332Z",
+  "date": "2026-11-22T09:41:54.855Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
     "opticien": 73,
-    "poids_plume": 50,
+    "poids_plume": 34,
     "phare": 90,
     "parapluie": 88
   },
-  "controle_technique": 58,
-  "note": 74,
+  "controle_technique": 52,
+  "note": 71,
   "apte": false,
   "compte": {
     "bloquant": 0,
-    "important": 4,
+    "important": 5,
     "conseil": 12
   },
   "problemes": [
@@ -55,6 +55,14 @@
       "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 1 bouton sans nom lisible (button.p-1.5). Donne un nom à chaque bouton-icône (aria-label=\"…\") : un lecteur d'écran doit pouvoir l'annoncer. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
+      "agent": "poids_plume",
+      "gravite": "important",
+      "titre": "Page très lourde (2.6 Mo au chargement)",
+      "detail": "",
+      "correction": "Allège la page d'accueil : images compressées (WebP, 1 200 px de large au plus), bibliothèques inutiles retirées, chargement différé du reste.",
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Page très lourde (2.6 Mo au chargement). Allège la page d'accueil : images compressées (WebP, 1 200 px de large au plus), bibliothèques inutiles retirées, chargement différé du reste. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Clé publique à restreindre (clé Google)",
@@ -66,9 +74,9 @@
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Appels vers 8 services tiers non déclarés",
-      "detail": "apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, gen-lang-client-0692358943.firebaseapp.com, images.unsplash.com, franceinfo.fr, i.f1g.fr",
+      "detail": "apis.google.com, images.unsplash.com, i.f1g.fr, img.lemde.fr, io-fsly-bfmtv.cdn.nextradiotv.com, gen-lang-client-0692358943.firebaseapp.com",
       "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Appels vers 8 services tiers non déclarés (apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, gen-lang-client-0692358943.firebaseapp.com, images.unsplash.com, franceinfo.fr, i.f1g.fr). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Appels vers 8 services tiers non déclarés (apis.google.com, images.unsplash.com, i.f1g.fr, img.lemde.fr, io-fsly-bfmtv.cdn.nextradiotv.com, gen-lang-client-0692358943.firebaseapp.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -97,10 +105,10 @@
     {
       "agent": "poids_plume",
       "gravite": "conseil",
-      "titre": "Page lourde (2.0 Mo au chargement)",
-      "detail": "",
-      "correction": "Vise moins de 1 Mo pour l'écran d'accueil : compresse les images et charge le reste plus tard.",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Page lourde (2.0 Mo au chargement). Vise moins de 1 Mo pour l'écran d'accueil : compresse les images et charge le reste plus tard. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "titre": "1 image de plus de 300 Ko",
+      "detail": "i.f1g.[masqué].jpg (515 Ko)",
+      "correction": "Recompresse ces images (WebP ou AVIF, largeur adaptée à l'écran).",
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 1 image de plus de 300 Ko (i.f1g.[masqué].jpg (515 Ko)). Recompresse ces images (WebP ou AVIF, largeur adaptée à l'écran). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "poids_plume",
@@ -152,23 +160,23 @@
     }
   ],
   "mesures": {
-    "poids_ko": 2047,
-    "js_ko": 807,
-    "requetes": 28,
-    "dom": 2072,
-    "ecoindex": 37.9,
-    "chargement_ms": 2584,
+    "poids_ko": 2685,
+    "js_ko": 819,
+    "requetes": 30,
+    "dom": 2075,
+    "ecoindex": 35.9,
+    "chargement_ms": 2892,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com",
       "apis.google.com",
+      "images.unsplash.com",
+      "i.f1g.fr",
+      "img.lemde.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
       "gen-lang-client-0692358943.firebaseapp.com",
-      "images.unsplash.com",
-      "franceinfo.fr",
-      "i.f1g.fr",
-      "googleapis.com",
-      "firestore.googleapis.com"
+      "firestore.googleapis.com",
+      "googleapis.com"
     ],
     "traceurs": [],
     "contraste_ok_pct": 74
@@ -199,11 +207,11 @@
       "Abonnements Suite15€ / 40€",
       "Tarifs & soutienBientôt"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Info Perso VOS INFOS, À VOTRE FAÇON ♥ BIG ☀️ 🔊 ⋯ IA : votre clé API Info Perso Clé NAVIGATION Mon flux d'actualités Articles sauvegardés 0 Mon Compte & Synchro MOBILE Simulateur de rentabilité Point Mort L'Œil de l'Atelier Chantiers Abonnements Suite 15€ / 40€ Tarifs & soutien Bientôt Clé API Mistral Clé à ajouter CATÉGORIES IA Technologie Culture Local / Occitanie Design Économie Médias TAGS ACTIFS #Claude API #LLM #Occitanie #Startup #React #OpenAI #Benchmark #Design Actualiser le flux Découvrir toutes les applications sur alphabette.fr ↗ Réglages Score Récents Live (253) ≤5 Photo Standard RSS 🎭 HUMEUR DE PLUME (7 STYLES) : ✍️ Humain 😄 Humour 🌶️ Sarcastiqu"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Info Perso VOS INFOS, À VOTRE FAÇON ♥ BIG ☀️ 🔊 ⋯ IA : votre clé API Info Perso Clé NAVIGATION Mon flux d'actualités Articles sauvegardés 0 Mon Compte & Synchro MOBILE Simulateur de rentabilité Point Mort L'Œil de l'Atelier Chantiers Abonnements Suite 15€ / 40€ Tarifs & soutien Bientôt Clé API Mistral Clé à ajouter CATÉGORIES IA Technologie Culture Local / Occitanie Design Économie Médias TAGS ACTIFS #Claude API #LLM #Occitanie #Startup #React #OpenAI #Benchmark #Design Actualiser le flux Découvrir toutes les applications sur alphabette.fr ↗ Réglages Score Récents Live (251) ≤5 Photo Standard RSS 🎭 HUMEUR DE PLUME (7 STYLES) : ✍️ Humain 😄 Humour 🌶️ Sarcastiqu"
   },
   "temoin": {
     "capture": "captures/infos-perso.jpg",
-    "changement": null,
+    "changement": 15,
     "blanc": false
   }
 }

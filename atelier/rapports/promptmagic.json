@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/promptmagic/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:08.461Z",
+  "date": "2026-11-22T09:42:55.369Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 125,
-    "js_ko": 113,
-    "requetes": 6,
-    "dom": 369,
-    "ecoindex": 80.8,
-    "chargement_ms": 1564,
+    "poids_ko": 132,
+    "js_ko": 120,
+    "requetes": 7,
+    "dom": 374,
+    "ecoindex": 80.4,
+    "chargement_ms": 2047,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 99
@@ -97,7 +97,7 @@
       "♥",
       "BIG",
       "☀️",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "🧳 Catalogue (20 idées)",
       "🌳 Explorateur (20 niveaux)",
@@ -110,11 +110,11 @@
       "Entraide3",
       "Écologie5"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Prompt Magic ♥ BIG ☀️ 🔊 ⋯ 🧳 Catalogue (20 idées) 🌳 Explorateur (20 niveaux) ✨ Atelier & Prompts 📚 Bibliothèque 🤍 TECH FOR GOOD · CONCEPTION WEB & MOBILE-FIRST Créez des applications qui changent vraiment le quotidien. Explorez 20 idées d'applications citoyennes et humaines déjà intégrées, descendez jusqu'à 20 niveaux de précision thématique dans l'explorateur, puis générez d'un clic le cahier des charges, le prompt développeur et un aperçu de maquette (mobile, tablette, bureau). Prompt Magic écrit des prompts : il ne fabrique pas l'application. ✨ Inspirer une app utile au hasard 📚 Parcourir les 20 idées 🌳 Arbre de catégories 🧠 IDÉES INTÉGRÉES 20 apps C"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Prompt Magic ♥ BIG ☀️ ⋯ 🧳 Catalogue (20 idées) 🌳 Explorateur (20 niveaux) ✨ Atelier & Prompts 📚 Bibliothèque 🤍 TECH FOR GOOD · CONCEPTION WEB & MOBILE-FIRST Créez des applications qui changent vraiment le quotidien. Explorez 20 idées d'applications citoyennes et humaines déjà intégrées, descendez jusqu'à 20 niveaux de précision thématique dans l'explorateur, puis générez d'un clic le cahier des charges, le prompt développeur et un aperçu de maquette (mobile, tablette, bureau). Prompt Magic écrit des prompts : il ne fabrique pas l'application. ✨ Inspirer une app utile au hasard 📚 Parcourir les 20 idées 🌳 Arbre de catégories 🧠 IDÉES INTÉGRÉES 20 apps Cahi"
   },
   "temoin": {
     "capture": "captures/promptmagic.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

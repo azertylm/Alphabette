@@ -1,11 +1,11 @@
 {
-  "date": "2026-11-21T09:42:55.258Z",
+  "date": "2026-11-22T09:43:43.738Z",
   "regle": "Dernier contrôle sans point bloquant ni point important de sécurité ou légal, contrôle technique ≥ 85/100 (Pouce, Opticien et Poids Plume ≥ 75), aucune erreur JavaScript, et au moins 3 jours de contrôle réussi sur les 7 derniers.",
   "apps": {
     "info": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 78,
       "note": 82,
@@ -14,7 +14,7 @@
     "bonplan": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 72,
       "note": 81,
@@ -23,16 +23,16 @@
     "ecobatisol": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 83,
-      "note": 88,
+      "controle_technique": 82,
+      "note": 87,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-femmes": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 88,
@@ -41,7 +41,7 @@
     "frigoplacard": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 83,
@@ -50,7 +50,7 @@
     "quiz-extraordinaires": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 86,
@@ -59,7 +59,7 @@
     "goat-chevre-the-king": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 74,
       "note": 82,
@@ -68,25 +68,25 @@
     "iadebat": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 77,
+      "controle_technique": 76,
       "note": 81,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "infos-perso": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 58,
-      "note": 74,
+      "controle_technique": 52,
+      "note": 71,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "oeil-atelier": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 87,
@@ -95,7 +95,7 @@
     "dico-loufoque": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -104,7 +104,7 @@
     "juste-chiffre": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -113,7 +113,7 @@
     "memo-meninges": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -122,7 +122,7 @@
     "orbit": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 83,
@@ -131,7 +131,7 @@
     "ou-cest": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -140,7 +140,7 @@
     "ou-cest-france": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -149,7 +149,7 @@
     "petits-jeux": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -158,7 +158,7 @@
     "podcasts": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 86,
@@ -167,7 +167,7 @@
     "promptmagic": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 86,
@@ -176,7 +176,7 @@
     "proxilien": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 66,
       "note": 79,
@@ -185,7 +185,7 @@
     "quiz-famille": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -194,25 +194,25 @@
     "quiz-musique": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 86,
+      "controle_technique": 85,
       "note": 88,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "revolution": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 80,
-      "note": 85,
+      "controle_technique": 79,
+      "note": 84,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "bonplansenior": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 83,
       "note": 87,
@@ -221,16 +221,16 @@
     "france-service": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
-      "controle_technique": 66,
-      "note": 79,
+      "controle_technique": 65,
+      "note": 78,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "wikicom": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 83,
@@ -239,7 +239,7 @@
     "crash-testeur": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 84,
       "note": 87,

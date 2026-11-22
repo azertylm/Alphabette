@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/bonplansenior/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:34.500Z",
+  "date": "2026-11-22T09:43:22.200Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -88,18 +88,18 @@
     }
   ],
   "mesures": {
-    "poids_ko": 269,
-    "js_ko": 110,
-    "requetes": 10,
-    "dom": 132,
-    "ecoindex": 88.4,
-    "chargement_ms": 1412,
+    "poids_ko": 277,
+    "js_ko": 118,
+    "requetes": 11,
+    "dom": 137,
+    "ecoindex": 88,
+    "chargement_ms": 2092,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
     ],
     "traceurs": [],
-    "contraste_ok_pct": 88
+    "contraste_ok_pct": 87
   },
   "plume": {
     "titre": "SeniorBonPlan — Conseils pour bien vivre",
@@ -115,7 +115,7 @@
       "♥",
       "BIG",
       "☀️",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "🛡️ Modération (équipe)",
       "❤️‍🩹Santé & MédecinsSoins, médicaments, droits💡 ",
@@ -129,11 +129,11 @@
       "🛡️Sécurité & ArnaquesEscroqueries, protection💡 1",
       "😊Bien-Être & MoralSolitude, activités, enthousias"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Senior Bon Plan ♥ BIG ☀️ 🔊 ⋯ 🌟 Gratuit · Sans publicité · Pour vous Des conseils utiles pour bien vivre au quotidien Des astuces, droits et bonnes adresses sélectionnés par l'équipe Senior Bon Plan. Votez pour ceux qui vous aident, ajoutez les vôtres. Vos votes et vos conseils restent sur cet appareil. 🔍 🛡️ Modération (équipe) 💡 150 Conseils 👍 0 Vos votes 📂 10 Rubriques Toutes les rubriques ❤️‍🩹 Santé & Médecins Soins, médicaments, droits 💡 15 conseils 💊 Médicaments & Pharmacie Ordonnances, génériques, prix 💡 15 conseils 🏡 Aides à Domicile Services, auxiliaires, EHPAD 💡 15 conseils 💰 Retraite & Aides Pension, allocations, droits 💡 15 conseils 📱 N"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Senior Bon Plan ♥ BIG ☀️ ⋯ 🌟 Gratuit · Sans publicité · Pour vous Des conseils utiles pour bien vivre au quotidien Des astuces, droits et bonnes adresses sélectionnés par l'équipe Senior Bon Plan. Votez pour ceux qui vous aident, ajoutez les vôtres. Vos votes et vos conseils restent sur cet appareil. 🔍 🛡️ Modération (équipe) 💡 150 Conseils 👍 0 Vos votes 📂 10 Rubriques Toutes les rubriques ❤️‍🩹 Santé & Médecins Soins, médicaments, droits 💡 15 conseils 💊 Médicaments & Pharmacie Ordonnances, génériques, prix 💡 15 conseils 🏡 Aides à Domicile Services, auxiliaires, EHPAD 💡 15 conseils 💰 Retraite & Aides Pension, allocations, droits 💡 15 conseils 📱 Numé"
   },
   "temoin": {
     "capture": "captures/bonplansenior.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

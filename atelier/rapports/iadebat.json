@@ -4,16 +4,16 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:40:57.977Z",
+  "date": "2026-11-22T09:41:49.190Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
     "opticien": 90,
-    "poids_plume": 90,
+    "poids_plume": 89,
     "phare": 83,
     "parapluie": 81
   },
-  "controle_technique": 77,
+  "controle_technique": 76,
   "note": 81,
   "apte": false,
   "compte": {
@@ -120,12 +120,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 451,
-    "js_ko": 428,
-    "requetes": 15,
-    "dom": 460,
-    "ecoindex": 74.2,
-    "chargement_ms": 1680,
+    "poids_ko": 463,
+    "js_ko": 440,
+    "requetes": 17,
+    "dom": 463,
+    "ecoindex": 73.6,
+    "chargement_ms": 1720,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -164,7 +164,7 @@
   },
   "temoin": {
     "capture": "captures/iadebat.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

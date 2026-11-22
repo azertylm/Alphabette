@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest-france/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:53.455Z",
+  "date": "2026-11-22T09:42:39.828Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 56,
-    "js_ko": 14,
-    "requetes": 5,
-    "dom": 70,
-    "ecoindex": 92.2,
-    "chargement_ms": 1056,
+    "poids_ko": 68,
+    "js_ko": 26,
+    "requetes": 7,
+    "dom": 73,
+    "ecoindex": 91.7,
+    "chargement_ms": 1797,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -102,11 +102,11 @@
       "← Tous les petits jeux",
       "Version monde"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point La plus haute dune d'Europe. On y monte pour glisser en bas. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Le plus haut sommet des Alpes : 4 800 mètres et quelques centimètres qui varient chaque année. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
   },
   "temoin": {
     "capture": "captures/ou-cest-france.jpg",
-    "changement": null,
+    "changement": 23,
     "blanc": false
   }
 }

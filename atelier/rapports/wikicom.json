@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:45.704Z",
+  "date": "2026-11-22T09:43:33.773Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 35,
-    "js_ko": 14,
-    "requetes": 5,
-    "dom": 289,
-    "ecoindex": 84.8,
-    "chargement_ms": 1072,
+    "poids_ko": 47,
+    "js_ko": 26,
+    "requetes": 7,
+    "dom": 292,
+    "ecoindex": 84.3,
+    "chargement_ms": 1745,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83
@@ -130,7 +130,7 @@
   },
   "temoin": {
     "capture": "captures/wikicom.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

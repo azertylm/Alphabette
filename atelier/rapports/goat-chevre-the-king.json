@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/goatchevretheking/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:40:52.006Z",
+  "date": "2026-11-22T09:41:43.256Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 200,
-    "js_ko": 177,
-    "requetes": 28,
-    "dom": 1651,
-    "ecoindex": 48.6,
-    "chargement_ms": 1664,
+    "poids_ko": 207,
+    "js_ko": 184,
+    "requetes": 29,
+    "dom": 1656,
+    "ecoindex": 48.4,
+    "chargement_ms": 1940,
     "tiers": [
       "fonts.googleapis.com"
     ],
@@ -126,7 +126,7 @@
       "♥",
       "BIG",
       "🌙",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "🧀Fromagidex",
       "Communauté",
@@ -140,11 +140,11 @@
       "🎾TennisÀ découvrir",
       "🏊NatationÀ découvrir"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Goat Chèvre The King ♥ BIG 🌙 🔊 ⋯ LE CLASSEMENT ULTIME Goat Chèvre The King Football, basket, tennis, natation, rugby… 30 disciplines et des milliers de légendes : construis ta pyramide des plus grands athlètes de tous les temps, du GOAT ultime jusqu'à l'étage des 8. Gratuit, sans compte pour jouer un compte pour publier ta pyramide 🐐 🪙 0 🧀 Communauté Bêê 30 disciplines ⚽ Football 500 joueurs 🏀 Basket 0 joueurs 🎾 Tennis À découvrir 🏊 Natation À découvrir 🏓 Ping-pong À découvrir 🏉 Rugby À découvrir 🤾 Handball À découvrir 🏃 Athlé À découvrir 🚴 Cyclisme À découvrir 🥋 Judo À découvrir 🥊 Boxe À découvrir 🏎️ F1 À découvrir 🏐 Volley À découvrir ⛳ Golf À"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Goat Chèvre The King ♥ BIG 🌙 ⋯ LE CLASSEMENT ULTIME Goat Chèvre The King Football, basket, tennis, natation, rugby… 30 disciplines et des milliers de légendes : construis ta pyramide des plus grands athlètes de tous les temps, du GOAT ultime jusqu'à l'étage des 8. Gratuit, sans compte pour jouer un compte pour publier ta pyramide 🐐 🪙 0 🧀 Communauté Bêê 30 disciplines ⚽ Football 500 joueurs 🏀 Basket 0 joueurs 🎾 Tennis À découvrir 🏊 Natation À découvrir 🏓 Ping-pong À découvrir 🏉 Rugby À découvrir 🤾 Handball À découvrir 🏃 Athlé À découvrir 🚴 Cyclisme À découvrir 🥋 Judo À découvrir 🥊 Boxe À découvrir 🏎️ F1 À découvrir 🏐 Volley À découvrir ⛳ Golf À dé"
   },
   "temoin": {
     "capture": "captures/goat-chevre-the-king.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

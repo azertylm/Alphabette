@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/podcasts/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:03.508Z",
+  "date": "2026-11-22T09:42:50.336Z",
   "scores": {
     "douanier": 96,
     "pouce": 65,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 206,
-    "js_ko": 14,
-    "requetes": 9,
-    "dom": 496,
-    "ecoindex": 74.7,
-    "chargement_ms": 1052,
+    "poids_ko": 218,
+    "js_ko": 26,
+    "requetes": 11,
+    "dom": 499,
+    "ecoindex": 74.2,
+    "chargement_ms": 1802,
     "tiers": [
       "is1-ssl.mzstatic.com"
     ],
@@ -131,7 +131,7 @@
   },
   "temoin": {
     "capture": "captures/podcasts.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

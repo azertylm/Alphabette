@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/apps/ecobatisol/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:40:32.312Z",
+  "date": "2026-11-22T09:41:22.944Z",
   "scores": {
     "douanier": 100,
     "pouce": 62,
-    "opticien": 94,
-    "poids_plume": 93,
+    "opticien": 93,
+    "poids_plume": 92,
     "phare": 80,
     "parapluie": 96
   },
-  "controle_technique": 83,
-  "note": 88,
+  "controle_technique": 82,
+  "note": 87,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -64,12 +64,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 102,
-    "js_ko": 91,
-    "requetes": 6,
-    "dom": 361,
-    "ecoindex": 81.3,
-    "chargement_ms": 1380,
+    "poids_ko": 111,
+    "js_ko": 99,
+    "requetes": 7,
+    "dom": 366,
+    "ecoindex": 80.9,
+    "chargement_ms": 1922,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 96
@@ -90,7 +90,7 @@
       "♥",
       "BIG",
       "☀️",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "🏠 Maison",
       "🏢 Copropriété",
@@ -102,11 +102,11 @@
       "Optimisation & Petit ÉquipementMoins de 500 €▾",
       "Investissement & AutonomiePlus de 2 000 €▾"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ÉcoBâtisol ♥ BIG ☀️ 🔊 ⋯ Aller aux résultats SIMULATEUR CITOYEN Votre maison peut produire ce qu’elle consomme. Renseignez trois paramètres : votre toiture, votre région, votre facture — de la maison individuelle à l’immeuble en copropriété (jusqu’à 5 000 m² de toit et 6 000 € par mois). Le simulateur chiffre en direct joule et goutte ce que l’autonomie vous rapporterait, puis construit un plan d’action en trois paliers budgétaires. 1 · Vos paramètres Exemples : 🏠 Maison 🏢 Copropriété 🏭 Tertiaire Votre toiture et votre facture Surface de toiture i Comprendre : Surface de toiture 80 m² Facture d’électricité mensuelle i Comprendre : Facture d’électricité mensue"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ÉcoBâtisol ♥ BIG ☀️ ⋯ Aller aux résultats SIMULATEUR CITOYEN Votre maison peut produire ce qu’elle consomme. Renseignez trois paramètres : votre toiture, votre région, votre facture — de la maison individuelle à l’immeuble en copropriété (jusqu’à 5 000 m² de toit et 6 000 € par mois). Le simulateur chiffre en direct joule et goutte ce que l’autonomie vous rapporterait, puis construit un plan d’action en trois paliers budgétaires. 1 · Vos paramètres Exemples : 🏠 Maison 🏢 Copropriété 🏭 Tertiaire Votre toiture et votre facture Surface de toiture i Comprendre : Surface de toiture 80 m² Facture d’électricité mensuelle i Comprendre : Facture d’électricité mensuelle"
   },
   "temoin": {
     "capture": "captures/ecobatisol.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

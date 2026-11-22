@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/juste-chiffre/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:41:26.877Z",
+  "date": "2026-11-22T09:42:18.784Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 23,
-    "js_ko": 14,
-    "requetes": 5,
-    "dom": 75,
-    "ecoindex": 92,
-    "chargement_ms": 904,
+    "poids_ko": 35,
+    "js_ko": 26,
+    "requetes": 7,
+    "dom": 78,
+    "ecoindex": 91.6,
+    "chargement_ms": 1616,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 88
@@ -104,7 +104,7 @@
   },
   "temoin": {
     "capture": "captures/juste-chiffre.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/info.html",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:40:21.683Z",
+  "date": "2026-11-22T09:41:12.360Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -34,9 +34,9 @@
       "agent": "opticien",
       "gravite": "important",
       "titre": "65 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « samedi 21 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)",
+      "detail": "span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « dimanche 22 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 65 textes plus petits que 12 px (span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « samedi 21 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 65 textes plus petits que 12 px (span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « dimanche 22 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -104,12 +104,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 210,
-    "js_ko": 14,
-    "requetes": 9,
-    "dom": 326,
-    "ecoindex": 81.8,
-    "chargement_ms": 1221,
+    "poids_ko": 223,
+    "js_ko": 26,
+    "requetes": 11,
+    "dom": 329,
+    "ecoindex": 81.3,
+    "chargement_ms": 1777,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -142,11 +142,11 @@
       "Ajouter mes sources d'actualités",
       "Alphabette"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo samedi 21 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèque"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo dimanche 22 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèq"
   },
   "temoin": {
     "capture": "captures/info.jpg",
-    "changement": null,
+    "changement": 14,
     "blanc": false
   }
 }

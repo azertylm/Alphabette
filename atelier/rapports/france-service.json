@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/apps/franceservice/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-21T09:42:39.496Z",
+  "date": "2026-11-22T09:43:27.565Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
-    "opticien": 53,
+    "opticien": 51,
     "poids_plume": 84,
     "phare": 83,
     "parapluie": 92
   },
-  "controle_technique": 66,
-  "note": 79,
+  "controle_technique": 65,
+  "note": 78,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -33,10 +33,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "Textes peu contrastés (86 % des textes)",
+      "titre": "Textes peu contrastés (89 % des textes)",
       "detail": "span « alphabette » (1.0:1) ; button.ab-eco__icone « Nouveautés » (1.0:1) ; span.font-extrabold « 🚨 Urgence 114 » (1.0:1) ; div.w-8 « PP » (1.0:1) ; span « papierpapier.fr · Suite Civique & Famili » (1.0:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « SERVICE FRANCE » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (86 % des textes) (span « alphabette » (1.0:1) ; button.ab-eco__icone « Nouveautés » (1.0:1) ; span.font-extrabold « 🚨 Urgence 114 » (1.0:1) ; div.w-8 « PP » (1.0:1) ; span « papierpapier.fr · Suite Civique & Famili » (1.0:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « SERVICE FRANCE » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (89 % des textes) (span « alphabette » (1.0:1) ; button.ab-eco__icone « Nouveautés » (1.0:1) ; span.font-extrabold « 🚨 Urgence 114 » (1.0:1) ; div.w-8 « PP » (1.0:1) ; span « papierpapier.fr · Suite Civique & Famili » (1.0:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -96,15 +96,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 336,
-    "js_ko": 312,
-    "requetes": 6,
-    "dom": 990,
-    "ecoindex": 59.4,
-    "chargement_ms": 2164,
+    "poids_ko": 345,
+    "js_ko": 319,
+    "requetes": 7,
+    "dom": 995,
+    "ecoindex": 59.2,
+    "chargement_ms": 2521,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 14
+    "contraste_ok_pct": 11
   },
   "plume": {
     "titre": "papierpapier.fr — Le portail citoyen d'utilité publique",
@@ -119,7 +119,7 @@
       "⭐ S’abonner",
       "♥",
       "BIG",
-      "🔊",
+      "Lire à voix haute",
       "⋯",
       "papierpapier.fr",
       "🚨 Urgence 114",
@@ -134,11 +134,11 @@
       "🕊️ Succession",
       "🧭 Tuteur"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Service France ♥ BIG 🔊 ⋯ PAPIERPAPIER.FR 🚨 Urgence 114 🇫🇷 Portail 🚨 114 Urgence ✂️ Résil 🏠 EDL Protect 🔑 AutoBailleur 🚗 PermisProtect 🕊️ Succession 🧭 Tuteur 🛡️ Garanties 💰 Droits ⚖️ Contrats 🩺 Santé ✍️ Plume 📬 Courrier 🏛️ Patrimoine PP papierpapier.fr ALPHABETTE Guides, modèles et numéros utiles : gratuits. Les analyses par IA demandent votre clé IA (Mistral AI propose une formule gratuite). Ajouter ma clé IA papierpapier.fr · Suite Civique & Familiale d'Utilité Publique Tous vos outils administratifs et juridiques, en un seul clic. Sélectionnez ci-dessous l'outil dont vous avez besoin : calcul de points de permis, quittances locatives, analyse de"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Service France ♥ BIG ⋯ PAPIERPAPIER.FR 🚨 Urgence 114 🇫🇷 Portail 🚨 114 Urgence ✂️ Résil 🏠 EDL Protect 🔑 AutoBailleur 🚗 PermisProtect 🕊️ Succession 🧭 Tuteur 🛡️ Garanties 💰 Droits ⚖️ Contrats 🩺 Santé ✍️ Plume 📬 Courrier 🏛️ Patrimoine PP papierpapier.fr ALPHABETTE Guides, modèles et numéros utiles : gratuits. Les analyses par IA demandent votre clé IA (Mistral AI propose une formule gratuite). Ajouter ma clé IA papierpapier.fr · Suite Civique & Familiale d'Utilité Publique Tous vos outils administratifs et juridiques, en un seul clic. Sélectionnez ci-dessous l'outil dont vous avez besoin : calcul de points de permis, quittances locatives, analyse de co"
   },
   "temoin": {
     "capture": "captures/france-service.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }
