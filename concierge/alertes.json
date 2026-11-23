@@ -1,12 +1,4 @@
 {
-  "date": "2026-11-22T01:34:09.221Z",
-  "alertes": [
-    {
-      "agent": "concierge",
-      "gravite": "important",
-      "titre": "Sauvegarde des avis arrêtée depuis 29 h",
-      "detail": "dernier export : 2026-11-20T20:41:49Z",
-      "correction": "Relancer le workflow « labo-avis » et vérifier que feedback.php répond."
-    }
-  ]
+  "date": "2026-11-23T01:57:45.471Z",
+  "alertes": []
 }
