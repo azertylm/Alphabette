@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-22T09:41:12.359Z",
+  "date": "2026-11-23T10:42:23.320Z",
   "apps": {
     "info": {
       "note": 82,
@@ -10,7 +10,7 @@
         "conseil": 8
       },
       "apte": false,
-      "date": "2026-11-22T09:41:12.360Z"
+      "date": "2026-11-23T10:42:23.320Z"
     },
     "bonplan": {
       "note": 81,
@@ -21,7 +21,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:41:17.667Z"
+      "date": "2026-11-23T10:42:28.802Z"
     },
     "ecobatisol": {
       "note": 87,
@@ -32,7 +32,7 @@
         "conseil": 3
       },
       "apte": false,
-      "date": "2026-11-22T09:41:22.944Z"
+      "date": "2026-11-23T10:42:34.021Z"
     },
     "quiz-femmes": {
       "note": 88,
@@ -43,7 +43,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-22T09:41:28.196Z"
+      "date": "2026-11-23T10:42:39.410Z"
     },
     "frigoplacard": {
       "note": 83,
@@ -54,7 +54,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:41:33.052Z"
+      "date": "2026-11-23T10:42:44.413Z"
     },
     "quiz-extraordinaires": {
       "note": 86,
@@ -65,7 +65,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:41:38.386Z"
+      "date": "2026-11-23T10:42:49.589Z"
     },
     "goat-chevre-the-king": {
       "note": 82,
@@ -76,7 +76,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:41:43.256Z"
+      "date": "2026-11-23T10:42:54.424Z"
     },
     "iadebat": {
       "note": 81,
@@ -87,18 +87,18 @@
         "conseil": 10
       },
       "apte": false,
-      "date": "2026-11-22T09:41:49.190Z"
+      "date": "2026-11-23T10:43:00.325Z"
     },
     "infos-perso": {
-      "note": 71,
-      "controle_technique": 52,
+      "note": 74,
+      "controle_technique": 58,
       "compte": {
         "bloquant": 0,
-        "important": 5,
+        "important": 4,
         "conseil": 12
       },
       "apte": false,
-      "date": "2026-11-22T09:41:54.855Z"
+      "date": "2026-11-23T10:43:05.658Z"
     },
     "oeil-atelier": {
       "note": 87,
@@ -109,7 +109,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:42:08.347Z"
+      "date": "2026-11-23T10:43:19.167Z"
     },
     "dico-loufoque": {
       "note": 89,
@@ -120,7 +120,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:42:13.915Z"
+      "date": "2026-11-23T10:43:24.780Z"
     },
     "juste-chiffre": {
       "note": 89,
@@ -131,7 +131,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:42:18.784Z"
+      "date": "2026-11-23T10:43:29.596Z"
     },
     "memo-meninges": {
       "note": 89,
@@ -142,7 +142,7 @@
         "conseil": 4
       },
       "apte": false,
-      "date": "2026-11-22T09:42:23.636Z"
+      "date": "2026-11-23T10:43:34.508Z"
     },
     "orbit": {
       "note": 83,
@@ -153,7 +153,7 @@
         "conseil": 8
       },
       "apte": false,
-      "date": "2026-11-22T09:42:28.485Z"
+      "date": "2026-11-23T10:43:39.308Z"
     },
     "ou-cest": {
       "note": 89,
@@ -164,7 +164,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:42:34.816Z"
+      "date": "2026-11-23T10:43:45.590Z"
     },
     "ou-cest-france": {
       "note": 89,
@@ -175,7 +175,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:42:39.828Z"
+      "date": "2026-11-23T10:43:50.554Z"
     },
     "petits-jeux": {
       "note": 89,
@@ -186,7 +186,7 @@
         "conseil": 4
       },
       "apte": false,
-      "date": "2026-11-22T09:42:44.869Z"
+      "date": "2026-11-23T10:43:55.521Z"
     },
     "podcasts": {
       "note": 86,
@@ -197,7 +197,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:42:50.336Z"
+      "date": "2026-11-23T10:44:00.904Z"
     },
     "promptmagic": {
       "note": 86,
@@ -208,7 +208,7 @@
         "conseil": 4
       },
       "apte": false,
-      "date": "2026-11-22T09:42:55.369Z"
+      "date": "2026-11-23T10:44:06.119Z"
     },
     "proxilien": {
       "note": 79,
@@ -219,7 +219,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-22T09:43:00.740Z"
+      "date": "2026-11-23T10:44:11.426Z"
     },
     "quiz-famille": {
       "note": 89,
@@ -230,7 +230,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:43:06.321Z"
+      "date": "2026-11-23T10:44:16.581Z"
     },
     "quiz-musique": {
       "note": 88,
@@ -241,7 +241,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-22T09:43:11.151Z"
+      "date": "2026-11-23T10:44:21.358Z"
     },
     "revolution": {
       "note": 84,
@@ -252,7 +252,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:43:16.026Z"
+      "date": "2026-11-23T10:44:26.009Z"
     },
     "bonplansenior": {
       "note": 87,
@@ -263,7 +263,7 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-22T09:43:22.200Z"
+      "date": "2026-11-23T10:44:32.547Z"
     },
     "france-service": {
       "note": 78,
@@ -274,7 +274,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-22T09:43:27.565Z"
+      "date": "2026-11-23T10:44:37.548Z"
     },
     "wikicom": {
       "note": 83,
@@ -285,7 +285,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:43:33.773Z"
+      "date": "2026-11-23T10:44:43.435Z"
     },
     "crash-testeur": {
       "note": 87,
@@ -296,14 +296,14 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-22T09:43:38.808Z"
+      "date": "2026-11-23T10:44:48.305Z"
     }
   },
   "jury": {
     "info": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 78,
       "note": 82,
@@ -312,7 +312,7 @@
     "bonplan": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 72,
       "note": 81,
@@ -321,7 +321,7 @@
     "ecobatisol": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 82,
       "note": 87,
@@ -330,7 +330,7 @@
     "quiz-femmes": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 88,
@@ -339,7 +339,7 @@
     "frigoplacard": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 83,
@@ -348,7 +348,7 @@
     "quiz-extraordinaires": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 86,
@@ -357,7 +357,7 @@
     "goat-chevre-the-king": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 74,
       "note": 82,
@@ -366,7 +366,7 @@
     "iadebat": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 76,
       "note": 81,
@@ -375,16 +375,16 @@
     "infos-perso": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
-      "controle_technique": 52,
-      "note": 71,
+      "controle_technique": 58,
+      "note": 74,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "oeil-atelier": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 87,
@@ -393,7 +393,7 @@
     "dico-loufoque": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -402,7 +402,7 @@
     "juste-chiffre": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -411,7 +411,7 @@
     "memo-meninges": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -420,7 +420,7 @@
     "orbit": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 83,
@@ -429,7 +429,7 @@
     "ou-cest": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -438,7 +438,7 @@
     "ou-cest-france": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -447,7 +447,7 @@
     "petits-jeux": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 89,
@@ -456,7 +456,7 @@
     "podcasts": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 86,
@@ -465,7 +465,7 @@
     "promptmagic": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 81,
       "note": 86,
@@ -474,7 +474,7 @@
     "proxilien": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 66,
       "note": 79,
@@ -483,7 +483,7 @@
     "quiz-famille": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 89,
@@ -492,7 +492,7 @@
     "quiz-musique": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 85,
       "note": 88,
@@ -501,7 +501,7 @@
     "revolution": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 79,
       "note": 84,
@@ -510,7 +510,7 @@
     "bonplansenior": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 83,
       "note": 87,
@@ -519,7 +519,7 @@
     "france-service": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 65,
       "note": 78,
@@ -528,7 +528,7 @@
     "wikicom": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 83,
@@ -537,7 +537,7 @@
     "crash-testeur": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 84,
       "note": 87,
