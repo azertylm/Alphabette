@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest-france/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:42:39.828Z",
+  "date": "2026-11-23T10:43:50.554Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -77,7 +77,7 @@
     "requetes": 7,
     "dom": 73,
     "ecoindex": 91.7,
-    "chargement_ms": 1797,
+    "chargement_ms": 1790,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -102,11 +102,11 @@
       "← Tous les petits jeux",
       "Version monde"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Le plus haut sommet des Alpes : 4 800 mètres et quelques centimètres qui varient chaque année. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une grande ville portuaire avec une bonne mère qui veille sur la ville, tout en haut. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
   },
   "temoin": {
     "capture": "captures/ou-cest-france.jpg",
-    "changement": 23,
+    "changement": 3,
     "blanc": false
   }
 }

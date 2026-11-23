@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:43:33.773Z",
+  "date": "2026-11-23T10:44:43.435Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -93,7 +93,7 @@
     "requetes": 7,
     "dom": 292,
     "ecoindex": 84.3,
-    "chargement_ms": 1745,
+    "chargement_ms": 1801,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83

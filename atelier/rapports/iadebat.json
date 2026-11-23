@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:41:49.190Z",
+  "date": "2026-11-23T10:43:00.325Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
@@ -125,7 +125,7 @@
     "requetes": 17,
     "dom": 463,
     "ecoindex": 73.6,
-    "chargement_ms": 1720,
+    "chargement_ms": 1568,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",

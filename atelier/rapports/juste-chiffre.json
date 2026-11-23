@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/juste-chiffre/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:42:18.784Z",
+  "date": "2026-11-23T10:43:29.596Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 35,
+    "poids_ko": 36,
     "js_ko": 26,
     "requetes": 7,
     "dom": 78,
     "ecoindex": 91.6,
-    "chargement_ms": 1616,
+    "chargement_ms": 1755,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 88

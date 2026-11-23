@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-famille/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:43:06.321Z",
+  "date": "2026-11-23T10:44:16.581Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -77,7 +77,7 @@
     "requetes": 7,
     "dom": 84,
     "ecoindex": 91.4,
-    "chargement_ms": 1608,
+    "chargement_ms": 1599,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 88

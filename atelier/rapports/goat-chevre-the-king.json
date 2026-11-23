@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/goatchevretheking/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:41:43.256Z",
+  "date": "2026-11-23T10:42:54.424Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -101,7 +101,7 @@
     "requetes": 29,
     "dom": 1656,
     "ecoindex": 48.4,
-    "chargement_ms": 1940,
+    "chargement_ms": 1927,
     "tiers": [
       "fonts.googleapis.com"
     ],

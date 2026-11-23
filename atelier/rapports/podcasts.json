@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/podcasts/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:42:50.336Z",
+  "date": "2026-11-23T10:44:00.904Z",
   "scores": {
     "douanier": 96,
     "pouce": 65,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 218,
+    "poids_ko": 220,
     "js_ko": 26,
     "requetes": 11,
-    "dom": 499,
-    "ecoindex": 74.2,
-    "chargement_ms": 1802,
+    "dom": 509,
+    "ecoindex": 73.8,
+    "chargement_ms": 1769,
     "tiers": [
       "is1-ssl.mzstatic.com"
     ],
@@ -104,11 +104,11 @@
     "titre": "Podcasts · écoutez, sans pub ni compte",
     "h1": "Podcasts. Écoutez ce qui vous plaît.",
     "h2": [
+      "🎙️ Le Podcast du Labo",
       "Notre sélection",
       "À la une",
       "Médias de gauche et indépendants",
-      "Culture et ARTE",
-      "Sciences et nature"
+      "Culture et ARTE"
     ],
     "boutons": [
       "αalphabette",
@@ -120,6 +120,7 @@
       "☀️",
       "🔊",
       "⋯",
+      "▶ Écouter",
       "Mes podcasts",
       "Chercher",
       "Réglages",
@@ -127,11 +128,11 @@
       "S'abonner",
       "Voir les épisodes"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Podcasts ÉCOUTEZ, SANS PUB NI COMPTE ♥ BIG ☀️ 🔊 ⋯ Podcasts. Écoutez ce qui vous plaît. Sans publicité, sans compte. Vos abonnements restent sur votre appareil. Mes podcasts Chercher Réglages Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner ». Chercher un podcast Notre sélection À la une Radio et actualités du jour. Radio Nova La radio des musiques et des idées. La dernière S'abonner Voir les épisodes La Dernière L’émission de fin de journée de Radio Nova. La dernière S'abonner Voir les épisodes La Matinale du Soir Le rendez-vous du soir pour comprendre la journée. Recherche du podcast… HugoDécrypte L’actualité du jou"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Podcasts ÉCOUTEZ, SANS PUB NI COMPTE ♥ BIG ☀️ 🔊 ⋯ Podcasts. Écoutez ce qui vous plaît. Sans publicité, sans compte. Vos abonnements restent sur votre appareil. 🎙️ Le Podcast du Labo Le Podcast du Labo — semaine du 16 novembre · environ 1 min Chaque dimanche : ce qui a vraiment changé au Laboratoire cette semaine, en 3 minutes au plus. Lu par la voix de synthèse de votre appareil. ▶ Écouter Lire le texte Mes podcasts Chercher Réglages Vous n'avez pas encore de podcast. Cherchez un sujet qui vous plaît, puis touchez « S'abonner ». Chercher un podcast Notre sélection À la une Radio et actualités du jour. Radio Nova La radio des musiques et des idées. La dernière "
   },
   "temoin": {
     "capture": "captures/podcasts.jpg",
-    "changement": 0,
+    "changement": 22,
     "blanc": false
   }
 }

@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/frigoplacard/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:41:33.052Z",
+  "date": "2026-11-23T10:42:44.413Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -101,7 +101,7 @@
     "requetes": 7,
     "dom": 150,
     "ecoindex": 88.8,
-    "chargement_ms": 2055,
+    "chargement_ms": 1973,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 90
@@ -134,7 +134,7 @@
       "🎓 Quiz anti-gaspi",
       "+ Ajouter"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Frites molles ? Une minute au four à 140 °C leur rend presque tout leur croquant. 🔮 Traducteur de restes insolites Pain rassis Épluchures de légumes l"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Un pot de crème presque fini se rince au lait : sauce improvisée pour les légumes du soir. 🔮 Traducteur de restes insolites Pain rassis Épluchures de "
   },
   "temoin": {
     "capture": "captures/frigoplacard.jpg",

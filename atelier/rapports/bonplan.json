@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/bonplan/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:41:17.667Z",
+  "date": "2026-11-23T10:42:28.802Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -109,7 +109,7 @@
     "requetes": 10,
     "dom": 567,
     "ecoindex": 71.9,
-    "chargement_ms": 1466,
+    "chargement_ms": 1499,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"

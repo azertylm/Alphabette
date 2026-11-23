@@ -10,7 +10,7 @@
 | GENS EXTRAORDINAIRES | 86/100 | 85/100 | 0 | 1 |
 | Goat Chèvre The King | 82/100 | 74/100 | 0 | 2 |
 | IADÉBAT | 81/100 | 76/100 | 0 | 2 |
-| INFOS PERSO | 71/100 | 52/100 | 0 | 5 |
+| INFOS PERSO | 74/100 | 58/100 | 0 | 4 |
 | L'ŒIL DE L'ATELIER | 87/100 | 81/100 | 0 | 2 |
 | LE DICO LOUFOQUE | 89/100 | 85/100 | 0 | 1 |
 | LE JUSTE CHIFFRE | 89/100 | 85/100 | 0 | 1 |

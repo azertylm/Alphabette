@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/dico-loufoque/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:42:13.915Z",
+  "date": "2026-11-23T10:43:24.780Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -77,7 +77,7 @@
     "requetes": 7,
     "dom": 71,
     "ecoindex": 92,
-    "chargement_ms": 1617,
+    "chargement_ms": 1636,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 88

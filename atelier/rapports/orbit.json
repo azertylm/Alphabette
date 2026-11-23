@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/orbit/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-22T09:42:28.485Z",
+  "date": "2026-11-23T10:43:39.308Z",
   "scores": {
     "douanier": 100,
     "pouce": 52,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 350,
+    "poids_ko": 269,
     "js_ko": 38,
-    "requetes": 27,
-    "dom": 287,
-    "ecoindex": 79.9,
-    "chargement_ms": 1976,
+    "requetes": 26,
+    "dom": 286,
+    "ecoindex": 80.5,
+    "chargement_ms": 1828,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 98
@@ -134,7 +134,7 @@
       "⚡ Express < 1 min",
       "☕ Pause café 3–10 min"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ YouTube ▶ Half-Life 2's Invisible Tutorial Game Maker's Toolkit 🛰️ Tech & IA Durée inconnue 🐇 Plongée ↗ ▶️ YouTube ▶ Newton’s fractal (which Newton knew nothing ab"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ YouTube ▶ Thinking outside the 10-dimensional box 3Blue1Brown 🏃 Sport Durée inconnue 🐇 Plongée ↗ ▶️ YouTube ▶ But what is the Central Limit Theorem? 3Blue1Brown 🛰"
   },
   "temoin": {
     "capture": "captures/orbit.jpg",
