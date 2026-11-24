@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentions légales — Alphabette</title>
+  <meta name="description" content="Mentions légales officielles des plateformes Alphabette (alphabette.fr et alphabette.eu)." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="stylesheet" href="/shared/alphabette-core.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --text: #0f172a;
+      --muted: #334155;
+      --accent: #1d4ed8;
+      --border: #cbd5e1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --accent: #60a5fa;
+        --border: #334155;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .legal-wrap { max-width: 820px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    nav.legal-nav {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border);
+    }
+    nav.legal-nav a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 0.9rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600;
+      color: var(--accent); border: 1px solid var(--border);
+    }
+    nav.legal-nav a[aria-current="page"] { background: var(--accent); color: #ffffff; border-color: var(--accent); }
+    nav.legal-nav a:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 0.5rem; }
+    h2 { font-size: 1.35rem; margin: 2.25rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .meta-date { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.45rem; }
+    a { color: var(--accent); }
+    footer.legal-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--border); font-size: 0.95rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="legal-wrap">
+    <nav class="legal-nav" aria-label="Navigation juridique">
+      <a href="/">← Retour au Hub</a>
+      <a href="/mentions-legales.html" aria-current="page">Mentions légales</a>
+      <a href="/confidentialite.html">Confidentialité &amp; RGPD</a>
+      <a href="/cgv.html">CGV &amp; CGU</a>
+    </nav>
+
+    <main>
+      <h1>Mentions légales</h1>
+      <p class="meta-date">Dernière mise à jour : novembre 2026 — Conformément à la loi n° 2004-575 du 21 juin 2004 (LCEN).</p>
+
+      <section>
+        <h2>1. Éditeur des plateformes</h2>
+        <div class="card">
+          <p>Les sites <strong>www.alphabette.fr</strong> (vitrine de production) et <strong>www.alphabette.eu</strong> (laboratoire communautaire de test) sont édités par :</p>
+          <ul>
+            <li><strong>Raison sociale :</strong> Alphabette — Société par Actions Simplifiée Unipersonnelle (SASU)</li>
+            <li><strong>Capital social :</strong> [À COMPLÉTER : ex. 1 000 €]</li>
+            <li><strong>Siège social :</strong> [À COMPLÉTER : Adresse postale complète, 34280 La Grande-Motte, France]</li>
+            <li><strong>Immatriculation :</strong> RCS [À COMPLÉTER : Montpellier] — SIREN : [À COMPLÉTER] — SIRET : [À COMPLÉTER]</li>
+            <li><strong>Numéro de TVA intracommunautaire :</strong> [À COMPLÉTER ou « TVA non applicable, art. 293 B du CGI » si franchise en base]</li>
+            <li><strong>Directeur de la publication :</strong> Valentin Richaud, Président</li>
+            <li><strong>Contact électronique :</strong> <a href="mailto:contact@alphabette.fr">[À COMPLÉTER : contact@alphabette.fr]</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>2. Hébergement</h2>
+        <p>Les noms de domaine et l'infrastructure d'hébergement sont assurés en Europe par :</p>
+        <div class="card">
+          <ul>
+            <li><strong>Hébergeur :</strong> OVHcloud (OVH SAS)</li>
+            <li><strong>Adresse :</strong> 2 rue Kellermann, 59100 Roubaix, France</li>
+            <li><strong>Site web :</strong> <a href="https://www.ovhcloud.com/fr/" target="_blank" rel="noopener noreferrer">www.ovhcloud.com</a></li>
+            <li><strong>Téléphone :</strong> 1007 (depuis la France)</li>
+          </ul>
+          <p><em>[À COMPLÉTER si une partie du Hub ou du stockage applicatif utilise un autre hébergeur européen ou cloud complémentaire : indiquer son nom et son adresse].</em></p>
+        </div>
+      </section>
+
+      <section>
+        <h2>3. Propriété intellectuelle &amp; paternité des applications</h2>
+        <p>L'architecture, la marque <strong>Alphabette</strong>, la Double Barre de navigation, les interfaces du Hub, les illustrations, les textes et le code socle sont la propriété exclusive d'Alphabette. Toute reproduction ou représentation non autorisée est interdite.</p>
+        <p>Concernant les applications soumises par des créateurs indépendants sur <strong>alphabette.eu</strong> :</p>
+        <ul>
+          <li>Chaque créateur conserve la paternité de sa <strong>version originale</strong>, archivée avec empreinte cryptographique (SHA-256) et horodatage lors du dépôt.</li>
+          <li>L'évolution collaborative (<strong>version communautaire</strong>) et la commercialisation sur <strong>alphabette.fr</strong> sont régies par les Conditions Générales d'Utilisation et de Vente (<a href="/cgv.html">CGV/CGU</a>) acceptées explicitement lors de la soumission.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>4. Responsabilité &amp; signalement de contenu illicite</h2>
+        <p>Alphabette met en œuvre un isolement technique (sandbox) et une modération des applications publiées. Les applications proposées sur le laboratoire <strong>alphabette.eu</strong> sont des versions de test fournies en l'état.</p>
+        <p>Tout utilisateur peut signaler un contenu illicite, un abus, un problème de sécurité ou une atteinte au droit d'auteur directement via le bouton <strong>« Signaler un problème / abus »</strong> du menu 3 points de la Double Barre, ou par e-mail à <a href="mailto:contact@alphabette.fr">[À COMPLÉTER : contact@alphabette.fr]</a>.</p>
+      </section>
+
+      <section>
+        <h2>5. Données personnelles &amp; accessibilité</h2>
+        <p>Alphabette applique une démarche de souveraineté numérique, de minimisation des données (Zero-Knowledge sur les applications clientes) et d'accessibilité renforcée (WCAG AAA / RGAA). Les détails figurent dans notre <a href="/confidentialite.html">Politique de confidentialité</a>.</p>
+      </section>
+    </main>
+
+    <footer class="legal-footer">
+      <p>© 2026 Alphabette — Tous droits réservés.</p>
+    </footer>
+  </div>
+</body>
+</html>
