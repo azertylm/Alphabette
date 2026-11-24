@@ -12,7 +12,7 @@ dépôt ou sur une application de l'écosystème. Il décrit les règles à resp
 La base fournit, pour chaque application :
 
 ```
-[Barre 1 — écosystème]  ◉ ALPHABETTE · ♥ DON · 5 sites · 3/16 (7 essai) · ⭐ Pass 40 €/an → paiement
+[Barre 1 — écosystème]  ◉ ALPHABETTE · ♥ DON · 5 sites · 3/16 (7 essai) ·⭐ Abonnement 15 €/an → paiement
 [Barre 2 — application] ☰ Nom App + sous-titre · ♥ DON · Mon Compte · BIG · Clé API · Plein Écran · ☀ Jour
 ```
 
@@ -42,7 +42,7 @@ une application.
 ## Règle nº 4 — Tarification officielle
 
 - **15 €** par application et par an.
-- **40 €** pour tout l'écosystème et par an.
+-- 10 € pour le créateur et 5 € pour Alphabette (aucun bouquet 40 €, aucun prorata).
 - **7 jours** d'essai offerts.
 
 Ces montants remplacent les anciennes formules. La source de vérité est le hub
@@ -152,3 +152,5 @@ Ce que fait une application :
 développeur, testeur mobile, vérificateur d'honnêteté, publieur…).
 Liste et mode d'emploi : `docs/EQUIPE-AGENTS.md`. Pour une demande large,
 commencer par `chef-de-projet`.
+
+server.ts + server/ :api/ + labo/serveur/ | Endpoints PHP légers compatibles hébergement OVH Perso
