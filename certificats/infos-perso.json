@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-23T15:59:21.733Z",
-  "empreinte_page_sha256": "3003b65aae56f9472212d6f6dafc9737452e91fa557cb2216e7e8104c38b4d87",
+  "audite_le": "2026-11-24T03:23:23.525Z",
+  "empreinte_page_sha256": "75f2ebd20ed0cbbcec5d8aca0becbaa4699205da94c8fc668592467cbf4a15d0",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1223,
-      "bloquees": 1223,
+      "requetes": 753,
+      "bloquees": 753,
       "types": [
         "image",
         "fetch"
@@ -69,14 +69,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 3,
+      "bloquees": 3,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -112,25 +112,7 @@
       ]
     },
     {
-      "hote": "media.lesechos.com",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
-    },
-    {
       "hote": "img.lemde.fr",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -147,15 +129,13 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "media.lesechos.com",
-      "img.lemde.fr",
-      "www.franceinfo.fr"
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "a9bd0387d61a4ceff55ad550c0532124ea21a7cf6d0ed6d90ba9c60c95a8ca0d"
+  "empreinte_certificat_sha256": "5b759c666b2b4206ed25b20388d905a03bb0061bb493c962cd81898598e2d222"
 }
