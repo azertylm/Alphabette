@@ -32,6 +32,43 @@
         "proposed_fix": null
       },
       "changelog_public_message": null
+    },
+    {
+      "id": "fb_1795459873_8825",
+      "app_id": "orbit",
+      "version_tested": "main",
+      "rating": 5,
+      "category": "Idée",
+      "comment": "https://ai.[masqué]?… il faut que orbit soit exactement comme ça peux-tu la modifier",
+      "upvotes": 1,
+      "timestamp": "2026-11-23T18:51:13Z",
+      "source": "formulaire",
+      "declencheur": null,
+      "urgence": null,
+      "pseudo": "Tintoon",
+      "classement": null,
+      "incident_api": null,
+      "telemetry": {
+        "viewport": "406x760 (dpr: 3)",
+        "platform": "Android / Chrome",
+        "console_errors": [],
+        "stockage_cles": [
+          "ab_podcasts",
+          "ab_podcasts_sel",
+          "alphabette.prefs",
+          "labo_erreurs_v1",
+          "labo_limites_v1",
+          "labo_pseudo"
+        ]
+      },
+      "status": "pending",
+      "ai_analysis": {
+        "relevance_score": null,
+        "intervention_level": null,
+        "reasoning": null,
+        "proposed_fix": null
+      },
+      "changelog_public_message": null
     }
   ],
   "ab": [],
