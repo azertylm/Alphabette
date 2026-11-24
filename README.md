@@ -1,83 +1,28 @@
-# ALPHABETTE — la vitrine de l'écosystème
+# Alphabette — Écosystème d'applications web souveraines
 
-Le site **alphabette.fr** : il présente les applications de l'écosystème et renvoie
-vers chacune d'elles, hébergée sur son propre sous-domaine.
+**Alphabette** réunit un écosystème d'applications pratiques, ludiques et accessibles réparties sur deux espaces complémentaires :
 
-> **1 projet = 1 dépôt GitHub = 1 sous-domaine**
+- **`alphabette.eu` (Le Laboratoire)** : espace communautaire **100 % gratuit** pour tester les nouveautés, voter, signaler des bugs et co-construire les évolutions.
+- **`alphabette.fr` (La Vitrine)** : applications stabilisées validées par la communauté (≥ 10 avis positifs avec ratio ≥ 75 %), proposées en abonnement unitaire transparent à **15,00 €/an** (**10 €** pour le créateur, **5 €** pour Alphabette — aucun bouquet imposé).
 
-## Les applications
+## Principes fondamentaux
+- **Zero-Knowledge côté applications** : les données personnelles créées dans les apps restent stockées localement sur l'appareil de l'utilisateur (`localStorage` / `IndexedDB`) avec export/import `.json` chiffré.
+- **IA BYOK (Bring Your Own Key)** : priorité à Mistral AI (compatible OpenAI/Gemini), clés stockées et chiffrées côté navigateur.
+- **Accessibilité WCAG AAA & Mobile-First** : contrastes élevés, cibles tactiles ≥ 44×44 px, mode nuit, mode calme, lecture et dictée vocale (Web Speech API).
+- **Zéro pistage** : aucun cookie publicitaire ni script d'analyse tiers intrusif.
 
-Le registre central fait foi : **`data/apps-registry.json`**. Il se pilote en 1 clic
-depuis la console `/admin` (activer, masquer, badge « Nouveau » / « Populaire »), et
-la section « Nos Applications » de la vitrine s'y synchronise automatiquement.
+## Structure du dépôt
+- `src/` & `public/` : application Vite / TypeScript et ressources statiques (dont pages légales).
+- `labo/` & `vitrine/` / `pages-fr/` : interfaces dédiées aux univers `.eu` et `.fr`.
+- `server/` : API backend minimale (comptes, votes, abonnements 15 €, reversements).
+- `data/` : catalogues et données structurées (dont `apps-catalog.json`).
+- `scripts/` : outils d'automatisation et d'import des applications.
+- `tests/` : tests unitaires, d'intégration et de recette E2E.
+- `prompts/` : prompts système versionnés pour les fonctionnalités IA.
 
-| Application | Adresse | Dépôt |
-|---|---|---|
-| Goat Chèvre The King | <https://goatchevretheking.alphabette.fr> | `azertylm/goatchevretheking.alphabette.fr` |
-| Lidarsol | <https://lidarsol.fr> | — |
-| IADÉBAT, INFOS PERSO, SERVICE FRANCE… | voir `/admin` | — |
+## Démarrage local
 
-Chaque application vit dans **son propre dépôt** : ce dépôt-ci ne contient que la
-vitrine, le registre et la console d'administration.
-
-## Démarrer en local
-
-```powershell
+```bash
 bun install
-
-$env:ADMIN_PASSWORD='mot-de-passe-admin'
+cp .env.example .env
 bun run dev
-```
-
-→ <http://localhost:3000>
-
-## Ajouter une application
-
-1. **Créer le projet** avec la base commune :
-   `bun run new:app <slug> "Nom" "Sous-titre" --accent "#2563eb"` → dépôt autonome
-   où l'en-tête de l'écosystème est déjà câblé — voir
-   [`docs/base-application.md`](docs/base-application.md) ;
-2. **Enregistrer l'application** depuis `/admin` : nom, slug, icône, URL
-   (`https://monapp.alphabette.fr`), sous-domaine et statut ;
-3. **Configurer le DNS** une seule fois pour toutes les applications
-   (enregistrement `*` + certificat TLS wildcard) — voir
-   [`docs/ecosysteme-alphabette.md`](docs/ecosysteme-alphabette.md).
-
-L'application apparaît alors automatiquement dans la section « Nos Applications ».
-
-## Console d'administration
-
-`/admin` (protégée par `ADMIN_PASSWORD`) permet de :
-
-- lister toutes les applications et basculer leur statut en 1 clic
-  (actif / brouillon / maintenance) ;
-- créer une application et lui attribuer son sous-domaine ;
-- modérer les classements publiés par la communauté.
-
-## Structure
-
-```
-packages/shell/      LA BASE COMMUNE (@alphabette/shell) : barres, thème, densité
-templates/app/       modèle d'application autonome (utilisé par le générateur)
-scripts/create-app.ts   générateur « bun run new:app »
-src/App.tsx          la vitrine
-src/components/      sections de la vitrine (Hero, catalogue, registre, tarifs…)
-src/admin/           console d'administration
-server/              API du registre, de la console et de la configuration
-data/apps-registry.json   registre des applications
-docs/                documentation de l'écosystème
-```
-
-## Variables d'environnement
-
-| Variable | Rôle |
-|---|---|
-| `ADMIN_PASSWORD` | accès à la console `/admin` (obligatoire en production) |
-| `ADMIN_SESSION_SECRET` | signature des sessions admin (recommandé) |
-| `AI_API_KEY` / `MISTRAL_API_KEY` | moteur IA souverain de l'atelier |
-
-Voir `.env.example`.
-
-## Licence
-
-Apache License 2.0 — voir [LICENSE](LICENSE).
