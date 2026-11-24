@@ -1,0 +1,168 @@
+{
+  "owner": "azertylm",
+  "updatedAt": "2026-11-24",
+  "apps": [
+    {
+      "id": 1,
+      "title": "L'Atelier Alphabette",
+      "slug": "atelier-alphabette",
+      "repo": null,
+      "category": "Création",
+      "maturity": "labo",
+      "description": "Espace de création bienveillant et accessible."
+    },
+    {
+      "id": 2,
+      "title": "Radar",
+      "slug": "radar",
+      "repo": null,
+      "category": "Vie pratique",
+      "maturity": "labo",
+      "description": "L'agrégateur culturel anti-manque pour ne plus rien louper de ce qui vous passionne."
+    },
+    {
+      "id": 3,
+      "title": "Lecture Magique",
+      "slug": "lecture-magique",
+      "repo": null,
+      "category": "Éducation",
+      "maturity": "labo",
+      "description": "Application ludo-éducative d'apprentissage de la lecture."
+    },
+    {
+      "id": 4,
+      "title": "MémoVoix",
+      "slug": "memovoix",
+      "repo": null,
+      "category": "Vie pratique",
+      "maturity": "labo",
+      "description": "Le Biographe Familial : application vocale zéro-clavier pour recueillir et préserver des souvenirs."
+    },
+    {
+      "id": 5,
+      "title": "MatchSoirée",
+      "slug": "matchsoiree",
+      "repo": null,
+      "category": "Jeux",
+      "maturity": "labo",
+      "description": "Prenez des décisions rapides en duo pour vos soirées."
+    },
+    {
+      "id": 6,
+      "title": "Parent SOS",
+      "slug": "parent-sos",
+      "repo": null,
+      "category": "Vie pratique",
+      "maturity": "labo",
+      "description": "Boîte à outils bienveillante et utilisable hors-ligne pour les parents."
+    },
+    {
+      "id": 7,
+      "title": "Révis'Clash",
+      "slug": "revis-clash",
+      "repo": null,
+      "category": "Éducation",
+      "maturity": "labo",
+      "description": "Jeu de cartes tactique en 1 contre 1 pour réviser en s'amusant."
+    },
+    {
+      "id": 8,
+      "title": "NégoCoach",
+      "slug": "negocoach",
+      "repo": null,
+      "category": "Productivité",
+      "maturity": "labo",
+      "description": "Simulateur de négociation confidentiel pour s'entraîner avant un échange décisif."
+    },
+    {
+      "id": 9,
+      "title": "Le Salon de Famille",
+      "slug": "salon-de-famille",
+      "repo": null,
+      "category": "Vie pratique",
+      "maturity": "labo",
+      "description": "Espace numérique inclusif, simple et accessible pour toute la famille."
+    },
+    {
+      "id": 10,
+      "title": "Vie en 2035",
+      "slug": "vie-en-2035",
+      "repo": null,
+      "category": "Jeux",
+      "maturity": "prototype",
+      "description": "Un RPG textuel réaliste pour explorer les choix et le quotidien du futur."
+    },
+    {
+      "id": 11,
+      "title": "DissTrack Express",
+      "slug": "disstrack-express",
+      "repo": null,
+      "category": "Création",
+      "maturity": "prototype",
+      "description": "Transformez les anecdotes drôles de vos amis en rimes percutantes."
+    },
+    {
+      "id": 12,
+      "title": "TierList Chaos",
+      "slug": "tierlist-chaos",
+      "repo": null,
+      "category": "Jeux",
+      "maturity": "prototype",
+      "description": "Créez des tier lists rapides pensées pour mobile avec l'aide de l'IA."
+    },
+    {
+      "id": 13,
+      "title": "Le Tribunal des Potes",
+      "slug": "tribunal-des-potes",
+      "repo": null,
+      "category": "Jeux",
+      "maturity": "labo",
+      "description": "Réglez vos débats absurdes entre amis grâce à un jury décalé."
+    },
+    {
+      "id": 14,
+      "title": "Balade",
+      "slug": "balade",
+      "repo": "Balade",
+      "category": "Vie pratique",
+      "maturity": "labo",
+      "description": "L'Oreille Locale : capsules culturelles audio-guide géolocalisées avec escales rapides."
+    },
+    {
+      "id": 15,
+      "title": "Le Tribunal des Choix",
+      "slug": "tribunal-des-choix",
+      "repo": "Le-tribunal-des-choix",
+      "category": "Vie pratique",
+      "maturity": "prototype",
+      "description": null
+    },
+    {
+      "id": 16,
+      "title": "Alphabette Hub",
+      "slug": "alphabette-hub",
+      "repo": "Alphabette-Hub",
+      "category": "Productivité",
+      "maturity": "labo",
+      "description": "Passeport Universel et espace laboratoire pour naviguer dans l'écosystème Alphabette."
+    },
+    {
+      "id": 17,
+      "title": "La Une de l'Absurde",
+      "slug": "une-de-labsurde",
+      "repo": "La-Une-de-l-absurde",
+      "category": "Création",
+      "maturity": "prototype",
+      "description": "Transformez une photo du quotidien et deux phrases banales en scandale loufoque à la Une."
+    },
+    {
+      "id": 18,
+      "title": "Curioz",
+      "slug": "curioz",
+      "repo": null,
+      "category": "Éducation",
+      "maturity": "prototype",
+      "description": null
+    }
+  ]
+}
