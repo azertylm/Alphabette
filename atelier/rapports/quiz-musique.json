@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-musique/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:44:21.358Z",
+  "date": "2026-11-24T12:24:23.058Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -80,12 +80,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 42,
-    "js_ko": 26,
+    "poids_ko": 44,
+    "js_ko": 27,
     "requetes": 7,
     "dom": 90,
     "ecoindex": 91.2,
-    "chargement_ms": 1628,
+    "chargement_ms": 733,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89

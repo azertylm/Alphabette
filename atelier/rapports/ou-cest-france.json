@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest-france/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:43:50.554Z",
+  "date": "2026-11-24T12:23:58.873Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 68,
-    "js_ko": 26,
+    "poids_ko": 70,
+    "js_ko": 27,
     "requetes": 7,
     "dom": 73,
-    "ecoindex": 91.7,
-    "chargement_ms": 1790,
+    "ecoindex": 91.6,
+    "chargement_ms": 818,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -102,11 +102,11 @@
       "← Tous les petits jeux",
       "Version monde"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une grande ville portuaire avec une bonne mère qui veille sur la ville, tout en haut. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une vallée au pied du plus haut sommet d'Europe de l'Ouest. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
   },
   "temoin": {
     "capture": "captures/ou-cest-france.jpg",
-    "changement": 3,
+    "changement": 23,
     "blanc": false
   }
 }

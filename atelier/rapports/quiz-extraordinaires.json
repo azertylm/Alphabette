@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-extraordinaires/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:42:49.589Z",
+  "date": "2026-11-24T12:23:08.533Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 65,
-    "js_ko": 49,
+    "poids_ko": 66,
+    "js_ko": 50,
     "requetes": 8,
     "dom": 94,
     "ecoindex": 90.8,
-    "chargement_ms": 1637,
+    "chargement_ms": 740,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89

@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/orbit/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:43:39.308Z",
+  "date": "2026-11-24T12:23:49.209Z",
   "scores": {
     "douanier": 100,
     "pouce": 52,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 269,
-    "js_ko": 38,
+    "poids_ko": 300,
+    "js_ko": 40,
     "requetes": 26,
-    "dom": 286,
-    "ecoindex": 80.5,
-    "chargement_ms": 1828,
+    "dom": 287,
+    "ecoindex": 80.3,
+    "chargement_ms": 1084,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 98
@@ -134,7 +134,7 @@
       "⚡ Express < 1 min",
       "☕ Pause café 3–10 min"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ YouTube ▶ Thinking outside the 10-dimensional box 3Blue1Brown 🏃 Sport Durée inconnue 🐇 Plongée ↗ ▶️ YouTube ▶ But what is the Central Limit Theorem? 3Blue1Brown 🛰"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ YouTube ▶ Vectors | Chapter 1, Essence of linear algebra 3Blue1Brown 🧭 Culture générale Durée inconnue 🐇 Plongée ↗ ▶️ YouTube ▶ But what is a neural network? | Dee"
   },
   "temoin": {
     "capture": "captures/orbit.jpg",

@@ -1,0 +1,681 @@
+{
+  "date": "2026-11-24T12:22:48.575Z",
+  "base": "https://alphabette.eu",
+  "apps": {
+    "info": {
+      "id": "info",
+      "nom": "ALPHABETTE INFO",
+      "url": "https://alphabette.eu/info.html",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:22:48.576Z",
+      "note": 82,
+      "controle_technique": 78,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 85,
+        "poids_plume": 88,
+        "phare": 70,
+        "parapluie": 88
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 8
+      },
+      "bloquants": []
+    },
+    "bonplan": {
+      "id": "bonplan",
+      "nom": "BON PLAN",
+      "url": "https://alphabette.eu/apps/bonplan/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:22:52.688Z",
+      "note": 81,
+      "controle_technique": 72,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 72,
+        "poids_plume": 84,
+        "phare": 80,
+        "parapluie": 88
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 3,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "ecobatisol": {
+      "id": "ecobatisol",
+      "nom": "ÉCOBÂTISOL",
+      "url": "https://alphabette.eu/apps/ecobatisol/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:22:56.769Z",
+      "note": 87,
+      "controle_technique": 82,
+      "scores": {
+        "douanier": 100,
+        "pouce": 62,
+        "opticien": 93,
+        "poids_plume": 92,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 3
+      },
+      "bloquants": []
+    },
+    "quiz-femmes": {
+      "id": "quiz-femmes",
+      "nom": "FEMMES EXTRAORDINAIRES",
+      "url": "https://alphabette.eu/quiz-femmes/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:00.789Z",
+      "note": 88,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 95,
+        "poids_plume": 96,
+        "phare": 73,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 6
+      },
+      "bloquants": []
+    },
+    "frigoplacard": {
+      "id": "frigoplacard",
+      "nom": "FRIGO-PLACARD",
+      "url": "https://alphabette.eu/apps/frigoplacard/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:04.547Z",
+      "note": 83,
+      "controle_technique": 81,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 86,
+        "poids_plume": 96,
+        "phare": 63,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "quiz-extraordinaires": {
+      "id": "quiz-extraordinaires",
+      "nom": "GENS EXTRAORDINAIRES",
+      "url": "https://alphabette.eu/quiz-extraordinaires/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:08.533Z",
+      "note": 86,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 95,
+        "poids_plume": 96,
+        "phare": 66,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "goat-chevre-the-king": {
+      "id": "goat-chevre-the-king",
+      "nom": "Goat Chèvre The King",
+      "url": "https://alphabette.eu/apps/goatchevretheking/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:12.283Z",
+      "note": 82,
+      "controle_technique": 74,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 89,
+        "poids_plume": 74,
+        "phare": 83,
+        "parapluie": 88
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "iadebat": {
+      "id": "iadebat",
+      "nom": "IADÉBAT",
+      "url": "https://alphabette.eu/apps/iadebat/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:16.760Z",
+      "note": 81,
+      "controle_technique": 76,
+      "scores": {
+        "douanier": 92,
+        "pouce": 50,
+        "opticien": 90,
+        "poids_plume": 89,
+        "phare": 83,
+        "parapluie": 81
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 10
+      },
+      "bloquants": []
+    },
+    "infos-perso": {
+      "id": "infos-perso",
+      "nom": "INFOS PERSO",
+      "url": "https://alphabette.eu/apps/infosperso/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:21.135Z",
+      "note": 71,
+      "controle_technique": 53,
+      "scores": {
+        "douanier": 92,
+        "pouce": 50,
+        "opticien": 74,
+        "poids_plume": 34,
+        "phare": 90,
+        "parapluie": 88
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 5,
+        "conseil": 12
+      },
+      "bloquants": []
+    },
+    "oeil-atelier": {
+      "id": "oeil-atelier",
+      "nom": "L'ŒIL DE L'ATELIER",
+      "url": "https://alphabette.eu/apps/atelier/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:33.381Z",
+      "note": 87,
+      "controle_technique": 81,
+      "scores": {
+        "douanier": 100,
+        "pouce": 62,
+        "opticien": 85,
+        "poids_plume": 95,
+        "phare": 83,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "dico-loufoque": {
+      "id": "dico-loufoque",
+      "nom": "LE DICO LOUFOQUE",
+      "url": "https://alphabette.eu/dico-loufoque/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:37.542Z",
+      "note": 89,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 94,
+        "poids_plume": 97,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "juste-chiffre": {
+      "id": "juste-chiffre",
+      "nom": "LE JUSTE CHIFFRE",
+      "url": "https://alphabette.eu/juste-chiffre/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:41.281Z",
+      "note": 89,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 94,
+        "poids_plume": 97,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "memo-meninges": {
+      "id": "memo-meninges",
+      "nom": "MÉMO-MÉNINGES",
+      "url": "https://alphabette.eu/memo-meninges/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:45.477Z",
+      "note": 89,
+      "controle_technique": 86,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 96,
+        "poids_plume": 96,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 4
+      },
+      "bloquants": []
+    },
+    "orbit": {
+      "id": "orbit",
+      "nom": "ORBIT",
+      "url": "https://alphabette.eu/orbit/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:49.209Z",
+      "note": 83,
+      "controle_technique": 81,
+      "scores": {
+        "douanier": 100,
+        "pouce": 52,
+        "opticien": 98,
+        "poids_plume": 92,
+        "phare": 63,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 8
+      },
+      "bloquants": []
+    },
+    "ou-cest": {
+      "id": "ou-cest",
+      "nom": "OÙ C'EST ?",
+      "url": "https://alphabette.eu/ou-cest/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:55.039Z",
+      "note": 89,
+      "controle_technique": 86,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 95,
+        "poids_plume": 97,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "ou-cest-france": {
+      "id": "ou-cest-france",
+      "nom": "OÙ C'EST EN FRANCE ?",
+      "url": "https://alphabette.eu/ou-cest-france/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:23:58.873Z",
+      "note": 89,
+      "controle_technique": 86,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 95,
+        "poids_plume": 97,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "petits-jeux": {
+      "id": "petits-jeux",
+      "nom": "PETITS JEUX",
+      "url": "https://alphabette.eu/petits-jeux/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:02.709Z",
+      "note": 89,
+      "controle_technique": 86,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 97,
+        "poids_plume": 96,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 4
+      },
+      "bloquants": []
+    },
+    "podcasts": {
+      "id": "podcasts",
+      "nom": "PODCASTS",
+      "url": "https://alphabette.eu/podcasts/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:06.903Z",
+      "note": 86,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 96,
+        "pouce": 65,
+        "opticien": 99,
+        "poids_plume": 90,
+        "phare": 73,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "promptmagic": {
+      "id": "promptmagic",
+      "nom": "PROMPT MAGIC",
+      "url": "https://alphabette.eu/apps/promptmagic/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:11.038Z",
+      "note": 86,
+      "controle_technique": 81,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 90,
+        "poids_plume": 92,
+        "phare": 80,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 4
+      },
+      "bloquants": []
+    },
+    "proxilien": {
+      "id": "proxilien",
+      "nom": "PROXILIEN",
+      "url": "https://alphabette.eu/apps/proxilien/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:15.048Z",
+      "note": 79,
+      "controle_technique": 66,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 58,
+        "poids_plume": 80,
+        "phare": 90,
+        "parapluie": 88
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 3,
+        "conseil": 6
+      },
+      "bloquants": []
+    },
+    "quiz-famille": {
+      "id": "quiz-famille",
+      "nom": "QUIZ EN FAMILLE",
+      "url": "https://alphabette.eu/quiz-famille/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:19.317Z",
+      "note": 89,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 94,
+        "poids_plume": 97,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "quiz-musique": {
+      "id": "quiz-musique",
+      "nom": "QUIZ MUSIQUE",
+      "url": "https://alphabette.eu/quiz-musique/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:23.058Z",
+      "note": 88,
+      "controle_technique": 85,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 95,
+        "poids_plume": 96,
+        "phare": 73,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 6
+      },
+      "bloquants": []
+    },
+    "revolution": {
+      "id": "revolution",
+      "nom": "RÉVOLUTION",
+      "url": "https://alphabette.eu/apps/revolution/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:26.792Z",
+      "note": 84,
+      "controle_technique": 79,
+      "scores": {
+        "douanier": 92,
+        "pouce": 62,
+        "opticien": 90,
+        "poids_plume": 86,
+        "phare": 80,
+        "parapluie": 96
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "bonplansenior": {
+      "id": "bonplansenior",
+      "nom": "SENIOR BON PLAN",
+      "url": "https://alphabette.eu/apps/bonplansenior/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:31.406Z",
+      "note": 87,
+      "controle_technique": 83,
+      "scores": {
+        "douanier": 100,
+        "pouce": 65,
+        "opticien": 94,
+        "poids_plume": 90,
+        "phare": 80,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 7
+      },
+      "bloquants": []
+    },
+    "france-service": {
+      "id": "france-service",
+      "nom": "SERVICE FRANCE",
+      "url": "https://alphabette.eu/apps/franceservice/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:35.390Z",
+      "note": 78,
+      "controle_technique": 65,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 51,
+        "poids_plume": 84,
+        "phare": 83,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 3,
+        "conseil": 6
+      },
+      "bloquants": []
+    },
+    "wikicom": {
+      "id": "wikicom",
+      "nom": "WIKICOM",
+      "url": "https://alphabette.eu/wikicom/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:39.749Z",
+      "note": 83,
+      "controle_technique": 75,
+      "scores": {
+        "douanier": 100,
+        "pouce": 60,
+        "opticien": 72,
+        "poids_plume": 94,
+        "phare": 80,
+        "parapluie": 92
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 3,
+        "conseil": 5
+      },
+      "bloquants": []
+    },
+    "crash-testeur": {
+      "id": "crash-testeur",
+      "nom": "Le Crash-Testeur",
+      "url": "https://alphabette.eu/crash-testeur/",
+      "communaute": false,
+      "heberge": false,
+      "date": "2026-11-24T12:24:43.613Z",
+      "note": 87,
+      "controle_technique": 84,
+      "scores": {
+        "douanier": 100,
+        "pouce": 62,
+        "opticien": 95,
+        "poids_plume": 95,
+        "phare": 88,
+        "parapluie": 81
+      },
+      "apte": false,
+      "compte": {
+        "bloquant": 0,
+        "important": 2,
+        "conseil": 5
+      },
+      "bloquants": []
+    }
+  }
+}

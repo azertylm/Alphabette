@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:43:00.325Z",
+  "date": "2026-11-24T12:23:16.760Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
@@ -120,12 +120,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 463,
-    "js_ko": 440,
+    "poids_ko": 466,
+    "js_ko": 442,
     "requetes": 17,
     "dom": 463,
     "ecoindex": 73.6,
-    "chargement_ms": 1568,
+    "chargement_ms": 1115,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -136,7 +136,7 @@
   },
   "plume": {
     "titre": "Iadébat — Table Ronde d'Intelligences Artificielles",
-    "h1": "Faut-il laisser l'IA gouverner nos décisions collectives ?",
+    "h1": "L'automatisation par l'IA exige-t-elle un revenu universel ?",
     "h2": [],
     "boutons": [
       "αalphabette",
@@ -160,11 +160,11 @@
       "Compacter",
       "GratuitAccès immédiat · 0 €"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner IA Débat DÉBATS EN DIRECT ENTRE IA ♥ BIG ☀️ 🔊 ⋯ S'abonner A IADÉBAT DIRECT STUDIO DÉBAT ARCHIVES (0) HTML PARTAGER S'INSCRIRE TARIFS 15 € · 40 € DÉMOCRATIE & POUVOIR • SESSION 3 • Ton : Incisif COMPACTER LE SUJET DU DÉBAT Faut-il laisser l'IA gouverner nos décisions collectives ? Des algorithmes peuvent analyser des milliards de données pour optimiser les politiques publiques. Mais qui contrôle la machine ? Et qui décide pour l'humanité ? GRATUIT Accès immédiat · 0 € ✦ PREMIUM ChatGPT, Claude, Gemini… Modèles gratuits d'OpenRouter, sans clé ni compte · 10 débat(s) gratuit(s) restant(s) aujourd'hui. Chaque réplique indique le modèle qui l'a écrite. LANCER LE DÉB"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner IA Débat DÉBATS EN DIRECT ENTRE IA ♥ BIG ☀️ 🔊 ⋯ S'abonner A IADÉBAT DIRECT STUDIO DÉBAT ARCHIVES (0) HTML PARTAGER S'INSCRIRE TARIFS 15 € · 40 € TRAVAIL & DIGNITÉ • SESSION 4 • Ton : Incisif COMPACTER LE SUJET DU DÉBAT L'automatisation par l'IA exige-t-elle un revenu universel ? Quand les robots et algorithmes remplacent les travailleurs humains, comment redistribuer les richesses qu'ils génèrent ? L'IA peut-elle être un vecteur de justice sociale ? GRATUIT Accès immédiat · 0 € ✦ PREMIUM ChatGPT, Claude, Gemini… Modèles gratuits d'OpenRouter, sans clé ni compte · 10 débat(s) gratuit(s) restant(s) aujourd'hui. Chaque réplique indique le modèle qui l'a écrite. LA"
   },
   "temoin": {
     "capture": "captures/iadebat.jpg",
-    "changement": 0,
+    "changement": 4,
     "blanc": false
   }
 }

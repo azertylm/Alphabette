@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/ecobatisol/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:42:34.021Z",
+  "date": "2026-11-24T12:22:56.769Z",
   "scores": {
     "douanier": 100,
     "pouce": 62,
@@ -64,12 +64,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 111,
-    "js_ko": 99,
+    "poids_ko": 112,
+    "js_ko": 100,
     "requetes": 7,
     "dom": 366,
     "ecoindex": 80.9,
-    "chargement_ms": 2124,
+    "chargement_ms": 917,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 96

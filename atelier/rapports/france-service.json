@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/franceservice/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-23T10:44:37.548Z",
+  "date": "2026-11-24T12:24:35.390Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 345,
-    "js_ko": 319,
+    "poids_ko": 347,
+    "js_ko": 320,
     "requetes": 7,
     "dom": 995,
-    "ecoindex": 59.2,
-    "chargement_ms": 2356,
+    "ecoindex": 59.1,
+    "chargement_ms": 1051,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 11
