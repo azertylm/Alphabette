@@ -85,7 +85,9 @@ if (!$a || $a['version'] !== $version) {
 }
 if ($a['sessions'] < FENETRE) {
     $a['sessions']++;
-    if (!empty($e['fatale'])) {
+    // « ResizeObserver loop… » : avertissement du navigateur, l'appli ne plante pas (anciennes sondes en cache).
+    $benin = isset($e['erreur']) && preg_match('/ResizeObserver loop/i', (string) $e['erreur']);
+    if (!empty($e['fatale']) && !$benin) {
         $a['fatales']++;
         $m = isset($e['erreur']) ? mb_substr(preg_replace('/[^\P{C}\n]/u', '', (string) $e['erreur']), 0, 160) : '';
         if ($m !== '' && !in_array($m, $a['erreurs'], true)) $a['erreurs'] = array_slice(array_merge($a['erreurs'], array($m)), -10);
