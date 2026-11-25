@@ -466,6 +466,8 @@ async function preparerLaboratoire() {
     await mkdir(path.join(eu, 'data', 'private'), { recursive: true });
     await cp(path.join(racine, 'data', 'private', '.htaccess'), path.join(eu, 'data', 'private', '.htaccess'));
     await cp(path.join(racine, 'data', 'private', 'cartes-hashes.txt'), path.join(eu, 'data', 'private', 'cartes-hashes.txt')).catch(() => {});
+    await cp(path.join(racine, 'serveur', 'php', 'agent.php'), path.join(eu, 'api', 'agent.php'));
+    await cp(path.join(racine, 'data', 'private', 'agents-codes.txt'), path.join(eu, 'data', 'private', 'agents-codes.txt')).catch(() => {});
     await cp(path.join(racine, 'labo', 'pages', 'admin-cartes.html'), path.join(eu, 'admin-cartes.html'));
   }
   // Lot 6 — Passeport (relais chiffré 120 s), Aidant, Ruche à Idées, Kits, Presse, santé du serveur (.eu seulement).

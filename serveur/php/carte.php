@@ -32,6 +32,8 @@ function k_db(): PDO {
     return $db;
 }
 const K_LIEN = 'https://alphabette.fr';
+/** Fin de validité : 7 mai 2027 inclus (minuit, heure de Paris). */
+const K_FIN = 1809727200; // 2027-05-08 00:00 Europe/Paris
 /** Réseaux proposés : id => [nom, gabarit d'adresse de partage (%u = lien, %t = texte, %s = sujet), phrase automatique]. */
 function k_reseaux(): array {
     return array(
@@ -81,6 +83,7 @@ if ($methode === 'GET' && (isset($_GET['admin']) || isset($_GET['export']))) {
     f_repondre(200, array('parReseau' => $parReseau, 'total' => $total, 'utilisees' => count($liste), 'restantes' => $total - count($liste), 'parLot' => $parLot, 'recentes' => array_slice($liste, 0, 100)));
 }
 
+if (f_maintenant() >= K_FIN) k_page('Carte expirée', '<h1 class="ko">Carte expirée</h1><p>Cette offre s\'est terminée le 7 mai 2027.</p><p><a class="b" href="' . K_LIEN . '">Découvrir Alphabette</a></p>', 410);
 $code = k_norm((string) ($_GET['c'] ?? $_POST['c'] ?? ''));
 if (!isset($_GET['c']) && !isset($_POST['c'])) {
     k_page('Activer ma carte', '<h1>🎁 Activer ma carte</h1><form method="get"><label for="c"><small>Code inscrit sur votre carte</small></label>'

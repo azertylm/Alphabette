@@ -5,6 +5,7 @@
 <body><h1>Cartes offertes</h1>
 <label>Mot de passe administrateur <input id="mdp" type="password" autocomplete="current-password"></label>
 <button id="v">Voir les cartes activées</button><button id="x">Télécharger en CSV</button>
+<button id="ag">Voir les agents (QR personnels)</button>
 <p id="s" role="status"></p><table id="t"></table>
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -14,5 +15,6 @@ $('v').onclick=function(){get('admin').then(function(r){return r.json().then(fun
   $('s').textContent=d.utilisees+' carte(s) activée(s) sur '+d.total+' — '+d.restantes+' restante(s). Réseaux : '+d.parReseau.map(function(r){return r.reseau+' '+r.n}).join(', ');
   $('t').innerHTML='<tr><th>Date</th><th>Lot-N°</th><th>Réseau</th><th>E-mail</th></tr>'+d.recentes.map(function(c){return '<tr><td>'+new Date(c.utilise_le*1000).toLocaleString('fr-FR')+'</td><td>'+c.lot+'-'+c.numero+'</td><td></td><td></td></tr>'}).join('');
   var tr=$('t').rows;d.recentes.forEach(function(c,i){tr[i+1].cells[2].textContent=c.reseau||'';tr[i+1].cells[3].textContent=c.email||''})})})};
+$('ag').onclick=function(){get('admin').then(function(){return fetch('/api/agent.php?admin',{headers:{'X-Admin-Password':$('mdp').value}})}).then(function(r){return r.json().then(function(d){if(!r.ok){$('s').textContent=d.erreur||'Erreur';return}$('s').textContent=d.passages+' passage(s) au total, '+d.agents+' agents.';$('t').innerHTML='<tr><th>Agent</th><th>Passages</th><th>Visiteurs distincts</th></tr>'+d.liste.map(function(a){return '<tr><td>'+a.numero+'</td><td>'+a.passages+'</td><td>'+a.uniques+'</td></tr>'}).join('')})})};
 $('x').onclick=function(){get('export').then(function(r){return r.ok?r.blob():null}).then(function(b){if(!b){$('s').textContent='Mot de passe incorrect.';return}var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cartes-activees.csv';a.click()})};
 </script></body></html>
