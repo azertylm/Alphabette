@@ -36,82 +36,17 @@
         try {
           if ('caches' in window) {
             caches.keys().then(function (keys) {
-              var hadOld = false;
-              Promise.all(
-                keys.map(function (key) {
-                  hadOld = true;
-                  return caches.delete(key);
-                })
-              ).then(function () {
-                if (hadOld && !sessionStorage.getItem('orbit_cache_cleared_v8')) {
-                  sessionStorage.setItem('orbit_cache_cleared_v8', '1');
-                  window.location.reload();
-                }
+              keys.forEach(function (key) {
+                caches.delete(key);
               });
             });
           }
 
-          function checkOrbitLiveVersion() {
-            fetch('/api/orbit/version?_t=' + Date.now(), {
-              cache: 'no-store',
-              headers: { 'Cache-Control': 'no-cache' },
-            })
-              .then(function (r) {
-                return r.ok ? r.json() : null;
-              })
-              .then(function (data) {
-                if (!data || !data.buildHash) return;
-                var prev = localStorage.getItem('orbit_live_build_hash');
-                localStorage.setItem('orbit_live_build_hash', data.buildHash);
-                if (prev && prev !== data.buildHash) {
-                  var guardKey = 'orbit_reloaded_for_' + data.buildHash;
-                  if (!sessionStorage.getItem(guardKey)) {
-                    sessionStorage.setItem(guardKey, '1');
-                    if ('caches' in window) {
-                      caches.keys().then(function (keys) {
-                        Promise.all(keys.map(function (k) { return caches.delete(k); })).finally(function () {
-                          window.location.reload();
-                        });
-                      });
-                    } else {
-                      window.location.reload();
-                    }
-                  }
-                }
-              })
-              .catch(function () {});
-          }
-
-          checkOrbitLiveVersion();
-          document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'visible') {
-              checkOrbitLiveVersion();
-            }
-          });
-
           if ('serviceWorker' in navigator) {
-            navigator.serviceWorker
-              .getRegistrations()
-              .then(function (regs) {
-                regs.forEach(function (reg) {
-                  try {
-                    var p = reg.update();
-                    if (p && typeof p.catch === 'function') {
-                      p.catch(function () {});
-                    }
-                  } catch (err) {}
-                });
-              })
-              .catch(function () {});
             window.addEventListener('load', function () {
               try {
                 navigator.serviceWorker
-                  .register("./sw.js", { updateViaCache: 'none' })
-                  .then(function (reg) {
-                    try {
-                      reg.update().catch(function () {});
-                    } catch (e) {}
-                  })
+                  .register('/sw.js', { updateViaCache: 'none' })
                   .catch(function () {});
               } catch (err) {}
             });
@@ -119,20 +54,10 @@
         } catch (e) {}
       })();
     </script>
-    <script type="module" crossorigin src="./assets/index-C-UdU8ZT.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Gn1WiuzI.css">
-    <style>
-      /* Laboratoire (19/11/2026) : sur téléphone, la barre de recherche était écrasée (largeur 0) et « Publier »
-         dépassait de l'écran. On passe à la ligne : boutons en haut, recherche pleine largeur dessous.
-         À reporter dans le code source d'Orbit à la prochaine reconstruction (sélecteurs Tailwind du bundle). */
-      @media (max-width: 520px) {
-        main header > div.flex.items-center.gap-2.w-full { flex-wrap: wrap; row-gap: .5rem; }
-        main header > div.flex.items-center.gap-2.w-full > form { order: 9; flex: 1 1 100%; }
-      }
-    </style>
+    <script type="module" crossorigin src="./assets/index-Cqf2MyM-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CcQemaRd.css">
   </head>
   <body style="background-color: #090A0F; color: #FFFFFF; margin: 0;">
-    <script src="https://alphabette.fr/assets/alphabette-barre.js" data-cle="orbit" data-nom="Orbit" data-sous-titre="Toutes les vidéos, simplement" data-accent="#7c5cff" data-big="police"></script>
     <div id="root"></div>
   </body>
 </html>
