@@ -25,5 +25,11 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run lint
       - run: bun run check:a11y
+      - name: Installer Playwright (à part des dépendances du site)
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm install --no-audit --no-fund playwright@1
+          cd /tmp/pw && npx playwright install --with-deps chromium
       - run: bun run test
+        env:
+          NODE_PATH: /tmp/pw/node_modules
       - run: bun run build
