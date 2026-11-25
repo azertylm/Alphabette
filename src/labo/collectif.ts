@@ -108,7 +108,14 @@ export async function signaler(s: { app_id: string; motif: string; details: stri
       body: JSON.stringify({ action: 'signaler', ...s, adresse: window.location.href }),
     });
     const d = await r.json().catch(() => ({}));
-    if (r.ok) return { ok: true, message: 'Merci : votre signalement est bien parti. Alphabette l\'examine sans délai.' };
+    if (r.ok) {
+      // Compteur citoyen : 3 signalements d'utilisateurs distincts mettent l'appli en pause (paused_abuse) + alerte admin.
+      fetch('/api/upload-guard.php', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'signaler', app_id: s.app_id, motif: s.motif }),
+      }).catch(() => {});
+      return { ok: true, message: 'Merci : votre signalement est bien parti. Alphabette l\'examine sans délai.' };
+    }
     return { ok: false, message: d.erreur || 'Envoi impossible pour le moment.' };
   } catch {
     return { ok: false, message: 'Pas de connexion : réessayez.' };

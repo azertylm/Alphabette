@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mes revenus — créateurs Alphabette</title>
+<meta name="description" content="Créateurs Alphabette : vos abonnés, vos revenus (15 €/an = 10 € pour vous), votre solde et vos virements dès 20 €.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .chiffres { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .chiffre { background: var(--carte); border: 1px solid var(--trait); border-radius: 1rem; padding: .8rem; }
+  .chiffre b { display: block; font-size: 1.5rem; line-height: 1.1; }
+  .chiffre span { font-size: .9rem; color: var(--doux); }
+  .jauge { height: 14px; border-radius: 999px; background: var(--trait); overflow: hidden; margin: .5rem 0; }
+  .jauge > div { height: 100%; background: var(--acc); width: 0; transition: width .4s; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  td, th { padding: .5rem .3rem; border-top: 1px solid var(--trait); text-align: left; color: var(--encre); }
+  td.m { text-align: right; white-space: nowrap; font-weight: 700; }
+  .filtres { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .danger { border-color: var(--err) !important; background: transparent !important; color: var(--err) !important; }
+  dialog { border: 1px solid var(--trait); border-radius: 1rem; background: var(--carte); color: var(--encre); max-width: 26rem; width: calc(100% - 2rem); }
+  dialog::backdrop { background: rgba(0,0,0,.5); }
+  input[type=number], input[type=date] { display: block; width: 100%; margin-top: .35rem; min-height: 48px; padding: .6rem .75rem; border-radius: .7rem; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); font: 500 1rem/1.4 system-ui, sans-serif; }
+  input.code { font-size: 1.6rem !important; letter-spacing: .4em; text-align: center; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="mes-revenus" data-nom="Mes revenus" data-sous-titre="Espace créateurs" data-accent="#0f766e"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Mes revenus</h1>
+  <p class="pastille" id="rappel">15 €/an = 10 € créateur / 5 € Alphabette</p>
+
+  <section id="connexion" aria-labelledby="t-cnx">
+    <h2 id="t-cnx">Se connecter</h2>
+    <p>Sans mot de passe : vous recevez un code à 6 chiffres par e-mail.</p>
+    <form id="f-email">
+      <label class="champ">Votre adresse e-mail <input type="email" id="email" autocomplete="email" required></label>
+      <div class="actions"><button type="submit">Recevoir mon code</button></div>
+    </form>
+    <form id="f-code" class="cache">
+      <label class="champ">Code reçu <input id="code-cnx" class="code" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" required></label>
+      <div class="actions"><button type="submit">Me connecter</button></div>
+    </form>
+    <p class="message" id="msg-cnx" role="status"></p>
+  </section>
+
+  <section id="tableau" class="cache" aria-labelledby="t-tab">
+    <h2 id="t-tab">Mon tableau de bord</h2>
+    <div class="chiffres">
+      <div class="chiffre"><b id="v-abonnes">0</b><span>abonnés actifs</span></div>
+      <div class="chiffre"><b id="v-revenus">0,00 €</b><span>revenus (abonnés × 10 €)</span></div>
+      <div class="chiffre"><b id="v-attente">0,00 €</b><span>gains en attente (14 jours)</span></div>
+      <div class="chiffre"><b id="v-dispo">0,00 €</b><span>solde disponible</span></div>
+    </div>
+    <ul class="liste-simple" id="v-applis"></ul>
+
+    <h2>Virement</h2>
+    <div class="carte">
+      <p><strong>Seuil : 20,00 €</strong> disponibles. <span id="v-progression"></span></p>
+      <div class="jauge" role="progressbar" aria-label="Progression vers le virement" aria-valuemin="0" aria-valuemax="100" id="jauge"><div></div></div>
+      <p id="v-iban">Aucun IBAN enregistré.</p>
+      <form id="f-iban">
+        <label class="champ">IBAN <span class="aide">Chiffré, jamais affiché en entier.</span><input id="iban" autocomplete="off" spellcheck="false" placeholder="FR76 …"></label>
+        <div class="actions"><button type="submit" class="secondaire">Enregistrer l'IBAN</button></div>
+      </form>
+      <div class="actions"><button type="button" id="b-virement" disabled>Demander mon virement</button></div>
+      <p class="message" id="msg-vir" role="status"></p>
+    </div>
+
+    <h2>Historique</h2>
+    <form id="f-histo" class="filtres">
+      <label class="champ">Type <select id="h-type"><option value="">Tout</option><option value="vente">Ventes</option><option value="remboursement">Remboursements</option><option value="virement">Virements</option><option value="virement_annule">Virements annulés</option></select></label>
+      <label class="champ">Appli <input id="h-app" placeholder="toutes"></label>
+      <label class="champ">Du <input type="date" id="h-du"></label>
+      <label class="champ">Au <input type="date" id="h-au"></label>
+    </form>
+    <table><tbody id="histo"><tr><td>Aucune opération pour l'instant.</td></tr></tbody></table>
+
+    <h2>Mon profil</h2>
+    <div class="carte">
+      <p>Aucun cookie publicitaire, aucun traceur. Vos données vous appartiennent.</p>
+      <div class="actions">
+        <button type="button" class="secondaire" id="b-export">Exporter mes données (JSON)</button>
+        <button type="button" class="danger" id="b-supprimer">Supprimer mon compte</button>
+        <button type="button" class="secondaire" id="b-deco">Me déconnecter</button>
+      </div>
+      <p class="message" id="msg-profil" role="status"></p>
+    </div>
+  </section>
+
+  <section id="simulation" class="cache" aria-labelledby="t-sim">
+    <h2 id="t-sim">Simulation (indicative)</h2>
+    <label class="champ">Nombre d'abonnés <input type="number" id="s-n" min="0" max="100000" value="10" inputmode="numeric"></label>
+    <p><strong id="s-res">100,00 € par an</strong> pour vous. Estimation sans garantie.</p>
+  </section>
+
+  <footer class="pied"><a href="/mentions-legales/">Mentions légales</a><a href="/confidentialite/">Confidentialité</a><a href="/cgv/">CGV</a></footer>
+</main>
+
+<dialog id="d-otp" aria-labelledby="t-otp">
+  <form method="dialog" id="f-otp">
+    <h2 id="t-otp" style="margin-top:0">Confirmer le virement</h2>
+    <p id="otp-texte">Un code à 6 chiffres vient de partir par e-mail (valable 15 minutes).</p>
+    <label class="champ">Code <input id="code-vir" class="code" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code"></label>
+    <p class="message" id="msg-otp" role="status"></p>
+    <div class="actions"><button type="button" id="b-otp">Confirmer</button><button type="button" class="secondaire" id="b-otp-fermer">Annuler</button></div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+  var API = '/api/';
+  var CLE = 'alphabette_createur_jeton';
+  var SEUIL = 2000;
+  function $(id) { return document.getElementById(id); }
+  function euros(c) { c = Math.trunc(c); var s = c < 0 ? '-' : ''; c = Math.abs(c); return s + Math.floor(c / 100) + ',' + String(c % 100).padStart(2, '0') + ' €'; }
+  function jeton() { try { return localStorage.getItem(CLE) || ''; } catch (e) { return ''; } }
+  function poserJeton(j) { try { j ? localStorage.setItem(CLE, j) : localStorage.removeItem(CLE); } catch (e) {} }
+  function msg(id, t, ok) { var m = $(id); m.textContent = t || ''; m.className = 'message ' + (ok ? 'ok' : 'err'); }
+  function appel(fichier, corps, get) {
+    var h = {}; var j = jeton();
+    if (j) h.Authorization = 'Bearer ' + j;
+    if (corps) h['Content-Type'] = 'application/json';
+    return fetch(API + fichier + (get ? '?' + get : ''), { method: corps ? 'POST' : 'GET', headers: h, body: corps ? JSON.stringify(corps) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { d._s = r.status; return d; }); })
+      .catch(function () { return { _s: 0, erreur: 'Pas de connexion : réessayez.' }; });
+  }
+  var emailCourant = '';
+  $('f-email').addEventListener('submit', function (e) {
+    e.preventDefault(); emailCourant = $('email').value.trim();
+    appel('billing.php', { action: 'connexion', email: emailCourant }).then(function (d) {
+      if (d._s === 200) { $('f-code').classList.remove('cache'); $('code-cnx').focus(); msg('msg-cnx', d.message, true); } else msg('msg-cnx', d.erreur);
+    });
+  });
+  $('f-code').addEventListener('submit', function (e) {
+    e.preventDefault();
+    appel('billing.php', { action: 'code', email: emailCourant, code: $('code-cnx').value.trim() }).then(function (d) {
+      if (d._s === 200) { poserJeton(d.jeton); charger(); } else msg('msg-cnx', d.erreur);
+    });
+  });
+  function charger() {
+    if (!jeton()) return;
+    appel('billing.php', null, 'revenus').then(function (d) {
+      if (d._s === 401) { poserJeton(''); return; }
+      if (d._s !== 200) return;
+      $('connexion').classList.add('cache'); $('tableau').classList.remove('cache');
+      $('v-abonnes').textContent = d.abonnesActifs; $('v-revenus').textContent = euros(d.revenusCents);
+      $('v-attente').textContent = euros(d.pendingCents); $('v-dispo').textContent = euros(d.availableBalanceCents);
+      var ul = $('v-applis'); ul.textContent = '';
+      (d.applis || []).forEach(function (a) { var li = document.createElement('li'); li.textContent = a.slug + ' — ' + a.abonnesActifs + ' abonné(s), ' + euros(a.revenusCents); ul.appendChild(li); });
+      var p = d.progressionVirement; $('jauge').firstElementChild.style.width = p + '%'; $('jauge').setAttribute('aria-valuenow', p);
+      var manque = SEUIL - d.availableBalanceCents;
+      $('v-progression').textContent = d.virementEnCours ? 'Un virement est en cours.' : (manque > 0 ? 'Encore ' + euros(manque) + ' avant le virement.' : 'Vous pouvez demander votre virement.');
+      $('v-iban').textContent = d.ibanMasque ? 'IBAN : ' + d.ibanMasque : 'Aucun IBAN enregistré.';
+      $('b-virement').disabled = !(d.availableBalanceCents >= SEUIL && d.ibanMasque && !d.virementEnCours);
+      historique();
+    });
+  }
+  function historique() {
+    var q = 'historique&type=' + encodeURIComponent($('h-type').value) + '&app=' + encodeURIComponent($('h-app').value.trim()) + '&du=' + $('h-du').value + '&au=' + $('h-au').value;
+    appel('billing.php', null, q).then(function (d) {
+      var tb = $('histo'); tb.textContent = '';
+      var l = d.lignes || [];
+      if (!l.length) { tb.innerHTML = '<tr><td>Aucune opération.</td></tr>'; return; }
+      l.forEach(function (x) {
+        var tr = document.createElement('tr');
+        var t1 = document.createElement('td'); t1.textContent = new Date(x.date).toLocaleDateString('fr-FR') + ' · ' + (x.libelle || x.type) + (x.app ? ' (' + x.app + ')' : '') + (x.enAttente ? ' — en attente' : '');
+        var t2 = document.createElement('td'); t2.className = 'm'; t2.textContent = euros(x.montantCents);
+        tr.appendChild(t1); tr.appendChild(t2); tb.appendChild(tr);
+      });
+    });
+  }
+  $('f-histo').addEventListener('change', historique);
+  $('f-iban').addEventListener('submit', function (e) {
+    e.preventDefault();
+    appel('billing.php', { action: 'iban', iban: $('iban').value }).then(function (d) {
+      if (d._s === 200) { $('iban').value = ''; msg('msg-vir', 'IBAN enregistré : ' + d.ibanMasque, true); charger(); } else msg('msg-vir', d.erreur);
+    });
+  });
+  var verrou = false;
+  $('b-virement').addEventListener('click', function () {
+    if (verrou) return; verrou = true; $('b-virement').disabled = true;
+    appel('payouts.php', { action: 'demander' }).then(function (d) {
+      verrou = false;
+      if (d._s !== 200) { msg('msg-vir', d.erreur); charger(); return; }
+      $('otp-texte').textContent = 'Montant : ' + euros(d.montantCents) + '. ' + d.message; msg('msg-otp', '');
+      $('code-vir').value = ''; $('d-otp').showModal(); $('code-vir').focus();
+    });
+  });
+  $('b-otp').addEventListener('click', function () {
+    if (verrou) return; verrou = true; $('b-otp').disabled = true;
+    appel('payouts.php', { action: 'confirmer', code: $('code-vir').value.trim() }).then(function (d) {
+      verrou = false; $('b-otp').disabled = false;
+      if (d._s === 200) { $('d-otp').close(); msg('msg-vir', d.message, true); charger(); } else msg('msg-otp', d.erreur);
+    });
+  });
+  $('b-otp-fermer').addEventListener('click', function () { $('d-otp').close(); charger(); });
+  $('b-export').addEventListener('click', function () {
+    appel('gdpr.php', null, 'export').then(function (d) {
+      if (d._s !== 200) { msg('msg-profil', d.erreur); return; }
+      delete d._s;
+      var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
+      a.download = 'alphabette-mes-donnees.json'; document.body.appendChild(a); a.click(); a.remove();
+      msg('msg-profil', 'Fichier téléchargé.', true);
+    });
+  });
+  $('b-supprimer').addEventListener('click', function () {
+    var c = window.prompt('Supprimer définitivement votre compte ? Seules les écritures comptables obligatoires sont gardées, sans votre identité. Tapez SUPPRIMER pour confirmer.');
+    if (c !== 'SUPPRIMER') return;
+    appel('gdpr.php', { action: 'supprimer', confirmation: 'SUPPRIMER' }).then(function (d) {
+      if (d._s === 200) { poserJeton(''); alert(d.message); location.reload(); } else msg('msg-profil', d.erreur);
+    });
+  });
+  $('b-deco').addEventListener('click', function () { appel('billing.php', { action: 'deconnexion' }).then(function () { poserJeton(''); location.reload(); }); });
+  // Simulation indicative : seulement sur le Laboratoire (.eu).
+  if (/alphabette\.eu$|^localhost$|^127\./.test(location.hostname)) {
+    $('simulation').classList.remove('cache');
+    var sim = function () { var n = Math.max(0, Math.min(100000, parseInt($('s-n').value, 10) || 0)); $('s-res').textContent = euros(n * 1000) + ' par an'; };
+    $('s-n').addEventListener('input', sim); sim();
+  }
+  charger();
+})();
+</script>
+</body>
+</html>
