@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "bun run build:audio && bun run build:pop && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "bun run build:audio && bun run build:pop && bun run build:votes && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "build:static": "bun run build && node scripts/build-static.mjs && node scripts/collect-apps.mjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
@@ -21,7 +21,11 @@
     "test:atelier": "node tests/atelier/test_atelier.mjs",
     "test": "bun run test:atelier",
     "build:audio": "esbuild packages/shell/src/audio/navigateur.ts --bundle --format=iife --minify --target=es2019 --outfile=public/assets/alphabette-audio.js",
-    "build:pop": "esbuild packages/shell/src/pop/navigateur.ts --bundle --format=iife --minify --target=es2019 --outfile=public/assets/alphabette-effets.js && esbuild packages/shell/src/pop/pop.css --minify --outfile=public/assets/alphabette-pop.css"
+    "build:pop": "esbuild packages/shell/src/pop/navigateur.ts --bundle --format=iife --minify --target=es2019 --outfile=public/assets/alphabette-effets.js && esbuild packages/shell/src/pop/pop.css --minify --outfile=public/assets/alphabette-pop.css",
+    "build:votes": "esbuild packages/shell/src/labo/votesNavigateur.ts --bundle --format=iife --minify --target=es2019 --outfile=public/assets/alphabette-votes.js",
+    "test:createurs": "python3 tests/createurs/test_createurs.py",
+    "test:lot5": "python3 tests/lot5/test_lot5.py",
+    "audit:lot5": "node scripts/audit-lot5.mjs"
   },
   "dependencies": {
     "@alphabette/shell": "workspace:*",

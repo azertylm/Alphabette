@@ -15,7 +15,7 @@ const AC: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <mark className="legal__completer">[{children}]</mark>
 );
 
-const MAJ = `Dernière mise à jour : ${MODE_LABO ? '20' : '19'} novembre 2026`;
+const MAJ = 'Dernière mise à jour : 25 novembre 2026';
 const MAIL = 'azertylm@gmail.com';
 const Mail = () => <a href={`mailto:${MAIL}`}>{MAIL}</a>;
 
@@ -111,13 +111,12 @@ export const ConditionsVente: React.FC = () => (
     <p>Selon les offres affichées au moment de la commande :</p>
     <ul>
       <li><strong>Pass Application (annuel) — 15 € / an :</strong> accès complet pendant 12 mois à une application de l'écosystème Alphabette, sans publicité.</li>
-      <li><strong>Pass Écosystème complet (annuel) — 40 € / an :</strong> accès complet pendant 12 mois à l'ensemble des applications de l'écosystème, sans publicité.</li>
       <li><strong>Essai :</strong> 7 jours d'essai offerts.</li>
       {MODE_LABO ? (
         <>
         <li><strong>Offre de lancement :</strong> toutes les applications de l'écosystème sont gratuites <strong>au moins jusqu'au 7 mai 2027 inclus</strong>. Aucun Pass ni pack de crédits n'est vendu avant cette date ; les dons restent possibles. Le Vendeur peut prolonger cette période, jamais la raccourcir.</li>
         <li><strong>Pass Découverte — gratuit, 48 heures :</strong> sur alphabette.eu, accès découverte aux fonctions Premium (notamment quelques débats Premium par jour sur <em>IA Débat</em>) pendant exactement 48 heures sur l'appareil où il est ouvert, sans carte bancaire. Il s'arrête seul et ne devient jamais payant.</li>
-        <li><strong>Pass Cadeau (15 € ou 40 €) :</strong> le même Pass annuel, payé par le Client pour un tiers. Le Client reçoit un code et une carte cadeau à imprimer. Le code s'active dans les 12 mois suivant l'achat ; les 12 mois du Pass commencent le jour de l'activation.</li>
+        <li><strong>Pass Cadeau (15 €) :</strong> le même Pass annuel, payé par le Client pour un tiers. Le Client reçoit un code et une carte cadeau à imprimer. Le code s'active dans les 12 mois suivant l'achat ; les 12 mois du Pass commencent le jour de l'activation.</li>
         <li><strong>Packs de crédits IA Débat :</strong> achat ponctuel, sans abonnement, de crédits pour des débats en mode Premium sur <em>IA Débat</em>, au-delà du quota gratuit quotidien (par exemple 5 € pour 50 débats Premium ; 1 crédit est décompté par débat Premium lancé). Les crédits n'expirent pas tant que le service est exploité.</li>
         <li><strong>Soutien « Mécène du Labo » :</strong> don ponctuel par carte (montant au choix), sans contrepartie ni abonnement.</li>
         </>
@@ -163,7 +162,7 @@ export const ConditionsVente: React.FC = () => (
 
     <h2>Article 5 — Durée, sans renouvellement automatique</h2>
     <p className="legal__encart">
-      Les Pass annuels (15 € et 40 €) durent <strong>12 mois</strong>. <strong>Il n'y a aucun renouvellement
+      Le Pass annuel (15 € par application) dure <strong>12 mois</strong>. <strong>Il n'y a aucun renouvellement
       automatique</strong> : le Pass expire à l'issue des 12 mois, sans prélèvement. Le Client reste libre de le
       renouveler lui-même.
     </p>
@@ -241,6 +240,28 @@ export const ConditionsVente: React.FC = () => (
             <strong>Retrait :</strong> pour faire retirer un pseudo, un avis ou une idée, écrivez à <Mail />.
           </li>
         </ul>
+      </>
+    )}
+
+    {MODE_LABO && (
+      <>
+        <h2>Article 11 — Services aux créateurs, recommandations et Labo communautaire (alphabette.eu)</h2>
+        <p>
+          Tous les prix sont TTC, en euros, payés une seule fois (aucun renouvellement automatique), par carte ou avec le
+          solde créateur. Pour un abonnement de 15 € vendu, le créateur reçoit toujours 10 € ; les rémunérations
+          ci-dessous sont prises sur la part d'Alphabette (5 €) et ne réduisent jamais celle du créateur.
+        </p>
+        <ul>
+          <li><strong>Recommandations :</strong> 1,50 € par abonnement apporté dans les 7 jours par un lien recommandé (1 € depuis la vitrine « Mes 3 applis préférées »), 1 € par abonnement vendu par un créateur parrainé, pendant 12 mois. Pas de rémunération pour un achat fait par soi-même ou pour sa propre appli. Aucun cookie : le lien porte un code anonyme.</li>
+          <li><strong>Invitation d'un ami :</strong> 90 jours offerts au parrain quand l'ami s'abonne, 12 mois au plus par année civile ; retirés si l'abonnement est remboursé.</li>
+          <li><strong>Essai :</strong> 7 jours sans carte bancaire, une fois par personne et par application.</li>
+          <li><strong>Boost (10 €) :</strong> 7 jours de mise en avant sur alphabette.fr, 4 places au plus en même temps ; vendu seulement si une place est libre.</li>
+          <li><strong>Packs de licences (65 € / 120 € / 275 € pour 5 / 10 / 25 licences d'un an) :</strong> codes à attribuer et réattribuer ; le créateur reçoit au moins 10 € par licence.</li>
+          <li><strong>Domaine personnalisé (20 € / an), codes cadeaux (5 € par code d'un an, offerts par le créateur de l'application), café (3 €, dont 2 € pour le créateur), audit IA Pro (5 €).</strong></li>
+          <li><strong>Bounties :</strong> la récompense (10 € au moins) est mise sous séquestre à la commande ; 90 % vont à la personne qui réussit le défi, 10 % à Alphabette. Un défi annulé est rendu au solde de son auteur.</li>
+          <li><strong>Labo communautaire :</strong> les contributions sont gratuites. Statuts et jours gratuits sur alphabette.fr n'ont aucune valeur marchande, ne sont ni remboursables ni échangeables contre de l'argent ; un code de jours sert une seule fois. Une contribution peut être vérifiée par un outil automatique puis par une personne ; les doublons et abus ne donnent rien.</li>
+        </ul>
+        <p>Droit de rétractation : 14 jours, sauf pour un service pleinement exécuté avant ce délai avec votre accord (boost en cours, code déjà activé).</p>
       </>
     )}
 

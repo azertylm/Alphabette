@@ -264,7 +264,7 @@ export const AppGrid: React.FC<AppGridProps> = ({
           <div>
             <h4 className="text-sm font-bold text-emerald-950">Architecture extensible jusqu'à 50+ applications</h4>
             <p className="text-xs text-emerald-800">
-              Chaque nouvelle application s'ajoute automatiquement au catalogue et à l'écosystème (40 €/an) sans surcoût pour les abonnés.
+              Chaque nouvelle application s'ajoute automatiquement au catalogue, au même prix unique de 15 € / an.
             </p>
           </div>
         </div>

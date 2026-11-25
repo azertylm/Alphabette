@@ -57,13 +57,13 @@ export const DB_TABLES: DBTableDef[] = [
   },
   {
     name: 'subscriptions',
-    purpose: 'Gestion centrale des abonnements : Écosystème complet (40 € / an), Une application (15 € / an) ou Essai 7 j.',
+    purpose: 'Gestion centrale des abonnements : une application (15 € / an = 10 € créateur + 5 € Alphabette) ou Essai 7 j.',
     fields: [
       { name: 'id', type: 'UUID', constraints: 'PRIMARY KEY DEFAULT gen_random_uuid()', description: 'ID unique d’abonnement' },
       { name: 'tenant_id', type: 'UUID', constraints: 'NOT NULL REFERENCES tenants(id) ON DELETE CASCADE', description: 'Tenant facturé' },
       { name: 'user_id', type: 'UUID', constraints: 'NOT NULL REFERENCES users(id) ON DELETE CASCADE', description: 'Titulaire du compte payeur' },
       { name: 'plan_type', type: 'VARCHAR(32)', constraints: 'NOT NULL', description: 'trial_7d, app, ecosystem' },
-      { name: 'annual_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant annuel en centimes (ex : 1500 pour 15 €, 4000 pour 40 €)' },
+      { name: 'annual_price_cents', type: 'INTEGER', constraints: 'NOT NULL', description: 'Montant annuel en centimes (toujours 1500 pour 15 €)' },
       { name: 'status', type: 'VARCHAR(32)', constraints: 'DEFAULT \'active\'', description: 'active, past_due, canceled, trialing' },
       { name: 'current_period_end', type: 'TIMESTAMPTZ', constraints: 'NOT NULL', description: 'Échéance de renouvellement annuel' },
       { name: 'payment_provider', type: 'VARCHAR(32)', constraints: 'DEFAULT \'stripe\'', description: 'Stripe ou passerelle souveraine' }
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS applications (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. ABONNEMENTS (15 €/an pour une application ou 40 €/an pour l'écosystème)
+-- 4. ABONNEMENTS (15 €/an par application : 1000 c. créateur + 500 c. Alphabette)
 CREATE TABLE IF NOT EXISTS subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,

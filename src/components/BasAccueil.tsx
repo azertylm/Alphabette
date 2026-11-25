@@ -54,11 +54,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
           )}
           <div className="accueil__carte">
             <strong>{config.perAppPerYear} € par an</strong>
-            <span>Une application de votre choix.</span>
-          </div>
-          <div className="accueil__carte accueil__carte--vedette">
-            <strong>{config.ecosystemPerYear} € par an</strong>
-            <span>Toutes les applications, d'aujourd'hui et de demain.</span>
+            <span>Par application, dont 10 € pour son créateur.</span>
           </div>
         </div>
         {MODE_LABO && gratuitJusquAu && (
@@ -74,13 +70,13 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
               <p role="status">
                 {pass.type === 'decouverte'
                   ? <>⏳ Pass Découverte : <strong>{tempsRestant(pass.fin)}</strong> restantes</>
-                  : <>✅ {pass.offre === 'ecosysteme' ? 'Pass Écosystème' : `Pass ${pass.app_nom ?? 'Application'}`} actif</>}
+                  : <>✅ {`Pass ${pass.app_nom ?? 'Application'}`} actif</>}
               </p>
             ) : finie && gratuitJusquAu ? (
               <p role="status">Vos 48 h de découverte sont terminées. Le débat Premium offert revient chaque jour, et tout reste gratuit jusqu'au {dateLongue(gratuitJusquAu)}.</p>
             ) : finie ? (
               <p role="status">
-                Vos 48 h de découverte sont terminées. Pour continuer : Pass {config.perAppPerYear} € ou {config.ecosystemPerYear} € —{' '}
+                Vos 48 h de découverte sont terminées. Pour continuer : {config.perAppPerYear} € par an et par appli —{' '}
                 <strong>12 mois, aucun renouvellement automatique.</strong>
               </p>
             ) : (
@@ -103,7 +99,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
           {MODE_LABO
             ? gratuitJusquAu
               ? `Offre de lancement : gratuit jusqu'au ${dateLongue(gratuitJusquAu)} inclus. Ensuite : 12 mois, aucun renouvellement automatique.`
-              : `12 mois, aucun renouvellement automatique.${/^https:\/\/buy\.stripe\.com\//.test(config.paymentLinks.ecosystem) ? '' : ' Le paiement en ligne ouvre bientôt : en attendant, les applications s\'utilisent librement.'}`
+              : `12 mois, aucun renouvellement automatique.${/^https:\/\/buy\.stripe\.com\//.test(config.paymentLinks.perApp) ? '' : ' Le paiement en ligne ouvre bientôt : en attendant, les applications s\'utilisent librement.'}`
             : 'Le paiement en ligne n\'est pas encore ouvert : aujourd\'hui, les applications s\'utilisent librement.'}
         </p>
         <p className="accueil__note">

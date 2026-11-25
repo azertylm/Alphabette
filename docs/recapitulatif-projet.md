@@ -85,7 +85,7 @@ dont 14 actives.
 C'est **le bandeau que l'on retrouve au sommet de chaque application** :
 
 ```
-[Barre 1 — écosystème] ◉ ALPHABETTE · ♥ DON · [les 5 sites] · 3/16 (7 essai) · ⭐ Pass 40 €/an
+[Barre 1 — écosystème] ◉ ALPHABETTE · ♥ DON · [les 5 sites] · 3/16 (7 essai) · ⭐ Abonnement 15 €/an
 [Barre 2 — application] ☰ Nom App + SOUS-TITRE · ♥ DON · Mon Compte · BIG ● · Clé API : Prêt ● · Plein Écran · ☀ Jour
 ```
 
@@ -95,7 +95,7 @@ C'est **le bandeau que l'on retrouve au sommet de chaque application** :
 | ♥ DON | lien de dons de l'application |
 | Les sites | raccourcis vers les autres applications (pastilles) |
 | `3/16 (7 essai)` | compteur : applis débloquées / total + jours d'essai |
-| ⭐ Pass 40 €/an | résumé de l'offre → envoi vers le paiement |
+| ⭐ Abonnement 15 €/an | résumé de l'offre → envoi vers le paiement |
 | Mon Compte | espace compte (SSO alphabette) |
 | BIG | 3 densités d'affichage : Compact → Normal → Grand |
 | Clé API : Prêt | état de la clé Mistral (BYOK ou managée) |
@@ -135,7 +135,6 @@ correctement et la palette suit la couleur choisie.
 | Offre | Prix |
 |---|---|
 | Une application | **15 € / an** |
-| Tout l'écosystème | **40 € / an** |
 | Essai | **7 jours offerts** |
 
 La **source de vérité est le hub** : `/api/config.json`. La base commune récupère

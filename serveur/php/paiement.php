@@ -169,7 +169,7 @@ function envoyer_mail(string $a, string $sujet, string $corps): void {
 
 function public_json(string $nom): array { return lire_json(__DIR__ . '/' . $nom, array()); }
 
-/** Les prix des Pass viennent de la configuration du hub (api/config.json), le reste de data/paiements.json. */
+/** Un seul Pass payant : 15 €/an par application (aucun bouquet, CLAUDE.md). Les prix des Pass viennent de la configuration du hub (api/config.json), le reste de data/paiements.json. */
 function produits(): array {
     $hub = public_json('config.json');
     $p = public_json('paiements.json');
@@ -177,7 +177,6 @@ function produits(): array {
     $euros = function ($v, $defaut) { return (int) round((is_numeric($v) ? (float) $v : $defaut) * 100); };
     return array(
         'pass_app'        => array('nom' => 'Pass Application (12 mois)', 'prix' => $euros($hub['pricing']['perApp'] ?? null, 15), 'lien' => (string) ($l['pass_app'] ?? ''), 'type' => 'pass', 'offre' => 'app'),
-        'pass_ecosysteme' => array('nom' => 'Pass Écosystème (12 mois)', 'prix' => $euros($hub['pricing']['ecosystem'] ?? null, 40), 'lien' => (string) ($l['pass_ecosysteme'] ?? ''), 'type' => 'pass', 'offre' => 'ecosysteme'),
         'credits_iadebat' => array('nom' => 'Pack de crédits IA Débat', 'prix' => $euros($p['credits']['prix'] ?? null, 5), 'lien' => (string) ($l['credits_iadebat'] ?? ''), 'type' => 'credits'),
         'mecene_5'        => array('nom' => 'Soutien au Laboratoire (5 €)', 'prix' => 500, 'lien' => (string) ($l['mecene_5'] ?? ''), 'type' => 'mecene'),
         'mecene_10'       => array('nom' => 'Soutien au Laboratoire (10 €)', 'prix' => 1000, 'lien' => (string) ($l['mecene_10'] ?? ''), 'type' => 'mecene'),
@@ -194,7 +193,7 @@ function gratuit_jusqu_au(): ?string {
     $fin = DateTime::createFromFormat('Y-m-d H:i:s', $d . ' 23:59:59', new DateTimeZone('Europe/Paris'));
     return $fin && $fin->getTimestamp() >= time() ? $d : null;
 }
-function payant(string $produit): bool { return in_array($produit, array('pass_app', 'pass_ecosysteme', 'credits_iadebat'), true); }
+function payant(string $produit): bool { return in_array($produit, array('pass_app', 'credits_iadebat'), true); }
 
 function credits_par_pack(): int { return max(1, (int) (public_json('paiements.json')['credits']['debats_par_pack'] ?? 50)); }
 function activations_max(): int { return max(1, (int) (public_json('paiements.json')['pass']['appareils'] ?? 3)); }
@@ -289,7 +288,6 @@ function produit_de(array $s, ?array $commande): ?string {
     $candidat = $commande['produit'] ?? ($s['metadata']['produit'] ?? null);
     if (is_string($candidat) && isset($produits[$candidat])) return $candidat;
     $montant = (int) ($s['amount_total'] ?? 0);
-    if ($montant === $produits['pass_ecosysteme']['prix']) return 'pass_ecosysteme';
     if ($montant === $produits['pass_app']['prix']) return 'pass_app';
     return $montant >= 100 ? 'mecene_libre' : null;
 }

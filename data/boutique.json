@@ -1,0 +1,15 @@
+{
+  "info": "Lot 5 — liens de paiement Stripe PUBLICS de la boutique (aucune clé ici). Chaque lien : paiement unique, prix FIXE égal au prix du serveur (serveur/php/croissance-commun.php), sauf « bounty » (le client choisit le montant : il est contrôlé contre la commande). La page ajoute ?client_reference_id=cmd_… : le webhook (api/webhooks.php) retrouve la commande et vérifie le montant au centime près. Lien vide = paiement par carte pas encore ouvert (le paiement par solde créateur reste possible). Abonnement 15 €/an : un lien par appli dans « abonnement » (métadonnée app=<slug>). Voir docs/labo/LOT5-CROISSANCE.md.",
+  "liens": {
+    "abonnement": {},
+    "boost": "",
+    "pack_5": "",
+    "pack_10": "",
+    "pack_25": "",
+    "domaine": "",
+    "cadeau": "",
+    "pourboire": "",
+    "audit_pro": "",
+    "bounty": ""
+  }
+}

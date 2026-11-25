@@ -82,6 +82,8 @@ export { useContextualFeedback, MicroSondage, type OptionsSondage } from './labo
 export { envoyerAvisLabo, soutenirTicket, ticketsOuverts, API_AVIS, type NouvelAvis, type TicketOuvert, type CategorieAvis } from './labo/avis';
 export { nettoyerTexte, clesStockageSures, contexteTechnique, plateformeSimple, cheminCourant, surLeLaboratoire, type ContexteTechnique } from './labo/confidentialite';
 export { similarite, doublonsProbables, normaliser } from './labo/similarite';
+export { AppIsolee, SANDBOX_CREATEUR, CSP_SANDBOX_CREATEUR, type AppIsoleeProps } from './labo/AppIsolee';
+export { demarrerVotes, envoyerSignalement, ouvrirSignalement, messageErreurAvis, MesureUsage, TAGS_AVIS, MOTIFS_SIGNALEMENT, COMMENTAIRE_MAX, DELAI_USAGE_ACTIF_MS, type OptionsVotes, type ControleVotes, type EtatAvis } from './labo/votes';
 export { ABTestToggle, useABTest, appDepuisAdresse, type ABTestToggleProps, type VarianteAB } from './labo/ABTestToggle';
 export { useVoiceFeedback, BoutonMicro, moteurDisponible, type Voix, type MoteurVocal, type EtatVocal } from './labo/useVoiceFeedback';
 export { structurerAvisVocal, categorieDuType, type AvisVocal, type TypeAvisVocal } from './labo/structurerAvisVocal';

@@ -8,12 +8,16 @@
  *     charge.refunded             (payment_intent d'un abonnement)
  *        → abonnement « rembourse » + écritures inverses -1000 c. / -500 c.
  *
+ *     Lot 5 : client_reference_id = « cmd_… » (commande préparée par affiliation.php ou boutique.php)
+ *        → abonnement : commissions d'affiliation prélevées sur les 500 c. d'Alphabette (le créateur garde 1000 c.)
+ *        → boost, pack, domaine, cadeau, pourboire, audit IA Pro, bounty : montant contrôlé contre la commande
+ *
  * Sécurité : HMAC-SHA256 de « t.corps » avec le secret ALPHABETTE_WEBHOOK_SECRET, comparaison à temps constant,
  * horodatage à ±5 minutes (anti-rejeu). Idempotence stricte : providerEventId (id Stripe evt_…) clé primaire,
  * insérée dans la MÊME transaction que les écritures → un événement rejoué ne compte jamais deux fois.
  */
 declare(strict_types=1);
-require __DIR__ . '/finance-commun.php';
+require __DIR__ . '/croissance-commun.php'; // Lot 5 : affiliation et boutique (charge aussi finance-commun.php)
 header('Cache-Control: no-store');
 header('X-Robots-Tag: noindex');
 
@@ -58,27 +62,42 @@ $resultat = f_transaction(function (PDO $db) use ($evId, $type, $o, &$alerte) {
 
     if ($type === 'checkout.session.completed') {
         if (($o['payment_status'] ?? '') !== 'paid') return $fin('ignore_non_paye');
-        $app = (string) ($o['metadata']['app'] ?? '');
-        if (!preg_match('/^[a-z0-9][a-z0-9-]{0,62}$/', $app)) return $fin('ignore_sans_appli');
         $montant = $o['amount_total'] ?? null;
-        if (!is_int($montant) || $montant !== PRIX_ABONNEMENT_CENTIMES || strtolower((string) ($o['currency'] ?? '')) !== 'eur') {
+        $devise = strtolower((string) ($o['currency'] ?? ''));
+        $email = (string) ($o['customer_details']['email'] ?? '');
+        $acheteur = $email !== '' ? f_email_hash($email) : null;
+        // Lot 5 : commande préparée côté serveur (prix calculé ici, jamais par la page).
+        $cmd = null;
+        $cref = (string) ($o['client_reference_id'] ?? '');
+        if (preg_match('/^cmd_[a-f0-9]{24}$/', $cref)) {
+            $q = c_db()->prepare('SELECT * FROM commandes WHERE id = ?'); $q->execute(array($cref));
+            $cmd = $q->fetch() ?: null;
+        }
+        if ($cmd && $cmd['type'] !== 'abonnement') {
+            if (!is_int($montant) || $montant !== (int) $cmd['montant_centimes'] || $devise !== 'eur') {
+                $alerte = "Paiement de " . var_export($montant, true) . " c. pour la commande {$cmd['id']} ({$cmd['type']}, attendu {$cmd['montant_centimes']} c.) — événement $evId ignoré.";
+                return $fin('ignore_montant');
+            }
+            $mails = c_executer($db, $cmd, $evId, $t);
+            $GLOBALS['mails_apres'] = $mails;
+            return $fin('commande_' . $cmd['type']);
+        }
+        $app = (string) ($o['metadata']['app'] ?? ($cmd['app_slug'] ?? ''));
+        if (!preg_match('/^[a-z0-9][a-z0-9-]{0,62}$/', $app)) return $fin('ignore_sans_appli');
+        if (!is_int($montant) || $montant !== PRIX_ABONNEMENT_CENTIMES || $devise !== 'eur') {
             $alerte = "Paiement reçu avec un montant inattendu (" . var_export($montant, true) . ") pour $app — événement $evId ignoré.";
             return $fin('ignore_montant');
         }
         $ref = (string) ($o['payment_intent'] ?? '') ?: (string) ($o['id'] ?? '');
         if ($ref === '') return $fin('ignore_sans_reference');
-        $email = (string) ($o['customer_details']['email'] ?? '');
         $q = $db->prepare('INSERT OR IGNORE INTO abonnements (app_slug, abonne_hash, paiement_ref, montant_centimes, debut, fin, statut, provider_event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $q->execute(array($app, $email !== '' ? f_email_hash($email) : null, $ref, PRIX_ABONNEMENT_CENTIMES, $t, $t + DUREE_ABONNEMENT_SECONDES, 'actif', $evId));
+        $q->execute(array($app, $acheteur, $ref, PRIX_ABONNEMENT_CENTIMES, $t, $t + DUREE_ABONNEMENT_SECONDES, 'actif', $evId));
         if ($q->rowCount() === 0) return $fin('deja_enregistre'); // même paiement reçu sous un autre événement
         $abo = (int) $db->lastInsertId();
         $db->prepare('INSERT OR IGNORE INTO applis (slug, createur_id, maj) VALUES (?, NULL, ?)')->execute(array($app, $t));
-        $q = $db->prepare('SELECT createur_id FROM applis WHERE slug = ?'); $q->execute(array($app));
-        $createur = $q->fetchColumn();
-        $e = $db->prepare('INSERT INTO ecritures (compte_id, beneficiaire, type, montant_centimes, app_slug, abonnement_id, provider_event_id, disponible_le, cree_le, libelle) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        if ($createur) $e->execute(array((int) $createur, 'createur', 'vente', PART_CREATEUR_CENTIMES, $app, $abo, $evId, $t + f_delai_disponibilite(), $t, 'Abonnement 15 €/an — part créateur'));
-        else $e->execute(array(null, 'alphabette', 'vente_sans_createur', PART_CREATEUR_CENTIMES, $app, $abo, $evId, $t, $t, 'Abonnement 15 €/an — appli d\'Alphabette'));
-        $e->execute(array(null, 'alphabette', 'commission', PART_ALPHABETTE_CENTIMES, $app, $abo, $evId, $t, $t, 'Abonnement 15 €/an — part Alphabette'));
+        if ($cmd) $db->prepare("UPDATE commandes SET statut = 'payee', paye_le = ?, provider_event_id = ? WHERE id = ?")->execute(array($t, $evId, $cmd['id']));
+        // 1000 c. créateur (toujours) ; affiliation éventuelle prélevée sur les 500 c. d'Alphabette.
+        c_repartir_abonnement($db, $abo, $app, $cmd && $cmd['app_slug'] === $app ? $cmd : null, $evId, $t, $acheteur);
         return $fin('abonnement_cree');
     }
 
@@ -87,7 +106,7 @@ $resultat = f_transaction(function (PDO $db) use ($evId, $type, $o, &$alerte) {
         if ($ref === '') return $fin('ignore_sans_reference');
         $q = $db->prepare("SELECT * FROM abonnements WHERE paiement_ref = ? AND statut = 'actif'"); $q->execute(array($ref));
         $abo = $q->fetch();
-        if (!$abo) return $fin('ignore_inconnu');
+        if (!$abo) { $alerte = "Remboursement Stripe $ref sans abonnement connu (boost, pack, cadeau… ?) : à vérifier à la main."; return $fin('ignore_inconnu'); }
         // Remboursement total seulement (aucun prorata) : on inverse exactement les écritures d'origine.
         $db->prepare("UPDATE abonnements SET statut = 'rembourse', fin = ? WHERE id = ?")->execute(array($t, (int) $abo['id']));
         $q = $db->prepare("SELECT * FROM ecritures WHERE abonnement_id = ? AND montant_centimes > 0"); $q->execute(array((int) $abo['id']));
@@ -98,10 +117,15 @@ $resultat = f_transaction(function (PDO $db) use ($evId, $type, $o, &$alerte) {
                 // Si la vente était encore en attente, l'annulation reste dans « en attente » ; sinon débit immédiat.
                 max($t, (int) $orig['disponible_le']), $t,'Remboursement de l\'abonnement'));
         }
+        // Lot 5 : les jours offerts au parrain d'une invitation disparaissent avec l'abonnement remboursé.
+        c_db();
+        $db->prepare("DELETE FROM droits WHERE source = 'invitation' AND source_id = ?")->execute(array((string) $abo['id']));
+        $db->prepare('DELETE FROM invitations WHERE abonnement_id = ?')->execute(array((int) $abo['id']));
         return $fin('rembourse');
     }
     return $fin('ignore_type');
 });
 
+if (!empty($GLOBALS['mails_apres'])) c_envoyer($GLOBALS['mails_apres']);
 if ($alerte) f_mail(ADMIN_EMAIL, '[Alphabette] Paiement à vérifier', $alerte);
 f_repondre(200, array('recu' => true, 'resultat' => $resultat));

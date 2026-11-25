@@ -34,19 +34,19 @@ function lireDonation(): Record<string, unknown> | undefined {
 }
 
 /**
- * Liens de paiement Stripe des Pass : data/paiements.json (liens.pass_app, liens.pass_ecosysteme).
+ * Lien de paiement Stripe de l'abonnement 15 €/an : data/paiements.json (liens.pass_app). Un seul prix : 15 €/an par appli.
  * Vides tant que le paiement n'est pas ouvert ou pendant l'offre de lancement : la base n'affiche alors aucun bouton.
  * (Le site est reconstruit plusieurs fois par jour : les boutons apparaissent seuls après la date.)
  */
-function lireLiensPaiement(): { perApp: string; ecosystem: string } {
+function lireLiensPaiement(): { perApp: string } {
   try {
     const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "paiements.json"), "utf-8").replace(/^\uFEFF/, ""));
     // Offre de lancement : gratuit jusqu'à « gratuit_jusqu_au » inclus (Paris) → aucun bouton de paiement d'ici là.
     const jusqua = /^\d{4}-\d{2}-\d{2}$/.test(String(d?.gratuit_jusqu_au ?? "")) ? Date.parse(`${d.gratuit_jusqu_au}T23:59:59+02:00`) : NaN;
-    if (!Number.isNaN(jusqua) && Date.now() <= jusqua) return { perApp: "", ecosystem: "" };
-    return { perApp: String(d?.liens?.pass_app ?? ""), ecosystem: String(d?.liens?.pass_ecosysteme ?? "") };
+    if (!Number.isNaN(jusqua) && Date.now() <= jusqua) return { perApp: "" };
+    return { perApp: String(d?.liens?.pass_app ?? "") };
   } catch {
-    return { perApp: "", ecosystem: "" };
+    return { perApp: "" };
   }
 }
 
@@ -56,7 +56,6 @@ let commercialConfig = {
   currency: "EUR",
   pricing: {
     perApp: 15,      // 15 € / application / an
-    ecosystem: 40,   // 40 € / écosystème complet / an
     trialDays: 7,    // 7 jours d'essai offerts
   },
   activePromotion: {

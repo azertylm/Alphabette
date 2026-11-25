@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Trophées — partager ses réussites · Alphabette</title>
+<meta name="description" content="Créez l'image de vos vrais paliers (abonnés, passage sur alphabette.fr, Pionnier) aux bons formats pour chaque réseau, avec QR code, légende et badge à intégrer.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}
+  .scene{perspective:900px;display:flex;justify-content:center;margin:1rem 0}
+  .scene canvas{max-width:100%;max-height:60vh;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.25);transform-style:preserve-3d;transition:transform .12s ease-out;will-change:transform}
+  @media (prefers-reduced-motion:reduce){.scene canvas{transition:none;transform:none!important}}
+  html[data-ab-calme] .scene canvas{transform:none!important}
+  .paliers{display:flex;flex-wrap:wrap;gap:.4rem}.paliers button{min-height:44px}
+  .paliers button[aria-pressed=true]{outline:3px solid var(--vedette)}
+  .paliers button:disabled{opacity:.45;cursor:not-allowed}
+  textarea{width:100%;min-height:7rem}
+  .ligne{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="studio-partage" data-nom="Trophées" data-sous-titre="Partager" data-accent="#6d28d9"></script>
+<script src="/labo/lot5.js"></script>
+<script src="/assets/qrcode.js"></script>
+<main id="contenu">
+  <a class="retour" href="/mes-revenus/">← Mes revenus</a>
+  <h1>Studio Trophées</h1>
+  <p class="chapeau">Une image nette de <strong>vos vrais paliers</strong>, prête pour chaque réseau. Seuls les paliers atteints peuvent être exportés : jamais de faux chiffre.</p>
+  <div id="cnx"></div>
+  <section id="studio" class="cache">
+    <label class="champ" for="app">Appli <select id="app"></select></label>
+    <h2>Palier</h2>
+    <div class="paliers" id="paliers" role="group" aria-label="Palier à partager"></div>
+    <div class="grille grille--2">
+      <label class="champ" for="format">Format
+        <select id="format">
+          <option value="1200x630">1200 × 630 — Facebook, LinkedIn, X</option>
+          <option value="1080x1080">1080 × 1080 — carré Instagram</option>
+          <option value="1600x900">1600 × 900 — X grand format</option>
+          <option value="1080x1920">1080 × 1920 — Stories, TikTok</option>
+          <option value="1080x1350">1080 × 1350 — portrait Instagram</option>
+        </select></label>
+      <label class="champ" for="theme">Thème
+        <select id="theme"><option value="nuit">Nuit néon</option><option value="aurore">Aurore</option><option value="papier">Papier</option><option value="or">Or</option></select></label>
+    </div>
+    <label class="case"><input type="checkbox" id="montant"> <span>Afficher le montant gagné (abonnés × 10 €)</span></label>
+    <label class="case"><input type="checkbox" id="qr" checked> <span>Ajouter le QR code vers l'appli</span></label>
+    <div class="scene" id="scene"><canvas id="toile" width="1200" height="630" role="img" aria-label="Aperçu du trophée"></canvas></div>
+    <div class="ligne"><button type="button" id="b-png">Télécharger l'image (PNG HD)</button><p class="message" id="m-png"></p></div>
+
+    <h2>Légende par réseau</h2>
+    <label class="champ" for="reseau">Réseau
+      <select id="reseau"><option value="x">X</option><option value="linkedin">LinkedIn</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option></select></label>
+    <textarea id="legende" aria-label="Légende à copier"></textarea>
+    <button type="button" class="secondaire" id="b-leg">Copier la légende</button>
+
+    <h2>Intégrer sur votre site</h2>
+    <p class="note">Badge SVG à jour en temps réel et cadre de l'appli. Le lien porte votre code (anonyme) : vous touchez 1,50 € par abonnement apporté dans les 7 jours.</p>
+    <textarea id="embed" readonly aria-label="Code à intégrer"></textarea>
+    <button type="button" class="secondaire" id="b-emb">Copier le code</button>
+  </section>
+</main>
+<script>
+(function () {
+  'use strict';
+  var A = window.AB5;
+  var PALIERS = [{ id: 'a1', n: 1, t: '1er abonné' }, { id: 'a10', n: 10, t: '10 abonnés' }, { id: 'a25', n: 25, t: '25 abonnés' }, { id: 'a50', n: 50, t: '50 abonnés' },
+    { id: 'a100', n: 100, t: '100 abonnés' }, { id: 'a500', n: 500, t: '500 abonnés' }, { id: 'fr', t: 'Sur alphabette.fr' }, { id: 'pionnier', t: 'Pionnier' }];
+  var THEMES = { nuit: ['#0b1220', '#3355d1', '#f0abfc', '#ffffff'], aurore: ['#ff7e5f', '#6a11cb', '#fde68a', '#ffffff'], papier: ['#fbf8f3', '#e7e5e4', '#4338ca', '#1c1917'], or: ['#1c1917', '#78350f', '#fbbf24', '#fffbeb'] };
+  var etat = { applis: [], app: null, palier: null, code: '', labo: {} };
+  var toile = A.$('toile'), ctx = toile.getContext('2d');
+
+  function atteint(p, a) {
+    if (!a) return false;
+    if (p.n) return a.abonnesActifs >= p.n;
+    if (p.id === 'fr') return etat.labo[a.slug] && etat.labo[a.slug].statut === 'published_fr' || !/^c-/.test(a.slug);
+    return !!(etat.labo[a.slug] && etat.labo[a.slug].pionnier);
+  }
+  function lienApp(a, src) { return location.origin + '/go/' + a.slug + '?ref=' + etat.code + '&src=' + (src || 'export'); }
+  function nomApp(a) { return (etat.labo[a.slug] && etat.labo[a.slug].nom) || a.slug; }
+
+  function dessinerQr(texte, x, y, taille) {
+    qrcode.stringToBytes = function (s) { return Array.prototype.slice.call(new TextEncoder().encode(s)); };
+    var q = qrcode(0, 'M'); q.addData(texte, 'Byte'); q.make();
+    var n = q.getModuleCount(), m = Math.floor(taille / (n + 4));
+    ctx.fillStyle = '#fff'; ctx.fillRect(x, y, m * (n + 4), m * (n + 4));
+    ctx.fillStyle = '#000';
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) ctx.fillRect(x + (c + 2) * m, y + (r + 2) * m, m, m);
+  }
+  function texteAjuste(t, max, taille, poids) {
+    var s = taille;
+    do { ctx.font = poids + ' ' + s + 'px system-ui, -apple-system, Segoe UI, sans-serif'; s -= 2; } while (ctx.measureText(t).width > max && s > 12);
+  }
+  function dessiner() {
+    var f = A.$('format').value.split('x'), W = +f[0], H = +f[1], th = THEMES[A.$('theme').value];
+    toile.width = W; toile.height = H;
+    var a = etat.app, p = etat.palier;
+    var g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, th[0]); g.addColorStop(1, th[1]);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    var u = Math.min(W, H) / 100, marge = 7 * u;
+    ctx.fillStyle = th[2]; ctx.globalAlpha = .18; ctx.beginPath(); ctx.arc(W * .85, H * .2, 30 * u, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+    ctx.fillStyle = th[3]; ctx.textBaseline = 'top';
+    ctx.font = '800 ' + 4 * u + 'px system-ui, sans-serif'; ctx.fillText('alphabette', marge, marge);
+    var vrai = p && a && atteint(p, a);
+    texteAjuste(p ? p.t : 'Choisissez un palier', W - 2 * marge, 13 * u, '900');
+    ctx.fillStyle = th[2]; ctx.fillText(p ? (p.id === 'pionnier' ? '🏅 ' : p.id === 'fr' ? '🚀 ' : '🏆 ') + p.t : 'Choisissez un palier', marge, H * .32);
+    ctx.fillStyle = th[3];
+    texteAjuste(a ? nomApp(a) : '', W - 2 * marge, 7 * u, '700'); ctx.fillText(a ? nomApp(a) : '', marge, H * .32 + 16 * u);
+    if (A.$('montant').checked && a && vrai && p && p.n) { ctx.font = '700 ' + 5 * u + 'px system-ui, sans-serif'; ctx.fillText(A.euros(a.abonnesActifs * 1000) + ' gagnés pour le créateur', marge, H * .32 + 27 * u); }
+    ctx.font = '600 ' + 3.2 * u + 'px system-ui, sans-serif'; ctx.textBaseline = 'bottom';
+    ctx.fillText('Créé avec ' + (a ? nomApp(a) : 'Alphabette') + ' sur Alphabette.fr', marge, H - marge);
+    if (A.$('qr').checked && a) dessinerQr(lienApp(a, 'export'), W - marge - 22 * u, H - marge - 22 * u, 22 * u);
+    if (!vrai) { ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(-.2); ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.font = '900 ' + 9 * u + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('APERÇU', 0, 0); ctx.restore(); }
+    A.$('b-png').disabled = !vrai;
+    legende(); embed();
+  }
+  function legende() {
+    var a = etat.app, p = etat.palier; if (!a || !p) return;
+    var nom = nomApp(a), url = lienApp(a, 'export'), r = A.$('reseau').value;
+    var base = { x: p.t + ' pour ' + nom + ' 🎉 Merci à chaque abonné ! ' + url + ' #Alphabette #FaitEnFrance',
+      linkedin: 'Étape franchie : ' + p.t + ' pour « ' + nom + ' ». Une appli utile, sans publicité, financée par ses abonnés (15 €/an, dont 10 € pour le créateur).\n\n' + url + '\n\n#Alphabette #IndieMaker #Numérique #FaitEnFrance',
+      instagram: '✨ ' + p.t + ' ✨\n' + nom + ' grandit grâce à vous 💜\nLien dans la bio 👉 alphabette.fr\n\n#Alphabette #Appli #Créateur #FaitEnFrance #SansPub #Numérique #IndieMaker #Merci',
+      facebook: p.t + ' pour ' + nom + ' ! Merci à toutes celles et ceux qui l\'utilisent. Essai gratuit 7 jours, sans carte : ' + url,
+      tiktok: p.t + ' 🏆 ' + nom + ' sur Alphabette #Alphabette #Appli #FaitEnFrance #Créateur' };
+    A.$('legende').value = base[r];
+  }
+  function embed() {
+    var a = etat.app; if (!a) return;
+    var o = location.origin;
+    A.$('embed').value = '<a href="' + o + '/go/' + a.slug + '?ref=' + etat.code + '&src=export"><img src="' + o + '/api/badge.php?slug=' + a.slug + '" alt="' + nomApp(a).replace(/"/g, '') + ' sur Alphabette" height="28"></a>\n'
+      + '<iframe src="' + o + (/^c-/.test(a.slug) ? '/c/' + a.slug + '/' : '/apps/' + a.slug + '/') + '?ref=' + etat.code + '&src=export" title="' + nomApp(a).replace(/"/g, '') + '" width="100%" height="640" loading="lazy" sandbox="allow-scripts allow-forms allow-popups" style="border:0;border-radius:12px"></iframe>';
+  }
+  function paliers() {
+    var z = A.$('paliers'); z.textContent = '';
+    PALIERS.forEach(function (p) {
+      var ok = atteint(p, etat.app);
+      var b = A.el('button', { type: 'button', class: ok ? '' : 'secondaire', 'aria-pressed': String(etat.palier === p) }, [(ok ? '✓ ' : '🔒 ') + p.t]);
+      b.onclick = function () { etat.palier = p; paliers(); dessiner(); };
+      z.appendChild(b);
+    });
+  }
+  // Aperçu 3D : la carte suit le doigt ou la souris (rien en Mode Calme ou si l'appareil réduit les animations).
+  A.$('scene').addEventListener('pointermove', function (e) {
+    var r = toile.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    toile.style.transform = 'rotateY(' + (x * 16).toFixed(2) + 'deg) rotateX(' + (-y * 16).toFixed(2) + 'deg)';
+  });
+  A.$('scene').addEventListener('pointerleave', function () { toile.style.transform = ''; });
+  ['format', 'theme', 'montant', 'qr'].forEach(function (id) { A.$(id).addEventListener('change', dessiner); });
+  A.$('reseau').addEventListener('change', legende);
+  A.$('app').addEventListener('change', function () { etat.app = etat.applis[+A.$('app').value]; paliers(); dessiner(); });
+  A.$('b-png').onclick = function () {
+    dessiner(); // export à plat, en pleine définition (sans l'effet 3D de l'aperçu)
+    toile.toBlob(function (b) {
+      var l = document.createElement('a'); l.href = URL.createObjectURL(b);
+      l.download = 'alphabette-' + (etat.app ? etat.app.slug : 'trophee') + '-' + (etat.palier ? etat.palier.id : '') + '-' + A.$('format').value + '.png';
+      document.body.appendChild(l); l.click(); l.remove(); A.message(A.$('m-png'), 'Image téléchargée.', true);
+    }, 'image/png');
+  };
+  function copier(id, b) { var t = A.$(id).value; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copié ✓'; }, function () { A.$(id).select(); }); }
+  A.$('b-leg').onclick = function () { copier('legende', this); };
+  A.$('b-emb').onclick = function () { copier('embed', this); };
+
+  A.connexion(A.$('cnx'), function () {
+    Promise.all([A.finance('billing.php', null, 'revenus'), A.finance('affiliation.php', null, 'moi'), A.labo('soumissions.php', null, 'mes=1')]).then(function (r) {
+      if (r[0]._s !== 200) { A.$('cnx').appendChild(A.el('p', { class: 'message err', text: r[0].erreur || 'Indisponible.' })); return; }
+      etat.applis = r[0].applis || []; etat.code = r[1].code || '';
+      (r[2].soumissions || []).forEach(function (s) { etat.labo[s.id] = s; });
+      A.$('studio').classList.remove('cache');
+      if (!etat.applis.length) { A.$('studio').insertBefore(A.el('p', { class: 'carte', text: 'Aucune appli rattachée à votre compte pour l\'instant : les trophées s\'ouvrent dès votre passage sur alphabette.fr.' }), A.$('studio').firstChild); }
+      etat.applis.forEach(function (a, i) { A.$('app').appendChild(A.el('option', { value: String(i), text: nomApp(a) })); });
+      etat.app = etat.applis[0] || null; paliers(); dessiner();
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -106,8 +106,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^api/admin/session/?$ eu/api/admin-session.json [L]
   RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
   RewriteRule ^api/donnees-privees - [F,L]
-  # Carte Collector d'un créateur du Collectif (Lot 4) : une seule page, le pseudo est lu dans l'adresse.
+  # Carte Collector d'un créateur (Lot 4) : pseudos hors service Créateurs (majuscules, « _ », 1-2 caractères) ;
+  # les autres passent par eu/.htaccess → createur.php, qui affiche la Carte Collector s'il ne connaît pas le pseudo (Lot 5).
   RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
+  RewriteCond %{REQUEST_URI} !^/createur/[a-z0-9-]{3,30}/?$
   RewriteRule ^createur/[A-Za-z0-9_-]{1,40}/?$ eu/createur/index.html [L]
   RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
   RewriteCond %{REQUEST_URI} !^/eu/
@@ -121,6 +123,10 @@ ${REGLES_REDIRECTIONS || '  # (aucun)'}
 
   # Domaines propres des applications (aiguillage par nom d'hôte)
 ${REGLES_DOMAINES || '  # (aucun)'}
+
+  # Lot 5 : liens recommandés et badge depuis alphabette.fr → service du Laboratoire (aucun cookie)
+  RewriteRule ^go/([a-z0-9][a-z0-9-]{0,62})/?$ https://alphabette.eu/go/$1?site=fr [R=302,L,QSA]
+  RewriteRule ^api/badge\\.php$ https://alphabette.eu/api/badge.php [R=302,L,QSA]
 
   # Continuité des anciennes adresses
   RewriteRule ^goat(/.*)?$ https://alphabette.eu/apps/goatchevretheking$1 [R=302,L]
@@ -179,6 +185,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^api/ai/config/?$ api/ai/config.json [L]
   RewriteRule ^api/health/?$ api/health.json [L]
   RewriteRule ^api/admin/session/?$ api/admin-session.json [L]
+  # Service « Créateurs » (PHP + SQLite) : fichier.php/<id>/… utilise PATH_INFO, donc on laisse Apache résoudre
+  RewriteRule ^api/createurs/ - [L]
+  # Lot 5 : badge SVG public (/api/badge.php?slug=…), servi par le service Créateurs
+  RewriteRule ^api/badge\\.php$ api/createurs/badge.php [L,QSA]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
@@ -187,6 +197,18 @@ ErrorDocument 404 /404.html
 
   # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
   RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
+
+  # Créateurs (alphabette.eu) : page d'un créateur, cadre isolé d'une appli, lien de transfert, console d'administration
+  RewriteRule ^createur/([a-z0-9-]{3,30})/?$ api/createurs/createur.php?handle=$1 [L,QSA]
+  RewriteRule ^c/(c-[a-f0-9]{8})/?$ api/createurs/app.php?id=$1 [L,QSA]
+  RewriteRule ^creations/valider-transfert/?$ api/createurs/transfert.php [L,QSA]
+  RewriteRule ^admin/(validations|avis-suspects)/?$ admin-createurs.html [L]
+
+  # Lot 5 : liens recommandés sans traceur, essai 7 jours, invitation d'un ami, lettre d'information (administration)
+  RewriteRule ^go/([a-z0-9][a-z0-9-]{0,62})/?$ api/affiliation.php?go=$1 [L,QSA]
+  RewriteRule ^essai/[a-z0-9][a-z0-9-]{0,62}/?$ essai/index.html [L]
+  RewriteRule ^invite/r[a-z0-9]{10}/?$ invite/index.html [L]
+  RewriteRule ^admin/newsletter/?$ admin-newsletter.html [L]
 
   # Application monopage : toute autre adresse renvoie index.html
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -294,7 +316,7 @@ ${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHt
 
   await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\nDisallow: /kit-terrain/\nDisallow: /en-direct/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
   const jour = new Date().toISOString().slice(0, 10);
-  const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/'];
+  const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/', '/soumettre/', '/decouvrir/', '/rejoindre-createurs/', '/contribuer/', '/bounties/', '/credits/', '/roadmap/'];
   await writeFile(
     path.join(eu, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -412,6 +434,34 @@ async function preparerLaboratoire() {
   // Collectif : soutiens et propositions (collectif.php), badge d'entraide et ses deux pages (.eu seulement).
   await cp(path.join(racine, 'labo', 'serveur', 'collectif.php'), path.join(eu, 'api', 'collectif.php'));
   await cp(path.join(racine, 'labo', 'collectif', 'badge.js'), path.join(eu, 'badge.js'));
+  // Créateurs (.eu seulement) : dépôt en 60 s (/soumettre), validation et avis suspects (/admin/…), avis X/10, découverte (/decouvrir),
+  // pages /createur/<pseudo> et cadre isolé /c/<id>. PHP + SQLite (OVH Perso), données hors du site ; aucun fichier envoyé par un
+  // créateur n'est jamais exécuté (jamais de .php), il est servi avec « CSP: sandbox » dans une iframe sans allow-same-origin.
+  {
+    const source = path.join(racine, 'serveur', 'php', 'createurs');
+    await mkdir(path.join(eu, 'api', 'createurs'), { recursive: true });
+    for (const nom of await readdir(source)) await cp(path.join(source, nom), path.join(eu, 'api', 'createurs', nom));
+    await mkdir(path.join(eu, 'data', 'private'), { recursive: true });
+    await cp(path.join(racine, 'data', 'private', '.htaccess'), path.join(eu, 'data', 'private', '.htaccess'));
+    for (const [page, dossier] of [['soumettre.html', 'soumettre'], ['decouvrir.html', 'decouvrir']]) {
+      await mkdir(path.join(eu, dossier), { recursive: true });
+      await cp(path.join(racine, 'labo', 'createurs', page), path.join(eu, dossier, 'index.html'));
+    }
+    await cp(path.join(racine, 'labo', 'createurs', 'admin.html'), path.join(eu, 'admin-createurs.html'));
+  }
+  // Lot 5 — croissance, monétisation complémentaire, Labo communautaire (.eu seulement ; voir docs/labo/LOT5-CROISSANCE.md).
+  {
+    for (const nom of ['croissance-commun.php', 'affiliation.php', 'boutique.php', 'newsletter.php']) await cp(path.join(racine, 'serveur', 'php', nom), path.join(eu, 'api', nom));
+    await cp(path.join(racine, 'data', 'boutique.json'), path.join(eu, 'api', 'boutique.json'));
+    await mkdir(path.join(eu, 'labo'), { recursive: true });
+    await cp(path.join(racine, 'labo', 'pages', 'lot5.js'), path.join(eu, 'labo', 'lot5.js'));
+    for (const [page, dossier] of [['rejoindre-createurs', 'rejoindre-createurs'], ['essai', 'essai'], ['invite', 'invite'], ['studio-partage', 'creations/studio-partage'],
+      ['boutique', 'creations/boutique'], ['bounties', 'bounties'], ['credits', 'credits'], ['roadmap', 'roadmap'], ['contribuer', 'contribuer']]) {
+      await mkdir(path.join(eu, dossier), { recursive: true });
+      await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, dossier, 'index.html'));
+    }
+    await cp(path.join(racine, 'labo', 'pages', 'admin-newsletter.html'), path.join(eu, 'admin-newsletter.html'));
+  }
   for (const [source, dossier] of [['au-hasard.html', 'au-hasard'], ['rejoindre.html', 'rejoindre']]) {
     await mkdir(path.join(eu, dossier), { recursive: true });
     await cp(path.join(racine, 'labo', 'collectif', source), path.join(eu, dossier, 'index.html'));

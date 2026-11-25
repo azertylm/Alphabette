@@ -118,7 +118,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <button onClick={onOpenPricing} className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer">
                   <CreditCard className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Tarifs : 15 € (application) · 40 € (écosystème)</span>
+                  <span>Tarif : 15 € / an par application</span>
                 </button>
               </li>
               {onOpenUrlManager && (<>
@@ -146,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-1.5 text-slate-400 text-xs">
               <li className="font-semibold text-slate-300 pt-1">Tarif unique :</li>
               <li className="pl-2">• Une application au choix : <strong>15 € / an</strong></li>
-              <li className="pl-2 text-emerald-400">• L'écosystème complet : <strong>40 € / an</strong></li>
+              <li className="pl-2 text-emerald-400">• Dont <strong>10 €</strong> pour le créateur</li>
               <li className="text-[11px] text-slate-500 pt-1">Essai 7 jours offerts sur toute inscription · sans engagement</li>
             </ul>
           </div>

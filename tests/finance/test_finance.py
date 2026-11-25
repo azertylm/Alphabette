@@ -8,7 +8,7 @@ Rien ne sort de la machine : php -S local, e-mails écrits dans un dossier tempo
 import base64, hashlib, hmac, io, json, os, shutil, socket, sqlite3, subprocess, sys, tempfile, threading, time, urllib.request, urllib.error, uuid, zipfile
 
 RACINE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-FICHIERS = ['finance-commun.php', 'billing.php', 'webhooks.php', 'payouts.php', 'upload-guard.php', 'gdpr.php']
+FICHIERS = ['finance-commun.php', 'croissance-commun.php', 'billing.php', 'webhooks.php', 'payouts.php', 'upload-guard.php', 'gdpr.php']
 SECRET_WH = 'whsec_test_' + uuid.uuid4().hex
 CLE_IBAN = os.urandom(32)
 ADMIN = 'mot-de-passe-admin-' + uuid.uuid4().hex[:8]

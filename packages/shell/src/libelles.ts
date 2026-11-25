@@ -35,6 +35,11 @@ const EN: Record<string, string> = {
   'Quitter le plein écran': 'Leave full screen',
   'Mes favoris': 'My favorites',
   'Fermer': 'Close',
+  'Noter cette appli': 'Rate this app',
+  'Signaler un problème / abus': 'Report a problem / abuse',
+  'Publier une appli (Gagnez 10 €/an)': 'Publish an app (Earn €10/year)',
+  'Inviter un ami': 'Invite a friend',
+  'Mode Calme': 'Calm mode',
 };
 
 export function traduire(texte: string, langue: Langue): string {

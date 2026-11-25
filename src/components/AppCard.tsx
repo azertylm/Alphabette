@@ -131,7 +131,7 @@ export const AppCard: React.FC<AppCardProps> = ({
                 {isProxilienFree 
                   ? 'Gratuit Pilote' 
                   : isUnlockedByPass 
-                    ? `Écosystème ${PRICES.ecosystem} € Actif` 
+                    ? 'Accès complet (offre de lancement)' 
                     : isUnlockedByB2B 
                       ? 'Licence B2B' 
                       : `À l'unité (${PRICES.perApp} €)`}
@@ -278,7 +278,7 @@ export const AppCard: React.FC<AppCardProps> = ({
             <span>
               {app.isB2B 
                 ? 'Licence B2B (49 € HT/mois)' 
-                : `Débloquer (${PRICES.perApp} € ou écosystème ${PRICES.ecosystem} €)`}
+                : `Débloquer (${PRICES.perApp} € / an)`}
             </span>
           </button>
         )}

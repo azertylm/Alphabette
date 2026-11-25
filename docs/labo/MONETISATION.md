@@ -29,4 +29,6 @@ Stripe : lien de paiement 15 € avec métadonnée `app=<slug>`, webhook vers `h
 
 Bac à sable / CI : `php serveur/php/upload-guard.php archive.zip` → verdict JSON, code de sortie 0 (conforme) ou 1.
 
+Lot 5 (affiliation, boutique, Labo communautaire) : `docs/labo/LOT5-CROISSANCE.md`.
+
 Tests : `python3 tests/finance/test_finance.py` (php -S local, e-mails dans un dossier temporaire).

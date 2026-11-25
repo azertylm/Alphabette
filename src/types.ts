@@ -12,7 +12,7 @@ export type AppCategory =
  * Plans officiels ALPHABETTE :
  * - trial_7d  : Essai 7 jours offerts (clé Mistral Alphabette incluse)
  * - app       : 15 € / an — une application au choix
- * - ecosystem : 40 € / an — l'écosystème complet
+ * - ecosystem : accès complet pendant l'offre de lancement gratuite (aucun prix : un seul tarif, 15 €/an par appli)
  * - pro_b2b   : 49 € HT / mois (pôle professionnel solaire)
  * - pilot_free: 100 % gratuit (ex. pilote La Grande-Motte)
  *
@@ -92,7 +92,6 @@ export interface HubCommercialConfig {
   currency: string;
   pricing: {
     perApp: number;    // 15 € / application / an
-    ecosystem: number; // 40 € / écosystème complet / an
     trialDays: number; // 7 jours offerts
   };
   activePromotion?: {
@@ -105,7 +104,6 @@ export interface HubCommercialConfig {
   };
   stripePaymentLinks: {
     perApp: string;
-    ecosystem: string;
   };
   aiPolicy: {
     provider: 'Mistral AI (Exclusif)';

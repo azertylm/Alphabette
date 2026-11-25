@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lettre d'information — administration Alphabette</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}textarea{width:100%;min-height:14rem}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="admin-newsletter" data-nom="Lettre" data-sous-titre="Admin" data-accent="#334155"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <h1>Lettre d'information</h1>
+  <label class="champ" for="mdp">Mot de passe administrateur <input id="mdp" type="password" autocomplete="current-password"></label>
+  <button type="button" id="b-voir" class="secondaire">Voir les inscrits</button>
+  <p id="stats" class="note"></p>
+  <label class="champ" for="sujet">Sujet <input id="sujet" maxlength="140"></label>
+  <label class="champ" for="texte">Texte (sans lien pisté ni image : un désabonnement en un clic est ajouté) <textarea id="texte"></textarea></label>
+  <button type="button" id="b-test" class="secondaire">M'envoyer un test</button> <button type="button" id="b-env">Envoyer à tous</button>
+  <p class="message" id="m" role="status"></p>
+</main>
+<script>
+(function () {
+  var A = window.AB5, $ = A.$;
+  function appel(corps, get) {
+    return fetch('/api/newsletter.php' + (get ? '?' + get : ''), { method: corps ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': $('mdp').value }, body: corps ? JSON.stringify(corps) : undefined })
+      .then(function (r) { return r.json().then(function (d) { d._s = r.status; return d; }); }).catch(function () { return { _s: 0, erreur: 'Pas de connexion.' }; });
+  }
+  $('b-voir').onclick = function () { appel(null, 'admin').then(function (d) { $('stats').textContent = d._s === 200 ? d.confirmes + ' inscrit(s) confirmé(s), ' + d.enAttente + ' en attente, ' + d.envois.length + ' envoi(s).' : d.erreur; }); };
+  function envoyer(test) { appel({ action: 'envoyer', sujet: $('sujet').value, texte: $('texte').value, test: test }).then(function (d) { A.message($('m'), d._s === 200 ? (test ? 'Test envoyé.' : d.envoyes + ' message(s) envoyé(s).') : d.erreur, d._s === 200); }); }
+  $('b-test').onclick = function () { envoyer(true); };
+  $('b-env').onclick = function () { if (confirm('Envoyer la lettre à tous les inscrits confirmés ?')) envoyer(false); };
+})();
+</script>
+</body>
+</html>
