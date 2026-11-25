@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/revolution/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:24:26.792Z",
+  "date": "2026-11-25T11:12:52.836Z",
   "scores": {
     "douanier": 92,
     "pouce": 62,
@@ -34,9 +34,9 @@
       "agent": "opticien",
       "gravite": "important",
       "titre": "48 textes plus petits que 12 px",
-      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 h · plusieurs fois p » (11 px) ; span.inline-flex « 🌍 Europe & monde » (11 px)",
+      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 min · plusieurs fois » (11 px) ; span.inline-flex « 🧾 Impôts & budget public » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 48 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 h · plusieurs fois p » (11 px) ; span.inline-flex « 🌍 Europe & monde » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 48 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 min · plusieurs fois » (11 px) ; span.inline-flex « 🧾 Impôts & budget public » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 527,
+    "poids_ko": 531,
     "js_ko": 457,
     "requetes": 18,
-    "dom": 339,
-    "ecoindex": 78.4,
-    "chargement_ms": 1073,
+    "dom": 335,
+    "ecoindex": 78.5,
+    "chargement_ms": 904,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -115,7 +115,7 @@
     "titre": "Révolution — alphabette.fr",
     "h1": "",
     "h2": [
-      "Cet après-midi, l’actualité"
+      "Ce matin, l’actualité"
     ],
     "boutons": [
       "αalphabette",
@@ -139,7 +139,7 @@
       "Un peu",
       "Pas du tout"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CET APRÈS-MIDI, L’ACTUALITÉ mis à jour il y a 9 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🌍 EUROPE & MONDE 📍 OCCITANIE Sommet Choose France : le laboratoire pharmaceutique Virbac dévoile un plan d'investissement de plus de 320 millions d'euros jusqu'en 2030 Depuis Toulouse, Emmanuel Macron a a"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 9 min · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🧾 IMPÔTS & BUDGET PUBLIC 🇫🇷 NATIONAL Subventions pour les secours, sport pour tous, budget… les grandes lignes du dernier conseil municipal à Cléon Actu.fr · il y a 13 min · Lire l’article ↗ Ce sujet compte-"
   },
   "temoin": {
     "capture": "captures/revolution.jpg",

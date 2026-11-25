@@ -4,16 +4,16 @@
   "url": "https://alphabette.eu/info.html",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:22:48.576Z",
+  "date": "2026-11-25T11:11:18.437Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
     "opticien": 85,
-    "poids_plume": 88,
+    "poids_plume": 87,
     "phare": 70,
     "parapluie": 88
   },
-  "controle_technique": 78,
+  "controle_technique": 77,
   "note": 82,
   "apte": false,
   "compte": {
@@ -34,9 +34,9 @@
       "agent": "opticien",
       "gravite": "important",
       "titre": "65 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mardi 24 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)",
+      "detail": "span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mercredi 25 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 65 textes plus petits que 12 px (span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mardi 24 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 65 textes plus petits que 12 px (span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mercredi 25 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -104,18 +104,18 @@
     }
   ],
   "mesures": {
-    "poids_ko": 224,
-    "js_ko": 27,
-    "requetes": 11,
-    "dom": 329,
-    "ecoindex": 81.3,
-    "chargement_ms": 839,
+    "poids_ko": 235,
+    "js_ko": 33,
+    "requetes": 13,
+    "dom": 336,
+    "ecoindex": 80.7,
+    "chargement_ms": 962,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
     ],
     "traceurs": [],
-    "contraste_ok_pct": 98
+    "contraste_ok_pct": 97
   },
   "plume": {
     "titre": "Alphabette Info — vos actualités, à creuser",
@@ -142,11 +142,11 @@
       "Ajouter mes sources d'actualités",
       "Alphabette"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo mardi 24 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèques"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo mercredi 25 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèq"
   },
   "temoin": {
     "capture": "captures/info.jpg",
-    "changement": 0,
+    "changement": 14,
     "blanc": false
   }
 }

@@ -4,12 +4,12 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:24:39.749Z",
+  "date": "2026-11-25T11:13:05.244Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
-    "opticien": 72,
-    "poids_plume": 94,
+    "opticien": 73,
+    "poids_plume": 93,
     "phare": 80,
     "parapluie": 92
   },
@@ -57,10 +57,10 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "Textes peu contrastés (17 % des textes)",
-      "detail": "span.ab-bar__nom « Wikicom » (3.7:1) ; span « BIG » (3.7:1) ; span.cat-count-badge « 10 liens » (1.9:1) ; span.cat-count-badge « 8 liens » (3.1:1) ; span.cat-count-badge « 3 liens » (2.6:1)",
+      "titre": "Textes peu contrastés (16 % des textes)",
+      "detail": "span « BIG » (3.7:1) ; span.cat-count-badge « 10 liens » (1.9:1) ; span.cat-count-badge « 8 liens » (3.1:1) ; span.cat-count-badge « 3 liens » (2.6:1) ; span.cat-count-badge « 3 liens » (1.7:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (17 % des textes) (span.ab-bar__nom « Wikicom » (3.7:1) ; span « BIG » (3.7:1) ; span.cat-count-badge « 10 liens » (1.9:1) ; span.cat-count-badge « 8 liens » (3.1:1) ; span.cat-count-badge « 3 liens » (2.6:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (16 % des textes) (span « BIG » (3.7:1) ; span.cat-count-badge « 10 liens » (1.9:1) ; span.cat-count-badge « 8 liens » (3.1:1) ; span.cat-count-badge « 3 liens » (2.6:1) ; span.cat-count-badge « 3 liens » (1.7:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "phare",
@@ -88,15 +88,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 48,
-    "js_ko": 27,
-    "requetes": 7,
-    "dom": 292,
-    "ecoindex": 84.3,
-    "chargement_ms": 814,
+    "poids_ko": 60,
+    "js_ko": 33,
+    "requetes": 9,
+    "dom": 299,
+    "ecoindex": 83.7,
+    "chargement_ms": 803,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 83
+    "contraste_ok_pct": 84
   },
   "plume": {
     "titre": "Wikicom · l'annuaire des bons outils du web",

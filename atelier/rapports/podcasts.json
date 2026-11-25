@@ -4,16 +4,16 @@
   "url": "https://alphabette.eu/podcasts/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:24:06.903Z",
+  "date": "2026-11-25T11:12:33.794Z",
   "scores": {
     "douanier": 96,
     "pouce": 65,
-    "opticien": 99,
-    "poids_plume": 90,
+    "opticien": 98,
+    "poids_plume": 89,
     "phare": 73,
     "parapluie": 92
   },
-  "controle_technique": 85,
+  "controle_technique": 84,
   "note": 86,
   "apte": false,
   "compte": {
@@ -88,17 +88,17 @@
     }
   ],
   "mesures": {
-    "poids_ko": 223,
-    "js_ko": 27,
-    "requetes": 11,
-    "dom": 509,
-    "ecoindex": 73.8,
-    "chargement_ms": 822,
+    "poids_ko": 234,
+    "js_ko": 33,
+    "requetes": 13,
+    "dom": 516,
+    "ecoindex": 73.2,
+    "chargement_ms": 790,
     "tiers": [
       "is1-ssl.mzstatic.com"
     ],
     "traceurs": [],
-    "contraste_ok_pct": 99
+    "contraste_ok_pct": 98
   },
   "plume": {
     "titre": "Podcasts · écoutez, sans pub ni compte",

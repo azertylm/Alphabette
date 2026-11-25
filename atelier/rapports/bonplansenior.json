@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/bonplansenior/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:24:31.406Z",
+  "date": "2026-11-25T11:12:57.142Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 279,
+    "poids_ko": 283,
     "js_ko": 118,
     "requetes": 11,
     "dom": 137,
     "ecoindex": 88,
-    "chargement_ms": 920,
+    "chargement_ms": 888,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -133,7 +133,7 @@
   },
   "temoin": {
     "capture": "captures/bonplansenior.jpg",
-    "changement": 0,
+    "changement": 1,
     "blanc": false
   }
 }

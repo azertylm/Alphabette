@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/ou-cest/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:55.039Z",
+  "date": "2026-11-25T11:12:22.218Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
-    "opticien": 95,
-    "poids_plume": 97,
+    "opticien": 93,
+    "poids_plume": 96,
     "phare": 80,
     "parapluie": 96
   },
-  "controle_technique": 86,
-  "note": 89,
+  "controle_technique": 85,
+  "note": 88,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -41,10 +41,10 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "Textes peu contrastés (11 % des textes)",
-      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)",
+      "titre": "Textes peu contrastés (16 % des textes)",
+      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Placez-le sur la carte » (4.5:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « OÙ C'EST ? » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (11 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « OÙ C'EST ? » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (16 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Placez-le sur la carte » (4.5:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -72,15 +72,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 64,
-    "js_ko": 27,
-    "requetes": 7,
-    "dom": 72,
-    "ecoindex": 91.8,
-    "chargement_ms": 815,
+    "poids_ko": 75,
+    "js_ko": 33,
+    "requetes": 9,
+    "dom": 79,
+    "ecoindex": 91.1,
+    "chargement_ms": 794,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 89
+    "contraste_ok_pct": 84
   },
   "plume": {
     "titre": "Où c'est ? · placez-le sur la carte",
@@ -102,7 +102,7 @@
       "← Tous les petits jeux",
       "Version France"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Quand on veut dire « au bout du monde », on pense souvent à elle. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une commune française n'a qu'une seule lettre pour nom : « Y ». + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
   },
   "temoin": {
     "capture": "captures/ou-cest.jpg",

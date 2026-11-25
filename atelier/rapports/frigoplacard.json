@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/frigoplacard/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:04.547Z",
+  "date": "2026-11-25T11:11:34.176Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -101,7 +101,7 @@
     "requetes": 7,
     "dom": 150,
     "ecoindex": 88.8,
-    "chargement_ms": 931,
+    "chargement_ms": 892,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 90
@@ -134,7 +134,7 @@
       "🎓 Quiz anti-gaspi",
       "+ Ajouter"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour DLC (« à consommer jusqu’au ») dépassée : on jette, c’est une question de sécurité. DDM (« de préférence avant ») dépassée : on regarde, on sent, on go"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Une épluchure de pomme de terre huilée au four donne des chips de récupération. 🔮 Traducteur de restes insolites Pain rassis Épluchures de légumes lav"
   },
   "temoin": {
     "capture": "captures/frigoplacard.jpg",

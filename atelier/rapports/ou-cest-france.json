@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/ou-cest-france/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:58.873Z",
+  "date": "2026-11-25T11:12:25.966Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
-    "opticien": 95,
-    "poids_plume": 97,
+    "opticien": 93,
+    "poids_plume": 96,
     "phare": 80,
     "parapluie": 96
   },
-  "controle_technique": 86,
-  "note": 89,
+  "controle_technique": 85,
+  "note": 88,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -41,10 +41,10 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "Textes peu contrastés (11 % des textes)",
-      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)",
+      "titre": "Textes peu contrastés (16 % des textes)",
+      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Placez-le sur la carte » (4.5:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « OÙ C'EST EN FRANCE ? » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (11 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « OÙ C'EST EN FRANCE ? » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (16 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Placez-le sur la carte » (4.5:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -72,15 +72,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 70,
-    "js_ko": 27,
-    "requetes": 7,
-    "dom": 73,
-    "ecoindex": 91.6,
-    "chargement_ms": 818,
+    "poids_ko": 81,
+    "js_ko": 33,
+    "requetes": 9,
+    "dom": 80,
+    "ecoindex": 91,
+    "chargement_ms": 795,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 89
+    "contraste_ok_pct": 84
   },
   "plume": {
     "titre": "Où c'est en France ? · placez-le sur la carte",
@@ -102,11 +102,11 @@
       "← Tous les petits jeux",
       "Version monde"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une vallée au pied du plus haut sommet d'Europe de l'Ouest. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Un village où l'on affine un célèbre fromage bleu dans des caves. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
   },
   "temoin": {
     "capture": "captures/ou-cest-france.jpg",
-    "changement": 23,
+    "changement": 2,
     "blanc": false
   }
 }

@@ -4,11 +4,11 @@
   "url": "https://alphabette.eu/apps/bonplan/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:22:52.688Z",
+  "date": "2026-11-25T11:11:22.555Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
-    "opticien": 72,
+    "opticien": 71,
     "poids_plume": 84,
     "phare": 80,
     "parapluie": 88
@@ -57,10 +57,10 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "Textes peu contrastés (21 % des textes)",
-      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__nom « BonPlan » (3.1:1) ; span « BIG » (3.1:1) ; button#accountBtn.btn-modo « 👤 Mon Compte » (3.7:1)",
+      "titre": "Textes peu contrastés (22 % des textes)",
+      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__nom « BonPlan » (2.8:1) ; span.ab-bar__sous « Les meilleurs conseils du quotidien » (4.3:1) ; span « BIG » (3.1:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « BON PLAN » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (21 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__nom « BonPlan » (3.1:1) ; span « BIG » (3.1:1) ; button#accountBtn.btn-modo « 👤 Mon Compte » (3.7:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « BON PLAN » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (22 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__nom « BonPlan » (2.8:1) ; span.ab-bar__sous « Les meilleurs conseils du quotidien » (4.3:1) ; span « BIG » (3.1:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "poids_plume",
@@ -104,18 +104,18 @@
     }
   ],
   "mesures": {
-    "poids_ko": 174,
-    "js_ko": 27,
-    "requetes": 10,
-    "dom": 567,
-    "ecoindex": 71.9,
-    "chargement_ms": 1092,
+    "poids_ko": 185,
+    "js_ko": 33,
+    "requetes": 12,
+    "dom": 574,
+    "ecoindex": 71.3,
+    "chargement_ms": 803,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
     ],
     "traceurs": [],
-    "contraste_ok_pct": 79
+    "contraste_ok_pct": 78
   },
   "plume": {
     "titre": "BonPlan — Conseils du Quotidien",

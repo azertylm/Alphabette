@@ -4,22 +4,22 @@
   "url": "https://alphabette.eu/memo-meninges/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:45.477Z",
+  "date": "2026-11-25T11:12:13.417Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
-    "opticien": 96,
+    "opticien": 94,
     "poids_plume": 96,
     "phare": 80,
     "parapluie": 96
   },
-  "controle_technique": 86,
+  "controle_technique": 85,
   "note": 89,
   "apte": false,
   "compte": {
     "bloquant": 0,
     "important": 1,
-    "conseil": 4
+    "conseil": 5
   },
   "problemes": [
     {
@@ -37,6 +37,14 @@
       "detail": "button.ab-pico « Faire un don » ↔ button#ab-big.ab-pico « BIG, Taille du texte : Normale » ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » ↔ button#ab-theme.ab-pico « Passer en mode nuit » ; button#ab-theme.ab-pico « Passer en mode nuit » ↔ button#ab-lire.ab-pico « Lire à voix haute »",
       "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
       "prompt": "Mon application web « MÉMO-MÉNINGES » a ce problème, relevé par un contrôle automatique : 4 boutons trop serrés (moins de 8 px d'écart) (button.ab-pico « Faire un don » ↔ button#ab-big.ab-pico « BIG, Taille du texte : Normale » ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » ↔ button#ab-theme.ab-pico « Passer en mode nuit » ; button#ab-theme.ab-pico « Passer en mode nuit » ↔ button#ab-lire.ab-pico « Lire à voix haute »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "opticien",
+      "gravite": "conseil",
+      "titre": "Textes peu contrastés (12 % des textes)",
+      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Cinq minutes de jeux pour la mémoire » (4.5:1)",
+      "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
+      "prompt": "Mon application web « MÉMO-MÉNINGES » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (12 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Cinq minutes de jeux pour la mémoire » (4.5:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -64,15 +72,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 37,
-    "js_ko": 27,
-    "requetes": 7,
-    "dom": 109,
-    "ecoindex": 90.6,
-    "chargement_ms": 738,
+    "poids_ko": 48,
+    "js_ko": 33,
+    "requetes": 9,
+    "dom": 116,
+    "ecoindex": 90.1,
+    "chargement_ms": 715,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 92
+    "contraste_ok_pct": 88
   },
   "plume": {
     "titre": "Mémo-Méninges · cinq minutes de jeux pour la mémoire",

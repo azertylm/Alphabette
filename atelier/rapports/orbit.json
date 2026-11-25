@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/orbit/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:49.209Z",
+  "date": "2026-11-25T11:12:17.068Z",
   "scores": {
     "douanier": 100,
     "pouce": 52,
@@ -96,15 +96,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 300,
-    "js_ko": 40,
-    "requetes": 26,
-    "dom": 287,
-    "ecoindex": 80.3,
-    "chargement_ms": 1084,
+    "poids_ko": 313,
+    "js_ko": 46,
+    "requetes": 27,
+    "dom": 293,
+    "ecoindex": 79.9,
+    "chargement_ms": 802,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 98
+    "contraste_ok_pct": 97
   },
   "plume": {
     "titre": "ORBIT — Vos vidéos, sans algorithme",
@@ -134,11 +134,11 @@
       "⚡ Express < 1 min",
       "☕ Pause café 3–10 min"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ YouTube ▶ Vectors | Chapter 1, Essence of linear algebra 3Blue1Brown 🧭 Culture générale Durée inconnue 🐇 Plongée ↗ ▶️ YouTube ▶ But what is a neural network? | Dee"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ORBIT VOS VIDÉOS, SANS ALGORITHME ♥ BIG ☀️ 🔊 ⋯ Aller aux vidéos 🪐 Mon flux 🧭 Culture générale 😄 Humour 🛰️ Tech & IA 🏃 Sport 🎸 Musique live 🔨 Bricolage 🫧 Bulle 30 % de découverte Découverte 🔭 0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes. Toutes durées ⚡ Express < 1 min ☕ Pause café 3–10 min 🎬 Documentaire > 20 min 🔇 Sans son / sous-titres 🚀 Mettre en orbite ⏳ Choisir Choisissez vos orbites (bouton ⏳ en haut) pour que le curseur Bulle / Découverte agisse. ▶️ ▶️ YouTube 33778 h 11 ▶ Vidéo YouTube 🎸 Musique live 🐇 Plongée ↗ ▶️ YouTube ▶ But what is a neural network? | Deep learning chapter 1 3Blue1Brown 🛰️ Tech & IA Dur"
   },
   "temoin": {
     "capture": "captures/orbit.jpg",
-    "changement": 1,
+    "changement": 2,
     "blanc": false
   }
 }

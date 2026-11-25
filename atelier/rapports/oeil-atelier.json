@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/atelier/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:23:33.381Z",
+  "date": "2026-11-25T11:12:02.027Z",
   "scores": {
     "douanier": 100,
     "pouce": 62,
@@ -85,7 +85,7 @@
     "requetes": 7,
     "dom": 185,
     "ecoindex": 87,
-    "chargement_ms": 1022,
+    "chargement_ms": 1065,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83

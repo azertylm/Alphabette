@@ -4,17 +4,17 @@
   "url": "https://alphabette.eu/quiz-musique/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-24T12:24:23.058Z",
+  "date": "2026-11-25T11:12:49.172Z",
   "scores": {
     "douanier": 100,
     "pouce": 65,
-    "opticien": 95,
+    "opticien": 92,
     "poids_plume": 96,
     "phare": 73,
     "parapluie": 96
   },
-  "controle_technique": 85,
-  "note": 88,
+  "controle_technique": 84,
+  "note": 87,
   "apte": false,
   "compte": {
     "bloquant": 0,
@@ -41,10 +41,10 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "Textes peu contrastés (11 % des textes)",
-      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)",
+      "titre": "Textes peu contrastés (17 % des textes)",
+      "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (4.5:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
-      "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (11 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (17 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (4.5:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -80,15 +80,15 @@
     }
   ],
   "mesures": {
-    "poids_ko": 44,
-    "js_ko": 27,
-    "requetes": 7,
-    "dom": 90,
-    "ecoindex": 91.2,
-    "chargement_ms": 733,
+    "poids_ko": 55,
+    "js_ko": 33,
+    "requetes": 9,
+    "dom": 97,
+    "ecoindex": 90.6,
+    "chargement_ms": 719,
     "tiers": [],
     "traceurs": [],
-    "contraste_ok_pct": 89
+    "contraste_ok_pct": 83
   },
   "plume": {
     "titre": "Quiz musique · anecdotes de chanteurs, 1960-1990",
@@ -111,7 +111,7 @@
   },
   "temoin": {
     "capture": "captures/quiz-musique.jpg",
-    "changement": 0,
+    "changement": 1,
     "blanc": false
   }
 }
