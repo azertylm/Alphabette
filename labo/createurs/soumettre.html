@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Publier mon appli en 60 secondes | Laboratoire Alphabette</title>
+<meta name="description" content="Déposez un fichier .html, une archive .zip ou un dépôt GitHub public : votre appli rejoint le Laboratoire Alphabette. Gagnez 10 € par an et par abonnement si elle passe sur alphabette.fr.">
+<link rel="canonical" href="https://alphabette.eu/soumettre/">
+<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="Le Laboratoire Alphabette">
+<meta property="og:title" content="Publier mon appli en 60 secondes">
+<meta property="og:description" content="Déposez votre appli : validée à la main, isolée du reste, notée par la communauté. 10 avis positifs et 75 % d'avis favorables ouvrent le passage vers alphabette.fr.">
+<meta property="og:url" content="https://alphabette.eu/soumettre/"><meta property="og:image" content="https://alphabette.eu/og-image.png">
+<style>
+:root{color-scheme:light dark;--f:#fff;--t:#1b1b1f;--d:#55555f;--b:#d6d6de;--a:#5b3df5;--c:#f5f5f8;--e:#b3261e;--ok:#146c2e}
+@media (prefers-color-scheme:dark){:root{--f:#121216;--t:#f1f1f4;--d:#b8b8c4;--b:#34343e;--a:#a99bff;--c:#1d1d24;--e:#ff8a80;--ok:#7bd88f}}
+html[data-ab-calme] *{animation:none!important;transition:none!important}
+*{box-sizing:border-box}body{margin:0;background:var(--f);color:var(--t);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:12px 14px 60px}
+a{color:var(--a)}h1{font-size:26px;line-height:1.2;margin:.4em 0}h2{font-size:20px;margin:1.4em 0 .4em}
+.carte{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=email],input[type=url],select,textarea{width:100%;min-height:48px;padding:10px;font:inherit;border-radius:10px;border:1px solid var(--b);background:var(--f);color:var(--t)}
+textarea{min-height:90px}
+button,.bouton{min-height:48px;padding:0 18px;border-radius:12px;border:1px solid var(--b);background:var(--c);color:var(--t);font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.principal{background:var(--a);border-color:var(--a);color:#fff;font-weight:700}
+button:disabled{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.choix{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.choix label{margin:0;font-weight:500;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 12px;border:1px solid var(--b);border-radius:12px}
+.choix input{width:22px;height:22px}
+.case{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:400}.case input{width:26px;height:26px;margin-top:2px;flex:none}
+.msg{margin:10px 0;padding:10px 12px;border-radius:10px;border:1px solid var(--b)}.msg.err{border-color:var(--e);color:var(--e)}.msg.ok{border-color:var(--ok);color:var(--ok)}
+.petit{font-size:14px;color:var(--d)}.badge{display:inline-block;padding:1px 10px;border-radius:99px;border:1px solid var(--a);font-size:14px;margin-left:4px}
+ul.liste{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.piege{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Le Laboratoire</a></p>
+<h1>Publier mon appli en 60 secondes</h1>
+<p>Déposez votre appli : elle est lue par une personne, isolée du reste d'Alphabette, puis notée par la communauté. <strong>Gagnez 10 € par an et par abonnement</strong> si elle passe sur alphabette.fr (15 € par an).</p>
+<div id="etat" role="status" aria-live="polite"></div>
+
+<section id="connexion" class="carte" hidden>
+  <h2 style="margin-top:0">1. Votre adresse e-mail</h2>
+  <p class="petit">Pas de mot de passe : nous vous envoyons un lien de connexion. Il confirme aussi votre adresse, nécessaire pour donner des avis.</p>
+  <form id="f-lien" novalidate>
+    <label for="email">Adresse e-mail</label>
+    <input id="email" type="email" inputmode="email" autocomplete="email" required>
+    <p style="margin:12px 0 0"><button class="principal" type="submit">Recevoir mon lien</button></p>
+  </form>
+</section>
+
+<section id="espace" hidden>
+  <p class="petit">Connecté : <strong id="pseudo"></strong> · <button type="button" id="b-quitter" style="min-height:44px;border:0;background:none;color:var(--a);text-decoration:underline;padding:0 6px">Me déconnecter</button></p>
+  <div id="acces-createur" class="msg ok" hidden>Votre accès créateur est gratuit. Code : <strong id="code-createur"></strong></div>
+
+  <form id="f-depot" class="carte" novalidate>
+    <h2 style="margin-top:0" id="titre-depot">2. Déposer mon appli</h2>
+    <input type="hidden" id="resoumettre" value="">
+    <div class="choix" role="radiogroup" aria-label="Source de l'appli">
+      <label><input type="radio" name="source" value="fichier" checked> Un fichier .html ou .zip</label>
+      <label><input type="radio" name="source" value="github"> Un dépôt GitHub public</label>
+    </div>
+    <div id="bloc-fichier">
+      <label for="fichier">Fichier (15 Mo au maximum)</label>
+      <input id="fichier" type="file" accept=".html,.htm,.zip" style="min-height:48px;width:100%">
+      <p class="petit">Une archive .zip doit contenir un fichier index.html à sa racine. Aucun fichier .php n'est accepté.</p>
+    </div>
+    <div id="bloc-github" hidden>
+      <label for="depot">Adresse du dépôt</label>
+      <input id="depot" type="url" inputmode="url" placeholder="https://github.com/pseudo/depot">
+      <p class="petit" id="info-github"></p>
+    </div>
+    <label for="nom">Nom de l'appli</label>
+    <input id="nom" type="text" maxlength="80" autocomplete="off">
+    <label for="description">Une phrase pour la décrire</label>
+    <textarea id="description" maxlength="300"></textarea>
+    <label for="categorie">Catégorie</label>
+    <select id="categorie"></select>
+    <label class="case"><input type="checkbox" id="collab" required>
+      <span>J'accepte que mon appli <strong>évolue avec la communauté</strong> (ma version d'origine reste archivée, avec son empreinte SHA-256, à côté de la version communautaire) et qu'elle soit <strong>encapsulée dans @alphabette/shell</strong> et isolée du reste d'Alphabette.</span></label>
+    <div class="piege" aria-hidden="true"><label>Ne pas remplir <input id="site_web" tabindex="-1" autocomplete="off"></label></div>
+    <p style="margin:14px 0 0"><button class="principal" type="submit" id="b-envoyer">Envoyer mon appli</button> <span class="petit" id="brouillon-etat"></span></p>
+  </form>
+
+  <h2>Mes soumissions</h2>
+  <ul class="liste" id="mes"></ul>
+</section>
+</main>
+<script>
+(function(){
+'use strict';
+var API='/api/createurs/', CLE='alphabette.soumission.brouillon';
+var STATUTS={draft:'Brouillon',pending_admin_review:'En attente de validation',rejected:'À corriger',lab_eu:'En ligne dans le Laboratoire',eligible_fr:'Éligible à alphabette.fr',published_fr:'Publiée sur alphabette.fr',paused_abuse:'En pause (signalement)',flag_security_review:'Vérification de sécurité en cours'};
+var CATS=['Quotidien','Santé & bien-être','Éducation','Culture','Outils','Jeux','Citoyen','Autre'];
+var $=function(i){return document.getElementById(i)};
+function msg(texte,type){var e=$('etat');e.textContent='';if(!texte)return;var d=document.createElement('div');d.className='msg '+(type||'');d.textContent=texte;e.appendChild(d);d.scrollIntoView({block:'nearest'})}
+function api(fichier,opts){opts=opts||{};opts.credentials='same-origin';if(opts.method==='POST'){opts.headers=Object.assign({'X-Alphabette':'1'},opts.headers||{})}
+  return fetch(API+fichier,opts).then(function(r){return r.json().catch(function(){return {}}).then(function(d){return {s:r.status,d:d}})})}
+CATS.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;$('categorie').appendChild(o)});
+
+/* Brouillon : enregistré à chaque frappe, jamais le fichier lui-même. */
+var champs=['nom','description','categorie','depot'];
+function sauver(){try{var b={source:document.querySelector('input[name=source]:checked').value,collab:$('collab').checked};champs.forEach(function(c){b[c]=$(c).value});localStorage.setItem(CLE,JSON.stringify(b));$('brouillon-etat').textContent='Brouillon enregistré sur cet appareil.'}catch(e){}}
+function restaurer(){try{var b=JSON.parse(localStorage.getItem(CLE)||'null');if(!b)return;champs.forEach(function(c){if(b[c])$(c).value=b[c]});$('collab').checked=!!b.collab;
+  var r=document.querySelector('input[name=source][value='+(b.source==='github'?'github':'fichier')+']');if(r){r.checked=true;basculerSource()}}catch(e){}}
+function basculerSource(){var g=document.querySelector('input[name=source]:checked').value==='github';$('bloc-github').hidden=!g;$('bloc-fichier').hidden=g}
+document.querySelectorAll('input[name=source]').forEach(function(r){r.addEventListener('change',function(){basculerSource();sauver()})});
+['nom','description','categorie','depot','collab'].forEach(function(i){$(i).addEventListener('input',sauver);$(i).addEventListener('change',sauver)});
+
+/* Analyse automatique : <title> / README.md, avec repli manuel. */
+$('fichier').addEventListener('change',function(){var f=this.files[0];if(!f)return;
+  var zip=/\.zip$/i.test(f.name),fd=new FormData();fd.append('action','analyser');fd.append('type',zip?'zip':'html');fd.append('fichier',f);
+  $('info-github').textContent='';msg('Lecture du fichier…');
+  api('soumissions.php',{method:'POST',body:fd}).then(function(r){
+    if(r.s===200){if(!$('nom').value&&r.d.nom)$('nom').value=r.d.nom;if(!$('description').value&&r.d.description)$('description').value=r.d.description;msg(r.d.nom?'Nom et description lus dans votre fichier : vérifiez-les.':'Rien à lire automatiquement : remplissez le nom à la main.','ok');sauver()}
+    else msg(r.d.erreur||'Fichier non lisible.','err')}).catch(function(){msg('Analyse indisponible : remplissez les champs à la main.','err')})});
+function analyseGithub(){var m=/^https:\/\/github\.com\/([A-Za-z0-9._-]+)\/([A-Za-z0-9._-]+?)(?:\.git)?\/?$/.exec($('depot').value.trim());if(!m)return;
+  var base='https://raw.githubusercontent.com/'+m[1]+'/'+m[2]+'/HEAD/',info=$('info-github');info.textContent='Lecture du README…';
+  function lire(n){return fetch(base+n).then(function(r){if(!r.ok)throw 0;return r.text()})}
+  Promise.all([lire('README.md').catch(function(){return ''}),lire('index.html').catch(function(){return ''})]).then(function(x){
+    var readme=x[0],html=x[1],titre='',desc='',t;
+    if(!readme&&!html){info.textContent="GitHub ne répond pas (ou le dépôt est vide) : remplissez le nom et la description à la main, c'est tout aussi rapide.";return}
+    if(html&&(t=/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)))titre=t[1].trim();
+    if(html&&(t=/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)/i.exec(html)))desc=t[1].trim();
+    if(readme){if(!titre&&(t=/^\s*#\s+(.+)$/m.exec(readme)))titre=t[1].trim();
+      if(!desc){var ps=readme.split(/\n{2,}/);for(var i=0;i<ps.length;i++){var p=ps[i].trim();if(p&&!/^[#!\[<]/.test(p)){desc=p.replace(/[*_`>\[\]()]/g,'').slice(0,300);break}}}}
+    if(!$('nom').value&&titre)$('nom').value=titre.slice(0,80);if(!$('description').value&&desc)$('description').value=desc.slice(0,300);
+    info.textContent=titre?'Nom et description lus sur GitHub : vérifiez-les.':'Lecture partielle : complétez à la main.';sauver()});}
+$('depot').addEventListener('change',analyseGithub);
+
+/* Compte */
+function afficherCompte(u){$('connexion').hidden=true;$('espace').hidden=false;$('pseudo').textContent=u.handle;
+  if(u.hasFreeCreatorAccess){$('acces-createur').hidden=false;$('code-createur').textContent=u.creatorCode||''}
+  chargerMes()}
+$('f-lien').addEventListener('submit',function(e){e.preventDefault();var mail=$('email').value.trim();if(!mail){msg('Saisissez votre adresse e-mail.','err');return}
+  api('auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'demander',email:mail})}).then(function(r){
+    msg(r.s===200?'Lien envoyé. Ouvrez votre courrier (pensez aux indésirables) et touchez le lien : vous reviendrez ici, connecté.':(r.d.erreur||'Envoi impossible.'),r.s===200?'ok':'err')})});
+$('b-quitter').addEventListener('click',function(){api('auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'quitter'})}).then(function(){location.href='/soumettre/'})});
+
+/* Mes soumissions : motif de refus + « Corriger et re-soumettre ». */
+function chargerMes(){api('soumissions.php?mes=1').then(function(r){var ul=$('mes');ul.textContent='';var l=r.d.soumissions||[];
+  if(!l.length){var li=document.createElement('li');li.className='petit';li.textContent='Aucune soumission pour le moment.';ul.appendChild(li);return}
+  l.forEach(function(s){var li=document.createElement('li');li.className='carte';var t=document.createElement('strong');t.textContent=s.nom;li.appendChild(t);
+    var b=document.createElement('span');b.className='badge';b.textContent=STATUTS[s.statut]||s.statut;li.appendChild(b);
+    if(s.pionnier){var p=document.createElement('span');p.className='badge';p.textContent='Pionnier';li.appendChild(p)}
+    var d=document.createElement('p');d.className='petit';d.textContent=s.positifs+' avis positif'+(s.positifs>1?'s':'')+(s.negatifs?' · '+s.negatifs+' négatif'+(s.negatifs>1?'s':''):'');li.appendChild(d);
+    if(s.statut==='rejected'){var m=document.createElement('p');m.className='msg err';m.textContent='Motif du refus : '+s.motifRefus;li.appendChild(m);
+      var bt=document.createElement('button');bt.type='button';bt.className='principal';bt.textContent='Corriger et re-soumettre';bt.onclick=function(){
+        $('resoumettre').value=s.id;$('nom').value=s.nom;$('description').value=s.description;$('categorie').value=s.categorie;$('titre-depot').textContent='Corriger « '+s.nom+' »';
+        $('b-envoyer').textContent='Re-soumettre';$('f-depot').scrollIntoView({behavior:'smooth'});msg('Déposez la version corrigée (fichier ou dépôt) puis renvoyez.','')};li.appendChild(bt)}
+    if(s.statut==='lab_eu'||s.statut==='eligible_fr'||s.statut==='published_fr'){var a=document.createElement('a');a.href='/c/'+s.id+'/';a.textContent='Voir mon appli';a.className='bouton';li.appendChild(a)}
+    ul.appendChild(li)})})}
+
+/* Envoi */
+$('f-depot').addEventListener('submit',function(e){e.preventDefault();
+  var g=document.querySelector('input[name=source]:checked').value==='github',fd=new FormData(),f=$('fichier').files[0];
+  if($('site_web').value){return}
+  if(!$('collab').checked){msg("Cochez la case d'acceptation : elle est obligatoire.",'err');$('collab').focus();return}
+  if(g){if(!$('depot').value.trim()){msg("Indiquez l'adresse du dépôt GitHub.",'err');return}fd.append('type','github');fd.append('depot',$('depot').value.trim())}
+  else{if(!f){msg('Choisissez un fichier .html ou .zip.','err');return}fd.append('type',/\.zip$/i.test(f.name)?'zip':'html');fd.append('fichier',f)}
+  fd.append('action','deposer');fd.append('collab','1');fd.append('nom',$('nom').value);fd.append('description',$('description').value);fd.append('categorie',$('categorie').value);
+  if($('resoumettre').value)fd.append('resoumettre',$('resoumettre').value);
+  $('b-envoyer').disabled=true;msg('Envoi en cours…');
+  api('soumissions.php',{method:'POST',body:fd}).then(function(r){$('b-envoyer').disabled=false;
+    if(r.s===200){msg(r.d.statut==='lab_eu'?'Votre appli est en ligne dans le Laboratoire !':'Reçue ! Elle sera lue et validée sous peu : vous recevrez un e-mail.','ok');
+      try{localStorage.removeItem(CLE)}catch(x){}$('f-depot').reset();$('resoumettre').value='';$('titre-depot').textContent='2. Déposer mon appli';$('b-envoyer').textContent='Envoyer mon appli';basculerSource();chargerMes()}
+    else msg(r.d.erreur||"Envoi impossible pour le moment.",'err')}).catch(function(){$('b-envoyer').disabled=false;msg('Réseau indisponible : votre brouillon est conservé, réessayez.','err')})});
+
+/* Démarrage */
+var q=new URLSearchParams(location.search);
+if(q.get('lien')==='expire')msg('Ce lien a expiré ou a déjà servi : demandez-en un nouveau.','err');
+else if(q.get('lien')==='invalide')msg("Ce lien n'est pas valide : demandez-en un nouveau.",'err');
+else if(q.get('connecte'))msg('Adresse confirmée : vous êtes connecté.','ok');
+restaurer();
+api('auth.php?moi=1').then(function(r){if(r.d.connecte)afficherCompte(r.d.utilisateur);else{$('connexion').hidden=false}}).catch(function(){msg('Service indisponible pour le moment : votre brouillon est conservé.','err');$('connexion').hidden=false});
+})();
+</script>
+</body>
+</html>

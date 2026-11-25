@@ -1134,3 +1134,16 @@ html[data-ab-simple] .ab-content { max-width: 48rem; margin-inline: auto; line-h
 .ab-pied a { color: inherit; opacity: .8; text-decoration: underline; min-height: 24px; display: inline-flex; align-items: center; }
 .ab-pied a:hover, .ab-pied a:focus-visible { opacity: 1; }
 @media print { .ab-pied { display: none; } }
+/* Mode Calme : aucune animation ni transition (attribut posé sur <html> par useModeCalme). */
+html[data-ab-calme] *, html[data-ab-calme] *::before, html[data-ab-calme] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+/* Menu « ⋯ » : plus d'entrées, il défile au lieu de dépasser de l'écran. */
+.ab-menu { max-height: calc(100dvh - 8rem); overflow-y: auto; overscroll-behavior: contain; }
+.ab-champ { display: grid; gap: 0.3rem; margin-bottom: 0.7rem; font-weight: 600; }
+.ab-champ select, .ab-champ textarea, .ab-champ input {
+  width: 100%; min-height: 2.75rem; padding: 0.5rem 0.6rem; font: inherit; font-weight: 400;
+  border: 1px solid var(--ab-border); border-radius: 0.6rem; background: var(--ab-surface); color: var(--ab-ink);
+}
