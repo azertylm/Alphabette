@@ -71,7 +71,7 @@ if ($action === 'confirmer') {
         return array('otp' => 'ok', 'id' => $vid, 'montant' => $montant);
     });
     if ($r['otp'] !== 'ok') f_erreur($r['otp'] === 'bloque' ? 429 : 400, $r['otp'] === 'bloque' ? 'Trop d\'essais : redemandez un code.' : 'Code incorrect ou expiré.');
-    f_mail(ADMIN_EMAIL, '[Alphabette] Virement créateur à faire', 'Virement n° ' . $r['id'] . ' : ' . f_euros($r['montant']) . " (voir payouts.php?admin).");
+    f_mail(f_admin_email(), '[Alphabette] Virement créateur à faire', 'Virement n° ' . $r['id'] . ' : ' . f_euros($r['montant']) . " (voir payouts.php?admin).");
     f_repondre(200, array('ok' => true, 'virement' => $r['id'], 'montantCents' => $r['montant'], 'message' => 'Virement demandé : ' . f_euros($r['montant']) . '. Il part sous 7 jours ouvrés.'));
 }
 

@@ -59,7 +59,7 @@ if ($action === 'envoyer') {
     $sujet = mb_substr(trim(strip_tags((string) ($e['sujet'] ?? ''))), 0, 140);
     $texte = mb_substr(trim(strip_tags((string) ($e['texte'] ?? ''))), 0, 20000);
     if (mb_strlen($sujet) < 3 || mb_strlen($texte) < 20) f_erreur(400, 'Sujet et texte obligatoires.');
-    if (($e['test'] ?? false) === true) { f_mail(ADMIN_EMAIL, '[TEST] ' . $sujet, $texte . "\n\n— Se désinscrire : (lien personnel ajouté à chaque envoi réel)"); f_repondre(200, array('ok' => true, 'test' => true)); }
+    if (($e['test'] ?? false) === true) { f_mail(f_admin_email(), '[TEST] ' . $sujet, $texte . "\n\n— Se désinscrire : (lien personnel ajouté à chaque envoi réel)"); f_repondre(200, array('ok' => true, 'test' => true)); }
     $db = c_db();
     $dernier = (int) $db->query('SELECT COALESCE(MAX(envoye_le), 0) FROM newsletter_envois')->fetchColumn();
     if (f_maintenant() - $dernier < 86400) f_erreur(429, 'Un seul envoi par 24 heures.');

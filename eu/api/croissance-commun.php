@@ -386,7 +386,7 @@ function c_executer(PDO $db, array $cmd, string $ref, int $t): array {
             $db->prepare('INSERT INTO domaines (app_slug, domaine, compte_id, debut, fin, shell_conserve, statut, commande_id) VALUES (?, ?, ?, ?, ?, 1, ?, ?)')
                 ->execute(array($app, (string) $p['domaine'], (int) $acheteur, $t, $t + DUREE_ABONNEMENT_SECONDES, 'a_configurer', $cmd['id']));
             $alpha('domaine', $prix, 'Domaine personnalisé (1 an, double barre conservée)');
-            $mails[] = array(ADMIN_EMAIL, '[Alphabette] Domaine personnalisé à brancher', 'Domaine ' . $p['domaine'] . ' → ' . $app . ' (double barre @alphabette/shell obligatoire).');
+            $mails[] = array(f_admin_email(), '[Alphabette] Domaine personnalisé à brancher', 'Domaine ' . $p['domaine'] . ' → ' . $app . ' (double barre @alphabette/shell obligatoire).');
             break;
         case 'cadeau':
             $codes = array();
@@ -407,7 +407,7 @@ function c_executer(PDO $db, array $cmd, string $ref, int $t): array {
         case 'audit_pro':
             $db->prepare("INSERT INTO audits_pro (compte_id, app_slug, statut, commande_id, cree_le) VALUES (?, ?, 'a_faire', ?, ?)")->execute(array($acheteur, $app, $cmd['id'], $t));
             $alpha('audit_pro', $prix, 'Audit IA Pro');
-            $mails[] = array(ADMIN_EMAIL, '[Alphabette] Audit IA Pro à faire', "Appli $app — commande " . $cmd['id']);
+            $mails[] = array(f_admin_email(), '[Alphabette] Audit IA Pro à faire', "Appli $app — commande " . $cmd['id']);
             break;
         case 'bounty':
             $db->prepare("UPDATE bounties SET statut = 'ouvert' WHERE commande_id = ? AND statut = 'en_attente_paiement'")->execute(array($cmd['id']));

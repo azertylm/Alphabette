@@ -16,7 +16,9 @@
 require __DIR__ . '/_lib.php';
 
 function mot_de_passe_admin(): string {
-    $p = (string) (getenv('ADMIN_PASSWORD') ?: ($_SERVER['ADMIN_PASSWORD'] ?? ''));
+    // Nom unique ADMIN_PASSWORD ; l'ancien nom ALPHABETTE_ADMIN_PASSWORD reste lu en secours (à retirer).
+    $p = env_reglage('ADMIN_PASSWORD');
+    if ($p === '') $p = env_reglage('ALPHABETTE_ADMIN_PASSWORD');
     if ($p === '' && is_file(dossier_prive() . '/admin-password.txt')) $p = trim((string) file_get_contents(dossier_prive() . '/admin-password.txt'));
     return $p;
 }
@@ -84,7 +86,7 @@ if ($action === 'connexion') {
     $attendu = mot_de_passe_admin();
     if ($attendu === '') erreur(503, "La console est fermée : aucun mot de passe administrateur n'est défini (ADMIN_PASSWORD).");
     if (!limite('admin:' . empreinte_ip(), 5, 900)) erreur(429, 'Trop d\'essais : réessayez dans 15 minutes.');
-    if (!hash_equals(hash('sha256', $attendu), hash('sha256', (string) ($e['mot_de_passe'] ?? '')))) erreur(401, 'Mot de passe incorrect.');
+    if (!hash_equals(hash('sha256', $attendu), hash('sha256', (string) ($e['mot_de_passe'] ?? '')))) { usleep(300000); erreur(401, 'Mot de passe incorrect.'); }
     $jeton = bin2hex(random_bytes(32)); $csrf = bin2hex(random_bytes(16));
     db()->prepare('DELETE FROM admin_sessions WHERE expiresAt < ?')->execute(array(time()));
     db()->prepare('INSERT INTO admin_sessions(hash, csrf, expiresAt) VALUES (?, ?, ?)')->execute(array(sha256_jeton($jeton), $csrf, time() + 8 * 3600));
