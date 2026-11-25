@@ -17,6 +17,8 @@ if ($u) {
     $s = db()->prepare("SELECT * FROM submissions WHERE userId = ? AND status IN ('lab_eu','eligible_fr','published_fr') ORDER BY validatedAt DESC");
     $s->execute(array((int) $u['id'])); $apps = $s->fetchAll();
 }
+// Lot 5 : pas (encore) de dépôt dans le service Créateurs → la Carte Collector du Collectif (Lot 4) prend le relais.
+if ((!$u || !$apps) && is_file(dirname(__DIR__, 2) . '/createur/index.html')) { header('Cache-Control: public, max-age=60'); readfile(dirname(__DIR__, 2) . '/createur/index.html'); exit; }
 if (!$u || !$apps) { http_response_code(404); }
 $o = origine_publique();
 $titre = $u && $apps ? $handle . ' — créateur sur le Laboratoire Alphabette' : 'Créateur introuvable';

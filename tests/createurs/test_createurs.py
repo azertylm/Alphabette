@@ -73,7 +73,7 @@ def zipper(fichiers):
 HTML = b'<!doctype html><html><head><title>Mon Quiz Fou</title><meta name="description" content="Un quiz pour rire."></head><body><h1>Salut</h1></body></html>'
 
 serveur = subprocess.Popen(['php', '-S', f'127.0.0.1:{PORT}', '-t', os.environ.get('CREATEURS_DIR', RACINE + '/serveur/php/createurs')], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    env={**os.environ, 'ALPHABETTE_PRIVATE_DIR': PRIV, 'ALPHABETTE_MAIL_DIR': MAIL, 'ADMIN_PASSWORD': 'mdp-de-test', 'ALPHABETTE_ORIGINE': ORIG,
+    env={**os.environ, 'ALPHABETTE_FINANCE_DIR': TMP + '/finance', 'ALPHABETTE_FINANCE_MAIL_DIR': MAIL, 'ALPHABETTE_PRIVATE_DIR': PRIV, 'ALPHABETTE_MAIL_DIR': MAIL, 'ADMIN_PASSWORD': 'mdp-de-test', 'ALPHABETTE_ORIGINE': ORIG,
          'ALPHABETTE_ORIGINES': ORIG, 'ALPHABETTE_ADMIN_EMAIL': 'admin@exemple.invalid', 'PHP_CLI_SERVER_WORKERS': '4'})
 try:
     for _ in range(50):

@@ -171,6 +171,10 @@ CREATE TABLE IF NOT EXISTS admin_sessions (hash TEXT PRIMARY KEY, csrf TEXT NOT 
 CREATE TABLE IF NOT EXISTS limites (k TEXT PRIMARY KEY, n INTEGER NOT NULL, debut INTEGER NOT NULL);
 INSERT OR IGNORE INTO admin_settings(key, value) VALUES ('requireManualValidation', 'true');
 SQL);
+    // Lot 5 : colonnes ajoutées sans casser une base existante (parrainage, date de confirmation, Hall of Fame).
+    $cols = array_column($pdo->query('PRAGMA table_info(users)')->fetchAll(), 'name');
+    foreach (array('sponsorCode' => 'TEXT', 'verifiedAt' => 'INTEGER', 'hallVisible' => 'INTEGER NOT NULL DEFAULT 1') as $c => $type)
+        if (!in_array($c, $cols, true)) $pdo->exec("ALTER TABLE users ADD COLUMN $c $type");
     return $pdo;
 }
 
@@ -195,6 +199,8 @@ function reglage(string $k, string $defaut = ''): string {
     return $v === false ? $defaut : (string) $v;
 }
 function validation_manuelle(): bool { return reglage('requireManualValidation', 'true') !== 'false'; }
+
+require_once __DIR__ . '/_pont.php';
 
 /* ───────────────────────────── secrets et empreintes ───────────────────────────── */
 
@@ -327,6 +333,9 @@ function recalculer(PDO $p, string $appId): array {
     if ($app['status'] === 'lab_eu' && $remplit) {
         $p->prepare("UPDATE submissions SET status = 'eligible_fr', updatedAt = ? WHERE id = ?")->execute(array(time(), $appId));
         $app['status'] = 'eligible_fr';
+        // Lot 5 — Défi Lancement Éclair : éligible moins de 48 h après l'arrivée sur .eu → badge + boost 7 jours sur .fr.
+        $arrive = (int) ($app['validatedAt'] ?: $app['createdAt']);
+        pont(function () use ($appId, $arrive) { return c_defi_eclair($appId, $arrive, time()); });
         $jeton = bin2hex(random_bytes(32));
         $p->prepare('INSERT INTO transfer_tokens(hash, appId, userId, expiresAt) VALUES (?, ?, ?, ?)')
             ->execute(array(sha256_jeton($jeton), $appId, (int) $app['userId'], time() + 90 * 86400));

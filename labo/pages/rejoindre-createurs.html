@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rejoindre les créateurs — Laboratoire Alphabette</title>
+<meta name="description" content="Publiez votre appli sur le Laboratoire Alphabette en 60 secondes. 15 €/an par abonné, dont 10 € pour vous. Parrainage, concours du mois.">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}
+ol.top{padding-left:1.4rem}ol.top li{padding:.25rem 0}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="rejoindre-createurs" data-nom="Créateurs" data-sous-titre="Rejoindre" data-accent="#4338ca"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Créez, publiez, soyez payé·e</h1>
+  <p class="chapeau">Votre appli arrive sur le Laboratoire en 60 secondes. Quand la communauté l'adopte (10 avis positifs, 75 % au moins), elle passe sur alphabette.fr : <strong>15 €/an par abonné, dont 10 € pour vous</strong>.</p>
+  <p class="pastille" id="parrain" hidden>Vous êtes invité·e par un créateur Alphabette</p>
+
+  <section class="carte carte--acc" aria-labelledby="t-ins">
+    <h2 id="t-ins">Créer mon compte créateur</h2>
+    <form id="f-ins">
+      <label class="champ" for="email">Votre adresse e-mail <span class="aide">Vous recevez un lien de connexion (aucun mot de passe).</span>
+        <input type="email" id="email" autocomplete="email" required></label>
+      <button type="submit">Recevoir mon lien</button>
+    </form>
+    <p class="message" id="m-ins" role="status"></p>
+    <p class="note">Ensuite : <a href="/soumettre/">déposez votre appli</a> (fichier HTML, ZIP ou dépôt GitHub public).</p>
+  </section>
+
+  <section aria-labelledby="t-par">
+    <h2 id="t-par">Parrainer d'autres créateurs</h2>
+    <p>Pendant <strong>12 mois</strong>, vous touchez <strong>1 € par abonnement</strong> vendu par chaque créateur que vous faites venir. Ce euro est pris sur la part d'Alphabette : <strong>votre filleul garde ses 10 €</strong>.</p>
+    <div id="zone-lien"><p class="note">Connectez-vous dans <a href="/mes-revenus/">Mes revenus</a> pour obtenir votre lien de parrainage.</p></div>
+  </section>
+
+  <section aria-labelledby="t-con">
+    <h2 id="t-con">Concours du mois</h2>
+    <p>Le parrain qui fait venir le plus de créateurs (adresse e-mail confirmée) gagne <strong>15 jours de mise en avant sur alphabette.fr</strong>.</p>
+    <ol class="top" id="top"><li>Chargement…</li></ol>
+  </section>
+</main>
+<script>
+(function () {
+  var A = window.AB5, q = new URLSearchParams(location.search);
+  var sponsor = q.get('sponsor');
+  if (sponsor && /^r[a-z0-9]{10}$/.test(sponsor)) { try { sessionStorage.setItem('ab5_sponsor', sponsor); } catch (e) {} }
+  try { sponsor = sessionStorage.getItem('ab5_sponsor') || ''; } catch (e) { sponsor = ''; }
+  if (sponsor) A.$('parrain').hidden = false;
+  A.$('f-ins').addEventListener('submit', function (e) {
+    e.preventDefault();
+    A.labo('auth.php', { action: 'demander', email: A.$('email').value.trim(), sponsor: sponsor || undefined }).then(function (d) {
+      A.message(A.$('m-ins'), d._s === 200 ? 'C\'est parti : ouvrez le lien reçu par e-mail (valable 30 minutes).' : d.erreur, d._s === 200);
+    });
+  });
+  if (A.jeton()) A.finance('affiliation.php', null, 'moi').then(function (d) {
+    if (d._s !== 200) return;
+    var url = location.origin + d.liens.parrainerCreateur;
+    var z = A.$('zone-lien'); z.textContent = '';
+    z.appendChild(A.el('p', {}, ['Votre lien : ', A.el('strong', { text: url })]));
+    var b = A.el('button', { type: 'button', text: 'Copier mon lien' });
+    b.onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { b.textContent = 'Copié ✓'; }, function () { b.textContent = 'Sélectionnez le lien ci-dessus'; }); };
+    z.appendChild(b);
+    z.appendChild(A.el('p', { class: 'note', text: d.filleulsCreateurs + ' créateur(s) parrainé(s) à ce jour.' }));
+  });
+  A.labo('recrutement.php', null, 'concours=' + new Date().toISOString().slice(0, 7)).then(function (d) {
+    var ol = A.$('top'); ol.textContent = '';
+    if (d._s !== 200) { ol.appendChild(A.el('li', { text: d.erreur || 'Classement indisponible.' })); return; }
+    if (!d.top.length) { ol.appendChild(A.el('li', { text: 'Personne encore ce mois-ci : la place est à prendre !' })); return; }
+    d.top.forEach(function (x) { ol.appendChild(A.el('li', {}, [A.el('strong', { text: x.pseudo }), ' — ' + x.filleuls + ' créateur(s)'])); });
+  });
+})();
+</script>
+</body>
+</html>

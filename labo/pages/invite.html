@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Une invitation Alphabette</title>
+<meta name="description" content="Un ami vous invite sur Alphabette : des applis utiles, 7 jours d'essai sans carte.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="invite" data-nom="Invitation" data-sous-titre="D'un ami" data-accent="#db2777"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Un ami vous invite 🎁</h1>
+  <p class="chapeau" id="txt">Chargement…</p>
+  <p><a class="bouton" href="/">Découvrir les applis</a></p>
+  <p class="note">Aucune information sur vous n'est transmise à votre ami. Il reçoit 90 jours d'abonnement en plus si vous vous abonnez un jour (plafond de 12 mois par an).</p>
+</main>
+<script>
+(function () {
+  var A = window.AB5, m = location.pathname.match(/^\/invite\/(r[a-z0-9]{10})\/?$/);
+  var code = m ? m[1] : '';
+  A.finance('affiliation.php', null, 'invite=' + code).then(function (d) {
+    if (d._s === 200 && d.valide) {
+      try { sessionStorage.setItem('ab5_invite', code); } catch (e) {}
+      A.$('txt').textContent = 'Essayez n\'importe quelle appli 7 jours, sans carte bancaire. Si vous vous abonnez ensuite (15 €/an), votre ami gagne 90 jours offerts.';
+    } else A.$('txt').textContent = 'Ce lien d\'invitation n\'est plus valable, mais les applis vous attendent quand même.';
+  });
+})();
+</script>
+</body>
+</html>

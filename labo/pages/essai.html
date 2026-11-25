@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Essayer 7 jours sans carte — Alphabette</title>
+<meta name="description" content="7 jours d'essai sans carte bancaire, une fois par appli. Ensuite, 15 €/an, dont 10 € pour le créateur. Codes licence et cadeau.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="essai" data-nom="Essai" data-sous-titre="7 jours" data-accent="#0f766e"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Essayer <span id="nom-app">cette appli</span></h1>
+  <p class="chapeau"><strong>7 jours offerts, sans carte bancaire.</strong> Un seul essai par personne et par appli. Rien n'est prélevé ensuite.</p>
+  <div id="cnx"></div>
+  <section id="actions" class="cache">
+    <div class="carte carte--acc">
+      <h2>Mon essai</h2>
+      <p id="etat">…</p>
+      <button type="button" id="b-essai">Commencer mes 7 jours</button>
+      <p class="message" id="m-essai"></p>
+    </div>
+    <div class="carte">
+      <h2>J'ai un code</h2>
+      <p class="note">Licence <code>LIC-…</code>, cadeau <code>ALPHA-…</code> ou jours gagnés au Labo <code>JFR-…</code>.</p>
+      <form id="f-code"><label class="champ" for="code">Code <input id="code" autocomplete="off" required></label><button type="submit">Activer</button></form>
+      <p class="message" id="m-code"></p>
+    </div>
+    <div class="carte">
+      <h2>S'abonner : 15 €/an</h2>
+      <p>Dont <strong>10 € pour le créateur</strong>. Un paiement, 12 mois, aucun renouvellement automatique.</p>
+      <button type="button" class="secondaire" id="b-abo">S'abonner</button>
+      <p class="message" id="m-abo"></p>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var A = window.AB5;
+  var m = location.pathname.match(/^\/essai\/([a-z0-9][a-z0-9-]{0,62})\/?$/);
+  var app = m ? m[1] : (new URLSearchParams(location.search).get('app') || '');
+  var ref = new URLSearchParams(location.search).get('ref') || '';
+  A.$('nom-app').textContent = app || 'cette appli';
+  function etat() {
+    A.finance('affiliation.php', null, 'acces=' + encodeURIComponent(app)).then(function (d) {
+      if (d._s !== 200) { A.$('etat').textContent = d.erreur || ''; return; }
+      A.$('etat').textContent = d.actif ? 'Accès en cours (' + d.source + ') jusqu\'au ' + new Date(d.fin).toLocaleDateString('fr-FR') + '.' : 'Pas encore d\'accès.';
+      A.$('b-essai').hidden = !!d.actif;
+    });
+  }
+  A.connexion(A.$('cnx'), function () { A.$('actions').classList.remove('cache'); etat(); });
+  A.$('b-essai').onclick = function () {
+    A.finance('affiliation.php', { action: 'essai', app: app, ref: ref || undefined }).then(function (d) { A.message(A.$('m-essai'), d._s === 200 ? d.message : d.erreur, d._s === 200); etat(); });
+  };
+  A.$('f-code').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = A.$('code').value.trim().toUpperCase();
+    var p = /^JFR-/.test(c) ? A.finance('boutique.php', { action: 'utiliser_code_jours', code: A.$('code').value.trim(), app: app }) : A.finance('boutique.php', { action: 'activer', code: c });
+    p.then(function (d) { A.message(A.$('m-code'), d._s === 200 ? 'Activé : accès jusqu\'au ' + new Date(d.fin).toLocaleDateString('fr-FR') + '.' : d.erreur, d._s === 200); etat(); });
+  });
+  A.$('b-abo').onclick = function () {
+    var clic = '', invite = '';
+    try { clic = sessionStorage.getItem('ab5_clic') || ''; invite = sessionStorage.getItem('ab5_invite') || ''; } catch (e) {}
+    A.finance('affiliation.php', { action: 'preparer', app: app, clic: clic || undefined, invite: invite || undefined }).then(function (d) {
+      if (d._s === 200 && d.lien) location.href = d.lien; else A.message(A.$('m-abo'), d.message || d.erreur, d._s === 200);
+    });
+  };
+})();
+</script>
+</body>
+</html>

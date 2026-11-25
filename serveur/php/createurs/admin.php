@@ -197,6 +197,10 @@ if ($action === 'publier_fr') {
         if ($a['status'] !== 'eligible_fr' || !$t->fetchColumn()) erreur(409, "L'appli doit être éligible et le créateur doit avoir lancé le transfert.");
         $p->prepare("UPDATE submissions SET status = 'published_fr', updatedAt = ? WHERE id = ?")->execute(array(time(), $id));
         $p->prepare("UPDATE transfers SET status = 'publie' WHERE appId = ?")->execute(array($id));
+        // Lot 5 : l'appli est rattachée à son créateur dans le moteur financier (10 € par abonnement vendu, versés à son solde).
+        $u = $p->prepare('SELECT email FROM users WHERE id = ?'); $u->execute(array((int) $a['userId']));
+        $email = (string) $u->fetchColumn();
+        pont(function () use ($id, $email) { c_lier_app($id, $email); return true; });
     });
     repondre(200, array('ok' => true));
 }

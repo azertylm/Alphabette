@@ -31,6 +31,14 @@
   var HUB = local ? location.origin : 'https://alphabette.fr';
   var app = { cle: d.cle || '', nom: d.nom || document.title, sousTitre: d.sousTitre || '', accent: d.accent || '#2563eb', categorie: d.categorie || '' };
 
+  // ------------------------------------------------------------ Lien recommandé (Lot 5)
+  // /go/<appli>?ref=… ajoute ?clic=clk_… à l'adresse : gardé pour CET onglet seulement (sessionStorage, jamais de cookie),
+  // pour que l'abonnement éventuel dans les 7 jours remercie la personne qui a recommandé l'appli.
+  try {
+    var clic = new URLSearchParams(location.search).get('clic');
+    if (clic && /^clk_[a-f0-9]{24}$/.test(clic)) sessionStorage.setItem('ab5_clic', clic);
+  } catch (e) {}
+
   // ------------------------------------------------------------ Design Pop / Néon (Lot 4)
   // Univers posé tout de suite (avant l'affichage) : alphabette.eu = « Labo Pop Électrique », sinon « Vitrine Solaire ».
   // Mode Calme (localStorage) : coupe les animations. Feuille et effets chargés à côté de ce script, sans bloquer.
