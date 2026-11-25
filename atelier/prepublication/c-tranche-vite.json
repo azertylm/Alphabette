@@ -1,0 +1,12 @@
+{
+  "id": "c-tranche-vite",
+  "ref": "ff54c7cdedcc4ccd5014d7cb7bca72f9996ff28a",
+  "date": "2026-11-25T18:36:47.693Z",
+  "conforme": false,
+  "bloquants": [
+    "L'application ne s'ouvre pas"
+  ],
+  "note": 33,
+  "hotes_references": [],
+  "dernier_conforme": null
+}
