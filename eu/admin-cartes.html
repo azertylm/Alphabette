@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr"><head>
+    <script src="/labo/capteur.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cartes offertes — administration Alphabette</title><meta name="robots" content="noindex, nofollow">
+<style>body{font:17px/1.5 system-ui,sans-serif;max-width:760px;margin:0 auto;padding:16px}input{font:inherit;padding:10px;width:100%;box-sizing:border-box}button{font:inherit;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;border:0;border-radius:10px;background:#4338ca;color:#fff}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #e2e8f0;padding:6px;text-align:left}</style></head>
+<body><h1>Cartes offertes</h1>
+<label>Mot de passe administrateur <input id="mdp" type="password" autocomplete="current-password"></label>
+<button id="v">Voir les cartes activées</button><button id="x">Télécharger en CSV</button>
+<p id="s" role="status"></p><table id="t"></table>
+<script>
+var $=function(i){return document.getElementById(i)};
+function get(q){return fetch('/api/carte.php?'+q,{headers:{'X-Admin-Password':$('mdp').value}})}
+$('v').onclick=function(){get('admin').then(function(r){return r.json().then(function(d){
+  if(!r.ok){$('s').textContent=d.erreur||'Erreur';return}
+  $('s').textContent=d.utilisees+' carte(s) activée(s) sur '+d.total+' — '+d.restantes+' restante(s).';
+  $('t').innerHTML='<tr><th>Date</th><th>Lot-N°</th><th>E-mail</th></tr>'+d.recentes.map(function(c){return '<tr><td>'+new Date(c.utilise_le*1000).toLocaleString('fr-FR')+'</td><td>'+c.lot+'-'+c.numero+'</td><td></td></tr>'}).join('');
+  var tr=$('t').rows;d.recentes.forEach(function(c,i){tr[i+1].cells[2].textContent=c.email||''})})})};
+$('x').onclick=function(){get('export').then(function(r){return r.ok?r.blob():null}).then(function(b){if(!b){$('s').textContent='Mot de passe incorrect.';return}var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cartes-activees.csv';a.click()})};
+</script></body></html>
