@@ -1,0 +1,99 @@
+diff --git a/data/labo/incidents.json b/data/labo/incidents.json
+index 15f9406..820f041 100644
+--- a/data/labo/incidents.json
++++ b/data/labo/incidents.json
+@@ -17,7 +17,8 @@
+       "erreurs": [
+         "ResizeObserver loop completed with undelivered notifications. (:0)"
+       ],
+-      "tickets_rouverts": []
++      "tickets_rouverts": [],
++      "faux_positif": "Seule erreur relevée : « ResizeObserver loop completed with undelivered notifications », un avertissement du navigateur, pas un plantage. Retrait annulé (correctif docs/labo/correctifs/sentinelle-faux-positif-resizeobserver.patch)."
+     }
+   ]
+ }
+diff --git a/data/labo/releases.json b/data/labo/releases.json
+index ca17519..a93661c 100644
+--- a/data/labo/releases.json
++++ b/data/labo/releases.json
+@@ -12,9 +12,9 @@
+       {
+         "ref": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e",
+         "depuis": "2026-11-18",
+-        "statut": "retiree",
+-        "retiree_le": "2026-11-25T19:25:51.276Z",
+-        "raison": "3 session(s) sur 77 avec une erreur fatale (seuil : plus de 2 % des 100 premières)"
++        "statut": "en_ligne",
++        "faux_positif_le": "2026-11-25T19:25:51.276Z",
++        "note": "Retrait annulé : les 3 « erreurs fatales » étaient l'avertissement « ResizeObserver loop… » du navigateur (l'appli ne plantait pas)."
+       }
+     ],
+     "iadebat": [
+diff --git a/labo/serveur/sentinelle.js b/labo/serveur/sentinelle.js
+index 0d292bb..8b2ae64 100644
+--- a/labo/serveur/sentinelle.js
++++ b/labo/serveur/sentinelle.js
+@@ -21,6 +21,7 @@
+   window.addEventListener('error', function (e) {
+     if (!e || !e.message || !memeOrigine(e.filename)) return; // extensions, scripts tiers : ignorés
+     if (/\[Incident API Tiers\]|IncidentApiTiers/.test(e.message)) return; // fournisseur d'IA, pas l'appli
++    if (/ResizeObserver loop/i.test(e.message)) return; // simple avertissement du navigateur, l'appli ne plante pas
+     fatale = 1; if (!erreur) erreur = nettoyer(e.message + ' (' + String(e.filename).split('/').pop().split('?')[0] + ':' + e.lineno + ')');
+   });
+   window.addEventListener('unhandledrejection', function (e) {
+diff --git a/labo/serveur/sentinelle.php b/labo/serveur/sentinelle.php
+index 2b52bba..c4018bd 100644
+--- a/labo/serveur/sentinelle.php
++++ b/labo/serveur/sentinelle.php
+@@ -85,7 +85,9 @@ if (!$a || $a['version'] !== $version) {
+ }
+ if ($a['sessions'] < FENETRE) {
+     $a['sessions']++;
+-    if (!empty($e['fatale'])) {
++    // « ResizeObserver loop… » : avertissement du navigateur, l'appli ne plante pas (anciennes sondes en cache).
++    $benin = isset($e['erreur']) && preg_match('/ResizeObserver loop/i', (string) $e['erreur']);
++    if (!empty($e['fatale']) && !$benin) {
+         $a['fatales']++;
+         $m = isset($e['erreur']) ? mb_substr(preg_replace('/[^\P{C}\n]/u', '', (string) $e['erreur']), 0, 160) : '';
+         if ($m !== '' && !in_array($m, $a['erreurs'], true)) $a['erreurs'] = array_slice(array_merge($a['erreurs'], array($m)), -10);
+diff --git a/scripts/labo/sentinelle.mjs b/scripts/labo/sentinelle.mjs
+index 4aa849c..7f4897d 100644
+--- a/scripts/labo/sentinelle.mjs
++++ b/scripts/labo/sentinelle.mjs
+@@ -44,11 +44,17 @@ const idRegistre = (cle) => {
+   return registre.apps.find((a) => hote(a.url) === `${cle}.alphabette.fr` || (s.domains ?? []).includes(hote(a.url)))?.id ?? cle;
+ };
+ 
++// Avertissements du navigateur qui ne font pas planter l'appli : jamais une « erreur fatale ».
++const BENIN = /ResizeObserver loop/i;
++
+ const verdicts = [];
+-for (const [cle, a] of Object.entries(etat.apps)) {
++for (let [cle, a] of Object.entries(etat.apps)) {
+   const ref = sources.apps[cle]?.vitrine?.ref;
+   if (!ref || !ref.startsWith(a.version)) continue; // mesure d'une version qui n'est plus (ou pas) en ligne
+   const raisons = [];
++  // Si toutes les erreurs relevées sont des avertissements bénins, les sessions « fatales » n'en sont pas.
++  const erreursReelles = (a.erreurs ?? []).filter((e) => !BENIN.test(e));
++  if (a.fatales > 0 && (a.erreurs ?? []).length > 0 && erreursReelles.length === 0) a = { ...a, fatales: 0 };
+   if (a.fatales >= MIN_FATALES || (a.sessions >= FENETRE && a.fatales / a.sessions > SEUIL_TAUX)) {
+     raisons.push(`${a.fatales} session(s) sur ${a.sessions} avec une erreur fatale (seuil : plus de 2 % des ${FENETRE} premières)`);
+   }
+@@ -62,7 +68,10 @@ for (const [cle, a] of Object.entries(etat.apps)) {
+     rendu_precedent_ms: p ?? null, retour_arriere: raisons.length > 0, raisons, cible: raisons.length ? precedente?.ref ?? null : null, erreurs: a.erreurs ?? [] });
+ }
+ 
+-const fautifs = verdicts.filter((v) => v.retour_arriere);
++// Sans version N-1, une version déjà marquée « retiree » a déjà donné son alerte : pas de nouvel incident,
++// ni commit, ni publication, ni ticket à chaque passage (toutes les 20 minutes).
++const dejaSignale = (v) => !v.cible && (releases.apps[v.cle] ?? []).some((r) => r.ref === v.version && r.statut === 'retiree');
++const fautifs = verdicts.filter((v) => v.retour_arriere && !dejaSignale(v));
+ if (args.includes('--appliquer') && fautifs.length) {
+   const incidents = lire('data/labo/incidents.json', { incidents: [] });
+   const decisions = lire('data/labo/decisions.json', { decisions: {} });
+@@ -105,4 +114,4 @@ if (args.includes('--appliquer') && fautifs.length) {
+   ecrire('data/labo/decisions.json', decisions);
+   writeFileSync('/tmp/sentinelle-rapport.md', rapport);
+ }
+-console.log(JSON.stringify({ verifie_le: new Date().toISOString(), apps: verdicts, retours_arriere: fautifs.map((v) => v.cle) }, null, 2));
++console.log(JSON.stringify({ verifie_le: new Date().toISOString(), apps: verdicts, retours_arriere: fautifs.map((v) => v.cle), deja_signales: verdicts.filter((v) => v.retour_arriere && dejaSignale(v)).map((v) => v.cle) }, null, 2));

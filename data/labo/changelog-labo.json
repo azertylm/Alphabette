@@ -24,12 +24,55 @@
       ]
     },
     "iadebat": {
-      "passage": "2026-11-20T20:30:00Z",
+      "passage": "2026-11-25T20:40:00Z",
       "changements": [
         {
-          "probleme": "Sur les très petits téléphones et en mode BIG, le bouton « Intervenir » dépassait de l'écran et la page glissait de côté.",
-          "amelioration": "La barre pour intervenir tient maintenant sur l'écran : sur petit écran, le bouton montre seulement la flèche d'envoi.",
-          "origine": "chaos",
+          "probleme": "Rien ne rappelait que les réponses de l'IA peuvent être fausses.",
+          "amelioration": "Une phrase sous les réponses invite à vérifier les informations importantes.",
+          "origine": "atelier",
+          "avis": []
+        }
+      ]
+    },
+    "france-service": {
+      "passage": "2026-11-25T20:40:00Z",
+      "changements": [
+        {
+          "probleme": "En mode BIG, les petits textes restaient tout petits.",
+          "amelioration": "436 petits textes grandissent maintenant avec le bouton BIG, sans changer à taille normale.",
+          "origine": "avis",
+          "avis": [
+            "fb_1795199847_24b2"
+          ]
+        },
+        {
+          "probleme": "En très grande taille, les rangées de sous-pages dépassaient de l'écran.",
+          "amelioration": "Les rangées de sous-pages passent à la ligne au lieu de déborder.",
+          "origine": "avis",
+          "avis": [
+            "fb_1795199847_24b2"
+          ]
+        }
+      ]
+    },
+    "frigoplacard": {
+      "passage": "2026-11-25T20:40:00Z",
+      "changements": [
+        {
+          "probleme": "Les 4 champs d'ajout n'avaient pas d'étiquette pour les lecteurs d'écran.",
+          "amelioration": "Chaque champ d'ajout est maintenant annoncé par son nom.",
+          "origine": "atelier",
+          "avis": []
+        }
+      ]
+    },
+    "bonplan": {
+      "passage": "2026-11-25T20:40:00Z",
+      "changements": [
+        {
+          "probleme": "Des champs de saisie n'étaient pas annoncés par les lecteurs d'écran.",
+          "amelioration": "8 champs de saisie ont maintenant une étiquette.",
+          "origine": "atelier",
           "avis": []
         }
       ]

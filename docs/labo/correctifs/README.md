@@ -1,3 +1,9 @@
+# ⏳ En attente de l'ordre de Valentin
+
+| Date | Correctif | Ce qu'il fait |
+|---|---|---|
+| 25/11/2026 | `sentinelle-faux-positif-resizeobserver.patch` (hub : `labo/serveur/sentinelle.js`, `sentinelle.php`, `scripts/labo/sentinelle.mjs`, `data/labo/releases.json`, `incidents.json`) | la Sentinelle de alphabette.fr ne compte plus l'avertissement « ResizeObserver loop… » comme une erreur fatale, ne répète plus un incident déjà signalé, et remet Info Perso « en ligne » (faux retrait du 25/11). Appliquer : `git apply docs/labo/correctifs/sentinelle-faux-positif-resizeobserver.patch`, commit, push sur `main`. |
+
 # ✅ Correctifs appliqués et poussés le 19/11/2026 (sur ordre de Valentin)
 
 | Dépôt | Commit sur `main` |
