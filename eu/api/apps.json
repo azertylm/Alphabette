@@ -421,6 +421,26 @@
       "createdAt": "2026-11-19T00:00:00.000Z",
       "updatedAt": "2026-11-20T00:00:00.000Z",
       "description": "N'importe quel site testé en 30 secondes : note sur 100 (téléphone, vitesse, accessibilité, sécurité) et les 3 points à corriger en premier."
+    },
+    {
+      "id": "c-tranche-vite",
+      "name": "Tranche-Vite",
+      "slug": "c-tranche-vite",
+      "icon": "Sparkles",
+      "status": "actif",
+      "badge": null,
+      "url": "/createurs/c-tranche-vite/",
+      "description": "Application de test du Collectif Alphabette (Salle d'embarquement).",
+      "createdAt": "2026-11-25T18:35:00Z",
+      "updatedAt": "2026-11-25T18:35:00Z",
+      "communaute": true,
+      "createur": "Tintoon",
+      "categorie": "Autre",
+      "reseau_autorise": [],
+      "badges": [],
+      "heberge": true,
+      "url_app": "/createurs/c-tranche-vite/app/index.html",
+      "ref": "73274d8278bd008c063d08c9ada099331f0160bf"
     }
   ],
   "labo": true

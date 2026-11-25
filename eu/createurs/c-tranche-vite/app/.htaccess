@@ -1,0 +1,16 @@
+# Généré par scripts/labo/bac-a-sable.mjs — application d'un créateur, isolée (ne pas modifier à la main).
+Options -Indexes -ExecCGI
+<FilesMatch "(^\.|\.(php[0-9]?|phtml|phar|pht|inc|pl|py|cgi|sh|shtml|asp|aspx|jsp|htaccess|htpasswd|ini)$)">
+  Require all denied
+</FilesMatch>
+<IfModule mod_mime.c>
+  RemoveHandler .php .php5 .php7 .php8 .phtml .phar .pl .py .cgi
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "sandbox allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads; default-src 'none'; script-src https://alphabette.eu 'unsafe-inline' 'unsafe-eval' blob:; style-src https://alphabette.eu 'unsafe-inline'; img-src https://alphabette.eu data: blob:; font-src https://alphabette.eu data:; media-src https://alphabette.eu data: blob:; connect-src https://alphabette.eu; worker-src https://alphabette.eu blob:; frame-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; frame-ancestors https://alphabette.eu"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "no-referrer"
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Cross-Origin-Resource-Policy "cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+</IfModule>

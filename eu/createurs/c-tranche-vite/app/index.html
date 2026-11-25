@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="onyx">
+<head>
+<script>/* Coffre du bac à sable Alphabette — inséré en tête de chaque page d'une application hébergée pour un
+ * créateur du collectif (scripts/labo/bac-a-sable.mjs). L'application tourne dans un cadre isolé (origine
+ * « opaque ») : elle ne peut lire ni les cookies ni le stockage d'alphabette.eu. Ce petit script lui rend un
+ * localStorage / sessionStorage qui marche, gardé par la page d'accueil du cadre (et seulement pour elle).
+ * Garde-fou : si l'isolement manque (en-tête de sécurité absent), la page s'arrête et renvoie vers le cadre. */
+(function () {
+  'use strict';
+  var isole;
+  try { isole = self.origin === 'null'; } catch (e) { isole = true; }
+  if (!isole) {
+    try { window.stop(); } catch (e) { /* rien */ }
+    try { document.documentElement.innerHTML = ''; } catch (e) { /* rien */ }
+    location.replace(new URL('../', location.href).href);
+    throw new Error('Bac à sable Alphabette : ouverture hors du cadre isolé.');
+  }
+  var MARQUE = '__ab_coffre__';
+  var MAX = 2000000;
+  var donnees = {};
+  try { if (String(window.name).indexOf(MARQUE) === 0) donnees = JSON.parse(String(window.name).slice(MARQUE.length)) || {}; } catch (e) { donnees = {}; }
+
+  function annoncer() {
+    var texte;
+    try { texte = JSON.stringify(donnees); } catch (e) { return; }
+    if (texte.length > MAX) return;
+    try { window.name = MARQUE + texte; } catch (e) { /* rien */ }
+    try { parent.postMessage({ type: 'ab-coffre', donnees: donnees }, '*'); } catch (e) { /* rien */ }
+  }
+
+  function stockage(table, garde) {
+    var api = {
+      getItem: function (k) { k = String(k); return Object.prototype.hasOwnProperty.call(table, k) ? table[k] : null; },
+      setItem: function (k, v) { table[String(k)] = String(v); if (garde) annoncer(); },
+      removeItem: function (k) { delete table[String(k)]; if (garde) annoncer(); },
+      clear: function () { for (var k in table) delete table[k]; if (garde) annoncer(); },
+      key: function (i) { var c = Object.keys(table); return i >= 0 && i < c.length ? c[i] : null; },
+    };
+    return new Proxy(api, {
+      get: function (c, p) { if (p === 'length') return Object.keys(table).length; if (p in api) return api[p]; return typeof p === 'string' && Object.prototype.hasOwnProperty.call(table, p) ? table[p] : undefined; },
+      set: function (c, p, v) { if (p in api) return true; api.setItem(p, v); return true; },
+      deleteProperty: function (c, p) { api.removeItem(p); return true; },
+      has: function (c, p) { return p in api || Object.prototype.hasOwnProperty.call(table, p); },
+      ownKeys: function () { return Object.keys(table); },
+      getOwnPropertyDescriptor: function (c, p) { return Object.prototype.hasOwnProperty.call(table, p) ? { value: table[p], enumerable: true, configurable: true, writable: true } : undefined; },
+    });
+  }
+
+  var definir = function (nom, valeur) { try { Object.defineProperty(window, nom, { value: valeur, configurable: true, enumerable: true }); } catch (e) { /* rien */ } };
+  definir('localStorage', stockage(donnees, true));
+  definir('sessionStorage', stockage({}, false));
+  try { Object.defineProperty(document, 'cookie', { get: function () { return ''; }, set: function () {}, configurable: true }); } catch (e) { /* rien */ }
+})();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tranche-Vite — Tirage au sort instantané, 100 % local et sans compte. Application labo alphabette.eu.">
+  <meta name="theme-color" content="#09090B" id="meta-theme-color">
+  <title>Tranche-Vite — Labo alphabette.eu</title>
+  <style>
+    /* =========================================================
+       SOCLE ALPHABETTE.EU — WCAG AAA (Contraste >= 7:1)
+       Mode Onyx (défaut) & Mode Clair lumineux
+       ========================================================= */
+    :root {
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --tap-min: 52px;
+      --focus-ring: 3px solid var(--focus-color);
+    }
+
+    /* THÈME ONYX (Sombre haute lisibilité) */
+    [data-theme="onyx"] {
+      --bg: #09090B;
+      --surface: #14141A;
+      --surface-alt: #1E1E28;
+      --text: #FFFFFF;
+      --text-muted: #D4D4E0;
+      --border: #525268;
+      --border-strong: #FFFFFF;
+      --accent: #FFD84D;
+      --accent-hover: #FFE47A;
+      --accent-text: #09090B;
+      --secondary: #5CE1E6;
+      --secondary-text: #09090B;
+      --danger-bg: #361019;
+      --danger-text: #FFB3C1;
+      --danger-border: #FF859B;
+      --focus-color: #5CE1E6;
+      --title-shadow: 2px 2px 0 #2A2A3D;
+      --card-shadow: 0 4px 0 #262636;
+    }
+
+    /* THÈME CLAIR (Blanc pur + ombres typographiques vives) */
+    [data-theme="clair"] {
+      --bg: #FFFFFF;
+      --surface: #F5F6FA;
+      --surface-alt: #E9ECF4;
+      --text: #0A0A0F;
+      --text-muted: #2B2B38;
+      --border: #5C5C70;
+      --border-strong: #0A0A0F;
+      --accent: #0038A8;
+      --accent-hover: #00297D;
+      --accent-text: #FFFFFF;
+      --secondary: #005C4B;
+      --secondary-text: #FFFFFF;
+      --danger-bg: #990024;
+      --danger-text: #FFFFFF;
+      --danger-border: #6E001A;
+      --focus-color: #B30059;
+      --title-shadow: 3px 3px 0 #FFD84D;
+      --card-shadow: 4px 4px 0 #0A0A0F;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Focus visible AAA partout */
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    /* En-tête non-collant : disparaît naturellement au scroll (zéro double barre) */
+    .app-header {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 1rem 1rem 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 2px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.85rem, 6vw, 2.4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: var(--title-shadow);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .card-title {
+      margin: 0 0 0.85rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Boutons tactiles généreux (>= 52px) */
+    button {
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      min-height: var(--tap-min);
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      touch-action: manipulation;
+      transition: transform 0.08s ease, background-color 0.15s ease;
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(2px);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--border-strong);
+      font-size: 1.2rem;
+      font-weight: 900;
+      min-height: 60px;
+      width: 100%;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--secondary-text);
+      border-color: var(--border-strong);
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border-color: var(--danger-border);
+    }
+
+    .btn-icon {
+      min-width: var(--tap-min);
+      padding: 0.5rem 0.75rem;
+    }
+
+    /* Zone résultat principal */
+    .result-box {
+      min-height: 112px;
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      border: 3px dashed var(--border-strong);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .result-box.is-winner {
+      border-style: solid;
+      border-color: var(--accent);
+      background: var(--surface-alt);
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+    }
+
+    .result-value {
+      font-size: clamp(1.5rem, 6vw, 2.15rem);
+      font-weight: 900;
+      word-break: break-word;
+      text-shadow: var(--title-shadow);
+    }
+
+    /* Toggle élimination */
+    .toggle-row {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      border: 2px solid var(--border);
+      min-height: var(--tap-min);
+      cursor: pointer;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle-row span {
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
+    /* Formulaire d'ajout */
+    .add-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .add-form input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      min-height: var(--tap-min);
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-strong);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .add-form input[type="text"]::placeholder {
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    /* Packs rapides */
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .presets button {
+      min-height: 44px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.92rem;
+    }
+
+    /* Liste des options */
+    .options-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+      padding: 0.45rem 0.55rem 0.45rem 0.95rem;
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      border: 2px solid var(--border);
+    }
+
+    .option-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .option-remove {
+      min-width: 48px;
+      min-height: 48px;
+      padding: 0;
+      font-size: 1.35rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .list-footer {
+      margin-top: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .muted-note {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    /* Historique */
+    .history-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .history-winner {
+      font-weight: 800;
+      font-size: 1rem;
+      word-break: break-word;
+    }
+
+    .history-time {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    /* Module Feedback Labo alphabette.eu */
+    .stars-row {
+      display: flex;
+      gap: 0.45rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .star-btn {
+      min-width: 52px;
+      min-height: 52px;
+      font-size: 1.35rem;
+      padding: 0;
+    }
+
+    .star-btn[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      min-height: 82px;
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-strong);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      resize: vertical;
+    }
+
+    .status-msg {
+      margin: 0.6rem 0 0;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    footer {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    footer a {
+      color: var(--text);
+      font-weight: 800;
+      text-underline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-badge">Labo alphabette.eu • Test</span>
+      <h1>Tranche-Vite</h1>
+    </div>
+    <div class="header-actions">
+      <button type="button" id="voice-toggle" class="btn-icon" aria-pressed="false" title="Activer ou couper l'annonce vocale">
+        <span aria-hidden="true" id="voice-icon">🔇</span>
+        <span class="sr-only">Annonce vocale</span>
+      </button>
+      <button type="button" id="theme-toggle" aria-label="Basculer entre le thème Onyx et le thème Clair">
+        <span id="theme-label">☀️ Clair</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- BLOC 1 : TIRAGE INSTANTANÉ -->
+    <section class="card" aria-labelledby="titre-tirage">
+      <h2 id="titre-tirage" class="sr-only">Zone de tirage au sort</h2>
+
+      <div id="result-box" class="result-box" role="status" aria-live="polite" aria-atomic="true">
+        <span id="result-label" class="result-label">Prêt à décider</span>
+        <span id="result-value" class="result-value">Ajoute tes choix et lance</span>
+      </div>
+
+      <button type="button" id="draw-btn" class="btn-primary">
+        🎲 TRANCHER !
+      </button>
+
+      <label class="toggle-row" for="eliminate-toggle">
+        <input type="checkbox" id="eliminate-toggle">
+        <span>Retirer l'option gagnante après tirage</span>
+      </label>
+    </section>
+
+    <!-- BLOC 2 : GESTION DES CHOIX -->
+    <section class="card" aria-labelledby="titre-options">
+      <div class="card-title">
+        <h2 id="titre-options" style="margin:0;font-size:inherit;">Tes options (<span id="options-count">0</span>)</h2>
+        <button type="button" id="clear-options-btn" class="btn-danger" style="min-height:44px;padding:0.35rem 0.75rem;font-size:0.9rem;">
+          Tout vider
+        </button>
+      </div>
+
+      <form id="add-form" class="add-form" autocomplete="off">
+        <label for="option-input" class="sr-only">Nouvelle option</label>
+        <input
+          type="text"
+          id="option-input"
+          placeholder="Ex : Pizza, Sushi, Burger..."
+          maxlength="80"
+          enterkeyhint="done"
+        >
+        <button type="button" id="mic-btn" class="btn-icon" hidden aria-label="Dicter une option à la voix" title="Dicter une option">
+          🎙️
+        </button>
+        <button type="submit" class="btn-secondary">
+          + Ajouter
+        </button>
+      </form>
+
+      <div class="presets" aria-label="Modèles rapides">
+        <button type="button" data-preset="repas">🍽️ Repas</button>
+        <button type="button" data-preset="soiree">🎬 Soirée</button>
+        <button type="button" data-preset="ouinon">⚖️ Oui / Non</button>
+        <button type="button" data-preset="weekend">☀️ Week-end</button>
+      </div>
+
+      <ul id="options-list" class="options-list" aria-label="Liste des options actives"></ul>
+      <p id="empty-options-msg" class="muted-note" hidden>Aucune option pour le moment. Saisis-en au moins deux ou choisis un modèle rapide.</p>
+    </section>
+
+    <!-- BLOC 3 : HISTORIQUE LOCAL -->
+    <section class="card" aria-labelledby="titre-historique">
+      <div class="card-title">
+        <h2 id="titre-historique" style="margin:0;font-size:inherit;">Historique local</h2>
+        <button type="button" id="clear-history-btn" style="min-height:44px;padding:0.35rem 0.75rem;font-size:0.9rem;">
+          Effacer
+        </button>
+      </div>
+      <ul id="history-list" class="history-list"></ul>
+      <p id="empty-history-msg" class="muted-note">Aucun tirage enregistré pour l'instant.</p>
+    </section>
+
+    <!-- BLOC 4 : MODULE RETOUR LABO ALPHABETTE.EU -->
+    <section class="card" aria-labelledby="titre-feedback">
+      <h2 id="titre-feedback" class="card-title">Retour labo alphabette.eu</h2>
+      <p class="muted-note" style="margin-bottom:0.85rem;">
+        Application issue de « Proposer une application ». Note ton essai ou signale un bug :
+      </p>
+      <div class="stars-row" role="group" aria-label="Note sur 5">
+        <button type="button" class="star-btn" data-rating="1" aria-pressed="false" aria-label="1 étoile">1★</button>
+        <button type="button" class="star-btn" data-rating="2" aria-pressed="false" aria-label="2 étoiles">2★</button>
+        <button type="button" class="star-btn" data-rating="3" aria-pressed="false" aria-label="3 étoiles">3★</button>
+        <button type="button" class="star-btn" data-rating="4" aria-pressed="false" aria-label="4 étoiles">4★</button>
+        <button type="button" class="star-btn" data-rating="5" aria-pressed="false" aria-label="5 étoiles">5★</button>
+      </div>
+      <label for="feedback-text" class="sr-only">Commentaire ou bug constaté</label>
+      <textarea id="feedback-text" class="feedback-textarea" placeholder="Un bug, une idée d'amélioration ?"></textarea>
+      <button type="button" id="send-feedback-btn" class="btn-secondary" style="width:100%;">
+        Enregistrer le retour
+      </button>
+      <p id="feedback-status" class="status-msg" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      100 % local (Zero-Knowledge) • Aucune donnée envoyée sans ton action •
+      <a href="../index.html">Retour à alphabette.eu</a>
+    </p>
+  </footer>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEY = 'alphabette_tranche_vite_v1';
+      const FEEDBACK_KEY = 'alphabette_tranche_vite_feedback_v1';
+      const MAX_HISTORY = 15;
+
+      const PRESETS = {
+        repas: ['Pizza maison', 'Sushi', 'Burger', 'Pâtes carbonara', 'Salade composée'],
+        soiree: ['Film', 'Série', 'Jeu de société', 'Balade', 'Lecture au calme'],
+        ouinon: ['Oui, fonce !', 'Non, passe ton tour'],
+        weekend: ['Plage', 'Randonnée', 'Cinéma', 'Pétanque entre amis', 'Grasse matinée']
+      };
+
+      const DEFAULT_STATE = {
+        theme: 'onyx',
+        voiceEnabled: false,
+        eliminateWinner: false,
+        options: ['Pizza maison', 'Burger', 'Sushi'],
+        history: []
+      };
+
+      // --- Persistance locale sécurisée ---
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return { ...DEFAULT_STATE };
+          const parsed = JSON.parse(raw);
+          return {
+            theme: parsed.theme === 'clair' ? 'clair' : 'onyx',
+            voiceEnabled: Boolean(parsed.voiceEnabled),
+            eliminateWinner: Boolean(parsed.eliminateWinner),
+            options: Array.isArray(parsed.options) ? parsed.options.filter(Boolean) : [...DEFAULT_STATE.options],
+            history: Array.isArray(parsed.history) ? parsed.history.slice(0, MAX_HISTORY) : []
+          };
+        } catch {
+          return { ...DEFAULT_STATE };
+        }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {
+          // Mode navigation privée strict : on continue en mémoire
+        }
+      }
+
+      // --- Aléatoire cryptographique si disponible ---
+      function randomIndex(max) {
+        if (window.crypto && window.crypto.getRandomValues) {
+          const arr = new Uint32Array(1);
+          window.crypto.getRandomValues(arr);
+          return arr[0] % max;
+        }
+        return Math.floor(Math.random() * max);
+      }
+
+      let state = loadState();
+      let isSpinning = false;
+      let selectedRating = 0;
+
+      // --- Références DOM ---
+      const htmlEl = document.documentElement;
+      const metaTheme = document.getElementById('meta-theme-color');
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeLabel = document.getElementById('theme-label');
+      const voiceToggle = document.getElementById('voice-toggle');
+      const voiceIcon = document.getElementById('voice-icon');
+
+      const resultBox = document.getElementById('result-box');
+      const resultLabel = document.getElementById('result-label');
+      const resultValue = document.getElementById('result-value');
+      const drawBtn = document.getElementById('draw-btn');
+      const eliminateToggle = document.getElementById('eliminate-toggle');
+
+      const addForm = document.getElementById('add-form');
+      const optionInput = document.getElementById('option-input');
+      const micBtn = document.getElementById('mic-btn');
+      const optionsList = document.getElementById('options-list');
+      const optionsCount = document.getElementById('options-count');
+      const emptyOptionsMsg = document.getElementById('empty-options-msg');
+      const clearOptionsBtn = document.getElementById('clear-options-btn');
+
+      const historyList = document.getElementById('history-list');
+      const emptyHistoryMsg = document.getElementById('empty-history-msg');
+      const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+      const starBtns = document.querySelectorAll('.star-btn');
+      const feedbackText = document.getElementById('feedback-text');
+      const sendFeedbackBtn = document.getElementById('send-feedback-btn');
+      const feedbackStatus = document.getElementById('feedback-status');
+
+      // --- Thème Onyx / Clair ---
+      function applyTheme() {
+        htmlEl.setAttribute('data-theme', state.theme);
+        if (state.theme === 'onyx') {
+          themeLabel.textContent = '☀️ Clair';
+          metaTheme.setAttribute('content', '#09090B');
+        } else {
+          themeLabel.textContent = '🌙 Onyx';
+          metaTheme.setAttribute('content', '#FFFFFF');
+        }
+      }
+
+      // --- Synthèse vocale (Web Speech API) ---
+      const supportsTTS = 'speechSynthesis' in window;
+      if (!supportsTTS) {
+        voiceToggle.hidden = true;
+      }
+
+      function applyVoiceUI() {
+        voiceToggle.setAttribute('aria-pressed', String(state.voiceEnabled));
+        voiceIcon.textContent = state.voiceEnabled ? '🔊' : '🔇';
+      }
+
+      function speak(text) {
+        if (!supportsTTS || !state.voiceEnabled) return;
+        try {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'fr-FR';
+          utter.rate = 1.02;
+          window.speechSynthesis.speak(utter);
+        } catch {
+          // Ignore si bloqué par le navigateur
+        }
+      }
+
+      // --- Dictée vocale (si supportée) ---
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRec) {
+        micBtn.hidden = false;
+        const recognition = new SpeechRec();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        micBtn.addEventListener('click', () => {
+          try {
+            micBtn.disabled = true;
+            micBtn.textContent = '⏺️';
+            recognition.start();
+          } catch {
+            micBtn.disabled = false;
+            micBtn.textContent = '🎙️';
+          }
+        });
+
+        recognition.addEventListener('result', (event) => {
+          const transcript = event.results[0][0].transcript.trim();
+          if (transcript) {
+            optionInput.value = transcript;
+            optionInput.focus();
+          }
+        });
+
+        recognition.addEventListener('end', () => {
+          micBtn.disabled = false;
+          micBtn.textContent = '🎙️';
+        });
+
+        recognition.addEventListener('error', () => {
+          micBtn.disabled = false;
+          micBtn.textContent = '🎙️';
+        });
+      }
+
+      // --- Rendu des options ---
+      function renderOptions() {
+        optionsList.textContent = '';
+        optionsCount.textContent = String(state.options.length);
+        emptyOptionsMsg.hidden = state.options.length > 0;
+        clearOptionsBtn.disabled = state.options.length === 0;
+        drawBtn.disabled = state.options.length === 0 || isSpinning;
+
+        state.options.forEach((opt, idx) => {
+          const li = document.createElement('li');
+          li.className = 'option-item';
+
+          const span = document.createElement('span');
+          span.className = 'option-text';
+          span.textContent = opt;
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'option-remove btn-danger';
+          delBtn.setAttribute('aria-label', `Supprimer l'option ${opt}`);
+          delBtn.textContent = '×';
+          delBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            state.options.splice(idx, 1);
+            saveState();
+            renderOptions();
+          });
+
+          li.append(span, delBtn);
+          optionsList.appendChild(li);
+        });
+      }
+
+      // --- Rendu de l'historique ---
+      function renderHistory() {
+        historyList.textContent = '';
+        emptyHistoryMsg.hidden = state.history.length > 0;
+        clearHistoryBtn.disabled = state.history.length === 0;
+
+        state.history.forEach((entry) => {
+          const li = document.createElement('li');
+          li.className = 'history-item';
+
+          const winnerSpan = document.createElement('span');
+          winnerSpan.className = 'history-winner';
+          winnerSpan.textContent = entry.value;
+
+          const timeSpan = document.createElement('span');
+          timeSpan.className = 'history-time';
+          timeSpan.textContent = entry.time;
+
+          li.append(winnerSpan, timeSpan);
+          historyList.appendChild(li);
+        });
+      }
+
+      // --- Ajout d'option ---
+      function addOption(rawValue) {
+        const clean = rawValue.trim();
+        if (!clean) return;
+        state.options.push(clean);
+        saveState();
+        renderOptions();
+      }
+
+      // --- Tirage au sort ---
+      function finalizeDraw(winnerIndex) {
+        const winner = state.options[winnerIndex];
+        resultBox.classList.add('is-winner');
+        resultLabel.textContent = state.eliminateWinner
+          ? 'C’est tranché ! (retiré de la liste)'
+          : 'C’est tranché !';
+        resultValue.textContent = winner;
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        state.history.unshift({ value: winner, time: timeStr });
+        state.history = state.history.slice(0, MAX_HISTORY);
+
+        if (state.eliminateWinner) {
+          state.options.splice(winnerIndex, 1);
+        }
+
+        isSpinning = false;
+        saveState();
+        renderOptions();
+        renderHistory();
+        speak(`C'est tranché : ${winner}`);
+      }
+
+      function runDraw() {
+        if (isSpinning || state.options.length === 0) return;
+
+        if (state.options.length === 1) {
+          finalizeDraw(0);
+          return;
+        }
+
+        const winnerIndex = randomIndex(state.options.length);
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reducedMotion) {
+          finalizeDraw(winnerIndex);
+          return;
+        }
+
+        isSpinning = true;
+        drawBtn.disabled = true;
+        resultBox.classList.remove('is-winner');
+        resultLabel.textContent = 'Tirage en cours…';
+
+        let step = 0;
+        const totalSteps = 14;
+        const timer = setInterval(() => {
+          const preview = state.options[step % state.options.length];
+          resultValue.textContent = preview;
+          step += 1;
+          if (step >= totalSteps) {
+            clearInterval(timer);
+            finalizeDraw(winnerIndex);
+          }
+        }, 75);
+      }
+
+      // --- Événements ---
+      themeToggle.addEventListener('click', () => {
+        state.theme = state.theme === 'onyx' ? 'clair' : 'onyx';
+        saveState();
+        applyTheme();
+      });
+
+      voiceToggle.addEventListener('click', () => {
+        state.voiceEnabled = !state.voiceEnabled;
+        saveState();
+        applyVoiceUI();
+        if (state.voiceEnabled) speak('Annonce vocale activée');
+      });
+
+      eliminateToggle.checked = state.eliminateWinner;
+      eliminateToggle.addEventListener('change', () => {
+        state.eliminateWinner = eliminateToggle.checked;
+        saveState();
+      });
+
+      drawBtn.addEventListener('click', runDraw);
+
+      addForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        addOption(optionInput.value);
+        optionInput.value = '';
+        optionInput.focus();
+      });
+
+      document.querySelectorAll('[data-preset]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (isSpinning) return;
+          const key = btn.getAttribute('data-preset');
+          if (PRESETS[key]) {
+            state.options = [...PRESETS[key]];
+            saveState();
+            renderOptions();
+            resultBox.classList.remove('is-winner');
+            resultLabel.textContent = 'Modèle chargé';
+            resultValue.textContent = 'Clique sur TRANCHER !';
+          }
+        });
+      });
+
+      clearOptionsBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        state.options = [];
+        saveState();
+        renderOptions();
+        resultBox.classList.remove('is-winner');
+        resultLabel.textContent = 'Liste vidée';
+        resultValue.textContent = 'Ajoute de nouveaux choix';
+      });
+
+      clearHistoryBtn.addEventListener('click', () => {
+        state.history = [];
+        saveState();
+        renderHistory();
+      });
+
+      // --- HOOK FEEDBACK ALPHABETTE.EU ---
+      starBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          selectedRating = Number(btn.getAttribute('data-rating'));
+          starBtns.forEach((b) => {
+            const val = Number(b.getAttribute('data-rating'));
+            b.setAttribute('aria-pressed', String(val <= selectedRating));
+          });
+        });
+      });
+
+      sendFeedbackBtn.addEventListener('click', () => {
+        const comment = feedbackText.value.trim();
+        if (!selectedRating && !comment) {
+          feedbackStatus.textContent = 'Choisis une note ou écris un petit mot avant d’envoyer.';
+          return;
+        }
+
+        const payload = {
+          app: 'tranche-vite',
+          rating: selectedRating || null,
+          comment,
+          theme: state.theme,
+          timestamp: new Date().toISOString()
+        };
+
+        // 1. Sauvegarde locale (Zero-Knowledge)
+        try {
+          const existing = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+          existing.unshift(payload);
+          localStorage.setItem(FEEDBACK_KEY, JSON.stringify(existing.slice(0, 20)));
+        } catch {
+          // Ignore
+        }
+
+        // 2. Événement interceptable par le wrapper global alphabette.eu / Sentinelle
+        window.dispatchEvent(new CustomEvent('alphabette:feedback', { detail: payload }));
+
+        feedbackText.value = '';
+        feedbackStatus.textContent = 'Merci ! Retour enregistré localement (et prêt pour le collecteur alphabette.eu).';
+      });
+
+      // --- Initialisation immédiate (zéro popup d'intro) ---
+      applyTheme();
+      applyVoiceUI();
+      renderOptions();
+      renderHistory();
+    })();
+  </script>
+</body>
+</html>
