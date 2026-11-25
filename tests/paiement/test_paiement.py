@@ -55,7 +55,7 @@ def main():
     for f in ['serveur/php/paiement.php', 'serveur/php/iadebat-proxy.php', 'labo/serveur/collectif.php']:
         shutil.copy(os.path.join(RACINE, f), api)
     reglages = json.load(open(os.path.join(RACINE, 'data/paiements.json'), encoding='utf-8'))
-    json.dump({'pricing': {'perApp': 15, 'ecosystem': 40}}, open(os.path.join(api, 'config.json'), 'w'))
+    json.dump({'pricing': {'perApp': 15}}, open(os.path.join(api, 'config.json'), 'w'))
     json.dump({'apps': [
         {'id': 'iadebat', 'slug': 'iadebat', 'name': 'IA Débat', 'status': 'actif'},
         {'id': 'infos-perso', 'slug': 'infos-perso', 'name': 'Info Perso', 'status': 'actif'},
@@ -143,9 +143,9 @@ def main():
         reglages['gratuit_jusqu_au'] = time.strftime('%Y-%m-%d', time.localtime(time.time() + 86400))
         json.dump(reglages, open(os.path.join(api, 'paiements.json'), 'w'))
         c, d = P(None, requete='etat')
-        verifier(d['gratuit_jusqu_au'] == reglages['gratuit_jusqu_au'] and not d['ouvert']['pass_app'] and not d['ouvert']['pass_ecosysteme'] and not d['ouvert']['credits_iadebat'], 'ni Pass ni crédits vendus pendant la période gratuite')
+        verifier(d['gratuit_jusqu_au'] == reglages['gratuit_jusqu_au'] and not d['ouvert']['pass_app'] and not d['ouvert']['credits_iadebat'], 'ni Pass ni crédits vendus pendant la période gratuite')
         verifier(d['ouvert']['mecene_5'] and d['ouvert']['mecene_libre'], 'le soutien Mécène reste possible')
-        c, d = P({'action': 'commander', 'produit': 'pass_ecosysteme', 'pour': 'cadeau'})
+        c, d = P({'action': 'commander', 'produit': 'pass_app', 'app': 'iadebat', 'pour': 'cadeau'})
         verifier(c == 403 and 'gratuit' in d['erreur'], 'commande d\'un Pass refusée : « rien à payer »')
         c, d = P({'action': 'commander', 'produit': 'credits_iadebat'})
         verifier(c == 403, 'commande de crédits refusée')
@@ -160,11 +160,12 @@ def main():
         c, e = R(None, requete='etat')
         verifier(e['gratuit_jusqu_au'] is None, 'et le relais ne l\'annonce plus')
 
-        print('Pass Cadeau 40 €')
-        c, d = P({'action': 'commander', 'produit': 'pass_ecosysteme', 'pour': 'cadeau', 'message': 'Joyeux anniversaire <b>Maman</b> !'})
-        verifier(c == 200 and d['lien'].startswith('https://buy.stripe.com/test_pass_ecosysteme00?client_reference_id=cmd_'), 'lien Stripe + référence de commande')
+        print('Pass Cadeau 15 € (tarif unique, aucun bouquet)')
+        verifier('pass_ecosysteme' not in P(None, requete='etat')[1]['ouvert'], 'aucun Pass à 40 € proposé')
+        c, d = P({'action': 'commander', 'produit': 'pass_app', 'app': 'iadebat', 'pour': 'cadeau', 'message': 'Joyeux anniversaire <b>Maman</b> !'})
+        verifier(c == 200 and d['lien'].startswith('https://buy.stripe.com/test_pass_app00?client_reference_id=cmd_'), 'lien Stripe + référence de commande')
         ref = d['lien'].split('=')[1]
-        session('cs_test_cadeau000000001', 4000, ref)
+        session('cs_test_cadeau000000001', 1500, ref)
         c, cad = P({'action': 'confirmer', 'session_id': 'cs_test_cadeau000000001'})
         verifier(c == 200 and cad['type'] == 'cadeau' and cad['code'].startswith('ALPHA-') and len(cad['code']) == 20, 'carte cadeau : code ALPHA-XXXX-XXXX-XXXX')
         verifier(cad['message'] == 'Joyeux anniversaire Maman !', 'petit mot nettoyé (pas de HTML)')
@@ -176,7 +177,7 @@ def main():
         verifier(any(x['a'] == 'azertylm@gmail.com' and 'CADEAU' in x['sujet'] for x in mails()), 'Valentin prévenu de la vente')
         c, a1 = P({'action': 'activer', 'code': cad['code'].lower().replace('-', ' ')})
         an = time.time() + 365 * 86400
-        verifier(c == 200 and a1['offre'] == 'ecosysteme' and abs(a1['fin'] / 1000 - an) < 2 * 86400, 'activation (même tapé en minuscules) : 12 mois à partir d\'aujourd\'hui')
+        verifier(c == 200 and a1['offre'] == 'app' and abs(a1['fin'] / 1000 - an) < 2 * 86400, 'activation (même tapé en minuscules) : 12 mois à partir d\'aujourd\'hui')
         for _ in range(2): P({'action': 'activer', 'code': cad['code']})
         c, d = P({'action': 'activer', 'code': cad['code']})
         verifier(c == 410, '3 appareils au plus')
@@ -208,11 +209,11 @@ def main():
         verifier(d['app'] == 'infos-perso', 'le choix ne peut pas être changé ensuite')
 
         print('Contrôles de paiement')
-        session('cs_test_impaye00000001', 4000, None, paye=False)
+        session('cs_test_impaye00000001', 1500, None, paye=False)
         c, d = P({'action': 'confirmer', 'session_id': 'cs_test_impaye00000001'})
         verifier(c == 402 and d.get('en_attente'), 'session non payée : rien n\'est délivré')
-        c, d = P({'action': 'commander', 'produit': 'pass_ecosysteme', 'pour': 'moi'})
-        session('cs_test_troppeu0000001', 1500, d['lien'].split('=')[1])
+        c, d = P({'action': 'commander', 'produit': 'pass_app', 'app': 'iadebat', 'pour': 'moi'})
+        session('cs_test_troppeu0000001', 1400, d['lien'].split('=')[1])
         c, d = P({'action': 'confirmer', 'session_id': 'cs_test_troppeu0000001'})
         verifier(c == 400, 'montant inférieur au prix : refusé')
         c, d = P({'action': 'confirmer', 'session_id': 'cs_test_inexistant000001'})

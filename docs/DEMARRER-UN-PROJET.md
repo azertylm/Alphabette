@@ -45,7 +45,7 @@ Règles de l'écosystème ALPHABETTE — à respecter sans exception :
 2. L'application part de la base commune @alphabette/shell, générée par
    `bun run new:app`. Ne jamais recoder les barres du haut à la main.
 3. Toute couleur d'interface dérive de `accent` dans src/alphabette.app.ts.
-4. Tarifs : 15 € / application / an · 40 € / écosystème / an · 7 jours d'essai.
+4. Tarifs : 15 € / application / an · 7 jours d'essai.
    Source de vérité : /api/config.json du hub.
 5. IA souveraine : Mistral AI (France), BYOK ou clé managée, repli local.
    Aucune donnée utilisateur ne sert à l'entraînement.

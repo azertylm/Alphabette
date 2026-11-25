@@ -12,7 +12,7 @@ restent cachés et les pages disent « le paiement en ligne ouvre bientôt ».
 | Quoi | Où | Comment |
 |---|---|---|
 | Pass Découverte 48 h | `/pass/`, accueil .eu, IA Débat | gratuit, sans carte ; jeton signé 48 h exactement ; 1 par connexion et par jour ; proposé seulement si le crédit IA du site n'est pas épuisé |
-| Pass 15 € / 40 € | `/pass/` (+ ⭐ Pass de la barre) | 12 mois, 3 appareils (code d'activation par e-mail) |
+| Pass 15 € | `/pass/` (+ ⭐ Pass de la barre) | 12 mois, 3 appareils (code d'activation par e-mail) |
 | Pass Cadeau | `/pass/#cadeau` | code `ALPHA-XXXX-XXXX-XXXX` + carte imprimable (`/merci/`, A5 paysage) ; 12 mois à partir de l'activation, à activer dans l'année |
 | Crédits IA Débat | `/pass/#credits`, IA Débat | 5 € = 50 débats Premium ; porte-monnaie `PM-…` ; 1 crédit décompté par le relais à chaque débat Premium lancé |
 | Mécène du Labo | Tableau d'Honneur de l'accueil (`/#soutenir`), pied de page | 5 €, 10 €, montant libre ; pseudo affiché seulement si la case est cochée (jamais le montant) |
@@ -33,10 +33,10 @@ les crédits. Si le crédit OpenRouter du site est épuisé, aucun crédit n'est
 
 ## Brancher Stripe (une fois, Claude peut le faire dans le navigateur avec Valentin)
 
-1. Dans Stripe : créer 6 **liens de paiement** (paiement unique) : Pass 15 €, Pass 40 €, Crédits 5 €, Soutien 5 €,
+1. Dans Stripe : créer 5 **liens de paiement** (paiement unique) : Pass 15 €, Crédits 5 €, Soutien 5 €,
    Soutien 10 €, Soutien « le client choisit le montant ». Pour chacun :
    - « Après le paiement » → rediriger vers `https://alphabette.eu/merci/?session_id={CHECKOUT_SESSION_ID}` ;
-   - métadonnée `produit` = `pass_app`, `pass_ecosysteme`, `credits_iadebat`, `mecene_5`, `mecene_10` ou `mecene_libre`.
+   - métadonnée `produit` = `pass_app`, `credits_iadebat`, `mecene_5`, `mecene_10` ou `mecene_libre`.
 2. Coller les 6 adresses `https://buy.stripe.com/…` dans `data/paiements.json` (`liens`), puis PR.
 3. Créer une **clé restreinte** (droit : Checkout Sessions en lecture) et un **webhook** vers
    `https://alphabette.eu/api/paiement.php?webhook` (événements `checkout.session.completed` et

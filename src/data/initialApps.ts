@@ -84,7 +84,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['IGN LiDAR HD', 'Potentiel Solaire', 'Cartographie 3D', 'Mistral AI'],
     iconName: 'SunMedium',
-    pricingNote: '15 € / an, ou écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
     isB2B: true,
   },
@@ -100,7 +100,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Chiffrage Commercial', 'Photovoltaïque', 'Rentabilité', 'Installateurs'],
     iconName: 'Zap',
-    pricingNote: '15 € / an, ou écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
     isB2B: true,
   },
@@ -134,7 +134,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Débat Public', 'Esprit Critique', 'Argumentation', 'Mistral AI'],
     iconName: 'Scale',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
   },
   {
@@ -149,7 +149,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Démarches', 'Gestionnaire Sécurisé', 'Vie Courante', 'RGPD'],
     iconName: 'Newspaper',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
   },
   {
@@ -164,7 +164,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Artisans', 'Chantiers', 'Documentation', 'Artisanat'],
     iconName: 'Hammer',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
   },
 
@@ -176,12 +176,12 @@ export const INITIAL_APPS: AppItem[] = [
     pole: 'france_service',
     category: 'France Service (Zero-Knowledge)',
     tagline: 'Suite pratique d\'utilité publique familiale 100% locale (7 modules inclus)',
-    description: 'Suite complète en architecture 100% locale (Zero-Knowledge). Aucune donnée personnelle ne transite par les serveurs. 15 € / an pour une application, 40 € / an pour l\'écosystème complet.',
+    description: 'Suite complète en architecture 100% locale (Zero-Knowledge). Aucune donnée personnelle ne transite par les serveurs. 15 € / an par application, dont 10 € pour son créateur.',
     url: 'https://franceservice.alphabette.fr',
     isConfigured: false,
-    tags: ['Zero-Knowledge', '7 Modules Inclus', 'Mistral AI', 'Écosystème 40 €/an'],
+    tags: ['Zero-Knowledge', '7 Modules Inclus', 'Mistral AI', '15 €/an par appli'],
     iconName: 'ShieldCheck',
-    pricingNote: '15 € / an, ou écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
     isFranceServiceSuite: true,
     franceServiceModules: FRANCE_SERVICE_MODULES
@@ -200,7 +200,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Copropriété', 'Audit Charges', 'Syndic', 'Mistral AI'],
     iconName: 'Building',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
   },
   {
@@ -215,7 +215,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Rénovation', 'DPE', 'Aides Rénov', 'Sans Démarchage'],
     iconName: 'Leaf',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
   },
   {
     id: 'bailleur-serein',
@@ -229,7 +229,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Immobilier', 'Bail Alur', 'Quittances', 'Gestion Propre'],
     iconName: 'FileText',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
   },
   {
     id: 'facture-propre',
@@ -243,7 +243,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Factur-X', 'Chorus Pro', 'TPE/PME', 'Conforme 2026'],
     iconName: 'Receipt',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isB2B: true,
   },
   {
@@ -258,7 +258,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Loi 1901', 'Adhérents', 'Cerfa', 'Sans Commission'],
     iconName: 'Users',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
   },
   {
     id: 'cyber-vigie',
@@ -272,7 +272,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Anti-Phishing', 'Sécurité Email', 'Zero-Knowledge', 'France'],
     iconName: 'Shield',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
   },
   {
     id: 'agri-meteo-locale',
@@ -286,7 +286,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Météo France Open Data', 'Agriculture', 'Occitanie', 'B2B'],
     iconName: 'CloudSun',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isB2B: true,
   },
   {
@@ -301,7 +301,7 @@ export const INITIAL_APPS: AppItem[] = [
     isConfigured: false,
     tags: ['Patrimoine Vivant', 'Retranscription Audio', 'Chiffrement Local', 'Archives'],
     iconName: 'Bookmark',
-    pricingNote: '15 € / an · Écosystème complet 40 € / an',
+    pricingNote: '15 € / an (dont 10 € pour le créateur)',
     isPopular: true,
   }
 ];

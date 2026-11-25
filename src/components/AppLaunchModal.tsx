@@ -219,32 +219,7 @@ export const AppLaunchModal: React.FC<AppLaunchModalProps> = ({
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {/* Option 1 : l'écosystème complet (40 € / an pour toutes les applications) */}
-                  <div 
-                    onClick={() => {
-                      onSelectPass();
-                      onClose();
-                    }}
-                    className="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 transition-all cursor-pointer flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-emerald-950">L'Écosystème complet (Recommandé)</span>
-                        <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
-                          Toutes les applis
-                        </span>
-                      </div>
-                      <p className="text-xs text-emerald-800 mt-0.5">
-                        Débloquez <strong>l'intégralité des applications</strong> avec l'abonnement annuel : {app.name} + Service France + toutes les briques professionnelles et citoyennes.
-                      </p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <span className="font-extrabold text-base text-emerald-950">{PRICES.ecosystem} €</span>
-                      <span className="text-xs text-slate-500"> / an</span>
-                    </div>
-                  </div>
-
-                  {/* Option 2 : une application au choix (15 € / an) */}
+                  {/* Un seul prix : 15 € / an pour cette application (10 € pour son créateur). Aucun bouquet. */}
                   <div 
                     onClick={() => {
                       onSelectSingleApp(app.id);

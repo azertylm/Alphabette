@@ -269,7 +269,7 @@ export default function App() {
           onOpenPricing={handleScrollToPricing}
         />
 
-        {/* 5. Interactive Pricing Table : 15 € (une application) · 40 € (écosystème) avec API promo & activation VIP */}
+        {/* 5. Tarif unique : 15 € / an par application (10 € créateur + 5 € Alphabette) */}
         <PricingSection
           key={appsAchetables ? 'registre' : 'local'}
           user={user}

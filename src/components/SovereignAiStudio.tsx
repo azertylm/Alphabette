@@ -974,7 +974,7 @@ Tous les exports de projet sont chiffrés côté client avec SubtleCrypto en AES
                     <div className="text-[11px] text-slate-400">
                       {isAppUnlocked
                         ? `Traitement illimité pour ${selectedPreset.name}`
-                        : `${PRICES.perApp} € / an pour cette application seule, ou ${PRICES.ecosystem} € / an pour tout l'écosystème`}
+                        : `${PRICES.perApp} € / an pour cette application (dont 10 € pour son créateur)`}
                     </div>
                   </div>
                 </div>

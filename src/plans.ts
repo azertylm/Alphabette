@@ -1,7 +1,8 @@
 import type { PlanType } from './types';
 
 /**
- * Tarification officielle de l'écosystème alphabette.fr.
+ * Tarification officielle de l'écosystème alphabette.fr : UN seul prix, 15 €/an par application
+ * (10 € créateur / 5 € Alphabette). Aucun bouquet, aucun prorata (CLAUDE.md).
  *
  * Source de vérité côté hub : `/api/config.json` (voir `server.ts`). Ces valeurs
  * en sont le reflet côté vitrine, pour les libellés et les simulations.
@@ -9,8 +10,6 @@ import type { PlanType } from './types';
 export const PRICES = {
   /** 15 € / application / an. */
   perApp: 15,
-  /** 40 € / écosystème complet / an. */
-  ecosystem: 40,
   /** 7 jours d'essai offerts. */
   trialDays: 7,
   currency: 'EUR',
@@ -75,7 +74,7 @@ export function planBadge(
   switch (planTier(plan)) {
     case 'ecosystem':
       return {
-        label: `Écosystème complet (${PRICES.ecosystem} €/an${apps})`,
+        label: `Accès complet — offre de lancement gratuite${apps}`,
         classes: 'bg-emerald-500/15 text-emerald-800 border-emerald-300 ring-1 ring-emerald-400/20',
         dot: 'bg-emerald-500',
       };
@@ -111,7 +110,7 @@ export function planBadge(
 export function planToast(plan: PlanType): string {
   switch (planTier(plan)) {
     case 'ecosystem':
-      return `🎉 Écosystème complet activé (${PRICES.ecosystem} € / an) ! Toutes les applications et les clés Mistral sont incluses.`;
+      return '🎉 Accès complet activé (offre de lancement gratuite) ! Toutes les applications sont incluses.';
     case 'app':
       return `Application activée (${PRICES.perApp} € / an).`;
     case 'pro':

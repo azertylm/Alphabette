@@ -95,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Tarifs (15 € · 40 €)</span>
+              <span>Tarif (15 € / an)</span>
             </button>
 
             {onOpenVipModal && (
@@ -197,7 +197,7 @@ export const Header: React.FC<HeaderProps> = ({
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <span>Écosystème complet (40 € / an · toutes les apps)</span>
+                        <span>Accès complet (offre de lancement gratuite)</span>
                         {isEcosystemPlan(user.subscriptionPlan) && <Check className="w-3.5 h-3.5 text-emerald-600" />}
                       </button>
 
@@ -337,7 +337,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100 flex items-center gap-2 text-sm text-left"
             >
               <CreditCard className="w-4 h-4 text-blue-600" />
-              <span>Tarifs (15 € · 40 €)</span>
+              <span>Tarif (15 € / an)</span>
             </button>
             {onOpenVipModal && (
               <button 

@@ -18,7 +18,7 @@ Elle fournit les deux barres que l'on retrouve au sommet de chaque application :
 | **Thème** | Jour/Nuit, mémorisé par l'utilisateur |
 | **Densité** | 3 crans (Compact / Normal / Grand), mémorisé |
 | **Plein écran** | API Fullscreen du navigateur |
-| **Tarifs** | 15 €/app/an · 40 €/écosystème/an, synchronisés avec `/api/config.json` du hub |
+| **Tarifs** | 15 €/app/an (10 € créateur + 5 € Alphabette), synchronisés avec `/api/config.json` du hub |
 | **Couleur** | Toute la palette dérive de `app.accent`, la couleur d'identité du site |
 
 Aucune dépendance d'exécution : ni Tailwind, ni bibliothèque d'icônes. React est

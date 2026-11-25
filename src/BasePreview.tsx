@@ -101,7 +101,7 @@ export function BasePreview() {
             <li><strong>BIG</strong> : 3 crans de densité (Compact → Normal → Grand).</li>
             <li><strong>Jour / Nuit</strong> : bascule de thème, conservée au rechargement.</li>
             <li><strong>Plein Écran</strong> : plein écran total du navigateur.</li>
-            <li><strong>Pass 40 €/an</strong> : résumé de l’offre, envoi vers le paiement.</li>
+            <li><strong>Abonnement 15 €/an</strong> : résumé de l’offre (10 € pour le créateur), envoi vers le paiement.</li>
           </ul>
         </div>
       </AppShell>

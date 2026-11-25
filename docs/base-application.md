@@ -26,7 +26,7 @@ fois, disponible partout.
 
 ```
 [Barre 1 — écosystème]
-◉ ALPHABETTE   ♥ DON   📍 Proxilien   🖥 Info Perso ●   …   [3/16 (7 essai)]   [⭐ Pass 40 €/an]
+◉ ALPHABETTE   ♥ DON   📍 Proxilien   🖥 Info Perso ●   …   [3/16 (7 essai)]   [⭐ Abonnement 15 €/an]
 
 [Barre 2 — application]
 ≡   Info Perso                              ♥ DON  👤 Mon Compte  BIG ▮▮▯  🔑 Clé API : Prêt ●  ⛶ Plein Écran  ☀ Jour ●
@@ -39,7 +39,7 @@ fois, disponible partout.
 | **♥ DON** | Lien de collecte de dons de l'application |
 | **Les 5 sites** | Raccourcis vers les autres applications (liste modifiable dans `sites.ts`) |
 | **3/16 (7 essai)** | Compteur : dons/accès débloqués + jours d'essai restants |
-| **⭐ Pass 40 €/an** | Résumé de l'offre → envoi vers le paiement |
+| **⭐ Abonnement 15 €/an** | Résumé de l'offre → envoi vers le paiement |
 | **Mon Compte** | Espace compte (SSO alphabette) |
 | **BIG** | 3 crans de densité : Compact → Normal → Grand |
 | **Clé API : Prêt** | État de la clé Mistral (BYOK ou managée) |

@@ -79,7 +79,7 @@ export const CommitmentsSection: React.FC = () => {
                 Essai 7 jours, puis un prix unique
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Profitez de 7 jours d'essai offerts, puis 15 € par an pour une application au choix ou 40 € par an pour l'écosystème complet — clés d'API Mistral gérées et incluses. Vous pouvez aussi brancher votre propre clé (BYOK).
+                Profitez de 7 jours d'essai offerts, puis 15 € par an et par application (dont 10 € pour son créateur) — clés d'API Mistral gérées et incluses. Vous pouvez aussi brancher votre propre clé (BYOK).
               </p>
               <div className="text-[11px] font-semibold text-purple-800 flex items-center gap-1.5 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Support natif du développement local sous Mac (Metal / Ollama)
@@ -97,7 +97,7 @@ export const CommitmentsSection: React.FC = () => {
                 Grille Tarifaire Frugale & Sans Engagement
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                15 € par an pour une application, ou 40 € par an pour débloquer l'ensemble de l'écosystème. Un prix fixe annuel, zéro commission cachée, zéro publicité.
+                15 € par an et par application, dont 10 € pour son créateur. Un seul prix fixe annuel, zéro commission cachée, zéro publicité.
               </p>
               <div className="text-[11px] font-semibold text-amber-800 flex items-center gap-1.5 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Pilotage centralisé en temps réel depuis le hub https://alphabette.fr

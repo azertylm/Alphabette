@@ -304,9 +304,8 @@ function PanneauGratuit({ app, config, apps, hubUrl, ouvrir, basculer }: Panneau
             </>
           )}
           {gratuites === 0 && <>Les autres applications se débloquent avec le Pass : </>}
-          <strong>{euros(config.perAppPerYear)} / an</strong> pour une application,{' '}
-          <strong>{euros(config.ecosystemPerYear)} / an</strong> pour tout l’écosystème. C’est ce qui finance, entre
-          autres, les applications gratuites comme celle-ci.
+          <strong>{euros(config.perAppPerYear)} / an</strong> par application, dont 10 € pour son créateur. C’est ce qui
+          finance, entre autres, les applications gratuites comme celle-ci.
         </p>
         <p className="ab-note">
           Les prix viennent du hub (<code>/api/config.json</code>) et les applications gratuites du registre

@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({
             <span>·</span>
             <span>Application au choix : <strong className="text-blue-800 font-bold">15 € / an</strong></span>
             <span>·</span>
-            <span>Écosystème complet : <strong className="text-emerald-800 font-bold">40 € / an</strong></span>
+            <span>Dont <strong className="text-emerald-800 font-bold">10 €</strong> pour le créateur de l'appli</span>
           </div>
 
           {/* Action CTAs */}
@@ -78,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm shadow-xs transition-all cursor-pointer"
             >
               <CreditCard className="w-4 h-4 text-emerald-400" />
-              <span>Grille tarifaire (15 € · 40 €)</span>
+              <span>Tarif unique (15 € / an)</span>
             </button>
 
             {onOpenUrlManager && <button
@@ -132,7 +132,7 @@ export const Hero: React.FC<HeroProps> = ({
               <h3 className="font-bold text-slate-900 text-xs sm:text-sm">Essai 7j & Prix unique</h3>
             </div>
             <p className="text-xs text-slate-600 leading-snug">
-              7 jours offerts clés en main, puis 15 € / an pour une application ou 40 € / an pour tout l'écosystème. Sans engagement, zéro publicité.
+              7 jours offerts clés en main, puis 15 € / an par application (dont 10 € pour son créateur). Sans engagement, zéro publicité.
             </p>
           </div>
 

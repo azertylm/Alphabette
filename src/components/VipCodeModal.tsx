@@ -363,7 +363,7 @@ export const VipCodeModal: React.FC<VipCodeModalProps> = ({
                       onChange={(e) => setPlanGranted(e.target.value as any)}
                       className="w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-900"
                     >
-                      <option value="ecosystem">Écosystème complet (40 €/an)</option>
+                      <option value="ecosystem">Accès complet (offre de lancement)</option>
                       <option value="app">Une application au choix (15 €/an)</option>
                     </select>
                   </div>
