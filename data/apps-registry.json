@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T11:40:50.460Z",
+  "updatedAt": "2026-11-25T11:48:02.045Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -16,7 +16,8 @@
       "gratuit": true,
       "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres.",
       "groupe": "petits-jeux",
-      "cover": "/covers/goat.svg"
+      "cover": "/covers/GOAT.jpg",
+      "coverCustom": true
     },
     {
       "id": "lidarsol",
@@ -229,7 +230,8 @@
       "updatedAt": "2026-11-10T19:30:00.000Z",
       "gratuit": true,
       "description": "Les questions de l'actualité du moment et celles des syndicats, associations et citoyens : répondez en un geste.",
-      "cover": "/covers/revolution.svg"
+      "cover": "/covers/R%C3%A9volution.jpg",
+      "coverCustom": true
     },
     {
       "id": "test-barre",
@@ -270,7 +272,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées.",
       "ordre": 10,
-      "cover": "/covers/frigoplacard.svg"
+      "cover": "/covers/Frigo-Placard.jpg",
+      "coverCustom": true
     },
     {
       "id": "bonplan",
@@ -663,7 +666,8 @@
       "createdAt": "2026-11-25T06:10:16.468Z",
       "updatedAt": "2026-11-25T06:10:16.468Z",
       "description": "Le Biographe Familial : application vocale zéro-clavier pour recueillir et préserver des souvenirs.",
-      "cover": "/covers/memovoix.svg"
+      "cover": "/covers/M%C3%A9moVoix.jpg",
+      "coverCustom": true
     },
     {
       "id": "matchsoiree",
@@ -676,7 +680,8 @@
       "createdAt": "2026-11-25T06:10:16.577Z",
       "updatedAt": "2026-11-25T06:10:16.577Z",
       "description": "Prenez des décisions rapides en duo pour vos soirées.",
-      "cover": "/covers/matchsoiree.svg"
+      "cover": "/covers/MatchSoir%C3%A9e.jpg",
+      "coverCustom": true
     },
     {
       "id": "parent-sos",
@@ -689,7 +694,8 @@
       "createdAt": "2026-11-25T06:10:16.689Z",
       "updatedAt": "2026-11-25T06:10:16.689Z",
       "description": "Boîte à outils bienveillante et utilisable hors-ligne pour les parents.",
-      "cover": "/covers/parent-sos.svg"
+      "cover": "/covers/Parent%20SOS.jpg",
+      "coverCustom": true
     },
     {
       "id": "revis-clash",
@@ -744,7 +750,8 @@
       "createdAt": "2026-11-25T06:10:17.185Z",
       "updatedAt": "2026-11-25T06:10:17.185Z",
       "description": "Réglez vos débats absurdes entre amis grâce à un jury décalé.",
-      "cover": "/covers/tribunal-des-potes.svg"
+      "cover": "/covers/Le%20Tribunal%20des%20Potes.jpg",
+      "coverCustom": true
     },
     {
       "id": "balade",
@@ -757,7 +764,8 @@
       "createdAt": "2026-11-25T06:10:17.293Z",
       "updatedAt": "2026-11-25T06:10:17.293Z",
       "description": "L'Oreille Locale : capsules culturelles audio-guide géolocalisées avec escales rapides.",
-      "cover": "/covers/balade.svg"
+      "cover": "/covers/Balade.jpg",
+      "coverCustom": true
     },
     {
       "id": "tribunal-des-choix",
@@ -770,7 +778,8 @@
       "createdAt": "2026-11-25T06:10:17.406Z",
       "updatedAt": "2026-11-25T06:10:17.406Z",
       "description": "Le Tribunal des Choix par Alphabette — Plaidoiries en 30 secondes, juge satirique et gages absurdes pour trancher vos débats du quotidien.",
-      "cover": "/covers/tribunal-des-choix.svg"
+      "cover": "/covers/Le%20Tribunal%20des%20Choix.jpg",
+      "coverCustom": true
     },
     {
       "id": "alphabette-hub",
@@ -783,7 +792,8 @@
       "createdAt": "2026-11-25T06:10:17.513Z",
       "updatedAt": "2026-11-25T06:10:17.513Z",
       "description": "Passeport Universel et espace laboratoire pour naviguer dans l'écosystème Alphabette.",
-      "cover": "/covers/alphabette-hub.svg"
+      "cover": "/covers/Alphabette%20Hub.jpg",
+      "coverCustom": true
     },
     {
       "id": "une-de-labsurde",
@@ -796,7 +806,8 @@
       "createdAt": "2026-11-25T06:10:17.623Z",
       "updatedAt": "2026-11-25T06:10:17.623Z",
       "description": "Transformez une photo du quotidien et deux phrases banales en scandale loufoque à la Une.",
-      "cover": "/covers/une-de-labsurde.svg"
+      "cover": "/covers/La%20Une%20de%20l'Absurde.jpg",
+      "coverCustom": true
     },
     {
       "id": "curioz",
@@ -809,7 +820,8 @@
       "createdAt": "2026-11-25T06:10:17.759Z",
       "updatedAt": "2026-11-25T06:10:17.759Z",
       "description": "Cabinet de curiosités interactif : photographiez un objet ou explorez un mystère pour révéler son époque, son usage et sa vie secrète selon votre niveau de lecture.",
-      "cover": "/covers/curioz.svg"
+      "cover": "/covers/Curioz.jpg",
+      "coverCustom": true
     }
   ]
 }
