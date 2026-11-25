@@ -80,6 +80,8 @@ DirectoryIndex index.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Jeton « Authorization: Bearer » transmis à PHP (espace créateurs, api/billing.php…) : OVH le retire sinon.
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
   # HTTPS partout
   RewriteCond %{HTTPS} !=on
@@ -154,6 +156,8 @@ DirectoryIndex index.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Jeton « Authorization: Bearer » transmis à PHP (espace créateurs, api/billing.php…) : OVH le retire sinon.
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   RewriteBase /eu/
 
   # Le dossier eu/ n'est servi que sous le nom alphabette.eu
@@ -409,12 +413,17 @@ async function preparerLaboratoire() {
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   for (const nom of ['pages.css', 'pass.js']) await cp(path.join(racine, 'labo', 'pages', nom), path.join(eu, 'labo', nom));
   // + kit terrain (cartes et flyers à QR codes, interne, noindex) et vue verticale « 21 h 13 en direct ».
-  for (const page of ['embarquement', 'badge', 'pass', 'merci', 'kit-terrain', 'en-direct']) {
+  for (const page of ['embarquement', 'badge', 'pass', 'merci', 'kit-terrain', 'en-direct', 'mes-revenus']) {
     await mkdir(path.join(eu, page), { recursive: true });
     await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, page, 'index.html'));
   }
   await cp(path.join(racine, 'labo', 'pages', 'badge'), path.join(eu, 'badge'), { recursive: true });
   await cp(path.join(racine, 'serveur', 'php', 'paiement.php'), path.join(eu, 'api', 'paiement.php'));
+  // Lot 3 — abonnement 15 €/an (10 € créateur / 5 € Alphabette), virements dès 20 €, pare-feu d'upload, RGPD.
+  // Données privées hors du site : ~/alphabette-finance/ (voir docs/labo/MONETISATION.md).
+  for (const nom of ['finance-commun.php', 'billing.php', 'webhooks.php', 'payouts.php', 'upload-guard.php', 'gdpr.php']) {
+    await cp(path.join(racine, 'serveur', 'php', nom), path.join(eu, 'api', nom));
+  }
   // Le Crash-Testeur (.eu seulement) : la page et son service (clé OpenRouter du relais IA Débat, rien n'est stocké).
   await cp(path.join(racine, 'serveur', 'php', 'crash-test.php'), path.join(eu, 'api', 'crash-test.php'));
   // Audit express (sans IA) : n'importe quel site, note sur 100 ; bulletins publics gardés 90 jours hors du site.
