@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T11:48:02.045Z",
+  "updatedAt": "2026-11-25T11:54:55.782Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -55,7 +55,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision.",
       "ordre": 2,
-      "cover": "/covers/proxilien.svg"
+      "cover": "/covers/Proxilien.jpg",
+      "coverCustom": true
     },
     {
       "id": "iadebat",
@@ -258,7 +259,8 @@
       "gratuit": true,
       "description": "Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans.",
       "ordre": 8,
-      "cover": "/covers/bonplansenior.svg"
+      "cover": "/covers/Senior%20Bon%20Plan.jpg",
+      "coverCustom": true
     },
     {
       "id": "frigoplacard",
@@ -341,7 +343,8 @@
       "createdAt": "2026-10-22T08:08:36.614Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
       "description": "Autonomie solaire et récupération d'eau de pluie, chiffrées pour votre maison.",
-      "cover": "/covers/ecobatisol.svg"
+      "cover": "/covers/%C3%89coB%C3%A2tisol.jpg",
+      "coverCustom": true
     },
     {
       "id": "lsf-atelier",
@@ -407,7 +410,8 @@
       "description": "Vos flux d'actualités dans une page calme, avec dix outils pour creuser chaque article.",
       "createdAt": "2026-11-10T22:04:24.000Z",
       "updatedAt": "2026-11-10T22:04:24.000Z",
-      "cover": "/covers/info.svg"
+      "cover": "/covers/Alphabette%20Info.jpg",
+      "coverCustom": true
     },
     {
       "id": "kurate",
@@ -505,7 +509,8 @@
       "createdAt": "2026-11-11T21:28:12.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 12,
-      "cover": "/covers/orbit.svg"
+      "cover": "/covers/Orbit.jpg",
+      "coverCustom": true
     },
     {
       "id": "petits-jeux",
@@ -519,7 +524,8 @@
       "createdAt": "2026-11-12T09:14:47.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 11,
-      "cover": "/covers/petits-jeux.svg"
+      "cover": "/covers/Petits%20Jeux.jpg",
+      "coverCustom": true
     },
     {
       "id": "ou-cest",
