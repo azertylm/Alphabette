@@ -1,0 +1,80 @@
+/* ===================== Esthétique « Codex de Vinci » — alphabette.eu UNIQUEMENT =====================
+   Parchemin chaud, encre sépia, touches de sanguine, laiton doux. Actif quand <html data-univers="labo" data-ab-codex="oui">
+   (jamais sur alphabette.fr). Interrupteur « Mode Codex » : Mon compte, dans la barre (localStorage alphabette.codex).
+   Contrastes WCAG AAA (≥ 7:1) contrôlés par tests/lot6 pour le texte, en jour comme en nuit/encre.
+   Le Mode Calme (body.calm-mode) ne change aucune couleur : il retire seulement les animations.
+   Rien ici ne touche aux tailles : cibles tactiles et zoom BIG (var(--ab-zoom, 1)) restent ceux de la base commune. */
+
+:root[data-univers='labo'][data-ab-codex='oui'] {
+  /* Jeu de jetons : jour (parchemin) */
+  --codex-fond: #f4e8cf;
+  --codex-carte: #efe0c2;
+  --codex-encre: #2c1a0e;
+  --codex-doux: #4a2e1b;
+  --codex-sang: #7a2e22;        /* texte et liens en sanguine foncée */
+  --codex-sur-sang: #fff8ea;
+  --codex-trait: #9c7b55;
+  --codex-ornement: #9e4736;    /* sanguine, décor seulement (jamais du texte) */
+  --codex-laiton: #b08d3c;      /* laiton doux, décor seulement */
+}
+:root[data-univers='labo'][data-ab-codex='oui'][data-ab-theme='nuit'] {
+  /* Nuit : encre sombre, parchemin en lettres */
+  --codex-fond: #20140b;
+  --codex-carte: #2c1d11;
+  --codex-encre: #f4e8cf;
+  --codex-doux: #e6d3ae;
+  --codex-sang: #f0b8a8;
+  --codex-sur-sang: #20140b;
+  --codex-trait: #7d6240;
+  --codex-ornement: #d98c74;
+  --codex-laiton: #d9b45e;
+}
+
+/* --- Variables de l'accueil et de la base commune (une seule source : les jetons ci-dessus) --- */
+:root[data-univers='labo'][data-ab-codex='oui'] {
+  --pop-fond: var(--codex-fond); --pop-carte: var(--codex-carte); --pop-trait: var(--codex-trait);
+  --pop-texte-acc: var(--codex-sang); --pop-sur-acc: var(--codex-sur-sang); --pop-grille: transparent;
+  --pop-1: var(--codex-ornement); --pop-2: var(--codex-laiton); --pop-3: var(--codex-ornement);
+  --pop-ombre: 0 1px 0 var(--codex-trait), 0 6px 14px -8px rgba(74, 46, 27, 0.45);
+}
+:root[data-univers='labo'][data-ab-codex='oui'][data-ab-theme='nuit'] {
+  --pop-ombre: 0 1px 0 var(--codex-trait), 0 8px 18px -10px rgba(0, 0, 0, 0.7);
+}
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil {
+  --acc: var(--codex-sang); --acc-fond: var(--codex-fond); --acc-carte: var(--codex-carte);
+  --acc-encre: var(--codex-encre); --acc-doux: var(--codex-doux); --acc-trait: var(--codex-trait);
+  background-image: none;
+}
+:root[data-univers='labo'][data-ab-codex='oui'] .ab-shell,
+:root[data-univers='labo'][data-ab-codex='oui'][data-ab-theme='nuit'] .ab-shell {
+  --ab-bg: var(--codex-fond); --ab-surface: var(--codex-carte); --ab-ink: var(--codex-encre); --ab-muted: var(--codex-doux);
+  --ab-border: var(--codex-trait); --ab-chip: color-mix(in srgb, var(--codex-trait) 22%, var(--codex-carte));
+  --ab-chip-hover: color-mix(in srgb, var(--codex-trait) 38%, var(--codex-carte));
+  --ab-eco-bg: #2c1a0e; --ab-eco-ink: #f4e8cf; --ab-eco-muted: #e6d3ae;
+}
+
+/* --- Titres de carnet, bordures fines, coins à l'encre et au compas --- */
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil__titre,
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil__rubrique {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil__tuile {
+  border: 1px solid var(--codex-trait);
+  border-radius: 0.5rem;
+  background: var(--codex-carte);
+  /* double filet de carnet d'inventeur */
+  box-shadow: inset 0 0 0 3px var(--codex-carte), inset 0 0 0 4px color-mix(in srgb, var(--codex-trait) 70%, transparent), var(--pop-ombre);
+}
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil__tuile:hover { border-color: var(--codex-sang); }
+:root[data-univers='labo'][data-ab-codex='oui'] .labo-carte { position: relative; }
+:root[data-univers='labo'][data-ab-codex='oui'] .labo-carte::before {
+  /* arc de compas discret dans le coin haut droit, hors de toute cible tactile */
+  content: ''; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; pointer-events: none; z-index: 1; opacity: 0.8;
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22' fill='none' stroke='%239e4736' stroke-width='1.2'%3E%3Cpath d='M2 2.5A19 19 0 0 1 19.5 20'/%3E%3Ccircle cx='19.5' cy='20' r='1.4'/%3E%3C/svg%3E");
+}
+:root[data-univers='labo'][data-ab-codex='oui'] .accueil__recherche { border-color: var(--codex-encre); border-radius: 0.5rem; }
+:root[data-univers='labo'][data-ab-codex='oui'] .labo__bouton,
+:root[data-univers='labo'][data-ab-codex='oui'] .pop-carte__bouton { border-radius: 0.4rem; }
+:root[data-univers='labo'][data-ab-codex='oui'] .pop-carte__vignette { border-radius: 0.3rem; border: 1px solid var(--codex-trait); }
+/* Les couvertures déposées (parchemin) s'harmonisent avec les illustrations de carnet. */
+:root[data-univers='labo'][data-ab-codex='oui'] .pop-carte__cover { filter: sepia(0.08); }

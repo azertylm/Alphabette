@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aidant Famille — régler l'appareil d'un proche en 1 scan · Alphabette</title>
+<meta name="description" content="Préparez un lien ou un QR code qui règle automatiquement l'appareil d'un proche (grande taille, Mode Calme, applis épinglées), sans compte.">
+<meta name="robots" content="index, follow">
+<script src="/labo/codex.js"></script>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="aidant" data-nom="Aidant Famille" data-sous-titre="1 scan" data-accent="#0f766e" data-masquer="defilement"></script>
+<script src="/assets/qrcode.js"></script>
+<script src="/assets/qr-alphabette.js"></script>
+<script src="/assets/alphabette-lot6.js"></script>
+<script src="/labo/lot6.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Mode Aidant Famille</h1>
+  <div id="recevoir" class="cache">
+    <p class="chapeau">Un proche a préparé vos réglages pour que ce soit plus simple.</p>
+    <p class="message" id="etat" role="status" aria-live="polite"></p>
+    <div class="actions"><a class="bouton" href="/">Voir mes applications</a><button type="button" class="secondaire" id="annuler">Annuler ces réglages</button></div>
+  </div>
+  <div id="preparer">
+    <p class="chapeau">Réglez l'appareil d'un proche <strong>en un scan</strong> : grande taille, Mode Calme, et 1 à 5 applications épinglées. <strong>Aucun compte</strong>, rien n'est envoyé à un serveur : les réglages sont dans le lien lui-même.</p>
+    <form class="carte" id="f" novalidate>
+      <fieldset><legend>Taille de l'affichage</legend>
+        <div class="radios">
+          <label><input type="radio" name="taille" value="large"> Grande</label>
+          <label><input type="radio" name="taille" value="xlarge" checked> Très grande (BIG)</label>
+        </div></fieldset>
+      <label class="case"><input type="checkbox" id="calme" checked><span><strong>Mode Calme</strong> : aucune animation, rien qui s'ouvre tout seul.</span></label>
+      <fieldset><legend>Applications à épingler (1 à 5)</legend><ul class="liste-choix" id="liste"><li>Chargement des applications…</li></ul></fieldset>
+      <p class="message" id="m"></p>
+      <button type="submit">Créer le lien et le QR code</button>
+    </form>
+    <div class="carte cache" id="resultat">
+      <h2>Prêt à scanner</h2>
+      <div class="qr-boite" id="qr" role="img" aria-label="QR code des réglages"></div>
+      <p class="note">Faites scanner ce QR code avec l'appareil photo du téléphone de votre proche. Ou copiez le lien :</p>
+      <pre class="code" id="lien"></pre>
+      <div class="actions"><button type="button" id="copier">Copier le lien</button><button type="button" class="secondaire" onclick="window.print()">Imprimer</button></div>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  var P = window.AB6P, A = window.AB6.passeport;
+  var hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+  if (hash.get('a')) {
+    P.$('preparer').className = 'cache'; P.$('recevoir').className = '';
+    try {
+      var brut = P.deb64(hash.get('a'));
+      var avant = A.appliquerPasseport(A.nettoyerPasseport(brut));
+      P.message(P.$('etat'), 'C\'est réglé ✓ Taille, Mode Calme et applications épinglées sont en place sur cet appareil.', true);
+      P.$('annuler').onclick = function () { A.appliquerPasseport(avant); P.message(P.$('etat'), 'Réglages d\'avant rétablis.', true); };
+    } catch (e) { P.message(P.$('etat'), 'Ce lien est incomplet ou abîmé : demandez-en un nouveau à votre aidant.', false); P.$('annuler').className = 'cache'; }
+    return;
+  }
+  P.applis().then(function (apps) {
+    var ul = P.$('liste'); ul.textContent = '';
+    apps.filter(function (a) { return a.url; }).forEach(function (a) {
+      var c = P.el('input', { type: 'checkbox', value: a.slug, 'data-nom': a.name });
+      ul.appendChild(P.el('li', {}, [P.el('label', {}, [c, P.el('span', { text: P.nomLisible(a.name) })])]));
+    });
+  });
+  P.$('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var choisies = Array.prototype.map.call(document.querySelectorAll('#liste input:checked'), function (c) { return c.value; });
+    if (choisies.length < 1 || choisies.length > 5) { P.message(P.$('m'), 'Choisissez entre 1 et 5 applications.', false); return; }
+    P.message(P.$('m'), '', true);
+    var taille = document.querySelector('input[name=taille]:checked').value;
+    var p = A.passeportAidant({ density: taille, calme: P.$('calme').checked, epingles: choisies });
+    var lien = location.origin + '/aidant/#a=' + P.b64(p);
+    P.$('qr').innerHTML = P.qr(lien); P.$('lien').textContent = lien; P.$('resultat').className = 'carte';
+    P.$('resultat').scrollIntoView({ block: 'nearest' });
+    P.$('copier').onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(lien) : Promise.reject()).then(function () { P.message(P.$('m'), 'Lien copié.', true); }, function () { P.message(P.$('m'), 'Copie impossible : sélectionnez le lien à la main.', false); }); };
+  });
+})();
+</script>
+</body>
+</html>

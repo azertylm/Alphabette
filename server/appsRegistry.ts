@@ -42,6 +42,12 @@ export interface RegistryApp {
    * sur l'accueil, elle est listée sur la page du groupe (alphabette.fr/petits-jeux/).
    */
   groupe?: string;
+  /** Couverture illustrée (« /covers/<slug>.svg » ou image déposée) : carte du hub et Open Graph. */
+  cover?: string;
+  /** Vrai = image personnelle de Valentin : scripts/sync-covers.mjs ne la remplace jamais. */
+  coverCustom?: boolean;
+  /** Couleur d'identité (#rrggbb) utilisée pour la couverture de repli. */
+  accent?: string;
   createdAt: string;
   updatedAt: string;
 }

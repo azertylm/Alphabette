@@ -1,4 +1,5 @@
 import { ADRESSE_INSCRIPTION, LIBELLE_ROLE, dateLisible, lienInscription, lireMembre } from './membre';
+import { ReglagesLabo } from './ReglagesLabo';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { MOTIFS_SIGNALEMENT, envoyerSignalement } from './labo/votes';
@@ -154,6 +155,7 @@ function PanneauCompte({ apps, ouvrir, basculer }: PanneauProps) {
   if (membre) {
     return (
       <>
+        <ReglagesLabo />
         <div className="ab-panneau">
           <h4>👤 {membre.prenom}</h4>
           <p>
@@ -182,6 +184,7 @@ function PanneauCompte({ apps, ouvrir, basculer }: PanneauProps) {
   }
   return (
     <>
+      <ReglagesLabo />
       <div className="ab-panneau">
         <h4>Vous n’êtes pas encore inscrit(e)</h4>
         <p>

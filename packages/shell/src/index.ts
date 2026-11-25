@@ -90,7 +90,7 @@ export { structurerAvisVocal, categorieDuType, type AvisVocal, type TypeAvisVoca
 export { InteractiveSpotlight, MicroTuto, useMicroTuto, type EtapeSpotlight, type InteractiveSpotlightProps, type TutoAgent } from './labo/InteractiveSpotlight';
 export {
   appelerIA, classerStatut, messagePedagogique, incidentRecent, ecouterIncidents, lireChaineIA, enregistrerChaineIA,
-  IncidentApiTiers, ErreurRequeteIA, MODELES_PAR_DEFAUT, NOMS_FOURNISSEURS, DOMAINES_FOURNISSEURS, MARQUEUR_INCIDENT,
+  IncidentApiTiers, ErreurRequeteIA, ErreurCleManquante, MODELES_PAR_DEFAUT, NOMS_FOURNISSEURS, DOMAINES_FOURNISSEURS, MARQUEUR_INCIDENT,
   type Fournisseur, type MaillonIA, type RequeteIA, type ReponseIA, type Bascule, type TypeIncident, type OptionsRouteur,
 } from './ia/routeurByok';
 
@@ -115,3 +115,17 @@ export {
 } from './pop/effets';
 export { SVG_VIDES, TEXTES_VIDES, ecranVide, type EcranVideType } from './pop/illustrations';
 export { FioleLabo, BadgeMetal, Odometre, Egaliseur, EcranVide, CarteSquelette, BoutonModeCalme, useEtatAudio, type TypeBadge } from './pop/composants';
+
+// Lot 6 : Météo du Labo (barre .eu), masquage au défilement, Passeport QR chiffré, Nutri-Score numérique.
+export { MeteoPastille } from './MeteoPastille';
+export { meteoDepuisStatut, ilYaTexte, chargerStatutMeteo, type StatutLabo, type Meteo, type CielLabo } from './meteo';
+export { installerMasquageDefilement } from './masquage';
+export {
+  chiffrerPasseport, dechiffrerPasseport, collecterPasseport, appliquerPasseport, passeportAidant, nettoyerPasseport,
+  deposerPasseport, recevoirPasseport, lienReception, lireLien, VERSION_PASSEPORT, DUREE_RELAIS_SECONDES, type Passeport, type Depot,
+} from './passeport';
+export { calculerNutriScore, svgNutriScore, lettreDepuisNote, LETTRES, SEUILS, COULEURS_LETTRE, type ConstatsNutri, type ResultatNutri, type Lettre } from './nutriscore';
+export { NutriBadge, NutriFiche, useNutri, chargerNutri, resultatPour, constatsDe, type MetaNutri, type RegistreNutri } from './NutriEtiquette';
+export { ReglagesLabo } from './ReglagesLabo';
+export { guideIaNonConfiguree, iaConfiguree, estCleManquante, useIaConfiguree, EncartIaNonConfiguree, ADRESSE_CLES_MISTRAL } from './guideIA';
+export { PanneauDebugLocal } from './DebugLocal';

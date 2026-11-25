@@ -1147,3 +1147,71 @@ html[data-ab-calme] *, html[data-ab-calme] *::before, html[data-ab-calme] *::aft
   width: 100%; min-height: 2.75rem; padding: 0.5rem 0.6rem; font: inherit; font-weight: 400;
   border: 1px solid var(--ab-border); border-radius: 0.6rem; background: var(--ab-surface); color: var(--ab-ink);
 }
+
+/* ───── Nutri-Score numérique (Lot 6) : SVG pur, contrastes AAA (texte blanc sur fonds ≥ 7:1) ───── */
+.ab-nutri-badge { display: inline-flex; align-items: center; line-height: 0; }
+.ab-nutri-badge svg { display: block; height: 1.15rem; width: auto; }
+.ab-nutri { margin: 0.5rem 0; border: 1px solid var(--ab-border, #94a3b8); border-radius: 0.75rem; background: var(--ab-surface, #fff); color: var(--ab-ink, #0f172a); }
+.ab-nutri__resume { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; cursor: pointer; min-height: 44px; }
+.ab-nutri__resume svg { height: 2.2rem; width: auto; max-width: 100%; }
+.ab-nutri__phrase { flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere; }
+.ab-nutri__plus { text-decoration: underline; margin-left: 0.25rem; }
+.ab-nutri__detail { padding: 0 0.9rem 0.8rem; }
+.ab-nutri__detail h4 { margin: 0.7rem 0 0.2rem; font-size: 1rem; }
+.ab-nutri__detail ul { margin: 0; padding-left: 1.1rem; }
+.ab-nutri__detail li { margin: 0.2rem 0; }
+.ab-nutri__note, .ab-nutri__pts { font-weight: 600; opacity: 0.85; }
+.ab-nutri__pied { font-size: 0.85em; margin: 0.7rem 0 0; opacity: 0.9; }
+.ab-nutri summary:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+
+/* ───── Double barre : masquage au défilement (Règle d'or 2) + Météo du Labo (alphabette.eu) ───── */
+.ab-barres { position: sticky; top: 0; z-index: 40; transition: transform 0.25s ease; container-type: inline-size; container-name: abeco; }
+html[data-ab-barres="cachees"] .ab-barres { transform: translateY(-100%); }
+@media (prefers-reduced-motion: reduce) { .ab-barres { transition: none; } }
+html[data-ab-calme="oui"] .ab-barres { transition: none; }
+/* Conteneur : c'est la largeur de la BARRE (zoom BIG compris) qui décide, pas celle de l'écran ; le panneau « fixed » se place par rapport à ce conteneur (haut de page). */
+.ab-meteo { display: inline-flex; flex: 0 0 auto; }
+.ab-meteo__pastille {
+  display: inline-flex; align-items: center; gap: 0.3rem; min-height: 2rem; min-width: 2rem; padding: 0 0.55rem; justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--ab-eco-ink) 45%, transparent); border-radius: 999px; background: transparent; color: var(--ab-eco-ink);
+  font: inherit; font-size: 0.78rem; font-weight: 700; white-space: nowrap; cursor: pointer;
+}
+.ab-meteo__pastille:hover, .ab-meteo__pastille[aria-expanded="true"] { background: color-mix(in srgb, var(--ab-eco-ink) 16%, transparent); }
+.ab-meteo__pastille:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+/* Petite barre (≤ 400 px de large vue par la barre, zoom BIG compris) : icône seule, libellé dans aria-label. */
+@container abeco (max-width: 400px) {
+  .ab-meteo__mot { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .ab-meteo__pastille { padding: 0; width: 2rem; }
+}
+.ab-meteo__panneau {
+  position: fixed; z-index: 60; box-sizing: border-box; max-width: calc(100vw - 1rem); padding: 0.8rem 0.9rem;
+  background: var(--ab-surface, #fff); color: var(--ab-ink, #0f172a); border: 2px solid var(--ab-accent); border-radius: 0.9rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); font-size: 0.95rem; line-height: 1.4; text-align: left;
+}
+.ab-meteo__panneau h4 { margin: 0 0 0.3rem; font-size: 1rem; }
+.ab-meteo__panneau p { margin: 0 0 0.5rem; }
+.ab-meteo__panneau dl { margin: 0 0 0.6rem; }
+.ab-meteo__panneau dt { font-weight: 700; margin-top: 0.35rem; }
+.ab-meteo__panneau dd { margin: 0; overflow-wrap: anywhere; }
+.ab-meteo__lien { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; color: inherit; text-decoration: underline; }
+.ab-meteo__panneau:focus-visible { outline: 3px solid var(--ab-accent); }
+
+/* ───── Guide « IA non configurée » ───── */
+.ab-guide-ia { border: 2px solid var(--ab-accent); border-radius: 1rem; padding: 0.9rem 1rem; background: var(--ab-surface, #fff); color: var(--ab-ink, #0f172a); }
+.ab-guide-ia h3 { margin: 0 0 0.3rem; font-size: 1.1rem; }
+.ab-guide-ia ol { margin: 0.4rem 0 0.7rem; padding-left: 1.2rem; }
+.ab-guide-ia li { margin: 0.3rem 0; }
+.ab-guide-ia a { color: inherit; font-weight: 700; }
+
+/* ───── Panneau Debug Local (localhost seulement) ───── */
+.ab-debug { position: fixed; left: 0.5rem; bottom: 0.5rem; z-index: 2147483000; max-width: min(28rem, calc(100vw - 1rem)); background: #0f172a; color: #f8fafc; border-radius: 0.6rem; font: 0.8rem/1.4 ui-monospace, monospace; }
+.ab-debug > summary { padding: 0.45rem 0.7rem; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.ab-debug__corps { max-height: 50vh; overflow: auto; padding: 0 0.7rem 0.7rem; }
+.ab-debug__corps ul { margin: 0; padding-left: 1rem; overflow-wrap: anywhere; }
+
+/* ───── Transfert chiffré vers un autre appareil ───── */
+.ab-transfert__case { display: flex; gap: 0.6rem; align-items: flex-start; margin: 0.6rem 0; min-height: 44px; }
+.ab-transfert__case input { width: 1.4rem; height: 1.4rem; flex: 0 0 auto; margin-top: 0.1rem; }
+.ab-transfert__qr { display: block; width: min(100%, 16rem); margin: 0.5rem auto; background: #fff; padding: 0.4rem; border-radius: 0.5rem; }
+.ab-transfert__qr svg { display: block; width: 100%; height: auto; }
+.ab-transfert__code { font: 800 1.3rem ui-monospace, monospace; letter-spacing: 0.15em; }

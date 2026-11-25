@@ -2,6 +2,7 @@ import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import './codex.css';
 import { LegalPage, pageLegale } from './legal/LegalPage';
 
 /**

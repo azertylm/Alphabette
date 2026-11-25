@@ -418,3 +418,22 @@ html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180d
 .legal__tableau th, .legal__tableau td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--acc-trait); color: var(--acc-doux); overflow-wrap: anywhere; }
 .legal__tableau th { color: var(--acc-encre); background: var(--acc-carte); }
 .legal__nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--acc-trait); }
+
+/* ───── Couvertures illustrées (Lot 6B) : ratio fixe, aucune secousse de mise en page (CLS = 0) ───── */
+.pop-carte__vignette--cover, .accueil__tuiles--labo .pop-carte__vignette--cover { aspect-ratio: 16 / 9; display: block; background: #e5e7eb; }
+.pop-carte__cover { display: block; width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.pop-carte__vignette--cover::before { display: none; }
+
+/* ───── « Surprends-moi » : discret, accessible, calme ───── */
+.accueil__surprise { margin-top: 0.6rem; }
+.accueil__surprise-bouton, .accueil__surprise-ecoute { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0 0.9rem; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
+.accueil__surprise-bouton:focus-visible, .accueil__surprise-ecoute:focus-visible, .accueil__surprise select:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+.accueil__surprise-corps { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.accueil__surprise-filtre { display: inline-flex; gap: 0.4rem; align-items: center; }
+.accueil__surprise select { min-height: 44px; border-radius: 0.6rem; padding: 0 0.5rem; font: inherit; max-width: 100%; }
+.accueil__surprise-resultat { flex: 1 1 100%; min-width: 0; overflow-wrap: anywhere; }
+.accueil__surprise-defile { animation: surprise-fondu 0.18s ease; font-weight: 800; }
+.accueil__surprise-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+@keyframes surprise-fondu { from { opacity: 0.2; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+:is(:root[data-calme], :root[data-ab-calme='oui'], body.calm-mode) .accueil__surprise-defile { animation: none; }
+@media (prefers-reduced-motion: reduce) { .accueil__surprise-defile { animation: none; } }

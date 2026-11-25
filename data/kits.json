@@ -1,0 +1,10 @@
+{
+  "_aide": "Kits Alphabette (/kits) : collections curatées d'applications. Chaque entrée de « apps » est le slug d'une application ACTIVE du registre (data/apps-registry.json) ; un slug inconnu ou brouillon est ignoré à l'affichage. Jamais d'appli protégée (Lidarsol, Osolar, ProxiLien, Orbit, Info Perso). Publié dans api/kits.json.",
+  "kits": [
+    { "id": "soiree-potes", "nom": "Kit Soirée entre Potes", "emoji": "🎉", "phrase": "Un seul écran, des fous rires : des quiz, des mots inventés et des débats de légendes.", "apps": ["quiz-famille", "quiz-musique", "dico-loufoque", "goat", "ou-cest"] },
+    { "id": "parents-famille", "nom": "Kit Parents & Famille", "emoji": "👨‍👩‍👧", "phrase": "Jouer ensemble, cuisiner sans gaspiller et trouver les bons plans du quotidien.", "apps": ["quiz-famille", "ou-cest-france", "memo-meninges", "frigoplacard", "bonplan"] },
+    { "id": "seniors-facile", "nom": "Kit Seniors Facile", "emoji": "🌿", "phrase": "De gros boutons, des conseils vérifiés et de la mémoire en douceur, sans chronomètre.", "apps": ["bonplansenior", "memo-meninges", "podcasts", "quiz-femmes", "france-service"] },
+    { "id": "revisions-creation", "nom": "Kit Révisions & Création", "emoji": "✏️", "phrase": "Apprendre, deviner des chiffres vrais et transformer une idée en cahier des charges.", "apps": ["juste-chiffre", "quiz-extraordinaires", "wikicom", "promptmagic", "oeil-atelier"] },
+    { "id": "productivite-zen", "nom": "Kit Productivité Zen", "emoji": "🧘", "phrase": "S'informer dans le calme, trouver les bons outils, organiser ses repas.", "apps": ["info", "wikicom", "podcasts", "frigoplacard", "memo-meninges"] }
+  ]
+}
