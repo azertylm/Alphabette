@@ -143,19 +143,19 @@
     '#ab-barres{--ab-accent:' + app.accent + ';--ab-bar-fond:#fff;--ab-bar-encre:#0f172a;--ab-bar-trait:#e2e8f0;--ab-chip:#f1f5f9;--ab-chip-h:#e2e8f0;--ab-muted:#64748b;--ab-eco:color-mix(in oklab,var(--ab-accent) 32%,#0a1226);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.2;}',
     ':root[data-ab-theme="nuit"] #ab-barres{--ab-bar-fond:#111a2e;--ab-bar-encre:#e2e8f0;--ab-bar-trait:#1e293b;--ab-chip:#1b2540;--ab-chip-h:#26324f;--ab-muted:#94a3b8;}',
     '#ab-barres *,.ab-modale-fond *,.ab-tip{box-sizing:border-box;}',
-    '.ab-eco{display:flex;align-items:center;gap:8px;min-height:44px;padding:4px 10px;background:var(--ab-eco);color:#e6ecf7;font-size:14px;overflow-x:auto;scrollbar-width:none;}',
+    '.ab-eco{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 10px;background:var(--ab-eco);color:#e6ecf7;font-size:14px;overflow-x:auto;scrollbar-width:none;}',
     '.ab-eco::-webkit-scrollbar{display:none;}',
-    '.ab-eco__logo{display:inline-flex;align-items:center;gap:5px;color:#fff;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;opacity:.92;}',
+    '.ab-eco__logo{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:#fff;text-decoration:none;font-size:14px;font-weight:700;letter-spacing:.03em;white-space:nowrap;opacity:.92;}',
     '.ab-eco__logo:hover{opacity:1;text-decoration:underline;}',
-    '.ab-eco__marque{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:999px;background:var(--ab-accent);color:#fff;font-size:10px;font-weight:900;}',
-    '.ab-eco__icone{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 6px;border:0;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font:inherit;font-size:17px;line-height:1;cursor:pointer;}',
+    '.ab-eco__marque{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:var(--ab-accent);color:#fff;font-size:12px;font-weight:900;}',
+    '.ab-eco__icone{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 6px;border:0;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font:inherit;font-size:17px;line-height:1;cursor:pointer;}',
     '.ab-eco__icone:hover{background:rgba(255,255,255,.25);}',
     '.ab-eco__point{position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:999px;background:#ef4444;border:2px solid #0a1226;}',
     '.ab-eco__favoris{display:flex;align-items:center;gap:4px;min-width:0;}',
     '.ab-site{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;color:#cdd6ea;text-decoration:none;white-space:nowrap;font-size:13px;}',
     '.ab-site:hover{background:rgba(255,255,255,.16);color:#fff;}.ab-site--actif{background:var(--ab-accent);color:#fff;font-weight:700;}',
     '.ab-eco__droite{display:flex;align-items:center;margin-left:auto;}',
-    '.ab-abonner{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 14px;border:0;border-radius:999px;background:#f5b50a;color:#3a2a00;font:inherit;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;text-decoration:none;}',
+    '.ab-abonner{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 14px;border:0;border-radius:999px;background:#f5b50a;color:#3a2a00;font:inherit;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;text-decoration:none;}',
     '.ab-abonner:hover{background:#dba207;}',
     '.ab-abonner--membre{background:rgba(245,181,10,.18);color:#fff;border:1px solid rgba(245,181,10,.7);max-width:150px;overflow:hidden;text-overflow:ellipsis;}',
     '.ab-abonner--membre:hover{background:rgba(245,181,10,.32);}',
@@ -163,10 +163,11 @@
     '.ab-bar__titres{display:flex;flex-direction:column;min-width:0;}',
     '.ab-bar__nom{font-size:20px;font-weight:800;line-height:1.1;color:var(--ab-accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
     ':root[data-ab-theme="nuit"] .ab-bar__nom{color:color-mix(in oklab,var(--ab-accent) 55%,#fff);}',
-    '.ab-bar__sous{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ab-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
-    '.ab-bar__actions{display:flex;align-items:center;gap:6px;margin-left:auto;position:relative;}',
-    '.ab-pico{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:38px;height:38px;padding:0 8px;border:1px solid var(--ab-bar-trait);border-radius:12px;background:var(--ab-chip);color:var(--ab-bar-encre);font:inherit;font-size:19px;font-weight:800;line-height:1;cursor:pointer;}',
+    '.ab-bar__sous{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ab-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.ab-bar__actions{display:flex;align-items:center;gap:8px;margin-left:auto;position:relative;}',
+    '.ab-pico{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:44px;height:44px;padding:0 8px;border:1px solid var(--ab-bar-trait);border-radius:12px;background:var(--ab-chip);color:var(--ab-bar-encre);font:inherit;font-size:19px;font-weight:800;line-height:1;cursor:pointer;}',
     '.ab-pico:hover{background:var(--ab-chip-h);}',
+    '@media (max-width:400px){.ab-bar__actions{gap:4px;}.ab-pico{min-width:40px;padding:0 6px;}}',
     '.ab-pico--don{background:#e11d5b;border-color:transparent;color:#fff;}.ab-pico--don:hover{background:#be184d;}',
     '.ab-pico--big{background:var(--ab-accent);border-color:transparent;color:#fff;font-size:14px;letter-spacing:.04em;}.ab-pico--big:hover{background:color-mix(in oklab,var(--ab-accent) 85%,#000);}',
     '.ab-pico--actif{background:var(--ab-accent);border-color:transparent;color:#fff;}',
@@ -371,8 +372,47 @@
       boite.appendChild(el('p', { text: 'L’installation ajoute un raccourci sur l’écran d’accueil : l’application s’ouvre ensuite en plein écran, sans passer par un magasin d’applications.' }));
     });
   }
-  function donnerAvis() {
+  function avisParMail() {
     location.href = 'mailto:contact@alphabette.fr?subject=' + encodeURIComponent('Avis sur ' + app.nom) + '&body=' + encodeURIComponent('Bonjour,\n\nMon avis sur ' + app.nom + ' :\n\n\n(Page : ' + location.href + ')');
+  }
+  // Retour en 3 touches, sans compte ni e-mail : alphabette.eu (le Laboratoire) l'enregistre ; ailleurs, repli sur l'e-mail.
+  var surLabo = /(^|\.)alphabette\.eu$/.test(location.hostname) || local;
+  function donnerAvis() {
+    if (!surLabo) { avisParMail(); return; }
+    modale('Votre retour', function (boite, clore) {
+      var genre = '', info = el('p', { class: 'ab-note', role: 'status', 'aria-live': 'polite', style: 'margin:8px 0 0;font-size:14px;' });
+      var CHOIX = [['Bug', '😕 Ça m’a bloqué', 'Qu’est-ce qui n’a pas marché ?'], ['Autre', '👍 Ça m’a été utile', 'Qu’est-ce qui vous a plu ? (facultatif)'], ['Idée', '💡 J’ai une idée', 'Quelle amélioration proposez-vous ?']];
+      var rang = el('div', { class: 'ab-choix', style: 'grid-template-columns:1fr;' });
+      var zone = el('textarea', { rows: '4', maxlength: '800', 'aria-label': 'Votre message', style: 'width:100%;font:inherit;font-size:16px;padding:10px;border:1px solid #94a3b8;border-radius:12px;margin-top:10px;background:transparent;color:inherit;' });
+      var piege = el('input', { type: 'text', name: 'site_web', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true', style: 'position:absolute;left:-9999px;' });
+      var consigne = el('p', { class: 'ab-note', style: 'margin:10px 0 0;', text: 'Touchez un choix ci-dessus.' });
+      CHOIX.forEach(function (c) {
+        rang.appendChild(el('button', { type: 'button', class: 'ab-btn', 'aria-pressed': 'false', text: c[1], onclick: function (e) {
+          genre = c[0]; Array.prototype.forEach.call(rang.children, function (b) { b.setAttribute('aria-pressed', 'false'); });
+          e.currentTarget.setAttribute('aria-pressed', 'true'); consigne.textContent = c[2]; zone.focus();
+        } }));
+      });
+      var envoyer = el('button', { type: 'button', class: 'ab-btn ab-btn--accent', text: 'Envoyer', onclick: function () {
+        if (!genre) { info.textContent = 'Choisissez d’abord l’une des trois propositions.'; return; }
+        var texte = zone.value.trim();
+        if (genre !== 'Autre' && texte.length < 5) { info.textContent = 'Écrivez quelques mots pour que l’on comprenne.'; zone.focus(); return; }
+        envoyer.disabled = true; info.textContent = 'Envoi…';
+        var corps = { action: 'avis', app_id: app.cle, chemin: location.pathname, category: genre, comment: texte, version_tested: 'main', source: 'formulaire', site_web: piege.value,
+          telemetry: { viewport: innerWidth + 'x' + innerHeight, platform: String(navigator.platform || '').slice(0, 40) } };
+        if (genre === 'Autre') corps.rating = 5;
+        fetch('/api/feedback.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corps) })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || j.erreur || ''); }); })
+          .then(function () { boite.textContent = ''; boite.appendChild(el('h2', { text: 'Merci !' })); boite.appendChild(el('p', { text: 'Votre retour est bien arrivé. Les corrections sont publiées au fil des jours.' }));
+            var f = el('button', { type: 'button', class: 'ab-btn', text: T('Fermer'), onclick: clore }); boite.appendChild(f); f.focus(); })
+          .catch(function (err) { envoyer.disabled = false; info.textContent = (err && err.message) || 'L’envoi a échoué. Réessayez, ou écrivez-nous par e-mail ci-dessous.'; });
+      } });
+      boite.appendChild(el('p', { text: 'Dites-nous en une touche ce qui s’est passé. Pas de compte, pas d’e-mail demandé : n’écrivez pas d’informations personnelles.' }));
+      boite.appendChild(rang); boite.appendChild(consigne); boite.appendChild(zone); boite.appendChild(piege);
+      var actions = el('div', { class: 'ab-modale__actions', style: 'display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;' });
+      actions.appendChild(envoyer);
+      actions.appendChild(el('button', { type: 'button', class: 'ab-btn', text: '✉️ Par e-mail', onclick: avisParMail }));
+      boite.appendChild(actions); boite.appendChild(info);
+    });
   }
   function panneauLangue() {
     modale(T('Langue'), function (boite, clore) {
