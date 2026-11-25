@@ -32,6 +32,8 @@ export interface ResumeApp {
   moyenne: number | null;
   nb_notes: number;
   nb_avis: number;
+  /** Notes de 4 ou 5 étoiles (jauge « Fiole de Labo » X/10, seuil du passage sur .fr). */
+  positifs?: number;
   top: AvisPublic[];
   ab?: { actuelle: number; beta: number };
 }

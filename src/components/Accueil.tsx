@@ -11,6 +11,13 @@ import { BoiteIdees } from '../labo/BoiteIdees';
 import { LaboAvis } from '../labo/LaboAvis';
 import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
+import { BadgeMetal, CarteSquelette, EcranVide, FioleLabo, celebrerSiNouveau, cleCategorie } from '@alphabette/shell';
+
+/** Seuil du passage .eu → .fr : 10 avis positifs, ratio ≥ 75 % (CLAUDE.md). */
+const SEUIL_FR = 10;
+/** « Léa Dupont » → « lea-dupont » : adresse de la Carte Collector (/createur/<handle>/). */
+export const handleCreateur = (nom: string) =>
+  nom.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
 
 type FiltreCollectif = 'toutes' | 'officiel' | 'communaute' | 'nouveautes' | 'test';
 const FILTRES: { id: FiltreCollectif; nom: string }[] = [
@@ -132,6 +139,18 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
   const gratuites = apps.filter((app) => app.gratuit).length;
 
+  // Confettis sur de vrais événements seulement : une appli devient éligible au .fr (10e avis positif,
+  // ratio ≥ 75 %) ou y est transférée. Le premier passage d'un visiteur note l'état sans fêter.
+  useEffect(() => {
+    if (!MODE_LABO || !resumes || etat !== 'ok') return;
+    for (const app of apps) {
+      const r = resumes.apps[app.id];
+      const positifs = r?.positifs ?? 0;
+      celebrerSiNouveau('eligible_fr', app.id, positifs >= SEUIL_FR && r!.nb_notes > 0 && positifs / r!.nb_notes >= 0.75);
+      celebrerSiNouveau('transfert_fr', app.id, Boolean(app.vitrine));
+    }
+  }, [apps, resumes, etat]);
+
   const visibles = useMemo(() => {
     const q = sansAccent(recherche.trim());
     // Sans recherche : les jeux sont regroupés derrière la tuile « Petits Jeux ».
@@ -154,7 +173,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
   return (
     <div className="accueil">
-      <section className="accueil__haut">
+      <section className="accueil__haut pop-halo">
         {MODE_LABO && <MeteoLabo fileAttente={resumes?.file_attente} serveurAvis={serveurAvis} noms={noms} />}
         {MODE_LABO ? (
           <>
@@ -216,35 +235,41 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           </div>
         )}
 
-        {etat === 'chargement' && <p className="accueil__message">Chargement des applications…</p>}
+        {etat === 'chargement' && <p className="accueil__cache" role="status">Chargement des applications…</p>}
 
         {etat === 'erreur' && (
-          <p className="accueil__message">
-            La liste des applications n'a pas pu être chargée.{' '}
-            <button type="button" className="accueil__lien" onClick={charger}>
-              Réessayer
-            </button>
-          </p>
+          <EcranVide type="erreur-reseau" texte="La liste des applications n'a pas pu être chargée." onReessayer={charger} />
         )}
 
         {etat === 'ok' && visibles.length === 0 && (
-          <p className="accueil__message">
-            Aucune application ne correspond à « {recherche.trim()} ».{' '}
-            <button type="button" className="accueil__lien" onClick={() => setRecherche('')}>
+          <EcranVide type="aucun-resultat" texte={`Aucune application ne correspond à « ${recherche.trim()} ».`}>
+            <button type="button" className="pop-vide__bouton ab-elastique" onClick={() => setRecherche('')}>
               Tout afficher
             </button>
-          </p>
+          </EcranVide>
         )}
 
         <div className={MODE_LABO ? 'accueil__tuiles accueil__tuiles--labo' : 'accueil__tuiles'}>
+          {/* Squelettes aux dimensions des cartes : la grille ne saute pas quand le registre arrive. */}
+          {etat === 'chargement' && Array.from({ length: 6 }, (_, i) => <CarteSquelette key={i} />)}
           {visibles.map((app) => {
+            const resume = resumes?.apps[app.id];
             const tuile = (
-              <a key={app.id} className="accueil__tuile" href={app.url || '#'} {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                <span className="accueil__icone" aria-hidden="true">
-                  <RegistryIcon name={app.icon} />
+              <a key={app.id} className="accueil__tuile pop-carte" href={app.url || '#'}
+                {...(!MODE_LABO ? { 'data-ab-3d': '' } : {})}
+                data-ab-categorie={cleCategorie(app.categorie) ?? undefined} data-ab-vt={app.slug || app.id} data-ab-prefetch=""
+                {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                <span className="pop-carte__vignette" aria-hidden="true" data-ab-vt-cible="">
+                  <span className="accueil__icone">
+                    <RegistryIcon name={app.icon} />
+                  </span>
                 </span>
-                <strong>{nomLisible(app.name)}</strong>
-                {app.description && <span className="accueil__desc">{app.description}</span>}
+                <span className="pop-carte__tete">
+                  <strong>{nomLisible(app.name)}</strong>
+                  {app.badges?.map((b) => <BadgeMetal key={b} type={b} />)}
+                </span>
+                <span className="pop-carte__createur">par {app.communaute ? app.createur || 'un créateur du Collectif' : 'Alphabette'}</span>
+                {app.description && <span className="accueil__desc pop-carte__promesse">{app.description}</span>}
                 {!MODE_LABO && notesFr[app.id]?.[0]?.citoyenne?.[0] && (
                   <span className="accueil__nouveau">Nouveau : {notesFr[app.id][0].citoyenne[0]}</span>
                 )}
@@ -273,6 +298,14 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                     {app.badge === 'Nouveau' && <span className="accueil__pastille">Nouveau</span>}
                   </span>
                 )}
+                <span className="pop-carte__pied">
+                  {MODE_LABO ? (
+                    <FioleLabo valeur={resume?.positifs ?? 0} max={SEUIL_FR} libelle="avis positifs avant alphabette.fr" />
+                  ) : (
+                    <span className="pop-prix">{app.gratuit ? 'Gratuit' : '15 €/an'}</span>
+                  )}
+                  <span className="pop-carte__bouton" aria-hidden="true">Ouvrir →</span>
+                </span>
               </a>
             );
             if (!MODE_LABO) return tuile;
@@ -281,7 +314,9 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                 {tuile}
                 <div className="collectif-fiche">
                   <p className="collectif-fiche__meta">
-                    <span>par <strong>{app.communaute ? app.createur || 'un créateur du collectif' : 'Alphabette'}</strong></span>
+                    <span>par <strong>{app.communaute && app.createur && handleCreateur(app.createur)
+                      ? <a href={`/createur/${handleCreateur(app.createur)}/`} title={`Carte Collector de ${app.createur}`}>{app.createur}</a>
+                      : app.communaute ? app.createur || 'un créateur du collectif' : 'Alphabette'}</strong></span>
                     <span className={app.vitrine ? 'collectif-statut collectif-statut--validee' : 'collectif-statut'}>
                       {app.vitrine ? '✓ Validée' : '🧪 En test'}
                     </span>

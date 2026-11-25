@@ -3,6 +3,7 @@ import { AppHeader } from './AppHeader';
 import { EcosystemBar } from './EcosystemBar';
 import { InfoBulle } from './InfoBulle';
 import { installerAudioAlphabette } from './audio/passerelle';
+import { installerEffets, poserCategorie } from './pop/effets';
 import { plateforme, useFavoris, useInstallation, useLangue, useLectureVocale, useModeSimple, useNouveautes } from './outils';
 import { loadEcosystemRegistry, synchroniserSites, type EcosystemApp, type RegistreApps } from './apps';
 import type { AlphaAppConfig, AlphaSite, ShellPanelId } from './config';
@@ -91,6 +92,9 @@ export function AppShell({
   const { simple, basculer: basculerSimple } = useModeSimple();
   const lecture = useLectureVocale(langue);
   useEffect(() => installerAudioAlphabette(), []);
+  // Design Pop / Néon : univers .eu/.fr, Mode Calme, cartes 3D, ripple (rien de visible au démarrage).
+  useEffect(() => installerEffets(), []);
+  useEffect(() => poserCategorie(app.categorie), [app.categorie]);
   const installation = useInstallation();
   const [remoteConfig, setRemoteConfig] = useState<ShellConfig>(config ?? FALLBACK_CONFIG);
   const [panel, setPanel] = useState<ShellPanelId | null>(null);

@@ -29,7 +29,27 @@
   var d = (script && script.dataset) || {};
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var HUB = local ? location.origin : 'https://alphabette.fr';
-  var app = { cle: d.cle || '', nom: d.nom || document.title, sousTitre: d.sousTitre || '', accent: d.accent || '#2563eb' };
+  var app = { cle: d.cle || '', nom: d.nom || document.title, sousTitre: d.sousTitre || '', accent: d.accent || '#2563eb', categorie: d.categorie || '' };
+
+  // ------------------------------------------------------------ Design Pop / Néon (Lot 4)
+  // Univers posé tout de suite (avant l'affichage) : alphabette.eu = « Labo Pop Électrique », sinon « Vitrine Solaire ».
+  // Mode Calme (localStorage) : coupe les animations. Feuille et effets chargés à côté de ce script, sans bloquer.
+  (function designPop() {
+    var r = document.documentElement;
+    r.dataset.univers = /(^|\.)alphabette\.eu$/i.test(location.hostname) || /[?&]labo(=|&|$)/.test(location.search) ? 'labo' : 'vitrine';
+    try { if (localStorage.getItem('alphabette.calme') === 'oui') r.dataset.calme = 'oui'; } catch (e) {}
+    var base = (script && script.src) ? script.src.replace(/alphabette-barre\.js(\?.*)?$/, '') : 'https://alphabette.fr/assets/';
+    if (!document.getElementById('ab-pop-css')) {
+      var l = document.createElement('link'); l.id = 'ab-pop-css'; l.rel = 'stylesheet'; l.href = base + 'alphabette-pop.css';
+      (document.head || r).appendChild(l);
+    }
+    if (!window.alphabetteEffets && !document.getElementById('ab-effets-js')) {
+      var s = document.createElement('script'); s.id = 'ab-effets-js'; s.src = base + 'alphabette-effets.js'; s.async = true;
+      (document.head || r).appendChild(s);
+    }
+    var cat = (app.categorie || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+    if (cat) r.dataset.abCategorie = cat;
+  })();
 
   // ------------------------------------------------------------ Inscription (code d'invitation)
   // Écrite par https://alphabette.fr/inscription/ dans un cookie de tout le domaine : chaque appli la lit.
@@ -293,6 +313,9 @@
   function majLecture() {
     var b = document.getElementById('ab-lire'); if (!b) return; var e = etatVoix();
     b.textContent = e === 'preparation' ? '⏳' : e === 'lecture' ? '🔇' : '🔊';
+    // Égaliseur 4 barres, animé seulement pendant la lecture d'alphabetteAudio (aucune place prise).
+    b.dataset.abAudioEtat = e;
+    var eq = el('span', { class: 'ab-egaliseur', 'aria-hidden': 'true' }, [el('i'), el('i'), el('i'), el('i')]); b.appendChild(eq);
     b.classList.toggle('ab-pico--actif', e !== 'repos'); b.classList.toggle('ab-pico--audio-lecture', e === 'lecture');
     b.setAttribute('aria-busy', String(e === 'preparation'));
     var m = T(e === 'preparation' ? 'Préparation... (toucher pour annuler)' : e === 'lecture' ? 'Arrêter la lecture' : 'Lire à voix haute');
@@ -451,11 +474,18 @@
     var actions = el('div', { class: 'ab-bar__actions', id: 'ab-actions' }, [
       tip(el('button', { type: 'button', class: 'ab-pico ab-pico--don', text: '♥', onclick: ouvrirDon }), T('Faire un don')),
       big,
-      el('button', { type: 'button', class: 'ab-pico', id: 'ab-theme', onclick: function () { theme = theme === 'nuit' ? 'jour' : 'nuit'; ecrirePrefs({ theme: theme }); appliquerTheme(true); } }),
+      el('button', { type: 'button', class: 'ab-pico', id: 'ab-theme', onclick: function (ev) {
+        var suivant = theme === 'nuit' ? 'jour' : 'nuit';
+        var faire = function () { theme = suivant; ecrirePrefs({ theme: theme }); appliquerTheme(true); };
+        // Onde circulaire depuis le bouton (repli : fondu 300 ms ; Mode Calme : instantané).
+        if (window.alphabetteEffets) window.alphabetteEffets.vagueTheme(ev.currentTarget, faire); else faire();
+      } }),
     ]);
     actions.appendChild(el('button', { type: 'button', class: 'ab-pico', id: 'ab-lire', onclick: basculerLecture }));
     actions.appendChild(tip(el('button', { type: 'button', class: 'ab-pico', text: '⋯', 'aria-haspopup': 'true', onclick: function (e) { e.stopPropagation(); menuOuvert ? fermerMenu() : ouvrirMenu(); } }), T('Plus d’options')));
-    var titres = [el('span', { class: 'ab-bar__nom', text: app.nom })]; if (app.sousTitre) titres.push(el('span', { class: 'ab-bar__sous', text: app.sousTitre }));
+    // Même nom de transition que la carte cliquée sur le hub : la vignette « vole » jusqu'au titre (View Transitions).
+    var vt = (app.cle || '').replace(/[^a-z0-9-]/gi, '');
+    var titres = [el('span', vt ? { class: 'ab-bar__nom', text: app.nom, style: 'view-transition-name:vt-' + vt } : { class: 'ab-bar__nom', text: app.nom })]; if (app.sousTitre) titres.push(el('span', { class: 'ab-bar__sous', text: app.sousTitre }));
     var barre = el('div', { class: 'ab-bar' }, [el('div', { class: 'ab-bar__titres' }, titres), actions]);
     var r = el('div', { id: 'ab-barres' }); r.appendChild(eco); r.appendChild(barre);
     return r;

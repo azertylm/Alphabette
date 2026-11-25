@@ -7,6 +7,9 @@
 <meta name="description" content="Créateur indépendant : faites tester votre application par le Laboratoire Alphabette. Contrôles de sécurité et anti-traceurs, hébergement et test sur alphabette.eu, zéro pub, zéro revente de données.">
 <link rel="canonical" href="https://alphabette.eu/embarquement/">
 <link rel="stylesheet" href="/labo/pages.css">
+<link rel="stylesheet" href="/assets/alphabette-pop.css">
+<script>(function(){var r=document.documentElement;r.dataset.univers=/(^|\.)alphabette\.eu$/i.test(location.hostname)||/[?&]labo(=|&|$)/.test(location.search)?'labo':'vitrine';try{if(localStorage.getItem('alphabette.calme')==='oui')r.dataset.calme='oui'}catch(e){}})();</script>
+<script src="/assets/alphabette-effets.js" defer></script>
 </head>
 <body>
 <main>
@@ -49,6 +52,17 @@
       <p class="message" id="m" role="status"></p>
     </fieldset>
   </form>
+
+  <!-- Scanner Magique : vrais contrôles de l'adresse, puis faisceau pendant la remise au Laboratoire. -->
+  <div class="pop-scanner" id="scanner" hidden>
+    <span class="pop-scanner__faisceau" aria-hidden="true"></span>
+    <p class="pop-scanner__url" id="scan-url"></p>
+    <ul class="pop-scanner__etapes" aria-live="polite">
+      <li id="scan-1">Adresse lue</li>
+      <li id="scan-2">Connexion chiffrée (https)</li>
+      <li id="scan-3">Remise au Laboratoire</li>
+    </ul>
+  </div>
 
   <div id="ok" class="carte carte--acc cache" role="status">
     <h2 style="margin-top:0">✅ Embarquement enregistré</h2>
@@ -97,6 +111,13 @@
     if ($('description').value.trim().length < 15) { m.textContent = 'Décrivez votre application en une ou deux phrases.'; $('description').focus(); return; }
     if ($('pseudo').value.trim().length < 2) { m.textContent = 'Indiquez votre pseudo de créateur.'; $('pseudo').focus(); return; }
     m.className = 'message'; m.textContent = 'Envoi…'; $('envoyer').disabled = true;
+    // Scanner Magique : chaque ligne cochée correspond à un contrôle réellement fait.
+    var sc = $('scanner'); sc.hidden = false; sc.classList.remove('pop-scanner--fini');
+    ['scan-1', 'scan-2', 'scan-3'].forEach(function (id) { $(id).removeAttribute('data-fait'); });
+    $('scan-url').textContent = adr.url || ('github.com/' + adr.depot + (adr.dossier ? '/' + adr.dossier : ''));
+    $('scan-2').textContent = adr.url ? 'Connexion chiffrée (https)' : 'Dépôt GitHub public : hébergé dans un cadre isolé';
+    $('scan-1').setAttribute('data-fait', ''); $('scan-2').setAttribute('data-fait', '');
+    var finScan = function (ok) { sc.classList.add('pop-scanner--fini'); if (ok) $('scan-3').setAttribute('data-fait', ''); else sc.hidden = true; };
     var corps = {
       action: 'proposer', formulaire: 'embarquement', regles: regles.map(function (r) { return r.checked; }), duree: Date.now() - debut,
       nom: $('nom').value, url: adr.url || '', depot: adr.depot || '', dossier: adr.dossier || '', description: $('description').value,
@@ -105,12 +126,13 @@
     try {
       var r = await fetch('/api/collectif.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corps) });
       var d = await r.json().catch(function () { return {}; });
-      if (!r.ok) { m.className = 'message err'; m.textContent = d.erreur || 'Envoi impossible pour le moment.'; $('envoyer').disabled = false; return; }
+      if (!r.ok) { finScan(false); m.className = 'message err'; m.textContent = d.erreur || 'Envoi impossible pour le moment.'; $('envoyer').disabled = false; return; }
+      finScan(true);
       $('f').classList.add('cache'); $('ok').classList.remove('cache');
       $('ok-texte').textContent = '« ' + $('nom').value.trim() + ' » est dans la file d’attente' + (d.id && d.id !== 'ignore' ? ' (n° ' + d.id + ')' : '') + '. Merci !';
       $('ok').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
-      m.className = 'message err'; m.textContent = 'Pas de connexion : réessayez.'; $('envoyer').disabled = false;
+      finScan(false); m.className = 'message err'; m.textContent = 'Pas de connexion : réessayez.'; $('envoyer').disabled = false;
     }
   });
 })();

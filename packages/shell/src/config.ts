@@ -39,6 +39,11 @@ export interface AlphaAppConfig {
    * (barre écosystème, boutons actifs, titre). Ex. « #2563eb ».
    */
   accent?: string;
+  /**
+   * Catégorie de l'application (« Vie pratique », « Éducation », « Jeux », « Création »,
+   * « Productivité », « Communauté », « Labo ») : colore le liseré lumineux de la double barre.
+   */
+  categorie?: string;
   /** Sous-domaine dédié (ex. « infosperso » → infosperso.alphabette.fr). */
   subdomain?: string;
   /** Chemin sur le domaine principal (ex. « /infos-perso »). */

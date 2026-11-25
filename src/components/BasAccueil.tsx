@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useShell } from '@alphabette/shell';
+import { BoutonModeCalme, useShell } from '@alphabette/shell';
 import { MODE_LABO } from '../labo/labo';
 import { dateLongue, decouverteDejaOuverte, decouverteTerminee, etatOffres, lancerDecouverte, passActif, tempsRestant } from '../labo/pass';
 
@@ -164,6 +164,10 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
             <a href="/en-direct/">📱 21 h 13 en direct</a>
           </p>
         )}
+        {/* Mode Calme : coupe les animations (couleurs, contrastes et BIG inchangés). */}
+        <p>
+          <BoutonModeCalme />
+        </p>
         <p className="accueil__legal">
           <a href="/mentions-legales">Mentions légales</a>
           <a href="/confidentialite">Confidentialité</a>

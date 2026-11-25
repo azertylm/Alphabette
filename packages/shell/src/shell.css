@@ -17,6 +17,9 @@
  *    par-dessus le contenu.
  */
 
+/* Design Pop / Néon unifié (Lot 4) : univers .eu / .fr, verre, cartes 3D, Mode Calme. */
+@import './pop/pop.css';
+
 /* ============================ Densité (bouton BIG) ======================== */
 /* La densité change la taille de base : toute mesure en rem suit, donc les
    barres ET le contenu de l'application. */

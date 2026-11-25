@@ -168,6 +168,8 @@ export interface RegistryApp {
   categorie?: string;
   /** Appli du Collectif hébergée et isolée par Alphabette (bac à sable, /createurs/<id>/). */
   heberge?: boolean;
+  /** Badges métallisés attribués par Alphabette (vides par défaut : jamais de badge inventé). */
+  badges?: ('pionnier' | 'eclair' | 'projecteur')[];
 }
 
 export interface RegistrySnapshot {

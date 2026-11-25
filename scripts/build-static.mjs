@@ -70,6 +70,8 @@ const REGLES_REDIRECTIONS = Object.entries(sources)
 const HTACCESS = (labo) => `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes -MultiViews
 DirectoryIndex index.html
+# Page 404 illustrée (Lot 4) : adresses de fichiers introuvables (apps/, labo/, api/…).
+ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
   <FilesMatch "\\.json$">
@@ -104,6 +106,9 @@ DirectoryIndex index.html
   RewriteRule ^api/admin/session/?$ eu/api/admin-session.json [L]
   RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
   RewriteRule ^api/donnees-privees - [F,L]
+  # Carte Collector d'un créateur du Collectif (Lot 4) : une seule page, le pseudo est lu dans l'adresse.
+  RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
+  RewriteRule ^createur/[A-Za-z0-9_-]{1,40}/?$ eu/createur/index.html [L]
   RewriteCond %{HTTP_HOST} ^(www\\.)?alphabette\\.eu$ [NC]
   RewriteCond %{REQUEST_URI} !^/eu/
   RewriteRule ^(.*)$ eu/$1 [L]
@@ -147,6 +152,8 @@ const PAGES_FR = ['kit-seniors', 'site-vitrine', 'manifeste'];
 const HTACCESS_EU = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes -MultiViews
 DirectoryIndex index.html
+# Page 404 illustrée (Lot 4) : adresses de fichiers introuvables (apps/, labo/, api/…).
+ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
   <FilesMatch "\\.(json|php)$">
@@ -370,6 +377,8 @@ async function preparerLaboratoire() {
         url: a.url, description: a.description ?? '', createdAt: a.createdAt ?? new Date().toISOString(),
         updatedAt: a.updatedAt ?? a.createdAt ?? new Date().toISOString(), communaute: true,
         createur: a.createur ?? '', categorie: a.categorie ?? '', reseau_autorise: a.reseau_autorise ?? [],
+        // Badges métallisés attribués à la main par Alphabette (jamais calculés ni inventés).
+        badges: (Array.isArray(a.badges) ? a.badges : []).filter((b) => ['pionnier', 'eclair', 'projecteur'].includes(b)),
         ...(a.heberge ? { heberge: true, url_app: a.url_app, ref: a.ref } : {}),
       }));
   } catch (err) { console.log(`collectif : ${err.code === 'ENOENT' ? 'aucune appli de la communauté' : err.message}`); }
@@ -413,10 +422,13 @@ async function preparerLaboratoire() {
   await mkdir(path.join(eu, 'labo'), { recursive: true });
   for (const nom of ['pages.css', 'pass.js']) await cp(path.join(racine, 'labo', 'pages', nom), path.join(eu, 'labo', nom));
   // + kit terrain (cartes et flyers à QR codes, interne, noindex) et vue verticale « 21 h 13 en direct ».
-  for (const page of ['embarquement', 'badge', 'pass', 'merci', 'kit-terrain', 'en-direct', 'mes-revenus']) {
+  for (const page of ['embarquement', 'badge', 'pass', 'merci', 'kit-terrain', 'en-direct', 'mes-revenus', 'createur']) {
     await mkdir(path.join(eu, page), { recursive: true });
     await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, page, 'index.html'));
   }
+  // Lot 4 : /soumettre/ = la Salle d'embarquement (avec son Scanner Magique), même page, même formulaire.
+  await mkdir(path.join(eu, 'soumettre'), { recursive: true });
+  await cp(path.join(racine, 'labo', 'pages', 'embarquement.html'), path.join(eu, 'soumettre', 'index.html'));
   await cp(path.join(racine, 'labo', 'pages', 'badge'), path.join(eu, 'badge'), { recursive: true });
   await cp(path.join(racine, 'serveur', 'php', 'paiement.php'), path.join(eu, 'api', 'paiement.php'));
   // Lot 3 — abonnement 15 €/an (10 € créateur / 5 € Alphabette), virements dès 20 €, pare-feu d'upload, RGPD.

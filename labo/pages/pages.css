@@ -71,3 +71,30 @@ legend + * { clear: both; }
 .radios input { width: 20px; height: 20px; accent-color: var(--acc); }
 footer.pied { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--trait); font-size: .95rem; }
 footer.pied a { display: inline-flex; min-height: 44px; align-items: center; margin-right: 1rem; }
+
+/* ===================== Design Pop / Néon (Lot 4) =====================
+   Le thème suit désormais le bouton Jour / Nuit de la barre (html[data-ab-theme]), puis l'appareil.
+   Univers « Labo Pop Électrique » : violet profond / cyan électrique, micro-grille. Contrastes AAA. */
+:root[data-ab-theme='jour'] {
+  --fond: #fbf8f3; --carte: #ffffff; --encre: #1c1917; --doux: #57534e; --trait: #e7e5e4;
+  --acc: #0f766e; --acc-encre: #ffffff; --acc-fond: #f0fdfa; --ok: #166534; --err: #b91c1c; --vedette: #6d28d9;
+  color-scheme: light;
+}
+:root[data-ab-theme='nuit'] {
+  --fond: #0b1220; --carte: #111a2e; --encre: #f1f5f9; --doux: #cbd5e1; --trait: #2a3a58;
+  --acc: #5eead4; --acc-encre: #0b1220; --acc-fond: #0f2a2a; --ok: #86efac; --err: #fca5a5; --vedette: #c4b5fd;
+  color-scheme: dark;
+}
+:root[data-univers='labo'][data-ab-theme='jour'] { --fond: #f6f7ff; --trait: #e2e4f5; --acc: #4c1d95; --acc-fond: #f3efff; }
+:root[data-univers='labo'][data-ab-theme='nuit'] { --fond: #070a17; --carte: #0f1428; --trait: #222b4d; --acc: #67e8f9; --acc-encre: #04121a; --acc-fond: #082a33; }
+:root[data-univers='labo'] body {
+  background-image: linear-gradient(var(--pop-grille, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pop-grille, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.carte { box-shadow: var(--pop-ombre, none); }
+main :is(button, .bouton), dialog button { transition: transform .45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+main :is(button:not(:disabled), .bouton):hover, dialog button:not(:disabled):hover { transform: translateY(-1px) scale(1.02); }
+main :is(button:not(:disabled), .bouton):active, dialog button:not(:disabled):active { transform: scale(.95); transition-duration: .12s; }
+:root[data-calme] :is(main button, main .bouton, dialog button), body.calm-mode :is(main button, main .bouton, dialog button) { transition: none !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) { main :is(button, .bouton), dialog button { transition: none !important; transform: none !important; } }
