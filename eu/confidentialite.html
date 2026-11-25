@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politique de confidentialité &amp; RGPD — Alphabette</title>
+  <meta name="description" content="Politique de confidentialité, engagement Zero-Knowledge, IA BYOK et droits RGPD de l'écosystème Alphabette." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="stylesheet" href="/shared/alphabette-core.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --text: #0f172a;
+      --muted: #334155;
+      --accent: #1d4ed8;
+      --border: #cbd5e1;
+      --ok-bg: #ecfdf5;
+      --ok-border: #059669;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --accent: #60a5fa;
+        --border: #334155;
+        --ok-bg: #064e3b;
+        --ok-border: #34d399;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .legal-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    nav.legal-nav {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border);
+    }
+    nav.legal-nav a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 0.9rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600;
+      color: var(--accent); border: 1px solid var(--border);
+    }
+    nav.legal-nav a[aria-current="page"] { background: var(--accent); color: #ffffff; border-color: var(--accent); }
+    nav.legal-nav a:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 0.5rem; }
+    h2 { font-size: 1.35rem; margin: 2.25rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .meta-date { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .highlight {
+      background: var(--ok-bg); border-left: 4px solid var(--ok-border);
+      padding: 1rem 1.25rem; border-radius: 8px; margin: 1.25rem 0;
+    }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.75rem; text-align: left; vertical-align: top; }
+    th { background: var(--surface); font-weight: 700; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.45rem; }
+    a { color: var(--accent); }
+    footer.legal-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--border); font-size: 0.95rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="legal-wrap">
+    <nav class="legal-nav" aria-label="Navigation juridique">
+      <a href="/">← Retour au Hub</a>
+      <a href="/mentions-legales.html">Mentions légales</a>
+      <a href="/confidentialite.html" aria-current="page">Confidentialité &amp; RGPD</a>
+      <a href="/cgv.html">CGV &amp; CGU</a>
+    </nav>
+
+    <main>
+      <h1>Politique de confidentialité &amp; RGPD</h1>
+      <p class="meta-date">Dernière mise à jour : novembre 2026 — Conforme au RGPD (UE 2016/679) et à la loi Informatique et Libertés.</p>
+
+      <div class="highlight">
+        <strong>Notre promesse claire :</strong> Alphabette ne vend jamais vos données, n'installe aucun cookie publicitaire ni traceur tiers, et isole strictement les données personnelles créées dans vos applications (architecture <em>Zero-Knowledge</em> côté appareil).
+      </div>
+
+      <section>
+        <h2>1. Responsable de traitement</h2>
+        <p>Le responsable de traitement est la société <strong>Alphabette (SASU)</strong>, représentée par Valentin Richaud, dont les coordonnées complètes figurent dans les <a href="/mentions-legales.html">Mentions légales</a>. Pour toute question relative à vos données : <a href="mailto:privacy@alphabette.fr">[À COMPLÉTER : privacy@alphabette.fr ou contact@alphabette.fr]</a>.</p>
+      </section>
+
+      <section>
+        <h2>2. Séparation stricte : Applications locales (Zero-Knowledge) vs Plateforme Hub</h2>
+        <p>L'écosystème Alphabette fonctionne sur deux niveaux distincts afin de maximiser votre souveraineté :</p>
+        <ul>
+          <li><strong>Dans les applications hébergées (stockage 100 % local) :</strong> vos créations, souvenirs, notes, réglages et sauvegardes sont stockés exclusivement dans votre navigateur (<code>localStorage</code> / <code>IndexedDB</code>). Alphabette n'y a jamais accès. Vous pouvez les exporter ou les transférer entre appareils via un fichier <code>.json</code> chiffré.</li>
+          <li><strong>Clés d'Intelligence Artificielle (BYOK — Bring Your Own Key) :</strong> lorsque vous saisissez votre propre clé API (ex. Mistral AI ou autre fournisseur), celle-ci est chiffrée localement dans votre navigateur et utilisée directement entre votre appareil et le fournisseur d'IA que vous avez choisi. Elle ne transite jamais en clair sur les serveurs d'Alphabette.</li>
+          <li><strong>Sur la plateforme Hub (<code>alphabette.eu</code> et <code>alphabette.fr</code>) :</strong> seules les données strictement nécessaires à votre compte, vos votes communautaires, vos abonnements (15 €/an) et le versement des revenus créateurs sont traitées côté serveur.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Registre simplifié des traitements (données, bases légales, durées)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Finalité</th>
+                <th>Données traitées</th>
+                <th>Base légale</th>
+                <th>Durée de conservation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gestion du compte utilisateur &amp; accès</td>
+                <td>Adresse e-mail, pseudo/handle, mot de passe hashé, statut vérifié</td>
+                <td>Exécution du contrat (CGU)</td>
+                <td>Durée du compte, puis suppression/anonymisation sous 30 jours après demande (ou après 3 ans d'inactivité)</td>
+              </tr>
+              <tr>
+                <td>Abonnements (15 €/an), licences, pourboires &amp; facturation</td>
+                <td>Identifiant client, historique de souscription, justificatifs comptables (CB traitée exclusivement par le prestataire de paiement)</td>
+                <td>Exécution du contrat &amp; obligation légale</td>
+                <td>10 ans pour les pièces comptables (Code de commerce)</td>
+              </tr>
+              <tr>
+                <td>Rémunération &amp; virements créateurs</td>
+                <td>IBAN chiffré au repos (AES-256-GCM), écritures du grand livre (Ledger), justificatifs fiscaux</td>
+                <td>Exécution du contrat &amp; obligation légale</td>
+                <td>Durée de l'activité créateur + 10 ans pour les écritures comptables</td>
+              </tr>
+              <tr>
+                <td>Votes communautaires, anti-fraude &amp; sécurité</td>
+                <td>Avis, notes, horodatage de session, empreinte IP anonymisée (hashée, non réversible)</td>
+                <td>Intérêt légitime (intégrité des votes et sécurité)</td>
+                <td>Durée de publication de l'avis ; journaux techniques anti-fraude purgés sous 12 mois maximum</td>
+              </tr>
+              <tr>
+                <td>Diagnostic de bug (Opt-in)</td>
+                <td>10 dernières erreurs JS, type d'appareil/navigateur, capture annotée/floutée (uniquement si coché par l'utilisateur)</td>
+                <td>Consentement explicite</td>
+                <td>6 mois maximum après résolution du bug</td>
+              </tr>
+              <tr>
+                <td>Notifications &amp; Newsletter</td>
+                <td>Adresse e-mail, préférences granulaires Web Push / e-mail</td>
+                <td>Consentement (désactivable en 1 clic)</td>
+                <td>Jusqu'au retrait du consentement</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>4. Usages spécifiques : dictée vocale, seniors &amp; mineurs</h2>
+        <ul>
+          <li><strong>Dictée et lecture vocale (Web Speech API) :</strong> les fonctions vocales (ex. lecture à haute voix, MémoVoix) reposent sur les API natives de votre navigateur/appareil. Alphabette n'enregistre et ne stocke aucun fichier audio sur ses serveurs. Selon votre navigateur et votre système d'exploitation, le traitement de la reconnaissance vocale peut être effectué localement ou par le fournisseur de votre navigateur conformément à ses propres réglages de confidentialité.</li>
+          <li><strong>Protection des mineurs :</strong> conformément à la loi française, la création d'un compte par un mineur de moins de 15 ans requiert l'accord d'un titulaire de l'autorité parentale. Tout achat payant sur <code>alphabette.fr</code> est réservé aux personnes majeures ou disposant d'une autorisation parentale.</li>
+          <li><strong>Accessibilité &amp; publics fragiles :</strong> nos formulaires sont conçus sans pièges visuels (zéro <em>dark pattern</em>) et toute option de diagnostic technique est désactivable en un clic.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>5. Cookies &amp; stockage navigateur</h2>
+        <p><strong>Alphabette n'utilise aucun cookie publicitaire, aucun pixel social et aucun outil d'analyse tiers intrusif.</strong></p>
+        <p>Seuls des éléments strictement nécessaires au fonctionnement sont stockés sur votre appareil (exemptés de consentement préalable selon les lignes directrices CNIL) :</p>
+        <ul>
+          <li>Session d'authentification sécurisée (cookie <code>HttpOnly</code> / <code>SameSite</code>).</li>
+          <li>Préférences locales d'accessibilité : Mode Nuit, Mode Calme, taille de police, brouillon local de soumission.</li>
+          <li>Identifiant interne anonymisé de suivi d'attribution créateur (valable 7 jours, sans suivi inter-sites ni partage tiers).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. Sous-traitants &amp; transferts de données</h2>
+        <p>Alphabette privilégie des partenaires européens souverains :</p>
+        <ul>
+          <li><strong>Hébergement :</strong> OVHcloud (Union européenne).</li>
+          <li><strong>Paiement sécurisé :</strong> [À COMPLÉTER : ex. Stripe Payments Europe Ltd / Mollie — certifié PCI-DSS]. Alphabette ne stocke jamais vos numéros de carte bancaire.</li>
+          <li><strong>Envoi d'e-mails transactionnels :</strong> [À COMPLÉTER : ex. Brevo (France) / OVHcloud].</li>
+        </ul>
+        <p>Si un utilisateur choisit librement un fournisseur d'IA hors UE en mode BYOK, ce choix relève de sa relation directe avec ledit fournisseur.</p>
+      </section>
+
+      <section>
+        <h2>7. Vos droits RGPD &amp; exercice en 1 clic</h2>
+        <p>Vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données personnelles.</p>
+        <ul>
+          <li><strong>En autonomie immédiate :</strong> depuis votre espace profil, vous pouvez cliquer sur <strong>« Exporter mes données (JSON) »</strong> ou <strong>« Supprimer mon compte »</strong> (les données personnelles sont supprimées/anonymisées ; seules les pièces comptables légales restent archivées conformément à la loi).</li>
+          <li><strong>Par e-mail :</strong> écrivez à <a href="mailto:privacy@alphabette.fr">[À COMPLÉTER : privacy@alphabette.fr]</a> (réponse sous 30 jours maximum).</li>
+          <li><strong>Recours :</strong> si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la <strong>CNIL</strong> (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="legal-footer">
+      <p>© 2026 Alphabette — Confidentialité par conception (Zero-Knowledge).</p>
+    </footer>
+  </div>
+</body>
+</html>

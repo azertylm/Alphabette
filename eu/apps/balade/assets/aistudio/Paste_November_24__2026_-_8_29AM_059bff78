@@ -1,0 +1,1436 @@
+```html
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#09090B" />
+  <meta name="description" content="Curioz par Alphabette — Compagnon de curiosité tout-en-un : balades culturelles audio, détective d'objets et prof socratique." />
+  <title>Curioz — Alphabette</title>
+
+  <!-- Police Inter pour une lisibilité optimale WCAG AAA -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            onyx: {
+              bg: '#09090B',
+              card: '#18181B',
+              border: '#27272A',
+              muted: '#A1A1AA',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Styles complémentaires pour l'accessibilité et les animations douces */
+    html, body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+
+    /* Focus visible haute visibilité (WCAG AAA) */
+    *:focus-visible {
+      outline: 3px solid #38BDF8;
+      outline-offset: 2px;
+    }
+
+    /* Animation onde vocale pour le micro */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+    }
+    .recording-pulse {
+      animation: pulseRing 1.4s infinite;
+    }
+
+    /* Masquer les barres de défilement sur les filtres horizontaux */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Styles d'impression propres pour l'export du Carnet */
+    @media print {
+      header, nav, .no-print { display: none !important; }
+      body { background: #FFFFFF !important; color: #000000 !important; }
+      main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+      .print-card { break-inside: avoid; border: 2px solid #000 !important; background: #FFF !important; color: #000 !important; margin-bottom: 16px; }
+    }
+  </style>
+</head>
+<body class="bg-white text-black dark:bg-onyx-bg dark:text-white min-h-screen flex flex-col transition-colors duration-200 selection:bg-indigo-500 selection:text-white">
+
+  <!-- ==================== HEADER FIXE ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-onyx-bg/95 backdrop-blur-md border-b-2 border-zinc-200 dark:border-onyx-border px-4 py-3">
+    <div class="max-w-2xl mx-auto flex items-center justify-between gap-2">
+      <!-- Logo & Nom -->
+      <div class="flex items-center gap-3">
+        <div id="brandBadge" class="w-11 h-11 rounded-2xl bg-emerald-600 dark:bg-emerald-500 flex items-center justify-center text-white font-black text-xl shadow-md transition-colors">
+          C
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-black tracking-tight leading-none">Curioz</h1>
+            <span id="modeBadge" class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-emerald-400">
+              Démo
+            </span>
+          </div>
+          <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mt-0.5">par Alphabette</p>
+        </div>
+      </div>
+
+      <!-- Actions Header : Switch Thème & Paramètres -->
+      <div class="flex items-center gap-2">
+        <button
+          id="btnThemeToggle"
+          type="button"
+          aria-label="Basculer entre le mode Onyx et le mode Clarté"
+          class="min-w-[48px] min-h-[48px] px-3 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-onyx-card hover:bg-zinc-200 dark:hover:bg-zinc-800 flex items-center justify-center gap-2 font-bold text-sm transition"
+        >
+          <span id="themeIcon" aria-hidden="true">☀️</span>
+          <span id="themeLabel" class="hidden sm:inline">Clarté</span>
+        </button>
+
+        <button
+          id="btnOpenSettings"
+          type="button"
+          aria-label="Ouvrir les paramètres IA et voix"
+          class="min-w-[48px] min-h-[48px] rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-onyx-card hover:bg-zinc-200 dark:hover:bg-zinc-800 flex items-center justify-center text-xl transition"
+        >
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENU PRINCIPAL ==================== -->
+  <main class="flex-1 w-full max-w-2xl mx-auto px-4 pt-5 pb-28">
+
+    <!-- ==================== ONGLET 1 : BALADE (L'OREILLE LOCALE) ==================== -->
+    <section id="tab-balade" class="tab-panel space-y-5" aria-labelledby="heading-balade">
+      <div class="rounded-3xl p-5 border-2 border-emerald-600/30 dark:border-emerald-500/40 bg-emerald-50/70 dark:bg-onyx-card">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-700 text-white dark:bg-emerald-500 dark:text-black">
+            🧭 L'Oreille Locale
+          </span>
+          <span class="text-xs font-bold text-emerald-900 dark:text-emerald-300">Audio-guide IA</span>
+        </div>
+        <h2 id="heading-balade" class="text-2xl font-black tracking-tight mb-1">Écoutez les secrets autour de vous</h2>
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-4">
+          Géolocalisez-vous ou saisissez un lieu pour découvrir une histoire insolite, une légende ou un détail d'architecture.
+        </p>
+
+        <!-- Bouton géant Géolocalisation -->
+        <button
+          id="btnGeolocate"
+          type="button"
+          class="w-full min-h-[56px] rounded-2xl bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-400 dark:hover:bg-emerald-300 text-white dark:text-black font-extrabold text-base px-5 py-3.5 flex items-center justify-center gap-2.5 shadow-lg transition active:scale-[0.98]"
+        >
+          <span class="text-xl" aria-hidden="true">📍</span>
+          <span>Me géolocaliser maintenant</span>
+        </button>
+
+        <!-- Séparateur -->
+        <div class="flex items-center gap-3 my-4">
+          <div class="h-0.5 flex-1 bg-emerald-200 dark:bg-zinc-800"></div>
+          <span class="text-xs font-bold uppercase text-zinc-600 dark:text-zinc-400">ou saisir un lieu</span>
+          <div class="h-0.5 flex-1 bg-emerald-200 dark:bg-zinc-800"></div>
+        </div>
+
+        <!-- Saisie manuelle -->
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input
+            id="inputLocation"
+            type="text"
+            placeholder="Ex : La Grande-Motte, Lille, Paris..."
+            class="flex-1 min-h-[52px] px-4 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-black dark:text-white font-semibold placeholder:text-zinc-500"
+          />
+          <button
+            id="btnSearchLocation"
+            type="button"
+            class="min-h-[52px] px-5 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-extrabold text-sm hover:opacity-90 transition active:scale-[0.98]"
+          >
+            Explorer
+          </button>
+        </div>
+
+        <!-- Raccourcis rapides -->
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button type="button" data-quick-loc="La Grande-Motte" class="quick-loc min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-bold border-2 border-emerald-700/30 dark:border-emerald-500/40 bg-white dark:bg-zinc-900 hover:bg-emerald-100 dark:hover:bg-emerald-950 transition">
+            🏖️ La Grande-Motte
+          </button>
+          <button type="button" data-quick-loc="Lille - Wazemmes" class="quick-loc min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-bold border-2 border-emerald-700/30 dark:border-emerald-500/40 bg-white dark:bg-zinc-900 hover:bg-emerald-100 dark:hover:bg-emerald-950 transition">
+            🧱 Lille - Wazemmes
+          </button>
+          <button type="button" data-quick-loc="Montmartre, Paris" class="quick-loc min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-bold border-2 border-emerald-700/30 dark:border-emerald-500/40 bg-white dark:bg-zinc-900 hover:bg-emerald-100 dark:hover:bg-emerald-950 transition">
+            🗼 Montmartre
+          </button>
+        </div>
+      </div>
+
+      <!-- Résultat Capsule Balade -->
+      <div id="baladeResult" class="hidden rounded-3xl p-5 border-2 border-zinc-200 dark:border-onyx-border bg-white dark:bg-onyx-card shadow-sm space-y-4">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p id="baladeLocTag" class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400"></p>
+            <h3 id="baladeTitle" class="text-xl font-black mt-1"></h3>
+          </div>
+          <span class="text-2xl" aria-hidden="true">🎧</span>
+        </div>
+        <p id="baladeText" class="text-base leading-relaxed font-medium text-zinc-900 dark:text-zinc-100 whitespace-pre-line"></p>
+
+        <!-- Barre audio & sauvegarde -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t-2 border-zinc-100 dark:border-zinc-800">
+          <button id="btnBaladeSpeak" type="button" class="min-h-[48px] px-4 rounded-xl bg-emerald-700 dark:bg-emerald-400 text-white dark:text-black font-extrabold text-sm flex items-center gap-2">
+            🔊 Écouter
+          </button>
+          <button id="btnBaladeStop" type="button" class="min-h-[48px] px-4 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 font-bold text-sm flex items-center gap-1.5">
+            ⏹️ Stop
+          </button>
+          <button id="btnBaladeSave" type="button" class="min-h-[48px] px-4 rounded-xl border-2 border-emerald-700 dark:border-emerald-400 text-emerald-800 dark:text-emerald-300 font-extrabold text-sm ml-auto">
+            ⭐ Sauvegarder
+          </button>
+        </div>
+      </div>
+
+      <!-- Bouton Déposer une anecdote -->
+      <div class="rounded-3xl p-5 border-2 border-dashed border-emerald-600/50 dark:border-emerald-500/50 bg-white dark:bg-onyx-card/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="font-extrabold text-base">Vous connaissez un secret local ?</h3>
+          <p class="text-sm text-zinc-700 dark:text-zinc-400">Dictez votre propre anecdote pour l'archiver dans votre Carnet.</p>
+        </div>
+        <button
+          id="btnOpenAnecdote"
+          type="button"
+          class="w-full sm:w-auto min-h-[52px] px-5 rounded-2xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black font-extrabold text-sm whitespace-nowrap"
+        >
+          🎙️ Déposer une anecdote
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET 2 : SCANNER (DÉTECTIVE D'OBJET) ==================== -->
+    <section id="tab-scanner" class="tab-panel hidden space-y-5" aria-labelledby="heading-scanner">
+      <div class="rounded-3xl p-5 border-2 border-amber-500/40 bg-amber-50/70 dark:bg-onyx-card space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-600 text-white dark:bg-amber-400 dark:text-black">
+            🔎 Détective d'Objet
+          </span>
+          <span class="text-xs font-bold text-amber-900 dark:text-amber-300">Vision IA</span>
+        </div>
+        <div>
+          <h2 id="heading-scanner" class="text-2xl font-black tracking-tight mb-1">Identifiez n'importe quel objet</h2>
+          <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Objet de brocante, plante, outil mystérieux ou monument : prenez une photo et choisissez votre niveau d'explication.
+          </p>
+        </div>
+
+        <!-- Sélecteur de niveau de vulgarisation -->
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-wider text-zinc-700 dark:text-zinc-400 mb-2">Niveau d'explication :</p>
+          <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Niveau de vulgarisation">
+            <button type="button" data-level="enfant" class="level-btn min-h-[48px] rounded-xl font-extrabold text-xs sm:text-sm border-2 transition px-2">
+              🎈 Enfant 10 ans
+            </button>
+            <button type="button" data-level="public" class="level-btn min-h-[48px] rounded-xl font-extrabold text-xs sm:text-sm border-2 transition px-2">
+              👀 Grand Public
+            </button>
+            <button type="button" data-level="expert" class="level-btn min-h-[48px] rounded-xl font-extrabold text-xs sm:text-sm border-2 transition px-2">
+              🎓 Expert
+            </button>
+          </div>
+        </div>
+
+        <!-- Zone Capture / Import Photo -->
+        <label
+          for="scannerFileInput"
+          class="block cursor-pointer rounded-2xl border-2 border-dashed border-amber-600 dark:border-amber-400 bg-white dark:bg-zinc-950 p-5 text-center hover:bg-amber-50 dark:hover:bg-zinc-900 transition"
+        >
+          <input id="scannerFileInput" type="file" accept="image/*" capture="environment" class="sr-only" />
+          <div id="scannerPlaceholder" class="space-y-2 py-3">
+            <div class="text-4xl" aria-hidden="true">📸</div>
+            <p class="font-extrabold text-base">Prendre une photo ou importer</p>
+            <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Appareil photo mobile ou galerie</p>
+          </div>
+          <img id="scannerPreview" alt="Aperçu de l'objet à analyser" class="hidden max-h-64 mx-auto rounded-xl object-contain border border-zinc-200 dark:border-zinc-800" />
+        </label>
+
+        <!-- Boutons Analyser & Démo -->
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button
+            id="btnAnalyzeObject"
+            type="button"
+            class="flex-1 min-h-[54px] rounded-2xl bg-amber-600 hover:bg-amber-700 dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-black font-extrabold text-base px-5 flex items-center justify-center gap-2 shadow-md transition active:scale-[0.98]"
+          >
+            ✨ Analyser cet objet
+          </button>
+          <button
+            id="btnScannerDemoSample"
+            type="button"
+            class="min-h-[54px] px-4 rounded-2xl border-2 border-amber-700/40 dark:border-amber-400/50 font-extrabold text-sm hover:bg-amber-100 dark:hover:bg-zinc-800 transition"
+          >
+            🎲 Tester un objet mystère
+          </button>
+        </div>
+      </div>
+
+      <!-- Résultat Fiche Objet -->
+      <div id="scannerResult" class="hidden rounded-3xl p-5 border-2 border-zinc-200 dark:border-onyx-border bg-white dark:bg-onyx-card shadow-sm space-y-4">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <span id="scanLevelBadge" class="inline-block text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 dark:bg-amber-500/20 dark:text-amber-300 mb-1"></span>
+            <h3 id="scanName" class="text-2xl font-black"></h3>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+            <p class="text-xs font-extrabold uppercase text-zinc-600 dark:text-zinc-400">⏳ Époque & Origine</p>
+            <p id="scanOrigin" class="font-bold text-sm mt-1"></p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+            <p class="text-xs font-extrabold uppercase text-zinc-600 dark:text-zinc-400">🛠️ Usage concret</p>
+            <p id="scanUsage" class="font-bold text-sm mt-1"></p>
+          </div>
+        </div>
+
+        <!-- Encart décalé : Petite histoire imaginaire -->
+        <div class="p-4 rounded-2xl bg-amber-100/80 dark:bg-amber-500/10 border-2 border-amber-400/60 dark:border-amber-400/40">
+          <p class="text-xs font-black uppercase tracking-wider text-amber-900 dark:text-amber-300 mb-1">
+            🎭 La petite histoire imaginaire de cet objet
+          </p>
+          <p id="scanStory" class="text-sm font-medium leading-relaxed text-zinc-900 dark:text-zinc-100 italic"></p>
+        </div>
+
+        <!-- Actions TTS & Carnet -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t-2 border-zinc-100 dark:border-zinc-800">
+          <button id="btnScanSpeak" type="button" class="min-h-[48px] px-4 rounded-xl bg-amber-600 dark:bg-amber-400 text-white dark:text-black font-extrabold text-sm flex items-center gap-2">
+            🔊 Écouter
+          </button>
+          <button id="btnScanStop" type="button" class="min-h-[48px] px-4 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 font-bold text-sm">
+            ⏹️ Stop
+          </button>
+          <button id="btnScanSave" type="button" class="min-h-[48px] px-4 rounded-xl border-2 border-amber-600 dark:border-amber-400 text-amber-800 dark:text-amber-300 font-extrabold text-sm ml-auto">
+            ⭐ Sauvegarder dans le Carnet
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET 3 : PROF (MODE SOCRATIQUE) ==================== -->
+    <section id="tab-prof" class="tab-panel hidden space-y-4" aria-labelledby="heading-prof">
+      <div class="rounded-3xl p-5 border-2 border-indigo-600/30 dark:border-indigo-400/40 bg-indigo-50/70 dark:bg-onyx-card">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-700 text-white dark:bg-indigo-400 dark:text-black">
+            🦉 Mode Socratique
+          </span>
+          <button
+            id="btnQuizExpress"
+            type="button"
+            class="min-h-[40px] px-3.5 rounded-xl bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-400 dark:hover:bg-indigo-300 text-white dark:text-black font-extrabold text-xs transition"
+          >
+            ⚡ Quiz Express (3 Q)
+          </button>
+        </div>
+        <h2 id="heading-prof" class="text-2xl font-black tracking-tight mb-1">Je vous guide, vous trouvez !</h2>
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          Règle d'or : je ne donne <strong>jamais</strong> la réponse directe. Envoyez un exercice en photo ou posez votre question au micro, on avance étape par étape.
+        </p>
+      </div>
+
+      <!-- Zone Quiz Express (masquée par défaut) -->
+      <div id="quizContainer" class="hidden rounded-3xl p-5 border-2 border-indigo-500 bg-white dark:bg-onyx-card space-y-4 shadow-md">
+        <div class="flex items-center justify-between">
+          <h3 class="font-black text-lg text-indigo-700 dark:text-indigo-300">⚡ Quiz Express</h3>
+          <button id="btnCloseQuiz" type="button" class="min-w-[44px] min-h-[44px] rounded-xl border-2 border-zinc-300 dark:border-zinc-700 font-bold">✕</button>
+        </div>
+        <div id="quizContent" class="space-y-3"></div>
+      </div>
+
+      <!-- Fil de discussion Socratique -->
+      <div id="profChatLog" class="space-y-3 min-h-[220px] max-h-[46vh] overflow-y-auto pr-1">
+        <!-- Message d'accueil injecté par JS -->
+      </div>
+
+      <!-- Aperçu photo d'exercice en attente -->
+      <div id="profImagePending" class="hidden flex items-center gap-3 p-2.5 rounded-2xl bg-indigo-100 dark:bg-zinc-900 border-2 border-indigo-400">
+        <img id="profImageThumb" alt="Exercice importé" class="w-14 h-14 rounded-xl object-cover" />
+        <span class="text-xs font-bold flex-1">Photo d'exercice prête à être envoyée</span>
+        <button id="btnClearProfImg" type="button" class="min-w-[40px] min-h-[40px] rounded-xl bg-zinc-200 dark:bg-zinc-800 font-bold">✕</button>
+      </div>
+
+      <!-- Zone de saisie Prof -->
+      <div class="rounded-3xl p-3 border-2 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-onyx-card space-y-2">
+        <div class="flex items-center gap-2">
+          <!-- Bouton photo exercice -->
+          <label for="profFileInput" title="Photographier un exercice" class="cursor-pointer min-w-[48px] min-h-[48px] rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center justify-center text-xl">
+            📷
+            <input id="profFileInput" type="file" accept="image/*" capture="environment" class="sr-only" />
+          </label>
+
+          <!-- Bouton micro dictée -->
+          <button id="btnProfMic" type="button" aria-label="Dicter ma question" class="min-w-[48px] min-h-[48px] rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center justify-center text-xl">
+            🎙️
+          </button>
+
+          <!-- Champ texte -->
+          <input
+            id="profInput"
+            type="text"
+            placeholder="Posez votre question ou répondez..."
+            class="flex-1 min-h-[48px] px-3 rounded-xl bg-transparent font-semibold text-sm sm:text-base focus:outline-none"
+          />
+
+          <!-- Envoyer -->
+          <button id="btnProfSend" type="button" class="min-w-[52px] min-h-[48px] px-4 rounded-2xl bg-indigo-700 dark:bg-indigo-400 text-white dark:text-black font-extrabold text-sm">
+            Envoyer
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+          <button id="btnProfSaveNotion" type="button" class="text-xs font-extrabold text-indigo-700 dark:text-indigo-300 underline py-1">
+            ⭐ Archiver cette séance dans le Carnet
+          </button>
+          <button id="btnProfReset" type="button" class="text-xs font-bold text-zinc-500 hover:text-rose-500 py-1">
+            Nouvelle séance
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET 4 : CARNET (COLLECTION LOCALE) ==================== -->
+    <section id="tab-carnet" class="tab-panel hidden space-y-5" aria-labelledby="heading-carnet">
+      <div class="rounded-3xl p-5 border-2 border-rose-600/30 dark:border-rose-400/40 bg-rose-50/70 dark:bg-onyx-card space-y-4 no-print">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-700 text-white dark:bg-rose-400 dark:text-black">
+            📓 Collection Locale
+          </span>
+          <span id="carnetCount" class="text-xs font-extrabold text-rose-900 dark:text-rose-300">0 entrées</span>
+        </div>
+        <div>
+          <h2 id="heading-carnet" class="text-2xl font-black tracking-tight mb-1">Votre Carnet de Découvertes</h2>
+          <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            100% stocké sur votre appareil (Zero-Knowledge). Aucune donnée n'est envoyée sur un serveur.
+          </p>
+        </div>
+
+        <!-- Boutons Export -->
+        <div class="flex flex-wrap gap-2">
+          <button id="btnExportJSON" type="button" class="flex-1 min-h-[48px] px-4 rounded-2xl bg-rose-700 hover:bg-rose-800 dark:bg-rose-400 dark:hover:bg-rose-300 text-white dark:text-black font-extrabold text-sm transition">
+            💾 Exporter en JSON
+          </button>
+          <button id="btnExportPrint" type="button" class="flex-1 min-h-[48px] px-4 rounded-2xl border-2 border-rose-700 dark:border-rose-400 text-rose-800 dark:text-rose-300 font-extrabold text-sm transition">
+            🖨️ Version imprimable
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtres Catégories -->
+      <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1 no-print" role="tablist" aria-label="Filtrer le carnet">
+        <button type="button" data-filter="all" class="filter-btn min-h-[44px] px-4 rounded-xl font-extrabold text-sm whitespace-nowrap border-2 transition">Tous</button>
+        <button type="button" data-filter="balade" class="filter-btn min-h-[44px] px-4 rounded-xl font-extrabold text-sm whitespace-nowrap border-2 transition">🧭 Balades</button>
+        <button type="button" data-filter="objet" class="filter-btn min-h-[44px] px-4 rounded-xl font-extrabold text-sm whitespace-nowrap border-2 transition">🔎 Objets</button>
+        <button type="button" data-filter="prof" class="filter-btn min-h-[44px] px-4 rounded-xl font-extrabold text-sm whitespace-nowrap border-2 transition">🦉 Prof</button>
+      </div>
+
+      <!-- Liste des cartes du Carnet -->
+      <div id="carnetList" class="space-y-4"></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BARRE DE NAVIGATION INFÉRIEURE (BOTTOM NAV) ==================== -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-onyx-bg/95 backdrop-blur-md border-t-2 border-zinc-200 dark:border-onyx-border px-2 py-1.5 no-print" aria-label="Navigation principale">
+    <div class="max-w-2xl mx-auto grid grid-cols-4 gap-1">
+      <button type="button" data-tab="balade" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-extrabold text-xs transition">
+        <span class="text-xl leading-none" aria-hidden="true">🧭</span>
+        <span>Balade</span>
+      </button>
+      <button type="button" data-tab="scanner" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-extrabold text-xs transition">
+        <span class="text-xl leading-none" aria-hidden="true">🔎</span>
+        <span>Scanner</span>
+      </button>
+      <button type="button" data-tab="prof" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-extrabold text-xs transition">
+        <span class="text-xl leading-none" aria-hidden="true">🦉</span>
+        <span>Prof</span>
+      </button>
+      <button type="button" data-tab="carnet" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-extrabold text-xs transition">
+        <span class="text-xl leading-none" aria-hidden="true">📓</span>
+        <span>Carnet</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODAL PARAMÈTRES (API IA & VOIX) ==================== -->
+  <div id="modalSettings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="w-full max-w-md rounded-3xl bg-white dark:bg-onyx-card border-2 border-zinc-300 dark:border-zinc-700 p-6 space-y-5 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h2 id="settingsTitle" class="text-xl font-black">⚙️ Paramètres Curioz</h2>
+        <button id="btnCloseSettings" type="button" aria-label="Fermer les paramètres" class="min-w-[44px] min-h-[44px] rounded-xl bg-zinc-100 dark:bg-zinc-800 font-black">✕</button>
+      </div>
+
+      <!-- Fournisseur IA -->
+      <div class="space-y-2">
+        <label for="selectProvider" class="block text-sm font-extrabold">Fournisseur IA</label>
+        <select id="selectProvider" class="w-full min-h-[50px] px-4 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-bold">
+          <option value="gemini">Google Gemini (gemini-2.0-flash)</option>
+          <option value="mistral">Mistral AI (mistral-small-latest)</option>
+        </select>
+      </div>
+
+      <!-- Clé API -->
+      <div class="space-y-2">
+        <label for="inputApiKey" class="block text-sm font-extrabold">Clé API (optionnelle)</label>
+        <input
+          id="inputApiKey"
+          type="password"
+          placeholder="Laissez vide pour le mode Démo simulée"
+          class="w-full min-h-[50px] px-4 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-semibold"
+        />
+        <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+          Stockée uniquement dans votre navigateur. Sans clé, Curioz fonctionne immédiatement en mode Démo enrichi.
+        </p>
+      </div>
+
+      <!-- Vitesse Synthèse Vocale -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label for="rangeTtsSpeed" class="text-sm font-extrabold">Vitesse de lecture vocale</label>
+          <span id="ttsSpeedLabel" class="text-sm font-black text-indigo-700 dark:text-indigo-400">1.0x</span>
+        </div>
+        <input id="rangeTtsSpeed" type="range" min="0.75" max="1.5" step="0.05" value="1" class="w-full accent-indigo-600 h-3 rounded-lg cursor-pointer" />
+        <div class="flex justify-between text-xs font-bold text-zinc-500">
+          <span>0.75x (Lent)</span>
+          <span>1.0x</span>
+          <span>1.5x (Rapide)</span>
+        </div>
+      </div>
+
+      <button id="btnSaveSettings" type="button" class="w-full min-h-[52px] rounded-2xl bg-black dark:bg-white text-white dark:text-black font-extrabold text-base">
+        Enregistrer
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DÉPOSER UNE ANECDOTE ==================== -->
+  <div id="modalAnecdote" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="anecdoteTitle">
+    <div class="w-full max-w-md rounded-3xl bg-white dark:bg-onyx-card border-2 border-emerald-500 p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h2 id="anecdoteTitle" class="text-xl font-black">🎙️ Déposer une anecdote</h2>
+        <button id="btnCloseAnecdote" type="button" aria-label="Fermer" class="min-w-[44px] min-h-[44px] rounded-xl bg-zinc-100 dark:bg-zinc-800 font-black">✕</button>
+      </div>
+
+      <div class="space-y-2">
+        <label for="anecdotePlace" class="block text-sm font-extrabold">Lieu / Quartier</label>
+        <input id="anecdotePlace" type="text" placeholder="Ex : Port de La Grande-Motte" class="w-full min-h-[48px] px-4 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-semibold" />
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label for="anecdoteBody" class="text-sm font-extrabold">Votre histoire</label>
+          <button id="btnAnecdoteMic" type="button" class="min-h-[40px] px-3 rounded-xl bg-emerald-700 dark:bg-emerald-400 text-white dark:text-black font-extrabold text-xs flex items-center gap-1.5">
+            🎙️ Dicter
+          </button>
+        </div>
+        <textarea id="anecdoteBody" rows="4" placeholder="Racontez une légende, un souvenir ou un détail insolite..." class="w-full p-3.5 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-medium"></textarea>
+      </div>
+
+      <button id="btnSubmitAnecdote" type="button" class="w-full min-h-[52px] rounded-2xl bg-emerald-700 dark:bg-emerald-400 text-white dark:text-black font-extrabold text-base">
+        Enregistrer dans mon Carnet
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST DE NOTIFICATION ==================== -->
+  <div id="toast" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-black font-extrabold text-sm shadow-xl border-2 border-zinc-700 dark:border-zinc-300 text-center max-w-[90vw]"></div>
+
+  <!-- ==================== JAVASCRIPT MODULAIRE ==================== -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* ============================================================
+         1. ÉTAT GLOBAL & STOCKAGE LOCAL (LOCAL-FIRST / ZERO-KNOWLEDGE)
+         ============================================================ */
+      const STORAGE_KEYS = {
+        SETTINGS: 'curioz_settings_v1',
+        CARNET: 'curioz_carnet_v1',
+      };
+
+      const state = {
+        activeTab: 'balade',
+        settings: {
+          theme: 'dark', // 'dark' (Onyx) | 'light' (Clarté)
+          provider: 'gemini',
+          apiKey: '',
+          ttsSpeed: 1.0,
+        },
+        carnet: [],
+        carnetFilter: 'all',
+        currentBalade: null,
+        scannerLevel: 'public', // 'enfant' | 'public' | 'expert'
+        scannerImageDataUrl: null,
+        currentScan: null,
+        profHistory: [],
+        profPendingImage: null,
+        isRecording: false,
+      };
+
+      function loadState() {
+        try {
+          const savedSettings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS));
+          if (savedSettings) state.settings = { ...state.settings, ...savedSettings };
+          const savedCarnet = JSON.parse(localStorage.getItem(STORAGE_KEYS.CARNET));
+          if (Array.isArray(savedCarnet)) state.carnet = savedCarnet;
+        } catch (e) {
+          console.warn('Erreur lecture localStorage:', e);
+        }
+      }
+
+      function saveSettings() {
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(state.settings));
+        updateModeBadge();
+      }
+
+      function saveCarnet() {
+        localStorage.setItem(STORAGE_KEYS.CARNET, JSON.stringify(state.carnet));
+        renderCarnet();
+      }
+
+      /* ============================================================
+         2. UTILITAIRES UI (TOAST, THÈME, ONGLETS)
+         ============================================================ */
+      let toastTimer = null;
+      function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.add('hidden'), 3200);
+      }
+
+      function applyTheme() {
+        const isDark = state.settings.theme === 'dark';
+        document.documentElement.classList.toggle('dark', isDark);
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#09090B' : '#FFFFFF');
+        document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+        document.getElementById('themeLabel').textContent = isDark ? 'Clarté' : 'Onyx';
+      }
+
+      function updateModeBadge() {
+        const badge = document.getElementById('modeBadge');
+        if (state.settings.apiKey.trim()) {
+          badge.textContent = state.settings.provider === 'mistral' ? 'Mistral' : 'Gemini';
+        } else {
+          badge.textContent = 'Démo';
+        }
+      }
+
+      const TAB_COLORS = {
+        balade: { badge: 'bg-emerald-600 dark:bg-emerald-500', activeNav: 'bg-emerald-100 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-300' },
+        scanner: { badge: 'bg-amber-600 dark:bg-amber-500', activeNav: 'bg-amber-100 text-amber-900 dark:bg-amber-500/20 dark:text-amber-300' },
+        prof: { badge: 'bg-indigo-600 dark:bg-indigo-500', activeNav: 'bg-indigo-100 text-indigo-900 dark:bg-indigo-500/20 dark:text-indigo-300' },
+        carnet: { badge: 'bg-rose-600 dark:bg-rose-500', activeNav: 'bg-rose-100 text-rose-900 dark:bg-rose-500/20 dark:text-rose-300' },
+      };
+
+      function switchTab(tabName) {
+        state.activeTab = tabName;
+        stopSpeaking();
+
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+        // Mise à jour couleur logo
+        const brandBadge = document.getElementById('brandBadge');
+        brandBadge.className = `w-11 h-11 rounded-2xl ${TAB_COLORS[tabName].badge} flex items-center justify-center text-white font-black text-xl shadow-md transition-colors`;
+
+        // Mise à jour Bottom Nav
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          const isCurrent = btn.dataset.tab === tabName;
+          btn.className = `nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-extrabold text-xs transition ${
+            isCurrent ? TAB_COLORS[tabName].activeNav : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+          }`;
+          btn.setAttribute('aria-current', isCurrent ? 'page' : 'false');
+        });
+
+        if (tabName === 'carnet') renderCarnet();
+      }
+
+      /* ============================================================
+         3. SYNTHÈSE VOCALE (TTS) & DICTÉE VOCALE (STT)
+         ============================================================ */
+      function speakText(text) {
+        if (!('speechSynthesis' in window)) {
+          showToast('Synthèse vocale non supportée sur ce navigateur.');
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = parseFloat(state.settings.ttsSpeed) || 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function stopSpeaking() {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      }
+
+      function startVoiceDictation(targetInput, buttonEl) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          showToast('Dictée vocale non disponible sur ce navigateur.');
+          return;
+        }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        buttonEl.classList.add('recording-pulse', 'bg-rose-600', 'text-white');
+        showToast('🎙️ Je vous écoute...');
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          targetInput.value = targetInput.value ? `${targetInput.value} ${transcript}` : transcript;
+        };
+        recognition.onerror = () => {
+          showToast('Impossible de capter la voix. Vérifiez le micro.');
+        };
+        recognition.onend = () => {
+          buttonEl.classList.remove('recording-pulse', 'bg-rose-600', 'text-white');
+        };
+        recognition.start();
+      }
+
+      /* ============================================================
+         4. CLIENT API IA UNIFIÉ (GEMINI / MISTRAL) + MODE DÉMO
+         ============================================================ */
+      async function callAI({ systemPrompt, userPrompt, imageBase64 = null, expectJson = false }) {
+        const apiKey = state.settings.apiKey.trim();
+        if (!apiKey) return null; // Déclenche le mode démo
+
+        try {
+          if (state.settings.provider === 'gemini') {
+            const parts = [{ text: userPrompt }];
+            if (imageBase64) {
+              const mime = imageBase64.match(/^data:(.*?);base64,/)?.[1] || 'image/jpeg';
+              const data = imageBase64.split(',')[1];
+              parts.push({ inlineData: { mimeType: mime, data } });
+            }
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+            const body = {
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts }],
+            };
+            if (expectJson) {
+              body.generationConfig = { responseMimeType: 'application/json' };
+            }
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body),
+            });
+            if (!res.ok) throw new Error('Erreur Gemini API');
+            const json = await res.json();
+            return json.candidates?.[0]?.content?.parts?.[0]?.text || null;
+          } else {
+            // Mistral AI
+            const messages = [{ role: 'system', content: systemPrompt }];
+            if (imageBase64) {
+              messages.push({
+                role: 'user',
+                content: [
+                  { type: 'text', text: userPrompt },
+                  { type: 'image_url', image_url: imageBase64 }
+                ]
+              });
+            } else {
+              messages.push({ role: 'user', content: userPrompt });
+            }
+            const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify({
+                model: imageBase64 ? 'pixtral-12b-2409' : 'mistral-small-latest',
+                messages,
+                response_format: expectJson ? { type: 'json_object' } : undefined,
+              }),
+            });
+            if (!res.ok) throw new Error('Erreur Mistral API');
+            const json = await res.json();
+            return json.choices?.[0]?.message?.content || null;
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('Erreur API : bascule automatique en mode Démo.');
+          return null;
+        }
+      }
+
+      /* ============================================================
+         5. MODULE 1 : BALADE (L'OREILLE LOCALE)
+         ============================================================ */
+      const DEMO_BALADES = {
+        'la grande-motte': {
+          title: 'Les Pyramides inspirées des temples précolombiens',
+          text: "Saviez-vous que l'architecture de La Grande-Motte n'a rien d'un hasard ? Dans les années 1960, l'architecte Jean Balladur a voyagé au Mexique et a été fasciné par les pyramides de Teotihuacan.\n\nEn observant les façades autour de vous, remarquez les lignes courbes côté Couchant (symbole féminin) et les angles plus droits côté Levant (symbole masculin). Même les bancs, les lampadaires et les jardinières ont été dessinés sur mesure pour que la ville ressemble à une sculpture géante face à la Méditerranée."
+        },
+        'lille': {
+          title: 'Wazemmes et le secret des anciens moulins',
+          text: "Avant de devenir le quartier bouillonnant et cosmopolite que l'on connaît aujourd'hui, Wazemmes était un village indépendant rempli de moulins à vent et de guinguettes où les Lillois venaient faire la fête le dimanche pour éviter les taxes de la ville.\n\nSous vos pieds passaient autrefois des bras de la Deûle utilisés par les blanchisseurs. C'est cette énergie populaire et musicale qui survit encore chaque dimanche matin autour des Halles de Wazemmes."
+        },
+        'montmartre': {
+          title: 'Le passe-muraille et la vigne cachée',
+          text: "À deux pas des ruelles touristiques de Montmartre se cache le Clos Montmartre, l'un des derniers vignobles actifs de Paris, planté en 1933 pour empêcher un projet immobilier.\n\nSi vous levez les yeux vers la place Marcel-Aymé, vous croiserez la statue en bronze du Passe-Muraille, sculptée par Jean Marais : n'oubliez pas de lui serrer la main gauche, la légende dit qu'elle porte chance aux rêveurs."
+        }
+      };
+
+      async function generateBalade(locationName) {
+        const cleanLoc = locationName.trim();
+        if (!cleanLoc) {
+          showToast('Indiquez une ville ou un quartier.');
+          return;
+        }
+
+        const resultBox = document.getElementById('baladeResult');
+        const titleEl = document.getElementById('baladeTitle');
+        const textEl = document.getElementById('baladeText');
+        const tagEl = document.getElementById('baladeLocTag');
+
+        resultBox.classList.remove('hidden');
+        tagEl.textContent = `📍 ${cleanLoc}`;
+        titleEl.textContent = 'Recherche d’anecdotes locales...';
+        textEl.textContent = 'Préparation de votre capsule audio...';
+
+        const aiResp = await callAI({
+          systemPrompt: "Tu es un guide culturel passionné, chaleureux et concis. Réponds en JSON strict avec les clés 'title' (titre accrocheur) et 'text' (capsule audio de 100 à 140 mots, fluide à écouter à voix haute, sur une anecdote insolite, une légende ou un détail d'architecture du lieu).",
+          userPrompt: `Raconte-moi une capsule audio passionnante sur ce lieu : ${cleanLoc}.`,
+          expectJson: true,
+        });
+
+        let data = null;
+        if (aiResp) {
+          try { data = JSON.parse(aiResp); } catch {}
+        }
+
+        if (!data) {
+          const lower = cleanLoc.toLowerCase();
+          if (lower.includes('grande-motte')) data = DEMO_BALADES['la grande-motte'];
+          else if (lower.includes('lille') || lower.includes('wazemmes')) data = DEMO_BALADES['lille'];
+          else if (lower.includes('montmartre') || lower.includes('paris')) data = DEMO_BALADES['montmartre'];
+          else {
+            data = {
+              title: `Trésors cachés de ${cleanLoc}`,
+              text: `Bienvenue à ${cleanLoc} ! Prenez quelques secondes pour lever les yeux au-dessus des vitrines : c'est souvent au premier étage que se cache la véritable mémoire d'un quartier.\n\nObservez les ferronneries des balcons, les anciennes plaques de rue ou la couleur des pierres : elles racontent l'époque où les artisans locaux façonnaient chaque bâtiment à la main. (Ajoutez une clé API Gemini ou Mistral dans ⚙️ pour des anecdotes ultra-précises sur chaque rue !)`
+            };
+          }
+        }
+
+        state.currentBalade = {
+          id: Date.now().toString(),
+          type: 'balade',
+          location: cleanLoc,
+          title: data.title,
+          content: data.text,
+          date: new Date().toLocaleDateString('fr-FR'),
+        };
+
+        titleEl.textContent = data.title;
+        textEl.textContent = data.text;
+        speakText(`${data.title}. ${data.text}`);
+      }
+
+      document.getElementById('btnGeolocate').addEventListener('click', () => {
+        if (!('geolocation' in navigator)) {
+          showToast('Géolocalisation non supportée. Saisissez votre ville.');
+          return;
+        }
+        showToast('📡 Localisation en cours...');
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            try {
+              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=fr`);
+              const data = await res.json();
+              const city = data.address?.city || data.address?.town || data.address?.village || data.address?.suburb || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+              document.getElementById('inputLocation').value = city;
+              generateBalade(city);
+            } catch {
+              generateBalade('La Grande-Motte');
+            }
+          },
+          () => {
+            showToast('Position refusée. Vous pouvez saisir votre ville manuellement.');
+          },
+          { timeout: 8000 }
+        );
+      });
+
+      document.getElementById('btnSearchLocation').addEventListener('click', () => {
+        generateBalade(document.getElementById('inputLocation').value);
+      });
+
+      document.querySelectorAll('.quick-loc').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('inputLocation').value = btn.dataset.quickLoc;
+          generateBalade(btn.dataset.quickLoc);
+        });
+      });
+
+      document.getElementById('btnBaladeSpeak').addEventListener('click', () => {
+        if (state.currentBalade) speakText(`${state.currentBalade.title}. ${state.currentBalade.content}`);
+      });
+      document.getElementById('btnBaladeStop').addEventListener('click', stopSpeaking);
+      document.getElementById('btnBaladeSave').addEventListener('click', () => {
+        if (!state.currentBalade) return;
+        state.carnet.unshift({ ...state.currentBalade, id: Date.now().toString() });
+        saveCarnet();
+        showToast('⭐ Balade enregistrée dans le Carnet !');
+      });
+
+      // Modal Déposer une anecdote
+      const modalAnecdote = document.getElementById('modalAnecdote');
+      document.getElementById('btnOpenAnecdote').addEventListener('click', () => {
+        document.getElementById('anecdotePlace').value = document.getElementById('inputLocation').value || '';
+        modalAnecdote.classList.remove('hidden');
+      });
+      document.getElementById('btnCloseAnecdote').addEventListener('click', () => modalAnecdote.classList.add('hidden'));
+      document.getElementById('btnAnecdoteMic').addEventListener('click', (e) => {
+        startVoiceDictation(document.getElementById('anecdoteBody'), e.currentTarget);
+      });
+      document.getElementById('btnSubmitAnecdote').addEventListener('click', () => {
+        const place = document.getElementById('anecdotePlace').value.trim() || 'Mon quartier';
+        const body = document.getElementById('anecdoteBody').value.trim();
+        if (!body) {
+          showToast('Écrivez ou dictez votre anecdote avant de valider.');
+          return;
+        }
+        state.carnet.unshift({
+          id: Date.now().toString(),
+          type: 'balade',
+          location: place,
+          title: `Mon anecdote à ${place}`,
+          content: body,
+          date: new Date().toLocaleDateString('fr-FR'),
+        });
+        saveCarnet();
+        document.getElementById('anecdoteBody').value = '';
+        modalAnecdote.classList.add('hidden');
+        showToast('✅ Anecdote ajoutée à votre Carnet !');
+      });
+
+      /* ============================================================
+         6. MODULE 2 : SCANNER (DÉTECTIVE D'OBJET)
+         ============================================================ */
+      function updateLevelButtons() {
+        document.querySelectorAll('.level-btn').forEach(btn => {
+          const active = btn.dataset.level === state.scannerLevel;
+          btn.className = `level-btn min-h-[48px] rounded-xl font-extrabold text-xs sm:text-sm border-2 transition px-2 ${
+            active
+              ? 'bg-amber-600 dark:bg-amber-400 text-white dark:text-black border-amber-700 dark:border-amber-300 shadow-sm'
+              : 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700'
+          }`;
+        });
+      }
+
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.scannerLevel = btn.dataset.level;
+          updateLevelButtons();
+          if (state.currentScan) {
+            analyzeObject(true); // Ré-adapter le niveau si un objet est déjà affiché
+          }
+        });
+      });
+
+      document.getElementById('scannerFileInput').addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.scannerImageDataUrl = reader.result;
+          const img = document.getElementById('scannerPreview');
+          img.src = reader.result;
+          img.classList.remove('hidden');
+          document.getElementById('scannerPlaceholder').classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      const DEMO_OBJECTS = {
+        enfant: {
+          name: 'Moulin à café mécanique Peugeot',
+          origin: 'France, vers 1950 (l’époque de tes arrière-grands-parents !)',
+          usage: 'On mettait des grains de café en haut, on tournait la manivelle avec la main, et la poudre magique tombait dans le petit tiroir en bois en bas.',
+          story: "On raconte que ce moulin appartenait à un boulanger très pressé qui tournait la manivelle si vite qu'elle faisait le bruit d'un petit hélicoptère chaque matin à 5 heures !"
+        },
+        public: {
+          name: 'Moulin à café manuel en bois et fonte (type Peugeot)',
+          origin: 'France (Franche-Comté), années 1930-1950',
+          usage: 'Broyage manuel des grains de café torréfiés grâce à une meule conique en acier réglable, recueillant la mouture dans un tiroir inférieur.',
+          story: "Avant de finir sur une brocante, ce moulin a sans doute écouté des milliers de confidences matinales autour d'une toile cirée, rythmant le réveil d'une famille entière au son de sa manivelle."
+        },
+        expert: {
+          name: 'Moulin à café domestique à meule hélicoïdale en acier cémenté',
+          origin: 'Manufacture Peugeot Frères (Doubs), période entre-deux-guerres / Trente Glorieuses',
+          usage: 'Mouture par cisaillement progressif permettant de préserver les composés aromatiques volatils du café sans échauffement thermique excessif.',
+          story: "Rescapé de l'ère de l'obsolescence programmée, ce mécanisme de précision horlogère regarde probablement les machines à capsules modernes avec un léger mépris aristocratique."
+        }
+      };
+
+      async function analyzeObject(isDemoForced = false) {
+        if (!state.scannerImageDataUrl && !isDemoForced) {
+          showToast('Prenez une photo ou cliquez sur « Tester un objet mystère ».');
+          return;
+        }
+
+        const resBox = document.getElementById('scannerResult');
+        resBox.classList.remove('hidden');
+        document.getElementById('scanName').textContent = 'Analyse en cours...';
+
+        const levelLabels = { enfant: 'Enfant 10 ans', public: 'Grand Public', expert: 'Expert' };
+        document.getElementById('scanLevelBadge').textContent = `Niveau : ${levelLabels[state.scannerLevel]}`;
+
+        let data = null;
+        if (state.scannerImageDataUrl && state.settings.apiKey.trim()) {
+          const aiResp = await callAI({
+            systemPrompt: `Tu es un conservateur de musée doublé d'un conteur plein d'humour. Adapte ton vocabulaire au niveau : ${levelLabels[state.scannerLevel]}. Réponds en JSON strict avec les clés : 'name', 'origin', 'usage', 'story' (une petite histoire imaginaire et décalée de 2 phrases sur la vie secrète de cet objet).`,
+            userPrompt: "Identifie cet objet sur la photo et remplis la fiche.",
+            imageBase64: state.scannerImageDataUrl,
+            expectJson: true,
+          });
+          if (aiResp) {
+            try { data = JSON.parse(aiResp); } catch {}
+          }
+        }
+
+        if (!data) {
+          data = DEMO_OBJECTS[state.scannerLevel];
+        }
+
+        state.currentScan = {
+          id: Date.now().toString(),
+          type: 'objet',
+          title: data.name,
+          origin: data.origin,
+          usage: data.usage,
+          story: data.story,
+          level: levelLabels[state.scannerLevel],
+          image: state.scannerImageDataUrl,
+          date: new Date().toLocaleDateString('fr-FR'),
+        };
+
+        document.getElementById('scanName').textContent = data.name;
+        document.getElementById('scanOrigin').textContent = data.origin;
+        document.getElementById('scanUsage').textContent = data.usage;
+        document.getElementById('scanStory').textContent = data.story;
+      }
+
+      document.getElementById('btnAnalyzeObject').addEventListener('click', () => analyzeObject(false));
+      document.getElementById('btnScannerDemoSample').addEventListener('click', () => analyzeObject(true));
+
+      document.getElementById('btnScanSpeak').addEventListener('click', () => {
+        if (!state.currentScan) return;
+        const s = state.currentScan;
+        speakText(`${s.title}. Époque et origine : ${s.origin}. Usage : ${s.usage}. Petite histoire imaginaire : ${s.story}`);
+      });
+      document.getElementById('btnScanStop').addEventListener('click', stopSpeaking);
+      document.getElementById('btnScanSave').addEventListener('click', () => {
+        if (!state.currentScan) return;
+        state.carnet.unshift({ ...state.currentScan, id: Date.now().toString() });
+        saveCarnet();
+        showToast('⭐ Objet sauvegardé dans le Carnet !');
+      });
+
+      /* ============================================================
+         7. MODULE 3 : PROF (MODE SOCRATIQUE + QUIZ EXPRESS)
+         ============================================================ */
+      const SOCRATIC_SYSTEM_PROMPT = `Tu es un professeur particulier bienveillant utilisant STRICTEMENT la méthode socratique.
+RÈGLE ABSOLUE : Tu ne donnes JAMAIS la réponse finale à un exercice ou un problème.
+- Félicite l'effort de l'élève.
+- Décompose le problème en une toute petite étape.
+- Pose UNE SEULE question guidée à la fois pour l'amener à trouver seul.
+- Sois concis (3 à 4 phrases maximum), clair et encourageant.`;
+
+      function addProfMessage(role, text, imgUrl = null) {
+        state.profHistory.push({ role, text, imgUrl });
+        const log = document.getElementById('profChatLog');
+        const wrapper = document.createElement('div');
+        wrapper.className = `flex flex-col ${role === 'user' ? 'items-end' : 'items-start'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = `max-w-[88%] rounded-2xl p-4 text-sm sm:text-base font-medium leading-relaxed shadow-sm ${
+          role === 'user'
+            ? 'bg-indigo-700 text-white dark:bg-indigo-400 dark:text-black font-semibold'
+            : 'bg-white dark:bg-onyx-card border-2 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100'
+        }`;
+
+        if (imgUrl) {
+          const img = document.createElement('img');
+          img.src = imgUrl;
+          img.alt = 'Exercice envoyé';
+          img.className = 'max-h-40 rounded-xl mb-2 border border-white/20';
+          bubble.appendChild(img);
+        }
+
+        const p = document.createElement('p');
+        p.className = 'whitespace-pre-line';
+        p.textContent = text;
+        bubble.appendChild(p);
+
+        if (role === 'assistant') {
+          const actions = document.createElement('div');
+          actions.className = 'flex items-center gap-2 mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800';
+          const btnPlay = document.createElement('button');
+          btnPlay.type = 'button';
+          btnPlay.className = 'min-h-[38px] px-3 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-900 dark:text-indigo-300 font-extrabold text-xs';
+          btnPlay.textContent = '🔊 Écouter';
+          btnPlay.onclick = () => speakText(text);
+
+          const btnStop = document.createElement('button');
+          btnStop.type = 'button';
+          btnStop.className = 'min-h-[38px] px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 font-bold text-xs';
+          btnStop.textContent = '⏹️ Stop';
+          btnStop.onclick = stopSpeaking;
+
+          actions.append(btnPlay, btnStop);
+          bubble.appendChild(actions);
+        }
+
+        wrapper.appendChild(bubble);
+        log.appendChild(wrapper);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function initProfChat() {
+        state.profHistory = [];
+        document.getElementById('profChatLog').innerHTML = '';
+        addProfMessage(
+          'assistant',
+          "Bonjour ! Je suis ton Prof Socratique 🦉. Envoie-moi une photo d'exercice (maths, physique, histoire...) ou dicte ta question. Je ne te donnerai jamais la réponse toute faite, mais on va la trouver ensemble étape par étape !"
+        );
+      }
+
+      document.getElementById('profFileInput').addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.profPendingImage = reader.result;
+          document.getElementById('profImageThumb').src = reader.result;
+          document.getElementById('profImagePending').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('btnClearProfImg').addEventListener('click', () => {
+        state.profPendingImage = null;
+        document.getElementById('profImagePending').classList.add('hidden');
+      });
+
+      document.getElementById('btnProfMic').addEventListener('click', (e) => {
+        startVoiceDictation(document.getElementById('profInput'), e.currentTarget);
+      });
+
+      async function handleProfSend() {
+        const input = document.getElementById('profInput');
+        const text = input.value.trim();
+        const img = state.profPendingImage;
+        if (!text && !img) return;
+
+        addProfMessage('user', text || 'Voici la photo de mon exercice.', img);
+        input.value = '';
+        state.profPendingImage = null;
+        document.getElementById('profImagePending').classList.add('hidden');
+
+        const historyText = state.profHistory.slice(-6).map(m => `${m.role === 'user' ? 'Élève' : 'Prof'}: ${m.text}`).join('\n');
+        const aiResp = await callAI({
+          systemPrompt: SOCRATIC_SYSTEM_PROMPT,
+          userPrompt: `Historique récent :\n${historyText}\n\nRéponds en tant que Prof Socratique.`,
+          imageBase64: img,
+        });
+
+        let reply = aiResp;
+        if (!reply) {
+          // Réponses socratiques simulées intelligentes
+          const step = state.profHistory.filter(m => m.role === 'user').length;
+          if (step === 1) {
+            reply = "Super point de départ ! Avant de calculer ou de répondre, quelles sont les données importantes que tu repères dans l'énoncé ? Dis-moi juste ce que l'on connaît déjà.";
+          } else if (step === 2) {
+            reply = "Très bien vu ! Maintenant que tu as isolé ces éléments, quelle règle ou quelle formule de ton cours relie ces informations entre elles ?";
+          } else {
+            reply = "Tu brûles ! Si tu appliques cette étape calmement, quel résultat intermédiaire obtiens-tu ? Vas-y, propose-moi ton calcul, on vérifie ensemble !";
+          }
+        }
+        addProfMessage('assistant', reply);
+      }
+
+      document.getElementById('btnProfSend').addEventListener('click', handleProfSend);
+      document.getElementById('profInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleProfSend();
+      });
+      document.getElementById('btnProfReset').addEventListener('click', initProfChat);
+
+      document.getElementById('btnProfSaveNotion').addEventListener('click', () => {
+        if (state.profHistory.length < 2) {
+          showToast('Commencez une séance avant de l’archiver.');
+          return;
+        }
+        const firstUserMsg = state.profHistory.find(m => m.role === 'user')?.text || 'Séance de révision';
+        const summary = state.profHistory.slice(1).map(m => `${m.role === 'user' ? 'Moi' : 'Prof'} : ${m.text}`).join('\n\n');
+        state.carnet.unshift({
+          id: Date.now().toString(),
+          type: 'prof',
+          title: `Séance Prof : ${firstUserMsg.slice(0, 45)}${firstUserMsg.length > 45 ? '...' : ''}`,
+          content: summary,
+          date: new Date().toLocaleDateString('fr-FR'),
+        });
+        saveCarnet();
+        showToast('⭐ Séance archivée dans le Carnet !');
+      });
+
+      // Quiz Express (3 questions interactives)
+      const DEMO_QUIZ = [
+        { q: "Dans un triangle rectangle, comment appelle-t-on le côté le plus long ?", options: ["L'hypoténuse", "La médiane", "La tangente"], answer: 0 },
+        { q: "Quelle unité utilise-t-on pour mesurer une force en physique ?", options: ["Le Watt", "Le Newton", "Le Joule"], answer: 1 },
+        { q: "Si on double la vitesse d'un objet, que devient son énergie cinétique ?", options: ["Elle double", "Elle est multipliée par 4", "Elle reste identique"], answer: 1 },
+      ];
+
+      document.getElementById('btnQuizExpress').addEventListener('click', async () => {
+        const container = document.getElementById('quizContainer');
+        const content = document.getElementById('quizContent');
+        container.classList.remove('hidden');
+        content.innerHTML = '<p class="text-sm font-bold">Génération de 3 questions rapides...</p>';
+
+        let questions = DEMO_QUIZ;
+        const lastTopic = state.profHistory.find(m => m.role === 'user')?.text || 'culture générale scientifique collège';
+        const aiResp = await callAI({
+          systemPrompt: "Génère un quiz de 3 questions courtes en français. Réponds en JSON strict : {\"questions\": [{\"q\": \"...\", \"options\": [\"A\", \"B\", \"C\"], \"answer\": 0}]} où answer est l'index (0, 1 ou 2) de la bonne réponse.",
+          userPrompt: `Thème du quiz : ${lastTopic}`,
+          expectJson: true,
+        });
+        if (aiResp) {
+          try {
+            const parsed = JSON.parse(aiResp);
+            if (Array.isArray(parsed.questions) && parsed.questions.length === 3) questions = parsed.questions;
+          } catch {}
+        }
+
+        content.innerHTML = '';
+        questions.forEach((item, idx) => {
+          const card = document.createElement('div');
+          card.className = 'p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 space-y-2.5';
+
+          const header = document.createElement('div');
+          header.className = 'flex items-start justify-between gap-2';
+          const qText = document.createElement('p');
+          qText.className = 'font-extrabold text-sm';
+          qText.textContent = `${idx + 1}. ${item.q}`;
+          const btnAudio = document.createElement('button');
+          btnAudio.type = 'button';
+          btnAudio.className = 'min-w-[40px] min-h-[40px] rounded-xl bg-indigo-100 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-300 font-bold text-sm';
+          btnAudio.textContent = '🔊';
+          btnAudio.onclick = () => speakText(`Question ${idx + 1}. ${item.q}`);
+          header.append(qText, btnAudio);
+
+          const opts = document.createElement('div');
+          opts.className = 'grid grid-cols-1 gap-2';
+          item.options.forEach((opt, optIdx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'min-h-[44px] text-left px-3.5 py-2 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 font-bold text-sm transition';
+            btn.textContent = opt;
+            btn.onclick = () => {
+              if (optIdx === item.answer) {
+                btn.className = 'min-h-[44px] text-left px-3.5 py-2 rounded-xl border-2 border-emerald-600 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-300 font-extrabold text-sm';
+                showToast('✅ Bravo, bonne réponse !');
+              } else {
+                btn.className = 'min-h-[44px] text-left px-3.5 py-2 rounded-xl border-2 border-rose-600 bg-rose-100 dark:bg-rose-500/20 text-rose-900 dark:text-rose-300 font-extrabold text-sm';
+                showToast('❌ Pas tout à fait, réessaie !');
+              }
+            };
+            opts.appendChild(btn);
+          });
+
+          card.append(header, opts);
+          content.appendChild(card);
+        });
+      });
+
+      document.getElementById('btnCloseQuiz').addEventListener('click', () => {
+        document.getElementById('quizContainer').classList.add('hidden');
+      });
+
+      /* ============================================================
+         8. MODULE 4 : CARNET (COLLECTION LOCALE & EXPORT)
+         ============================================================ */
+      function updateFilterButtons() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          const active = btn.dataset.filter === state.carnetFilter;
+          btn.className = `filter-btn min-h-[44px] px-4 rounded-xl font-extrabold text-sm whitespace-nowrap border-2 transition ${
+            active
+              ? 'bg-rose-700 dark:bg-rose-400 text-white dark:text-black border-rose-700 dark:border-rose-400'
+              : 'bg-white dark:bg-onyx-card text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700'
+          }`;
+        });
+      }
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.carnetFilter = btn.dataset.filter;
+          updateFilterButtons();
+          renderCarnet();
+        });
+      });
+
+      function renderCarnet() {
+        const list = document.getElementById('carnetList');
+        const filtered = state.carnetFilter === 'all'
+          ? state.carnet
+          : state.carnet.filter(item => item.type === state.carnetFilter);
+
+        document.getElementById('carnetCount').textContent = `${state.carnet.length} entrée${state.carnet.length > 1 ? 's' : ''}`;
+
+        if (filtered.length === 0) {
+          list.innerHTML = `
+            <div class="rounded-3xl p-8 text-center border-2 border-dashed border-zinc-300 dark:border-zinc-700 space-y-2">
+              <div class="text-4xl">📓</div>
+              <p class="font-extrabold text-base">Aucune découverte enregistrée ici</p>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Explorez une Balade, scannez un Objet ou archivez une séance Prof pour remplir votre Carnet.</p>
+            </div>`;
+          return;
+        }
+
+        const BADGE_META = {
+          balade: { label: '🧭 Balade', cls: 'bg-emerald-100 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-300' },
+          objet: { label: '🔎 Objet', cls: 'bg-amber-100 text-amber-900 dark:bg-amber-500/20 dark:text-amber-300' },
+          prof: { label: '🦉 Prof', cls: 'bg-indigo-100 text-indigo-900 dark:bg-indigo-500/20 dark:text-indigo-300' },
+        };
+
+        list.innerHTML = '';
+        filtered.forEach(item => {
+          const meta = BADGE_META[item.type] || BADGE_META.balade;
+          const card = document.createElement('article');
+          card.className = 'print-card rounded-3xl p-5 border-2 border-zinc-200 dark:border-onyx-border bg-white dark:bg-onyx-card shadow-sm space-y-3';
+
+          const bodyText = item.type === 'objet'
+            ? `Époque : ${item.origin}\nUsage : ${item.usage}\nHistoire : ${item.story}`
+            : item.content;
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded-full ${meta.cls}">${meta.label}</span>
+              <span class="text-xs font-bold text-zinc-500">${item.date || ''}</span>
+            </div>
+            <h3 class="text-lg font-black">${item.title}</h3>
+            ${item.image ? `<img src="${item.image}" alt="${item.title}" class="max-h-48 rounded-2xl object-cover border border-zinc-200 dark:border-zinc-800" />` : ''}
+            <p class="text-sm font-medium leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-line"></p>
+            <div class="flex items-center gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800 no-print">
+              <button type="button" class="carnet-speak min-h-[42px] px-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black font-extrabold text-xs">🔊 Écouter</button>
+              <button type="button" class="carnet-stop min-h-[42px] px-3 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 font-bold text-xs">⏹️ Stop</button>
+              <button type="button" class="carnet-del min-h-[42px] px-3 rounded-xl text-rose-600 dark:text-rose-400 font-extrabold text-xs ml-auto">🗑️ Supprimer</button>
+            </div>
+          `;
+          card.querySelector('p').textContent = bodyText;
+          card.querySelector('.carnet-speak').onclick = () => speakText(`${item.title}. ${bodyText}`);
+          card.querySelector('.carnet-stop').onclick = stopSpeaking;
+          card.querySelector('.carnet-del').onclick = () => {
+            state.carnet = state.carnet.filter(c => c.id !== item.id);
+            saveCarnet();
+            showToast('Entrée supprimée du Carnet.');
+          };
+
+          list.appendChild(card);
+        });
+      }
+
+      // Export JSON
+      document.getElementById('btnExportJSON').addEventListener('click', () => {
+        if (state.carnet.length === 0) {
+          showToast('Votre Carnet est vide.');
+          return;
+        }
+        const blob = new Blob([JSON.stringify(state.carnet, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `curioz-carnet-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('💾 Carnet exporté en JSON !');
+      });
+
+      // Version imprimable
+      document.getElementById('btnExportPrint').addEventListener('click', () => {
+        window.print();
+      });
+
+      /* ============================================================
+         9. MODAL PARAMÈTRES & INITIALISATION
+         ============================================================ */
+      const modalSettings = document.getElementById('modalSettings');
+      document.getElementById('btnOpenSettings').addEventListener('click', () => {
+        document.getElementById('selectProvider').value = state.settings.provider;
+        document.getElementById('inputApiKey').value = state.settings.apiKey;
+        document.getElementById('rangeTtsSpeed').value = state.settings.ttsSpeed;
+        document.getElementById('ttsSpeedLabel').textContent = `${Number(state.settings.ttsSpeed).toFixed(2)}x`;
+        modalSettings.classList.remove('hidden');
+      });
+
+      document.getElementById('btnCloseSettings').addEventListener('click', () => modalSettings.classList.add('hidden'));
+      document.getElementById('rangeTtsSpeed').addEventListener('input', (e) => {
+        document.getElementById('ttsSpeedLabel').textContent = `${Number(e.target.value).toFixed(2)}x`;
+      });
+
+      document.getElementById('btnSaveSettings').addEventListener('click', () => {
+        state.settings.provider = document.getElementById('selectProvider').value;
+        state.settings.apiKey = document.getElementById('inputApiKey').value.trim();
+        state.settings.ttsSpeed = parseFloat(document.getElementById('rangeTtsSpeed').value) || 1.0;
+        saveSettings();
+        modalSettings.classList.add('hidden');
+        showToast('✅ Paramètres enregistrés !');
+      });
+
+      document.getElementById('btnThemeToggle').addEventListener('click', () => {
+        state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
+        applyTheme();
+        saveSettings();
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Lancement initial
+      loadState();
+      applyTheme();
+      updateModeBadge();
+      updateLevelButtons();
+      updateFilterButtons();
+      initProfChat();
+      switchTab('balade');
+    })();
+  </script>
+</body>
+</html>
+```

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#0F1115"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" stroke="#F59E0B" stroke-opacity="0.35" stroke-width="6"/>
+  <!-- Open family book -->
+  <path d="M108 340V164C108 152 154 140 220 156C240 161 256 172 256 184V366C256 356 240 345 220 340C154 324 108 336 108 340Z" fill="#181B22" stroke="#F59E0B" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M404 340V164C404 152 358 140 292 156C272 161 256 172 256 184V366C256 356 272 345 292 340C358 324 404 336 404 340Z" fill="#181B22" stroke="#F59E0B" stroke-width="14" stroke-linejoin="round"/>
+  <!-- Golden soundwaves / voice microphone emblem above spine -->
+  <rect x="234" y="102" width="44" height="76" rx="22" fill="#F59E0B"/>
+  <path d="M210 144C210 169.4 230.6 190 256 190C281.4 190 302 169.4 302 144" stroke="#FEF3C7" stroke-width="12" stroke-linecap="round"/>
+  <path d="M150 222H216M150 262H216M150 302H200" stroke="#FEF3C7" stroke-opacity="0.75" stroke-width="10" stroke-linecap="round"/>
+  <path d="M296 222H362M296 262H362M296 302H346" stroke="#FEF3C7" stroke-opacity="0.75" stroke-width="10" stroke-linecap="round"/>
+</svg>

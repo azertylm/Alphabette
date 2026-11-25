@@ -1,0 +1,1853 @@
+```html
+<!DOCTYPE html>
+<html lang="fr" data-theme="light" data-font-size="normal" data-font-family="standard">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alphabette Hub — Passeport Universel, Labo & Applis</title>
+  <meta name="description" content="Hub central Zero-Knowledge et WCAG AAA de l'écosystème Alphabette (alphabette.fr & alphabette.eu).">
+  <meta name="theme-color" content="#00449E">
+
+  <!-- Police ultra-lisible Atkinson Hyperlegible (Braille Institute) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Génération de QR Code fiable en local (aucun serveur externe appelé) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & THÈMES WCAG AAA (APPLICATION EN TEMPS RÉEL)
+       ========================================================================== */
+    :root {
+      --font-main: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --letter-spacing: 0em;
+      --word-spacing: 0em;
+      --line-height: 1.55;
+      --border-width: 1px;
+      --radius-card: 1rem;
+      --radius-btn: 0.75rem;
+    }
+
+    /* Tailles de texte fluides basées sur la racine HTML (adaptent tout Tailwind) */
+    html[data-font-size="normal"] { font-size: 16px; }
+    html[data-font-size="lg"]     { font-size: 20px; }
+    html[data-font-size="xl"]     { font-size: 24px; }
+
+    /* Confort Dys : espacement augmenté des lettres, mots et lignes */
+    html[data-font-family="dyslexic"] {
+      --letter-spacing: 0.08em;
+      --word-spacing: 0.18em;
+      --line-height: 1.85;
+    }
+
+    /* THÈME 1 : Clair Haute Visibilité (Contraste >= 9:1) */
+    html[data-theme="light"] {
+      --bg-page: #FFFFFF;
+      --bg-surface: #F4F6F9;
+      --bg-card: #FFFFFF;
+      --bg-input: #FFFFFF;
+      --text-primary: #0A0A0A;
+      --text-secondary: #2D3748;
+      --border-color: #CBD5E1;
+      --border-strong: #64748B;
+      --accent: #00449E;
+      --accent-hover: #003070;
+      --accent-text: #FFFFFF;
+      --accent-soft: #E6F0FA;
+      --accent-soft-text: #003580;
+      --danger: #9B1C1C;
+      --danger-soft: #FEF2F2;
+      --success: #065F46;
+      --success-soft: #ECFDF5;
+      --focus-ring: #D97706;
+      --shadow-card: 0 2px 8px rgba(10, 10, 10, 0.06);
+    }
+
+    /* THÈME 2 : Sombre Onyx (Contraste >= 10:1) */
+    html[data-theme="onyx"] {
+      --bg-page: #0E1117;
+      --bg-surface: #161B22;
+      --bg-card: #181D26;
+      --bg-input: #0E1117;
+      --text-primary: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --border-color: #30363D;
+      --border-strong: #6E7681;
+      --accent: #38BDF8;
+      --accent-hover: #7DD3FC;
+      --accent-text: #0A0A0A;
+      --accent-soft: #1E293B;
+      --accent-soft-text: #7DD3FC;
+      --danger: #FCA5A5;
+      --danger-soft: #450A0A;
+      --success: #6EE7B7;
+      --success-soft: #064E3B;
+      --focus-ring: #FACC15;
+      --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    /* THÈME 3 : Contraste Maximum (Noir absolu, Blanc, Jaune #FFD700, 2px net) */
+    html[data-theme="high-contrast"] {
+      --bg-page: #000000;
+      --bg-surface: #000000;
+      --bg-card: #000000;
+      --bg-input: #000000;
+      --text-primary: #FFFFFF;
+      --text-secondary: #FFD700;
+      --border-color: #FFFFFF;
+      --border-strong: #FFD700;
+      --accent: #FFD700;
+      --accent-hover: #FFFFFF;
+      --accent-text: #000000;
+      --accent-soft: #000000;
+      --accent-soft-text: #FFD700;
+      --danger: #FFD700;
+      --danger-soft: #000000;
+      --success: #FFD700;
+      --success-soft: #000000;
+      --focus-ring: #FFD700;
+      --border-width: 2px;
+      --shadow-card: none;
+    }
+
+    /* Application globale */
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      letter-spacing: var(--letter-spacing);
+      word-spacing: var(--word-spacing);
+      line-height: var(--line-height);
+      overflow-x: hidden;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    /* Focus AAA ultra-visible au clavier */
+    *:focus-visible {
+      outline: 3px solid var(--focus-ring) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Classes utilitaires liées aux variables */
+    .surface-box {
+      background-color: var(--bg-surface);
+      border: var(--border-width) solid var(--border-color);
+    }
+    .card-box {
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--border-color);
+      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-card);
+    }
+    .text-muted { color: var(--text-secondary); }
+    .input-aaa {
+      background-color: var(--bg-input);
+      color: var(--text-primary);
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-btn);
+    }
+    .input-aaa:focus {
+      border-color: var(--accent);
+    }
+
+    /* Boutons WCAG AAA : min 48x48px */
+    .btn-aaa {
+      min-height: 48px;
+      min-width: 48px;
+      border-radius: var(--radius-btn);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.15rem;
+      cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-aaa:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--accent-text);
+      border: 2px solid var(--accent);
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border: 2px solid var(--border-strong);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background-color: var(--accent-soft);
+      color: var(--accent-soft-text);
+    }
+
+    .btn-option {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+    .btn-option[aria-pressed="true"] {
+      background-color: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+    html[data-theme="high-contrast"] .btn-option[aria-pressed="true"] {
+      border-color: #FFFFFF;
+    }
+
+    /* Onglets principaux */
+    .tab-btn {
+      min-height: 52px;
+      font-weight: 700;
+      border-bottom: 4px solid transparent;
+      color: var(--text-secondary);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .tab-btn[aria-selected="true"] {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+      background-color: var(--accent-soft);
+    }
+    html[data-theme="high-contrast"] .tab-btn[aria-selected="true"] {
+      color: #FFD700;
+      border-bottom-color: #FFD700;
+      border-top: 2px solid #FFD700;
+    }
+
+    /* Badge catégorie */
+    .badge-aaa {
+      background-color: var(--accent-soft);
+      color: var(--accent-soft-text);
+      border: var(--border-width) solid var(--border-color);
+      border-radius: 9999px;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Animation micro en écoute */
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      70% { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    .mic-listening {
+      animation: pulse-ring 1.3s infinite;
+      background-color: #B91C1C !important;
+      color: #FFFFFF !important;
+      border-color: #FFFFFF !important;
+    }
+
+    /* Zone blanche obligatoire autour du QR Code pour scannabilité sur fond sombre */
+    .qr-wrapper {
+      background-color: #FFFFFF;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: 2px solid #0A0A0A;
+      display: inline-block;
+    }
+    .qr-wrapper img, .qr-wrapper canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Lien d'évitement (Skip link) */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      z-index: 100;
+      background: var(--accent);
+      color: var(--accent-text);
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Lien d'évitement pour lecteurs d'écran et navigation clavier -->
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <!-- Zone de notifications accessibles (Toast aria-live) -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true" class="fixed bottom-4 right-4 left-4 sm:left-auto sm:max-w-md z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ========================================================================
+       EN-TÊTE ÉCOSYSTÈME ALPHABETTE
+       ======================================================================== -->
+  <header class="surface-box sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Identité & Liens écosystème -->
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shrink-0" style="background-color: var(--accent); color: var(--accent-text);" aria-hidden="true">
+            A
+          </div>
+          <div>
+            <h1 class="text-xl font-bold leading-tight">Alphabette Hub</h1>
+            <nav aria-label="Liens de l'écosystème Alphabette" class="flex flex-wrap items-center gap-2 text-xs text-muted">
+              <a href="https://alphabette.fr" target="_blank" rel="noopener noreferrer" class="underline font-bold hover:opacity-80">alphabette.fr (Vitrine)</a>
+              <span aria-hidden="true">•</span>
+              <a href="https://alphabette.eu" target="_blank" rel="noopener noreferrer" class="underline font-bold hover:opacity-80">alphabette.eu (Labo)</a>
+              <span aria-hidden="true">•</span>
+              <span class="font-bold">Zero-Knowledge</span>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions globales : Lecture vocale + Config IA -->
+      <div class="flex items-center gap-2">
+        <button id="btn-read-page" type="button" class="btn-aaa btn-secondary text-sm" aria-label="Lire le contenu de l'onglet actif à voix haute">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zm4.54 3.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73"/></svg>
+          <span id="btn-read-page-label">Lire</span>
+        </button>
+        <button id="btn-open-ai-config" type="button" class="btn-aaa btn-secondary text-sm" aria-label="Configurer le moteur d'intelligence artificielle">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          <span>Config IA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barre de navigation à 3 onglets (WCAG ARIA Tablist) -->
+    <nav class="max-w-5xl mx-auto px-2 sm:px-4 border-t" style="border-color: var(--border-color);" aria-label="Navigation principale">
+      <div role="tablist" class="grid grid-cols-3 gap-1">
+        <button role="tab" id="tab-passport" aria-controls="panel-passport" aria-selected="true" class="tab-btn px-2 py-3 text-center flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-t-lg">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+          <span class="text-sm sm:text-base leading-tight">Mon Passeport</span>
+        </button>
+        <button role="tab" id="tab-ideas" aria-controls="panel-ideas" aria-selected="false" class="tab-btn px-2 py-3 text-center flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-t-lg">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          <span class="text-sm sm:text-base leading-tight">Boîte à Idées</span>
+        </button>
+        <button role="tab" id="tab-apps" aria-controls="panel-apps" aria-selected="false" class="tab-btn px-2 py-3 text-center flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-t-lg">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          <span class="text-sm sm:text-base leading-tight">Les Applis</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       CONTENU PRINCIPAL (3 PANNEAUX D'ONGLETS)
+       ======================================================================== -->
+  <main id="main-content" class="flex-1 max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
+
+    <!-- ======================================================================
+         ONGLET 1 : MON PASSEPORT ALPHABETTE
+         ====================================================================== -->
+    <section id="panel-passport" role="tabpanel" aria-labelledby="tab-passport" class="space-y-6">
+      <div class="space-y-2">
+        <span class="badge-aaa">100% Local • Sans compte • Sans cookie</span>
+        <h2 class="text-2xl sm:text-3xl font-bold">Mon Passeport Alphabette</h2>
+        <p class="text-muted">Réglez votre confort visuel et vocal en 3 clics. Vos choix s'appliquent immédiatement ici et sur toutes les applications Alphabette.</p>
+      </div>
+
+      <!-- Diagnostic Express en 3 clics -->
+      <div class="grid grid-cols-1 gap-5">
+
+        <!-- Étape 1 : Taille de texte -->
+        <article class="card-box p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full flex items-center justify-center font-bold shrink-0" style="background-color: var(--accent); color: var(--accent-text);" aria-hidden="true">1</span>
+            <div>
+              <h3 class="text-xl font-bold">Taille de texte idéale</h3>
+              <p class="text-sm text-muted">Choisissez la taille la plus reposante pour vos yeux.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="group" aria-label="Taille de texte">
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="fontSize" data-value="normal" aria-pressed="true">
+              <span class="text-base">Aa Normal</span>
+              <span class="text-xs opacity-80 font-normal">Standard (16px)</span>
+            </button>
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="fontSize" data-value="lg" aria-pressed="false">
+              <span class="text-lg">Aa Grand</span>
+              <span class="text-xs opacity-80 font-normal">Confort (20px)</span>
+            </button>
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="fontSize" data-value="xl" aria-pressed="false">
+              <span class="text-xl">Aa Très Grand</span>
+              <span class="text-xs opacity-80 font-normal">Maxi (24px)</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Étape 2 : Ambiance & Police -->
+        <article class="card-box p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full flex items-center justify-center font-bold shrink-0" style="background-color: var(--accent); color: var(--accent-text);" aria-hidden="true">2</span>
+            <div>
+              <h3 class="text-xl font-bold">Ambiance visuelle & Police</h3>
+              <p class="text-sm text-muted">Contraste certifié WCAG AAA et espacement adapté.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="group" aria-label="Thème visuel">
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="theme" data-value="light" aria-pressed="true">
+              <span>☀️ Clair Haute Visibilité</span>
+              <span class="text-xs opacity-80 font-normal">Fond blanc, noir profond</span>
+            </button>
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="theme" data-value="onyx" aria-pressed="false">
+              <span>🌙 Sombre Onyx</span>
+              <span class="text-xs opacity-80 font-normal">Reposant la nuit</span>
+            </button>
+            <button type="button" class="btn-aaa btn-option flex-col py-3" data-pref="theme" data-value="high-contrast" aria-pressed="false">
+              <span>⚡ Contraste Maximum</span>
+              <span class="text-xs opacity-80 font-normal">Noir pur & Jaune vif</span>
+            </button>
+          </div>
+
+          <div class="pt-2 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3" style="border-color: var(--border-color);">
+            <div>
+              <p class="font-bold">Police & Espacement</p>
+              <p class="text-sm text-muted">Atkinson Hyperlegible ou mode Confort Dys (lettres et lignes aérées).</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 shrink-0" role="group" aria-label="Police de caractères">
+              <button type="button" class="btn-aaa btn-option text-sm" data-pref="fontFamily" data-value="standard" aria-pressed="true">Standard</button>
+              <button type="button" class="btn-aaa btn-option text-sm" data-pref="fontFamily" data-value="dyslexic" aria-pressed="false">Confort Dys</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Étape 3 : Confort vocal -->
+        <article class="card-box p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full flex items-center justify-center font-bold shrink-0" style="background-color: var(--accent); color: var(--accent-text);" aria-hidden="true">3</span>
+            <div>
+              <h3 class="text-xl font-bold">Confort vocal (Synthèse vocale)</h3>
+              <p class="text-sm text-muted">Ajustez la vitesse de lecture et l'annonce automatique des onglets.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="group" aria-label="Vitesse de la voix">
+            <button type="button" class="btn-aaa btn-option" data-pref="speechRate" data-value="0.8" aria-pressed="false">🐢 Lente (0.8x)</button>
+            <button type="button" class="btn-aaa btn-option" data-pref="speechRate" data-value="1" aria-pressed="true">🗣️ Normale (1x)</button>
+            <button type="button" class="btn-aaa btn-option" data-pref="speechRate" data-value="1.25" aria-pressed="false">⚡ Rapide (1.25x)</button>
+          </div>
+
+          <div class="pt-2 border-t flex items-center justify-between gap-4" style="border-color: var(--border-color);">
+            <div>
+              <label for="toggle-autoread" class="font-bold block cursor-pointer">Lecture automatique des changements d'écran</label>
+              <p class="text-sm text-muted">Annonce vocalement l'onglet sélectionné lors de votre navigation.</p>
+            </div>
+            <button id="toggle-autoread" type="button" role="switch" aria-checked="false" class="btn-aaa btn-option shrink-0 min-w-[96px]">
+              Désactivé
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Aperçu en direct & Synchronisation Zero-Knowledge -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Carte Aperçu en direct -->
+        <article class="card-box p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <span class="badge-aaa">Aperçu en direct</span>
+            <h3 class="text-xl font-bold">Bonjour ! Voici votre confort de lecture.</h3>
+            <p class="text-muted">
+              Ce texte s'adapte instantanément à vos réglages. Les chiffres comme <strong>14h30</strong> ou les lettres proches comme <strong>Il1 / O0</strong> restent parfaitement distincts grâce à la police Atkinson Hyperlegible.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button id="btn-test-tts" type="button" class="btn-aaa btn-primary flex-1">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              <span>Écouter l'aperçu</span>
+            </button>
+            <button id="btn-reset-passport" type="button" class="btn-aaa btn-secondary">
+              Réinitialiser
+            </button>
+          </div>
+          <!-- Zone de confirmation inline pour réinitialisation (sans confirm()) -->
+          <div id="reset-confirm-box" class="hidden p-3 rounded-lg surface-box space-y-2" role="region" aria-label="Confirmer la réinitialisation">
+            <p class="text-sm font-bold">Remettre tous les réglages par défaut ?</p>
+            <div class="flex gap-2">
+              <button id="btn-reset-yes" type="button" class="btn-aaa btn-primary text-sm flex-1">Oui, réinitialiser</button>
+              <button id="btn-reset-no" type="button" class="btn-aaa btn-secondary text-sm flex-1">Annuler</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Carte Export / Sync sans compte (QR Code + Lien Base64) -->
+        <article class="card-box p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-2">
+            <span class="badge-aaa">Sync sans compte</span>
+            <h3 class="text-xl font-bold">Transférer mon Passeport</h3>
+            <p class="text-sm text-muted">Scannez ce QR Code avec votre tablette ou copiez le lien pour retrouver exactement vos réglages ailleurs, sans jamais créer de compte.</p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-4">
+            <div class="qr-wrapper shrink-0" aria-label="QR Code de synchronisation de votre Passeport Alphabette">
+              <div id="qrcode-container"></div>
+            </div>
+            <div class="w-full space-y-3">
+              <button id="btn-copy-passport" type="button" class="btn-aaa btn-primary w-full">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                <span>Copier mon lien Passeport</span>
+              </button>
+              <div class="text-xs text-muted break-all p-2.5 rounded-lg surface-box font-mono" id="passport-url-preview" aria-label="Aperçu du lien de synchronisation"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ONGLET 2 : LA BOÎTE À IDÉES VIVANTE (LABO .EU)
+         ====================================================================== -->
+    <section id="panel-ideas" role="tabpanel" aria-labelledby="tab-ideas" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <span class="badge-aaa">Labo communautaire alphabette.eu</span>
+          <h2 class="text-2xl sm:text-3xl font-bold">La Boîte à Idées Vivante</h2>
+          <p class="text-muted">Dictez un souci du quotidien : l'Agent IA Produit le transforme en projet concret soumis au vote de la communauté.</p>
+        </div>
+        <button id="btn-open-bug-modal" type="button" class="btn-aaa btn-secondary shrink-0">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <span>Signaler un bug à la voix</span>
+        </button>
+      </div>
+
+      <!-- Zone de soumission vocale ou texte -->
+      <article class="card-box p-5 space-y-4">
+        <label for="idea-input" class="block text-lg font-bold">Quel problème du quotidien aimeriez-vous simplifier ?</label>
+        <textarea id="idea-input" rows="3" class="input-aaa w-full p-3.5 text-base" placeholder="Exemple : J'ai du mal à lire les notices de médicaments écrites trop petit..."></textarea>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="btn-mic-idea" type="button" class="btn-aaa btn-secondary">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+            <span id="btn-mic-idea-label">Dicter mon idée</span>
+          </button>
+
+          <button id="btn-generate-idea" type="button" class="btn-aaa btn-primary flex-1 sm:flex-none">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>Transformer en Fiche Produit</span>
+          </button>
+
+          <span id="ai-mode-badge" class="text-xs font-bold text-muted ml-auto">Moteur : Mode Démo intégré</span>
+        </div>
+
+        <!-- Brouillon de Fiche Produit généré par l'IA -->
+        <div id="idea-draft-box" class="hidden mt-4 p-4 sm:p-5 rounded-xl surface-box space-y-4" aria-live="polite">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="badge-aaa">Fiche Produit générée — Modifiable</span>
+            <button id="btn-listen-draft" type="button" class="btn-aaa btn-secondary text-sm">
+              🔊 Écouter la fiche
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="draft-name" class="block text-sm font-bold mb-1">Nom proposé</label>
+              <input id="draft-name" type="text" class="input-aaa w-full p-2.5 font-bold">
+            </div>
+            <div>
+              <label for="draft-target" class="block text-sm font-bold mb-1">Public cible</label>
+              <input id="draft-target" type="text" class="input-aaa w-full p-2.5">
+            </div>
+          </div>
+
+          <div>
+            <label for="draft-problem" class="block text-sm font-bold mb-1">Problème résolu</label>
+            <textarea id="draft-problem" rows="2" class="input-aaa w-full p-2.5"></textarea>
+          </div>
+
+          <div>
+            <label for="draft-features" class="block text-sm font-bold mb-1">3 fonctionnalités clés (une par ligne)</label>
+            <textarea id="draft-features" rows="3" class="input-aaa w-full p-2.5"></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-1">
+            <button id="btn-publish-idea" type="button" class="btn-aaa btn-primary flex-1">
+              ✅ Publier dans la Boîte à Idées
+            </button>
+            <button id="btn-cancel-draft" type="button" class="btn-aaa btn-secondary">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Liste communautaire & Votes -->
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h3 class="text-xl font-bold">Idées de la communauté (<span id="ideas-count">0</span>)</h3>
+          <div class="flex items-center gap-2" role="group" aria-label="Trier les idées">
+            <button type="button" class="btn-aaa btn-option text-sm" data-sort="votes" aria-pressed="true">🔥 Plus demandées</button>
+            <button type="button" class="btn-aaa btn-option text-sm" data-sort="recent" aria-pressed="false">🕒 Récentes</button>
+          </div>
+        </div>
+
+        <div id="ideas-list" class="grid grid-cols-1 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ONGLET 3 : LES APPLIS (LANCEUR INTELLIGENT)
+         ====================================================================== -->
+    <section id="panel-apps" role="tabpanel" aria-labelledby="tab-apps" class="hidden space-y-6">
+      <div class="space-y-2">
+        <span class="badge-aaa">Continuité automatique du Passeport</span>
+        <h2 class="text-2xl sm:text-3xl font-bold">Les Applis Alphabette</h2>
+        <p class="text-muted">Chaque application s'ouvre avec vos préférences de texte, de contraste et de voix déjà réglées dans son lien.</p>
+      </div>
+
+      <!-- Bannière de lancement / Aperçu du lien généré -->
+      <div id="app-launch-banner" class="hidden card-box p-4 sm:p-5 space-y-3" role="region" aria-live="polite" aria-label="Aperçu du lancement d'application">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="badge-aaa mb-1">Passeport prêt à être transmis</span>
+            <h3 id="launch-app-title" class="text-xl font-bold"></h3>
+          </div>
+          <button id="btn-close-launch" type="button" class="btn-aaa btn-secondary text-sm" aria-label="Fermer l'aperçu de lancement">✕</button>
+        </div>
+        <p class="text-sm text-muted">URL générée automatiquement avec vos préférences actuelles :</p>
+        <div id="launch-app-url" class="p-3 rounded-lg surface-box font-mono text-xs break-all"></div>
+        <div class="flex flex-wrap gap-3">
+          <a id="launch-app-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-aaa btn-primary flex-1 sm:flex-none">
+            🚀 Lancer l'application maintenant
+          </a>
+          <button id="btn-copy-launch-url" type="button" class="btn-aaa btn-secondary">
+            📋 Copier le lien
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtres par besoin -->
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrer les applications par besoin">
+        <button type="button" class="btn-aaa btn-option text-sm" data-cat="Toutes" aria-pressed="true">Toutes</button>
+        <button type="button" class="btn-aaa btn-option text-sm" data-cat="Quotidien" aria-pressed="false">Quotidien</button>
+        <button type="button" class="btn-aaa btn-option text-sm" data-cat="Culture" aria-pressed="false">Culture</button>
+        <button type="button" class="btn-aaa btn-option text-sm" data-cat="Entraide" aria-pressed="false">Entraide</button>
+        <button type="button" class="btn-aaa btn-option text-sm" data-cat="Fun" aria-pressed="false">Fun</button>
+      </div>
+
+      <!-- Grille responsive d'applications -->
+      <div id="apps-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       PIED DE PAGE
+       ======================================================================== -->
+  <footer class="surface-box mt-auto py-5 px-4 text-center text-sm text-muted">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p><strong>Alphabette Hub</strong> — Conçu pour tous les yeux et tous les âges (WCAG AAA).</p>
+      <p>Zéro cookie traceur • Stockage 100% sur votre appareil.</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODALE 1 : CONFIGURATION DU MOTEUR IA
+       ======================================================================== -->
+  <div id="modal-ai-config" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75" role="dialog" aria-modal="true" aria-labelledby="modal-ai-title">
+    <div class="card-box w-full max-w-lg p-5 sm:p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between gap-2">
+        <h2 id="modal-ai-title" class="text-xl font-bold">Configuration du moteur IA</h2>
+        <button id="btn-close-ai-config" type="button" class="btn-aaa btn-secondary text-sm" aria-label="Fermer la fenêtre de configuration IA">✕</button>
+      </div>
+
+      <p class="text-sm text-muted">
+        Vos clés API éventuelles restent strictement dans le <code>localStorage</code> de votre navigateur et ne transitent par aucun serveur Alphabette.
+      </p>
+
+      <div class="space-y-3" role="radiogroup" aria-label="Choix du fournisseur IA">
+        <label class="card-box p-3.5 flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="ai-provider" value="demo" class="mt-1 w-5 h-5" checked>
+          <div>
+            <span class="font-bold block">Mode Démo intégré (Recommandé)</span>
+            <span class="text-sm text-muted">Fonctionne immédiatement, hors-ligne et sans clé API.</span>
+          </div>
+        </label>
+
+        <label class="card-box p-3.5 flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="ai-provider" value="gemini" class="mt-1 w-5 h-5">
+          <div>
+            <span class="font-bold block">Google Gemini API</span>
+            <span class="text-sm text-muted">Modèle <code>gemini-3-flash-preview</code> (clé optionnelle selon l'environnement).</span>
+          </div>
+        </label>
+
+        <label class="card-box p-3.5 flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="ai-provider" value="mistral" class="mt-1 w-5 h-5">
+          <div>
+            <span class="font-bold block">Mistral AI API (France / UE)</span>
+            <span class="text-sm text-muted">Modèle <code>mistral-small-latest</code> avec votre propre clé API.</span>
+          </div>
+        </label>
+      </div>
+
+      <div id="ai-key-container" class="hidden space-y-2">
+        <label for="ai-api-key" class="block text-sm font-bold">Clé API (stockée uniquement sur cet appareil)</label>
+        <input id="ai-api-key" type="password" class="input-aaa w-full p-3" placeholder="Collez votre clé API ici...">
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button id="btn-save-ai-config" type="button" class="btn-aaa btn-primary w-full sm:w-auto">Enregistrer la configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODALE 2 : SIGNALER UN BUG À LA VOIX
+       ======================================================================== -->
+  <div id="modal-bug" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75" role="dialog" aria-modal="true" aria-labelledby="modal-bug-title">
+    <div class="card-box w-full max-w-xl p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between gap-2">
+        <h2 id="modal-bug-title" class="text-xl font-bold">Signaler un bug à la voix</h2>
+        <button id="btn-close-bug-modal" type="button" class="btn-aaa btn-secondary text-sm" aria-label="Fermer la fenêtre de signalement de bug">✕</button>
+      </div>
+
+      <p class="text-sm text-muted">Expliquez simplement ce qui n'a pas fonctionné : l'IA prépare un ticket technique propre incluant votre Passeport actif.</p>
+
+      <textarea id="bug-input" rows="3" class="input-aaa w-full p-3" placeholder="Exemple : Sur ProxiLien, le bouton pour envoyer un message ne répond pas quand le texte est en très grand..."></textarea>
+
+      <div class="flex flex-wrap gap-3">
+        <button id="btn-mic-bug" type="button" class="btn-aaa btn-secondary">
+          🎙️ <span id="btn-mic-bug-label">Dicter le souci</span>
+        </button>
+        <button id="btn-generate-bug" type="button" class="btn-aaa btn-primary flex-1">
+          🛠️ Formater le ticket technique
+        </button>
+      </div>
+
+      <!-- Résultat du ticket formaté -->
+      <div id="bug-result-box" class="hidden space-y-3 pt-2 border-t" style="border-color: var(--border-color);" aria-live="polite">
+        <label for="bug-ticket-output" class="block text-sm font-bold">Ticket technique prêt à envoyer :</label>
+        <textarea id="bug-ticket-output" rows="8" class="input-aaa w-full p-3 font-mono text-sm"></textarea>
+        <div class="flex flex-wrap gap-3">
+          <button id="btn-copy-ticket" type="button" class="btn-aaa btn-primary flex-1">📋 Copier le ticket</button>
+          <a id="btn-email-ticket" href="#" class="btn-aaa btn-secondary flex-1">✉️ Envoyer par email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       JAVASCRIPT VANILLA MODULAIRE (ZERO-KNOWLEDGE, ACCESSIBLE, AUTONOME)
+       ======================================================================== -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* ======================================================================
+         MODULE 1 : ÉTAT & STOCKAGE ZERO-KNOWLEDGE (alphabette_passport_v1)
+         ====================================================================== */
+      const STORAGE_KEYS = {
+        PASSPORT: 'alphabette_passport_v1',
+        AI_CONFIG: 'alphabette_ai_config_v1',
+        IDEAS: 'alphabette_ideas_v1',
+        VOTES: 'alphabette_votes_v1'
+      };
+
+      const DEFAULT_PASSPORT = {
+        version: 1,
+        fontSize: 'normal',       // 'normal' | 'lg' | 'xl'
+        theme: 'light',           // 'light' | 'onyx' | 'high-contrast'
+        fontFamily: 'standard',   // 'standard' | 'dyslexic'
+        speechRate: 1,            // 0.8 | 1 | 1.25
+        autoRead: false           // boolean
+      };
+
+      const DEFAULT_IDEAS = [
+        {
+          id: 'idea-1',
+          name: 'MédiNotice Vocale',
+          problem: 'Les notices de médicaments sont imprimées en caractères minuscules et difficiles à comprendre.',
+          target: 'Seniors, personnes malvoyantes et aidants familiaux',
+          features: [
+            'Scan rapide du code-barres de la boîte de médicament',
+            'Résumé clair : posologie, précautions et effets majeurs',
+            'Lecture vocale à vitesse réglable sans connexion requise'
+          ],
+          votes: 42,
+          createdAt: Date.now() - 86400000 * 5
+        },
+        {
+          id: 'idea-2',
+          name: 'BusClair Direct',
+          problem: 'Les horaires de bus en temps réel sont souvent surchargés d\'informations et peu lisibles en plein soleil.',
+          target: 'Usagers des transports en commun et seniors',
+          features: [
+            'Affichage géant des 2 prochains passages à l\'arrêt favori',
+            'Mode Contraste Maximum automatique en extérieur',
+            'Alerte vocale 5 minutes avant l\'arrivée du bus'
+          ],
+          votes: 31,
+          createdAt: Date.now() - 86400000 * 3
+        },
+        {
+          id: 'idea-3',
+          name: 'CourrierSimple',
+          problem: 'Les courriers administratifs utilisent un jargon complexe qui génère du stress.',
+          target: 'Tout public souhaitant comprendre ses droits rapidement',
+          features: [
+            'Reformulation en français clair et bienveillant',
+            'Extraction automatique de la date limite et de l\'action à faire',
+            'Traitement respectueux sans conservation des documents'
+          ],
+          votes: 27,
+          createdAt: Date.now() - 86400000 * 2
+        },
+        {
+          id: 'idea-4',
+          name: 'MarchéLocal Voix',
+          problem: 'Difficile de connaître les producteurs présents au marché du matin sans naviguer sur des réseaux sociaux.',
+          target: 'Habitants de communes rurales et urbaines',
+          features: [
+            'Liste épurée des stands ouverts aujourd\'hui',
+            'Filtre rapide par besoin (fruits, fromage, pain, bio)',
+            'Partage facile entre voisins par simple lien'
+          ],
+          votes: 19,
+          createdAt: Date.now() - 86400000 * 1
+        }
+      ];
+
+      const ECOSYSTEM_APPS = [
+        {
+          id: 'infoperso',
+          name: 'InfoPerso',
+          category: 'Quotidien',
+          url: 'https://alphabette.eu/apps/infoperso',
+          description: 'Coffre-fort 100% local de vos démarches, numéros utiles et mémos essentiels, sans aucun cloud.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>`
+        },
+        {
+          id: 'iadebat',
+          name: 'IADébat',
+          category: 'Culture',
+          url: 'https://alphabette.eu/apps/iadebat',
+          description: 'Comprendre et débattre des grands sujets d\'actualité avec plusieurs points de vue nuancés et sourcés.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>`
+        },
+        {
+          id: 'proxilien',
+          name: 'ProxiLien',
+          category: 'Entraide',
+          url: 'https://alphabette.eu/apps/proxilien',
+          description: 'Petits services, prêts d\'outils et entraide de voisinage directe, sans publicité ni intermédiaire.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`
+        },
+        {
+          id: 'orbit',
+          name: 'Orbit',
+          category: 'Fun',
+          url: 'https://alphabette.eu/apps/orbit',
+          description: 'Jeux calmes de logique, mots et mémoire sans chronomètre stressant, adaptés à toutes les vues.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+        },
+        {
+          id: 'franceservice',
+          name: 'France Service Guide',
+          category: 'Quotidien',
+          url: 'https://alphabette.eu/apps/france-service',
+          description: 'Assistant pas-à-pas pour préparer vos démarches administratives (retraite, santé, impôts) sereinement.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`
+        },
+        {
+          id: 'medinotice',
+          name: 'MédiNotice',
+          category: 'Quotidien',
+          url: 'https://alphabette.eu/apps/medinotice',
+          description: 'Lecteur simplifié et vocal de notices de santé : retrouvez l\'essentiel sans loupe.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`
+        },
+        {
+          id: 'culturelibre',
+          name: 'CultureLibre',
+          category: 'Culture',
+          url: 'https://alphabette.eu/apps/culturelibre',
+          description: 'Découvertes audio, visites de musées commentées et récits du patrimoine local accessibles à tous.',
+          icon: `<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>`
+        }
+      ];
+
+      // État en mémoire
+      let passport = { ...DEFAULT_PASSPORT };
+      let aiConfig = { provider: 'demo', apiKey: '' };
+      let ideas = [];
+      let userVotes = []; // Liste des IDs votés sur cet appareil
+      let currentIdeaSort = 'votes';
+      let currentAppCategory = 'Toutes';
+      let activeTabId = 'tab-passport';
+      let isSpeaking = false;
+
+      /* ======================================================================
+         MODULE 2 : UTILITAIRES (BASE64 UTF-8, CLIPBOARD, TOASTS)
+         ====================================================================== */
+      function encodeBase64Unicode(obj) {
+        const json = JSON.stringify(obj);
+        const bytes = new TextEncoder().encode(json);
+        let binary = '';
+        bytes.forEach(b => binary += String.fromCharCode(b));
+        return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      }
+
+      function decodeBase64Unicode(str) {
+        const padded = str.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((str.length + 3) % 4);
+        const binary = atob(padded);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        return JSON.parse(new TextDecoder().decode(bytes));
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'pointer-events-auto card-box px-4 py-3 font-bold text-sm flex items-center justify-between gap-3';
+        toast.style.borderWidth = '2px';
+        if (type === 'success') {
+          toast.style.borderColor = 'var(--success)';
+        } else if (type === 'error') {
+          toast.style.borderColor = 'var(--danger)';
+        } else {
+          toast.style.borderColor = 'var(--accent)';
+        }
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 3800);
+      }
+
+      function copyTextToClipboard(text, successMsg) {
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-9999px';
+          document.body.appendChild(textarea);
+          textarea.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(textarea);
+          if (ok) {
+            showToast(successMsg || 'Copié dans le presse-papiers !', 'success');
+          } else {
+            showToast('Impossible de copier automatiquement. Sélectionnez le texte manuellement.', 'error');
+          }
+        } catch (err) {
+          showToast('Copie non supportée sur ce navigateur.', 'error');
+        }
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      /* ======================================================================
+         MODULE 3 : PASSEPORT ALPHABETTE (SYNC URL, QR CODE, RENDU TEMPS RÉEL)
+         ====================================================================== */
+      function sanitizePassport(raw) {
+        if (!raw || typeof raw !== 'object') return { ...DEFAULT_PASSPORT };
+        return {
+          version: 1,
+          fontSize: ['normal', 'lg', 'xl'].includes(raw.fontSize) ? raw.fontSize : 'normal',
+          theme: ['light', 'onyx', 'high-contrast'].includes(raw.theme) ? raw.theme : 'light',
+          fontFamily: ['standard', 'dyslexic'].includes(raw.fontFamily) ? raw.fontFamily : 'standard',
+          speechRate: [0.8, 1, 1.25].includes(Number(raw.speechRate)) ? Number(raw.speechRate) : 1,
+          autoRead: Boolean(raw.autoRead)
+        };
+      }
+
+      function loadPassport() {
+        // 1. Vérifier si un ?passport= existe dans l'URL
+        const params = new URLSearchParams(window.location.search);
+        const urlPassport = params.get('passport');
+        if (urlPassport) {
+          try {
+            const decoded = decodeBase64Unicode(urlPassport);
+            passport = sanitizePassport(decoded);
+            localStorage.setItem(STORAGE_KEYS.PASSPORT, JSON.stringify(passport));
+            // Nettoyer l'URL sans recharger la page
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+            showToast('✅ Passeport Alphabette synchronisé depuis votre lien !', 'success');
+            return;
+          } catch (e) {
+            showToast('Le lien Passeport détecté est invalide. Réglages locaux conservés.', 'error');
+          }
+        }
+
+        // 2. Sinon charger depuis localStorage
+        try {
+          const saved = localStorage.getItem(STORAGE_KEYS.PASSPORT);
+          if (saved) {
+            passport = sanitizePassport(JSON.parse(saved));
+          }
+        } catch (e) {
+          passport = { ...DEFAULT_PASSPORT };
+        }
+      }
+
+      function getPassportSyncUrl() {
+        const encoded = encodeBase64Unicode(passport);
+        const base = window.location.origin && window.location.origin !== 'null'
+          ? window.location.origin + window.location.pathname
+          : 'https://alphabette.eu/hub';
+        return `${base}?passport=${encoded}`;
+      }
+
+      function renderQRCode(url) {
+        const container = document.getElementById('qrcode-container');
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          try {
+            new QRCode(container, {
+              text: url,
+              width: 148,
+              height: 148,
+              colorDark: '#000000',
+              colorLight: '#FFFFFF',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } catch (e) {
+            container.innerHTML = '<p class="text-xs text-black font-bold p-2">QR Code indisponible</p>';
+          }
+        } else {
+          container.innerHTML = '<p class="text-xs text-black font-bold p-2">Mode hors-ligne : utilisez le bouton Copier le lien</p>';
+        }
+      }
+
+      function applyPassportToUI() {
+        const html = document.documentElement;
+        html.setAttribute('data-font-size', passport.fontSize);
+        html.setAttribute('data-theme', passport.theme);
+        html.setAttribute('data-font-family', passport.fontFamily);
+
+        // Mettre à jour l'état aria-pressed de tous les boutons de préférence
+        document.querySelectorAll('[data-pref]').forEach(btn => {
+          const key = btn.getAttribute('data-pref');
+          const val = btn.getAttribute('data-value');
+          const isMatch = String(passport[key]) === String(val);
+          btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        });
+
+        // Interrupteur lecture automatique
+        const toggleAuto = document.getElementById('toggle-autoread');
+        toggleAuto.setAttribute('aria-checked', passport.autoRead ? 'true' : 'false');
+        toggleAuto.setAttribute('aria-pressed', passport.autoRead ? 'true' : 'false');
+        toggleAuto.textContent = passport.autoRead ? 'Activé' : 'Désactivé';
+
+        // Lien & QR Code
+        const syncUrl = getPassportSyncUrl();
+        document.getElementById('passport-url-preview').textContent = syncUrl;
+        renderQRCode(syncUrl);
+
+        // Sauvegarder en localStorage
+        try {
+          localStorage.setItem(STORAGE_KEYS.PASSPORT, JSON.stringify(passport));
+        } catch (e) {
+          // Ignore quota errors
+        }
+
+        // Mettre à jour les URLs des applis si l'onglet est rendu
+        renderApps();
+      }
+
+      /* ======================================================================
+         MODULE 4 : WEB SPEECH API (SYNTHÈSE VOCALE TTS & DICTÉE VOCALE STT)
+         ====================================================================== */
+      function stopSpeaking() {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+        isSpeaking = false;
+        const label = document.getElementById('btn-read-page-label');
+        if (label) label.textContent = 'Lire';
+      }
+
+      function speakText(text) {
+        if (!('speechSynthesis' in window)) {
+          showToast('La synthèse vocale n\'est pas supportée par ce navigateur.', 'error');
+          return;
+        }
+        stopSpeaking();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = passport.speechRate || 1;
+        utterance.onstart = () => {
+          isSpeaking = true;
+          document.getElementById('btn-read-page-label').textContent = 'Stop';
+        };
+        utterance.onend = () => {
+          isSpeaking = false;
+          document.getElementById('btn-read-page-label').textContent = 'Lire';
+        };
+        utterance.onerror = () => {
+          isSpeaking = false;
+          document.getElementById('btn-read-page-label').textContent = 'Lire';
+        };
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function startVoiceDictation(targetTextarea, buttonEl, labelEl, defaultLabel) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          showToast('La dictée vocale nécessite Chrome, Edge ou Safari récent. Vous pouvez saisir votre texte au clavier.', 'error');
+          return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        buttonEl.classList.add('mic-listening');
+        labelEl.textContent = 'Écoute en cours...';
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          const existing = targetTextarea.value.trim();
+          targetTextarea.value = existing ? `${existing} ${transcript}` : transcript;
+          targetTextarea.focus();
+          showToast('Dictée vocale ajoutée !', 'success');
+        };
+
+        recognition.onerror = () => {
+          showToast('Micro non détecté ou autorisation refusée.', 'error');
+        };
+
+        recognition.onend = () => {
+          buttonEl.classList.remove('mic-listening');
+          labelEl.textContent = defaultLabel;
+        };
+
+        try {
+          recognition.start();
+        } catch (e) {
+          buttonEl.classList.remove('mic-listening');
+          labelEl.textContent = defaultLabel;
+        }
+      }
+
+      /* ======================================================================
+         MODULE 5 : MOTEUR IA CONFIGURABLE (DÉMO / GEMINI / MISTRAL)
+         ====================================================================== */
+      function loadAIConfig() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEYS.AI_CONFIG);
+          if (saved) aiConfig = JSON.parse(saved);
+        } catch (e) {
+          aiConfig = { provider: 'demo', apiKey: '' };
+        }
+        updateAIBadge();
+      }
+
+      function updateAIBadge() {
+        const labels = {
+          demo: 'Moteur : Mode Démo intégré',
+          gemini: 'Moteur : Google Gemini API',
+          mistral: 'Moteur : Mistral AI API'
+        };
+        document.getElementById('ai-mode-badge').textContent = labels[aiConfig.provider] || labels.demo;
+      }
+
+      // Exponential backoff pour les appels API réseau
+      async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+        for (let i = 0; i < retries; i++) {
+          const res = await fetch(url, options);
+          if (res.ok) return res;
+          if (i < retries - 1 && (res.status === 429 || res.status >= 500)) {
+            await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+            continue;
+          }
+          throw new Error(`Erreur API (${res.status})`);
+        }
+      }
+
+      // Mode Démo intelligent hors-ligne pour Fiche Produit
+      function demoGenerateProductSheet(rawText) {
+        const t = rawText.toLowerCase();
+        if (t.includes('médicament') || t.includes('notice') || t.includes('santé') || t.includes('ordonnance')) {
+          return {
+            name: 'SantéClair Vocal',
+            problem: rawText.trim(),
+            target: 'Seniors, patients chroniques et aidants',
+            features: [
+              'Lecture photo instantanée des notices et ordonnances en gros caractères',
+              'Synthèse vocale calme expliquant la posologie sans jargon médical',
+              'Rappels locaux de prise de traitement sans compte ni partage de données'
+            ]
+          };
+        }
+        if (t.includes('bus') || t.includes('train') || t.includes('transport') || t.includes('trajet')) {
+          return {
+            name: 'TrajetSerein',
+            problem: rawText.trim(),
+            target: 'Voyageurs quotidiens et personnes à mobilité réduite',
+            features: [
+              'Affichage épuré des prochains départs en contraste maximum',
+              'Guidage vocal étape par étape jusqu\'à la destination',
+              'Signalement simple des ascenseurs ou accès disponibles'
+            ]
+          };
+        }
+        if (t.includes('impôt') || t.includes('papier') || t.includes('courrier') || t.includes('administratif') || t.includes('caf')) {
+          return {
+            name: 'DémarcheFacile',
+            problem: rawText.trim(),
+            target: 'Citoyens souhaitant simplifier leurs démarches administratives',
+            features: [
+              'Traduction automatique du jargon administratif en français simple',
+              'Liste de contrôle interactive des justificatifs à préparer',
+              'Sauvegarde 100% locale sur l\'appareil pour protéger la vie privée'
+            ]
+          };
+        }
+        // Cas général adaptatif
+        const cleanSnippet = rawText.trim().slice(0, 120);
+        return {
+          name: 'Alphabette Compagnon',
+          problem: cleanSnippet,
+          target: 'Grand public et utilisateurs recherchant une interface accessible',
+          features: [
+            'Interface épurée compatible avec le Passeport Alphabette (WCAG AAA)',
+            'Assistance vocale intégrée pour dicter et écouter chaque étape',
+            'Fonctionnement 100% sans compte et respectueux de la vie privée'
+          ]
+        };
+      }
+
+      // Mode Démo intelligent hors-ligne pour Ticket de Bug
+      function demoGenerateBugTicket(rawText) {
+        const lower = rawText.toLowerCase();
+        const detectedApp = ECOSYSTEM_APPS.find(a => lower.includes(a.name.toLowerCase()))?.name || 'Alphabette Hub';
+        const isHigh = lower.includes('bloque') || lower.includes('plant') || lower.includes('impossible') || lower.includes('répond pas');
+        const severity = isHigh ? 'Élevée (Bloquant)' : 'Moyenne (Gêne d\'usage)';
+
+        return [
+          `=== TICKET TECHNIQUE ALPHABETTE ===`,
+          `Appli concernée : ${detectedApp}`,
+          `Gravité estimée : ${severity}`,
+          ``,
+          `Description & Étapes de reproduction :`,
+          `1. Ouvrir ${detectedApp} avec le Passeport actif.`,
+          `2. Reproduire l'action décrite : "${rawText.trim()}"`,
+          `3. Constater le dysfonctionnement signalé.`,
+          ``,
+          `Contexte Passeport (Zero-Knowledge) :`,
+          `- Thème : ${passport.theme}`,
+          `- Taille texte : ${passport.fontSize}`,
+          `- Police : ${passport.fontFamily}`,
+          `- Vitesse voix : ${passport.speechRate}x`,
+          `- Écran : ${window.innerWidth}x${window.innerHeight}px`
+        ].join('\n');
+      }
+
+      async function generateProductSheet(rawText) {
+        if (aiConfig.provider === 'demo') {
+          await new Promise(r => setTimeout(r, 450));
+          return demoGenerateProductSheet(rawText);
+        }
+
+        const prompt = `Tu es un architecte produit expert en accessibilité numérique. Transforme cette idée utilisateur en une fiche produit concise en français. Idée : "${rawText}".`;
+
+        if (aiConfig.provider === 'gemini') {
+          const apiKey = aiConfig.apiKey || '';
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+          const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: 'OBJECT',
+                properties: {
+                  name: { type: 'STRING' },
+                  problem: { type: 'STRING' },
+                  target: { type: 'STRING' },
+                  features: { type: 'ARRAY', items: { type: 'STRING' } }
+                },
+                required: ['name', 'problem', 'target', 'features']
+              }
+            }
+          };
+          const res = await fetchWithRetry(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          return JSON.parse(text);
+        }
+
+        if (aiConfig.provider === 'mistral') {
+          if (!aiConfig.apiKey) throw new Error('Clé API Mistral manquante dans Config IA.');
+          const res = await fetchWithRetry('https://api.mistral.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${aiConfig.apiKey}`
+            },
+            body: JSON.stringify({
+              model: 'mistral-small-latest',
+              response_format: { type: 'json_object' },
+              messages: [
+                { role: 'system', content: 'Réponds uniquement en JSON valide avec les clés: name (string), problem (string), target (string), features (tableau de 3 strings).' },
+                { role: 'user', content: prompt }
+              ]
+            })
+          });
+          const data = await res.json();
+          return JSON.parse(data.choices[0].message.content);
+        }
+
+        return demoGenerateProductSheet(rawText);
+      }
+
+      async function generateBugTicket(rawText) {
+        if (aiConfig.provider === 'demo') {
+          await new Promise(r => setTimeout(r, 400));
+          return demoGenerateBugTicket(rawText);
+        }
+
+        const contextInfo = `Contexte Passeport: thème=${passport.theme}, texte=${passport.fontSize}, police=${passport.fontFamily}, écran=${window.innerWidth}x${window.innerHeight}.`;
+        const prompt = `Formate un ticket technique propre en français (Appli concernée, Gravité, Étapes de reproduction, Contexte Passeport) à partir de ce signalement vocal : "${rawText}". ${contextInfo}`;
+
+        if (aiConfig.provider === 'gemini') {
+          const apiKey = aiConfig.apiKey || '';
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+          const res = await fetchWithRetry(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+          });
+          const data = await res.json();
+          return data?.candidates?.[0]?.content?.parts?.[0]?.text || demoGenerateBugTicket(rawText);
+        }
+
+        if (aiConfig.provider === 'mistral') {
+          if (!aiConfig.apiKey) throw new Error('Clé API Mistral manquante dans Config IA.');
+          const res = await fetchWithRetry('https://api.mistral.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${aiConfig.apiKey}`
+            },
+            body: JSON.stringify({
+              model: 'mistral-small-latest',
+              messages: [{ role: 'user', content: prompt }]
+            })
+          });
+          const data = await res.json();
+          return data.choices[0].message.content;
+        }
+
+        return demoGenerateBugTicket(rawText);
+      }
+
+      /* ======================================================================
+         MODULE 6 : BOÎTE À IDÉES & VOTES LOCAUX
+         ====================================================================== */
+      function loadIdeasAndVotes() {
+        try {
+          const savedIdeas = localStorage.getItem(STORAGE_KEYS.IDEAS);
+          ideas = savedIdeas ? JSON.parse(savedIdeas) : [...DEFAULT_IDEAS];
+          const savedVotes = localStorage.getItem(STORAGE_KEYS.VOTES);
+          userVotes = savedVotes ? JSON.parse(savedVotes) : [];
+        } catch (e) {
+          ideas = [...DEFAULT_IDEAS];
+          userVotes = [];
+        }
+      }
+
+      function saveIdeasAndVotes() {
+        try {
+          localStorage.setItem(STORAGE_KEYS.IDEAS, JSON.stringify(ideas));
+          localStorage.setItem(STORAGE_KEYS.VOTES, JSON.stringify(userVotes));
+        } catch (e) { /* ignore */ }
+      }
+
+      function toggleVote(ideaId) {
+        const idea = ideas.find(i => i.id === ideaId);
+        if (!idea) return;
+
+        const idx = userVotes.indexOf(ideaId);
+        if (idx === -1) {
+          userVotes.push(ideaId);
+          idea.votes += 1;
+          showToast(`Vote enregistré pour "${idea.name}" !`, 'success');
+        } else {
+          userVotes.splice(idx, 1);
+          idea.votes = Math.max(0, idea.votes - 1);
+          showToast(`Vote retiré pour "${idea.name}".`, 'info');
+        }
+        saveIdeasAndVotes();
+        renderIdeas();
+      }
+
+      function renderIdeas() {
+        const listEl = document.getElementById('ideas-list');
+        document.getElementById('ideas-count').textContent = ideas.length;
+
+        const sorted = [...ideas].sort((a, b) => {
+          if (currentIdeaSort === 'recent') return b.createdAt - a.createdAt;
+          return b.votes - a.votes;
+        });
+
+        listEl.innerHTML = sorted.map(idea => {
+          const hasVoted = userVotes.includes(idea.id);
+          const featuresHtml = (idea.features || [])
+            .map(f => `<li class="flex items-start gap-2"><span aria-hidden="true">•</span><span>${escapeHtml(f)}</span></li>`)
+            .join('');
+
+          return `
+            <article class="card-box p-5 space-y-3">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div class="space-y-1 flex-1 min-w-[200px]">
+                  <h4 class="text-xl font-bold">${escapeHtml(idea.name)}</h4>
+                  <p class="text-sm text-muted"><strong>Public cible :</strong> ${escapeHtml(idea.target)}</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button type="button" class="btn-aaa btn-secondary text-sm btn-speak-idea" data-id="${escapeHtml(idea.id)}" aria-label="Écouter la fiche ${escapeHtml(idea.name)}">
+                    🔊
+                  </button>
+                  <button type="button" class="btn-aaa btn-option btn-vote-idea" data-id="${escapeHtml(idea.id)}" aria-pressed="${hasVoted ? 'true' : 'false'}" aria-label="${hasVoted ? 'Retirer mon vote pour' : 'Voter pour'} ${escapeHtml(idea.name)}, actuellement ${idea.votes} votes">
+                    <span>${hasVoted ? '★' : '☆'}</span>
+                    <span>${idea.votes}</span>
+                  </button>
+                </div>
+              </div>
+              <p>${escapeHtml(idea.problem)}</p>
+              <ul class="text-sm text-muted space-y-1 pt-2 border-t" style="border-color: var(--border-color);">
+                ${featuresHtml}
+              </ul>
+            </article>
+          `;
+        }).join('');
+
+        // Attacher les écouteurs de vote et TTS
+        listEl.querySelectorAll('.btn-vote-idea').forEach(btn => {
+          btn.addEventListener('click', () => toggleVote(btn.getAttribute('data-id')));
+        });
+        listEl.querySelectorAll('.btn-speak-idea').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const item = ideas.find(i => i.id === btn.getAttribute('data-id'));
+            if (item) {
+              speakText(`${item.name}. Pour ${item.target}. Problème résolu : ${item.problem}. Fonctionnalités : ${(item.features || []).join('. ')}.`);
+            }
+          });
+        });
+      }
+
+      /* ======================================================================
+         MODULE 7 : LANCEUR D'APPLICATIONS INTELLIGENT
+         ====================================================================== */
+      function buildAppPassportUrl(baseUrl) {
+        const params = new URLSearchParams({
+          theme: passport.theme,
+          font: passport.fontSize,
+          dys: passport.fontFamily === 'dyslexic' ? '1' : '0',
+          tts: passport.autoRead ? 'auto' : 'manual',
+          rate: String(passport.speechRate)
+        });
+        return `${baseUrl}?${params.toString()}`;
+      }
+
+      function renderApps() {
+        const grid = document.getElementById('apps-grid');
+        const filtered = currentAppCategory === 'Toutes'
+          ? ECOSYSTEM_APPS
+          : ECOSYSTEM_APPS.filter(a => a.category === currentAppCategory);
+
+        grid.innerHTML = filtered.map(app => {
+          const fullUrl = buildAppPassportUrl(app.url);
+          return `
+            <article class="card-box p-5 flex flex-col justify-between gap-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style="background-color: var(--accent-soft); color: var(--accent-soft-text); border: var(--border-width) solid var(--border-color);" aria-hidden="true">
+                      ${app.icon}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold leading-tight">${escapeHtml(app.name)}</h3>
+                      <span class="badge-aaa mt-1">${escapeHtml(app.category)}</span>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-aaa btn-secondary text-sm btn-speak-app" data-id="${escapeHtml(app.id)}" aria-label="Écouter la présentation de ${escapeHtml(app.name)}">
+                    🔊
+                  </button>
+                </div>
+                <p class="text-muted">${escapeHtml(app.description)}</p>
+              </div>
+              <div class="pt-2">
+                <button type="button" class="btn-aaa btn-primary w-full btn-open-app" data-id="${escapeHtml(app.id)}" data-url="${escapeHtml(fullUrl)}">
+                  Ouvrir ${escapeHtml(app.name)} →
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // Écouteurs audio & lancement
+        grid.querySelectorAll('.btn-speak-app').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const app = ECOSYSTEM_APPS.find(a => a.id === btn.getAttribute('data-id'));
+            if (app) speakText(`${app.name}, catégorie ${app.category}. ${app.description}`);
+          });
+        });
+
+        grid.querySelectorAll('.btn-open-app').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const app = ECOSYSTEM_APPS.find(a => a.id === btn.getAttribute('data-id'));
+            const url = btn.getAttribute('data-url');
+            if (!app) return;
+            const banner = document.getElementById('app-launch-banner');
+            document.getElementById('launch-app-title').textContent = `Ouverture de ${app.name}`;
+            document.getElementById('launch-app-url').textContent = url;
+            document.getElementById('launch-app-link').href = url;
+            banner.classList.remove('hidden');
+            banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            showToast(`Lien Passeport généré pour ${app.name} !`, 'success');
+          });
+        });
+      }
+
+      /* ======================================================================
+         MODULE 8 : NAVIGATION PAR ONGLETS & MODALES ACCESSIBLES
+         ====================================================================== */
+      function switchTab(tabId) {
+        activeTabId = tabId;
+        const tabs = document.querySelectorAll('[role="tab"]');
+        const panels = document.querySelectorAll('[role="tabpanel"]');
+
+        tabs.forEach(t => {
+          const isSelected = t.id === tabId;
+          t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        });
+
+        panels.forEach(p => {
+          const isTarget = p.getAttribute('aria-labelledby') === tabId;
+          p.classList.toggle('hidden', !isTarget);
+        });
+
+        if (passport.autoRead) {
+          const announcements = {
+            'tab-passport': 'Onglet Mon Passeport Alphabette. Réglez la taille du texte, le contraste et la voix.',
+            'tab-ideas': 'Onglet La Boîte à Idées Vivante. Dictez une idée ou votez pour les projets de la communauté.',
+            'tab-apps': 'Onglet Les Applis Alphabette. Choisissez une application adaptée à votre passeport.'
+          };
+          speakText(announcements[tabId] || '');
+        }
+      }
+
+      function setupEventListeners() {
+        // Navigation par onglets
+        document.querySelectorAll('[role="tab"]').forEach(tab => {
+          tab.addEventListener('click', () => switchTab(tab.id));
+        });
+
+        // Lecture globale de la page active
+        document.getElementById('btn-read-page').addEventListener('click', () => {
+          if (isSpeaking) {
+            stopSpeaking();
+            return;
+          }
+          const activePanel = document.querySelector(`[role="tabpanel"][aria-labelledby="${activeTabId}"]`);
+          if (activePanel) {
+            speakText(activePanel.innerText.replace(/\s+/g, ' ').slice(0, 1200));
+          }
+        });
+
+        // Préférences du Passeport
+        document.querySelectorAll('[data-pref]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const key = btn.getAttribute('data-pref');
+            let val = btn.getAttribute('data-value');
+            if (key === 'speechRate') val = Number(val);
+            passport[key] = val;
+            applyPassportToUI();
+          });
+        });
+
+        // Interrupteur auto-lecture
+        document.getElementById('toggle-autoread').addEventListener('click', () => {
+          passport.autoRead = !passport.autoRead;
+          applyPassportToUI();
+          if (passport.autoRead) {
+            speakText('Lecture automatique activée.');
+          }
+        });
+
+        // Test TTS Aperçu
+        document.getElementById('btn-test-tts').addEventListener('click', () => {
+          speakText('Bonjour ! Voici votre confort de lecture Alphabette. Les réglages de votre passeport sont prêts.');
+        });
+
+        // Copier lien Passeport
+        document.getElementById('btn-copy-passport').addEventListener('click', () => {
+          copyTextToClipboard(getPassportSyncUrl(), 'Lien Passeport copié ! Ouvrez-le sur un autre appareil.');
+        });
+
+        // Réinitialisation Passeport (inline sans confirm())
+        const resetBox = document.getElementById('reset-confirm-box');
+        document.getElementById('btn-reset-passport').addEventListener('click', () => {
+          resetBox.classList.toggle('hidden');
+        });
+        document.getElementById('btn-reset-no').addEventListener('click', () => {
+          resetBox.classList.add('hidden');
+        });
+        document.getElementById('btn-reset-yes').addEventListener('click', () => {
+          passport = { ...DEFAULT_PASSPORT };
+          applyPassportToUI();
+          resetBox.classList.add('hidden');
+          showToast('Passeport réinitialisé aux valeurs par défaut.', 'info');
+        });
+
+        // Dictée vocale Idée
+        document.getElementById('btn-mic-idea').addEventListener('click', () => {
+          startVoiceDictation(
+            document.getElementById('idea-input'),
+            document.getElementById('btn-mic-idea'),
+            document.getElementById('btn-mic-idea-label'),
+            'Dicter mon idée'
+          );
+        });
+
+        // Transformation en Fiche Produit par l'IA
+        document.getElementById('btn-generate-idea').addEventListener('click', async () => {
+          const input = document.getElementById('idea-input').value.trim();
+          if (!input) {
+            showToast('Dictez ou écrivez d\'abord votre idée en une phrase.', 'error');
+            document.getElementById('idea-input').focus();
+            return;
+          }
+          const btn = document.getElementById('btn-generate-idea');
+          const origHtml = btn.innerHTML;
+          btn.disabled = true;
+          btn.textContent = '⏳ Analyse IA en cours...';
+
+          try {
+            const sheet = await generateProductSheet(input);
+            document.getElementById('draft-name').value = sheet.name || 'Nouvelle Idée';
+            document.getElementById('draft-target').value = sheet.target || 'Tout public';
+            document.getElementById('draft-problem').value = sheet.problem || input;
+            document.getElementById('draft-features').value = (sheet.features || []).join('\n');
+            document.getElementById('idea-draft-box').classList.remove('hidden');
+            showToast('Fiche Produit générée ! Vous pouvez l\'ajuster ou la publier.', 'success');
+          } catch (err) {
+            showToast(`Erreur IA : ${err.message}. Passage en Mode Démo.`, 'error');
+            const fallback = demoGenerateProductSheet(input);
+            document.getElementById('draft-name').value = fallback.name;
+            document.getElementById('draft-target').value = fallback.target;
+            document.getElementById('draft-problem').value = fallback.problem;
+            document.getElementById('draft-features').value = fallback.features.join('\n');
+            document.getElementById('idea-draft-box').classList.remove('hidden');
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+          }
+        });
+
+        // Écouter le brouillon de fiche
+        document.getElementById('btn-listen-draft').addEventListener('click', () => {
+          const name = document.getElementById('draft-name').value;
+          const target = document.getElementById('draft-target').value;
+          const problem = document.getElementById('draft-problem').value;
+          const features = document.getElementById('draft-features').value;
+          speakText(`Fiche produit : ${name}. Public cible : ${target}. Problème résolu : ${problem}. Fonctionnalités clés : ${features}`);
+        });
+
+        // Publier dans la Boîte à Idées
+        document.getElementById('btn-publish-idea').addEventListener('click', () => {
+          const name = document.getElementById('draft-name').value.trim();
+          const target = document.getElementById('draft-target').value.trim();
+          const problem = document.getElementById('draft-problem').value.trim();
+          const features = document.getElementById('draft-features').value
+            .split('\n')
+            .map(l => l.trim())
+            .filter(Boolean);
+
+          if (!name || !problem) {
+            showToast('Veuillez renseigner au moins un nom et le problème résolu.', 'error');
+            return;
+          }
+
+          const newId = 'idea-' + Date.now();
+          ideas.unshift({
+            id: newId,
+            name,
+            target: target || 'Tout public',
+            problem,
+            features: features.length ? features : ['Interface accessible WCAG AAA'],
+            votes: 1,
+            createdAt: Date.now()
+          });
+          userVotes.push(newId);
+          saveIdeasAndVotes();
+          renderIdeas();
+
+          document.getElementById('idea-input').value = '';
+          document.getElementById('idea-draft-box').classList.add('hidden');
+          showToast(`"${name}" a été publiée dans la Boîte à Idées !`, 'success');
+        });
+
+        document.getElementById('btn-cancel-draft').addEventListener('click', () => {
+          document.getElementById('idea-draft-box').classList.add('hidden');
+        });
+
+        // Tri des idées
+        document.querySelectorAll('[data-sort]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentIdeaSort = btn.getAttribute('data-sort');
+            document.querySelectorAll('[data-sort]').forEach(b => {
+              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+            renderIdeas();
+          });
+        });
+
+        // Filtres Applis
+        document.querySelectorAll('[data-cat]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentAppCategory = btn.getAttribute('data-cat');
+            document.querySelectorAll('[data-cat]').forEach(b => {
+              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+            renderApps();
+          });
+        });
+
+        // Bannière de lancement d'appli
+        document.getElementById('btn-close-launch').addEventListener('click', () => {
+          document.getElementById('app-launch-banner').classList.add('hidden');
+        });
+        document.getElementById('btn-copy-launch-url').addEventListener('click', () => {
+          const url = document.getElementById('launch-app-url').textContent;
+          copyTextToClipboard(url, 'Lien d\'application avec Passeport copié !');
+        });
+
+        // Modale Config IA
+        const modalAI = document.getElementById('modal-ai-config');
+        const keyContainer = document.getElementById('ai-key-container');
+        const keyInput = document.getElementById('ai-api-key');
+
+        document.getElementById('btn-open-ai-config').addEventListener('click', () => {
+          document.querySelectorAll('input[name="ai-provider"]').forEach(r => {
+            r.checked = r.value === aiConfig.provider;
+          });
+          keyInput.value = aiConfig.apiKey || '';
+          keyContainer.classList.toggle('hidden', aiConfig.provider === 'demo');
+          modalAI.classList.remove('hidden');
+        });
+
+        document.querySelectorAll('input[name="ai-provider"]').forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            keyContainer.classList.toggle('hidden', e.target.value === 'demo');
+          });
+        });
+
+        document.getElementById('btn-close-ai-config').addEventListener('click', () => {
+          modalAI.classList.add('hidden');
+        });
+
+        document.getElementById('btn-save-ai-config').addEventListener('click', () => {
+          const selected = document.querySelector('input[name="ai-provider"]:checked').value;
+          aiConfig = {
+            provider: selected,
+            apiKey: selected === 'demo' ? '' : keyInput.value.trim()
+          };
+          try {
+            localStorage.setItem(STORAGE_KEYS.AI_CONFIG, JSON.stringify(aiConfig));
+          } catch (e) { /* ignore */ }
+          updateAIBadge();
+          modalAI.classList.add('hidden');
+          showToast('Configuration IA enregistrée localement.', 'success');
+        });
+
+        // Modale Signalement de bug
+        const modalBug = document.getElementById('modal-bug');
+        document.getElementById('btn-open-bug-modal').addEventListener('click', () => {
+          modalBug.classList.remove('hidden');
+          document.getElementById('bug-input').focus();
+        });
+        document.getElementById('btn-close-bug-modal').addEventListener('click', () => {
+          modalBug.classList.add('hidden');
+        });
+        document.getElementById('btn-mic-bug').addEventListener('click', () => {
+          startVoiceDictation(
+            document.getElementById('bug-input'),
+            document.getElementById('btn-mic-bug'),
+            document.getElementById('btn-mic-bug-label'),
+            'Dicter le souci'
+          );
+        });
+        document.getElementById('btn-generate-bug').addEventListener('click', async () => {
+          const raw = document.getElementById('bug-input').value.trim();
+          if (!raw) {
+            showToast('Décrivez ou dictez d\'abord le problème rencontré.', 'error');
+            return;
+          }
+          const btn = document.getElementById('btn-generate-bug');
+          btn.disabled = true;
+          btn.textContent = '⏳ Formatage en cours...';
+          try {
+            const ticket = await generateBugTicket(raw);
+            document.getElementById('bug-ticket-output').value = ticket;
+            document.getElementById('btn-email-ticket').href = `mailto:support@alphabette.eu?subject=${encodeURIComponent('[Bug Alphabette] Signalement utilisateur')}&body=${encodeURIComponent(ticket)}`;
+            document.getElementById('bug-result-box').classList.remove('hidden');
+            showToast('Ticket technique formaté avec succès !', 'success');
+          } catch (err) {
+            const fallback = demoGenerateBugTicket(raw);
+            document.getElementById('bug-ticket-output').value = fallback;
+            document.getElementById('btn-email-ticket').href = `mailto:support@alphabette.eu?subject=${encodeURIComponent('[Bug Alphabette] Signalement utilisateur')}&body=${encodeURIComponent(fallback)}`;
+            document.getElementById('bug-result-box').classList.remove('hidden');
+            showToast('Ticket généré via le mode démo local.', 'info');
+          } finally {
+            btn.disabled = false;
+            btn.textContent = '🛠️ Formater le ticket technique';
+          }
+        });
+
+        document.getElementById('btn-copy-ticket').addEventListener('click', () => {
+          copyTextToClipboard(document.getElementById('bug-ticket-output').value, 'Ticket technique copié !');
+        });
+
+        // Fermeture des modales avec la touche Échap
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            modalAI.classList.add('hidden');
+            modalBug.classList.add('hidden');
+          }
+        });
+      }
+
+      /* ======================================================================
+         INITIALISATION AU CHARGEMENT
+         ====================================================================== */
+      window.addEventListener('DOMContentLoaded', () => {
+        loadPassport();
+        loadAIConfig();
+        loadIdeasAndVotes();
+        applyPassportToUI();
+        renderIdeas();
+        renderApps();
+        setupEventListeners();
+      });
+    })();
+  </script>
+</body>
+</html>
+```

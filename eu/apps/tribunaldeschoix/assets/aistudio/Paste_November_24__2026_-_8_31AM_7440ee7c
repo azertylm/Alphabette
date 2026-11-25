@@ -1,0 +1,1887 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <meta name="description" content="Le Bazar par Alphabette — Studio d'humour, tribunal des petits riens, fausses Unes de presse satirique et défis photo locaux." />
+  <title>Le Bazar — Alphabette</title>
+
+  <!-- Polices éditoriales & UI : Playfair Display (Presse Satirique) + Inter (Lisibilité WCAG AAA) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          },
+          colors: {
+            onyx: {
+              bg: '#09090B',
+              card: '#18181B',
+              border: '#27272A',
+              muted: '#A1A1AA',
+            },
+            paper: '#FAF8F5',
+          },
+          boxShadow: {
+            pop: '4px 4px 0px 0px #000000',
+            'pop-sm': '2px 2px 0px 0px #000000',
+            'pop-dark': '4px 4px 0px 0px #FACC15',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Base & confort tactile mobile */
+    html, body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+
+    /* Focus haute visibilité (WCAG AAA) */
+    *:focus-visible {
+      outline: 3px solid #2563EB;
+      outline-offset: 2px;
+    }
+    .dark *:focus-visible {
+      outline: 3px solid #FDE047;
+    }
+
+    /* Animation onde micro active */
+    @keyframes micPulse {
+      0% { transform: scale(0.97); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.75); }
+      70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(220, 38, 38, 0); }
+      100% { transform: scale(0.97); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    .mic-recording {
+      animation: micPulse 1.2s infinite;
+    }
+
+    /* Texture subtile papier journal en mode Clarté */
+    .newsprint-bg {
+      background-color: #FAF8F5;
+      background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
+      background-size: 16px 16px;
+    }
+    .dark .newsprint-bg {
+      background-color: #18181B;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+    }
+
+    /* Masquer les scrollbars horizontales */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-white text-black dark:bg-onyx-bg dark:text-zinc-50 min-h-screen flex flex-col transition-colors duration-200 selection:bg-yellow-300 selection:text-black">
+
+  <!-- ==================== EN-TÊTE FIXE ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-onyx-bg/95 backdrop-blur-md border-b-2 border-black dark:border-zinc-700 px-4 py-3">
+    <div class="max-w-2xl mx-auto flex items-center justify-between gap-2">
+      <!-- Identité Presse Satirique & Pop -->
+      <div class="flex items-center gap-3">
+        <div id="brandBadge" class="w-11 h-11 rounded-2xl bg-yellow-400 text-black border-2 border-black dark:border-yellow-300 flex items-center justify-center font-serif font-black text-2xl shadow-pop-sm transition-colors">
+          B
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-serif text-2xl font-black tracking-tight leading-none">Le Bazar</h1>
+            <span id="modeBadge" class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border border-black dark:border-yellow-400 bg-yellow-300 text-black dark:bg-yellow-400/20 dark:text-yellow-300">
+              Démo
+            </span>
+          </div>
+          <p class="text-xs font-bold text-zinc-700 dark:text-zinc-400 mt-0.5">Studio Satirique · Alphabette</p>
+        </div>
+      </div>
+
+      <!-- Actions : Switch Thème & Paramètres -->
+      <div class="flex items-center gap-2">
+        <button
+          id="btnThemeToggle"
+          type="button"
+          aria-label="Basculer entre le mode Clarté et le mode Onyx"
+          class="min-w-[48px] min-h-[48px] px-3 rounded-2xl border-2 border-black dark:border-zinc-600 bg-zinc-100 dark:bg-onyx-card hover:bg-yellow-200 dark:hover:bg-zinc-800 flex items-center justify-center gap-1.5 font-extrabold text-xs sm:text-sm transition"
+        >
+          <span id="themeIcon" aria-hidden="true">🌙</span>
+          <span id="themeLabel" class="hidden sm:inline">Onyx</span>
+        </button>
+
+        <button
+          id="btnOpenSettings"
+          type="button"
+          aria-label="Ouvrir les paramètres IA et voix"
+          class="min-w-[48px] min-h-[48px] rounded-2xl border-2 border-black dark:border-zinc-600 bg-zinc-100 dark:bg-onyx-card hover:bg-yellow-200 dark:hover:bg-zinc-800 flex items-center justify-center text-xl transition"
+        >
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENU PRINCIPAL ==================== -->
+  <main class="flex-1 w-full max-w-2xl mx-auto px-4 pt-5 pb-28">
+
+    <!-- ==================== MODULE 1 : LE TRIBUNAL DES PETITS RIENS ==================== -->
+    <section id="tab-tribunal" class="tab-panel space-y-5" aria-labelledby="heading-tribunal">
+      <!-- Bannière d'introduction -->
+      <div class="rounded-3xl p-5 border-2 border-black dark:border-red-500/70 bg-red-50 dark:bg-onyx-card shadow-pop dark:shadow-none space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-red-600 text-white dark:bg-red-500 dark:text-black">
+            ⚖️ Audience Ouverte
+          </span>
+          <!-- Sélecteur 2 ou 3 joueurs -->
+          <div class="inline-flex rounded-xl border-2 border-black dark:border-zinc-600 overflow-hidden bg-white dark:bg-zinc-900" role="group" aria-label="Nombre de joueurs">
+            <button type="button" data-players="2" class="player-count-btn min-h-[40px] px-3.5 font-extrabold text-xs transition">2 joueurs</button>
+            <button type="button" data-players="3" class="player-count-btn min-h-[40px] px-3.5 font-extrabold text-xs transition border-l-2 border-black dark:border-zinc-600">3 joueurs</button>
+          </div>
+        </div>
+
+        <div>
+          <h2 id="heading-tribunal" class="font-serif text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+            Le Tribunal des Petits Riens
+          </h2>
+          <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-300 mt-1">
+            Chacun plaide sa cause en 30 secondes. Le Juge tranche sans pitié et inflige un gage absurde.
+          </p>
+        </div>
+
+        <!-- Sujet du litige -->
+        <div class="space-y-2">
+          <label for="tribunalSubject" class="block text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
+            Sujet du litige
+          </label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              id="tribunalSubject"
+              type="text"
+              value="Le rangement stratégique du lave-vaisselle"
+              placeholder="Ex : Pain au chocolat vs Chocolatine..."
+              class="flex-1 min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-950 font-bold text-sm sm:text-base placeholder:text-zinc-500"
+            />
+            <button
+              id="btnRandomSubject"
+              type="button"
+              class="min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-yellow-400 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm whitespace-nowrap shadow-pop-sm active:translate-y-0.5 transition"
+            >
+              🎲 Sujet absurde
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cartes de plaidoirie des joueurs (générées par JS) -->
+      <div id="playersContainer" class="space-y-4"></div>
+
+      <!-- Sélecteur de personnalité du Juge IA -->
+      <div class="rounded-3xl p-5 border-2 border-black dark:border-zinc-700 bg-white dark:bg-onyx-card space-y-3">
+        <p class="text-xs font-black uppercase tracking-wider text-zinc-800 dark:text-zinc-300">
+          Choisissez votre Juge IA :
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" role="radiogroup" aria-label="Personnalité du juge">
+          <button type="button" data-judge="solennel" class="judge-btn min-h-[64px] p-3 rounded-2xl border-2 text-left flex sm:flex-col items-center sm:items-start gap-2.5 transition">
+            <span class="text-2xl" aria-hidden="true">🏛️</span>
+            <div>
+              <p class="font-black text-sm leading-tight">Magistrat Ultra-Solennel</p>
+              <p class="text-[11px] font-semibold opacity-80">Code civil & grandiloquence</p>
+            </div>
+          </button>
+          <button type="button" data-judge="satiriste" class="judge-btn min-h-[64px] p-3 rounded-2xl border-2 text-left flex sm:flex-col items-center sm:items-start gap-2.5 transition">
+            <span class="text-2xl" aria-hidden="true">😏</span>
+            <div>
+              <p class="font-black text-sm leading-tight">Satiriste Grinçant</p>
+              <p class="text-[11px] font-semibold opacity-80">Ironie mordante & piques</p>
+            </div>
+          </button>
+          <button type="button" data-judge="sportif" class="judge-btn min-h-[64px] p-3 rounded-2xl border-2 text-left flex sm:flex-col items-center sm:items-start gap-2.5 transition">
+            <span class="text-2xl" aria-hidden="true">📣</span>
+            <div>
+              <p class="font-black text-sm leading-tight">Commentateur Sportif</p>
+              <p class="text-[11px] font-semibold opacity-80">Hystérique & VAR du litige</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- Bouton principal : Rendre le Verdict -->
+        <button
+          id="btnRenderVerdict"
+          type="button"
+          class="w-full min-h-[58px] mt-2 rounded-2xl border-2 border-black dark:border-red-400 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400 text-white dark:text-black font-black text-lg flex items-center justify-center gap-2.5 shadow-pop dark:shadow-none active:translate-y-0.5 transition"
+        >
+          <span aria-hidden="true">⚖️</span>
+          <span>Rendre le Verdict</span>
+        </button>
+      </div>
+
+      <!-- Résultat : ARRÊT DU TRIBUNAL -->
+      <article id="verdictCard" class="hidden rounded-3xl p-5 sm:p-6 border-4 border-black dark:border-yellow-400 newsprint-bg shadow-pop dark:shadow-none space-y-4">
+        <div class="border-b-2 border-black dark:border-zinc-600 pb-3 flex items-center justify-between gap-2">
+          <div>
+            <p id="verdictCaseNumber" class="text-xs font-black uppercase tracking-widest text-red-700 dark:text-red-400"></p>
+            <h3 class="font-serif text-2xl sm:text-3xl font-black uppercase tracking-tight">Arrêt du Tribunal</h3>
+          </div>
+          <span id="verdictJudgeIcon" class="text-3xl" aria-hidden="true">⚖️</span>
+        </div>
+
+        <p id="verdictJudgeLabel" class="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-black text-white dark:bg-zinc-800 dark:text-yellow-300 inline-block"></p>
+
+        <p id="verdictBody" class="text-base font-semibold leading-relaxed whitespace-pre-line text-zinc-900 dark:text-zinc-100"></p>
+
+        <!-- Encadré Rouge : LE COUPABLE DÉSIGNÉ -->
+        <div class="p-4 rounded-2xl border-2 border-red-700 bg-red-600 text-white dark:bg-red-500/20 dark:border-red-400 dark:text-red-200">
+          <p class="text-xs font-black uppercase tracking-widest opacity-95">🚨 Le Coupable Désigné</p>
+          <p id="verdictCulprit" class="font-serif text-xl sm:text-2xl font-black mt-1"></p>
+        </div>
+
+        <!-- Encadré Jaune : GAGE SYMBOLIQUE ABSURDE -->
+        <div class="p-4 rounded-2xl border-2 border-black dark:border-yellow-400 bg-yellow-300 text-black dark:bg-yellow-400/20 dark:text-yellow-200">
+          <p class="text-xs font-black uppercase tracking-widest">🎭 Gage Symbolique Absurde</p>
+          <p id="verdictForfeit" class="font-extrabold text-base mt-1 leading-snug"></p>
+        </div>
+
+        <!-- Boutons d'action Verdict -->
+        <div class="flex flex-wrap items-center gap-2.5 pt-2 border-t-2 border-black/20 dark:border-zinc-700">
+          <button id="btnVerdictSpeak" type="button" class="flex-1 min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-500 bg-white dark:bg-zinc-900 font-black text-sm flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+            🔊 Écouter le verdict
+          </button>
+          <button id="btnVerdictStop" type="button" aria-label="Arrêter la lecture" class="min-w-[50px] min-h-[50px] px-3 rounded-2xl border-2 border-black dark:border-zinc-500 bg-white dark:bg-zinc-900 font-black text-sm">
+            ⏹️
+          </button>
+          <button id="btnVerdictShare" type="button" class="w-full sm:w-auto flex-1 min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-yellow-400 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm flex items-center justify-center gap-2 shadow-pop-sm transition">
+            📥 Partager l'arrêt (PNG)
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== MODULE 2 : LA UNE DE L'ABSURDE ==================== -->
+    <section id="tab-une" class="tab-panel hidden space-y-5" aria-labelledby="heading-une">
+      <div class="rounded-3xl p-5 border-2 border-black dark:border-yellow-400/70 bg-yellow-50 dark:bg-onyx-card shadow-pop dark:shadow-none space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black text-yellow-300 dark:bg-yellow-400 dark:text-black">
+            📰 Presse Satirique
+          </span>
+          <span class="text-xs font-extrabold text-zinc-700 dark:text-zinc-400">Édition Spéciale</span>
+        </div>
+
+        <div>
+          <h2 id="heading-une" class="font-serif text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+            La Une de l'Absurde
+          </h2>
+          <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-300 mt-1">
+            Transformez une photo banale et deux phrases du quotidien en scandale planétaire à la Une !
+          </p>
+        </div>
+
+        <!-- Zone Photo -->
+        <div class="space-y-2.5">
+          <label
+            for="uneFileInput"
+            class="block cursor-pointer rounded-2xl border-2 border-dashed border-black dark:border-yellow-400 bg-white dark:bg-zinc-950 p-4 text-center hover:bg-yellow-100/50 dark:hover:bg-zinc-900 transition"
+          >
+            <input id="uneFileInput" type="file" accept="image/*" capture="environment" class="sr-only" />
+            <div id="unePhotoPlaceholder" class="py-4 space-y-1.5">
+              <div class="text-4xl" aria-hidden="true">📷</div>
+              <p class="font-black text-base">Prendre ou importer une photo</p>
+              <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Un repas, une partie de pétanque, un vélo cassé...</p>
+            </div>
+            <img id="unePhotoPreview" alt="Aperçu pour la Une du journal" class="hidden max-h-60 mx-auto rounded-xl object-cover border-2 border-black dark:border-zinc-700" />
+          </label>
+
+          <button
+            id="btnUneDemoPhoto"
+            type="button"
+            class="w-full min-h-[48px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 font-extrabold text-sm transition"
+          >
+            🎨 Utiliser une photo démo illustrée
+          </button>
+        </div>
+
+        <!-- Zone Anecdote -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <label for="uneAnecdote" class="text-xs font-black uppercase tracking-wider">
+              Votre anecdote (2 phrases)
+            </label>
+            <button
+              id="btnUneDemoAnecdote"
+              type="button"
+              class="min-h-[38px] px-3 rounded-xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-900 font-extrabold text-xs hover:bg-yellow-200 dark:hover:bg-zinc-800 transition"
+            >
+              🎲 Anecdote démo
+            </button>
+          </div>
+          <div class="flex gap-2 items-start">
+            <textarea
+              id="uneAnecdote"
+              rows="3"
+              placeholder="Ex : Tonton Michel a encore raté le cochonnet de trois mètres et a accusé le vent marin..."
+              class="flex-1 p-3.5 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-950 font-semibold text-sm sm:text-base placeholder:text-zinc-500"
+            ></textarea>
+            <button
+              id="btnUneMic"
+              type="button"
+              aria-label="Dicter votre anecdote au micro"
+              class="min-w-[52px] min-h-[52px] rounded-2xl border-2 border-black dark:border-zinc-600 bg-red-600 text-white font-black text-xl flex items-center justify-center shadow-pop-sm transition"
+            >
+              🎙️
+            </button>
+          </div>
+        </div>
+
+        <!-- Bouton Imprimer la Une -->
+        <button
+          id="btnPrintUne"
+          type="button"
+          class="w-full min-h-[58px] rounded-2xl border-2 border-black dark:border-yellow-400 bg-black dark:bg-yellow-400 text-yellow-300 dark:text-black font-black text-lg flex items-center justify-center gap-2.5 shadow-pop dark:shadow-none active:translate-y-0.5 transition"
+        >
+          <span aria-hidden="true">📰</span>
+          <span>Imprimer la Une</span>
+        </button>
+      </div>
+
+      <!-- Résultat : FAUSSE UNE DE JOURNAL SATIRIQUE -->
+      <article id="newspaperCard" class="hidden rounded-3xl p-5 sm:p-6 border-4 border-black dark:border-zinc-500 newsprint-bg shadow-pop dark:shadow-none space-y-4">
+        <!-- Masthead Journal -->
+        <div class="border-b-4 border-double border-black dark:border-zinc-500 pb-2 text-center">
+          <div class="flex items-center justify-between text-[10px] sm:text-xs font-black uppercase tracking-widest border-b border-black dark:border-zinc-600 pb-1 mb-1.5">
+            <span>Édition Spéciale</span>
+            <span id="newsDate"></span>
+            <span>Prix : 1 Sourire</span>
+          </div>
+          <h3 class="font-serif text-3xl sm:text-4xl font-black uppercase tracking-tight leading-none">
+            LE BAZAR DU JOUR
+          </h3>
+          <p class="text-[11px] font-bold italic text-zinc-700 dark:text-zinc-400 mt-1">
+            « L'information vérifiée à peu près, dramatisée avec passion »
+          </p>
+        </div>
+
+        <!-- Gros Titre Choc & Sous-titre -->
+        <div class="space-y-1.5 text-center">
+          <h4 id="newsHeadline" class="font-serif text-2xl sm:text-3xl font-black uppercase leading-tight text-red-700 dark:text-red-400"></h4>
+          <p id="newsSubtitle" class="font-serif italic text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-200"></p>
+        </div>
+
+        <!-- Photo & Légende -->
+        <figure class="space-y-1.5">
+          <img id="newsPhoto" alt="Photo de la Une" class="w-full max-h-72 object-cover rounded-xl border-2 border-black dark:border-zinc-600" />
+          <figcaption id="newsCaption" class="text-xs font-bold italic text-zinc-700 dark:text-zinc-400 text-center"></figcaption>
+        </figure>
+
+        <!-- Article en 2 colonnes -->
+        <div id="newsArticle" class="columns-1 sm:columns-2 gap-5 text-sm font-medium leading-relaxed text-justify text-zinc-900 dark:text-zinc-100 border-t-2 border-black/20 dark:border-zinc-700 pt-3"></div>
+
+        <!-- Encart Météo Absurde du Jour -->
+        <div class="p-3.5 rounded-2xl border-2 border-black dark:border-blue-400 bg-blue-100 dark:bg-blue-500/20 text-black dark:text-blue-100 flex items-start gap-3">
+          <span class="text-2xl leading-none" aria-hidden="true">🌦️</span>
+          <div>
+            <p class="text-xs font-black uppercase tracking-wider">Météo Absurde du Jour</p>
+            <p id="newsWeather" class="text-sm font-bold mt-0.5"></p>
+          </div>
+        </div>
+
+        <!-- Boutons d'action Une -->
+        <div class="flex flex-wrap items-center gap-2.5 pt-2 border-t-2 border-black/20 dark:border-zinc-700">
+          <button id="btnFlashInfo" type="button" class="flex-1 min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-red-400 bg-red-600 hover:bg-red-700 dark:bg-red-500 text-white dark:text-black font-black text-sm flex items-center justify-center gap-2 transition">
+            📺 Mode Flash Info
+          </button>
+          <button id="btnUneStopAudio" type="button" aria-label="Arrêter le Flash Info" class="min-w-[50px] min-h-[50px] px-3 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-900 font-black text-sm">
+            ⏹️
+          </button>
+          <button id="btnUneDownload" type="button" class="w-full sm:w-auto flex-1 min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-yellow-400 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm flex items-center justify-center gap-2 shadow-pop-sm transition">
+            📥 Télécharger la Une (PNG)
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== MODULE 3 : DÉFI MICRO-LOCAL ==================== -->
+    <section id="tab-defi" class="tab-panel hidden space-y-5" aria-labelledby="heading-defi">
+      <!-- Carte du Défi de la semaine -->
+      <div class="rounded-3xl p-5 border-2 border-black dark:border-blue-400/80 bg-blue-50 dark:bg-onyx-card shadow-pop dark:shadow-none space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-blue-700 text-white dark:bg-blue-400 dark:text-black">
+            📸 Défi Micro-Local
+          </span>
+          <span class="text-xs font-extrabold text-blue-900 dark:text-blue-300">Zéro algorithme</span>
+        </div>
+
+        <div class="p-4 rounded-2xl border-2 border-black dark:border-blue-400/50 bg-white dark:bg-zinc-950 space-y-2">
+          <p class="text-xs font-black uppercase tracking-widest text-blue-700 dark:text-blue-400">Défi créatif actif</p>
+          <h2 id="heading-defi" class="font-serif text-xl sm:text-2xl font-black leading-snug"></h2>
+          <p id="defiHint" class="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-400"></p>
+        </div>
+
+        <button
+          id="btnNextChallenge"
+          type="button"
+          class="w-full min-h-[48px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-yellow-300 hover:bg-yellow-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-black dark:text-yellow-300 font-black text-sm transition"
+        >
+          🔄 Autre défi aléatoire
+        </button>
+
+        <!-- Formulaire rapide de publication -->
+        <div class="pt-3 border-t-2 border-black/15 dark:border-zinc-800 space-y-3">
+          <p class="text-xs font-black uppercase tracking-wider">Participer au défi</p>
+
+          <label
+            for="defiFileInput"
+            class="block cursor-pointer rounded-2xl border-2 border-dashed border-black dark:border-blue-400 bg-white dark:bg-zinc-950 p-4 text-center hover:bg-blue-100/50 dark:hover:bg-zinc-900 transition"
+          >
+            <input id="defiFileInput" type="file" accept="image/*" capture="environment" class="sr-only" />
+            <div id="defiPhotoPlaceholder" class="py-2 space-y-1">
+              <div class="text-3xl" aria-hidden="true">📷</div>
+              <p class="font-extrabold text-sm">Prendre ou choisir votre photo</p>
+            </div>
+            <img id="defiPhotoPreview" alt="Aperçu photo du défi" class="hidden max-h-52 mx-auto rounded-xl object-cover border-2 border-black dark:border-zinc-700" />
+          </label>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <input
+              id="defiTitleInput"
+              type="text"
+              maxlength="60"
+              placeholder="Titre court (ex : Bleu Méditerranée)"
+              class="min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-950 font-bold text-sm placeholder:text-zinc-500"
+            />
+            <input
+              id="defiCityInput"
+              type="text"
+              maxlength="40"
+              value="La Grande-Motte"
+              placeholder="Votre commune"
+              class="min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-white dark:bg-zinc-950 font-bold text-sm placeholder:text-zinc-500"
+            />
+          </div>
+
+          <button
+            id="btnPublishDefi"
+            type="button"
+            class="w-full min-h-[54px] rounded-2xl border-2 border-black dark:border-blue-400 bg-blue-700 hover:bg-blue-800 dark:bg-blue-400 dark:hover:bg-blue-300 text-white dark:text-black font-black text-base flex items-center justify-center gap-2 shadow-pop-sm dark:shadow-none active:translate-y-0.5 transition"
+          >
+            ✨ Publier dans la galerie locale
+          </button>
+        </div>
+      </div>
+
+      <!-- Galerie Locale Éphémère & Bienveillante -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between px-1">
+          <h3 class="font-serif text-xl font-black">Galerie du Quartier</h3>
+          <span class="text-xs font-bold text-zinc-600 dark:text-zinc-400">Bienveillance · Sans compteur</span>
+        </div>
+        <div id="defiGallery" class="space-y-4"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BARRE DE NAVIGATION INFÉRIEURE (3 ONGLETS) ==================== -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-onyx-bg/95 backdrop-blur-md border-t-2 border-black dark:border-zinc-700 px-3 py-2" aria-label="Navigation principale">
+    <div class="max-w-2xl mx-auto grid grid-cols-3 gap-2">
+      <button type="button" data-tab="tribunal" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-black text-xs transition border-2">
+        <span class="text-xl leading-none" aria-hidden="true">⚖️</span>
+        <span>Le Tribunal</span>
+      </button>
+      <button type="button" data-tab="une" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-black text-xs transition border-2">
+        <span class="text-xl leading-none" aria-hidden="true">📰</span>
+        <span>La Une</span>
+      </button>
+      <button type="button" data-tab="defi" class="nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-black text-xs transition border-2">
+        <span class="text-xl leading-none" aria-hidden="true">📸</span>
+        <span>Défi Local</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODALE PARAMÈTRES (API IA & VOIX) ==================== -->
+  <div id="modalSettings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="w-full max-w-md rounded-3xl bg-white dark:bg-onyx-card border-2 border-black dark:border-zinc-600 p-6 space-y-5 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h2 id="settingsTitle" class="font-serif text-2xl font-black">⚙️ Paramètres</h2>
+        <button id="btnCloseSettings" type="button" aria-label="Fermer les paramètres" class="min-w-[48px] min-h-[48px] rounded-2xl border-2 border-black dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800 font-black text-lg">
+          ✕
+        </button>
+      </div>
+
+      <!-- Choix fournisseur IA -->
+      <div class="space-y-1.5">
+        <label for="selectProvider" class="block text-sm font-black">Moteur de génération</label>
+        <select id="selectProvider" class="w-full min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-950 font-bold text-sm">
+          <option value="demo">Mode Démo Hors-Ligne (Rapide & gratuit)</option>
+          <option value="gemini">Google Gemini (gemini-2.0-flash)</option>
+          <option value="mistral">Mistral AI (mistral-small-latest)</option>
+        </select>
+      </div>
+
+      <!-- Clé API -->
+      <div id="apiKeyWrapper" class="space-y-1.5">
+        <label for="inputApiKey" class="block text-sm font-black">Clé API (stockée en local)</label>
+        <input
+          id="inputApiKey"
+          type="password"
+          placeholder="Collez votre clé Gemini ou Mistral..."
+          class="w-full min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-950 font-semibold text-sm"
+        />
+        <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+          Votre clé reste 100% sur votre appareil. Si elle est vide ou hors-ligne, Le Bazar bascule automatiquement en Mode Démo.
+        </p>
+      </div>
+
+      <!-- Vitesse TTS -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label for="rangeTtsSpeed" class="text-sm font-black">Vitesse de lecture vocale (TTS)</label>
+          <span id="ttsSpeedLabel" class="text-sm font-black text-blue-700 dark:text-yellow-300">1.05x</span>
+        </div>
+        <input id="rangeTtsSpeed" type="range" min="0.75" max="1.5" step="0.05" value="1.05" class="w-full accent-black dark:accent-yellow-400 h-3 rounded-lg cursor-pointer" />
+        <div class="flex justify-between text-xs font-bold text-zinc-600 dark:text-zinc-400">
+          <span>0.75x Lent</span>
+          <span>1.0x Normal</span>
+          <span>1.5x Rapide</span>
+        </div>
+      </div>
+
+      <button id="btnSaveSettings" type="button" class="w-full min-h-[54px] rounded-2xl border-2 border-black dark:border-yellow-400 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-base shadow-pop-sm transition">
+        Enregistrer les réglages
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast" role="status" aria-live="polite" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl bg-black dark:bg-yellow-400 text-white dark:text-black font-black text-sm shadow-xl border-2 border-yellow-400 dark:border-black text-center max-w-[90vw]"></div>
+
+  <!-- ==================== JAVASCRIPT MODULAIRE ==================== -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* ============================================================
+         1. ÉTAT GLOBAL & STOCKAGE LOCAL (LOCAL-FIRST)
+         ============================================================ */
+      const STORAGE = {
+        SETTINGS: 'lebazar_settings_v1',
+        GALLERY: 'lebazar_gallery_v1',
+      };
+
+      const state = {
+        activeTab: 'tribunal',
+        settings: {
+          theme: 'light', // 'light' (Clarté) | 'dark' (Onyx)
+          provider: 'demo', // 'demo' | 'gemini' | 'mistral'
+          apiKey: '',
+          ttsSpeed: 1.05,
+        },
+        // Tribunal
+        playerCount: 2,
+        players: [
+          { name: 'Camille', plea: '' },
+          { name: 'Julien', plea: '' },
+          { name: 'Sam', plea: '' },
+        ],
+        judge: 'solennel', // 'solennel' | 'satiriste' | 'sportif'
+        activeTimer: null,
+        activeRecognition: null,
+        recordingPlayerIdx: null,
+        currentVerdict: null,
+        // La Une
+        unePhotoDataUrl: null,
+        currentUne: null,
+        // Défi Local
+        currentChallengeIdx: 0,
+        defiPhotoDataUrl: null,
+        gallery: [],
+      };
+
+      function loadState() {
+        try {
+          const s = JSON.parse(localStorage.getItem(STORAGE.SETTINGS));
+          if (s) state.settings = { ...state.settings, ...s };
+          const g = JSON.parse(localStorage.getItem(STORAGE.GALLERY));
+          if (Array.isArray(g) && g.length > 0) {
+            state.gallery = g;
+          } else {
+            state.gallery = createInitialDemoGallery();
+            localStorage.setItem(STORAGE.GALLERY, JSON.stringify(state.gallery));
+          }
+        } catch (err) {
+          console.warn('Lecture localStorage:', err);
+          state.gallery = createInitialDemoGallery();
+        }
+      }
+
+      function saveSettings() {
+        try {
+          localStorage.setItem(STORAGE.SETTINGS, JSON.stringify(state.settings));
+        } catch (e) { console.warn(e); }
+        updateModeBadge();
+      }
+
+      function saveGallery() {
+        try {
+          localStorage.setItem(STORAGE.GALLERY, JSON.stringify(state.gallery));
+        } catch (e) {
+          showToast('Mémoire locale pleine : supprimez une ancienne photo.');
+        }
+        renderGallery();
+      }
+
+      /* ============================================================
+         2. MOTEUR AUDIO SYNTHÉTIQUE (WEB AUDIO API — ZÉRO FICHIER)
+         ============================================================ */
+      const SoundEngine = (() => {
+        let ctx = null;
+        function getCtx() {
+          if (!ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) ctx = new AudioCtx();
+          }
+          if (ctx && ctx.state === 'suspended') ctx.resume();
+          return ctx;
+        }
+
+        // 1. Coup de marteau de juge (double frappe boisée réaliste)
+        function playGavel() {
+          const c = getCtx();
+          if (!c) return;
+          const now = c.currentTime;
+          [0, 0.23].forEach((offset, i) => {
+            const t = now + offset;
+            // Corps boisé (oscillateur triangle à pitch décroissant)
+            const osc = c.createOscillator();
+            const gain = c.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(i === 0 ? 210 : 195, t);
+            osc.frequency.exponentialRampToValueAtTime(68, t + 0.11);
+            gain.gain.setValueAtTime(0.75, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+            osc.connect(gain);
+            gain.connect(c.destination);
+            osc.start(t);
+            osc.stop(t + 0.15);
+
+            // Claquement sec (bruit blanc filtré passe-bande)
+            const bufSize = Math.floor(c.sampleRate * 0.05);
+            const buf = c.createBuffer(1, bufSize, c.sampleRate);
+            const data = buf.getChannelData(0);
+            for (let j = 0; j < bufSize; j++) data[j] = (Math.random() * 2 - 1) * Math.exp(-j / (bufSize * 0.25));
+            const noise = c.createBufferSource();
+            noise.buffer = buf;
+            const filter = c.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(950, t);
+            filter.Q.setValueAtTime(2.5, t);
+            const nGain = c.createGain();
+            nGain.gain.setValueAtTime(0.6, t);
+            nGain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+            noise.connect(filter);
+            filter.connect(nGain);
+            nGain.connect(c.destination);
+            noise.start(t);
+          });
+        }
+
+        // 2. Jingle Journal Télévisé (Flash Info dramatique)
+        function playNewsJingle() {
+          const c = getCtx();
+          if (!c) return;
+          const now = c.currentTime;
+          // Arpège rapide + accord final brillant
+          const notes = [
+            { f: 523.25, t: 0.0, d: 0.14 },  // C5
+            { f: 659.25, t: 0.12, d: 0.14 }, // E5
+            { f: 783.99, t: 0.24, d: 0.14 }, // G5
+            { f: 1046.5, t: 0.38, d: 0.75 }, // C6
+            { f: 523.25, t: 0.38, d: 0.75 }, // C5 accord
+            { f: 783.99, t: 0.38, d: 0.75 }, // G5 accord
+            { f: 130.81, t: 0.38, d: 0.85 }, // C3 basse
+          ];
+          notes.forEach(n => {
+            const osc = c.createOscillator();
+            const filter = c.createBiquadFilter();
+            const gain = c.createGain();
+            osc.type = n.f < 200 ? 'triangle' : 'sawtooth';
+            osc.frequency.setValueAtTime(n.f, now + n.t);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(2400, now + n.t);
+            filter.frequency.exponentialRampToValueAtTime(900, now + n.t + n.d);
+            gain.gain.setValueAtTime(0.001, now + n.t);
+            gain.gain.linearRampToValueAtTime(n.f < 200 ? 0.35 : 0.14, now + n.t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(c.destination);
+            osc.start(now + n.t);
+            osc.stop(now + n.t + n.d + 0.02);
+          });
+        }
+
+        // 3. Déclencheur appareil photo (double clic mécanique)
+        function playShutter() {
+          const c = getCtx();
+          if (!c) return;
+          const now = c.currentTime;
+          [0, 0.065].forEach((offset, idx) => {
+            const t = now + offset;
+            const bufSize = Math.floor(c.sampleRate * 0.03);
+            const buf = c.createBuffer(1, bufSize, c.sampleRate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.18));
+            const src = c.createBufferSource();
+            src.buffer = buf;
+            const hp = c.createBiquadFilter();
+            hp.type = 'highpass';
+            hp.frequency.setValueAtTime(idx === 0 ? 1800 : 2600, t);
+            const g = c.createGain();
+            g.gain.setValueAtTime(0.45, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+            src.connect(hp);
+            hp.connect(g);
+            g.connect(c.destination);
+            src.start(t);
+          });
+        }
+
+        return { playGavel, playNewsJingle, playShutter };
+      })();
+
+      /* ============================================================
+         3. UTILITAIRES UI, TTS, STT & REDIMENSIONNEMENT IMAGE
+         ============================================================ */
+      let toastTimer = null;
+      function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.add('hidden'), 3200);
+      }
+
+      function speakText(text) {
+        if (!('speechSynthesis' in window)) {
+          showToast('Synthèse vocale non supportée sur ce navigateur.');
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'fr-FR';
+        u.rate = parseFloat(state.settings.ttsSpeed) || 1.05;
+        window.speechSynthesis.speak(u);
+      }
+
+      function stopSpeaking() {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+
+      // Compression & redimensionnement propre des photos smartphones pour localStorage & Canvas
+      function processImageFile(file, maxWidth = 900) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = reject;
+          reader.onload = () => {
+            const img = new Image();
+            img.onerror = reject;
+            img.onload = () => {
+              const scale = Math.min(1, maxWidth / img.width);
+              const canvas = document.createElement('canvas');
+              canvas.width = Math.round(img.width * scale);
+              canvas.height = Math.round(img.height * scale);
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL('image/jpeg', 0.82));
+            };
+            img.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Générateur d'images illustrées sur Canvas (pour Démo Une & Galerie initiale)
+      function createIllustratedCanvasImage({ bg1, bg2, emoji, title, subtitle }) {
+        const c = document.createElement('canvas');
+        c.width = 800;
+        c.height = 540;
+        const ctx = c.getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 800, 540);
+        grad.addColorStop(0, bg1);
+        grad.addColorStop(1, bg2);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 800, 540);
+
+        // Motifs pop en arrière-plan
+        ctx.fillStyle = 'rgba(255,255,255,0.16)';
+        ctx.beginPath(); ctx.arc(130, 120, 95, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(690, 420, 130, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,0.08)';
+        ctx.fillRect(40, 40, 720, 460);
+
+        // Emoji central géant
+        ctx.font = '150px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(emoji, 400, 225);
+
+        // Bandeau titre
+        ctx.fillStyle = 'rgba(0,0,0,0.72)';
+        ctx.fillRect(80, 355, 640, 110);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 34px Inter, sans-serif';
+        ctx.fillText(title, 400, 396);
+        ctx.fillStyle = '#FDE047';
+        ctx.font = '600 22px Inter, sans-serif';
+        ctx.fillText(subtitle, 400, 438);
+
+        return c.toDataURL('image/jpeg', 0.85);
+      }
+
+      function applyTheme() {
+        const isDark = state.settings.theme === 'dark';
+        document.documentElement.classList.toggle('dark', isDark);
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#09090B' : '#FFFFFF');
+        document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+        document.getElementById('themeLabel').textContent = isDark ? 'Clarté' : 'Onyx';
+      }
+
+      function updateModeBadge() {
+        const badge = document.getElementById('modeBadge');
+        if (state.settings.provider === 'gemini' && state.settings.apiKey.trim()) badge.textContent = 'Gemini';
+        else if (state.settings.provider === 'mistral' && state.settings.apiKey.trim()) badge.textContent = 'Mistral';
+        else badge.textContent = 'Démo';
+      }
+
+      const TAB_STYLES = {
+        tribunal: 'bg-red-600 text-white border-black dark:bg-red-500 dark:text-black dark:border-red-300',
+        une: 'bg-yellow-400 text-black border-black dark:bg-yellow-400 dark:text-black dark:border-yellow-200',
+        defi: 'bg-blue-700 text-white border-black dark:bg-blue-400 dark:text-black dark:border-blue-200',
+      };
+
+      function switchTab(tabName) {
+        state.activeTab = tabName;
+        stopSpeaking();
+        stopPlayerRecording();
+
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          const isCurrent = btn.dataset.tab === tabName;
+          btn.className = `nav-btn min-h-[56px] rounded-2xl flex flex-col items-center justify-center gap-0.5 font-black text-xs transition border-2 ${
+            isCurrent
+              ? TAB_STYLES[tabName]
+              : 'border-transparent text-zinc-700 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+          }`;
+          btn.setAttribute('aria-current', isCurrent ? 'page' : 'false');
+        });
+      }
+
+      /* ============================================================
+         4. CLIENT API IA UNIFIÉ (GEMINI / MISTRAL / MODE DÉMO)
+         ============================================================ */
+      async function callAI({ systemPrompt, userPrompt, expectJson = true }) {
+        const { provider, apiKey } = state.settings;
+        if (provider === 'demo' || !apiKey.trim()) return null;
+
+        try {
+          if (provider === 'gemini') {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey.trim())}`;
+            const body = {
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+            };
+            if (expectJson) body.generationConfig = { responseMimeType: 'application/json' };
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body),
+            });
+            if (!res.ok) throw new Error('Gemini API error');
+            const data = await res.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+          } else if (provider === 'mistral') {
+            const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey.trim()}`,
+              },
+              body: JSON.stringify({
+                model: 'mistral-small-latest',
+                messages: [
+                  { role: 'system', content: systemPrompt },
+                  { role: 'user', content: userPrompt },
+                ],
+                response_format: expectJson ? { type: 'json_object' } : undefined,
+              }),
+            });
+            if (!res.ok) throw new Error('Mistral API error');
+            const data = await res.json();
+            return data.choices?.[0]?.message?.content || null;
+          }
+        } catch (err) {
+          console.warn('Fallback Mode Démo:', err);
+          showToast('API indisponible : utilisation du Mode Démo !');
+          return null;
+        }
+        return null;
+      }
+
+      /* ============================================================
+         5. EXPORT CANVAS HAUTE RÉSOLUTION & PARTAGE WHATSAPP / PNG
+         ============================================================ */
+      function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 30) {
+        const paragraphs = String(text || '').split('\n');
+        let curY = y;
+        let totalLines = 0;
+
+        for (const para of paragraphs) {
+          const words = para.split(/\s+/);
+          let line = '';
+          for (let i = 0; i < words.length; i++) {
+            const testLine = line ? `${line} ${words[i]}` : words[i];
+            if (ctx.measureText(testLine).width > maxWidth && line) {
+              ctx.fillText(line, x, curY);
+              curY += lineHeight;
+              totalLines++;
+              line = words[i];
+              if (totalLines >= maxLines) return curY;
+            } else {
+              line = testLine;
+            }
+          }
+          if (line) {
+            ctx.fillText(line, x, curY);
+            curY += lineHeight;
+            totalLines++;
+          }
+          curY += lineHeight * 0.25;
+        }
+        return curY;
+      }
+
+      async function shareOrDownloadCanvas(canvas, filename, shareTitle) {
+        return new Promise((resolve) => {
+          canvas.toBlob(async (blob) => {
+            if (!blob) {
+              showToast('Erreur lors de la génération PNG.');
+              return resolve();
+            }
+            const file = new File([blob], filename, { type: 'image/png' });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({
+                  title: shareTitle,
+                  text: 'Créé avec Le Bazar · Alphabette',
+                  files: [file],
+                });
+                showToast('✅ Image partagée !');
+                return resolve();
+              } catch (err) {
+                if (err.name === 'AbortError') return resolve();
+              }
+            }
+            // Téléchargement PNG direct
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            showToast('📥 Image PNG téléchargée !');
+            resolve();
+          }, 'image/png');
+        });
+      }
+
+      function exportVerdictPNG(v) {
+        const c = document.createElement('canvas');
+        c.width = 1080;
+        c.height = 1350;
+        const ctx = c.getContext('2d');
+
+        // Fond papier journal chaud
+        ctx.fillStyle = '#FAF8F5';
+        ctx.fillRect(0, 0, c.width, c.height);
+
+        // Double bordure officielle
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 10;
+        ctx.strokeRect(28, 28, c.width - 56, c.height - 56);
+        ctx.lineWidth = 3;
+        ctx.strokeRect(46, 46, c.width - 92, c.height - 92);
+
+        // Bandeau d'en-tête
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(66, 66, c.width - 132, 130);
+        ctx.fillStyle = '#FACC15';
+        ctx.font = '900 24px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`⚖️  ${v.caseNumber}  ·  TRIBUNAL DES PETITS RIENS`, 540, 110);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 54px "Playfair Display", Georgia, serif';
+        ctx.fillText('ARRÊT DU TRIBUNAL', 540, 172);
+
+        // Sujet & Juge
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#DC2626';
+        ctx.font = '800 26px Inter, sans-serif';
+        ctx.fillText(`JUGE : ${v.judgeLabel.toUpperCase()}`, 82, 248);
+
+        ctx.fillStyle = '#18181B';
+        ctx.font = '700 28px Inter, sans-serif';
+        let y = wrapCanvasText(ctx, `Litige : « ${v.subject} »`, 82, 294, 916, 38, 2);
+
+        // Séparateur
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(82, y + 8, 916, 4);
+
+        // Attendus / Jugement
+        ctx.fillStyle = '#111827';
+        ctx.font = '500 30px Inter, sans-serif';
+        y = wrapCanvasText(ctx, v.reasoning, 82, y + 60, 916, 44, 11);
+
+        // Encadré Rouge : Coupable
+        const culpritY = Math.max(y + 20, 820);
+        ctx.fillStyle = '#DC2626';
+        ctx.fillRect(82, culpritY, 916, 145);
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(82, culpritY, 916, 145);
+        ctx.fillStyle = '#FEF2F2';
+        ctx.font = '900 22px Inter, sans-serif';
+        ctx.fillText('🚨 LE COUPABLE DÉSIGNÉ', 112, culpritY + 46);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 44px "Playfair Display", Georgia, serif';
+        ctx.fillText(v.culprit, 112, culpritY + 108);
+
+        // Encadré Jaune : Gage
+        const forfeitY = culpritY + 170;
+        ctx.fillStyle = '#FACC15';
+        ctx.fillRect(82, forfeitY, 916, 200);
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(82, forfeitY, 916, 200);
+        ctx.fillStyle = '#000000';
+        ctx.font = '900 22px Inter, sans-serif';
+        ctx.fillText('🎭 GAGE SYMBOLIQUE ABSURDE', 112, forfeitY + 44);
+        ctx.font = '700 28px Inter, sans-serif';
+        wrapCanvasText(ctx, v.forfeit, 112, forfeitY + 90, 856, 38, 3);
+
+        // Filigrane pied de page
+        ctx.fillStyle = '#52525B';
+        ctx.font = '800 22px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Le Bazar · Alphabette — Justice 100% garantie sans appel', 540, 1288);
+
+        shareOrDownloadCanvas(c, `arret-tribunal-${Date.now()}.png`, 'Arrêt du Tribunal — Le Bazar');
+      }
+
+      function exportNewspaperPNG(une, imgDataUrl) {
+        const c = document.createElement('canvas');
+        c.width = 1080;
+        c.height = 1480;
+        const ctx = c.getContext('2d');
+
+        const drawRest = (loadedImg) => {
+          // Fond papier journal
+          ctx.fillStyle = '#FAF8F5';
+          ctx.fillRect(0, 0, c.width, c.height);
+
+          // Bordure presse
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 8;
+          ctx.strokeRect(24, 24, c.width - 48, c.height - 48);
+
+          // Masthead
+          ctx.fillStyle = '#000000';
+          ctx.font = '800 20px Inter, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('ÉDITION SPÉCIALE', 56, 70);
+          ctx.textAlign = 'center';
+          ctx.fillText(une.date.toUpperCase(), 540, 70);
+          ctx.textAlign = 'right';
+          ctx.fillText('PRIX : 1 SOURIRE', 1024, 70);
+
+          ctx.fillRect(56, 84, 968, 3);
+          ctx.textAlign = 'center';
+          ctx.font = '900 74px "Playfair Display", Georgia, serif';
+          ctx.fillText('LE BAZAR DU JOUR', 540, 162);
+          ctx.fillRect(56, 180, 968, 6);
+          ctx.fillRect(56, 192, 968, 2);
+
+          // Gros Titre Choc
+          ctx.fillStyle = '#B91C1C';
+          ctx.font = '900 46px "Playfair Display", Georgia, serif';
+          let y = wrapCanvasText(ctx, une.headline.toUpperCase(), 540, 250, 950, 54, 3);
+
+          // Sous-titre dramatique
+          ctx.fillStyle = '#18181B';
+          ctx.font = 'italic 700 26px "Playfair Display", Georgia, serif';
+          y = wrapCanvasText(ctx, une.subtitle, 540, y + 6, 940, 34, 2);
+
+          // Photo recadrée proprement (object-fit cover)
+          const photoY = y + 14;
+          const photoW = 968;
+          const photoH = 420;
+          if (loadedImg) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(56, photoY, photoW, photoH);
+            ctx.clip();
+            const imgRatio = loadedImg.width / loadedImg.height;
+            const boxRatio = photoW / photoH;
+            let drawW = photoW, drawH = photoH, dx = 56, dy = photoY;
+            if (imgRatio > boxRatio) {
+              drawW = photoH * imgRatio;
+              dx = 56 - (drawW - photoW) / 2;
+            } else {
+              drawH = photoW / imgRatio;
+              dy = photoY - (drawH - photoH) / 2;
+            }
+            ctx.drawImage(loadedImg, dx, dy, drawW, drawH);
+            ctx.restore();
+          }
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 4;
+          ctx.strokeRect(56, photoY, photoW, photoH);
+
+          // Légende photo
+          ctx.fillStyle = '#3F3F46';
+          ctx.font = 'italic 700 21px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(une.caption, 540, photoY + photoH + 30);
+
+          // Article en 2 colonnes
+          const artY = photoY + photoH + 74;
+          const words = une.article.split(/\s+/);
+          const half = Math.ceil(words.length / 2);
+          const col1 = words.slice(0, half).join(' ');
+          const col2 = words.slice(half).join(' ');
+
+          ctx.fillStyle = '#111827';
+          ctx.font = '500 24px Inter, sans-serif';
+          ctx.textAlign = 'left';
+          wrapCanvasText(ctx, col1, 56, artY, 460, 33, 11);
+          wrapCanvasText(ctx, col2, 560, artY, 464, 33, 11);
+
+          // Filet vertical entre colonnes
+          ctx.fillStyle = '#D4D4D8';
+          ctx.fillRect(536, artY - 22, 2, 310);
+
+          // Encart Météo Absurde
+          const weatherY = 1260;
+          ctx.fillStyle = '#DBEAFE';
+          ctx.fillRect(56, weatherY, 968, 120);
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(56, weatherY, 968, 120);
+          ctx.fillStyle = '#000000';
+          ctx.font = '900 20px Inter, sans-serif';
+          ctx.fillText('🌦️ MÉTÉO ABSURDE DU JOUR', 84, weatherY + 38);
+          ctx.font = '700 23px Inter, sans-serif';
+          wrapCanvasText(ctx, une.weather, 84, weatherY + 74, 912, 30, 2);
+
+          // Filigrane bas de page
+          ctx.fillStyle = '#52525B';
+          ctx.font = '800 22px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Le Bazar · Alphabette — Studio Satirique', 540, 1425);
+
+          shareOrDownloadCanvas(c, `une-le-bazar-${Date.now()}.png`, 'La Une de l’Absurde — Le Bazar');
+        };
+
+        if (imgDataUrl) {
+          const img = new Image();
+          img.onload = () => drawRest(img);
+          img.onerror = () => drawRest(null);
+          img.src = imgDataUrl;
+        } else {
+          drawRest(null);
+        }
+      }
+
+      /* ============================================================
+         6. MODULE 1 : LE TRIBUNAL DES PETITS RIENS
+         ============================================================ */
+      const ABSURD_SUBJECTS = [
+        'Le rangement stratégique du lave-vaisselle',
+        'Qui doit payer la prochaine tournée ?',
+        'Pain au chocolat contre Chocolatine : la guerre finale',
+        "L'ananas sur la pizza : crime culinaire ou génie incompris ?",
+        'La température exacte de la climatisation',
+        'Qui a laissé le rouleau de papier toilette vide ?',
+        'Le volume sonore de la télévision le dimanche soir',
+        'Les chaussettes qui disparaissent mystérieusement au lavage',
+        'Faut-il plier ou rouler les serviettes de plage ?',
+        'Qui a mangé le dernier carré de chocolat en secret ?',
+      ];
+
+      function updatePlayerCountButtons() {
+        document.querySelectorAll('.player-count-btn').forEach(btn => {
+          const active = Number(btn.dataset.players) === state.playerCount;
+          btn.className = `player-count-btn min-h-[40px] px-3.5 font-extrabold text-xs transition ${
+            btn.dataset.players === '3' ? 'border-l-2 border-black dark:border-zinc-600' : ''
+          } ${
+            active
+              ? 'bg-black text-yellow-300 dark:bg-yellow-400 dark:text-black'
+              : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-300'
+          }`;
+        });
+      }
+
+      function stopPlayerRecording() {
+        clearInterval(state.activeTimer);
+        state.activeTimer = null;
+        if (state.activeRecognition) {
+          try { state.activeRecognition.stop(); } catch {}
+          state.activeRecognition = null;
+        }
+        state.recordingPlayerIdx = null;
+        renderPlayers();
+      }
+
+      function startPlayerRecording(idx) {
+        if (state.recordingPlayerIdx === idx) {
+          stopPlayerRecording();
+          return;
+        }
+        stopPlayerRecording();
+        state.recordingPlayerIdx = idx;
+
+        let secondsLeft = 30;
+        renderPlayers(secondsLeft);
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          const rec = new SpeechRecognition();
+          rec.lang = 'fr-FR';
+          rec.continuous = true;
+          rec.interimResults = true;
+          const baseText = state.players[idx].plea ? state.players[idx].plea + ' ' : '';
+
+          rec.onresult = (event) => {
+            let transcript = '';
+            for (let i = 0; i < event.results.length; i++) {
+              transcript += event.results[i][0].transcript;
+            }
+            state.players[idx].plea = (baseText + transcript).trim();
+            const ta = document.getElementById(`plea-${idx}`);
+            if (ta) ta.value = state.players[idx].plea;
+          };
+          rec.onerror = () => showToast('Micro indisponible : vous pouvez saisir au clavier.');
+          try { rec.start(); } catch {}
+          state.activeRecognition = rec;
+        } else {
+          showToast('Dictée non supportée ici : chrono 30s lancé, saisissez au clavier !');
+        }
+
+        state.activeTimer = setInterval(() => {
+          secondsLeft--;
+          const timerEl = document.getElementById(`timer-${idx}`);
+          if (timerEl) timerEl.textContent = `${secondsLeft}s`;
+          if (secondsLeft <= 0) {
+            SoundEngine.playGavel();
+            showToast(`⏱️ Temps écoulé pour ${state.players[idx].name} !`);
+            stopPlayerRecording();
+          }
+        }, 1000);
+      }
+
+      function renderPlayers(initialSeconds = 30) {
+        const container = document.getElementById('playersContainer');
+        container.innerHTML = '';
+        const accents = [
+          'border-blue-700 dark:border-blue-400',
+          'border-red-600 dark:border-red-400',
+          'border-emerald-700 dark:border-emerald-400',
+        ];
+
+        for (let i = 0; i < state.playerCount; i++) {
+          const p = state.players[i];
+          const isRec = state.recordingPlayerIdx === i;
+          const card = document.createElement('div');
+          card.className = `rounded-3xl p-4 border-2 ${accents[i]} bg-white dark:bg-onyx-card shadow-pop-sm dark:shadow-none space-y-3`;
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 flex-1">
+                <span class="w-8 h-8 rounded-xl bg-black dark:bg-zinc-800 text-yellow-300 font-black text-sm flex items-center justify-center">J${i + 1}</span>
+                <input
+                  type="text"
+                  value="${p.name.replace(/"/g, '&quot;')}"
+                  aria-label="Prénom du joueur ${i + 1}"
+                  data-player-name="${i}"
+                  class="player-name-input flex-1 min-h-[44px] px-3 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-extrabold text-sm sm:text-base"
+                />
+              </div>
+              <button
+                type="button"
+                data-mic-idx="${i}"
+                class="player-mic-btn min-h-[50px] px-4 rounded-2xl border-2 border-black dark:border-zinc-500 font-black text-sm flex items-center gap-2 transition ${
+                  isRec
+                    ? 'bg-red-600 text-white mic-recording'
+                    : 'bg-yellow-300 hover:bg-yellow-200 text-black'
+                }"
+              >
+                <span>${isRec ? '⏹️ Stop' : '🎙️ Plaider'}</span>
+                <span id="timer-${i}" class="px-1.5 py-0.5 rounded-lg bg-black/15 font-mono text-xs">${isRec ? initialSeconds + 's' : '30s'}</span>
+              </button>
+            </div>
+            <textarea
+              id="plea-${i}"
+              rows="2"
+              data-player-plea="${i}"
+              placeholder="Plaidoirie de ${p.name} (dictez au micro ou écrivez vos arguments de mauvaise foi)..."
+              class="player-plea-input w-full p-3 rounded-2xl border-2 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-medium text-sm"
+            ></textarea>
+          `;
+          card.querySelector(`#plea-${i}`).value = p.plea;
+          container.appendChild(card);
+        }
+
+        container.querySelectorAll('.player-name-input').forEach(inp => {
+          inp.addEventListener('input', (e) => {
+            state.players[Number(e.target.dataset.playerName)].name = e.target.value;
+          });
+        });
+        container.querySelectorAll('.player-plea-input').forEach(ta => {
+          ta.addEventListener('input', (e) => {
+            state.players[Number(e.target.dataset.playerPlea)].plea = e.target.value;
+          });
+        });
+        container.querySelectorAll('.player-mic-btn').forEach(btn => {
+          btn.addEventListener('click', () => startPlayerRecording(Number(btn.dataset.micIdx)));
+        });
+      }
+
+      function updateJudgeButtons() {
+        document.querySelectorAll('.judge-btn').forEach(btn => {
+          const active = btn.dataset.judge === state.judge;
+          btn.className = `judge-btn min-h-[64px] p-3 rounded-2xl border-2 text-left flex sm:flex-col items-center sm:items-start gap-2.5 transition ${
+            active
+              ? 'bg-black text-yellow-300 border-black dark:bg-yellow-400 dark:text-black dark:border-yellow-300 shadow-pop-sm'
+              : 'bg-zinc-50 dark:bg-zinc-900 text-black dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:border-black'
+          }`;
+        });
+      }
+
+      const JUDGE_META = {
+        solennel: { label: 'Magistrat Ultra-Solennel', icon: '🏛️' },
+        satiriste: { label: 'Satiriste Grinçant', icon: '😏' },
+        sportif: { label: 'Commentateur Sportif Hystérique', icon: '📣' },
+      };
+
+      function buildDemoVerdict(subject, activePlayers, judgeKey) {
+        const culpritObj = activePlayers[Math.floor(Math.random() * activePlayers.length)];
+        const innocentObj = activePlayers.find(p => p !== culpritObj) || activePlayers[0];
+        const pleaSnippet = culpritObj.plea
+          ? `notamment l'argument hautement suspect « ${culpritObj.plea.slice(0, 75)}${culpritObj.plea.length > 75 ? '...' : ''} »`
+          : `un silence assourdissant qui confine à l'aveu complet`;
+
+        const forfeits = [
+          `Préparer le prochain café ou thé de ${innocentObj.name} en l'appelant « Votre Honneur » pendant 24 heures.`,
+          `Faire un discours solennel de 30 secondes sur la grandeur morale de ${innocentObj.name}, debout sur une jambe.`,
+          `Céder officiellement le contrôle absolu de la télécommande et de la playlist jusqu'à demain midi.`,
+          `Rédiger une lettre d'excuses diplomatiques au sujet de « ${subject} » et la lire avec un accent dramatique.`,
+          `Offrir la prochaine fournée de viennoiseries en prononçant le mot que ${innocentObj.name} préfère.`,
+        ];
+        const forfeit = forfeits[Math.floor(Math.random() * forfeits.length)];
+
+        let reasoning = '';
+        if (judgeKey === 'solennel') {
+          reasoning = `VU le Code Civil des Petits Riens, article 42 alinéa B ;\nATTENDU que le litige portant sur « ${subject} » trouble gravement l'ordre domestique ;\nATTENDU que la défense de ${culpritObj.name} — ${pleaSnippet} — manque cruellement de rigueur juridique face à la droiture exemplaire de ${innocentObj.name} ;\nPAR CES MOTIFS, la Cour statue en dernier ressort et condamne la mauvaise foi caractérisée.`;
+        } else if (judgeKey === 'satiriste') {
+          reasoning = `Franchement, on a rarement vu un dossier aussi bancal sur « ${subject} ». Pendant que ${innocentObj.name} tente péniblement de sauver l'honneur de l'humanité, ${culpritObj.name} nous sert ${pleaSnippet}. C'est audacieux, c'est théâtral, mais ça ne trompe absolument personne. Le tribunal salue l'effort artistique mais sanctionne l'escroquerie intellectuelle.`;
+        } else {
+          reasoning = `OH LA LA MESDAMES ET MESSIEURS ! QUEL MATCH DE FOLIE SUR « ${subject} » !! On fait appel à la VAR... ET C'EST CARTON ROUGE DIRECT POUR ${culpritObj.name.toUpperCase()} ! Regardez ce ralenti : ${pleaSnippet} ! Face au pressing chirurgical de ${innocentObj.name}, c'est un K.O. technique à la 90e minute ! LE STADE EST EN DÉLIRE !`;
+        }
+
+        return {
+          culprit: culpritObj.name,
+          reasoning,
+          forfeit,
+        };
+      }
+
+      document.getElementById('btnRenderVerdict').addEventListener('click', async () => {
+        stopPlayerRecording();
+        stopSpeaking();
+        SoundEngine.playGavel();
+
+        const subject = document.getElementById('tribunalSubject').value.trim() || 'Un litige domestique majeur';
+        const activePlayers = state.players.slice(0, state.playerCount).map((p, idx) => ({
+          name: p.name.trim() || `Joueur ${idx + 1}`,
+          plea: p.plea.trim(),
+        }));
+
+        const card = document.getElementById('verdictCard');
+        card.classList.remove('hidden');
+        document.getElementById('verdictBody').textContent = 'Délibération du jury en cours...';
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        const judgeInfo = JUDGE_META[state.judge];
+        const pleasPrompt = activePlayers.map(p => `- ${p.name} : "${p.plea || '(aucune plaidoirie, air coupable)'}"`).join('\n');
+
+        let result = null;
+        const aiText = await callAI({
+          systemPrompt: `Tu es un juge d'humour dans le ton "${judgeInfo.label}". Tranche ce débat absurde avec drôlerie, sans méchanceté réelle. Réponds en JSON strict avec les clés : "culprit" (prénom d'un des joueurs), "reasoning" (jugement argumenté de 70 à 110 mots reprenant leurs arguments), "forfeit" (un gage symbolique absurde et bon enfant en 1 phrase).`,
+          userPrompt: `Sujet : ${subject}\nPlaidoiries :\n${pleasPrompt}`,
+          expectJson: true,
+        });
+        if (aiText) {
+          try { result = JSON.parse(aiText); } catch {}
+        }
+        if (!result || !result.culprit) {
+          result = buildDemoVerdict(subject, activePlayers, state.judge);
+        }
+
+        const caseNumber = `AFFAIRE N° ${new Date().getFullYear()}-BZ-${Math.floor(100 + Math.random() * 899)}`;
+        state.currentVerdict = {
+          caseNumber,
+          subject,
+          judgeLabel: judgeInfo.label,
+          judgeIcon: judgeInfo.icon,
+          culprit: result.culprit,
+          reasoning: result.reasoning,
+          forfeit: result.forfeit,
+        };
+
+        document.getElementById('verdictCaseNumber').textContent = caseNumber;
+        document.getElementById('verdictJudgeIcon').textContent = judgeInfo.icon;
+        document.getElementById('verdictJudgeLabel').textContent = `${judgeInfo.icon} ${judgeInfo.label}`;
+        document.getElementById('verdictBody').textContent = result.reasoning;
+        document.getElementById('verdictCulprit').textContent = result.culprit;
+        document.getElementById('verdictForfeit').textContent = result.forfeit;
+      });
+
+      document.getElementById('btnRandomSubject').addEventListener('click', () => {
+        const current = document.getElementById('tribunalSubject').value;
+        const pool = ABSURD_SUBJECTS.filter(s => s !== current);
+        document.getElementById('tribunalSubject').value = pool[Math.floor(Math.random() * pool.length)];
+      });
+
+      document.querySelectorAll('.player-count-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          stopPlayerRecording();
+          state.playerCount = Number(btn.dataset.players);
+          updatePlayerCountButtons();
+          renderPlayers();
+        });
+      });
+
+      document.querySelectorAll('.judge-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.judge = btn.dataset.judge;
+          updateJudgeButtons();
+        });
+      });
+
+      document.getElementById('btnVerdictSpeak').addEventListener('click', () => {
+        const v = state.currentVerdict;
+        if (!v) return;
+        speakText(`Arrêt du tribunal. ${v.reasoning}. Le coupable désigné est : ${v.culprit}. Gage symbolique : ${v.forfeit}`);
+      });
+      document.getElementById('btnVerdictStop').addEventListener('click', stopSpeaking);
+      document.getElementById('btnVerdictShare').addEventListener('click', () => {
+        if (state.currentVerdict) exportVerdictPNG(state.currentVerdict);
+      });
+
+      /* ============================================================
+         7. MODULE 2 : LA UNE DE L'ABSURDE
+         ============================================================ */
+      const DEMO_ANECDOTES = [
+        "Tonton Michel a raté le cochonnet de trois mètres et a officiellement accusé la rotation de la Terre. Les voisins ont applaudi son fair-play inexistant.",
+        "Mon vélo a décidé de perdre sa chaîne exactement devant la boulangerie à l'heure de pointe. J'ai fini la course à pied avec une baguette sous le bras.",
+        "Le barbecue familial a failli déclencher une alerte météo à cause de trois saucisses trop grillées. Tout le monde a prétendu que c'était « fumé à l'ancienne ».",
+        "Notre chat a pris le contrôle absolu du canapé pendant 6 heures d'affilée et a refusé toute négociation diplomatique.",
+      ];
+
+      document.getElementById('uneFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        SoundEngine.playShutter();
+        try {
+          state.unePhotoDataUrl = await processImageFile(file, 960);
+          const img = document.getElementById('unePhotoPreview');
+          img.src = state.unePhotoDataUrl;
+          img.classList.remove('hidden');
+          document.getElementById('unePhotoPlaceholder').classList.add('hidden');
+        } catch {
+          showToast('Impossible de charger cette photo.');
+        }
+      });
+
+      document.getElementById('btnUneDemoPhoto').addEventListener('click', () => {
+        SoundEngine.playShutter();
+        const samples = [
+          { bg1: '#F97316', bg2: '#FACC15', emoji: '🥖', title: 'ALERTE BOULANGERIE', subtitle: 'Document exclusif de notre envoyé spécial' },
+          { bg1: '#0EA5E9', bg2: '#2563EB', emoji: '🚲', title: 'EXPLOIT CYCLISTE', subtitle: 'Pris sur le vif à 2 km/h' },
+          { bg1: '#10B981', bg2: '#047857', emoji: '🐈', title: 'COUP D’ÉTAT FÉLIN', subtitle: 'Le canapé ne répond plus' },
+        ];
+        const pick = samples[Math.floor(Math.random() * samples.length)];
+        state.unePhotoDataUrl = createIllustratedCanvasImage(pick);
+        const img = document.getElementById('unePhotoPreview');
+        img.src = state.unePhotoDataUrl;
+        img.classList.remove('hidden');
+        document.getElementById('unePhotoPlaceholder').classList.add('hidden');
+        showToast('🎨 Photo démo prête !');
+      });
+
+      document.getElementById('btnUneDemoAnecdote').addEventListener('click', () => {
+        const ta = document.getElementById('uneAnecdote');
+        const pool = DEMO_ANECDOTES.filter(a => a !== ta.value);
+        ta.value = pool[Math.floor(Math.random() * pool.length)];
+      });
+
+      // Dictée micro pour La Une
+      document.getElementById('btnUneMic').addEventListener('click', (e) => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          showToast('Dictée vocale indisponible sur ce navigateur.');
+          return;
+        }
+        const btn = e.currentTarget;
+        const rec = new SpeechRecognition();
+        rec.lang = 'fr-FR';
+        rec.interimResults = false;
+        btn.classList.add('mic-recording');
+        showToast('🎙️ Dictez votre anecdote...');
+        rec.onresult = (ev) => {
+          const text = ev.results[0][0].transcript;
+          const ta = document.getElementById('uneAnecdote');
+          ta.value = ta.value ? `${ta.value} ${text}` : text;
+        };
+        rec.onerror = () => showToast('Erreur micro.');
+        rec.onend = () => btn.classList.remove('mic-recording');
+        rec.start();
+      });
+
+      function buildDemoUne(anecdote) {
+        const clean = anecdote.trim() || DEMO_ANECDOTES[0];
+        const shortLead = clean.split(/[.!?]/)[0].trim();
+        const headlines = [
+          'STUPÉFACTION GÉNÉRALE : UN INCIDENT DU QUOTIDIEN FAIT TREMBLER LE QUARTIER !',
+          'EXCLUSIF : LA VÉRITÉ ÉCLATE ENFIN SUR CETTE AFFAIRE HORS NORMES !',
+          'SCANDALE DE PROXIMITÉ : LES TÉMOINS N’EN CROIENT TOUJOURS PAS LEURS YEUX !',
+        ];
+        const weathers = [
+          'Soleil radieux avec 80% de risques de mauvaise foi en fin de journée et rafales d’apéro vers 19h.',
+          'Ciel dégagé, légère brise d’ironie venant du sud et averses soudaines de fous rires localisés.',
+          'Températures idéales pour débattre de tout et de rien, pression atmosphérique en hausse près de la machine à café.',
+        ];
+        return {
+          headline: headlines[Math.floor(Math.random() * headlines.length)],
+          subtitle: `Retour en urgence sur cet événement historique : « ${shortLead.slice(0, 95)}${shortLead.length > 95 ? '...' : ''} »`,
+          caption: 'Cliché d’archive pris quelques secondes avant que tout le monde n’éclate de rire (DR / Le Bazar).',
+          article: `D'après nos envoyés très spéciaux dépêchés sur place en trottinette, personne ne s'attendait à une telle tournure des événements. ${clean} Les experts internationaux, immédiatement contactés par notre rédaction, parlent déjà d'un « tournant majeur pour le moral du voisinage ».\n\nMalgré l'émotion palpable, une cellule de soutien psychologique équipée de croissants chauds a été déployée. La population reste mobilisée dans le calme et la bonne humeur en attendant le prochain rebondissement.`,
+          weather: weathers[Math.floor(Math.random() * weathers.length)],
+        };
+      }
+
+      document.getElementById('btnPrintUne').addEventListener('click', async () => {
+        stopSpeaking();
+        const anecdote = document.getElementById('uneAnecdote').value.trim();
+        if (!anecdote) {
+          showToast('Écrivez une anecdote ou cliquez sur « 🎲 Anecdote démo ».');
+          return;
+        }
+        if (!state.unePhotoDataUrl) {
+          // Génère automatiquement une photo démo si l'utilisateur n'en a pas choisi
+          state.unePhotoDataUrl = createIllustratedCanvasImage({
+            bg1: '#DC2626', bg2: '#F59E0B', emoji: '🗞️', title: 'FLASH SPÉCIAL', subtitle: 'Image exclusive de la rédaction'
+          });
+        }
+
+        const card = document.getElementById('newspaperCard');
+        card.classList.remove('hidden');
+        document.getElementById('newsHeadline').textContent = 'IMPRESSION EN COURS...';
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        let data = null;
+        const aiText = await callAI({
+          systemPrompt: "Tu es rédacteur en chef d'un journal satirique français délirant et bienveillant. Transforme cette petite anecdote banale en Une sensationnaliste hilarante. Réponds en JSON strict avec les clés : 'headline' (gros titre choc en MAJUSCULES, max 12 mots), 'subtitle' (sous-titre dramatique), 'caption' (légende photo décalée), 'article' (début d'article journalistique absurde de 85 à 115 mots), 'weather' (météo absurde du jour en 1 phrase).",
+          userPrompt: `Anecdote : ${anecdote}`,
+          expectJson: true,
+        });
+        if (aiText) {
+          try { data = JSON.parse(aiText); } catch {}
+        }
+        if (!data || !data.headline) {
+          data = buildDemoUne(anecdote);
+        }
+
+        const todayStr = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        state.currentUne = { ...data, date: todayStr };
+
+        document.getElementById('newsDate').textContent = todayStr;
+        document.getElementById('newsHeadline').textContent = data.headline;
+        document.getElementById('newsSubtitle').textContent = data.subtitle;
+        document.getElementById('newsPhoto').src = state.unePhotoDataUrl;
+        document.getElementById('newsCaption').textContent = data.caption;
+        document.getElementById('newsArticle').textContent = data.article;
+        document.getElementById('newsWeather').textContent = data.weather;
+      });
+
+      document.getElementById('btnFlashInfo').addEventListener('click', () => {
+        if (!state.currentUne) return;
+        stopSpeaking();
+        SoundEngine.playNewsJingle();
+        setTimeout(() => {
+          const u = state.currentUne;
+          speakText(`Flash info spécial Le Bazar du Jour ! ${u.headline}. ${u.subtitle}. ${u.article}. Et côté météo : ${u.weather}`);
+        }, 1250);
+      });
+
+      document.getElementById('btnUneStopAudio').addEventListener('click', stopSpeaking);
+      document.getElementById('btnUneDownload').addEventListener('click', () => {
+        if (state.currentUne) exportNewspaperPNG(state.currentUne, state.unePhotoDataUrl);
+      });
+
+      /* ============================================================
+         8. MODULE 3 : DÉFI MICRO-LOCAL (GALERIE BIENVEILLANTE)
+         ============================================================ */
+      const LOCAL_CHALLENGES = [
+        { title: 'La porte la plus colorée du quartier', hint: 'Ouvrez l’œil sur les façades anciennes ou les entrées cachées.' },
+        { title: 'Un reflet insolite dans une vitrine ou une flaque', hint: 'Cherchez un double monde inversé au ras du sol ou sur le verre.' },
+        { title: 'Une enseigne rétro pleine de charme', hint: 'Typographie vintage, néon oublié ou devanture d’artisan.' },
+        { title: 'Une ombre qui raconte une histoire', hint: 'Jouez avec la lumière rasante du matin ou de fin d’après-midi.' },
+        { title: 'Un arbre ou une fleur qui défie le béton', hint: 'La nature qui reprend doucement ses droits en ville.' },
+        { title: 'Une boîte aux lettres pleine de caractère', hint: 'Peinte à la main, penchée ou décorée avec humour.' },
+        { title: 'Un détail géométrique caché en levant les yeux', hint: 'Balcons, escaliers, courbes d’immeubles ou jeux de lignes.' },
+        { title: 'Un banc qui donne envie de lire un roman', hint: 'Face à la mer, sous un platane ou sur une placette calme.' },
+        { title: 'Un contraste de couleurs totalement inattendu', hint: 'Deux teintes vives qui se rencontrent par hasard dans la rue.' },
+        { title: 'Un petit clin d’œil de street-art ou de mosaïque', hint: 'Une œuvre discrète que les passants pressés ne voient plus.' },
+      ];
+
+      function createInitialDemoGallery() {
+        return [
+          {
+            id: 'demo-1',
+            title: 'Courbes blanches sous le soleil couchant',
+            city: 'La Grande-Motte',
+            challenge: 'Un détail géométrique caché en levant les yeux',
+            image: createIllustratedCanvasImage({ bg1: '#0284C7', bg2: '#38BDF8', emoji: '🏛️', title: 'GÉOMÉTRIE SOLAIRE', subtitle: 'La Grande-Motte' }),
+            reactions: { artiste: false, bienvu: true, poetique: false },
+            isDemo: true,
+          },
+          {
+            id: 'demo-2',
+            title: 'La petite porte jaune citron de la ruelle',
+            city: 'Montpellier',
+            challenge: 'La porte la plus colorée du quartier',
+            image: createIllustratedCanvasImage({ bg1: '#EAB308', bg2: '#F97316', emoji: '🚪', title: 'PORTE CITRON', subtitle: 'Montpellier' }),
+            reactions: { artiste: true, bienvu: false, poetique: false },
+            isDemo: true,
+          },
+          {
+            id: 'demo-3',
+            title: 'Reflet doré après l’averse',
+            city: 'Aigues-Mortes',
+            challenge: 'Un reflet insolite dans une vitrine ou une flaque',
+            image: createIllustratedCanvasImage({ bg1: '#4F46E5', bg2: '#EC4899', emoji: '✨', title: 'MIROIR D’EAU', subtitle: 'Aigues-Mortes' }),
+            reactions: { artiste: false, bienvu: false, poetique: true },
+            isDemo: true,
+          },
+        ];
+      }
+
+      function renderCurrentChallenge() {
+        const ch = LOCAL_CHALLENGES[state.currentChallengeIdx];
+        document.getElementById('heading-defi').textContent = `« ${ch.title} »`;
+        document.getElementById('defiHint').textContent = ch.hint;
+      }
+
+      document.getElementById('btnNextChallenge').addEventListener('click', () => {
+        let next = Math.floor(Math.random() * LOCAL_CHALLENGES.length);
+        if (next === state.currentChallengeIdx) next = (next + 1) % LOCAL_CHALLENGES.length;
+        state.currentChallengeIdx = next;
+        renderCurrentChallenge();
+      });
+
+      document.getElementById('defiFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        SoundEngine.playShutter();
+        try {
+          state.defiPhotoDataUrl = await processImageFile(file, 820);
+          const img = document.getElementById('defiPhotoPreview');
+          img.src = state.defiPhotoDataUrl;
+          img.classList.remove('hidden');
+          document.getElementById('defiPhotoPlaceholder').classList.add('hidden');
+        } catch {
+          showToast('Erreur de lecture photo.');
+        }
+      });
+
+      document.getElementById('btnPublishDefi').addEventListener('click', () => {
+        const title = document.getElementById('defiTitleInput').value.trim();
+        const city = document.getElementById('defiCityInput').value.trim() || 'Mon quartier';
+        if (!state.defiPhotoDataUrl) {
+          showToast('Prenez ou choisissez d’abord une photo !');
+          return;
+        }
+        if (!title) {
+          showToast('Ajoutez un titre court à votre photo.');
+          return;
+        }
+
+        const ch = LOCAL_CHALLENGES[state.currentChallengeIdx];
+        state.gallery.unshift({
+          id: `post-${Date.now()}`,
+          title,
+          city,
+          challenge: ch.title,
+          image: state.defiPhotoDataUrl,
+          reactions: { artiste: false, bienvu: false, poetique: false },
+          isDemo: false,
+        });
+
+        // Reset formulaire
+        state.defiPhotoDataUrl = null;
+        document.getElementById('defiTitleInput').value = '';
+        document.getElementById('defiFileInput').value = '';
+        document.getElementById('defiPhotoPreview').classList.add('hidden');
+        document.getElementById('defiPhotoPlaceholder').classList.remove('hidden');
+
+        saveGallery();
+        showToast('✨ Photo publiée dans la galerie locale !');
+      });
+
+      function renderGallery() {
+        const list = document.getElementById('defiGallery');
+        list.innerHTML = '';
+
+        const REACTION_DEFS = [
+          { key: 'artiste', label: '🎨 Œil d’artiste' },
+          { key: 'bienvu', label: '👀 Bien vu' },
+          { key: 'poetique', label: '✨ Poétique' },
+        ];
+
+        state.gallery.forEach(post => {
+          const card = document.createElement('article');
+          card.className = 'rounded-3xl overflow-hidden border-2 border-black dark:border-zinc-700 bg-white dark:bg-onyx-card shadow-pop-sm dark:shadow-none';
+
+          card.innerHTML = `
+            <img src="${post.image}" alt="${post.title.replace(/"/g, '&quot;')}" class="w-full max-h-72 object-cover border-b-2 border-black dark:border-zinc-700" />
+            <div class="p-4 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="inline-block text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 dark:bg-blue-500/20 dark:text-blue-300">
+                    📍 ${post.city}
+                  </span>
+                  <h4 class="font-serif text-lg font-black mt-1 leading-snug"></h4>
+                  <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mt-0.5"></p>
+                </div>
+                ${!post.isDemo ? `<button type="button" aria-label="Supprimer cette publication" class="del-post-btn min-w-[44px] min-h-[44px] rounded-xl border-2 border-zinc-300 dark:border-zinc-700 text-sm hover:bg-red-100 dark:hover:bg-red-900/40">🗑️</button>` : ''}
+              </div>
+              <div class="flex flex-wrap gap-2 pt-1">
+                ${REACTION_DEFS.map(r => {
+                  const active = post.reactions?.[r.key];
+                  return `<button type="button" data-react="${r.key}" class="react-btn min-h-[44px] px-3.5 rounded-xl border-2 font-extrabold text-xs transition ${
+                    active
+                      ? 'bg-yellow-300 text-black border-black dark:bg-yellow-400 dark:text-black dark:border-yellow-200 shadow-pop-sm'
+                      : 'bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:border-black'
+                  }">${r.label}</button>`;
+                }).join('')}
+              </div>
+            </div>
+          `;
+
+          card.querySelector('h4').textContent = post.title;
+          card.querySelector('p').textContent = `Défi : ${post.challenge}`;
+
+          card.querySelectorAll('.react-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const k = btn.dataset.react;
+              post.reactions[k] = !post.reactions[k];
+              saveGallery();
+            });
+          });
+
+          const delBtn = card.querySelector('.del-post-btn');
+          if (delBtn) {
+            delBtn.addEventListener('click', () => {
+              state.gallery = state.gallery.filter(item => item.id !== post.id);
+              saveGallery();
+              showToast('Photo retirée de la galerie.');
+            });
+          }
+
+          list.appendChild(card);
+        });
+      }
+
+      /* ============================================================
+         9. PARAMÈTRES & INITIALISATION GLOBALE
+         ============================================================ */
+      const modalSettings = document.getElementById('modalSettings');
+      const selectProvider = document.getElementById('selectProvider');
+      const apiKeyWrapper = document.getElementById('apiKeyWrapper');
+
+      function toggleApiKeyVisibility() {
+        apiKeyWrapper.classList.toggle('opacity-50', selectProvider.value === 'demo');
+      }
+
+      document.getElementById('btnOpenSettings').addEventListener('click', () => {
+        selectProvider.value = state.settings.provider;
+        document.getElementById('inputApiKey').value = state.settings.apiKey;
+        document.getElementById('rangeTtsSpeed').value = state.settings.ttsSpeed;
+        document.getElementById('ttsSpeedLabel').textContent = `${Number(state.settings.ttsSpeed).toFixed(2)}x`;
+        toggleApiKeyVisibility();
+        modalSettings.classList.remove('hidden');
+      });
+
+      selectProvider.addEventListener('change', toggleApiKeyVisibility);
+      document.getElementById('btnCloseSettings').addEventListener('click', () => modalSettings.classList.add('hidden'));
+      document.getElementById('rangeTtsSpeed').addEventListener('input', (e) => {
+        document.getElementById('ttsSpeedLabel').textContent = `${Number(e.target.value).toFixed(2)}x`;
+      });
+
+      document.getElementById('btnSaveSettings').addEventListener('click', () => {
+        state.settings.provider = selectProvider.value;
+        state.settings.apiKey = document.getElementById('inputApiKey').value.trim();
+        state.settings.ttsSpeed = parseFloat(document.getElementById('rangeTtsSpeed').value) || 1.05;
+        saveSettings();
+        modalSettings.classList.add('hidden');
+        showToast('✅ Paramètres enregistrés !');
+      });
+
+      document.getElementById('btnThemeToggle').addEventListener('click', () => {
+        state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
+        applyTheme();
+        saveSettings();
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Démarrage
+      loadState();
+      applyTheme();
+      updateModeBadge();
+      updatePlayerCountButtons();
+      renderPlayers();
+      updateJudgeButtons();
+      renderCurrentChallenge();
+      renderGallery();
+      switchTab('tribunal');
+    })();
+  </script>
+</body>
+</html>
+```

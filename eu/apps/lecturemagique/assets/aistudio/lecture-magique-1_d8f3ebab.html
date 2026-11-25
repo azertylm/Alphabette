@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>LectureMagique</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night: #0D0820;
+  --card: #1C1440;
+  --gold: #FFD600;
+  --coral: #FF6B6B;
+  --teal: #4ECDC4;
+  --purple: #A78BFA;
+  --green: #34D399;
+  --white: #F8F4FF;
+  --dim: #7C6FA0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--night);
+  font-family: 'Baloo 2', cursive;
+  color: var(--white);
+  touch-action: manipulation;
+}
+
+#stars {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position: fixed; inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+.screen.active { opacity: 1; pointer-events: all; }
+
+/* ══════════════════════════════
+   WELCOME
+══════════════════════════════ */
+#screen-welcome { gap: 20px; text-align: center; }
+
+.welcome-owl {
+  font-size: min(20vw, 110px);
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 36px rgba(167,139,250,0.7));
+  cursor: pointer;
+  user-select: none;
+}
+
+.welcome-title {
+  font-size: min(9vw, 48px);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--gold), var(--coral), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.world-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.world-chip {
+  background: var(--card);
+  border: 3px solid transparent;
+  border-radius: 20px;
+  padding: 12px 18px;
+  font-size: min(6vw, 28px);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-width: min(22vw, 100px);
+}
+.world-chip:active { transform: scale(0.93); }
+.world-chip.selected { transform: translateY(-4px) scale(1.06); }
+.world-chip[data-world="animaux"].selected  { border-color: var(--teal);   }
+.world-chip[data-world="aliments"].selected { border-color: var(--gold);   }
+.world-chip[data-world="nature"].selected   { border-color: var(--green);  }
+.world-chip[data-world="maison"].selected   { border-color: var(--coral);  }
+
+.world-label {
+  font-size: min(3.2vw, 14px);
+  font-weight: 700;
+  color: var(--dim);
+}
+.world-chip.selected .world-label { color: var(--white); }
+
+.start-btn {
+  width: min(70vw, 300px);
+  height: min(18vw, 80px);
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--purple), #7C3AED);
+  font-family: 'Baloo 2', cursive;
+  font-size: min(7vw, 30px);
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 36px rgba(124,58,237,0.5);
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.start-btn:active { transform: scale(0.93); }
+
+/* ══════════════════════════════
+   GAME SCREEN
+══════════════════════════════ */
+#screen-game {
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px 8px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid rgba(255,255,255,0.1);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.back-btn:active { transform: scale(0.9); }
+
+.progress-track {
+  flex: 1;
+  height: 14px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--gold), var(--coral));
+  transition: width 0.55s cubic-bezier(.34,1.56,.64,1);
+}
+
+.stars-badge {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+/* ── GAME BODY ── */
+.game-body {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 18px 16px;
+  overflow: hidden;
+  gap: 6px;
+}
+
+/* ── LUMO + BUBBLE ── */
+.lumo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  max-width: 560px;
+  flex-shrink: 0;
+}
+
+.lumo {
+  font-size: min(12vw, 56px);
+  animation: float 3s ease-in-out infinite;
+  cursor: pointer;
+  user-select: none;
+  filter: drop-shadow(0 4px 14px rgba(167,139,250,0.5));
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── BIG SPOKEN TEXT ── */
+.spoken-text {
+  flex: 1;
+  background: var(--card);
+  border: 2.5px solid rgba(167,139,250,0.45);
+  border-radius: 18px 18px 18px 6px;
+  padding: 12px 18px;
+  font-size: min(6.5vw, 28px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.35;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  animation: bubble-in 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── SUBJECT EMOJI ── */
+.subject-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.subject-emoji {
+  font-size: min(26vw, 120px);
+  animation: bounce-in 0.45s cubic-bezier(.34,1.56,.64,1);
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ── LISTEN BUTTON ── */
+.listen-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(167,139,250,0.14);
+  border: 2px solid rgba(167,139,250,0.35);
+  border-radius: 99px;
+  padding: 8px 24px;
+  font-size: min(4.2vw, 18px);
+  font-weight: 800;
+  color: var(--purple);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.listen-btn:active { transform: scale(0.94); background: rgba(167,139,250,0.28); }
+.listen-btn.pulse { animation: pulse-glow 1.3s ease-in-out infinite; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.35); }
+  50%       { box-shadow: 0 0 0 14px rgba(167,139,250,0); }
+}
+
+/* ── ANSWER GRID ── */
+.answer-grid {
+  width: 100%;
+  max-width: 560px;
+  display: grid;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.answer-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.answer-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.answer-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+.answer-card {
+  background: var(--card);
+  border: 4px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(.34,1.56,.64,1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.answer-card .ac-emoji { font-size: min(14vw, 60px); line-height: 1; }
+
+/* ── label beneath emoji in answer card ── */
+.answer-card .ac-label {
+  font-size: min(3.8vw, 16px);
+  font-weight: 800;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.1;
+  /* always visible — helps child connect sound to written word */
+}
+
+/* smaller for 3–4 cols */
+.answer-grid.cols-3 .answer-card .ac-emoji,
+.answer-grid.cols-4 .answer-card .ac-emoji { font-size: min(10vw, 44px); }
+.answer-grid.cols-3 .answer-card .ac-label,
+.answer-grid.cols-4 .answer-card .ac-label { font-size: min(2.8vw, 12px); }
+.answer-grid.cols-3 .answer-card,
+.answer-grid.cols-4 .answer-card { border-radius: 16px; }
+
+.answer-card:active { transform: scale(0.91); }
+
+.answer-card.correct {
+  background: rgba(52,211,153,0.22);
+  border-color: var(--green);
+  animation: pop 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+.answer-card.wrong {
+  background: rgba(255,107,107,0.18);
+  border-color: var(--coral);
+  animation: shake 0.35s ease;
+}
+.answer-card.disabled { pointer-events: none; opacity: 0.4; }
+
+/* ══════════════════════════════
+   VICTORY SCREEN
+══════════════════════════════ */
+#screen-victory { gap: 18px; text-align: center; }
+
+.victory-emoji { font-size: min(22vw, 110px); animation: bounce-in 0.5s cubic-bezier(.34,1.56,.64,1); }
+
+.victory-title {
+  font-size: min(12vw, 56px);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--gold), var(--coral), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.stars-row { font-size: min(9vw, 42px); letter-spacing: 2px; }
+
+.victory-btn {
+  width: min(70vw, 300px);
+  height: min(16vw, 70px);
+  border-radius: 999px;
+  border: none;
+  font-family: 'Baloo 2', cursive;
+  font-size: min(6vw, 26px);
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.victory-btn:active { transform: scale(0.93); }
+.victory-btn.primary   { background: linear-gradient(135deg, var(--purple), #7C3AED); box-shadow: 0 10px 28px rgba(124,58,237,0.4); }
+.victory-btn.secondary { background: linear-gradient(135deg, var(--teal), #2BA099);   box-shadow: 0 10px 28px rgba(78,205,196,0.3); }
+
+/* ══════════════════════════════
+   FEEDBACK OVERLAY
+══════════════════════════════ */
+#feedback-overlay {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#feedback-overlay.show { opacity: 1; }
+.feedback-emoji { font-size: min(40vw, 180px); animation: bounce-in 0.35s cubic-bezier(.34,1.56,.64,1); }
+
+/* ══════════════════════════════
+   KEYFRAMES
+══════════════════════════════ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes bounce-in {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes bubble-in {
+  from { transform: scale(0.75) translateY(6px); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.13); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-10px); }
+  75%       { transform: translateX(10px); }
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- ══ WELCOME ══ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-owl" onclick="welcomeSpeak()">🦉</div>
+  <div class="welcome-title">Apprends<br>avec Lumo !</div>
+
+  <div class="world-row" id="world-row">
+    <div class="world-chip selected" data-world="animaux" onclick="selectWorld(this)">
+      🐾<span class="world-label">Animaux</span>
+    </div>
+    <div class="world-chip" data-world="aliments" onclick="selectWorld(this)">
+      🍎<span class="world-label">Aliments</span>
+    </div>
+    <div class="world-chip" data-world="nature" onclick="selectWorld(this)">
+      🌿<span class="world-label">Nature</span>
+    </div>
+    <div class="world-chip" data-world="maison" onclick="selectWorld(this)">
+      🏠<span class="world-label">Maison</span>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="startGame()">▶ Jouer !</button>
+</div>
+
+<!-- ══ GAME ══ -->
+<div id="screen-game" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="stars-badge" id="stars-count">⭐ 0</div>
+  </div>
+
+  <div class="game-body">
+
+    <!-- Lumo + spoken text side by side -->
+    <div class="lumo-row">
+      <div class="lumo" onclick="replayQuestion()">🦉</div>
+      <div class="spoken-text" id="spoken-text">…</div>
+    </div>
+
+    <!-- Subject emoji (optional per mode) -->
+    <div class="subject-wrap" id="subject-wrap">
+      <div class="subject-emoji" id="subject-emoji" onclick="replayQuestion()"></div>
+    </div>
+
+    <!-- Re-listen button -->
+    <button class="listen-btn pulse" id="listen-btn" onclick="replayQuestion()">
+      🔊 Réécouter
+    </button>
+
+    <!-- Answers -->
+    <div class="answer-grid" id="answer-grid"></div>
+
+  </div>
+</div>
+
+<!-- ══ VICTORY ══ -->
+<div id="screen-victory" class="screen">
+  <div class="victory-emoji">🏆</div>
+  <div class="victory-title">Bravo !</div>
+  <div class="stars-row" id="victory-stars"></div>
+  <button class="victory-btn primary"   onclick="replayGame()">🔄 Encore !</button>
+  <button class="victory-btn secondary" onclick="goHome()">🏠 Choisir</button>
+</div>
+
+<!-- ══ FEEDBACK OVERLAY ══ -->
+<div id="feedback-overlay">
+  <div class="feedback-emoji" id="feedback-emoji"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   STARS CANVAS
+══════════════════════════════════════════ */
+(function() {
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+  let stars = [];
+  function resize() {
+    c.width = innerWidth; c.height = innerHeight;
+    stars = Array.from({length: 160}, () => ({
+      x: Math.random() * c.width, y: Math.random() * c.height,
+      r: Math.random() * 1.6 + 0.3,
+      speed: Math.random() * 0.015 + 0.004,
+      phase: Math.random() * Math.PI * 2
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0,0,c.width,c.height);
+    const t = Date.now()/1000;
+    stars.forEach(s => {
+      const a = 0.2 + 0.6*(0.5+0.5*Math.sin(t*s.speed*20+s.phase));
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${a})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  resize(); draw();
+})();
+
+/* ══════════════════════════════════════════
+   CONTENT BANK  — each item has:
+     emoji, article ("le"/"la"/"l'"), word (bare), 
+     distractors (wrong emoji choices)
+══════════════════════════════════════════ */
+const WORLDS = {
+  animaux: [
+    { emoji:'🐱', art:'le',  word:'chat',       distractors:['🐶','🐸','🐭','🐰','🦊','🐯'] },
+    { emoji:'🐶', art:'le',  word:'chien',      distractors:['🐱','🦁','🐻','🐨','🐼','🐸'] },
+    { emoji:'🐸', art:'la',  word:'grenouille', distractors:['🐟','🐢','🦀','🦋','🐍','🦎'] },
+    { emoji:'🦋', art:'le',  word:'papillon',   distractors:['🐛','🐝','🦗','🪲','🦟','🐞'] },
+    { emoji:'🐘', art:"l'",  word:'éléphant',   distractors:['🦒','🦓','🦏','🐪','🦛','🐆'] },
+    { emoji:'🦁', art:'le',  word:'lion',       distractors:['🐯','🐻','🦊','🐺','🐗','🦝'] },
+    { emoji:'🐬', art:'le',  word:'dauphin',    distractors:['🐋','🦈','🐙','🦑','🐠','🐡'] },
+    { emoji:'🦜', art:'le',  word:'perroquet',  distractors:['🐦','🦅','🦆','🦉','🐧','🕊️'] },
+    { emoji:'🐰', art:'le',  word:'lapin',      distractors:['🐱','🐭','🐹','🦔','🐿️','🦦'] },
+    { emoji:'🦊', art:'le',  word:'renard',     distractors:['🐺','🐗','🦝','🦨','🦡','🦥'] },
+  ],
+  aliments: [
+    { emoji:'🍎', art:'la',  word:'pomme',      distractors:['🍊','🍋','🍇','🍓','🍒','🫐'] },
+    { emoji:'🍌', art:'la',  word:'banane',     distractors:['🍎','🍊','🍋','🍇','🍓','🍒'] },
+    { emoji:'🍕', art:'la',  word:'pizza',      distractors:['🍔','🌮','🥪','🍜','🥗','🍣'] },
+    { emoji:'🍰', art:'le',  word:'gâteau',     distractors:['🍩','🍪','🧁','🍫','🍭','🍬'] },
+    { emoji:'🥕', art:'la',  word:'carotte',    distractors:['🥦','🥒','🫑','🌽','🧅','🧄'] },
+    { emoji:'🍦', art:'la',  word:'glace',      distractors:['🍧','🍨','🧃','🥤','🍵','☕'] },
+    { emoji:'🍓', art:'la',  word:'fraise',     distractors:['🍒','🫐','🍑','🥭','🍍','🥥'] },
+    { emoji:'🧀', art:'le',  word:'fromage',    distractors:['🥚','🥛','🧈','🫙','🍯','🥜'] },
+    { emoji:'🍇', art:'le',  word:'raisin',     distractors:['🍎','🍊','🍋','🍓','🍒','🫐'] },
+    { emoji:'🍊', art:"l'",  word:'orange',     distractors:['🍋','🍎','🍇','🍓','🍒','🫐'] },
+  ],
+  nature: [
+    { emoji:'☀️', art:'le',  word:'soleil',          distractors:['🌙','⭐','🌈','⛅','🌧️','❄️'] },
+    { emoji:'🌈', art:"l'",  word:'arc-en-ciel',     distractors:['☀️','🌧️','⛈️','🌊','🌬️','🌪️'] },
+    { emoji:'🌸', art:'la',  word:'fleur',           distractors:['🌿','🌱','🍀','🌾','🎋','🍁'] },
+    { emoji:'🌊', art:'la',  word:'vague',           distractors:['🏖️','⛵','🐚','🦀','🐠','🦭'] },
+    { emoji:'🌙', art:'la',  word:'lune',            distractors:['☀️','⭐','🌟','✨','💫','⚡'] },
+    { emoji:'⛄', art:'le',  word:'bonhomme de neige',distractors:['❄️','🌨️','🏔️','🎿','🛷','🧤'] },
+    { emoji:'🌋', art:'le',  word:'volcan',          distractors:['🏔️','⛰️','🗻','🏕️','🌄','🌅'] },
+    { emoji:'🌲', art:"l'",  word:'arbre',           distractors:['🌿','🌱','🍀','🌾','🎋','🍁'] },
+    { emoji:'🌧️', art:'la', word:'pluie',           distractors:['☀️','❄️','🌈','⛅','🌪️','🌊'] },
+    { emoji:'⛰️', art:'la', word:'montagne',        distractors:['🏖️','🌋','🗻','🏕️','🌄','🌅'] },
+  ],
+  maison: [
+    { emoji:'🛏️', art:'le',  word:'lit',         distractors:['🛋️','🚪','🪟','🛁','🚿','🪑'] },
+    { emoji:'🍳', art:'la',  word:'poêle',        distractors:['🥄','🍴','🔪','🫕','🥘','🍲'] },
+    { emoji:'📺', art:'la',  word:'télévision',   distractors:['📱','💻','🖥️','📷','🎮','📡'] },
+    { emoji:'🚪', art:'la',  word:'porte',        distractors:['🪟','🏠','🔑','🚿','🛁','🪑'] },
+    { emoji:'🪑', art:'la',  word:'chaise',       distractors:['🛋️','🛏️','🪞','🚪','🪟','🧹'] },
+    { emoji:'🧸', art:'le',  word:'nounours',     distractors:['🪆','🎮','🎲','🪀','🎯','🎪'] },
+    { emoji:'🪟', art:'la',  word:'fenêtre',      distractors:['🚪','🛋️','🪑','🛏️','🖼️','🔑'] },
+    { emoji:'🛁', art:'la',  word:'baignoire',    distractors:['🚿','🪥','🧴','🧼','🚪','🪑'] },
+    { emoji:'🔑', art:'la',  word:'clé',          distractors:['🚪','🪟','🔐','🔒','🧰','🪝'] },
+    { emoji:'🧹', art:'le',  word:'balai',        distractors:['🧺','🧻','🪣','🧽','🧴','🫧'] },
+  ]
+};
+
+// Returns "le chat", "la pomme", "l'éléphant" etc.
+function withArt(item) {
+  return item.art + ' ' + item.word;
+}
+
+/* ══════════════════════════════════════════
+   GAME MODES
+   Each mode returns a question object:
+     subjectEmoji  — big central emoji (or null)
+     spokenLine    — what Lumo says (also displayed large)
+     choices       — [{emoji, label, correct}]
+     successLine   — spoken+displayed on correct
+     failLine      — spoken+displayed on fail
+══════════════════════════════════════════ */
+function shuffle(a) { return [...a].sort(() => Math.random()-0.5); }
+
+function makeChoices(item, pool, count) {
+  const wrongs = pool.filter(p=>p.emoji!==item.emoji).sort(()=>Math.random()-0.5).slice(0, count-1);
+  return shuffle([item, ...wrongs]).map(c => ({
+    emoji: c.emoji,
+    label: withArt(c),   // e.g. "le chat"
+    correct: c.emoji === item.emoji
+  }));
+}
+
+const MODES = [
+  {
+    // Mode A: "Trouve le chat !" — 4 emoji choices, no subject shown
+    make(item, pool) {
+      const choices = makeChoices(item, pool, 4);
+      const line = `Trouve ${withArt(item)} !`;
+      return {
+        subjectEmoji: null,
+        spokenLine: line,
+        choices,
+        successLine: `Bravo ! C'est bien ${withArt(item)} !`,
+        failLine: `Non… C'est ${withArt(item)} ! Regarde bien !`
+      };
+    }
+  },
+  {
+    // Mode B: Subject shown large — "C'est le chat ou le chien ?" — 2 choices
+    make(item, pool) {
+      const wrong = pool.filter(p=>p.emoji!==item.emoji).sort(()=>Math.random()-0.5)[0];
+      const choices = shuffle([
+        { emoji: item.emoji,  label: withArt(item),  correct: true  },
+        { emoji: wrong.emoji, label: withArt(wrong), correct: false },
+      ]);
+      const line = `C'est ${withArt(item)} ou ${withArt(wrong)} ?`;
+      return {
+        subjectEmoji: item.emoji,
+        spokenLine: line,
+        choices,
+        successLine: `Oui ! C'est ${withArt(item)} ! Trop fort !`,
+        failLine: `Non, c'est ${withArt(item)} !`
+      };
+    }
+  },
+  {
+    // Mode C: Intruder — "Lequel est différent ?" — 3 same-world + 1 intruder emoji
+    make(item, pool) {
+      const sameGroup = pool.filter(p=>p.emoji!==item.emoji).sort(()=>Math.random()-0.5).slice(0,2);
+      const intruderEmoji = item.distractors[Math.floor(Math.random()*item.distractors.length)];
+      const choices = shuffle([
+        { emoji: intruderEmoji, label: '?', correct: true },
+        { emoji: item.emoji,    label: withArt(item),          correct: false },
+        { emoji: sameGroup[0].emoji, label: withArt(sameGroup[0]), correct: false },
+        { emoji: sameGroup[1].emoji, label: withArt(sameGroup[1]), correct: false },
+      ]);
+      return {
+        subjectEmoji: null,
+        spokenLine: `Lequel est différent des autres ?`,
+        choices,
+        successLine: `Bravo ! Tu as trouvé l'intrus !`,
+        failLine: `Non, l'intrus c'était l'image différente ! Cherche bien !`
+      };
+    }
+  },
+  {
+    // Mode D: "Écoute bien — je dis le chat. Montre-le moi !" — 3 choices
+    make(item, pool) {
+      const choices = makeChoices(item, pool, 3);
+      const line = `Écoute bien… ${withArt(item).toUpperCase()} ! Montre-le moi !`;
+      return {
+        subjectEmoji: null,
+        spokenLine: line,
+        choices,
+        successLine: `Super ! C'est bien ${withArt(item)} !`,
+        failLine: `Non… J'ai dit ${withArt(item)} ! Essaie encore !`
+      };
+    }
+  },
+];
+
+const MODE_SEQUENCE = [0,1,3,0,2,1,0,3]; // 8 rounds per session
+
+/* ══════════════════════════════════════════
+   SPEECH
+══════════════════════════════════════════ */
+const synth = window.speechSynthesis;
+let voices = [];
+synth.addEventListener('voiceschanged', () => { voices = synth.getVoices(); });
+setTimeout(() => { voices = synth.getVoices(); }, 300);
+
+function speak(text, cb) {
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR';
+  u.rate = 0.86;
+  u.pitch = 1.25;
+  const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
+  if (fr) u.voice = fr;
+  if (cb) u.onend = cb;
+  synth.speak(u);
+}
+
+/* ══════════════════════════════════════════
+   GAME STATE
+══════════════════════════════════════════ */
+const TOTAL = 8;
+const G = { world:'animaux', queue:[], index:0, stars:0, currentQ:null, locked:false };
+
+function selectWorld(el) {
+  document.querySelectorAll('.world-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  G.world = el.dataset.world;
+  const names = { animaux:'les animaux', aliments:'les aliments', nature:'la nature', maison:'la maison' };
+  speak(`On va apprendre ${names[G.world]} !`);
+}
+
+function welcomeSpeak() {
+  speak("Bonjour ! Je m'appelle Lumo ! Choisis un thème et appuie sur Jouer !");
+}
+
+function buildQueue() {
+  const pool = shuffle(WORLDS[G.world]).slice(0, TOTAL);
+  G.queue = pool.map((item, i) => ({ item, mode: MODES[MODE_SEQUENCE[i]] }));
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome() { synth.cancel(); showScreen('screen-welcome'); }
+
+function startGame() {
+  G.index = 0; G.stars = 0; G.locked = false;
+  buildQueue();
+  showScreen('screen-game');
+  document.getElementById('stars-count').textContent = '⭐ 0';
+  loadRound();
+}
+
+function replayGame() { startGame(); }
+
+/* ══════════════════════════════════════════
+   LOAD ROUND
+══════════════════════════════════════════ */
+function loadRound() {
+  G.locked = false;
+  const { item, mode } = G.queue[G.index];
+  const pool = WORLDS[G.world];
+  const q = mode.make(item, pool);
+  G.currentQ = q;
+
+  // Progress
+  document.getElementById('prog').style.width = (G.index/TOTAL*100)+'%';
+
+  // Spoken text display
+  setSpokenText(q.spokenLine);
+
+  // Subject emoji
+  const sw = document.getElementById('subject-wrap');
+  const se = document.getElementById('subject-emoji');
+  if (q.subjectEmoji) {
+    se.textContent = q.subjectEmoji;
+    sw.style.display = 'flex';
+  } else {
+    sw.style.display = 'none';
+  }
+
+  // Answer grid
+  const grid = document.getElementById('answer-grid');
+  const n = q.choices.length;
+  grid.className = 'answer-grid ' + (n<=2?'cols-2':n===3?'cols-3':'cols-2');
+  grid.innerHTML = q.choices.map((c,i) => `
+    <div class="answer-card" id="ac-${i}" onclick="checkAnswer(${i},${c.correct})">
+      <span class="ac-emoji">${c.emoji}</span>
+      <span class="ac-label">${c.label !== '?' ? c.label : ''}</span>
+    </div>
+  `).join('');
+
+  // Listen pulse
+  document.getElementById('listen-btn').classList.add('pulse');
+
+  // Auto-speak after short delay
+  setTimeout(() => speak(q.spokenLine), 500);
+}
+
+function setSpokenText(text) {
+  const el = document.getElementById('spoken-text');
+  el.textContent = text;
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = '';
+}
+
+function replayQuestion() {
+  if (G.currentQ) speak(G.currentQ.spokenLine);
+}
+
+/* ══════════════════════════════════════════
+   CHECK ANSWER
+══════════════════════════════════════════ */
+function checkAnswer(idx, correct) {
+  if (G.locked) return;
+  G.locked = true;
+  document.getElementById('listen-btn').classList.remove('pulse');
+  const card = document.getElementById('ac-'+idx);
+
+  if (correct) {
+    card.classList.add('correct');
+    G.stars++;
+    document.getElementById('stars-count').textContent = '⭐ '+G.stars;
+
+    showFeedback('✅');
+    setSpokenText(G.currentQ.successLine);
+
+    confetti({ particleCount:80, spread:60, origin:{y:0.65},
+      colors:['#FFD600','#4ECDC4','#A78BFA','#FF6B6B'] });
+
+    speak(G.currentQ.successLine, () => {
+      hideFeedback();
+      G.index++;
+      if (G.index >= TOTAL) showVictory();
+      else loadRound();
+    });
+
+  } else {
+    card.classList.add('wrong');
+    showFeedback('❌');
+    setSpokenText(G.currentQ.failLine);
+
+    speak(G.currentQ.failLine, () => {
+      hideFeedback();
+      // highlight correct
+      G.currentQ.choices.forEach((c,i) => {
+        const el = document.getElementById('ac-'+i);
+        if (c.correct) el.classList.add('correct');
+        else el.classList.add('disabled');
+      });
+      setTimeout(() => {
+        G.index++;
+        if (G.index >= TOTAL) showVictory();
+        else loadRound();
+      }, 1200);
+    });
+  }
+}
+
+function showFeedback(emoji) {
+  document.getElementById('feedback-emoji').textContent = emoji;
+  document.getElementById('feedback-overlay').classList.add('show');
+}
+function hideFeedback() {
+  document.getElementById('feedback-overlay').classList.remove('show');
+}
+
+/* ══════════════════════════════════════════
+   VICTORY
+══════════════════════════════════════════ */
+function showVictory() {
+  showScreen('screen-victory');
+  document.getElementById('victory-stars').textContent = '⭐'.repeat(G.stars);
+  const msg = G.stars >= 7
+    ? `Incroyable ! ${G.stars} étoiles ! Tu es un vrai champion !`
+    : G.stars >= 5
+    ? `Super bien ! ${G.stars} étoiles ! Continue comme ça !`
+    : `Bravo ! ${G.stars} étoiles ! Tu apprends vite !`;
+  setTimeout(() => speak(msg), 400);
+  let end = Date.now()+3000;
+  (function f() {
+    confetti({particleCount:5,angle:60, spread:55,origin:{x:0},colors:['#FFD600','#FF6B6B','#A78BFA']});
+    confetti({particleCount:5,angle:120,spread:55,origin:{x:1},colors:['#4ECDC4','#FFD600','#A78BFA']});
+    if(Date.now()<end) requestAnimationFrame(f);
+  })();
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => speak("Bonjour ! Je m'appelle Lumo ! Choisis un thème et appuie sur Jouer !"), 700);
+});
+</script>
+</body>
+</html>

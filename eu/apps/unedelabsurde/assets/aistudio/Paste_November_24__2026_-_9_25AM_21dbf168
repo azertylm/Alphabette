@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Une de l'Absurde — Le Bazar du Jour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+      .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+      .shadow-pop { box-shadow: 4px 4px 0px 0px #0f172a; }
+      .shadow-pop-sm { box-shadow: 2px 2px 0px 0px #0f172a; }
+      .newsprint-bg {
+        background-color: #faf8f4;
+        background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 0);
+        background-size: 16px 16px;
+      }
+      @keyframes micPulse {
+        0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+        100% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+      }
+      .mic-recording { animation: micPulse 1.2s infinite; }
+    </style>
+  </head>
+  <body class="bg-[#F8FAFC] text-[#0F172A] min-h-screen p-4 sm:p-8">
+    <main class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Atelier de Rédaction -->
+      <section class="lg:col-span-6 rounded-2xl p-5 sm:p-6 border-2 border-[#0f172a] bg-[#fefce8] shadow-pop space-y-5">
+        <div>
+          <p class="text-xs font-extrabold text-[#713f12]">Presse Satirique · Édition Spéciale</p>
+          <h1 class="font-serif text-2xl sm:text-3xl font-black mt-1">La Une de l’Absurde</h1>
+          <p class="text-sm text-[#334155] mt-1">
+            Transformez une photo du quotidien et deux phrases banales en scandale de proximité à la Une.
+          </p>
+        </div>
+
+        <!-- Zone Photo -->
+        <div class="space-y-2.5">
+          <label
+            for="uneFileInput"
+            class="block cursor-pointer rounded-xl border-2 border-dashed border-[#0f172a] bg-white p-4 text-center hover:bg-yellow-50 transition"
+          >
+            <input id="uneFileInput" type="file" accept="image/*" capture="environment" class="sr-only" />
+            <div id="unePhotoPlaceholder" class="py-4 space-y-1">
+              <div class="text-3xl" aria-hidden="true">📷</div>
+              <p class="font-extrabold text-sm sm:text-base">Prendre ou importer une photo</p>
+              <p class="text-xs text-[#64748b]">Un repas, une partie de pétanque, un vélo en panne…</p>
+            </div>
+            <img id="unePhotoPreview" alt="Aperçu pour la Une" class="hidden max-h-56 mx-auto rounded-lg object-cover border-2 border-[#0f172a]" />
+          </label>
+
+          <button
+            id="btnUneDemoPhoto"
+            type="button"
+            class="w-full min-h-[44px] px-4 rounded-xl border-2 border-[#0f172a] bg-white hover:bg-zinc-100 font-bold text-sm transition"
+          >
+            🎨 Utiliser une photo démo illustrée
+          </button>
+        </div>
+
+        <!-- Zone Anecdote -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <label for="uneAnecdote" class="text-xs font-extrabold text-[#334155]">
+              Votre anecdote (2 phrases)
+            </label>
+            <button
+              id="btnUneDemoAnecdote"
+              type="button"
+              class="min-h-[36px] px-3 rounded-lg border border-[#0f172a] bg-white font-bold text-xs hover:bg-yellow-200 transition"
+            >
+              🎲 Anecdote démo
+            </button>
+          </div>
+          <div class="flex gap-2 items-start">
+            <textarea
+              id="uneAnecdote"
+              rows="3"
+              placeholder="Ex : Tonton Michel a raté le cochonnet de trois mètres et a accusé la rotation de la Terre..."
+              class="flex-1 p-3.5 rounded-xl border-2 border-[#0f172a] bg-white font-medium text-sm sm:text-base"
+            ></textarea>
+            <button
+              id="btnUneMic"
+              type="button"
+              aria-label="Dicter votre anecdote au micro"
+              class="w-[50px] h-[50px] rounded-xl border-2 border-[#0f172a] bg-red-600 text-white font-black text-xl flex items-center justify-center shadow-pop-sm shrink-0"
+            >
+              🎙️
+            </button>
+          </div>
+        </div>
+
+        <button
+          id="btnPrintUne"
+          type="button"
+          class="w-full min-h-[54px] rounded-xl border-2 border-[#0f172a] bg-[#0f172a] text-yellow-300 font-extrabold text-base shadow-pop active:translate-y-0.5 transition"
+        >
+          📰 Imprimer la Une
+        </button>
+      </section>
+
+      <!-- Résultat : Journal LE BAZAR DU JOUR -->
+      <article
+        id="newspaperCard"
+        class="hidden lg:col-span-6 rounded-2xl p-5 sm:p-6 border-4 border-[#0f172a] newsprint-bg shadow-pop space-y-4"
+      >
+        <div class="border-b-4 border-double border-[#0f172a] pb-2.5 text-center">
+          <div class="flex items-center justify-between text-[11px] font-extrabold border-b border-[#0f172a] pb-1.5 mb-2 text-[#334155]">
+            <span>Édition Spéciale</span>
+            <span id="newsDate" class="capitalize"></span>
+            <span>Prix : 1 Sourire</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl font-black tracking-tight leading-none">
+            LE BAZAR DU JOUR
+          </h2>
+          <p class="text-xs italic text-[#475569] mt-1">
+            « L’information vérifiée à peu près, dramatisée avec passion »
+          </p>
+        </div>
+
+        <div class="space-y-1.5 text-center">
+          <h3 id="newsHeadline" class="font-serif text-2xl sm:text-[26px] font-black uppercase leading-tight text-red-700"></h3>
+          <p id="newsSubtitle" class="font-serif italic text-base font-bold text-[#1e293b]"></p>
+        </div>
+
+        <figure class="space-y-1.5">
+          <img id="newsPhoto" alt="Photo de la Une" class="w-full max-h-68 object-cover rounded-xl border-2 border-[#0f172a]" />
+          <figcaption id="newsCaption" class="text-xs italic text-[#475569] text-center"></figcaption>
+        </figure>
+
+        <div id="newsArticle" class="columns-1 sm:columns-2 gap-5 text-sm leading-relaxed border-t border-[#0f172a]/20 pt-3 whitespace-pre-line"></div>
+
+        <div class="p-3.5 rounded-xl border-2 border-[#0f172a] bg-blue-50 flex items-start gap-3">
+          <span class="text-2xl leading-none" aria-hidden="true">🌦️</span>
+          <div>
+            <p class="text-xs font-extrabold">Météo Absurde du Jour</p>
+            <p id="newsWeather" class="text-sm font-medium mt-0.5"></p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-[#0f172a]/20">
+          <button id="btnFlashInfo" type="button" class="flex-1 min-h-[46px] px-3.5 rounded-xl border-2 border-[#0f172a] bg-red-600 hover:bg-red-700 text-white font-extrabold text-sm">
+            📺 Mode Flash Info
+          </button>
+          <button id="btnUneStopAudio" type="button" aria-label="Arrêter le Flash Info" class="w-[46px] h-[46px] rounded-xl border-2 border-[#0f172a] bg-white font-black text-sm">
+            ⏹️
+          </button>
+          <button id="btnUneDownload" type="button" class="w-full min-h-[46px] px-4 rounded-xl border-2 border-[#0f172a] bg-yellow-400 hover:bg-yellow-300 text-[#0f172a] font-extrabold text-sm shadow-pop-sm">
+            📥 Télécharger la Une (PNG)
+          </button>
+        </div>
+      </article>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl bg-[#0f172a] text-white font-bold text-sm border-2 border-yellow-400"></div>
+
+    <script>
+      (() => {
+        'use strict';
+
+        const DEMO_ANECDOTES = [
+          "Tonton Michel a raté le cochonnet de trois mètres et a officiellement accusé la rotation de la Terre. Les voisins ont applaudi son fair-play inexistant.",
+          "Mon vélo a décidé de perdre sa chaîne exactement devant la boulangerie à l'heure de pointe. J'ai fini la course à pied avec une baguette sous le bras.",
+          "Le barbecue familial a failli déclencher une alerte météo à cause de trois saucisses trop grillées. Tout le monde a prétendu que c'était « fumé à l'ancienne ».",
+          "Notre chat a pris le contrôle absolu du canapé pendant 6 heures d'affilée et a refusé toute négociation diplomatique.",
+        ];
+
+        let photoDataUrl = null;
+        let currentUne = null;
+        let audioCtx = null;
+        let toastTimer = null;
+
+        function showToast(msg) {
+          const el = document.getElementById('toast');
+          el.textContent = msg;
+          el.classList.remove('hidden');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => el.classList.add('hidden'), 3000);
+        }
+
+        function getAudioCtx() {
+          if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (Ctx) audioCtx = new Ctx();
+          }
+          if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+          return audioCtx;
+        }
+
+        function playNewsJingle() {
+          const c = getAudioCtx();
+          if (!c) return;
+          const now = c.currentTime;
+          [
+            { f: 523.25, t: 0.0, d: 0.14 },
+            { f: 659.25, t: 0.12, d: 0.14 },
+            { f: 783.99, t: 0.24, d: 0.14 },
+            { f: 1046.5, t: 0.38, d: 0.75 },
+            { f: 523.25, t: 0.38, d: 0.75 },
+            { f: 783.99, t: 0.38, d: 0.75 },
+            { f: 130.81, t: 0.38, d: 0.85 },
+          ].forEach((n) => {
+            const osc = c.createOscillator();
+            const filter = c.createBiquadFilter();
+            const gain = c.createGain();
+            osc.type = n.f < 200 ? 'triangle' : 'sawtooth';
+            osc.frequency.setValueAtTime(n.f, now + n.t);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(2400, now + n.t);
+            filter.frequency.exponentialRampToValueAtTime(900, now + n.t + n.d);
+            gain.gain.setValueAtTime(0.001, now + n.t);
+            gain.gain.linearRampToValueAtTime(n.f < 200 ? 0.32 : 0.13, now + n.t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(c.destination);
+            osc.start(now + n.t);
+            osc.stop(now + n.t + n.d + 0.02);
+          });
+        }
+
+        function playShutter() {
+          const c = getAudioCtx();
+          if (!c) return;
+          const now = c.currentTime;
+          [0, 0.065].forEach((offset, idx) => {
+            const t = now + offset;
+            const bufSize = Math.floor(c.sampleRate * 0.03);
+            const buf = c.createBuffer(1, bufSize, c.sampleRate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.18));
+            const src = c.createBufferSource();
+            src.buffer = buf;
+            const hp = c.createBiquadFilter();
+            hp.type = 'highpass';
+            hp.frequency.setValueAtTime(idx === 0 ? 1800 : 2600, t);
+            const g = c.createGain();
+            g.gain.setValueAtTime(0.4, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+            src.connect(hp);
+            hp.connect(g);
+            g.connect(c.destination);
+            src.start(t);
+          });
+        }
+
+        function createDemoImage({ bg1, bg2, title, subtitle }) {
+          const c = document.createElement('canvas');
+          c.width = 800;
+          c.height = 540;
+          const ctx = c.getContext('2d');
+          const grad = ctx.createLinearGradient(0, 0, 800, 540);
+          grad.addColorStop(0, bg1);
+          grad.addColorStop(1, bg2);
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, 800, 540);
+          ctx.fillStyle = 'rgba(255,255,255,0.18)';
+          ctx.beginPath(); ctx.arc(130, 120, 95, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(690, 420, 130, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(15,23,42,0.88)';
+          ctx.fillRect(72, 355, 656, 114);
+          ctx.strokeStyle = '#FACC15';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(72, 355, 656, 114);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '800 34px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(title, 400, 396);
+          ctx.fillStyle = '#FDE047';
+          ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(subtitle, 400, 439);
+          return c.toDataURL('image/jpeg', 0.85);
+        }
+
+        function processImageFile(file, maxWidth = 960) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = () => {
+              const img = new Image();
+              img.onerror = reject;
+              img.onload = () => {
+                const scale = Math.min(1, maxWidth / img.width);
+                const c = document.createElement('canvas');
+                c.width = Math.round(img.width * scale);
+                c.height = Math.round(img.height * scale);
+                c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                resolve(c.toDataURL('image/jpeg', 0.82));
+              };
+              img.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        function buildDemoUne(anecdote) {
+          const clean = anecdote.trim() || DEMO_ANECDOTES[0];
+          const shortLead = (clean.split(/[.!?]/)[0] || clean).trim();
+          const headlines = [
+            'STUPÉFACTION GÉNÉRALE : UN INCIDENT DU QUOTIDIEN FAIT TREMBLER LE QUARTIER !',
+            'EXCLUSIF : LA VÉRITÉ ÉCLATE ENFIN SUR CETTE AFFAIRE HORS NORMES !',
+            'SCANDALE DE PROXIMITÉ : LES TÉMOINS N’EN CROIENT TOUJOURS PAS LEURS YEUX !',
+          ];
+          const weathers = [
+            'Soleil radieux avec 80 % de risques de mauvaise foi en fin de journée et rafales d’apéro vers 19 h.',
+            'Ciel dégagé, légère brise d’ironie venant du sud et averses soudaines de fous rires localisés.',
+            'Températures idéales pour débattre de tout et de rien, pression atmosphérique en hausse près de la machine à café.',
+          ];
+          return {
+            headline: headlines[Math.floor(Math.random() * headlines.length)],
+            subtitle: `Retour en urgence sur cet événement historique : « ${shortLead.slice(0, 95)}${shortLead.length > 95 ? '…' : ''} »`,
+            caption: 'Cliché d’archive pris quelques secondes avant que tout le monde n’éclate de rire (DR / Le Bazar).',
+            article: `D'après nos envoyés très spéciaux dépêchés sur place en trottinette, personne ne s'attendait à une telle tournure des événements. ${clean} Les experts internationaux, immédiatement contactés par notre rédaction, parlent déjà d'un « tournant majeur pour le moral du voisinage ».\n\nMalgré l'émotion palpable, une cellule de soutien psychologique équipée de croissants chauds a été déployée. La population reste mobilisée dans le calme et la bonne humeur en attendant le prochain rebondissement.`,
+            weather: weathers[Math.floor(Math.random() * weathers.length)],
+          };
+        }
+
+        function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 30) {
+          const paragraphs = String(text || '').split('\n');
+          let curY = y;
+          let totalLines = 0;
+          for (const para of paragraphs) {
+            const words = para.split(/\s+/);
+            let line = '';
+            for (const word of words) {
+              const test = line ? `${line} ${word}` : word;
+              if (ctx.measureText(test).width > maxWidth && line) {
+                ctx.fillText(line, x, curY);
+                curY += lineHeight;
+                if (++totalLines >= maxLines) return curY;
+                line = word;
+              } else {
+                line = test;
+              }
+            }
+            if (line) {
+              ctx.fillText(line, x, curY);
+              curY += lineHeight;
+              totalLines++;
+            }
+            curY += lineHeight * 0.25;
+          }
+          return curY;
+        }
+
+        function exportNewspaperPNG(une) {
+          const c = document.createElement('canvas');
+          c.width = 1080;
+          c.height = 1480;
+          const ctx = c.getContext('2d');
+
+          const draw = (loadedImg) => {
+            ctx.fillStyle = '#FAF8F4';
+            ctx.fillRect(0, 0, c.width, c.height);
+            ctx.strokeStyle = '#0F172A';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(24, 24, c.width - 48, c.height - 48);
+
+            ctx.fillStyle = '#0F172A';
+            ctx.font = '800 20px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'left'; ctx.fillText('ÉDITION SPÉCIALE', 56, 70);
+            ctx.textAlign = 'center'; ctx.fillText(une.date.toUpperCase(), 540, 70);
+            ctx.textAlign = 'right'; ctx.fillText('PRIX : 1 SOURIRE', 1024, 70);
+            ctx.fillRect(56, 84, 968, 3);
+
+            ctx.textAlign = 'center';
+            ctx.font = '900 74px "Playfair Display", Georgia, serif';
+            ctx.fillText('LE BAZAR DU JOUR', 540, 162);
+            ctx.fillRect(56, 180, 968, 6);
+            ctx.fillRect(56, 192, 968, 2);
+
+            ctx.fillStyle = '#B91C1C';
+            ctx.font = '900 44px "Playfair Display", Georgia, serif';
+            let y = wrapCanvasText(ctx, une.headline.toUpperCase(), 540, 248, 950, 52, 3);
+            ctx.fillStyle = '#18181B';
+            ctx.font = 'italic 700 26px "Playfair Display", Georgia, serif';
+            y = wrapCanvasText(ctx, une.subtitle, 540, y + 6, 940, 34, 2);
+
+            const photoY = y + 14, photoW = 968, photoH = 420;
+            if (loadedImg) {
+              ctx.save();
+              ctx.beginPath(); ctx.rect(56, photoY, photoW, photoH); ctx.clip();
+              const imgRatio = loadedImg.width / loadedImg.height;
+              const boxRatio = photoW / photoH;
+              let drawW = photoW, drawH = photoH, dx = 56, dy = photoY;
+              if (imgRatio > boxRatio) { drawW = photoH * imgRatio; dx = 56 - (drawW - photoW) / 2; }
+              else { drawH = photoW / imgRatio; dy = photoY - (drawH - photoH) / 2; }
+              ctx.drawImage(loadedImg, dx, dy, drawW, drawH);
+              ctx.restore();
+            }
+            ctx.strokeStyle = '#0F172A'; ctx.lineWidth = 4; ctx.strokeRect(56, photoY, photoW, photoH);
+
+            ctx.fillStyle = '#3F3F46';
+            ctx.font = 'italic 700 21px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(une.caption, 540, photoY + photoH + 30);
+
+            const artY = photoY + photoH + 74;
+            const words = une.article.split(/\s+/);
+            const half = Math.ceil(words.length / 2);
+            ctx.fillStyle = '#111827';
+            ctx.font = '500 24px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'left';
+            wrapCanvasText(ctx, words.slice(0, half).join(' '), 56, artY, 460, 33, 11);
+            wrapCanvasText(ctx, words.slice(half).join(' '), 560, artY, 464, 33, 11);
+            ctx.fillStyle = '#D4D4D8'; ctx.fillRect(536, artY - 22, 2, 310);
+
+            const weatherY = 1260;
+            ctx.fillStyle = '#DBEAFE'; ctx.fillRect(56, weatherY, 968, 120);
+            ctx.strokeStyle = '#0F172A'; ctx.lineWidth = 3; ctx.strokeRect(56, weatherY, 968, 120);
+            ctx.fillStyle = '#0F172A'; ctx.font = '800 20px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('MÉTÉO ABSURDE DU JOUR', 84, weatherY + 38);
+            ctx.font = '700 23px "Plus Jakarta Sans", sans-serif';
+            wrapCanvasText(ctx, une.weather, 84, weatherY + 74, 912, 30, 2);
+
+            c.toBlob((blob) => {
+              if (!blob) return;
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `une-le-bazar-${Date.now()}.png`;
+              a.click();
+              URL.revokeObjectURL(url);
+              showToast('Image PNG téléchargée !');
+            }, 'image/png');
+          };
+
+          if (une.photoDataUrl) {
+            const img = new Image();
+            img.onload = () => draw(img);
+            img.onerror = () => draw(null);
+            img.src = une.photoDataUrl;
+          } else {
+            draw(null);
+          }
+        }
+
+        document.getElementById('uneFileInput').addEventListener('change', async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          playShutter();
+          photoDataUrl = await processImageFile(file);
+          const img = document.getElementById('unePhotoPreview');
+          img.src = photoDataUrl;
+          img.classList.remove('hidden');
+          document.getElementById('unePhotoPlaceholder').classList.add('hidden');
+        });
+
+        document.getElementById('btnUneDemoPhoto').addEventListener('click', () => {
+          playShutter();
+          const samples = [
+            { bg1: '#F97316', bg2: '#FACC15', title: 'ALERTE BOULANGERIE', subtitle: 'Document exclusif de notre envoyé spécial' },
+            { bg1: '#0EA5E9', bg2: '#2563EB', title: 'EXPLOIT CYCLISTE', subtitle: 'Pris sur le vif à 2 km/h' },
+            { bg1: '#10B981', bg2: '#047857', title: 'COUP D’ÉTAT FÉLIN', subtitle: 'Le canapé ne répond plus' },
+          ];
+          photoDataUrl = createDemoImage(samples[Math.floor(Math.random() * samples.length)]);
+          const img = document.getElementById('unePhotoPreview');
+          img.src = photoDataUrl;
+          img.classList.remove('hidden');
+          document.getElementById('unePhotoPlaceholder').classList.add('hidden');
+          showToast('Photo démo illustrée prête !');
+        });
+
+        document.getElementById('btnUneDemoAnecdote').addEventListener('click', () => {
+          const ta = document.getElementById('uneAnecdote');
+          const pool = DEMO_ANECDOTES.filter((a) => a !== ta.value);
+          ta.value = pool[Math.floor(Math.random() * pool.length)];
+        });
+
+        document.getElementById('btnUneMic').addEventListener('click', (e) => {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (!SpeechRecognition) return showToast('Dictée vocale indisponible sur ce navigateur.');
+          const btn = e.currentTarget;
+          const rec = new SpeechRecognition();
+          rec.lang = 'fr-FR';
+          btn.classList.add('mic-recording');
+          rec.onresult = (ev) => {
+            const ta = document.getElementById('uneAnecdote');
+            ta.value = ta.value ? `${ta.value} ${ev.results[0][0].transcript}` : ev.results[0][0].transcript;
+          };
+          rec.onend = () => btn.classList.remove('mic-recording');
+          rec.start();
+        });
+
+        document.getElementById('btnPrintUne').addEventListener('click', () => {
+          if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+          const anecdote = document.getElementById('uneAnecdote').value.trim();
+          if (!anecdote) return showToast('Écrivez une anecdote ou cliquez sur « Anecdote démo ».');
+          if (!photoDataUrl) {
+            photoDataUrl = createDemoImage({
+              bg1: '#DC2626',
+              bg2: '#F59E0B',
+              title: 'FLASH SPÉCIAL',
+              subtitle: 'Image exclusive de la rédaction',
+            });
+          }
+          const data = buildDemoUne(anecdote);
+          const date = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+          currentUne = { ...data, date, photoDataUrl };
+
+          document.getElementById('newsDate').textContent = date;
+          document.getElementById('newsHeadline').textContent = data.headline;
+          document.getElementById('newsSubtitle').textContent = data.subtitle;
+          document.getElementById('newsPhoto').src = photoDataUrl;
+          document.getElementById('newsCaption').textContent = data.caption;
+          document.getElementById('newsArticle').textContent = data.article;
+          document.getElementById('newsWeather').textContent = data.weather;
+          document.getElementById('newspaperCard').classList.remove('hidden');
+        });
+
+        document.getElementById('btnFlashInfo').addEventListener('click', () => {
+          if (!currentUne || !('speechSynthesis' in window)) return;
+          window.speechSynthesis.cancel();
+          playNewsJingle();
+          setTimeout(() => {
+            const u = new SpeechSynthesisUtterance(
+              `Flash info spécial Le Bazar du Jour ! ${currentUne.headline}. ${currentUne.subtitle}. ${currentUne.article}. Et côté météo : ${currentUne.weather}`
+            );
+            u.lang = 'fr-FR';
+            u.rate = 1.05;
+            window.speechSynthesis.speak(u);
+          }, 1200);
+        });
+
+        document.getElementById('btnUneStopAudio').addEventListener('click', () => {
+          if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        });
+
+        document.getElementById('btnUneDownload').addEventListener('click', () => {
+          if (currentUne) exportNewspaperPNG(currentUne);
+        });
+      })();
+    </script>
+  </body>
+</html>
