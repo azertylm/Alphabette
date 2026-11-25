@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-24T15:54:07.887Z",
-  "empreinte_page_sha256": "8fd1aad5a0267bcbe7489dbfb02e0cd4bae45c3bdbe5b1c2519bb918900b2de0",
+  "audite_le": "2026-11-25T01:29:31.836Z",
+  "empreinte_page_sha256": "1f482002ee18847ca60508a2fe6a2cd115b5f86e8b2e8c7a545c8e9c0251128c",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1086,
-      "bloquees": 1086,
+      "requetes": 339,
+      "bloquees": 339,
       "types": [
         "image",
         "fetch"
@@ -68,24 +68,6 @@
     },
     {
       "hote": "i.f1g.fr",
-      "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -95,6 +77,15 @@
     },
     {
       "hote": "img.lemde.fr",
+      "classe": "tierce",
+      "requetes": 2,
+      "bloquees": 2,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -128,6 +119,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -138,14 +138,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "www.franceinfo.fr",
       "img.lemde.fr",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "io-fsly-bfmtv.cdn.nextradiotv.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "4de915f7be3e30c812c6f24244e6c37480f834bbf06171ff42d10ead08ed95b0"
+  "empreinte_certificat_sha256": "01ccafc0362047b3cecb5bed2b8dc0f6cd5f888c650b4833c8653198b58bffbb"
 }
