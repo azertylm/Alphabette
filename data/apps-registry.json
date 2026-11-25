@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T11:22:26.420Z",
+  "updatedAt": "2026-11-25T11:40:50.460Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -69,7 +69,8 @@
       "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux.",
       "ordre": 4,
       "vitrine": true,
-      "cover": "/covers/iadebat.svg"
+      "cover": "/covers/IA%20D%C3%A9bat.jpg",
+      "coverCustom": true
     },
     {
       "id": "infos-perso",
@@ -84,7 +85,8 @@
       "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements.",
       "ordre": 1,
       "vitrine": true,
-      "cover": "/covers/infos-perso.svg"
+      "cover": "/covers/info-perso.jpg",
+      "coverCustom": true
     },
     {
       "id": "oeil-atelier",
@@ -98,7 +100,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché.",
       "ordre": 5,
-      "cover": "/covers/oeil-atelier.svg"
+      "cover": "/covers/L'%C5%92il%20de%20l'Atelier.jpg",
+      "coverCustom": true
     },
     {
       "id": "france-service",
@@ -114,7 +117,8 @@
       "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement.",
       "ordre": 6,
       "vitrine": true,
-      "cover": "/covers/france-service.svg"
+      "cover": "/covers/France%20Service.jpg",
+      "coverCustom": true
     },
     {
       "id": "copro-transparence",
@@ -282,7 +286,8 @@
       "gratuit": true,
       "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres.",
       "ordre": 7,
-      "cover": "/covers/bonplan.svg"
+      "cover": "/covers/Bon%20Plan.jpg",
+      "coverCustom": true
     },
     {
       "id": "echo",
@@ -359,7 +364,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire.",
       "ordre": 9,
-      "cover": "/covers/promptmagic.svg"
+      "cover": "/covers/PromptMagic.jpg",
+      "coverCustom": true
     },
     {
       "id": "sante-citoyenne",
@@ -439,7 +445,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 3,
       "vitrine": true,
-      "cover": "/covers/wikicom.svg"
+      "cover": "/covers/wikicom.jpg",
+      "coverCustom": true
     },
     {
       "id": "dico-loufoque",
@@ -539,7 +546,8 @@
       "updatedAt": "2026-11-12T11:30:00.000Z",
       "ordre": 13,
       "gratuit": true,
-      "cover": "/covers/podcasts.svg"
+      "cover": "/covers/Podcasts.jpg",
+      "coverCustom": true
     },
     {
       "id": "ou-cest-france",
@@ -627,7 +635,8 @@
       "createdAt": "2026-11-25T06:10:16.193Z",
       "updatedAt": "2026-11-25T06:10:16.193Z",
       "description": "L'agrégateur culturel anti-manque pour ne plus rien louper de ce qui vous passionne.",
-      "cover": "/covers/radar.svg"
+      "cover": "/covers/Radar.jpg",
+      "coverCustom": true
     },
     {
       "id": "lecture-magique",
@@ -640,7 +649,8 @@
       "createdAt": "2026-11-25T06:10:16.306Z",
       "updatedAt": "2026-11-25T06:10:16.306Z",
       "description": "Application ludo-éducative d'apprentissage de la lecture.",
-      "cover": "/covers/lecture-magique.svg"
+      "cover": "/covers/Lecture%20Magique.jpg",
+      "coverCustom": true
     },
     {
       "id": "memovoix",
@@ -692,7 +702,8 @@
       "createdAt": "2026-11-25T06:10:16.848Z",
       "updatedAt": "2026-11-25T06:10:16.848Z",
       "description": "Jeu de cartes tactique en 1 contre 1 pour réviser en s'amusant.",
-      "cover": "/covers/revis-clash.svg"
+      "cover": "/covers/R%C3%A9vis'Clash.jpg",
+      "coverCustom": true
     },
     {
       "id": "negocoach",
@@ -705,7 +716,8 @@
       "createdAt": "2026-11-25T06:10:16.959Z",
       "updatedAt": "2026-11-25T06:10:16.959Z",
       "description": "Simulateur de négociation confidentiel pour s'entraîner avant un échange décisif.",
-      "cover": "/covers/negocoach.svg"
+      "cover": "/covers/N%C3%A9goCoach.jpg",
+      "coverCustom": true
     },
     {
       "id": "disstrack-express",
@@ -718,7 +730,8 @@
       "createdAt": "2026-11-25T06:10:17.070Z",
       "updatedAt": "2026-11-25T06:10:17.070Z",
       "description": "Transformez les anecdotes drôles de vos amis en rimes percutantes.",
-      "cover": "/covers/disstrack-express.svg"
+      "cover": "/covers/DissTrack%20Express.jpg",
+      "coverCustom": true
     },
     {
       "id": "tribunal-des-potes",

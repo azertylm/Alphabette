@@ -80,7 +80,7 @@ async function main() {
     if (!fichier && app.slug === 'infos-perso') fichier = index.get('infoperso');
     if (fichier) {
       sansMatch.delete(fichier);
-      const cover = `/covers/${fichier}`;
+      const cover = `/covers/${encodeURIComponent(fichier)}`;
       if (app.cover !== cover || app.coverCustom !== true) { app.cover = cover; app.coverCustom = true; change = true; }
       perso += 1;
       continue;
