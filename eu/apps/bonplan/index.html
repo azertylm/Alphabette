@@ -362,7 +362,7 @@ header {
     <p>Des trouvailles utiles sélectionnées par l'équipe BON PLAN. Votez pour celles qui vous servent, ajoutez les vôtres : vos votes et vos conseils restent sur cet appareil.</p>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Rechercher un conseil, un sujet, une catégorie…" oninput="filterCats(this.value)">
+      <input type="text" id="searchInput" aria-label="Rechercher un conseil, un sujet, une catégorie" placeholder="Rechercher un conseil, un sujet, une catégorie…" oninput="filterCats(this.value)">
     </div>
   </div>
 
@@ -405,16 +405,16 @@ header {
       <h3>💡 Partager un conseil</h3>
       <p>Ajoutez un lien utile — il est gardé sur cet appareil.</p>
       <div class="form-row">
-        <div class="fg"><label>Titre du conseil *</label><input id="f-title" placeholder="Ex: Comparateur d'énergie"></div>
-        <div class="fg"><label>Votre pseudo *</label><input id="f-author" placeholder="Ex: Marie75"></div>
+        <div class="fg"><label>Titre du conseil *</label><input id="f-title" aria-label="Titre du conseil" placeholder="Ex: Comparateur d'énergie"></div>
+        <div class="fg"><label>Votre pseudo *</label><input id="f-author" aria-label="Votre pseudo" placeholder="Ex: Marie75"></div>
       </div>
       <div class="fg"><label>Lien (URL) *</label>
         <div style="display:flex;gap:8px">
-          <input id="f-url" type="url" placeholder="https://..." style="flex:1">
+          <input id="f-url" aria-label="Adresse du lien" type="url" placeholder="https://..." style="flex:1">
           <button type="button" class="btn-ai" id="aiBtn" onclick="aiSummarize()">✨ Résumer avec l'IA</button>
         </div>
       </div>
-      <div class="fg"><label>Résumé *</label><textarea id="f-summary" placeholder="Pourquoi ce lien est-il utile ? Qu'y trouve-t-on ?"></textarea></div>
+      <div class="fg"><label>Résumé *</label><textarea id="f-summary" aria-label="Résumé" placeholder="Pourquoi ce lien est-il utile ? Qu'y trouve-t-on ?"></textarea></div>
       <div class="form-btns">
         <button class="btn btn-primary" onclick="submitTip()">Publier le conseil ✓</button>
         <button class="btn-cancel" onclick="togglePropose()">Annuler</button>
@@ -461,7 +461,7 @@ header {
       <div class="avatar" id="li-prev"></div>
       <div class="fg">
         <label>Votre pseudo</label>
-        <input id="li-pseudo" placeholder="Ex : Marie75" maxlength="20" autocomplete="off" oninput="updateLoginPreview()" onkeydown="if(event.key==='Enter')completeLogin()">
+        <input id="li-pseudo" aria-label="Votre pseudo" placeholder="Ex : Marie75" maxlength="20" autocomplete="off" oninput="updateLoginPreview()" onkeydown="if(event.key==='Enter')completeLogin()">
       </div>
     </div>
     <div id="saved-acc-wrap">
@@ -481,7 +481,7 @@ header {
     <div class="settings-stats" id="set-stats"></div>
     <div class="section-lbl">🔑 Clé API Gemini (IA · stockée sur cet appareil)</div>
     <div style="display:flex;gap:8px;margin-bottom:20px">
-      <input id="set-key" type="password" placeholder="AIza…" style="flex:1">
+      <input id="set-key" aria-label="Clé API Gemini" type="password" placeholder="AIza…" style="flex:1">
       <button class="btn btn-primary" onclick="saveKey()">Enregistrer</button>
     </div>
     <div class="section-lbl">💾 Sauvegarde communautaire</div>
@@ -510,7 +510,7 @@ header {
     <button class="modal-close" onclick="closeOverlayDirect('addcat-overlay')">✕</button>
     <h3>Nouvelle catégorie</h3>
     <p>Ajoutez une thématique</p>
-    <div class="fg"><label>Nom *</label><input id="nc-name" placeholder="Ex: Astronomie"></div>
+    <div class="fg"><label>Nom *</label><input id="nc-name" aria-label="Nom de la catégorie" placeholder="Ex: Astronomie"></div>
     <div class="section-lbl">Emoji</div>
     <div class="emoji-grid" id="emoji-grid"></div>
     <div class="section-lbl">Couleur</div>

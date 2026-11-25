@@ -15,8 +15,30 @@
     ],
     "iadebat": [
       {
+        "date": "2026-11-25T20:40:00Z",
+        "message": "Une phrase rappelle que les réponses de l'IA peuvent contenir des erreurs, suite au contrôle qualité du Laboratoire"
+      },
+      {
         "date": "2026-11-20T20:30:00Z",
         "message": "Le bouton « Intervenir » tient sur les petits téléphones et en mode BIG, suite au contrôle automatique de nuit"
+      }
+    ],
+    "france-service": [
+      {
+        "date": "2026-11-25T20:40:00Z",
+        "message": "Les petits textes grandissent avec le bouton BIG, suite à vos retours"
+      }
+    ],
+    "frigoplacard": [
+      {
+        "date": "2026-11-25T20:40:00Z",
+        "message": "Les champs d'ajout sont annoncés par les lecteurs d'écran, suite au contrôle qualité du Laboratoire"
+      }
+    ],
+    "bonplan": [
+      {
+        "date": "2026-11-25T20:40:00Z",
+        "message": "Les champs de saisie sont annoncés par les lecteurs d'écran, suite au contrôle qualité du Laboratoire"
       }
     ]
   }

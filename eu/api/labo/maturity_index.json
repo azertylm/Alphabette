@@ -61,7 +61,7 @@
       "satisfaction": null,
       "stabilite": 30,
       "audit": null,
-      "nb_notes": 0,
+      "nb_notes": 1,
       "manque": [
         "au moins 3 notes",
         "audit QA"
@@ -193,7 +193,7 @@
       "satisfaction": null,
       "stabilite": 30,
       "audit": null,
-      "nb_notes": 0,
+      "nb_notes": 1,
       "manque": [
         "au moins 3 notes",
         "audit QA"
@@ -288,5 +288,5 @@
       ]
     }
   },
-  "calcule_le": "2026-11-20T20:25:02.142Z"
+  "calcule_le": "2026-11-25T20:42:06.572Z"
 }

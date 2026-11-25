@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "genere": "2026-11-25T19:44:37.955Z",
+  "genere": "2026-11-25T20:45:31.680Z",
   "methode": "analyse statique des fichiers publiés",
   "apps": {
     "accord": {
@@ -78,7 +78,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 168.9,
+      "poidsKo": 169.2,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -154,7 +154,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 1414.4,
+      "poidsKo": 1416.6,
       "fichiers": 7,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -168,7 +168,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 458.4,
+      "poidsKo": 458.5,
       "fichiers": 13,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -198,7 +198,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 1295,
+      "poidsKo": 1295.3,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -217,7 +217,7 @@
       "voix": false,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 3468.7,
+      "poidsKo": 3414,
       "fichiers": 34,
       "cookiesPub": false,
       "syntheseDirecte": true
