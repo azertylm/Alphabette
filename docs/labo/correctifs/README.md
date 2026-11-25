@@ -1,4 +1,4 @@
-# ⏳ En attente de l'ordre de Valentin
+# ✅ Appliqué le 25/11/2026 sur ordre de Valentin — ne pas réappliquer
 
 | Date | Correctif | Ce qu'il fait |
 |---|---|---|

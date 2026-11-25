@@ -3,9 +3,9 @@
 Écrites par le cycle du laboratoire (`/cycle-labo`) : demandes de Niveau 2 et propositions de transfert vers
 alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… » ou « non pour fb_… (raison) ».
 
-## 25/11/2026 — Passage quotidien : 2 avis, 4 corrections, 1 correctif attend ton ordre (alphabette.fr)
+## 25/11/2026 — Passage quotidien : 2 avis, 4 corrections, correctif Sentinelle appliqué sur ton ordre
 
-### ⏳ Attend ton ordre — Sentinelle : faux retrait d'Info Perso sur alphabette.fr
+### ✅ FAIT le 25/11 sur ton ordre — Sentinelle : faux retrait d'Info Perso sur alphabette.fr
 - **Résumé** : à 19 h 25, la Sentinelle a marqué « retirée » la version d'Info Perso sur alphabette.fr, pour 3 « erreurs
   fatales » sur 77 visites. Les 3 étaient le message « ResizeObserver loop completed… », un simple avertissement du
   navigateur : l'appli ne plantait pas. Rien n'a changé pour les visiteurs (il n'y avait pas de version précédente).

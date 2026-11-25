@@ -12,9 +12,9 @@
       {
         "ref": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e",
         "depuis": "2026-11-18",
-        "statut": "retiree",
-        "retiree_le": "2026-11-25T19:25:51.276Z",
-        "raison": "3 session(s) sur 77 avec une erreur fatale (seuil : plus de 2 % des 100 premières)"
+        "statut": "en_ligne",
+        "faux_positif_le": "2026-11-25T19:25:51.276Z",
+        "note": "Retrait annulé : les 3 « erreurs fatales » étaient l'avertissement « ResizeObserver loop… » du navigateur (l'appli ne plantait pas)."
       }
     ],
     "iadebat": [

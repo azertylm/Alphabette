@@ -17,7 +17,8 @@
       "erreurs": [
         "ResizeObserver loop completed with undelivered notifications. (:0)"
       ],
-      "tickets_rouverts": []
+      "tickets_rouverts": [],
+      "faux_positif": "Seule erreur relevée : « ResizeObserver loop completed with undelivered notifications », un avertissement du navigateur, pas un plantage. Retrait annulé (correctif docs/labo/correctifs/sentinelle-faux-positif-resizeobserver.patch)."
     }
   ]
 }

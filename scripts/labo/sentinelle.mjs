@@ -44,11 +44,17 @@ const idRegistre = (cle) => {
   return registre.apps.find((a) => hote(a.url) === `${cle}.alphabette.fr` || (s.domains ?? []).includes(hote(a.url)))?.id ?? cle;
 };
 
+// Avertissements du navigateur qui ne font pas planter l'appli : jamais une « erreur fatale ».
+const BENIN = /ResizeObserver loop/i;
+
 const verdicts = [];
-for (const [cle, a] of Object.entries(etat.apps)) {
+for (let [cle, a] of Object.entries(etat.apps)) {
   const ref = sources.apps[cle]?.vitrine?.ref;
   if (!ref || !ref.startsWith(a.version)) continue; // mesure d'une version qui n'est plus (ou pas) en ligne
   const raisons = [];
+  // Si toutes les erreurs relevées sont des avertissements bénins, les sessions « fatales » n'en sont pas.
+  const erreursReelles = (a.erreurs ?? []).filter((e) => !BENIN.test(e));
+  if (a.fatales > 0 && (a.erreurs ?? []).length > 0 && erreursReelles.length === 0) a = { ...a, fatales: 0 };
   if (a.fatales >= MIN_FATALES || (a.sessions >= FENETRE && a.fatales / a.sessions > SEUIL_TAUX)) {
     raisons.push(`${a.fatales} session(s) sur ${a.sessions} avec une erreur fatale (seuil : plus de 2 % des ${FENETRE} premières)`);
   }
@@ -62,7 +68,10 @@ for (const [cle, a] of Object.entries(etat.apps)) {
     rendu_precedent_ms: p ?? null, retour_arriere: raisons.length > 0, raisons, cible: raisons.length ? precedente?.ref ?? null : null, erreurs: a.erreurs ?? [] });
 }
 
-const fautifs = verdicts.filter((v) => v.retour_arriere);
+// Sans version N-1, une version déjà marquée « retiree » a déjà donné son alerte : pas de nouvel incident,
+// ni commit, ni publication, ni ticket à chaque passage (toutes les 20 minutes).
+const dejaSignale = (v) => !v.cible && (releases.apps[v.cle] ?? []).some((r) => r.ref === v.version && r.statut === 'retiree');
+const fautifs = verdicts.filter((v) => v.retour_arriere && !dejaSignale(v));
 if (args.includes('--appliquer') && fautifs.length) {
   const incidents = lire('data/labo/incidents.json', { incidents: [] });
   const decisions = lire('data/labo/decisions.json', { decisions: {} });
@@ -105,4 +114,4 @@ if (args.includes('--appliquer') && fautifs.length) {
   ecrire('data/labo/decisions.json', decisions);
   writeFileSync('/tmp/sentinelle-rapport.md', rapport);
 }
-console.log(JSON.stringify({ verifie_le: new Date().toISOString(), apps: verdicts, retours_arriere: fautifs.map((v) => v.cle) }, null, 2));
+console.log(JSON.stringify({ verifie_le: new Date().toISOString(), apps: verdicts, retours_arriere: fautifs.map((v) => v.cle), deja_signales: verdicts.filter((v) => v.retour_arriere && dejaSignale(v)).map((v) => v.cle) }, null, 2));

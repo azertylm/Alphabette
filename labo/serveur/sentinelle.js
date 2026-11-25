@@ -21,6 +21,7 @@
   window.addEventListener('error', function (e) {
     if (!e || !e.message || !memeOrigine(e.filename)) return; // extensions, scripts tiers : ignorés
     if (/\[Incident API Tiers\]|IncidentApiTiers/.test(e.message)) return; // fournisseur d'IA, pas l'appli
+    if (/ResizeObserver loop/i.test(e.message)) return; // simple avertissement du navigateur, l'appli ne plante pas
     fatale = 1; if (!erreur) erreur = nettoyer(e.message + ' (' + String(e.filename).split('/').pop().split('?')[0] + ':' + e.lineno + ')');
   });
   window.addEventListener('unhandledrejection', function (e) {
