@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T13:03:12.063Z",
-  "empreinte_page_sha256": "5318bcb62d0d003f23f20ca174aa50a892718c6a414df51cdafd06ce54ce7afc",
+  "audite_le": "2026-11-25T14:14:20.404Z",
+  "empreinte_page_sha256": "b023af64e8bec57faffd168bac4ccf89e6e47ee9b9d93a400fac1329de32ff62",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,11 +60,20 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 433,
-      "bloquees": 433,
+      "requetes": 604,
+      "bloquees": 604,
       "types": [
         "image",
         "fetch"
+      ]
+    },
+    {
+      "hote": "i.f1g.fr",
+      "classe": "tierce",
+      "requetes": 4,
+      "bloquees": 4,
+      "types": [
+        "image"
       ]
     },
     {
@@ -78,24 +87,6 @@
     },
     {
       "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "i.f1g.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -129,33 +120,33 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "img.lemde.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
-    "conforme": false,
-    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
-    "fuites_tierces": [
-      {
-        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      }
-    ],
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
+      "i.f1g.fr",
       "www.franceinfo.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "i.f1g.fr",
-      "img.lemde.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "f7deaab7191eff599831d2ab02067dfb70d0f54470d7d69f8c744b4cbc317b63"
+  "empreinte_certificat_sha256": "f62b7ad748b62c9e749e4373b43b83deaed28adb3cb946e4244dac75b3a57d68"
 }
