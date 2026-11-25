@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le Labo communautaire — contribuer et gagner des jours · Alphabette</title>
+<meta name="description" content="Testez les applis du Laboratoire Alphabette : avis, bugs, idées, missions flash et duels A/B. Gagnez des statuts et des jours gratuits sur alphabette.fr.">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}
+  .chiffres{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.chiffre{background:var(--carte);border:1px solid var(--trait);border-radius:1rem;padding:.8rem}
+  .chiffre b{display:block;font-size:1.4rem}.jauge{height:14px;border-radius:999px;background:var(--trait);overflow:hidden;margin:.5rem 0}.jauge>div{height:100%;background:var(--acc);width:0}
+  textarea{width:100%;min-height:7rem}#toile{max-width:100%;border:1px solid var(--trait);border-radius:.6rem;touch-action:none}
+  .outils{display:flex;flex-wrap:wrap;gap:.4rem}.outils button[aria-pressed=true]{outline:3px solid var(--vedette)}
+  pre{white-space:pre-wrap;font-size:.85rem;background:var(--carte);border:1px solid var(--trait);border-radius:.6rem;padding:.5rem}
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="contribuer" data-nom="Le Labo" data-sous-titre="Contribuer" data-accent="#0f766e"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Le Labo communautaire</h1>
+  <p class="chapeau">Gratuit. Chaque contribution utile vous fait monter de statut et gagner des <strong>jours gratuits sur alphabette.fr</strong>.</p>
+  <section class="carte" aria-labelledby="t-jauge"><h2 id="t-jauge">Objectif collectif</h2><div class="jauge" aria-hidden="true"><div id="jauge"></div></div><p id="jauge-t" class="note"></p></section>
+
+  <section id="cnx" class="carte cache" aria-labelledby="t-cnx">
+    <h2 id="t-cnx">Se connecter</h2>
+    <form id="f-cnx"><label class="champ" for="email">Adresse e-mail <span class="aide">Lien de connexion par e-mail, sans mot de passe.</span><input id="email" type="email" required autocomplete="email"></label><button type="submit">Recevoir mon lien</button></form>
+    <p class="message" id="m-cnx"></p>
+  </section>
+
+  <section id="moi" class="cache">
+    <div class="chiffres">
+      <div class="chiffre"><b id="statut">—</b><span>statut (×<span id="mult">1</span>)</span></div>
+      <div class="chiffre"><b id="points">0</b><span>points</span></div>
+      <div class="chiffre"><b id="jours">0</b><span>jours gratuits .fr</span></div>
+      <div class="chiffre"><b id="serie">—</b><span>badge Pilier · jokers</span></div>
+    </div>
+    <p class="note">Avis +1 pt +1 j · bug confirmé +5 pts +5 j · idée déployée +15 pts +30 j · Mission Flash +7 j · 5 duels dans la semaine +1 j · 4 semaines d'affilée +10 j et badge Pilier.<br>Statuts : Explorateur ×1 · Bêta-Testeur (5 pts) ×1,5 · Testeur Or (20 pts) ×2 · Architecte (50 pts) ×3.</p>
+
+    <h2>Contribuer</h2>
+    <form id="f-c" class="carte">
+      <fieldset class="radios"><legend>Type</legend>
+        <label><input type="radio" name="type" value="avis" checked> Avis</label>
+        <label><input type="radio" name="type" value="bug"> Bug</label>
+        <label><input type="radio" name="type" value="idee"> Idée</label>
+        <label><input type="radio" name="type" value="mission"> Mission Flash</label></fieldset>
+      <label class="champ" for="app">Appli <span class="aide">Son adresse courte (ex. iadebat, c-1a2b3c4d).</span><input id="app" maxlength="63"></label>
+      <label class="champ cache" for="mission" id="l-mission">Mission <select id="mission"></select></label>
+      <label class="champ" for="texte">Votre contribution <textarea id="texte" required minlength="15" maxlength="2000"></textarea></label>
+      <div id="bugpro" class="cache">
+        <h3>Assistant Bug Pro</h3>
+        <label class="case"><input type="checkbox" id="joindre"> <span>Joindre les 10 dernières erreurs techniques de cette appli (gardées dans ce navigateur seulement, déjà nettoyées des e-mails et clés). Vous les voyez avant l'envoi :</span></label>
+        <pre id="erreurs" class="cache"></pre>
+        <label class="champ" for="image">Capture d'écran (facultatif) <span class="aide">Annotez, et floutez ce qui est privé, avant l'envoi.</span><input id="image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        <div id="editeur" class="cache">
+          <div class="outils"><button type="button" class="secondaire" id="o-stylo" aria-pressed="true">✏️ Annoter</button><button type="button" class="secondaire" id="o-flou" aria-pressed="false">▦ Flouter</button><button type="button" class="secondaire" id="o-annuler">Effacer la capture</button></div>
+          <canvas id="toile" aria-label="Capture annotée"></canvas>
+        </div>
+      </div>
+      <button type="submit">Envoyer</button>
+      <p class="message" id="m-c"></p>
+    </form>
+
+    <h2>Micro-duels A/B</h2>
+    <p class="note"><span id="duels-n">0</span>/5 cette semaine. 5 duels = +1 jour gratuit.</p>
+    <div id="duels"></div>
+
+    <h2>Mes jours gratuits</h2>
+    <form id="f-conv" class="carte"><label class="champ" for="nbj">Convertir en code promo pour alphabette.fr <input id="nbj" type="number" min="1" max="365" value="7"></label><button type="submit">Créer mon code</button><p class="message" id="m-conv"></p><ul id="codes"></ul></form>
+    <label class="case"><input type="checkbox" id="hall"> <span>Afficher mon pseudo dans le <a href="/credits/">Hall of Fame</a></span></label>
+    <p><a href="/roadmap/">Voter sur la feuille de route →</a></p>
+  </section>
+</main>
+<script>
+(function () {
+  'use strict';
+  var A = window.AB5, $ = A.$;
+  function type() { return document.querySelector('input[name=type]:checked').value; }
+  A.labo('communaute.php', null, 'jauge=1').then(function (d) {
+    if (d._s !== 200) return;
+    $('jauge').style.width = Math.min(100, d.total * 100 / d.objectif) + '%';
+    $('jauge-t').textContent = d.total + ' / ' + d.objectif + ' contributions validées : à ' + d.objectif + ', chaque contributeur actif du mois gagne ' + d.recompenseJours + ' jours.';
+  });
+  function charger() {
+    A.labo('communaute.php', null, 'moi=1').then(function (d) {
+      if (d._s === 401 || d._s === 403) { $('cnx').classList.remove('cache'); return; }
+      if (d._s !== 200) return;
+      $('moi').classList.remove('cache');
+      $('statut').textContent = d.statut; $('mult').textContent = String(d.multiplicateur).replace('.', ',');
+      $('points').textContent = String(d.points).replace('.', ','); $('jours').textContent = d.joursFr;
+      $('serie').textContent = (d.pilier ? '🏛️ Pilier' : '—') + ' · ' + d.jokers; $('duels-n').textContent = d.duelsCetteSemaine;
+      $('hall').checked = d.hallVisible;
+      var ul = $('codes'); ul.textContent = '';
+      d.codes.forEach(function (c) { ul.appendChild(A.el('li', {}, [A.el('code', { text: c.code }), ' — ' + c.jours + ' jour(s)'])); });
+    });
+    A.labo('communaute.php', null, 'duels=1').then(function (d) {
+      var z = $('duels'); z.textContent = '';
+      (d.duels || []).forEach(function (x) {
+        var c = A.el('div', { class: 'carte' }, [A.el('p', {}, [A.el('strong', { text: x.question })])]);
+        ['a', 'b'].forEach(function (k) {
+          var b = A.el('button', { type: 'button', class: 'secondaire', text: x[k] });
+          b.onclick = function () { A.labo('communaute.php', { action: 'duel', duel: x.id, choix: k }).then(function (r) { c.appendChild(A.el('p', { class: 'message ' + (r._s === 200 ? 'ok' : 'err'), text: r._s === 200 ? (r.jourGagne ? 'Merci ! +1 jour gagné.' : 'Merci !') : r.erreur })); charger(); }); };
+          c.appendChild(b); c.appendChild(document.createTextNode(' '));
+        });
+        z.appendChild(c);
+      });
+      if (!z.childNodes.length) z.appendChild(A.el('p', { class: 'note', text: 'Pas de duel cette semaine.' }));
+    });
+    A.labo('communaute.php', null, 'missions=1').then(function (d) {
+      var s = $('mission'); s.textContent = '';
+      (d.missions || []).forEach(function (m) { s.appendChild(A.el('option', { value: String(m.id), text: m.titre + ' (jusqu\'au ' + new Date(m.fin * 1000).toLocaleDateString('fr-FR') + ')' })); });
+    });
+  }
+  $('f-cnx').addEventListener('submit', function (e) {
+    e.preventDefault();
+    A.labo('auth.php', { action: 'demander', email: $('email').value.trim(), retour: '/contribuer/' }).then(function (d) { A.message($('m-cnx'), d._s === 200 ? 'Ouvrez le lien reçu par e-mail.' : d.erreur, d._s === 200); });
+  });
+  document.querySelectorAll('input[name=type]').forEach(function (r) { r.addEventListener('change', function () { $('bugpro').classList.toggle('cache', type() !== 'bug'); $('l-mission').classList.toggle('cache', type() !== 'mission'); }); });
+
+  // Assistant Bug Pro — erreurs relevées par le capteur du Labo (labo/capteur.js), jamais envoyées sans la case cochée.
+  function erreursApp() {
+    try {
+      var toutes = JSON.parse(localStorage.getItem('labo_erreurs_v1') || '{}'), app = $('app').value.trim(), l = [];
+      Object.keys(toutes).forEach(function (chemin) { if (!app || chemin.indexOf('/' + app) !== -1) l = l.concat(toutes[chemin]); });
+      return l.sort(function (a, b) { return a.t - b.t; }).slice(-10).map(function (x) { return { message: x.m, source: '', ligne: 0 }; });
+    } catch (e) { return []; }
+  }
+  function montrerErreurs() { var l = erreursApp(); $('erreurs').textContent = l.length ? l.map(function (x) { return '• ' + x.message; }).join('\n') : 'Aucune erreur relevée pour cette appli dans ce navigateur.'; $('erreurs').classList.toggle('cache', !$('joindre').checked); }
+  $('joindre').addEventListener('change', montrerErreurs); $('app').addEventListener('input', function () { if ($('joindre').checked) montrerErreurs(); });
+
+  var toile = $('toile'), ctx = toile.getContext('2d'), outil = 'stylo', capture = false, depart = null;
+  $('image').addEventListener('change', function () {
+    var f = this.files[0]; if (!f) return;
+    var img = new Image();
+    img.onload = function () {
+      var k = Math.min(1, 1280 / img.width); toile.width = Math.round(img.width * k); toile.height = Math.round(img.height * k);
+      ctx.drawImage(img, 0, 0, toile.width, toile.height); capture = true; $('editeur').classList.remove('cache'); URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(f);
+  });
+  function choisir(o) { outil = o; $('o-stylo').setAttribute('aria-pressed', String(o === 'stylo')); $('o-flou').setAttribute('aria-pressed', String(o === 'flou')); }
+  $('o-stylo').onclick = function () { choisir('stylo'); }; $('o-flou').onclick = function () { choisir('flou'); };
+  $('o-annuler').onclick = function () { capture = false; $('image').value = ''; $('editeur').classList.add('cache'); };
+  function pos(e) { var r = toile.getBoundingClientRect(); return { x: (e.clientX - r.left) * toile.width / r.width, y: (e.clientY - r.top) * toile.height / r.height }; }
+  toile.addEventListener('pointerdown', function (e) { depart = pos(e); toile.setPointerCapture(e.pointerId); if (outil === 'stylo') { ctx.strokeStyle = '#e11d48'; ctx.lineWidth = Math.max(3, toile.width / 200); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(depart.x, depart.y); } });
+  toile.addEventListener('pointermove', function (e) { if (!depart || outil !== 'stylo') return; var p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+  toile.addEventListener('pointerup', function (e) {
+    if (!depart) return;
+    if (outil === 'flou') { // pixelisation irréversible de la zone (le texte n'est plus lisible)
+      var p = pos(e), x = Math.max(0, Math.min(depart.x, p.x)) | 0, y = Math.max(0, Math.min(depart.y, p.y)) | 0, w = Math.abs(p.x - depart.x) | 0, h = Math.abs(p.y - depart.y) | 0, b = 14;
+      if (w > 2 && h > 2) for (var i = x; i < x + w; i += b) for (var j = y; j < y + h; j += b) { var d = ctx.getImageData(i, j, 1, 1).data; ctx.fillStyle = 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')'; ctx.fillRect(i, j, b, b); }
+    }
+    depart = null;
+  });
+
+  $('f-c').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var corps = { action: 'contribuer', type: type(), texte: $('texte').value, app: $('app').value.trim() || undefined };
+    if (type() === 'mission') corps.mission = Number($('mission').value || 0);
+    if (type() === 'bug' && $('joindre').checked) corps.erreurs = erreursApp();
+    if (type() === 'bug' && capture) corps.capture = toile.toDataURL('image/jpeg', .8);
+    A.labo('communaute.php', corps).then(function (d) {
+      A.message($('m-c'), d._s === 200 ? d.message : d.erreur, d._s === 200 && d.statut !== 'doublon' && d.statut !== 'refusee');
+      if (d._s === 200 && (d.statut === 'validee' || d.statut === 'en_attente' || d.statut === 'a_verifier')) { $('texte').value = ''; charger(); }
+    });
+  });
+  $('f-conv').addEventListener('submit', function (e) {
+    e.preventDefault();
+    A.labo('communaute.php', { action: 'convertir', jours: Number($('nbj').value) }).then(function (d) { A.message($('m-conv'), d._s === 200 ? 'Votre code : ' + d.code + ' (à saisir sur la page d\'essai de l\'appli)' : d.erreur, d._s === 200); charger(); });
+  });
+  $('hall').addEventListener('change', function () { A.labo('communaute.php', { action: 'hall', visible: $('hall').checked }); });
+  charger();
+})();
+</script>
+</body>
+</html>

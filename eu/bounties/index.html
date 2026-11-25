@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bounties — défis récompensés · Alphabette</title>
+<meta name="description" content="Des défis payés pour améliorer les applis : la somme est mise sous séquestre, 90 % pour la personne qui réussit.">
+
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="bounties" data-nom="Bounties" data-sous-titre="Défis payés" data-accent="#4338ca"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Bounties</h1>
+  <p class="chapeau">Un défi, une récompense. La somme (10 € minimum) est <strong>mise sous séquestre</strong> dès le dépôt ; la personne qui réussit reçoit <strong>90 %</strong>, Alphabette garde 10 %.</p>
+  <div id="liste"><p>Chargement…</p></div>
+  <h2>Proposer un défi</h2>
+  <div id="cnx"></div>
+  <form id="f" class="carte cache">
+    <label class="champ" for="titre">Titre <input id="titre" required minlength="5" maxlength="120"></label>
+    <label class="champ" for="desc">Ce qu'il faut réussir <textarea id="desc" required minlength="20" maxlength="2000"></textarea></label>
+    <label class="champ" for="app">Appli concernée (facultatif) <input id="app" placeholder="ex. c-1a2b3c4d"></label>
+    <label class="champ" for="montant">Récompense (€) <input id="montant" type="number" min="10" step="1" value="10" required></label>
+    <fieldset class="radios"><legend>Payer avec</legend>
+      <label><input type="radio" name="moyen" value="solde" checked> mon solde créateur</label>
+      <label><input type="radio" name="moyen" value="carte"> ma carte</label></fieldset>
+    <button type="submit">Déposer la bounty</button>
+    <p class="message" id="m"></p>
+  </form>
+</main>
+<script>
+(function () {
+  var A = window.AB5;
+  A.finance('boutique.php', null, 'bounties').then(function (d) {
+    var z = A.$('liste'); z.textContent = '';
+    if (d._s !== 200) { z.appendChild(A.el('p', { class: 'message err', text: d.erreur })); return; }
+    if (!d.bounties.length) { z.appendChild(A.el('p', { class: 'carte', text: 'Aucun défi en cours. Lancez le premier !' })); return; }
+    d.bounties.forEach(function (b) {
+      z.appendChild(A.el('article', { class: 'carte' + (b.statut === 'ouvert' ? ' carte--acc' : '') }, [
+        A.el('h3', { text: b.titre }), A.el('p', { text: b.description }),
+        A.el('p', { class: 'pastille', text: (b.statut === 'ouvert' ? 'Ouvert · ' : 'Réussi · ') + b.montant + ' (dont ' + A.euros(b.contributeurCents) + ' pour la personne qui réussit)' }),
+        b.app ? A.el('p', { class: 'note', text: 'Appli : ' + b.app }) : null]));
+    });
+  });
+  A.connexion(A.$('cnx'), function () { A.$('f').classList.remove('cache'); });
+  A.$('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var moyen = document.querySelector('input[name=moyen]:checked').value;
+    A.finance('boutique.php', { action: 'commander', produit: 'bounty', moyen: moyen, titre: A.$('titre').value, description: A.$('desc').value,
+      app: A.$('app').value.trim() || undefined, montant: Math.round(Number(A.$('montant').value) * 100) }).then(function (d) {
+      if (d._s === 200 && d.lien) { location.href = d.lien; return; }
+      A.message(A.$('m'), d._s === 200 ? d.message : d.erreur, d._s === 200);
+    });
+  });
+})();
+</script>
+</body>
+</html>

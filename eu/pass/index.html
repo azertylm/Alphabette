@@ -18,13 +18,13 @@
 
   <div id="lancement" class="carte carte--vedette cache" role="status">
     <h2 style="margin-top:0">🎉 Tout est gratuit jusqu'au <span class="date-gratuit"></span></h2>
-    <p>Offre de lancement : toutes les applications Alphabette sont gratuites jusqu'au <strong class="date-gratuit"></strong> inclus. <strong>Rien à payer</strong>, aucun Pass à prendre d'ici là. Ensuite : 15 € ou 40 € pour 12 mois, sans renouvellement automatique.</p>
+    <p>Offre de lancement : toutes les applications Alphabette sont gratuites jusqu'au <strong class="date-gratuit"></strong> inclus. <strong>Rien à payer</strong>, aucun Pass à prendre d'ici là. Ensuite : 15 € par application pour 12 mois, sans renouvellement automatique.</p>
   </div>
 
   <!-- Fin de la découverte : on propose le Pass, sans pression -->
   <div id="fin-decouverte" class="carte carte--acc cache" role="status">
     <h2 style="margin-top:0">Vos 48 h de découverte sont terminées</h2>
-    <p>Merci d'avoir essayé ! Pour continuer : le Pass <strong id="fin-prix-app">15 €</strong> (une application) ou le Pass <strong id="fin-prix-eco">40 €</strong> (toutes). <strong>12 mois, aucun renouvellement automatique.</strong> Le Mode Gratuit d'IA Débat reste ouvert.</p>
+    <p>Merci d'avoir essayé ! Pour continuer : le Pass <strong id="fin-prix-app">15 €</strong> par application (dont 10 € pour son créateur). <strong>12 mois, aucun renouvellement automatique.</strong> Le Mode Gratuit d'IA Débat reste ouvert.</p>
     <div class="actions"><a class="bouton" href="#offres">Voir les Pass</a></div>
   </div>
 
@@ -52,15 +52,6 @@
           <button type="button" class="secondaire" data-commander="pass_app" data-pour="cadeau">🎁 Offrir en cadeau</button>
         </div>
       </div>
-      <div class="carte carte--vedette">
-        <h3>Tout l'écosystème</h3>
-        <p class="prix"><span id="prix-eco">40</span> € <small>pour 12 mois</small></p>
-        <p>Toutes les applications d'Alphabette, d'aujourd'hui et de demain.</p>
-        <div class="actions">
-          <button type="button" data-commander="pass_ecosysteme" data-pour="moi">Prendre ce Pass</button>
-          <button type="button" class="secondaire" data-commander="pass_ecosysteme" data-pour="cadeau">🎁 Offrir en cadeau</button>
-        </div>
-      </div>
     </div>
     <p class="message" id="m-offres" role="status"></p>
     <p class="note">Paiement unique par carte (Stripe). <strong>12 mois, aucun renouvellement automatique</strong> : rien n'est prélevé à la fin. 14 jours pour changer d'avis (<a href="/conditions-de-vente">CGV</a>). Un Pass sert sur <span class="nb-appareils">3</span> appareils.</p>
@@ -75,7 +66,7 @@
         <input id="message-cadeau" maxlength="140" autocomplete="off" placeholder="Joyeux anniversaire Maman !">
       </label>
       <div class="actions"><button type="button" id="b-cadeau" class="cache">Continuer vers le paiement</button></div>
-      <p class="note" id="cadeau-aide">Choisissez le Pass plus haut et touchez « 🎁 Offrir en cadeau ». Infos Perso, IA Débat ou Service France avec le Pass 15 € ; tout avec le Pass 40 €. Senior Bon Plan est gratuite : rien à acheter.</p>
+      <p class="note" id="cadeau-aide">Choisissez le Pass plus haut et touchez « 🎁 Offrir en cadeau ». Infos Perso, IA Débat ou Service France : 15 € par application. Senior Bon Plan est gratuite : rien à acheter.</p>
       <p class="message" id="m-cadeau" role="status"></p>
     </div>
   </section>
@@ -125,8 +116,8 @@
     $('t-offres').textContent = 'Les Pass 12 mois, à partir du ' + new Date(new Date(e.gratuit_jusqu_au + 'T12:00:00').getTime() + 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     $('t-cadeau').textContent = 'Offrir un Pass à un proche (après l\u2019offre de lancement)';
   }
-  $('prix-app').textContent = e.prix.pass_app; $('prix-eco').textContent = e.prix.pass_ecosysteme;
-  $('fin-prix-app').textContent = e.prix.pass_app + ' €'; $('fin-prix-eco').textContent = e.prix.pass_ecosysteme + ' €';
+  $('prix-app').textContent = e.prix.pass_app;
+  $('fin-prix-app').textContent = e.prix.pass_app + ' €';
   $('prix-credits').textContent = e.prix.credits_iadebat; $('nb-credits').textContent = e.credits_par_pack;
   document.querySelectorAll('.nb-appareils').forEach(function (n) { n.textContent = e.appareils || 3; });
   var sel = $('app-pass');
@@ -143,7 +134,7 @@
       // Cadeau : d'abord le petit mot (carte), puis le paiement.
       if (b.getAttribute('data-pour') === 'cadeau') {
         cadeau = { produit: p, app: p === 'pass_app' ? sel.value : undefined };
-        var nom = p === 'pass_app' ? 'Pass ' + sel.options[sel.selectedIndex].text + ' (' + e.prix.pass_app + ' €)' : 'Pass Écosystème (' + e.prix.pass_ecosysteme + ' €)';
+        var nom = 'Pass ' + sel.options[sel.selectedIndex].text + ' (' + e.prix.pass_app + ' €)';
         $('cadeau-choix').textContent = '🎁 Vous offrez : ' + nom; $('cadeau-choix').classList.remove('cache');
         $('b-cadeau').classList.remove('cache'); $('cadeau-aide').textContent = 'La carte et son code s\u2019affichent juste après le paiement (et arrivent par e-mail).';
         $('cadeau').scrollIntoView({ behavior: 'smooth', block: 'start' }); $('message-cadeau').focus({ preventScroll: true });

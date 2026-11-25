@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Boutique créateurs — booster, licences, cadeaux · Alphabette</title>
+<meta name="description" content="Boost 7 jours, packs de licences pour équipes, écoles et associations, domaine personnalisé, codes cadeaux, audit IA Pro, café offert. Paiement par carte ou par solde.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}table{width:100%;border-collapse:collapse}td{padding:.4rem .2rem;border-top:1px solid var(--trait);color:var(--encre)}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="boutique" data-nom="Boutique" data-sous-titre="Créateurs" data-accent="#b45309"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/mes-revenus/">← Mes revenus</a>
+  <h1>Boutique créateurs</h1>
+  <p class="pastille">Votre part d'un abonnement reste toujours 10 € sur 15 €</p>
+  <section id="cafe" class="carte carte--acc cache" aria-labelledby="t-cafe"><h2 id="t-cafe">☕ Offrir un café au créateur</h2><p>3 € : <strong>2 € pour le créateur</strong>, 1 € pour faire vivre le Laboratoire.</p><button type="button" id="b-cafe">Offrir un café (3 €)</button><p class="message" id="m-cafe"></p></section>
+  <div id="cnx"></div>
+  <section id="b" class="cache">
+    <label class="champ" for="app">Pour l'appli <input id="app" placeholder="ex. c-1a2b3c4d" maxlength="63"></label>
+    <fieldset class="radios"><legend>Payer avec</legend><label><input type="radio" name="moyen" value="solde" checked> mon solde créateur</label><label><input type="radio" name="moyen" value="carte"> ma carte</label></fieldset>
+    <div class="grille grille--2" id="produits"></div>
+    <p class="message" id="m"></p>
+    <h2>Mes licences</h2><div id="lic"><p class="note">Aucun pack pour l'instant.</p></div>
+    <h2>Transparence</h2>
+    <label class="case"><input type="checkbox" id="transp"> <span>Afficher publiquement le nombre d'abonnés et les revenus de cette appli</span></label>
+  </section>
+</main>
+<script>
+(function () {
+  var A = window.AB5, $ = A.$, q = new URLSearchParams(location.search);
+  function moyen() { return document.querySelector('input[name=moyen]:checked').value; }
+  function commander(corps, zone) {
+    A.finance('boutique.php', Object.assign({ action: 'commander', moyen: corps.moyen || moyen(), app: $('app').value.trim() || q.get('cafe') || undefined }, corps)).then(function (d) {
+      if (d._s === 200 && d.lien) { location.href = d.lien; return; }
+      A.message(zone || $('m'), d._s === 200 ? d.message : d.erreur, d._s === 200); if (d._s === 200) licences();
+    });
+  }
+  if (q.get('cafe')) { $('cafe').classList.remove('cache'); $('b-cafe').onclick = function () { commander({ produit: 'pourboire', moyen: 'carte', app: q.get('cafe') }, $('m-cafe')); }; }
+  function carte(titre, texte, bouton, fn) { var b = A.el('button', { type: 'button', text: bouton }); b.onclick = fn; return A.el('div', { class: 'carte' }, [A.el('h3', { text: titre }), A.el('p', { text: texte }), b]); }
+  function licences() {
+    A.finance('boutique.php', null, 'licences').then(function (d) {
+      var z = $('lic'); if (d._s !== 200 || !d.packs.length) return; z.textContent = '';
+      d.packs.forEach(function (p) {
+        var t = A.el('table'); z.appendChild(A.el('h3', { text: 'Pack de ' + p.nb + ' — ' + p.app })); z.appendChild(t);
+        p.licences.forEach(function (l) {
+          if (l.statut === 'revoquee') return;
+          var b = A.el('button', { type: 'button', class: 'secondaire', text: l.statut === 'active' ? 'Réattribuer' : 'Envoyer à…' });
+          b.onclick = function () {
+            if (l.statut === 'active') { A.finance('boutique.php', { action: 'licence_reattribuer', licence: l.id }).then(function () { licences(); }); return; }
+            var e = prompt('Adresse e-mail de la personne :'); if (!e) return;
+            A.finance('boutique.php', { action: 'licence_attribuer', licence: l.id, email: e }).then(function (d) { A.message($('m'), d._s === 200 ? 'Licence envoyée.' : d.erreur, d._s === 200); licences(); });
+          };
+          t.appendChild(A.el('tr', {}, [A.el('td', {}, [A.el('code', { text: l.code || '' })]), A.el('td', { text: l.statut === 'active' ? 'activée' : (l.attribuee ? 'envoyée' : 'libre') }), A.el('td', {}, [b])]));
+        });
+      });
+    });
+  }
+  A.connexion($('cnx'), function () {
+    $('b').classList.remove('cache');
+    A.finance('boutique.php', null, 'catalogue').then(function (c) {
+      if (c._s !== 200) { A.message($('m'), c.erreur); return; }
+      var z = $('produits');
+      z.appendChild(carte('🚀 Boost 7 jours', A.euros(c.boost.prixCents) + ' — en tête d\'alphabette.fr. ' + c.boost.places + ' places' + (c.boost.placeLibre ? ', une est libre.' : ' : prochaine place le ' + new Date(c.boost.prochainePlace).toLocaleDateString('fr-FR') + '.'), 'Booster', function () { commander({ produit: 'boost' }); }));
+      c.packs.forEach(function (p) { z.appendChild(carte('👥 Pack ' + p.nb + ' licences', A.euros(p.prixCents) + ' (équipe, école, association) — ' + A.euros(p.createurCents) + ' pour le créateur.', 'Acheter', function () { commander({ produit: 'pack', nb: p.nb }); })); });
+      z.appendChild(carte('🌐 Domaine personnalisé', A.euros(c.domaine.prixCents) + ' par an. La double barre Alphabette reste en place.', 'Choisir mon domaine', function () { var d = prompt('Votre nom de domaine (ex. monappli.fr) :'); if (d) commander({ produit: 'domaine', domaine: d, shell_conserve: confirm('Je garde la double barre Alphabette (@alphabette/shell) sur mon domaine.') }); }));
+      z.appendChild(carte('🎁 Codes cadeaux 1 an', A.euros(c.cadeau.prixCents) + ' le code ' + c.cadeau.format + ' : vous offrez votre part.', 'Créer des codes', function () { var n = parseInt(prompt('Combien de codes ? (1 à 50)', '1'), 10); if (n) commander({ produit: 'cadeau', nb: n }); }));
+      z.appendChild(carte('🔎 Audit IA Pro', A.euros(c.auditPro.prixCents) + ' — rapport complet et correctifs à coller.', 'Commander', function () { commander({ produit: 'audit_pro' }); }));
+    });
+    licences();
+  });
+  $('transp').addEventListener('change', function () { A.finance('boutique.php', { action: 'transparence', app: $('app').value.trim(), publique: $('transp').checked }).then(function (d) { A.message($('m'), d._s === 200 ? 'Choix enregistré.' : d.erreur, d._s === 200); }); });
+})();
+</script>
+</body>
+</html>

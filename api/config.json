@@ -3,20 +3,18 @@
   "currency": "EUR",
   "pricing": {
     "perApp": 15,
-    "ecosystem": 40,
     "trialDays": 7
   },
   "activePromotion": {
     "isActive": false,
     "badgeLabel": "Offre Lancement Écosystème",
     "discountPercent": 15,
-    "expiresAt": "2026-12-09T07:20:59.033Z",
+    "expiresAt": "2026-12-09T11:03:40.573Z",
     "description": "-15% immédiats sur l'Écosystème complet avec le code SOUVERAIN15",
     "couponCode": "SOUVERAIN15"
   },
   "stripePaymentLinks": {
-    "perApp": "",
-    "ecosystem": ""
+    "perApp": ""
   },
   "aiPolicy": {
     "provider": "Mistral AI (Exclusif)",
@@ -25,7 +23,7 @@
     "zeroPublicTraining": true,
     "trialDaysIncluded": 7
   },
-  "updatedAt": "2026-11-25T07:20:59.033Z",
+  "updatedAt": "2026-11-25T11:03:40.573Z",
   "donation": {
     "version": 1,
     "updatedAt": "2026-11-11T00:00:00.000Z",

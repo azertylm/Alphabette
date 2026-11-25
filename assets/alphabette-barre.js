@@ -31,6 +31,14 @@
   var HUB = local ? location.origin : 'https://alphabette.fr';
   var app = { cle: d.cle || '', nom: d.nom || document.title, sousTitre: d.sousTitre || '', accent: d.accent || '#2563eb', categorie: d.categorie || '' };
 
+  // ------------------------------------------------------------ Lien recommandé (Lot 5)
+  // /go/<appli>?ref=… ajoute ?clic=clk_… à l'adresse : gardé pour CET onglet seulement (sessionStorage, jamais de cookie),
+  // pour que l'abonnement éventuel dans les 7 jours remercie la personne qui a recommandé l'appli.
+  try {
+    var clic = new URLSearchParams(location.search).get('clic');
+    if (clic && /^clk_[a-f0-9]{24}$/.test(clic)) sessionStorage.setItem('ab5_clic', clic);
+  } catch (e) {}
+
   // ------------------------------------------------------------ Design Pop / Néon (Lot 4)
   // Univers posé tout de suite (avant l'affichage) : alphabette.eu = « Labo Pop Électrique », sinon « Vitrine Solaire ».
   // Mode Calme (localStorage) : coupe les animations. Feuille et effets chargés à côté de ce script, sans bloquer.
@@ -296,20 +304,15 @@
 
   // ------------------------------------------------------------ Lecture à voix haute
   var lectureEnCours = false, jeton = 0;
-  function decouper(t) {
-    var ph = t.replace(/\s+/g, ' ').match(/[^.!?…:;]+[.!?…:;]?\s*/g) || [t], out = [];
-    ph.forEach(function (p) { var r = p.trim(); while (r.length > 200) { var c = r.lastIndexOf(' ', 200); c = c > 40 ? c : 200; out.push(r.slice(0, c)); r = r.slice(c).trim(); } if (r) out.push(r); });
-    return out;
-  }
   // Voix Alphabette unique (Gemini « Kore ») : alphabette-audio.js, chargé à côté de ce script.
-  // Repli sur la voix du téléphone tant qu'il n'est pas arrivé.
+  // Jamais de speechSynthesis en direct ici (CLAUDE.md) : un clic arrivé avant la voix attend son chargement.
   (function chargerVoix() {
     if (window.alphabetteAudio || document.getElementById('ab-audio-js')) return;
     var src = (script && script.src) ? script.src.replace(/alphabette-barre\.js(\?.*)?$/, 'alphabette-audio.js') : 'https://alphabette.fr/assets/alphabette-audio.js';
     var s = document.createElement('script'); s.id = 'ab-audio-js'; s.src = src; s.async = true;
     (document.head || document.documentElement).appendChild(s);
   })();
-  function etatVoix() { var a = window.alphabetteAudio; return a ? a.lireEtat().etat : (lectureEnCours ? 'lecture' : 'repos'); }
+  function etatVoix() { var a = window.alphabetteAudio; return a ? a.lireEtat().etat : (lectureEnCours ? 'preparation' : 'repos'); }
   function majLecture() {
     var b = document.getElementById('ab-lire'); if (!b) return; var e = etatVoix();
     b.textContent = e === 'preparation' ? '⏳' : e === 'lecture' ? '🔇' : '🔊';
@@ -335,18 +338,20 @@
       if (a.actif) return a.stop();
       return a.play(a.texteDeLaPage ? a.texteDeLaPage() : texteDeLaPage(), a.ID_BARRE, { langue: langue === 'en' ? 'en' : 'fr' });
     }
-    if (lectureEnCours) { jeton++; speechSynthesis.cancel(); lectureEnCours = false; return majLecture(); }
-    var phrases = decouper(texteDeLaPage());
-    if (!phrases.length) return;
-    speechSynthesis.cancel(); var moi = ++jeton; lectureEnCours = true; majLecture();
-    (function suivante(i) {
-      if (jeton !== moi) return; if (i >= phrases.length) { lectureEnCours = false; return majLecture(); }
-      var u = new SpeechSynthesisUtterance(phrases[i]); u.lang = langue === 'en' ? 'en-GB' : 'fr-FR'; u.rate = 0.94;
-      u.onend = function () { suivante(i + 1); }; u.onerror = function () { if (jeton === moi) { lectureEnCours = false; majLecture(); } };
-      speechSynthesis.speak(u);
-    })(0);
+    // La voix n'est pas encore arrivée : « préparation », puis lecture dès qu'elle est là (second clic = annuler).
+    if (lectureEnCours) { jeton++; lectureEnCours = false; return majLecture(); }
+    var moi = ++jeton; lectureEnCours = true; majLecture();
+    var fini = false, sc = document.getElementById('ab-audio-js');
+    function fin() {
+      if (fini || jeton !== moi) return; fini = true;
+      lectureEnCours = false; majLecture();
+      if (window.alphabetteAudio) return basculerLecture();
+      var b = document.getElementById('ab-lire'); if (b) { b.dataset.abTip = T('Lecture indisponible : réessayez'); b.setAttribute('aria-label', b.dataset.abTip); }
+    }
+    if (sc) { sc.addEventListener('load', fin); sc.addEventListener('error', fin); }
+    setTimeout(fin, 8000);
   }
-  window.addEventListener('pagehide', function () { if (window.alphabetteAudio) window.alphabetteAudio.stop(); else if ('speechSynthesis' in window) speechSynthesis.cancel(); });
+  window.addEventListener('pagehide', function () { if (window.alphabetteAudio) window.alphabetteAudio.stop(); });
 
   // ------------------------------------------------------------ Installer, avis, imprimer, langue
   var installation = null;

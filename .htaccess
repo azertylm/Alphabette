@@ -37,8 +37,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^api/admin/session/?$ eu/api/admin-session.json [L]
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
   RewriteRule ^api/donnees-privees - [F,L]
-  # Carte Collector d'un créateur du Collectif (Lot 4) : une seule page, le pseudo est lu dans l'adresse.
+  # Carte Collector d'un créateur (Lot 4) : pseudos hors service Créateurs (majuscules, « _ », 1-2 caractères) ;
+  # les autres passent par eu/.htaccess → createur.php, qui affiche la Carte Collector s'il ne connaît pas le pseudo (Lot 5).
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteCond %{REQUEST_URI} !^/createur/[a-z0-9-]{3,30}/?$
   RewriteRule ^createur/[A-Za-z0-9_-]{1,40}/?$ eu/createur/index.html [L]
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
   RewriteCond %{REQUEST_URI} !^/eu/
@@ -82,6 +84,10 @@ ErrorDocument 404 /404.html
   RewriteCond %{HTTP_HOST} ^(www\.)?(proxilien\.fr|proxilien\.alphabette\.fr)$ [NC]
   RewriteCond %{REQUEST_URI} !^/apps/proxilien/
   RewriteRule ^(.*)$ apps/proxilien/$1 [L]
+
+  # Lot 5 : liens recommandés et badge depuis alphabette.fr → service du Laboratoire (aucun cookie)
+  RewriteRule ^go/([a-z0-9][a-z0-9-]{0,62})/?$ https://alphabette.eu/go/$1?site=fr [R=302,L,QSA]
+  RewriteRule ^api/badge\.php$ https://alphabette.eu/api/badge.php [R=302,L,QSA]
 
   # Continuité des anciennes adresses
   RewriteRule ^goat(/.*)?$ https://alphabette.eu/apps/goatchevretheking$1 [R=302,L]

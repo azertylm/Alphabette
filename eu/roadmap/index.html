@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feuille de route — votez · Alphabette</title>
+<meta name="description" content="La feuille de route du Laboratoire Alphabette : 3 votes par personne, pondérés par le statut de contributeur.">
+
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}.kanban{display:grid;gap:.75rem}@media(min-width:56rem){.kanban{grid-template-columns:repeat(4,1fr)}main{max-width:72rem}}.col{background:var(--carte);border:1px solid var(--trait);border-radius:1rem;padding:.7rem}.item{border-top:1px solid var(--trait);padding:.6rem 0}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="roadmap" data-nom="À venir" data-sous-titre="3 votes" data-accent="#4338ca"></script>
+<script src="/labo/lot5.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Feuille de route</h1>
+  <p class="chapeau">Vous avez <strong>3 votes</strong>. Plus vous contribuez au Labo, plus votre vote pèse (×1 à ×3). <a href="/contribuer/">Se connecter au Labo</a></p>
+  <p class="message" id="m"></p>
+  <div class="kanban" id="k"></div>
+</main>
+<script>
+(function () {
+  var A = window.AB5, NOMS = { idees: '💡 Idées', prevu: '📅 Prévu', en_cours: '🔧 En cours', fait: '✅ Fait' };
+  function charger() {
+    A.labo('communaute.php', null, 'roadmap=1').then(function (d) {
+      var k = A.$('k'); k.textContent = '';
+      if (d._s !== 200) { A.message(A.$('m'), d.erreur); return; }
+      Object.keys(NOMS).forEach(function (c) {
+        var col = A.el('section', { class: 'col', 'aria-label': NOMS[c] }, [A.el('h2', { text: NOMS[c] })]);
+        (d.colonnes[c] || []).forEach(function (i) {
+          var b = null;
+          if (c !== 'fait') { b = A.el('button', { type: 'button', class: i.monVote ? '' : 'secondaire', 'aria-pressed': String(i.monVote), text: i.monVote ? 'Retirer mon vote' : 'Voter' });
+            b.onclick = function () { A.labo('communaute.php', { action: i.monVote ? 'retirer_vote' : 'voter_roadmap', item: i.id }).then(function (r) { if (r._s !== 200) A.message(A.$('m'), r.erreur); charger(); }); }; }
+          col.appendChild(A.el('div', { class: 'item' }, [A.el('h3', { text: i.titre }), i.description ? A.el('p', { class: 'note', text: i.description }) : null,
+            A.el('p', { class: 'petit', text: i.poids + ' point(s) de vote · ' + i.votants + ' votant(s)' }), b]));
+        });
+        k.appendChild(col);
+      });
+      A.$('m').textContent = 'Votes utilisés : ' + d.mesVotes + ' / ' + d.votesMax; A.$('m').className = 'message';
+    });
+  }
+  charger();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Service « Créateurs » (alphabette.eu) — généré avec le build, ne pas élargir.
+Options -Indexes -MultiViews
+# La bibliothèque commune n'est jamais appelée directement.
+<FilesMatch "^_.*\.php$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|key|txt)$">
+  Require all denied
+</FilesMatch>

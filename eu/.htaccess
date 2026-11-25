@@ -28,6 +28,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^api/ai/config/?$ api/ai/config.json [L]
   RewriteRule ^api/health/?$ api/health.json [L]
   RewriteRule ^api/admin/session/?$ api/admin-session.json [L]
+  # Service « Créateurs » (PHP + SQLite) : fichier.php/<id>/… utilise PATH_INFO, donc on laisse Apache résoudre
+  RewriteRule ^api/createurs/ - [L]
+  # Lot 5 : badge SVG public (/api/badge.php?slug=…), servi par le service Créateurs
+  RewriteRule ^api/badge\.php$ api/createurs/badge.php [L,QSA]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^api/ - [R=404,L]
 
@@ -36,6 +40,18 @@ ErrorDocument 404 /404.html
 
   # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
   RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
+
+  # Créateurs (alphabette.eu) : page d'un créateur, cadre isolé d'une appli, lien de transfert, console d'administration
+  RewriteRule ^createur/([a-z0-9-]{3,30})/?$ api/createurs/createur.php?handle=$1 [L,QSA]
+  RewriteRule ^c/(c-[a-f0-9]{8})/?$ api/createurs/app.php?id=$1 [L,QSA]
+  RewriteRule ^creations/valider-transfert/?$ api/createurs/transfert.php [L,QSA]
+  RewriteRule ^admin/(validations|avis-suspects)/?$ admin-createurs.html [L]
+
+  # Lot 5 : liens recommandés sans traceur, essai 7 jours, invitation d'un ami, lettre d'information (administration)
+  RewriteRule ^go/([a-z0-9][a-z0-9-]{0,62})/?$ api/affiliation.php?go=$1 [L,QSA]
+  RewriteRule ^essai/[a-z0-9][a-z0-9-]{0,62}/?$ essai/index.html [L]
+  RewriteRule ^invite/r[a-z0-9]{10}/?$ invite/index.html [L]
+  RewriteRule ^admin/newsletter/?$ admin-newsletter.html [L]
 
   # Application monopage : toute autre adresse renvoie index.html
   RewriteCond %{REQUEST_FILENAME} !-f
