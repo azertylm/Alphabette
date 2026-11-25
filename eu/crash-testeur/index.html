@@ -200,7 +200,7 @@
   <section id="attente" class="carte attente" aria-live="polite">
     <div class="roue" aria-hidden="true"></div>
     <p id="etape"><strong>Le Pressé ouvre votre appli sur son téléphone…</strong></p>
-    <p class="petit">10 à 20 secondes</p>
+    <p class="petit" id="delai">10 à 20 secondes</p>
   </section>
 
   <section id="rapport" aria-labelledby="t-rapport">
@@ -328,6 +328,7 @@
     let i = 0;
     const minuteur = setInterval(() => { i = Math.min(i + 1, ETAPES.length - 1); $('etape').innerHTML = `<strong>${ETAPES[i]}</strong>`; }, 3500);
     $('etape').innerHTML = `<strong>${ETAPES[0]}</strong>`;
+    $('delai').textContent = etat.mode === 'gratuit' ? 'Mode Gratuit : 15 à 60 secondes selon l\'affluence' : '10 à 20 secondes';
     etat.entree = { url, phrase };
     try {
       let r, d;
