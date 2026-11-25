@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T12:44:16.904Z",
-  "empreinte_page_sha256": "235858d6af63a10f3a0415f1056967f9b7ee1c440e84d6fa066ed4cab48e94ba",
+  "audite_le": "2026-11-25T13:03:12.063Z",
+  "empreinte_page_sha256": "5318bcb62d0d003f23f20ca174aa50a892718c6a414df51cdafd06ce54ce7afc",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,24 +60,33 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 498,
-      "bloquees": 498,
+      "requetes": 433,
+      "bloquees": 433,
       "types": [
         "image",
         "fetch"
       ]
     },
     {
-      "hote": "i.f1g.fr",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 2,
+      "bloquees": 2,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 2,
+      "bloquees": 2,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "i.f1g.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -120,33 +129,33 @@
       "types": [
         "image"
       ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
     }
   ],
   "resultat": {
-    "conforme": true,
-    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
-    "fuites_tierces": [],
+    "conforme": false,
+    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
+    "fuites_tierces": [
+      {
+        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
+        "classe": "tierce",
+        "type": "image",
+        "methode": "GET",
+        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
+        "interceptee": true
+      }
+    ],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
-      "i.f1g.fr",
       "www.franceinfo.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "i.f1g.fr",
       "img.lemde.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com",
-      "io-fsly-bfmtv.cdn.nextradiotv.com"
+      "www.google.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "308e09ae916001a191f18c2ad0413755c1af21a0f1bee249798bc9ce1e966aa9"
+  "empreinte_certificat_sha256": "f7deaab7191eff599831d2ab02067dfb70d0f54470d7d69f8c744b4cbc317b63"
 }
