@@ -1,4 +1,18 @@
 {
   "info": "Applications du Collectif Alphabette (créateurs indépendants), validées par Valentin. Affichées seulement sur alphabette.eu. Champs : id (unique, commence par c-), name, description, url (https), createur, categorie, createdAt.",
-  "apps": []
+  "apps": [
+    {
+      "id": "c-tranche-vite",
+      "name": "Tranche-Vite",
+      "description": "Application de test du Collectif Alphabette (Salle d'embarquement).",
+      "createur": "Tintoon",
+      "categorie": "Autre",
+      "createdAt": "2026-11-25T18:35:00Z",
+      "heberge": {
+        "depot": "azertylm/tranche-vite-index.html",
+        "ref": "ff54c7cdedcc4ccd5014d7cb7bca72f9996ff28a"
+      },
+      "reseau_autorise": []
+    }
+  ]
 }
