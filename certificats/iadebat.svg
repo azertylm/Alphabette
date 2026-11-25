@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="236" height="40" role="img" aria-label="Audit réseau conforme — IADÉBAT — 2026-11-25">
-<title>Certificat d'Audit Réseau Alphabette — IADÉBAT — conforme le 2026-11-25 — SHA-256 adc185aa429ab232405ce61eca6900b2dfbc33f1c08ec3f060052b81d1917c66</title>
+<title>Certificat d'Audit Réseau Alphabette — IADÉBAT — conforme le 2026-11-25 — SHA-256 b6f48c8f8cbd4dba9f8c1096fcf9f057c06340475582005cb98e6570aba0ec55</title>
 <rect width="236" height="40" rx="6" fill="#14161c"/><rect x="118" width="118" height="40" rx="6" fill="#1f6f43"/><rect x="118" width="8" height="40" fill="#1f6f43"/>
 <g font-family="system-ui,sans-serif" font-size="12" fill="#fff"><text x="10" y="17" font-weight="700">🔒 Audit réseau</text><text x="10" y="32" font-size="10" fill="#c9ccd4">zéro connaissance</text>
-<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · adc185aa</text></g>
-<metadata>{"app_id":"iadebat","conforme":true,"audite_le":"2026-11-25T17:05:44.959Z","empreinte_certificat_sha256":"adc185aa429ab232405ce61eca6900b2dfbc33f1c08ec3f060052b81d1917c66"}</metadata></svg>
+<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · b6f48c8f</text></g>
+<metadata>{"app_id":"iadebat","conforme":true,"audite_le":"2026-11-25T17:13:44.552Z","empreinte_certificat_sha256":"b6f48c8f8cbd4dba9f8c1096fcf9f057c06340475582005cb98e6570aba0ec55"}</metadata></svg>
