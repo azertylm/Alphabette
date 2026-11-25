@@ -4,45 +4,71 @@
   "url": "http://127.0.0.1:4173/createurs/c-tranche-vite/app/index.html",
   "communaute": true,
   "heberge": true,
-  "ref": "ff54c7cdedcc4ccd5014d7cb7bca72f9996ff28a",
-  "date": "2026-11-25T18:36:47.523Z",
+  "ref": "73274d8278bd008c063d08c9ada099331f0160bf",
+  "date": "2026-11-25T18:41:48.886Z",
   "scores": {
     "douanier": 100,
-    "pouce": 0,
-    "opticien": 0,
-    "poids_plume": 0,
-    "phare": 0,
+    "pouce": 100,
+    "opticien": 100,
+    "poids_plume": 97,
+    "phare": 100,
     "parapluie": 100
   },
-  "controle_technique": 0,
-  "note": 33,
-  "apte": false,
+  "controle_technique": 99,
+  "note": 100,
+  "apte": true,
   "compte": {
-    "bloquant": 1,
+    "bloquant": 0,
     "important": 0,
     "conseil": 0
   },
-  "problemes": [
-    {
-      "agent": "temoin",
-      "gravite": "bloquant",
-      "titre": "L'application ne s'ouvre pas",
-      "detail": "réponse HTTP 404",
-      "correction": "Vérifie que l'adresse publiée répond bien (code 200) et que la page d'accueil s'affiche sans connexion préalable.",
-      "prompt": "Mon application web « Tranche-Vite » a ce problème, relevé par un contrôle automatique : L'application ne s'ouvre pas (réponse HTTP 404). Vérifie que l'adresse publiée répond bien (code 200) et que la page d'accueil s'affiche sans connexion préalable. Fais le plus petit changement possible et ne modifie rien d'autre."
-    }
-  ],
+  "problemes": [],
   "mesures": {
-    "poids_ko": 0,
+    "poids_ko": 33,
     "js_ko": 0,
     "requetes": 1,
-    "dom": null,
-    "ecoindex": 99.2,
-    "chargement_ms": null,
+    "dom": 79,
+    "ecoindex": 93,
+    "chargement_ms": 48,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 100
   },
-  "plume": null,
-  "temoin": null
+  "plume": {
+    "titre": "Tranche-Vite — Labo alphabette.eu",
+    "h1": "Tranche-Vite",
+    "h2": [
+      "Zone de tirage au sort",
+      "Tes options (3)",
+      "Historique local",
+      "Retour labo alphabette.eu"
+    ],
+    "boutons": [
+      "🔇 Annonce vocale",
+      "☀️ Clair",
+      "🎲 TRANCHER !",
+      "Tout vider",
+      "🎙️",
+      "+ Ajouter",
+      "🍽️ Repas",
+      "🎬 Soirée",
+      "⚖️ Oui / Non",
+      "☀️ Week-end",
+      "×",
+      "Effacer",
+      "1★",
+      "2★",
+      "3★",
+      "4★",
+      "5★",
+      "Enregistrer le retour",
+      "Retour à alphabette.eu"
+    ],
+    "debut": "LABO ALPHABETTE.EU • TEST Tranche-Vite 🔇 Annonce vocale ☀️ Clair Zone de tirage au sort PRÊT À DÉCIDER Ajoute tes choix et lance 🎲 TRANCHER ! Retirer l'option gagnante après tirage Tes options (3) Tout vider Nouvelle option 🎙️ + Ajouter 🍽️ Repas 🎬 Soirée ⚖️ Oui / Non ☀️ Week-end Pizza maison × Burger × Sushi × Historique local Effacer Aucun tirage enregistré pour l'instant. Retour labo alphabette.eu Application issue de « Proposer une application ». Note ton essai ou signale un bug : 1★ 2★ 3★ 4★ 5★ Commentaire ou bug constaté Enregistrer le retour 100 % local (Zero-Knowledge) • Aucune donnée envoyée sans ton action • Retour à alphabette.eu"
+  },
+  "temoin": {
+    "capture": "captures/c-tranche-vite.jpg",
+    "changement": null,
+    "blanc": false
+  }
 }
