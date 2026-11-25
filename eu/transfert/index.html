@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recevoir mes réglages · Alphabette</title>
+<meta name="description" content="Récupérez vos réglages Alphabette (taille BIG, Mode Calme, favoris) envoyés depuis un autre appareil, chiffrés de bout en bout.">
+<meta name="robots" content="noindex">
+<script src="/labo/codex.js"></script>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="transfert" data-nom="Transfert" data-sous-titre="Mes réglages" data-accent="#4c1d95" data-masquer="defilement"></script>
+<script src="/assets/alphabette-lot6.js"></script>
+<script src="/labo/lot6.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Recevoir mes réglages</h1>
+  <p class="chapeau">Vos réglages ont voyagé <strong>chiffrés</strong> : le serveur n'a vu qu'un bloc illisible, supprimé dès la première lecture.</p>
+  <p class="message" id="etat" role="status" aria-live="polite">Lecture du lien…</p>
+  <div class="carte cache" id="ok">
+    <h2>✓ Réglages appliqués</h2>
+    <p id="detail"></p>
+    <div class="actions"><a class="bouton" href="/">Aller aux applications</a><button type="button" class="secondaire" id="annuler">Annuler et revenir à avant</button></div>
+  </div>
+  <div class="carte cache" id="aide">
+    <h2>Comment ça marche ?</h2>
+    <ol><li>Sur l'appareil qui a vos réglages, ouvrez <strong>Mon compte</strong> dans la barre du haut.</li><li>Choisissez « Transférer vers un autre appareil » : un QR code apparaît (2 minutes).</li><li>Scannez-le avec l'appareil photo de l'autre appareil : cette page s'ouvre et applique tout.</li></ol>
+    <p class="note">Le lien ne marche qu'une fois. S'il a expiré, recréez-en un.</p>
+  </div>
+</main>
+<script>
+(function () {
+  var P = window.AB6P, A = window.AB6.passeport;
+  var lien = A.lireLien(location.hash);
+  var zone = P.$('etat');
+  if (!lien) { zone.textContent = ''; P.$('aide').className = 'carte'; return; }
+  // On efface le #hash de la barre d'adresse : la clé n'a plus de raison d'y rester (historique, partage d'écran).
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  A.recevoirPasseport(lien.code, lien.cle, location.origin).then(function (r) {
+    var p = r.passeport.prefs, morceaux = [];
+    if (p.density && p.density !== 'normal') morceaux.push('taille ' + (p.density === 'xlarge' ? 'très grande' : 'grande') + ' (BIG)');
+    if (p.calme) morceaux.push('Mode Calme');
+    if (p.theme) morceaux.push(p.theme === 'nuit' ? 'thème nuit' : 'thème jour');
+    if (p.favoris && p.favoris.length) morceaux.push(p.favoris.length + ' favori' + (p.favoris.length > 1 ? 's' : ''));
+    if (r.passeport.ia) morceaux.push(r.passeport.ia.length + ' clé' + (r.passeport.ia.length > 1 ? 's' : '') + ' d\'IA');
+    zone.textContent = ''; P.$('ok').className = 'carte';
+    P.$('detail').textContent = morceaux.length ? 'Reçu : ' + morceaux.join(', ') + '.' : 'Vos réglages étaient déjà ceux par défaut.';
+    P.$('annuler').onclick = function () { A.appliquerPasseport(r.avant); P.$('detail').textContent = 'Réglages d\'avant rétablis.'; };
+  }).catch(function (e) { P.message(zone, e.message || 'Le transfert a échoué.', false); P.$('aide').className = 'carte'; });
+})();
+</script>
+</body>
+</html>

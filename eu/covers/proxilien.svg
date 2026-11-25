@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Illustration de l'application Proxilien">
+<rect width="1200" height="630" fill="#f4e8cf"/><rect x="24" y="24" width="1152" height="582" fill="none" stroke="#4a2e1b" stroke-width="2"/><rect x="34" y="34" width="1132" height="562" fill="none" stroke="#9c7b55" stroke-width="1"/>
+<g fill="none" stroke="#9e4736" stroke-width="1.5"><circle cx="890" cy="280" r="190"/><circle cx="890" cy="280" r="150" stroke="#b08d3c"/><path d="M700 280h380M890 90v380" stroke="#9c7b55"/></g>
+<path d="M760 400h260M790 400V200M850 400V150M910 400V240M970 400V180" stroke="#4a2e1b" stroke-width="2"/><circle cx="890" cy="190" r="34" fill="none" stroke="#9e4736" stroke-width="3"/><path d="M760 400 1020 150" stroke="#b08d3c" stroke-width="2"/>
+<text x="80" y="300" font-family="Georgia,'Times New Roman',serif" font-size="72" font-weight="700" fill="#2c1a0e">Proxilien</text>
+<path d="M80 330h300" stroke="#9e4736" stroke-width="3"/>
+<text x="80" y="390" font-family="Georgia,'Times New Roman',serif" font-size="30" font-style="italic" fill="#4a2e1b">Alphabette — le Laboratoire</text>
+</svg>

@@ -10,7 +10,8 @@
       "url": "/info.html",
       "description": "Vos flux d'actualités dans une page calme, avec dix outils pour creuser chaque article.",
       "createdAt": "2026-11-10T22:04:24.000Z",
-      "updatedAt": "2026-11-10T22:04:24.000Z"
+      "updatedAt": "2026-11-10T22:04:24.000Z",
+      "cover": "/covers/info.svg"
     },
     {
       "id": "bonplan",
@@ -26,6 +27,7 @@
       "gratuit": true,
       "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres.",
       "ordre": 7,
+      "cover": "/covers/bonplan.svg",
       "cle": "bonplan"
     },
     {
@@ -39,6 +41,7 @@
       "createdAt": "2026-10-22T08:08:36.614Z",
       "updatedAt": "2026-11-10T13:40:00.000Z",
       "description": "Autonomie solaire et récupération d'eau de pluie, chiffrées pour votre maison.",
+      "cover": "/covers/ecobatisol.svg",
       "cle": "ecobatisol"
     },
     {
@@ -53,7 +56,8 @@
       "createdAt": "2026-11-13T12:00:00.000Z",
       "updatedAt": "2026-11-13T12:00:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/quiz-femmes.svg"
     },
     {
       "id": "frigoplacard",
@@ -67,6 +71,7 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées.",
       "ordre": 10,
+      "cover": "/covers/frigoplacard.svg",
       "cle": "frigoplacard"
     },
     {
@@ -81,7 +86,8 @@
       "createdAt": "2026-11-13T09:00:00.000Z",
       "updatedAt": "2026-11-13T09:00:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/quiz-extraordinaires.svg"
     },
     {
       "id": "goat-chevre-the-king",
@@ -97,6 +103,7 @@
       "gratuit": true,
       "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres.",
       "groupe": "petits-jeux",
+      "cover": "/covers/goat.svg",
       "cle": "goatchevretheking"
     },
     {
@@ -112,6 +119,7 @@
       "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux.",
       "ordre": 4,
       "vitrine": true,
+      "cover": "/covers/iadebat.svg",
       "cle": "iadebat"
     },
     {
@@ -127,6 +135,7 @@
       "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements.",
       "ordre": 1,
       "vitrine": true,
+      "cover": "/covers/infos-perso.svg",
       "cle": "infosperso"
     },
     {
@@ -141,6 +150,7 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché.",
       "ordre": 5,
+      "cover": "/covers/oeil-atelier.svg",
       "cle": "atelier"
     },
     {
@@ -154,7 +164,8 @@
       "description": "Un mot rare, quatre définitions dont trois inventées pour rire : trouvez la vraie.",
       "createdAt": "2026-11-11T12:34:30.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
-      "groupe": "petits-jeux"
+      "groupe": "petits-jeux",
+      "cover": "/covers/dico-loufoque.svg"
     },
     {
       "id": "juste-chiffre",
@@ -167,7 +178,8 @@
       "description": "Devinez un chiffre réel au plus près : hauteurs, dates, distances. Chaque réponse cite sa source.",
       "createdAt": "2026-11-11T12:34:30.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
-      "groupe": "petits-jeux"
+      "groupe": "petits-jeux",
+      "cover": "/covers/juste-chiffre.svg"
     },
     {
       "id": "memo-meninges",
@@ -180,7 +192,8 @@
       "description": "Cinq minutes de petits jeux de mémoire et de calcul par jour, avec de gros boutons et sans chronomètre.",
       "createdAt": "2026-11-11T12:34:30.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
-      "groupe": "petits-jeux"
+      "groupe": "petits-jeux",
+      "cover": "/covers/memo-meninges.svg"
     },
     {
       "id": "orbit",
@@ -193,7 +206,8 @@
       "description": "Vos vidéos YouTube, TikTok, Instagram et Facebook sans algorithme : vous dosez la découverte, filtrez par durée réelle et un minuteur doux arrête le défilement.",
       "createdAt": "2026-11-11T21:28:12.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
-      "ordre": 12
+      "ordre": 12,
+      "cover": "/covers/orbit.svg"
     },
     {
       "id": "ou-cest",
@@ -207,7 +221,8 @@
       "createdAt": "2026-11-12T11:30:00.000Z",
       "updatedAt": "2026-11-12T11:30:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/ou-cest.svg"
     },
     {
       "id": "ou-cest-france",
@@ -221,7 +236,8 @@
       "createdAt": "2026-11-12T12:00:00.000Z",
       "updatedAt": "2026-11-12T12:00:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/ou-cest-france.svg"
     },
     {
       "id": "petits-jeux",
@@ -234,7 +250,8 @@
       "description": "Des petits jeux pour s'amuser et apprendre : mots rares, chiffres à deviner, mémoire, légendes du football.",
       "createdAt": "2026-11-12T09:14:47.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
-      "ordre": 11
+      "ordre": 11,
+      "cover": "/covers/petits-jeux.svg"
     },
     {
       "id": "podcasts",
@@ -248,7 +265,8 @@
       "createdAt": "2026-11-12T11:30:00.000Z",
       "updatedAt": "2026-11-12T11:30:00.000Z",
       "ordre": 13,
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/podcasts.svg"
     },
     {
       "id": "promptmagic",
@@ -262,6 +280,7 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire.",
       "ordre": 9,
+      "cover": "/covers/promptmagic.svg",
       "cle": "promptmagic"
     },
     {
@@ -276,6 +295,7 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision.",
       "ordre": 2,
+      "cover": "/covers/proxilien.svg",
       "cle": "proxilien"
     },
     {
@@ -290,7 +310,8 @@
       "createdAt": "2026-11-12T13:00:00.000Z",
       "updatedAt": "2026-11-12T13:00:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/quiz-famille.svg"
     },
     {
       "id": "quiz-musique",
@@ -304,7 +325,8 @@
       "createdAt": "2026-11-12T14:00:00.000Z",
       "updatedAt": "2026-11-12T14:00:00.000Z",
       "groupe": "petits-jeux",
-      "gratuit": true
+      "gratuit": true,
+      "cover": "/covers/quiz-musique.svg"
     },
     {
       "id": "revolution",
@@ -319,6 +341,7 @@
       "updatedAt": "2026-11-10T19:30:00.000Z",
       "gratuit": true,
       "description": "Les questions de l'actualité du moment et celles des syndicats, associations et citoyens : répondez en un geste.",
+      "cover": "/covers/revolution.svg",
       "cle": "revolution"
     },
     {
@@ -334,6 +357,7 @@
       "gratuit": true,
       "description": "Santé, droits, aides, sorties, arnaques : 150 conseils vérifiés pour bien vivre après 60 ans.",
       "ordre": 8,
+      "cover": "/covers/bonplansenior.svg",
       "cle": "bonplansenior"
     },
     {
@@ -350,6 +374,7 @@
       "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement.",
       "ordre": 6,
       "vitrine": true,
+      "cover": "/covers/france-service.svg",
       "cle": "franceservice"
     },
     {
@@ -364,7 +389,8 @@
       "createdAt": "2026-11-10T22:52:30.000Z",
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 3,
-      "vitrine": true
+      "vitrine": true,
+      "cover": "/covers/wikicom.svg"
     },
     {
       "id": "crash-testeur",

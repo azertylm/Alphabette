@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La Ruche à Idées · Alphabette</title>
+<meta name="description" content="Proposez l'application dont vous avez besoin, votez pour celles des autres : un créateur peut relever le défi et vous devenir co-auteur.">
+<meta name="robots" content="index, follow">
+<script src="/labo/codex.js"></script>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="idees" data-nom="Ruche à idées" data-sous-titre="De quoi avez-vous besoin ?" data-accent="#b45309" data-masquer="defilement"></script>
+<script src="/assets/alphabette-lot6.js"></script>
+<script src="/labo/lot6.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>🐝 La Ruche à Idées</h1>
+  <p class="chapeau">Dites en deux phrases l'appli dont vous avez besoin. Les autres votent « <strong>J'en ai besoin !</strong> », un créateur relève le défi, et vous devenez <strong>co-auteur d'idée</strong> : <strong>365 jours offerts</strong> sur l'appli une fois validée sur alphabette.fr.</p>
+
+  <form class="carte" id="f" novalidate>
+    <h2>Proposer une idée</h2>
+    <label class="champ" for="titre">Le nom de l'idée <span class="aide">3 à 60 caractères, par exemple « Rappel de rendez-vous »</span>
+      <span class="micro-ligne"><input id="titre" maxlength="60" autocomplete="off"><button type="button" class="secondaire" data-micro="titre" aria-label="Dicter le nom de l'idée">🎤</button></span></label>
+    <label class="champ" for="besoin">Votre besoin, en 2 phrases <span class="aide">Pas de lien, pas d'e-mail ni de téléphone : l'idée est publique.</span>
+      <span class="micro-ligne"><textarea id="besoin" maxlength="240" rows="3"></textarea><button type="button" class="secondaire" data-micro="besoin" aria-label="Dicter votre besoin">🎤</button></span></label>
+    <label class="champ" for="cat">Catégorie
+      <select id="cat"><option>Quotidien</option><option>Famille</option><option>Santé &amp; bien-être</option><option>Éducation</option><option>Culture</option><option>Outils</option><option>Jeux</option><option>Citoyen</option><option>Autre</option></select></label>
+    <div class="piege" aria-hidden="true"><label>Ne pas remplir <input id="piege" tabindex="-1" autocomplete="off"></label></div>
+    <p class="message" id="m"></p>
+    <button type="submit">Envoyer mon idée</button>
+  </form>
+
+  <h2 id="liste-titre">Les idées de la ruche</h2>
+  <div class="filtres" role="group" aria-label="Filtrer les idées">
+    <button type="button" data-f="demandees" aria-pressed="true">Les plus demandées</button>
+    <button type="button" class="secondaire" data-f="nouvelles" aria-pressed="false">Nouvelles</button>
+    <button type="button" class="secondaire" data-f="en_construction" aria-pressed="false">En construction</button>
+    <button type="button" class="secondaire" data-f="en_ligne" aria-pressed="false">En ligne</button>
+  </div>
+  <p class="message" id="info" role="status" aria-live="polite"></p>
+  <div id="liste" aria-labelledby="liste-titre"></div>
+</main>
+<script>
+(function () {
+  var P = window.AB6P, filtre = 'demandees', ouvertA = Date.now();
+  var CLE_AUTEUR = 'alphabette.idees.auteur';
+  function auteurs() { try { return JSON.parse(localStorage.getItem(CLE_AUTEUR) || '{}'); } catch (e) { return {}; } }
+  function retenirAuteur(id, jeton) { try { var a = auteurs(); a[id] = jeton; localStorage.setItem(CLE_AUTEUR, JSON.stringify(a)); } catch (e) {} }
+
+  // Bouton micro : la même dictée que partout (@alphabette/shell, demarrerDictee), jamais speechSynthesis.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-micro]'), function (b) {
+    var D = window.AB6.dictee, champ = P.$(b.getAttribute('data-micro')), actif = null, base = '';
+    if (!D.dicteePossible()) { b.className = 'cache'; return; }
+    b.addEventListener('click', function () {
+      if (actif) { actif.arreter(); actif = null; b.textContent = '🎤'; b.setAttribute('aria-pressed', 'false'); return; }
+      base = champ.value ? champ.value.replace(/\s+$/, '') + ' ' : ''; b.textContent = '⏹'; b.setAttribute('aria-pressed', 'true');
+      actif = D.demarrerDictee({
+        onTexte: function (t) { champ.value = (base + t).slice(0, Number(champ.getAttribute('maxlength')) || 240); },
+        onFin: function () { actif = null; b.textContent = '🎤'; b.setAttribute('aria-pressed', 'false'); },
+        onErreur: function (m) { P.message(P.$('m'), m, false); actif = null; b.textContent = '🎤'; }
+      });
+    });
+  });
+
+  function carte(i) {
+    var statut = i.statut === 'en_ligne' ? P.el('span', { class: 'idee__etiq idee__etiq--ligne', text: '✓ En ligne' }) : i.statut === 'en_construction' ? P.el('span', { class: 'idee__etiq idee__etiq--chantier', text: '🔧 En construction' }) : null;
+    var bouton = P.el('button', { type: 'button', text: i.a_vote ? '✓ Vous en avez besoin' : 'J\'en ai besoin !' });
+    if (i.a_vote) { bouton.disabled = true; bouton.className = 'secondaire'; }
+    bouton.onclick = function () {
+      bouton.disabled = true;
+      P.appeler('/api/ideas.php', { action: 'voter', id: i.id, jeton: P.session() }).then(function (r) {
+        if (r._s === 200 || r._s === 409) { charger(); if (r._s === 409) P.message(P.$('info'), r.erreur, false); } else { bouton.disabled = false; P.message(P.$('info'), r.erreur, false); }
+      });
+    };
+    var corps = [P.el('div', { class: 'idee__tete' }, [P.el('h3', { text: i.titre }), P.el('span', { class: 'pastille', text: '👍 ' + i.votes })]),
+      P.el('p', { text: i.besoin }),
+      P.el('p', { class: 'petit' }, [P.el('span', { class: 'idee__etiq', text: i.categorie }), ' ', statut, i.retenue ? P.el('span', { class: 'idee__etiq', text: '★ Retenue par le Labo' }) : null, i.coauteur ? P.el('span', { class: 'idee__etiq idee__etiq--ligne', text: '✍️ Co-auteur d\'idée' }) : null]),
+    ];
+    if (i.createur) corps.push(P.el('p', { class: 'petit', text: 'Défi relevé par ' + i.createur + '.' }));
+    var actions = P.el('div', { class: 'actions' }, [bouton]);
+    if (i.statut === 'nouvelle') {
+      var defi = P.el('button', { type: 'button', class: 'secondaire', text: 'Je prends le défi' });
+      defi.onclick = function () {
+        P.appeler('/api/ideas.php', { action: 'defi', id: i.id }).then(function (r) {
+          if (r._s === 200) { location.href = r.lien; }
+          else if (r._s === 401) { P.message(P.$('info'), 'Connectez-vous d\'abord à votre espace créateur (page « Rejoindre les créateurs »), puis revenez relever le défi.', false); }
+          else P.message(P.$('info'), r.erreur, false);
+        });
+      };
+      actions.appendChild(defi);
+    } else if (i.lien_defi) { actions.appendChild(P.el('a', { class: 'bouton secondaire', href: i.lien_defi, text: 'Voir la soumission' })); }
+    var jetonA = auteurs()[i.id];
+    if (jetonA && i.coauteur) {
+      var credit = P.el('button', { type: 'button', text: '🎁 Récupérer mes 365 jours' });
+      credit.onclick = function () { P.appeler('/api/ideas.php', { action: 'credit', id: i.id, jeton_auteur: jetonA }).then(function (r) {
+        if (r._s === 200) { var z = P.el('pre', { class: 'code', text: r.code }); credit.replaceWith(z); P.message(P.$('info'), 'Votre code de 365 jours : saisissez-le sur la page d\'essai de l\'appli (« jours gagnés au Labo »).', true); }
+        else P.message(P.$('info'), r.erreur, false); }); };
+      actions.appendChild(credit);
+    }
+    corps.push(actions);
+    return P.el('article', { class: 'carte idee' }, corps);
+  }
+
+  function charger() {
+    P.appeler('/api/ideas.php?liste=1&filtre=' + filtre + '&jeton=' + encodeURIComponent(P.session())).then(function (d) {
+      var z = P.$('liste'); z.textContent = '';
+      if (d._s !== 200) { P.message(P.$('info'), 'La ruche est momentanément indisponible. Réessayez dans un instant.', false); return; }
+      P.message(P.$('info'), '', true);
+      if (!d.idees.length) z.appendChild(P.el('p', { class: 'carte', text: filtre === 'en_ligne' ? 'Aucune idée de la ruche n\'est encore en ligne : soyez le premier à en proposer une !' : 'Rien ici pour le moment.' }));
+      d.idees.forEach(function (i) { z.appendChild(carte(i)); });
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.filtres button'), function (b) {
+    b.addEventListener('click', function () {
+      filtre = b.getAttribute('data-f');
+      Array.prototype.forEach.call(document.querySelectorAll('.filtres button'), function (x) { var on = x === b; x.setAttribute('aria-pressed', String(on)); x.className = on ? '' : 'secondaire'; });
+      charger();
+    });
+  });
+  P.$('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    P.appeler('/api/ideas.php', { action: 'idee', titre: P.$('titre').value, besoin: P.$('besoin').value, categorie: P.$('cat').value, jeton: P.session(), piege: P.$('piege').value, delai_ms: Date.now() - ouvertA }).then(function (r) {
+      if (r._s === 201) { if (r.jeton_auteur && r.idee) retenirAuteur(r.idee.id, r.jeton_auteur); P.message(P.$('m'), 'Merci ! Votre idée est dans la ruche.', true); P.$('titre').value = ''; P.$('besoin').value = ''; ouvertA = Date.now(); charger(); }
+      else P.message(P.$('m'), r.erreur || 'Envoi impossible.', false);
+    });
+  });
+  charger();
+})();
+</script>
+</body>
+</html>

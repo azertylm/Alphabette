@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "genere": "2026-11-25T11:26:18.788Z",
+  "methode": "analyse statique des fichiers publiés",
+  "apps": {
+    "accord": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 1.5,
+      "fichiers": 1,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "alphabettehub": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 466.4,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "atelier": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "images.unsplash.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 1492.6,
+      "fichiers": 5,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "balade": {
+      "hebergeeFrance": true,
+      "originesTierces": 2,
+      "hotes": [
+        "fonts.gstatic.com",
+        "nominatim.openstreetmap.org"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 398.5,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "bonplan": {
+      "hebergeeFrance": true,
+      "originesTierces": 2,
+      "hotes": [
+        "api.qrserver.com",
+        "r.jina.ai"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 168.9,
+      "fichiers": 5,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "bonplansenior": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 413.4,
+      "fichiers": 5,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "curioz": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 3356.1,
+      "fichiers": 7,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "disstrackexpress": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 357,
+      "fichiers": 3,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "ecobatisol": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 355.8,
+      "fichiers": 8,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "franceservice": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 1414.4,
+      "fichiers": 7,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "frigoplacard": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 458.4,
+      "fichiers": 13,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "goatchevretheking": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": true,
+      "ia": "autre",
+      "poidsKo": 4378.9,
+      "fichiers": 45,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "iadebat": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 1295,
+      "fichiers": 5,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "infosperso": {
+      "hebergeeFrance": true,
+      "originesTierces": 4,
+      "hotes": [
+        "fonts.gstatic.com",
+        "i.f1g.fr",
+        "images.unsplash.com",
+        "upload.wikimedia.org"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": false,
+      "horsLigne": true,
+      "ia": "autre",
+      "poidsKo": 3453.7,
+      "fichiers": 34,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "lecturemagique": {
+      "hebergeeFrance": true,
+      "originesTierces": 2,
+      "hotes": [
+        "cdn.jsdelivr.net",
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 1120.5,
+      "fichiers": 5,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "matchsoiree": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 409.3,
+      "fichiers": 3,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "memovoix": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": true,
+      "ia": "aucune",
+      "poidsKo": 5791.8,
+      "fichiers": 19,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "negocoach": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 409.8,
+      "fichiers": 3,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "parentsos": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 871.7,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "promptmagic": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": false,
+      "ia": "autre",
+      "poidsKo": 415.8,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "proxilien": {
+      "hebergeeFrance": true,
+      "originesTierces": 2,
+      "hotes": [
+        "fonts.gstatic.com",
+        "images.unsplash.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "mistral",
+      "poidsKo": 946.1,
+      "fichiers": 6,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "radar": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 3745.6,
+      "fichiers": 7,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "revisclash": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 753,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "revolution": {
+      "hebergeeFrance": true,
+      "originesTierces": 0,
+      "hotes": [],
+      "traceurs": 0,
+      "baseCommune": true,
+      "voix": true,
+      "horsLigne": true,
+      "ia": "autre",
+      "poidsKo": 1200.3,
+      "fichiers": 13,
+      "cookiesPub": false,
+      "syntheseDirecte": false
+    },
+    "tribunaldeschoix": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 479.4,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "tribunaldespotes": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 356.8,
+      "fichiers": 3,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    },
+    "unedelabsurde": {
+      "hebergeeFrance": true,
+      "originesTierces": 1,
+      "hotes": [
+        "fonts.gstatic.com"
+      ],
+      "traceurs": 0,
+      "baseCommune": false,
+      "voix": false,
+      "horsLigne": false,
+      "ia": "aucune",
+      "poidsKo": 377,
+      "fichiers": 4,
+      "cookiesPub": false,
+      "syntheseDirecte": true
+    }
+  }
+}
