@@ -72,7 +72,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées.",
       "ordre": 10,
-      "cover": "/covers/frigoplacard.svg",
+      "cover": "/covers/Frigo-Placard.jpg",
+      "coverCustom": true,
       "cle": "frigoplacard"
     },
     {
@@ -104,7 +105,8 @@
       "gratuit": true,
       "description": "Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres.",
       "groupe": "petits-jeux",
-      "cover": "/covers/goat.svg",
+      "cover": "/covers/GOAT.jpg",
+      "coverCustom": true,
       "cle": "goatchevretheking"
     },
     {
@@ -347,7 +349,8 @@
       "updatedAt": "2026-11-10T19:30:00.000Z",
       "gratuit": true,
       "description": "Les questions de l'actualité du moment et celles des syndicats, associations et citoyens : répondez en un geste.",
-      "cover": "/covers/revolution.svg",
+      "cover": "/covers/R%C3%A9volution.jpg",
+      "coverCustom": true,
       "cle": "revolution"
     },
     {
