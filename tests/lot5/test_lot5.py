@@ -21,15 +21,15 @@ for f in os.listdir(RACINE + '/serveur/php/createurs'): shutil.copy(f'{RACINE}/s
 shutil.copy(RACINE + '/data/boutique.json', WEB + '/boutique.json')
 
 SECRET_WH = 'whsec_test_' + uuid.uuid4().hex
-ADMIN_F = 'admin-finance-' + uuid.uuid4().hex[:10]
-ADMIN_C = 'admin-createurs-test'
+ADMIN_C = 'admin-unique-' + uuid.uuid4().hex[:10]   # un seul mot de passe : ADMIN_PASSWORD
+ADMIN_F = ADMIN_C
 
 def port_libre():
     s = socket.socket(); s.bind(('127.0.0.1', 0)); p = s.getsockname()[1]; s.close(); return p
 
 def lancer(port, extra=None):
     env = dict(os.environ, HOME=MAISON, WEB_DIR=WEB, ALPHABETTE_FINANCE_DIR=FIN, ALPHABETTE_FINANCE_MAIL_DIR=MAILF, ALPHABETTE_WEBHOOK_SECRET=SECRET_WH,
-               ALPHABETTE_IBAN_KEY=os.urandom(32).hex() if not hasattr(lancer, 'cle') else lancer.cle, ALPHABETTE_ADMIN_PASSWORD=ADMIN_F, ALPHABETTE_FINANCE_DELAI='2',
+               ALPHABETTE_IBAN_KEY=os.urandom(32).hex() if not hasattr(lancer, 'cle') else lancer.cle, ALPHABETTE_FINANCE_DELAI='2',
                ALPHABETTE_PRIVATE_DIR=PRIV, ALPHABETTE_MAIL_DIR=MAILC, ADMIN_PASSWORD=ADMIN_C, ALPHABETTE_ORIGINE=f'http://127.0.0.1:{port}',
                ALPHABETTE_ORIGINES=f'http://127.0.0.1:{port}', ALPHABETTE_ADMIN_EMAIL='admin@exemple.invalid', PHP_CLI_SERVER_WORKERS='4', **(extra or {}))
     lancer.cle = env['ALPHABETTE_IBAN_KEY']
@@ -328,7 +328,7 @@ try:
     seq = fdb().execute("SELECT SUM(montant_centimes) FROM ecritures WHERE type IN ('sequestre_bounty','sequestre_libere')").fetchone()[0]
     verif('séquestre soldé à zéro', seq == 0, seq)
     s, d = parrain.post('/api/boutique.php', {'action': 'bounty_attribuer', 'id': bid, 'email': 'autre@exemple.fr'}); verif('bounty déjà attribuée', s == 400)
-    s, d = parrain.post('/api/boutique.php', {'action': 'bounty_annuler', 'id': bid}); verif('annulation : admin seulement', s in (403, 503))
+    s, d = parrain.post('/api/boutique.php', {'action': 'bounty_annuler', 'id': bid}); verif('annulation : admin seulement', s in (401, 403, 503))
 
     print('9. Essai 7 jours sans carte, invitation, accès')
     essayeur = connecter_finance('essai@exemple.fr')
@@ -426,7 +426,7 @@ try:
     s, d = Client().post('/api/newsletter.php', {'action': 'inscrire', 'email': 'lecteur@exemple.fr'}); verif('newsletter : double confirmation', s == 200)
     lien = re.search(r'(/api/newsletter\.php\?confirmer=[^\s]+)', open(os.path.join(MAILF, 'lecteur@exemple.fr.txt'), encoding='utf-8').read()).group(1)
     s, h, page = Client().req('GET', lien, brut=True); verif('inscription confirmée', s == 200 and 'confirmée' in page.decode())
-    s, d = Client().get('/api/newsletter.php?admin'); verif('admin newsletter protégée', s in (403, 503))
+    s, d = Client().get('/api/newsletter.php?admin'); verif('admin newsletter protégée', s in (401, 403, 503))
     s, d = Client().req('GET', '/api/newsletter.php?admin', entetes={'X-Admin-Password': ADMIN_F}); verif('1 inscrit confirmé', d.get('confirmes') == 1, d)
     s, d = Client().req('POST', '/api/newsletter.php', {'action': 'envoyer', 'sujet': 'Nouvelles du Labo', 'texte': 'Trois nouvelles applis cette semaine sur le Laboratoire.'}, entetes={'X-Admin-Password': ADMIN_F})
     verif('envoi réel avec désinscription en un clic', d.get('envoyes') == 1 and 'desinscrire=' in open(os.path.join(MAILF, 'lecteur@exemple.fr.txt'), encoding='utf-8').read(), d)

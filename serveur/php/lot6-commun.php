@@ -51,6 +51,14 @@ function l6_dossier_prive(bool $creer = true): ?string {
     return null;
 }
 
+/** Variable d'environnement vue par PHP : getenv(), $_SERVER (SetEnv Apache) ou REDIRECT_<nom>. Valeur trimée, '' si absente. */
+function l6_env(string $nom): string {
+    foreach (array(getenv($nom), $_SERVER[$nom] ?? null, $_SERVER['REDIRECT_' . $nom] ?? null) as $v) {
+        if (is_string($v) && trim($v) !== '') return trim($v);
+    }
+    return '';
+}
+
 function l6_lire_json(string $f, array $defaut = array()): array {
     $d = is_file($f) ? json_decode((string) @file_get_contents($f), true) : null;
     return is_array($d) ? $d : $defaut;

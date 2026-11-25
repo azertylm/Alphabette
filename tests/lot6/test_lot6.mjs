@@ -53,7 +53,7 @@ else {
   cpSync(path.join(racine, 'data/labo/idees-statuts.json'), path.join(dossierApi, 'labo/idees-statuts.json'));
   cpSync(path.join(racine, 'data/labo/idees-statuts.json'), path.join(dossierApi, 'idees-statuts.json'));
   const port = 18700 + Math.floor(Math.random() * 500);
-  const srv = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', dossierApi], { env: { ...process.env, ALPHABETTE_PRIVATE_DIR: prive, ALPHABETTE_COLLECTIF_DIR: prive }, stdio: 'ignore' });
+  const srv = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', dossierApi], { env: { ...process.env, ALPHABETTE_PRIVATE_DIR: prive, ALPHABETTE_COLLECTIF_DIR: prive, ADMIN_PASSWORD: 'valeur-test-mdp-admin-0001', ALPHABETTE_ADMIN_EMAIL: 'boite-admin@exemple.invalid' }, stdio: 'ignore' });
   await new Promise((r) => setTimeout(r, 900));
   const base = `http://127.0.0.1:${port}/`;
   const post = (f, corps, ent = {}) => fetch(base + f, { method: 'POST', headers: { 'Content-Type': 'application/json', ...ent }, body: JSON.stringify(corps) });
@@ -82,6 +82,14 @@ else {
       const j = JSON.parse(t);
       for (const v of Object.values(j.configuration ?? {})) assert.equal(typeof v.configured, 'boolean');
       assert.ok(!/secret|password|=\w{16,}/i.test(JSON.stringify(j.configuration).replace(/ADMIN_PASSWORD|FINANCE_SECRET|WEBHOOK_SECRET/g, '')));
+    });
+    await test('Santé : ADMIN_PASSWORD et ALPHABETTE_ADMIN_EMAIL en booléens, valeurs jamais exposées', async () => {
+      const t = await (await fetch(base + 'health.php')).text();
+      const j = JSON.parse(t);
+      assert.equal(j.configuration.ADMIN_PASSWORD.configured, true);
+      assert.equal(j.configuration.ALPHABETTE_ADMIN_EMAIL.configured, true);
+      assert.deepEqual(Object.keys(j.configuration.ADMIN_PASSWORD), ['configured']);
+      assert.ok(!t.includes('valeur-test-mdp-admin-0001') && !t.includes('boite-admin@exemple.invalid') && !t.includes('exemple.invalid'));
     });
     await test('Ruche : piège, délai mini, idée, puis vote unique par session', async () => {
       const jeton = 'a'.repeat(32);

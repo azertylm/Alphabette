@@ -184,7 +184,7 @@ if ($action === 'signaler') {
         }
         return array('n' => $n, 'bascule' => $bascule, 'statut' => $bascule ? 'paused_abuse' : $avant);
     });
-    if ($r['bascule']) f_mail(ADMIN_EMAIL, '[Alphabette] URGENT — appli mise en pause : ' . $slug,
+    if ($r['bascule']) f_mail(f_admin_email(), '[Alphabette] URGENT — appli mise en pause : ' . $slug,
         "L'appli « $slug » a reçu {$r['n']} signalements d'utilisateurs distincts : elle est passée en paused_abuse.\nVérifier puis réactiver si besoin (upload-guard.php, action « reactiver »).");
     f_repondre(200, array('ok' => true, 'signalements' => $r['n'], 'statut' => $r['statut']));
 }

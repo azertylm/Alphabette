@@ -127,5 +127,5 @@ $resultat = f_transaction(function (PDO $db) use ($evId, $type, $o, &$alerte) {
 });
 
 if (!empty($GLOBALS['mails_apres'])) c_envoyer($GLOBALS['mails_apres']);
-if ($alerte) f_mail(ADMIN_EMAIL, '[Alphabette] Paiement à vérifier', $alerte);
+if ($alerte) f_mail(f_admin_email(), '[Alphabette] Paiement à vérifier', $alerte);
 f_repondre(200, array('recu' => true, 'resultat' => $resultat));

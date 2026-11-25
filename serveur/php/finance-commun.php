@@ -11,7 +11,9 @@
  * Secrets lus dans l'environnement (SetEnv du .htaccess OVH ou variables du serveur), sinon fichiers 0600 du dossier privé :
  *   ALPHABETTE_IBAN_KEY        clé AES-256-GCM des IBAN (64 hex ou base64 de 32 octets)
  *   ALPHABETTE_WEBHOOK_SECRET  secret de signature des webhooks Stripe (whsec_…)
- *   ALPHABETTE_ADMIN_PASSWORD  mot de passe de l'administration (en-tête X-Admin-Password)
+ *   ADMIN_PASSWORD             mot de passe de l'administration (en-tête X-Admin-Password) — NOM UNIQUE pour tout le site
+ *                              (ancien nom ALPHABETTE_ADMIN_PASSWORD encore lu en secours, à retirer).
+ *   ALPHABETTE_ADMIN_EMAIL     adresse qui reçoit les alertes (jamais écrite dans le code ni renvoyée par l'API)
  * Webhook et admin peuvent aussi être posés dans ~/alphabette-finance/config.json { webhook_secret, admin_password }.
  * Zéro pistage : aucun cookie, aucune IP enregistrée (empreintes HMAC seulement), aucun service tiers.
  */
@@ -28,7 +30,6 @@ const DELAI_DISPONIBILITE_DEFAUT = 14 * 86400; // droit de rétractation de 14 j
 const OTP_DUREE_SECONDES = 15 * 60;
 const OTP_ESSAIS_MAX = 5;
 const SESSION_DUREE_SECONDES = 30 * 86400;
-const ADMIN_EMAIL = 'azertylm@gmail.com';
 const EXPEDITEUR_FINANCE = 'Alphabette <revenus@alphabette.eu>';
 
 if (PART_CREATEUR_CENTIMES + PART_ALPHABETTE_CENTIMES !== PRIX_ABONNEMENT_CENTIMES) { http_response_code(500); exit; }
@@ -102,11 +103,32 @@ function f_secret(string $env, string $fichier, int $octets = 32): string {
 
 /** Réglage : variable d'environnement, sinon ~/alphabette-finance/config.json (hors du site, jamais dans le dépôt). */
 function f_reglage(string $env, string $cle): string {
-    $v = getenv($env);
+    $v = $env !== '' ? getenv($env) : false;
     if (is_string($v) && $v !== '') return $v;
     $f = f_dossier() . '/config.json';
     $c = is_file($f) ? json_decode((string) file_get_contents($f), true) : null;
     return is_array($c) && is_string($c[$cle] ?? null) ? $c[$cle] : '';
+}
+
+/** Variable d'environnement vue par PHP : getenv(), $_SERVER (SetEnv Apache) ou REDIRECT_<nom> (après RewriteRule). */
+function f_env(string $nom): string {
+    foreach (array(getenv($nom), $_SERVER[$nom] ?? null, $_SERVER['REDIRECT_' . $nom] ?? null) as $v) {
+        if (is_string($v) && trim($v) !== '') return trim($v);
+    }
+    return '';
+}
+
+/** Mot de passe admin : ADMIN_PASSWORD (nom unique), sinon ancien nom, sinon config.json hors du site. */
+function f_mot_de_passe_admin(): string {
+    $v = f_env('ADMIN_PASSWORD');
+    if ($v === '') $v = f_env('ALPHABETTE_ADMIN_PASSWORD');
+    return $v !== '' ? $v : trim(f_reglage('', 'admin_password'));
+}
+
+/** Adresse de l'administrateur (alertes) : ALPHABETTE_ADMIN_EMAIL, '' si absente ou invalide → aucun mail envoyé. */
+function f_admin_email(): string {
+    $e = f_env('ALPHABETTE_ADMIN_EMAIL');
+    return ($e !== '' && strlen($e) <= 190 && filter_var($e, FILTER_VALIDATE_EMAIL) !== false) ? $e : '';
 }
 
 function f_hmac(string $s): string { return hash_hmac('sha256', $s, f_secret('ALPHABETTE_FINANCE_SECRET', 'secret.key')); }
@@ -190,6 +212,7 @@ function f_limite(string $cle, int $max, int $fenetre): bool {
 /* ───────────────────────────── e-mails ───────────────────────────── */
 
 function f_mail(string $a, string $sujet, string $corps): bool {
+    if ($a === '') return false; // pas d'adresse admin configurée : rien n'est envoyé
     $test = getenv('ALPHABETTE_FINANCE_MAIL_DIR'); // tests : le message est écrit dans un fichier au lieu d'être envoyé
     if ($test) {
         @file_put_contents(rtrim($test, '/') . '/' . preg_replace('/[^a-z0-9@._-]/i', '_', $a) . '.txt', $sujet . "\n\n" . $corps . "\n---\n", FILE_APPEND);
@@ -332,9 +355,11 @@ function f_soldes(int $compte_id): array {
 /* ───────────────────────────── administration ───────────────────────────── */
 
 function f_admin(): void {
-    $attendu = f_reglage('ALPHABETTE_ADMIN_PASSWORD', 'admin_password');
-    if ( strlen($attendu) < 12) f_erreur(503, 'Administration non configurée.');
+    $attendu = f_mot_de_passe_admin();
+    if (strlen($attendu) < 12) f_erreur(503, 'Administration non configurée.');
     $donne = (string) ($_SERVER['HTTP_X_ADMIN_PASSWORD'] ?? '');
+    if ($donne === '') f_erreur(401, 'Authentification administrateur requise.');
     if (!f_limite('admin|' . f_empreinte_ip(), 20, 3600)) f_erreur(429, 'Trop d\'essais.');
-    if (!hash_equals($attendu, $donne)) f_erreur(403, 'Mot de passe incorrect.');
+    // Comparaison en temps constant sur des empreintes de longueur fixe (aucune fuite de la longueur).
+    if (!hash_equals(hash('sha256', $attendu), hash('sha256', $donne))) { usleep(300000); f_erreur(403, 'Mot de passe incorrect.'); }
 }

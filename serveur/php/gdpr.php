@@ -22,7 +22,7 @@ if ($methode === 'GET' && isset($_GET['politique'])) {
         'adresse_ip' => 'Jamais enregistrée : seule une empreinte chiffrée sert à limiter les abus.',
         'iban' => 'Chiffré (AES-256-GCM), affiché masqué, lu uniquement pour faire votre virement.',
         'conservation' => 'Écritures comptables : 10 ans (obligation légale). Le reste est effacé à la suppression du compte.',
-        'droits' => 'Export JSON et suppression du compte depuis /mes-revenus/. Contact : ' . ADMIN_EMAIL,
+        'droits' => 'Export JSON et suppression du compte depuis /mes-revenus/. Contact : formulaire des mentions légales sur alphabette.eu.',
     ));
 }
 

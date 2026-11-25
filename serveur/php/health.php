@@ -13,7 +13,12 @@ require_once __DIR__ . '/lot6-commun.php';
 l6_entetes();
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'GET') l6_erreur(405, 'Utilisez GET.');
 
-$configure = function (string $nom): bool { return trim((string) getenv($nom)) !== ''; };
+// Même lecture que les services (getenv, SetEnv Apache, REDIRECT_). Seul le booléen sort d'ici, jamais la valeur.
+$configure = function (string $nom): bool {
+    if ($nom === 'ADMIN_PASSWORD') return l6_env('ADMIN_PASSWORD') !== '' || l6_env('ALPHABETTE_ADMIN_PASSWORD') !== '';
+    if ($nom === 'ALPHABETTE_ADMIN_EMAIL') { $e = l6_env($nom); return $e !== '' && filter_var($e, FILTER_VALIDATE_EMAIL) !== false; }
+    return l6_env($nom) !== '';
+};
 $prive = l6_dossier_prive(false);
 
 // Test d'écriture réel (fichier jetable) : « dossier présent » ne prouve pas qu'on peut y écrire.

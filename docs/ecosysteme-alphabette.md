@@ -134,7 +134,8 @@ identité dans `src/alphabette.app.ts`. Aperçu de la base commune :
 
 | Variable | Rôle |
 |---|---|
-| `ADMIN_PASSWORD` | mot de passe de la console `/admin` (obligatoire, sinon console fermée) |
+| `ADMIN_PASSWORD` | mot de passe unique de l'administration : console `/admin` et PHP (obligatoire, sinon tout est fermé) |
+| `ALPHABETTE_ADMIN_EMAIL` | adresse qui reçoit les notifications admin (voir `docs/DEPLOY-OVH-ENV.md`) |
 | `ADMIN_SESSION_SECRET` | secret de signature des sessions admin (recommandé) |
 | `COMMUNITY_SESSION_SECRET` | secret de signature des sessions communauté |
 | `HUB_CENTRAL_URL` | adresse publique du hub |

@@ -29,7 +29,7 @@ for d in (web, prive, mails): os.makedirs(d)
 for f in FICHIERS: shutil.copy(os.path.join(RACINE, 'serveur', 'php', f), os.path.join(web, f))
 PORT = port_libre()
 env = dict(os.environ, ALPHABETTE_FINANCE_DIR=prive, ALPHABETTE_FINANCE_MAIL_DIR=mails, ALPHABETTE_WEBHOOK_SECRET=SECRET_WH,
-           ALPHABETTE_IBAN_KEY=CLE_IBAN.hex(), ALPHABETTE_ADMIN_PASSWORD=ADMIN, ALPHABETTE_FINANCE_DELAI=str(DELAI), PHP_CLI_SERVER_WORKERS='4')
+           ALPHABETTE_IBAN_KEY=CLE_IBAN.hex(), ADMIN_PASSWORD=ADMIN, ALPHABETTE_ADMIN_EMAIL='admin@exemple.invalid', ALPHABETTE_FINANCE_DELAI=str(DELAI), PHP_CLI_SERVER_WORKERS='4')
 serveur = subprocess.Popen(['php', '-S', f'127.0.0.1:{PORT}', '-t', web], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 time.sleep(0.8)
 BASE = f'http://127.0.0.1:{PORT}'
@@ -99,6 +99,8 @@ try:
     verifier('code à usage unique', s == 400)
     s, d = http('/billing.php', {'action': 'lier_app', 'slug': 'mon-appli', 'email': 'createur@example.org'}, entetes={'X-Admin-Password': 'faux-mot-de-passe'})
     verifier('admin : mauvais mot de passe → 403', s == 403)
+    s, d = http('/billing.php', {'action': 'lier_app', 'slug': 'mon-appli', 'email': 'createur@example.org'})
+    verifier('admin : sans mot de passe → 401', s == 401, (s, d))
     s, d = http('/billing.php', {'action': 'lier_app', 'slug': 'mon-appli', 'email': 'createur@example.org'}, entetes={'X-Admin-Password': ADMIN})
     verifier('admin : appli rattachée', s == 200, d)
 
@@ -285,7 +287,7 @@ try:
     s, d = http('/upload-guard.php', {'action': 'signaler', 'app_id': 'appli-a', 'motif': 'arnaque'}); verifier('3e utilisateur (anonyme) → paused_abuse', d['signalements'] == 3 and d['statut'] == 'paused_abuse', d)
     s, d = http('/upload-guard.php', {'action': 'signaler', 'app_id': 'appli-b', 'motif': 'bug'}); verifier('« ne marche pas » ne compte pas comme abus', d.get('compte') is False, d)
     s, d = http('/upload-guard.php?statut=appli-a'); verifier('statut public paused_abuse', d['statut'] == 'paused_abuse')
-    verifier('alerte admin envoyée', 'appli mise en pause' in open(os.path.join(mails, 'azertylm@gmail.com.txt'), encoding='utf-8').read())
+    verifier('alerte admin envoyée', 'appli mise en pause' in open(os.path.join(mails, 'admin@exemple.invalid.txt'), encoding='utf-8').read())
     s, d = http('/upload-guard.php', {'action': 'reactiver', 'slug': 'appli-a'}, entetes={'X-Admin-Password': ADMIN}); verifier('admin réactive', s == 200)
     s, d = http('/upload-guard.php?statut=appli-a'); verifier('appli de nouveau active', d['statut'] == 'active')
 

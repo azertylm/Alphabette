@@ -256,7 +256,19 @@ function limite(string $cle, int $max, int $fenetre): bool {
 
 /* ───────────────────────────── courrier ───────────────────────────── */
 
-function destinataire_admin(): string { return trim((string) getenv('ALPHABETTE_ADMIN_EMAIL')); }
+/** Variable d'environnement vue par PHP : getenv(), $_SERVER (SetEnv Apache) ou REDIRECT_<nom> (après RewriteRule). */
+function env_reglage(string $nom): string {
+    foreach (array(getenv($nom), $_SERVER[$nom] ?? null, $_SERVER['REDIRECT_' . $nom] ?? null) as $v) {
+        if (is_string($v) && trim($v) !== '') return trim($v);
+    }
+    return '';
+}
+
+/** Adresse de l'administrateur : ALPHABETTE_ADMIN_EMAIL (jamais dans le code), '' si absente ou invalide → aucun mail. */
+function destinataire_admin(): string {
+    $e = env_reglage('ALPHABETTE_ADMIN_EMAIL');
+    return ($e !== '' && strlen($e) <= 190 && filter_var($e, FILTER_VALIDATE_EMAIL) !== false) ? $e : '';
+}
 
 function envoyer_mail(string $a, string $sujet, string $corps): void {
     if ($a === '') return;

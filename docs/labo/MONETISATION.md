@@ -20,7 +20,7 @@ Page : `labo/pages/mes-revenus.html` → `alphabette.eu/mes-revenus/` (double ba
 ## Réglages (hors du dépôt)
 Dossier privé `~/alphabette-finance/` : `finance.sqlite`, `secret.key` et `cle-iban.key` (créés tout seuls, 0600),
 `config.json` `{ "webhook_secret": "whsec_…", "admin_password": "…12 caractères min." }`.
-Les variables `ALPHABETTE_IBAN_KEY`, `ALPHABETTE_WEBHOOK_SECRET`, `ALPHABETTE_ADMIN_PASSWORD` passent avant ces fichiers.
+Les variables `ALPHABETTE_IBAN_KEY`, `ALPHABETTE_WEBHOOK_SECRET`, `ADMIN_PASSWORD` (nom unique ; l'ancien `ALPHABETTE_ADMIN_PASSWORD` reste lu en secours) passent avant ces fichiers.
 **Sauvegarder `cle-iban.key`** : sans elle, les IBAN enregistrés ne sont plus lisibles.
 
 Stripe : lien de paiement 15 € avec métadonnée `app=<slug>`, webhook vers `https://alphabette.eu/api/webhooks.php`
