@@ -223,40 +223,35 @@ function PanneauCles({ app, config, hubUrl, ouvrir, basculer }: PanneauProps) {
       </div>
 
       <div className="ab-panneau">
-        <h4>Deux façons de brancher l’IA</h4>
+        <h4>Deux façons d’utiliser l’IA</h4>
         <p>
-          <IconCheck width={13} height={13} /> <strong>BYOK</strong> : tu apportes ta propre clé Mistral, tu gardes la
-          main sur tes quotas et ta facturation.
+          <IconCheck width={13} height={13} /> <strong>Avec ta propre clé</strong> : tu crées une clé gratuite chez
+          Mistral (société française) et tu la colles ici, une seule fois. Tu gardes la main sur ce que tu consommes.
         </p>
         <p>
-          <IconSparkles width={13} height={13} /> <strong>Clé managée Alphabette</strong> :{' '}
+          <IconSparkles width={13} height={13} /> <strong>Avec la clé d’Alphabette</strong> :{' '}
           {app.gratuit
-            ? 'hébergée par l’écosystème, rien à configurer.'
-            : `incluse pendant les ${config.trialDays} jours d’essai et avec le Pass. Rien à configurer.`}
+            ? 'rien à faire, elle est fournie par l’écosystème.'
+            : `rien à faire, elle est incluse pendant les ${config.trialDays} jours d’essai et avec l’abonnement.`}
         </p>
       </div>
 
       <div className="ab-panneau">
-        <h4>Ce que fait la base</h4>
+        <h4>Où va ma clé ?</h4>
         <p className="ab-note">
-          Les appels passent par le routeur souverain du hub (<code>{hubUrl.replace(/\/$/, '')}/api/ai/ask</code>), qui
-          choisit le fournisseur disponible et journalise le minimum. Aucune clé n’est stockée dans le navigateur.
+          Ta clé reste sur ton appareil, dans ton navigateur. Elle n’est envoyée qu’à ton fournisseur d’IA, jamais à
+          Alphabette. Tu peux l’effacer quand tu veux.
         </p>
       </div>
 
       <div className="ab-actions-ligne">
         <button type="button" className="ab-btn ab-btn--accent ab-btn--lg" onClick={() => ouvrir(cles)}>
-          Gérer mes clés <IconExternal width={14} height={14} />
+          Ajouter ma clé <IconExternal width={14} height={14} />
         </button>
         <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => basculer('pass')}>
-          {app.gratuit ? '🧭 L’écosystème' : '⭐ Incluse dans le Pass'}
+          {app.gratuit ? '🧭 L’écosystème' : '⭐ Voir l’abonnement'}
         </button>
       </div>
-
-      <p className="ab-note">
-        Adresse de gestion : <strong>{cles}</strong>. Remplaçable par la prop <code>onOpenApiKeys</code> ou en
-        surchargeant le panneau.
-      </p>
     </>
   );
 }
