@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T11:46:12.460Z",
-  "empreinte_page_sha256": "5c4989ce6de325c0fb3cf78aac38acd8d74370796e1da767cbd4458592c27054",
+  "audite_le": "2026-11-25T11:53:20.826Z",
+  "empreinte_page_sha256": "82577be6e86c43f51736051d45f52361fd74a80df42d79e909175f6085a164b4",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 900,
-      "bloquees": 900,
+      "requetes": 477,
+      "bloquees": 477,
       "types": [
         "image",
         "fetch"
@@ -70,17 +70,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
@@ -95,7 +86,7 @@
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -129,6 +120,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "img.lemde.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -139,14 +139,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
-      "img.lemde.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "067673651db665ab9bd5d6bed29b1f22da2e5812e12e442dbfcef5564f58f3f3"
+  "empreinte_certificat_sha256": "34ee21c75604aa29a783677ce2ec0556422f5cc364da165159d3e77de63b1be4"
 }
