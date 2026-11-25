@@ -1,4 +1,23 @@
 {
   "_aide": "Incidents de production détectés par la Sentinelle post-transfert (alphabette.fr) et retours arrière effectués.",
-  "incidents": []
+  "incidents": [
+    {
+      "date": "2026-11-25T19:25:51.276Z",
+      "app": "infosperso",
+      "app_id": "infos-perso",
+      "version": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e",
+      "retour_a": null,
+      "raisons": [
+        "3 session(s) sur 77 avec une erreur fatale (seuil : plus de 2 % des 100 premières)"
+      ],
+      "sessions": 77,
+      "fatales": 3,
+      "rendu_median_ms": 1076,
+      "rendu_precedent_ms": null,
+      "erreurs": [
+        "ResizeObserver loop completed with undelivered notifications. (:0)"
+      ],
+      "tickets_rouverts": []
+    }
+  ]
 }

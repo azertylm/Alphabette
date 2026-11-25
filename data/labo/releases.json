@@ -1,8 +1,33 @@
 {
   "_aide": "Historique des versions publiées sur alphabette.fr, par clé d'appli (data/apps-sources.json). La dernière entrée « en_ligne » est la version courante ; la précédente non « retiree » est la cible d'un retour arrière automatique (scripts/labo/sentinelle.mjs). Tenu par graduation.mjs preparer et par la Sentinelle.",
   "apps": {
-    "franceservice": [{ "ref": "661c8a66369b33e72aea7f4d59e1282afe65cc01", "depuis": "2026-11-18", "statut": "en_ligne" }],
-    "infosperso": [{ "ref": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e", "depuis": "2026-11-18", "statut": "en_ligne" }],
-    "iadebat": [{ "ref": "06806c0ee1cebd003e0def924c88987b6f57ac44", "depuis": "2026-11-18", "statut": "stable" }, { "ref": "fcaa61fc649b67d177a225b91a8d2f2bc61a2a4a", "depuis": "2026-11-19", "statut": "en_ligne" }]
+    "franceservice": [
+      {
+        "ref": "661c8a66369b33e72aea7f4d59e1282afe65cc01",
+        "depuis": "2026-11-18",
+        "statut": "en_ligne"
+      }
+    ],
+    "infosperso": [
+      {
+        "ref": "a7d6d6f2f97d3a31d9283117d6881ca57b9dc48e",
+        "depuis": "2026-11-18",
+        "statut": "retiree",
+        "retiree_le": "2026-11-25T19:25:51.276Z",
+        "raison": "3 session(s) sur 77 avec une erreur fatale (seuil : plus de 2 % des 100 premières)"
+      }
+    ],
+    "iadebat": [
+      {
+        "ref": "06806c0ee1cebd003e0def924c88987b6f57ac44",
+        "depuis": "2026-11-18",
+        "statut": "stable"
+      },
+      {
+        "ref": "fcaa61fc649b67d177a225b91a8d2f2bc61a2a4a",
+        "depuis": "2026-11-19",
+        "statut": "en_ligne"
+      }
+    ]
   }
 }
