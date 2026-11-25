@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="236" height="40" role="img" aria-label="Audit réseau conforme — SERVICE FRANCE — 2026-11-25">
-<title>Certificat d'Audit Réseau Alphabette — SERVICE FRANCE — conforme le 2026-11-25 — SHA-256 9b7776cbb87c46b52a9c07cfc43e9be975ef41a6575d8755be988d6a574d311f</title>
+<title>Certificat d'Audit Réseau Alphabette — SERVICE FRANCE — conforme le 2026-11-25 — SHA-256 a5f3909965f31d7eab8cae1f8ab9c04fb4329f62d2d23939543015c0a1dbf902</title>
 <rect width="236" height="40" rx="6" fill="#14161c"/><rect x="118" width="118" height="40" rx="6" fill="#1f6f43"/><rect x="118" width="8" height="40" fill="#1f6f43"/>
 <g font-family="system-ui,sans-serif" font-size="12" fill="#fff"><text x="10" y="17" font-weight="700">🔒 Audit réseau</text><text x="10" y="32" font-size="10" fill="#c9ccd4">zéro connaissance</text>
-<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · 9b7776cb</text></g>
-<metadata>{"app_id":"france-service","conforme":true,"audite_le":"2026-11-25T11:08:15.152Z","empreinte_certificat_sha256":"9b7776cbb87c46b52a9c07cfc43e9be975ef41a6575d8755be988d6a574d311f"}</metadata></svg>
+<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · a5f39099</text></g>
+<metadata>{"app_id":"france-service","conforme":true,"audite_le":"2026-11-25T11:29:25.078Z","empreinte_certificat_sha256":"a5f3909965f31d7eab8cae1f8ab9c04fb4329f62d2d23939543015c0a1dbf902"}</metadata></svg>
