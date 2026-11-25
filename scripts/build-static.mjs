@@ -461,6 +461,12 @@ async function preparerLaboratoire() {
       await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, dossier, 'index.html'));
     }
     await cp(path.join(racine, 'labo', 'pages', 'admin-newsletter.html'), path.join(eu, 'admin-newsletter.html'));
+    // Cartes « application offerte » (QR à usage unique) : validation + admin ; seules les empreintes des codes sont déployées.
+    await cp(path.join(racine, 'serveur', 'php', 'carte.php'), path.join(eu, 'api', 'carte.php'));
+    await mkdir(path.join(eu, 'data', 'private'), { recursive: true });
+    await cp(path.join(racine, 'data', 'private', '.htaccess'), path.join(eu, 'data', 'private', '.htaccess'));
+    await cp(path.join(racine, 'data', 'private', 'cartes-hashes.txt'), path.join(eu, 'data', 'private', 'cartes-hashes.txt')).catch(() => {});
+    await cp(path.join(racine, 'labo', 'pages', 'admin-cartes.html'), path.join(eu, 'admin-cartes.html'));
   }
   // Lot 6 — Passeport (relais chiffré 120 s), Aidant, Ruche à Idées, Kits, Presse, santé du serveur (.eu seulement).
   {
