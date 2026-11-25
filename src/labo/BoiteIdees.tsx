@@ -105,9 +105,9 @@ export const BoiteIdees: React.FC = () => {
                   {idee.statut === 'retenue' && <span className="collectif-statut collectif-statut--validee"> Retenue par le Labo</span>}
                   {idee.statut === 'realisee' && <span className="collectif-statut collectif-statut--validee"> ✓ Réalisée</span>}
                   <span>{idee.phrase}</span>
-                  {messageVote?.id === idee.id && <span className="labo__petit" role="status">{messageVote.texte}</span>}
+                  {messageVote?.id === idee.id && <span className="labo__petit pop-bandeau-vote" role="status">{messageVote.texte}</span>}
                 </div>
-                <button type="button" className={deja ? 'idees__vote idees__vote--fait' : 'idees__vote'} onClick={() => voter(idee.id)}
+                <button type="button" className={`idees__vote${deja ? ' idees__vote--fait' : ''}${deja && messageVote?.id === idee.id ? ' pop-vote--juste' : ''}`} onClick={() => voter(idee.id)}
                   aria-disabled={deja} aria-label={`${deja ? 'Déjà voté pour' : 'Voter pour'} « ${idee.titre} », ${idee.votes} vote${idee.votes > 1 ? 's' : ''}`}>
                   <span aria-hidden="true">{deja ? '✓' : '▲'}</span>
                   <span className="idees__nombre">{idee.votes}</span>

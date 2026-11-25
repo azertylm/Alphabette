@@ -29,6 +29,7 @@
 <script src="/assets/alphabette-barre.js" data-cle="mes-revenus" data-nom="Mes revenus" data-sous-titre="Espace créateurs" data-accent="#0f766e"></script>
 <main id="contenu">
   <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <div id="v-erreur"></div>
   <h1>Mes revenus</h1>
   <p class="pastille" id="rappel">15 €/an = 10 € créateur / 5 € Alphabette</p>
 
@@ -55,11 +56,12 @@
       <div class="chiffre"><b id="v-dispo">0,00 €</b><span>solde disponible</span></div>
     </div>
     <ul class="liste-simple" id="v-applis"></ul>
+    <div id="v-vide"></div>
 
     <h2>Virement</h2>
     <div class="carte">
       <p><strong>Seuil : 20,00 €</strong> disponibles. <span id="v-progression"></span></p>
-      <div class="jauge" role="progressbar" aria-label="Progression vers le virement" aria-valuemin="0" aria-valuemax="100" id="jauge"><div></div></div>
+      <div class="jauge pop-jauge-virement" role="progressbar" aria-label="Progression vers le virement" aria-valuemin="0" aria-valuemax="100" id="jauge"><div></div></div>
       <p id="v-iban">Aucun IBAN enregistré.</p>
       <form id="f-iban">
         <label class="champ">IBAN <span class="aide">Chiffré, jamais affiché en entier.</span><input id="iban" autocomplete="off" spellcheck="false" placeholder="FR76 …"></label>
@@ -116,6 +118,18 @@
   var CLE = 'alphabette_createur_jeton';
   var SEUIL = 2000;
   function $(id) { return document.getElementById(id); }
+  // Design Pop / Néon (alphabette-effets.js, chargé par la barre) : odomètre, confettis, écrans vides. Repli sans effets.
+  function E() { return window.alphabetteEffets; }
+  function chiffre(id, valeur, enEuros) {
+    if (E()) E().odometre($(id), valeur, { format: enEuros ? euros : undefined }); else $(id).textContent = enEuros ? euros(valeur) : String(valeur);
+  }
+  function vide(id, type, options) {
+    var z = $(id); z.textContent = '';
+    if (!type) return;
+    if (E()) z.appendChild(E().ecranVide(type, options || {}));
+    else { var p = document.createElement('p'); p.className = 'message err'; p.textContent = (options && options.texte) || 'Pas de connexion : réessayez.'; z.appendChild(p); }
+  }
+  var PALIERS_TROPHEE = [500, 100, 50, 10];
   function euros(c) { c = Math.trunc(c); var s = c < 0 ? '-' : ''; c = Math.abs(c); return s + Math.floor(c / 100) + ',' + String(c % 100).padStart(2, '0') + ' €'; }
   function jeton() { try { return localStorage.getItem(CLE) || ''; } catch (e) { return ''; } }
   function poserJeton(j) { try { j ? localStorage.setItem(CLE, j) : localStorage.removeItem(CLE); } catch (e) {} }
@@ -145,13 +159,25 @@
     if (!jeton()) return;
     appel('billing.php', null, 'revenus').then(function (d) {
       if (d._s === 401) { poserJeton(''); return; }
+      if (d._s === 0) { vide('v-erreur', 'erreur-reseau', { reessayer: charger }); return; }
       if (d._s !== 200) return;
+      vide('v-erreur', null);
       $('connexion').classList.add('cache'); $('tableau').classList.remove('cache');
-      $('v-abonnes').textContent = d.abonnesActifs; $('v-revenus').textContent = euros(d.revenusCents);
-      $('v-attente').textContent = euros(d.pendingCents); $('v-dispo').textContent = euros(d.availableBalanceCents);
+      chiffre('v-abonnes', d.abonnesActifs, false); chiffre('v-revenus', d.revenusCents, true);
+      chiffre('v-attente', d.pendingCents, true); chiffre('v-dispo', d.availableBalanceCents, true);
+      vide('v-vide', d.abonnesActifs > 0 ? null : 'zero-euro');
+      // Confettis sur de vrais paliers (une fois par appareil) : 1er abonné, puis trophées 10 / 50 / 100 / 500.
+      var feter = function () {
+        if (d.abonnesActifs < 1) return;
+        E().celebrer('premier_abonne', 'compte');
+        for (var i = 0; i < PALIERS_TROPHEE.length; i++) if (d.abonnesActifs >= PALIERS_TROPHEE[i]) { E().celebrer('trophee', 'abonnes-' + PALIERS_TROPHEE[i]); break; }
+      };
+      if (E()) feter(); else window.addEventListener('alphabette:effets', feter, { once: true });
       var ul = $('v-applis'); ul.textContent = '';
       (d.applis || []).forEach(function (a) { var li = document.createElement('li'); li.textContent = a.slug + ' — ' + a.abonnesActifs + ' abonné(s), ' + euros(a.revenusCents); ul.appendChild(li); });
-      var p = d.progressionVirement; $('jauge').firstElementChild.style.width = p + '%'; $('jauge').setAttribute('aria-valuenow', p);
+      var p = d.progressionVirement; $('jauge').firstElementChild.style.width = p + '%'; $('jauge').style.setProperty('--progression', String(Math.max(0, Math.min(100, p)) / 100)); $('jauge').setAttribute('aria-valuenow', p);
+      // Seuil de 20,00 € atteint (2000 centimes) : le bouton s'illumine.
+      $('b-virement').classList.toggle('pop-pret', d.availableBalanceCents >= SEUIL);
       var manque = SEUIL - d.availableBalanceCents;
       $('v-progression').textContent = d.virementEnCours ? 'Un virement est en cours.' : (manque > 0 ? 'Encore ' + euros(manque) + ' avant le virement.' : 'Vous pouvez demander votre virement.');
       $('v-iban').textContent = d.ibanMasque ? 'IBAN : ' + d.ibanMasque : 'Aucun IBAN enregistré.';

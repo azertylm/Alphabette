@@ -104,3 +104,12 @@ export {
   corpsRequeteTts, garantirWav, ttsGeminiDirect,
 } from './audio/voixGemini';
 export { corpsTranscription } from './audio/dictee';
+
+// Design Pop / Néon (Lot 4) : univers .eu/.fr, onde jour/nuit, cartes 3D, confettis, odomètre, Mode Calme.
+export {
+  installerEffets, univers, poserUnivers, poserCategorie, cleCategorie, SIGNATURES, modeCalme, modeCalmeActif, mouvementReduit,
+  vagueTheme, confettis, celebrer, celebrerSiNouveau, odometre, eurosDepuisCentimes, palierFiole, htmlFiole, HTML_EGALISEUR,
+  type Univers, type Fete, type OptionsConfettis, type OptionsOdometre,
+} from './pop/effets';
+export { SVG_VIDES, TEXTES_VIDES, ecranVide, type EcranVideType } from './pop/illustrations';
+export { FioleLabo, BadgeMetal, Odometre, Egaliseur, EcranVide, CarteSquelette, BoutonModeCalme, useEtatAudio, type TypeBadge } from './pop/composants';
