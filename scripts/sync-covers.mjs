@@ -58,15 +58,16 @@ ${motif(famille(app))}
 
 async function main() {
   await mkdir(dossier, { recursive: true });
-  // 1. images égarées à la racine de public/
-  const racinePublic = path.join(racine, 'public');
+  // 1. images égarées à la racine de public/ ou du dépôt (dépôts « Add files via upload »)
   let deplacees = 0;
-  for (const f of await readdir(racinePublic)) {
-    if (!EXT.test(f) || /^(og-image|favicon|icon|apple-touch|logo|pwa-)/i.test(f)) continue;
-    const dest = path.join(dossier, f);
-    if (await stat(dest).catch(() => null)) continue; // jamais d'écrasement
-    if (!verifier) await rename(path.join(racinePublic, f), dest);
-    deplacees += 1;
+  for (const base of [path.join(racine, 'public'), racine]) {
+    for (const f of await readdir(base)) {
+      if (!EXT.test(f) || /^(og-image|favicon|icon|apple-touch|logo|pwa-)/i.test(f)) continue;
+      const dest = path.join(dossier, f);
+      if (await stat(dest).catch(() => null)) continue; // jamais d'écrasement
+      if (!verifier) await rename(path.join(base, f), dest);
+      deplacees += 1;
+    }
   }
   const reg = JSON.parse(await readFile(registre, 'utf8'));
   const fichiers = (await readdir(dossier)).filter((f) => EXT.test(f));
