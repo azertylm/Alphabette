@@ -27,7 +27,8 @@
       "gratuit": true,
       "description": "Des trouvailles utiles du quotidien, rangées par thème. Votez pour vos préférées, ajoutez les vôtres.",
       "ordre": 7,
-      "cover": "/covers/bonplan.svg",
+      "cover": "/covers/Bon%20Plan.jpg",
+      "coverCustom": true,
       "cle": "bonplan"
     },
     {
@@ -119,7 +120,8 @@
       "description": "Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux.",
       "ordre": 4,
       "vitrine": true,
-      "cover": "/covers/iadebat.svg",
+      "cover": "/covers/IA%20D%C3%A9bat.jpg",
+      "coverCustom": true,
       "cle": "iadebat"
     },
     {
@@ -135,7 +137,8 @@
       "description": "Un portail d'actualités à votre goût, avec des résumés et des approfondissements.",
       "ordre": 1,
       "vitrine": true,
-      "cover": "/covers/infos-perso.svg",
+      "cover": "/covers/info-perso.jpg",
+      "coverCustom": true,
       "cle": "infosperso"
     },
     {
@@ -150,7 +153,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché.",
       "ordre": 5,
-      "cover": "/covers/oeil-atelier.svg",
+      "cover": "/covers/L'%C5%92il%20de%20l'Atelier.jpg",
+      "coverCustom": true,
       "cle": "atelier"
     },
     {
@@ -266,7 +270,8 @@
       "updatedAt": "2026-11-12T11:30:00.000Z",
       "ordre": 13,
       "gratuit": true,
-      "cover": "/covers/podcasts.svg"
+      "cover": "/covers/Podcasts.jpg",
+      "coverCustom": true
     },
     {
       "id": "promptmagic",
@@ -280,7 +285,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "description": "Décrivez une idée d'application utile : Prompt Magic en fait un cahier des charges prêt à construire.",
       "ordre": 9,
-      "cover": "/covers/promptmagic.svg",
+      "cover": "/covers/PromptMagic.jpg",
+      "coverCustom": true,
       "cle": "promptmagic"
     },
     {
@@ -374,7 +380,8 @@
       "description": "Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement.",
       "ordre": 6,
       "vitrine": true,
-      "cover": "/covers/france-service.svg",
+      "cover": "/covers/France%20Service.jpg",
+      "coverCustom": true,
       "cle": "franceservice"
     },
     {
@@ -390,7 +397,8 @@
       "updatedAt": "2026-11-12T09:14:47.000Z",
       "ordre": 3,
       "vitrine": true,
-      "cover": "/covers/wikicom.svg"
+      "cover": "/covers/wikicom.jpg",
+      "coverCustom": true
     },
     {
       "id": "crash-testeur",
