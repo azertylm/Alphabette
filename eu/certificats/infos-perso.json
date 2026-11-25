@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T17:14:12.795Z",
-  "empreinte_page_sha256": "9ffba1a5cd9825c64a9cfc31f0c9e206cfc9cc202ff317c5d3c30e7f2b6bfd6a",
+  "audite_le": "2026-11-25T17:37:56.973Z",
+  "empreinte_page_sha256": "6c85b14f43b3829880570507ef5f48a7d82a11dd79152cdfa9cdb93998180df5",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 290,
-      "bloquees": 290,
+      "requetes": 339,
+      "bloquees": 339,
       "types": [
         "image",
         "fetch"
@@ -129,6 +129,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "media.lesechos.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -144,9 +153,10 @@
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "img.lemde.fr"
+      "img.lemde.fr",
+      "media.lesechos.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "b1310d90af309937c53f41c37f79c52d443ec55894727fd46ee6e0b23a7f7cf9"
+  "empreinte_certificat_sha256": "16239fd4b8a47f8892aa82a59fd2c432750d2d3ff9bcc5651f74c063181fcb49"
 }
