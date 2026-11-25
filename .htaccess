@@ -11,6 +11,8 @@ DirectoryIndex index.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Jeton « Authorization: Bearer » transmis à PHP (espace créateurs, api/billing.php…) : OVH le retire sinon.
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
   # HTTPS partout
   RewriteCond %{HTTPS} !=on

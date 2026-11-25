@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T01:29:31.836Z",
-  "empreinte_page_sha256": "1f482002ee18847ca60508a2fe6a2cd115b5f86e8b2e8c7a545c8e9c0251128c",
+  "audite_le": "2026-11-25T06:40:13.941Z",
+  "empreinte_page_sha256": "0ad4ba692e4450dd654ec06f31dc11c73540e037aa473e4ecd82b482baba9840",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -59,8 +59,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 339,
-      "bloquees": 339,
+      "requetes": 475,
+      "bloquees": 475,
       "types": [
         "image",
         "fetch"
@@ -69,14 +69,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -119,15 +119,6 @@
       "types": [
         "image"
       ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
     }
   ],
   "resultat": {
@@ -138,14 +129,13 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "img.lemde.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com",
-      "io-fsly-bfmtv.cdn.nextradiotv.com"
+      "www.google.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "01ccafc0362047b3cecb5bed2b8dc0f6cd5f888c650b4833c8653198b58bffbb"
+  "empreinte_certificat_sha256": "0bbff4b56e2cb0c870b24b33bf776b2340a9bd99f4f0e76cf1cffe03de05cec1"
 }
