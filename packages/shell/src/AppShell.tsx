@@ -301,6 +301,12 @@ export function AppShell({
           {children}
         </div>
 
+        <footer className="ab-pied no-print" aria-label="Informations légales">
+          <a href={`${resolvedHubUrl}/mentions-legales.html`} target="_blank" rel="noopener noreferrer">Mentions légales</a>
+          <a href={`${resolvedHubUrl}/confidentialite.html`} target="_blank" rel="noopener noreferrer">Confidentialité</a>
+          <a href={`${resolvedHubUrl}/cgv.html`} target="_blank" rel="noopener noreferrer">CGV</a>
+        </footer>
+
         {isImmersion && (
           <button type="button" className="ab-sortie-immersion" onClick={toggleFullscreen}>
             ✕ Quitter l’écran plein

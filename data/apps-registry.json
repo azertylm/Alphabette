@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-14T01:15:00.000Z",
+  "updatedAt": "2026-11-25T06:10:17.760Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -570,6 +570,174 @@
       "updatedAt": "2026-11-13T12:00:00.000Z",
       "groupe": "petits-jeux",
       "gratuit": true
+    },
+    {
+      "id": "radar",
+      "name": "Radar",
+      "slug": "radar",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://radar.alphabette.fr",
+      "subdomain": "radar",
+      "createdAt": "2026-11-25T06:10:16.193Z",
+      "updatedAt": "2026-11-25T06:10:16.193Z",
+      "description": "L'agrégateur culturel anti-manque pour ne plus rien louper de ce qui vous passionne."
+    },
+    {
+      "id": "lecture-magique",
+      "name": "Lecture Magique",
+      "slug": "lecture-magique",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://lecturemagique.alphabette.fr",
+      "subdomain": "lecturemagique",
+      "createdAt": "2026-11-25T06:10:16.306Z",
+      "updatedAt": "2026-11-25T06:10:16.306Z",
+      "description": "Application ludo-éducative d'apprentissage de la lecture."
+    },
+    {
+      "id": "memovoix",
+      "name": "MémoVoix",
+      "slug": "memovoix",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://memovoix.alphabette.fr",
+      "subdomain": "memovoix",
+      "createdAt": "2026-11-25T06:10:16.468Z",
+      "updatedAt": "2026-11-25T06:10:16.468Z",
+      "description": "Le Biographe Familial : application vocale zéro-clavier pour recueillir et préserver des souvenirs."
+    },
+    {
+      "id": "matchsoiree",
+      "name": "MatchSoirée",
+      "slug": "matchsoiree",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://matchsoiree.alphabette.fr",
+      "subdomain": "matchsoiree",
+      "createdAt": "2026-11-25T06:10:16.577Z",
+      "updatedAt": "2026-11-25T06:10:16.577Z",
+      "description": "Prenez des décisions rapides en duo pour vos soirées."
+    },
+    {
+      "id": "parent-sos",
+      "name": "Parent SOS",
+      "slug": "parent-sos",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://parentsos.alphabette.fr",
+      "subdomain": "parentsos",
+      "createdAt": "2026-11-25T06:10:16.689Z",
+      "updatedAt": "2026-11-25T06:10:16.689Z",
+      "description": "Boîte à outils bienveillante et utilisable hors-ligne pour les parents."
+    },
+    {
+      "id": "revis-clash",
+      "name": "Révis'Clash",
+      "slug": "revis-clash",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://revisclash.alphabette.fr",
+      "subdomain": "revisclash",
+      "createdAt": "2026-11-25T06:10:16.848Z",
+      "updatedAt": "2026-11-25T06:10:16.848Z",
+      "description": "Jeu de cartes tactique en 1 contre 1 pour réviser en s'amusant."
+    },
+    {
+      "id": "negocoach",
+      "name": "NégoCoach",
+      "slug": "negocoach",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://negocoach.alphabette.fr",
+      "subdomain": "negocoach",
+      "createdAt": "2026-11-25T06:10:16.959Z",
+      "updatedAt": "2026-11-25T06:10:16.959Z",
+      "description": "Simulateur de négociation confidentiel pour s'entraîner avant un échange décisif."
+    },
+    {
+      "id": "disstrack-express",
+      "name": "DissTrack Express",
+      "slug": "disstrack-express",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://disstrackexpress.alphabette.fr",
+      "subdomain": "disstrackexpress",
+      "createdAt": "2026-11-25T06:10:17.070Z",
+      "updatedAt": "2026-11-25T06:10:17.070Z",
+      "description": "Transformez les anecdotes drôles de vos amis en rimes percutantes."
+    },
+    {
+      "id": "tribunal-des-potes",
+      "name": "Le Tribunal des Potes",
+      "slug": "tribunal-des-potes",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://tribunaldespotes.alphabette.fr",
+      "subdomain": "tribunaldespotes",
+      "createdAt": "2026-11-25T06:10:17.185Z",
+      "updatedAt": "2026-11-25T06:10:17.185Z",
+      "description": "Réglez vos débats absurdes entre amis grâce à un jury décalé."
+    },
+    {
+      "id": "balade",
+      "name": "Balade",
+      "slug": "balade",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://balade.alphabette.fr",
+      "subdomain": "balade",
+      "createdAt": "2026-11-25T06:10:17.293Z",
+      "updatedAt": "2026-11-25T06:10:17.293Z",
+      "description": "L'Oreille Locale : capsules culturelles audio-guide géolocalisées avec escales rapides."
+    },
+    {
+      "id": "tribunal-des-choix",
+      "name": "Le Tribunal des Choix",
+      "slug": "tribunal-des-choix",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://tribunaldeschoix.alphabette.fr",
+      "subdomain": "tribunaldeschoix",
+      "createdAt": "2026-11-25T06:10:17.406Z",
+      "updatedAt": "2026-11-25T06:10:17.406Z",
+      "description": "Le Tribunal des Choix par Alphabette — Plaidoiries en 30 secondes, juge satirique et gages absurdes pour trancher vos débats du quotidien."
+    },
+    {
+      "id": "alphabette-hub",
+      "name": "Alphabette Hub",
+      "slug": "alphabette-hub",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://alphabettehub.alphabette.fr",
+      "subdomain": "alphabettehub",
+      "createdAt": "2026-11-25T06:10:17.513Z",
+      "updatedAt": "2026-11-25T06:10:17.513Z",
+      "description": "Passeport Universel et espace laboratoire pour naviguer dans l'écosystème Alphabette."
+    },
+    {
+      "id": "une-de-labsurde",
+      "name": "La Une de l'Absurde",
+      "slug": "une-de-labsurde",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://unedelabsurde.alphabette.fr",
+      "subdomain": "unedelabsurde",
+      "createdAt": "2026-11-25T06:10:17.623Z",
+      "updatedAt": "2026-11-25T06:10:17.623Z",
+      "description": "Transformez une photo du quotidien et deux phrases banales en scandale loufoque à la Une."
+    },
+    {
+      "id": "curioz",
+      "name": "Curioz",
+      "slug": "curioz",
+      "icon": "Sparkles",
+      "status": "brouillon",
+      "url": "https://curioz.alphabette.fr",
+      "subdomain": "curioz",
+      "createdAt": "2026-11-25T06:10:17.759Z",
+      "updatedAt": "2026-11-25T06:10:17.759Z",
+      "description": "Cabinet de curiosités interactif : photographiez un objet ou explorez un mystère pour révéler son époque, son usage et sa vie secrète selon votre niveau de lecture."
     }
   ]
 }

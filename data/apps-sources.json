@@ -64,6 +64,48 @@
       "redirects": [
         "proxilien.eu"
       ]
+    },
+    "radar": {
+      "repo": "azertylm/Radar"
+    },
+    "lecturemagique": {
+      "repo": "azertylm/Lecture-magique"
+    },
+    "memovoix": {
+      "repo": "azertylm/Memovoix"
+    },
+    "matchsoiree": {
+      "repo": "azertylm/Match-soir-e"
+    },
+    "parentsos": {
+      "repo": "azertylm/Parents-SOS"
+    },
+    "revisclash": {
+      "repo": "azertylm/R-vis-clash"
+    },
+    "negocoach": {
+      "repo": "azertylm/Negocoach"
+    },
+    "disstrackexpress": {
+      "repo": "azertylm/DissTrack-Express"
+    },
+    "tribunaldespotes": {
+      "repo": "azertylm/Le-Tribunal-des-Potes"
+    },
+    "balade": {
+      "repo": "azertylm/Balade"
+    },
+    "tribunaldeschoix": {
+      "repo": "azertylm/Le-tribunal-des-choix"
+    },
+    "alphabettehub": {
+      "repo": "azertylm/Alphabette-Hub"
+    },
+    "unedelabsurde": {
+      "repo": "azertylm/La-Une-de-l-absurde"
+    },
+    "curioz": {
+      "repo": "azertylm/Curioz"
     }
   }
 }

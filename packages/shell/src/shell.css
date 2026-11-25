@@ -1122,3 +1122,12 @@ html[data-ab-simple] .ab-content { max-width: 48rem; margin-inline: auto; line-h
 }
 .ab-bar .ab-pico.ab-pico--audio.ab-pico--actif,
 .ab-bar .ab-pico.ab-pico--audio.ab-pico--actif:hover { background: var(--ab-ok, #15803d); border-color: var(--ab-ok, #15803d); color: #fff; opacity: 1; }
+
+/* Pied de page légal commun (Mentions légales · Confidentialité · CGV) — pixels fixes, hors zoom BIG. */
+.ab-pied {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px;
+  padding: 12px 10px; font-size: 13px; border-top: 1px solid var(--ab-border, #e2e8f0);
+}
+.ab-pied a { color: inherit; opacity: .8; text-decoration: underline; min-height: 24px; display: inline-flex; align-items: center; }
+.ab-pied a:hover, .ab-pied a:focus-visible { opacity: 1; }
+@media print { .ab-pied { display: none; } }

@@ -19,6 +19,7 @@
     "labo:cycle": "node scripts/labo/cycle.mjs",
     "labo:atelier": "node scripts/labo/atelier.mjs controler",
     "test:atelier": "node tests/atelier/test_atelier.mjs",
+    "test": "bun run test:atelier",
     "build:audio": "esbuild packages/shell/src/audio/navigateur.ts --bundle --format=iife --minify --target=es2019 --outfile=public/assets/alphabette-audio.js"
   },
   "dependencies": {
