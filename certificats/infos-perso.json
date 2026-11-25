@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T11:07:55.775Z",
-  "empreinte_page_sha256": "b9e1e5347c57c0500b707e36f51358072f97d93b7d5e9a4370d5ccbca7298716",
+  "audite_le": "2026-11-25T11:29:05.560Z",
+  "empreinte_page_sha256": "ab3959f72e29538de83b3c8b8ad82dd85586fa68362e3fb29bc1d64702ec2615",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1084,
-      "bloquees": 1084,
+      "requetes": 659,
+      "bloquees": 659,
       "types": [
         "image",
         "fetch"
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -122,7 +122,7 @@
       ]
     },
     {
-      "hote": "media.lesechos.com",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -139,14 +139,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
+      "img.lemde.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "media.lesechos.com"
+      "www.franceinfo.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "1041ee1a3db869be8e2fa4b38dffaa09dbb6b5ed70966bd170b60474945ca530"
+  "empreinte_certificat_sha256": "3dceb2c14bfa132125bd5ea130d8b620bfb44961170d9af8ac3bf33db48cfedf"
 }
