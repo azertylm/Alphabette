@@ -11,8 +11,8 @@ var $=function(i){return document.getElementById(i)};
 function get(q){return fetch('/api/carte.php?'+q,{headers:{'X-Admin-Password':$('mdp').value}})}
 $('v').onclick=function(){get('admin').then(function(r){return r.json().then(function(d){
   if(!r.ok){$('s').textContent=d.erreur||'Erreur';return}
-  $('s').textContent=d.utilisees+' carte(s) activée(s) sur '+d.total+' — '+d.restantes+' restante(s).';
-  $('t').innerHTML='<tr><th>Date</th><th>Lot-N°</th><th>E-mail</th></tr>'+d.recentes.map(function(c){return '<tr><td>'+new Date(c.utilise_le*1000).toLocaleString('fr-FR')+'</td><td>'+c.lot+'-'+c.numero+'</td><td></td></tr>'}).join('');
-  var tr=$('t').rows;d.recentes.forEach(function(c,i){tr[i+1].cells[2].textContent=c.email||''})})})};
+  $('s').textContent=d.utilisees+' carte(s) activée(s) sur '+d.total+' — '+d.restantes+' restante(s). Réseaux : '+d.parReseau.map(function(r){return r.reseau+' '+r.n}).join(', ');
+  $('t').innerHTML='<tr><th>Date</th><th>Lot-N°</th><th>Réseau</th><th>E-mail</th></tr>'+d.recentes.map(function(c){return '<tr><td>'+new Date(c.utilise_le*1000).toLocaleString('fr-FR')+'</td><td>'+c.lot+'-'+c.numero+'</td><td></td><td></td></tr>'}).join('');
+  var tr=$('t').rows;d.recentes.forEach(function(c,i){tr[i+1].cells[2].textContent=c.reseau||'';tr[i+1].cells[3].textContent=c.email||''})})})};
 $('x').onclick=function(){get('export').then(function(r){return r.ok?r.blob():null}).then(function(b){if(!b){$('s').textContent='Mot de passe incorrect.';return}var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cartes-activees.csv';a.click()})};
 </script></body></html>
