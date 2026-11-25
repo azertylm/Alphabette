@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-25T15:37:25.767Z",
-  "empreinte_page_sha256": "d01c15c3018433508fe3089a5c524515a6661e61e0a3422c9c93b2b9c5a51ba5",
+  "audite_le": "2026-11-25T16:43:40.156Z",
+  "empreinte_page_sha256": "cc9592f7ae238f913db88f1cd4e19f7e68191afbdfc0f6376f764d94784047d7",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 972,
-      "bloquees": 972,
+      "requetes": 405,
+      "bloquees": 405,
       "types": [
         "image",
         "fetch"
@@ -70,17 +70,8 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "img.lemde.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
@@ -129,6 +120,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "img.lemde.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -139,14 +139,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "img.lemde.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "0b485ad2e8691b49026650b462469460259635f72644fa6afa20894566b8982d"
+  "empreinte_certificat_sha256": "7b402fb9a204175f093c2ce577862650dd85a93f7fac9bfa8b66e30aaddd254f"
 }

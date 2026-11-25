@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ORBIT — Vos vidéos, sans algorithme</title>
+  <meta name="description" content="ORBIT réunit vos vidéos YouTube, TikTok, Instagram et Facebook sans algorithme : vous dosez la découverte, vous choisissez la durée, et un minuteur doux arrête le défilement." />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#5b3df5" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="stylesheet" href="./orbit.css" />
+  <!-- Aucune police distante, aucun traceur : les lecteurs YouTube/TikTok ne se chargent qu'au moment de lire. -->
+  <script src="/assets/alphabette-barre.js" data-cle="orbit" data-nom="ORBIT" data-sous-titre="Vos vidéos, sans algorithme" data-accent="#5b3df5" data-big="police" data-masquer="defilement"></script>
+</head>
+<body>
+  <a class="o-saut" href="#o-flux">Aller aux vidéos</a>
+
+  <header class="o-tete" id="o-tete">
+    <nav class="o-orbites" id="o-orbites" aria-label="Orbites thématiques"></nav>
+
+    <div class="o-bulle">
+      <label for="o-curseur" class="o-bulle__libelle">
+        <span>🫧 Bulle</span>
+        <output id="o-curseur-valeur" for="o-curseur">30 % de découverte</output>
+        <span>Découverte 🔭</span>
+      </label>
+      <input type="range" id="o-curseur" min="0" max="100" step="10" value="30"
+             aria-describedby="o-curseur-aide" />
+      <p id="o-curseur-aide" class="o-aide">0 % : seulement vos orbites. 100 % : seulement ce qui sort de vos habitudes.</p>
+    </div>
+
+    <div class="o-filtres" role="group" aria-label="Filtres">
+      <div class="o-puces" role="radiogroup" aria-label="Durée réelle" id="o-durees">
+        <button type="button" class="o-puce" role="radio" data-duree="" aria-checked="true">Toutes durées</button>
+        <button type="button" class="o-puce" role="radio" data-duree="express" aria-checked="false">⚡ Express &lt; 1 min</button>
+        <button type="button" class="o-puce" role="radio" data-duree="pause_cafe" aria-checked="false">☕ Pause café 3–10 min</button>
+        <button type="button" class="o-puce" role="radio" data-duree="documentaire" aria-checked="false">🎬 Documentaire &gt; 20 min</button>
+      </div>
+      <div class="o-ligne">
+        <button type="button" class="o-bascule" id="o-sans-son" aria-pressed="false">🔇 Sans son / sous-titres</button>
+        <button type="button" class="o-bouton o-bouton--accent" id="o-ouvrir-import">🚀 Mettre en orbite</button>
+        <button type="button" class="o-minuteur" id="o-minuteur" aria-live="polite">⏳ Libre</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="o-flux" class="o-flux" tabindex="-1" aria-live="polite" aria-busy="true">
+    <p class="o-vide">Chargement des vidéos…</p>
+  </main>
+  <p class="o-pied">ORBIT ne suit personne : pas de compte, pas de pub, pas de traceur. Vos choix restent dans ce navigateur.
+    Les lecteurs YouTube, TikTok, Instagram ou Facebook ne se chargent qu'au moment où vous lancez une vidéo.</p>
+
+  <!-- Début de session : minuteur doux et orbites préférées -->
+  <dialog id="o-session" class="o-dialogue" aria-labelledby="o-session-titre">
+    <form method="dialog" id="o-session-form">
+      <h2 id="o-session-titre">Combien de temps pour cette session ?</h2>
+      <p class="o-aide">À la fin, ORBIT arrête la lecture et vous laisse souffler. Rien ne se relance tout seul.</p>
+      <div class="o-grille" role="radiogroup" aria-label="Durée de la session">
+        <button type="submit" class="o-choix" value="5min">⏱️ 5 min</button>
+        <button type="submit" class="o-choix" value="15min">⏳ 15 min</button>
+        <button type="submit" class="o-choix" value="5videos">🎞️ 5 vidéos</button>
+        <button type="submit" class="o-choix" value="libre">♾️ Libre</button>
+      </div>
+      <fieldset class="o-themes">
+        <legend>Vos orbites (votre « bulle »)</legend>
+        <div id="o-themes" class="o-puces o-puces--multi"></div>
+      </fieldset>
+    </form>
+  </dialog>
+
+  <!-- Écran calme -->
+  <div id="o-calme" class="o-calme" hidden role="dialog" aria-modal="true" aria-labelledby="o-calme-titre">
+    <div class="o-calme__boite">
+      <div class="o-calme__astre" aria-hidden="true"></div>
+      <h2 id="o-calme-titre">Session terminée</h2>
+      <p id="o-calme-texte">Vous avez regardé ce que vous aviez prévu. Belle pause !</p>
+      <p class="o-aide">Respirez : inspirez 4 secondes, soufflez 6 secondes.</p>
+      <div class="o-ligne o-ligne--centre">
+        <button type="button" class="o-bouton" id="o-calme-plus">Encore 5 minutes</button>
+        <button type="button" class="o-bouton o-bouton--accent" id="o-calme-fin">J'arrête là</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import en 1 clic -->
+  <dialog id="o-import" class="o-dialogue" aria-labelledby="o-import-titre">
+    <form id="o-import-form">
+      <h2 id="o-import-titre">🚀 Mettre en orbite</h2>
+      <label for="o-import-url">Collez l'adresse d'une vidéo YouTube, TikTok, Instagram ou Facebook</label>
+      <input type="url" id="o-import-url" inputmode="url" autocomplete="off" required
+             placeholder="https://www.youtube.com/watch?v=…" />
+      <p id="o-import-etat" class="o-aide" role="status"></p>
+      <div class="o-ligne">
+        <button type="button" class="o-bouton" id="o-import-annuler">Fermer</button>
+        <button type="submit" class="o-bouton o-bouton--accent">Ajouter</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Plongée / autre point de vue -->
+  <dialog id="o-panneau" class="o-dialogue o-dialogue--large" aria-labelledby="o-panneau-titre">
+    <div class="o-panneau__tete">
+      <h2 id="o-panneau-titre"></h2>
+      <button type="button" class="o-bouton o-bouton--icone" id="o-panneau-fermer" aria-label="Fermer">✕</button>
+    </div>
+    <div id="o-panneau-corps"></div>
+  </dialog>
+
+  <noscript><p class="o-vide">ORBIT a besoin de JavaScript pour afficher les vidéos.</p></noscript>
+  <script type="module" src="./orbit.js"></script>
+</body>
+</html>
