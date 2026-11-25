@@ -11,6 +11,9 @@ import type { AlphaAppConfig, AlphaSite, ShellPanelId } from './config';
 import { useDensity, useFullscreen, useTheme, type ShellDensity, type ShellTheme } from './hooks';
 import { PanneauShell, infosPanneau } from './panels';
 import { ShellOverlay } from './ShellOverlay';
+import { installerMasquageDefilement } from './masquage';
+import { PanneauDebugLocal } from './DebugLocal';
+import { surLeLaboratoire } from './labo/confidentialite';
 import {
   FALLBACK_CONFIG,
   HUB_URL,
@@ -109,6 +112,9 @@ export function AppShell({
   // Design Pop / Néon : univers .eu/.fr, Mode Calme, cartes 3D, ripple (rien de visible au démarrage).
   useEffect(() => installerEffets(), []);
   useEffect(() => poserCategorie(app.categorie), [app.categorie]);
+  // Règle d'or 2 : en descendant dans le contenu, la double barre (et la Météo du Labo) se masque ; elle revient dès qu'on remonte.
+  // Réservé à alphabette.eu (la vitrine .fr garde sa présentation) ; le Mode Calme ne change rien : c'est déjà plus calme.
+  useEffect(() => (surLeLaboratoire() ? installerMasquageDefilement() : undefined), []);
   const installation = useInstallation();
   const [remoteConfig, setRemoteConfig] = useState<ShellConfig>(config ?? FALLBACK_CONFIG);
   const [panel, setPanel] = useState<ShellPanelId | null>(null);
@@ -319,8 +325,10 @@ export function AppShell({
         data-ab-density={density}
         style={app.accent ? ({ '--ab-accent': app.accent } as CSSProperties) : undefined}
       >
-        <EcosystemBar app={app} sites={sitesFinaux} hubUrl={resolvedHubUrl} apps={apps} />
-        <AppHeader app={app} onToggleNav={onToggleNav} />
+        <div className="ab-barres" data-masquer="defilement">
+          <EcosystemBar app={app} sites={sitesFinaux} hubUrl={resolvedHubUrl} apps={apps} />
+          <AppHeader app={app} onToggleNav={onToggleNav} />
+        </div>
         <div className="ab-content" role="region" aria-label={app.name}>
           {children}
         </div>
@@ -330,6 +338,8 @@ export function AppShell({
           <a href={`${resolvedHubUrl}/confidentialite.html`} target="_blank" rel="noopener noreferrer">Confidentialité</a>
           <a href={`${resolvedHubUrl}/cgv.html`} target="_blank" rel="noopener noreferrer">CGV</a>
         </footer>
+
+        <PanneauDebugLocal />
 
         {isImmersion && (
           <button type="button" className="ab-sortie-immersion" onClick={toggleFullscreen}>

@@ -4,14 +4,14 @@ import { RegistryApp } from '../types';
 import { fetchPublicApps } from '../services/registryService';
 import { RegistryIcon } from './RegistryIcon';
 import { MODE_LABO, cheminApp, chargerAtelier, chargerChangelogLabo, chargerDonneesLabo, chargerNotesCitoyennes, chargerCertificats, chargerEcoScores, chargerResumes, type CertificatReseau, type DonneesAtelier, type EcoScore, type DonneesLabo, type NoteVersion, type PassageApp, type Resumes } from '../labo/labo';
-import { MeteoLabo } from '../labo/MeteoLabo';
 import { AvantApres } from '../labo/AvantApres';
 import { TableauHonneur } from '../labo/TableauHonneur';
 import { BoiteIdees } from '../labo/BoiteIdees';
 import { LaboAvis } from '../labo/LaboAvis';
 import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
-import { BadgeMetal, CarteSquelette, EcranVide, FioleLabo, celebrerSiNouveau, cleCategorie } from '@alphabette/shell';
+import { BadgeMetal, CarteSquelette, EcranVide, FioleLabo, NutriBadge, NutriFiche, celebrerSiNouveau, cleCategorie, resultatPour, useNutri } from '@alphabette/shell';
+import { SurprendsMoi } from './SurprendsMoi';
 
 /** Seuil du passage .eu → .fr : 10 avis positifs, ratio ≥ 75 % (CLAUDE.md). */
 const SEUIL_FR = 10;
@@ -71,6 +71,8 @@ interface AccueilProps {
 }
 
 export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
+  const nutri = useNutri();
+  const cleNutri = (app: RegistryApp) => app.cle ?? app.subdomain ?? app.slug;
   const [apps, setApps] = useState<RegistryApp[]>([]);
   const [etat, setEtat] = useState<'chargement' | 'ok' | 'erreur'>('chargement');
   const [recherche, setRecherche] = useState('');
@@ -174,7 +176,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
   return (
     <div className="accueil">
       <section className="accueil__haut pop-halo">
-        {MODE_LABO && <MeteoLabo fileAttente={resumes?.file_attente} serveurAvis={serveurAvis} noms={noms} />}
+        {/* La Météo du Labo vit désormais dans la double barre (pastille, @alphabette/shell) : plus de bandeau séparé ici. */}
         {MODE_LABO ? (
           <>
             <p className="labo-bandeau">🤝 Le Collectif Alphabette</p>
@@ -218,6 +220,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             autoComplete="off"
           />
         </label>
+        <SurprendsMoi apps={visibles} />
       </section>
 
       <section id="nos-applications" className="accueil__applis" aria-label="Nos applications">
@@ -259,14 +262,20 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                 {...(!MODE_LABO ? { 'data-ab-3d': '' } : {})}
                 data-ab-categorie={cleCategorie(app.categorie) ?? undefined} data-ab-vt={app.slug || app.id} data-ab-prefetch=""
                 {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                <span className="pop-carte__vignette" aria-hidden="true" data-ab-vt-cible="">
-                  <span className="accueil__icone">
-                    <RegistryIcon name={app.icon} />
-                  </span>
+                <span className={app.cover ? 'pop-carte__vignette pop-carte__vignette--cover' : 'pop-carte__vignette'} data-ab-vt-cible="" {...(app.cover ? {} : { 'aria-hidden': true })}>
+                  {app.cover ? (
+                    <img className="pop-carte__cover" src={app.cover} width={1200} height={630} loading="lazy" decoding="async"
+                      alt={`Illustration de l'application ${nomLisible(app.name)}`} />
+                  ) : (
+                    <span className="accueil__icone">
+                      <RegistryIcon name={app.icon} />
+                    </span>
+                  )}
                 </span>
                 <span className="pop-carte__tete">
                   <strong>{nomLisible(app.name)}</strong>
                   {app.badges?.map((b) => <BadgeMetal key={b} type={b} />)}
+                  <NutriBadge resultat={resultatPour(nutri, cleNutri(app))} />
                 </span>
                 <span className="pop-carte__createur">par {app.communaute ? app.createur || 'un créateur du Collectif' : 'Alphabette'}</span>
                 {app.description && <span className="accueil__desc pop-carte__promesse">{app.description}</span>}
@@ -329,6 +338,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                       </span>
                     )}
                   </p>
+                  <NutriFiche resultat={resultatPour(nutri, cleNutri(app))} />
                   <div className="collectif-fiche__actions">
                     <a className="labo__bouton labo__bouton--envoyer" href={app.url || '#'} {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                       ▶ Tester en 1 clic

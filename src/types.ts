@@ -159,6 +159,11 @@ export interface RegistryApp {
   groupe?: string;
   /** Publiée sur alphabette.fr (validée). */
   vitrine?: boolean;
+  /** Couverture illustrée de la carte (1200×630, /covers/…) et de l'Open Graph. */
+  cover?: string;
+  coverCustom?: boolean;
+  /** Clé de publication (apps/<clé>/), connue sur alphabette.eu. */
+  cle?: string;
   /** Application d'un créateur indépendant du Collectif (alphabette.eu seulement). */
   communaute?: boolean;
   /** Nom ou pseudo du créateur (Collectif). */

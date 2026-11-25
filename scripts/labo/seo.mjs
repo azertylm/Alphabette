@@ -22,7 +22,7 @@ export function preRendre(html, app, certification) {
   const nom = nomLisible(app.name);
   const description = (app.description || `${nom}, une application Alphabette.`).slice(0, 300);
   const url = app.url.endsWith('/') ? app.url : `${app.url}/`;
-  const image = 'https://alphabette.fr/og-image.png';
+  const image = app.cover ? `https://alphabette.fr${app.cover}` : 'https://alphabette.fr/og-image.png';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',

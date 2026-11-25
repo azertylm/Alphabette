@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kits Alphabette — des playlists d'applis · Alphabette</title>
+<meta name="description" content="Cinq kits d'applications prêts à l'emploi (soirée, famille, seniors, révisions, productivité) et un composeur pour partager votre propre sélection par simple lien.">
+<meta name="robots" content="index, follow">
+<script src="/labo/codex.js"></script>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="kits" data-nom="Kits" data-sous-titre="Des playlists d'applis" data-accent="#7c3aed" data-masquer="defilement"></script>
+<script src="/assets/qrcode.js"></script>
+<script src="/assets/qr-alphabette.js"></script>
+<script src="/labo/lot6.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Les Kits Alphabette</h1>
+  <p class="chapeau">Des applis choisies ensemble, comme une playlist. Choisissez un kit — ou composez le vôtre et partagez-le par un simple lien : <strong>rien n'est enregistré sur nos serveurs</strong>.</p>
+  <div id="perso"></div>
+  <div id="kits"></div>
+  <section class="carte" aria-labelledby="compo-titre">
+    <h2 id="compo-titre">Composer mon kit</h2>
+    <p class="note">Cochez de 2 à 6 applications : le lien se met à jour tout seul.</p>
+    <ul class="liste-choix" id="choix"><li>Chargement…</li></ul>
+    <p class="message" id="m"></p>
+    <div id="partage" class="cache">
+      <pre class="code" id="lien"></pre>
+      <div class="qr-boite" id="qr" role="img" aria-label="QR code du kit"></div>
+      <div class="actions"><button type="button" id="copier">Copier le lien</button><a class="bouton secondaire" id="voir" href="#">Voir ce kit</a></div>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var P = window.AB6P, toutes = {}, ordre = [];
+  function lienApp(a) { return a.url || '#'; }
+  function liste(slugs) { return slugs.filter(function (s) { return toutes[s]; }).map(function (s) { return toutes[s]; }); }
+  function carteKit(k, apps) {
+    var ul = P.el('ul', { class: 'kit__applis' });
+    apps.forEach(function (a) { ul.appendChild(P.el('li', {}, [P.el('a', { href: lienApp(a), text: P.nomLisible(a.name) })])); });
+    var lien = location.origin + '/kits/?apps=' + apps.map(function (a) { return a.slug; }).join(',');
+    return P.el('article', { class: 'carte kit' }, [P.el('h3', { text: (k.emoji ? k.emoji + ' ' : '') + k.nom }), k.phrase ? P.el('p', { text: k.phrase }) : null, ul,
+      P.el('a', { class: 'petit', href: lien, text: 'Lien de partage de ce kit' })]);
+  }
+  var q = new URLSearchParams(location.search).get('apps');
+  Promise.all([P.applis(), P.appeler('/api/kits.json')]).then(function (r) {
+    r[0].forEach(function (a) { toutes[a.slug] = a; ordre.push(a.slug); });
+    // Kit partagé : seulement des slugs connus et actifs, 2 à 6 (un lien trafiqué ne peut rien injecter : on n'affiche que le registre).
+    if (q) {
+      var slugs = q.split(',').map(function (s) { return s.trim(); }).filter(function (s, i, t) { return /^[a-z0-9-]{1,60}$/.test(s) && t.indexOf(s) === i; }).slice(0, 6);
+      var apps = liste(slugs);
+      P.$('perso').appendChild(apps.length >= 2 ? carteKit({ nom: 'Le kit qu\'on vous a partagé', emoji: '🎁', phrase: 'Une sélection de ' + apps.length + ' applications.' }, apps) : P.el('p', { class: 'message err', text: 'Ce kit ne contient pas assez d\'applications connues.' }));
+    }
+    var kits = (r[1].kits || []);
+    kits.forEach(function (k) { var apps = liste(k.apps || []); if (apps.length >= 2) P.$('kits').appendChild(carteKit(k, apps)); });
+    var ul = P.$('choix'); ul.textContent = '';
+    ordre.forEach(function (s) {
+      var a = toutes[s], c = P.el('input', { type: 'checkbox', value: s });
+      c.addEventListener('change', maj);
+      ul.appendChild(P.el('li', {}, [P.el('label', {}, [c, P.el('span', { text: P.nomLisible(a.name) })])]));
+    });
+  });
+  function maj() {
+    var cochees = Array.prototype.map.call(document.querySelectorAll('#choix input:checked'), function (c) { return c.value; });
+    var ok = cochees.length >= 2 && cochees.length <= 6;
+    P.message(P.$('m'), cochees.length > 6 ? 'Six applications au maximum.' : cochees.length < 2 ? 'Choisissez au moins 2 applications.' : '', false);
+    P.$('partage').className = ok ? '' : 'cache';
+    if (!ok) return;
+    var lien = location.origin + '/kits/?apps=' + cochees.join(',');
+    P.$('lien').textContent = lien; P.$('voir').href = lien; P.$('qr').innerHTML = P.qr(lien);
+    P.$('copier').onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(lien) : Promise.reject()).then(function () { P.message(P.$('m'), 'Lien copié.', true); }, function () { P.message(P.$('m'), 'Copie impossible : sélectionnez le lien.', false); }); };
+  }
+})();
+</script>
+</body>
+</html>

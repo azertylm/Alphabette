@@ -314,9 +314,9 @@ ${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHt
   html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
   await writeFile(index, html);
 
-  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\nDisallow: /kit-terrain/\nDisallow: /en-direct/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
+  await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\nDisallow: /kit-terrain/\nDisallow: /en-direct/\nDisallow: /transfert/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);
   const jour = new Date().toISOString().slice(0, 10);
-  const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/', '/soumettre/', '/decouvrir/', '/rejoindre-createurs/', '/contribuer/', '/bounties/', '/credits/', '/roadmap/'];
+  const urls = ['/', ...liens.map((l) => l.chemin), '/embarquement/', '/badge/', '/pass/', '/soumettre/', '/decouvrir/', '/rejoindre-createurs/', '/contribuer/', '/bounties/', '/credits/', '/roadmap/', '/aidant/', '/idees/', '/kits/', '/presse/'];
   await writeFile(
     path.join(eu, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -461,6 +461,22 @@ async function preparerLaboratoire() {
       await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, dossier, 'index.html'));
     }
     await cp(path.join(racine, 'labo', 'pages', 'admin-newsletter.html'), path.join(eu, 'admin-newsletter.html'));
+  }
+  // Lot 6 — Passeport (relais chiffré 120 s), Aidant, Ruche à Idées, Kits, Presse, santé du serveur (.eu seulement).
+  {
+    for (const nom of ['lot6-commun.php', 'relay.php', 'ideas.php', 'health.php']) await cp(path.join(racine, 'serveur', 'php', nom), path.join(eu, 'api', nom));
+    await cp(path.join(racine, 'data', 'kits.json'), path.join(eu, 'api', 'kits.json'));
+    await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
+    await cp(path.join(racine, 'data', 'labo', 'idees-statuts.json'), path.join(eu, 'api', 'labo', 'idees-statuts.json')).catch(() => {});
+    await cp(path.join(racine, 'data', 'labo', 'idees-statuts.json'), path.join(eu, 'api', 'idees-statuts.json')).catch(() => {});
+    const registreJson = JSON.parse(await readFile(path.join(racine, 'data', 'apps-registry.json'), 'utf8'));
+    await writeFile(path.join(eu, 'api', 'registre.json'), JSON.stringify({ version: registreJson.version, updatedAt: registreJson.updatedAt, nb_applis: registreJson.apps.length }) + '\n');
+    await cp(path.join(racine, 'labo', 'pages', 'codex.js'), path.join(eu, 'labo', 'codex.js'));
+    await cp(path.join(racine, 'labo', 'pages', 'lot6.js'), path.join(eu, 'labo', 'lot6.js'));
+    for (const [page, dossier] of [['transfert', 'transfert'], ['aidant', 'aidant'], ['idees', 'idees'], ['kits', 'kits'], ['presse', 'presse']]) {
+      await mkdir(path.join(eu, dossier), { recursive: true });
+      await cp(path.join(racine, 'labo', 'pages', `${page}.html`), path.join(eu, dossier, 'index.html'));
+    }
   }
   for (const [source, dossier] of [['au-hasard.html', 'au-hasard'], ['rejoindre.html', 'rejoindre']]) {
     await mkdir(path.join(eu, dossier), { recursive: true });

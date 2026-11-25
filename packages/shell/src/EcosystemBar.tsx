@@ -3,6 +3,8 @@ import type { AlphaAppConfig, AlphaSite } from './config';
 import type { EcosystemApp } from './apps';
 import { useShell } from './ShellContext';
 import { lireMembre, type Membre } from './membre';
+import { MeteoPastille } from './MeteoPastille';
+import { surLeLaboratoire } from './labo/confidentialite';
 
 /** L'inscription de ce navigateur, relue quand on revient sur l'onglet. */
 function useMembre(): Membre | null {
@@ -96,6 +98,8 @@ export function EcosystemBar({ app, hubUrl, apps }: EcosystemBarProps) {
       </nav>
 
       <div className="ab-eco__right">
+        {/* Météo du Labo : uniquement sur alphabette.eu (jamais sur alphabette.fr). */}
+        {surLeLaboratoire() && <MeteoPastille />}
         {membre ? (
           <button
             type="button"

@@ -98,3 +98,61 @@ main :is(button:not(:disabled), .bouton):hover, dialog button:not(:disabled):hov
 main :is(button:not(:disabled), .bouton):active, dialog button:not(:disabled):active { transform: scale(.95); transition-duration: .12s; }
 :root[data-calme] :is(main button, main .bouton, dialog button), body.calm-mode :is(main button, main .bouton, dialog button) { transition: none !important; transform: none !important; }
 @media (prefers-reduced-motion: reduce) { main :is(button, .bouton), dialog button { transition: none !important; transform: none !important; } }
+
+/* ===================== Lot 6 : transfert, aidant, ruche à idées, kits, presse ===================== */
+.qr-boite { background: #fff; padding: .6rem; border-radius: .8rem; width: min(100%, 17rem); margin: .8rem auto; }
+.qr-boite svg { display: block; width: 100%; height: auto; }
+.code-court { font: 800 1.6rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .2em; color: var(--encre); }
+.liste-choix { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); padding: 0; margin: .5rem 0; list-style: none; }
+.liste-choix label { display: flex; gap: .6rem; align-items: center; min-height: 48px; padding: .4rem .7rem; border: 1px solid var(--trait); border-radius: .8rem; background: var(--carte); color: var(--encre); }
+.liste-choix input { width: 24px; height: 24px; accent-color: var(--acc); flex: 0 0 auto; }
+.filtres { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
+.filtres button { min-height: 44px; }
+.idee { display: grid; gap: .3rem; }
+.idee__tete { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; }
+.idee__etiq { display: inline-flex; padding: .1rem .6rem; border-radius: 999px; border: 1px solid var(--trait); font-size: .85rem; font-weight: 700; color: var(--encre); }
+.idee__etiq--ligne { border-color: var(--ok); color: var(--ok); }
+.idee__etiq--chantier { border-color: var(--vedette); color: var(--vedette); }
+.micro-ligne { display: flex; gap: .5rem; align-items: stretch; }
+.micro-ligne > :first-child { flex: 1 1 auto; min-width: 0; }
+.micro-ligne button { flex: 0 0 auto; min-width: 48px; }
+.kit h3 { margin: 0 0 .2rem; }
+.kit__applis { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; padding: 0; list-style: none; }
+.kit__applis a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .8rem; border: 1px solid var(--trait); border-radius: 999px; text-decoration: none; background: var(--carte); }
+.chiffres { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr)); }
+.chiffre { text-align: center; } .chiffre b { display: block; font-size: 2.2rem; line-height: 1.1; }
+.logos { display: flex; flex-wrap: wrap; gap: .8rem; }
+.logos a { display: inline-flex; flex-direction: column; align-items: center; gap: .3rem; min-width: 8rem; padding: .7rem; border: 1px solid var(--trait); border-radius: .8rem; text-decoration: none; background: var(--carte); }
+.logos img { width: 5rem; height: 5rem; }
+
+/* Affiche A4 : visible à l'écran en réduction, seule imprimée avec @media print. */
+.affiche-zone { margin: 1rem 0; }
+.affiche { box-sizing: border-box; width: min(100%, 21cm); aspect-ratio: 210 / 297; margin: 0 auto; padding: 8% 8%; background: #fff; color: #111827; border: 2px solid #111827;
+  display: flex; flex-direction: column; justify-content: space-between; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.affiche h2 { margin: 0; font-size: clamp(1.4rem, 6.5vw, 2.6rem); line-height: 1.1; color: #111827; }
+.affiche h3 { margin: 0 0 .2rem; font-size: clamp(1rem, 3.6vw, 1.5rem); color: #111827; }
+.affiche p, .affiche li { color: #1f2937; font-size: clamp(.8rem, 2.6vw, 1.05rem); }
+.affiche ul { padding-left: 1.1rem; margin: .5rem 0; }
+.affiche .affiche__qr { width: 36%; background: #fff; } .affiche .affiche__qr svg { display: block; width: 100%; height: auto; }
+.affiche__pied { display: flex; gap: 6%; align-items: center; }
+@media print {
+  @page { size: A4; margin: 0; }
+  body { background: #fff !important; }
+  body > *:not(main), main > *:not(.affiche-zone), .affiche-zone > *:not(.affiche), #ab-barres { display: none !important; }
+  main { padding: 0; max-width: none; } .affiche-zone { margin: 0; }
+  .affiche { width: 210mm; height: 297mm; max-width: none; border: 0; padding: 18mm; }
+  .affiche h2 { font-size: 40pt; } .affiche h3 { font-size: 20pt; } .affiche p, .affiche li { font-size: 14pt; }
+}
+
+/* ===================== Mode Codex (alphabette.eu) : parchemin, encre sépia, sanguine ===================== */
+html[data-ab-codex='oui'][data-ab-theme='jour'], html[data-ab-codex='oui']:not([data-ab-theme]) {
+  --fond: #f4e8cf; --carte: #efe0c2; --encre: #2c1a0e; --doux: #4a2e1b; --trait: #9c7b55; --acc: #7a2e22; --acc-encre: #fff8ea; --acc-fond: #efe0c2;
+  --ok: #1f5130; --err: #7a1d12; --vedette: #7a2e22; color-scheme: light;
+}
+html[data-ab-codex='oui'][data-ab-theme='nuit'] {
+  --fond: #20140b; --carte: #2c1d11; --encre: #f4e8cf; --doux: #e6d3ae; --trait: #7d6240; --acc: #e8b27a; --acc-encre: #20140b; --acc-fond: #2c1d11;
+  --ok: #a7e3b6; --err: #ffb4a8; --vedette: #f0b8a8; color-scheme: dark;
+}
+html[data-ab-codex='oui'] body { background-image: none; }
+html[data-ab-codex='oui'] .carte, html[data-ab-codex='oui'] .affiche-zone .carte { border: 1px solid var(--trait); box-shadow: 0 1px 0 var(--trait), 0 2px 6px rgba(74, 46, 27, .18); border-radius: .5rem; }
+html[data-ab-codex='oui'] h1, html[data-ab-codex='oui'] h2 { font-family: Georgia, "Times New Roman", serif; }

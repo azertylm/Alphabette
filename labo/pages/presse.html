@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Espace presse &amp; affiche A4 · Alphabette</title>
+<meta name="description" content="Les vrais chiffres d'Alphabette, le manifeste Zero-Knowledge, les logos et un générateur d'affiche A4 imprimable pour mairies, médiathèques, écoles, associations et commerces.">
+<meta name="robots" content="index, follow">
+<script src="/labo/codex.js"></script>
+<link rel="stylesheet" href="/labo/pages.css">
+<style>.cache{display:none!important}</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="presse" data-nom="Presse" data-sous-titre="Chiffres, logos, affiche" data-accent="#0f766e" data-masquer="defilement"></script>
+<script src="/assets/qrcode.js"></script>
+<script src="/assets/qr-alphabette.js"></script>
+<script src="/labo/lot6.js"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1>Espace presse</h1>
+  <p class="chapeau">Alphabette fabrique des applications simples, sans publicité ni pistage, hébergées en France. Voici de quoi en parler, avec des chiffres <strong>lus en direct dans notre registre</strong>.</p>
+
+  <section aria-labelledby="chiffres-titre"><h2 id="chiffres-titre">Les chiffres, aujourd'hui</h2>
+    <div class="chiffres" id="chiffres"><div class="carte chiffre">Chargement…</div></div>
+    <p class="note" id="chiffres-note"></p></section>
+
+  <section aria-labelledby="manifeste-titre"><h2 id="manifeste-titre">Notre manifeste</h2>
+    <div class="carte">
+      <h3>Zero-Knowledge : nous ne voulons pas savoir</h3>
+      <p>Vos réglages, vos clés d'IA et vos transferts d'un appareil à l'autre sont chiffrés <strong>sur votre appareil</strong>. Le serveur ne voit que des blocs illisibles, gardés deux minutes au plus. Pas de traceur, pas de publicité, pas de revente de données.</p>
+      <h3>Un seul prix, lisible</h3>
+      <p><strong>15 € par an et par application</strong> sur alphabette.fr : <strong>10 € pour le créateur</strong>, <strong>5 € pour Alphabette</strong>. Pas de bouquet, pas de prorata, pas de surprise.</p>
+      <h3>Souverain</h3>
+      <p>Hébergement en France, intelligence artificielle française (Mistral AI) avec votre propre clé.</p>
+    </div></section>
+
+  <section aria-labelledby="logos-titre"><h2 id="logos-titre">Logos à télécharger</h2>
+    <div class="logos">
+      <a href="/presse/alphabette-logo.svg" download><img src="/presse/alphabette-logo.svg" alt="Logo Alphabette, en couleur"><span>Couleur (SVG)</span></a>
+      <a href="/presse/alphabette-logo-noir.svg" download><img src="/presse/alphabette-logo-noir.svg" alt="Logo Alphabette, en noir sur fond blanc"><span>Noir (SVG)</span></a>
+      <a href="/presse/alphabette-logo-blanc.svg" download><img src="/presse/alphabette-logo-blanc.svg" alt="Logo Alphabette, en blanc sur fond sombre"><span>Blanc (SVG)</span></a>
+      <a href="/presse/alphabette-mot.svg" download><img src="/presse/alphabette-mot.svg" alt="Logo Alphabette avec le mot alphabette"><span>Avec le mot (SVG)</span></a>
+    </div></section>
+
+  <section aria-labelledby="affiche-titre"><h2 id="affiche-titre">Mon affiche A4</h2>
+    <p>Pour une mairie, une médiathèque, une école, une association ou un commerce : personnalisez, puis imprimez. Tout se fait dans votre navigateur, rien n'est envoyé.</p>
+    <form class="carte" id="f" novalidate>
+      <label class="champ" for="titre">Titre de l'affiche <span class="aide">80 caractères au plus</span><input id="titre" maxlength="80" value="Des applis simples, gratuites et respectueuses"></label>
+      <label class="champ" for="lieu">Votre lieu (facultatif) <span class="aide">Par exemple « Médiathèque de La Grande-Motte »</span><input id="lieu" maxlength="60"></label>
+      <fieldset><legend>3 applications à mettre en avant</legend>
+        <label class="champ" for="a1">Appli 1<select id="a1"></select></label>
+        <label class="champ" for="a2">Appli 2<select id="a2"></select></label>
+        <label class="champ" for="a3">Appli 3<select id="a3"></select></label></fieldset>
+      <label class="champ" for="cible">Le QR code mène vers<select id="cible"><option value="">alphabette.eu (toutes les applis)</option></select></label>
+      <div class="actions"><button type="button" id="imprimer">Imprimer l'affiche A4</button></div>
+    </form>
+    <div class="affiche-zone"><div class="affiche" id="affiche" aria-label="Aperçu de l'affiche A4">
+      <div><h2 id="p-titre"></h2><p id="p-lieu"></p></div>
+      <div><h3>À découvrir</h3><ul id="p-apps"></ul></div>
+      <div class="affiche__pied"><div class="affiche__qr" id="p-qr" role="img" aria-label="QR code vers Alphabette"></div><div><p><strong>Scannez pour essayer</strong></p><p id="p-adresse"></p><p>Sans publicité · Sans pistage · Hébergé en France</p></div></div>
+    </div></div>
+  </section>
+</main>
+<script>
+(function () {
+  var P = window.AB6P, apps = [], kits = [];
+  function maj() {
+    var cible = P.$('cible').value, adresse = location.origin + (cible ? '/kits/?apps=' + cible : '/');
+    P.$('p-titre').textContent = P.$('titre').value || 'Alphabette';
+    P.$('p-lieu').textContent = P.$('lieu').value;
+    var ul = P.$('p-apps'); ul.textContent = '';
+    ['a1', 'a2', 'a3'].forEach(function (id) {
+      var a = apps.filter(function (x) { return x.slug === P.$(id).value; })[0];
+      if (a) ul.appendChild(P.el('li', {}, [P.el('strong', { text: P.nomLisible(a.name) }), a.description ? ' — ' + a.description : '']));
+    });
+    P.$('p-qr').innerHTML = P.qr(adresse);
+    P.$('p-adresse').textContent = adresse.replace(/^https?:\/\//, '');
+  }
+  Promise.all([P.applis(), P.appeler('/api/kits.json'), P.appeler('/api/apps')]).then(function (r) {
+    apps = r[0].filter(function (a) { return a.url && a.description; });
+    kits = r[1].kits || [];
+    var tous = r[2].apps || [], fr = tous.filter(function (a) { return a.vitrine === true; }).length;
+    var actives = tous.filter(function (a) { return a.status !== 'brouillon'; });
+    var gratuites = actives.filter(function (a) { return a.gratuit; }).length;
+    var zone = P.$('chiffres'); zone.textContent = '';
+    [[actives.length, 'applications en ligne'], [fr, 'sur alphabette.fr (la vitrine, validées)'], [Math.max(0, actives.length - fr), 'à tester sur alphabette.eu (le Labo)'], [gratuites, 'gratuites, définitivement']].forEach(function (c) {
+      zone.appendChild(P.el('div', { class: 'carte chiffre' }, [P.el('b', { text: String(c[0]) }), P.el('span', { text: c[1] })]));
+    });
+    P.$('chiffres-note').textContent = 'Chiffres lus dans le registre public des applications au moment où vous ouvrez cette page.';
+    ['a1', 'a2', 'a3'].forEach(function (id, i) {
+      var s = P.$(id); apps.forEach(function (a, k) { var o = P.el('option', { value: a.slug, text: P.nomLisible(a.name) }); if (k === i) o.selected = true; s.appendChild(o); }); s.addEventListener('change', maj);
+    });
+    kits.forEach(function (k) { var sl = (k.apps || []).filter(function (s) { return apps.some(function (a) { return a.slug === s; }); }); if (sl.length >= 2) P.$('cible').appendChild(P.el('option', { value: sl.join(','), text: 'Le kit « ' + k.nom + ' »' })); });
+    maj();
+  });
+  ['titre', 'lieu'].forEach(function (id) { P.$(id).addEventListener('input', maj); });
+  P.$('cible').addEventListener('change', maj);
+  P.$('imprimer').addEventListener('click', function () { window.print(); });
+})();
+</script>
+</body>
+</html>
