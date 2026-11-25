@@ -1,0 +1,4 @@
+# Données du service « Créateurs » : jamais versionnées (seul le .htaccess de protection l'est).
+*
+!.gitignore
+!.htaccess

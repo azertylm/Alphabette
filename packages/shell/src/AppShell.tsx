@@ -3,7 +3,8 @@ import { AppHeader } from './AppHeader';
 import { EcosystemBar } from './EcosystemBar';
 import { InfoBulle } from './InfoBulle';
 import { installerAudioAlphabette } from './audio/passerelle';
-import { plateforme, useFavoris, useInstallation, useLangue, useLectureVocale, useModeSimple, useNouveautes } from './outils';
+import { plateforme, useFavoris, useInstallation, useLangue, useLectureVocale, useModeCalme, useModeSimple, useNouveautes } from './outils';
+import { demarrerVotes, type ControleVotes } from './labo/votes';
 import { loadEcosystemRegistry, synchroniserSites, type EcosystemApp, type RegistreApps } from './apps';
 import type { AlphaAppConfig, AlphaSite, ShellPanelId } from './config';
 import { useDensity, useFullscreen, useTheme, type ShellDensity, type ShellTheme } from './hooks';
@@ -89,6 +90,19 @@ export function AppShell({
   const { langue, setLangue, t } = useLangue();
   const { favoris, basculer: basculerFavori } = useFavoris();
   const { simple, basculer: basculerSimple } = useModeSimple();
+  const { calme, basculer: basculerCalme } = useModeCalme();
+  const [votes, setVotes] = useState<ControleVotes | null>(null);
+  const voteId = app.voteId;
+  // Avis des applis de créateurs : bandeau discret après 30 s d'usage actif, jamais à l'ouverture, jamais en Mode Calme.
+  useEffect(() => {
+    if (!voteId || typeof document === 'undefined') return undefined;
+    const controle = demarrerVotes({ appId: voteId });
+    setVotes(controle);
+    return () => {
+      controle.detruire();
+      setVotes(null);
+    };
+  }, [voteId]);
   const lecture = useLectureVocale(langue);
   useEffect(() => installerAudioAlphabette(), []);
   const installation = useInstallation();
@@ -231,6 +245,9 @@ export function AppShell({
       marquerNouveautesVues: marquerVues,
       simple,
       basculerSimple,
+      calme,
+      basculerCalme,
+      noter: votes ? votes.ouvrir : undefined,
       lecture,
       installation: { installee: installation.installee, directe: installation.directe, installer: installation.installer, plateforme: plateforme() },
       donnerAvis: () => {
@@ -274,6 +291,9 @@ export function AppShell({
     marquerVues,
     simple,
     basculerSimple,
+    calme,
+    basculerCalme,
+    votes,
     lecture,
     installation,
     resolvedHubUrl,

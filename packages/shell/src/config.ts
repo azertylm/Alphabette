@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 export type ShellStatus = 'ok' | 'loading' | 'off';
 
 /** Les cinq panneaux que la base sait ouvrir par-dessus le contenu. */
-export type ShellPanelId = 'compte' | 'cles' | 'pass' | 'sites' | 'dons' | 'nouveautes' | 'langue' | 'installer';
+export type ShellPanelId = 'compte' | 'cles' | 'pass' | 'sites' | 'dons' | 'nouveautes' | 'langue' | 'installer' | 'signaler' | 'publier' | 'inviter';
 
 export interface AlphaSite {
   /** Identifiant technique. */
@@ -82,6 +82,11 @@ export interface AlphaAppConfig {
   panels?: Partial<Record<ShellPanelId, ReactNode>>;
   /** Pictogramme de l'application (emoji ou composant). */
   icon?: ReactNode;
+  /**
+   * Identifiant d'une appli de créateur (« c-1a2b3c4d », alphabette.eu) : active le bandeau d'avis (30 s d'usage actif)
+   * et l'entrée « Noter cette appli » du menu ⋯. Absent = aucune requête d'avis.
+   */
+  voteId?: string;
 }
 
 /** Valeurs par défaut d'une application (utilisées par le générateur). */
