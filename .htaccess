@@ -1,6 +1,8 @@
 # Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes -MultiViews
 DirectoryIndex index.html
+# Page 404 illustrée (Lot 4) : adresses de fichiers introuvables (apps/, labo/, api/…).
+ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
   <FilesMatch "\.json$">
@@ -35,6 +37,9 @@ DirectoryIndex index.html
   RewriteRule ^api/admin/session/?$ eu/api/admin-session.json [L]
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
   RewriteRule ^api/donnees-privees - [F,L]
+  # Carte Collector d'un créateur du Collectif (Lot 4) : une seule page, le pseudo est lu dans l'adresse.
+  RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
+  RewriteRule ^createur/[A-Za-z0-9_-]{1,40}/?$ eu/createur/index.html [L]
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.eu$ [NC]
   RewriteCond %{REQUEST_URI} !^/eu/
   RewriteRule ^(.*)$ eu/$1 [L]

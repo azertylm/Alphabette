@@ -7,6 +7,9 @@
 <meta name="referrer" content="no-referrer">
 <title>Merci — Alphabette</title>
 <link rel="stylesheet" href="/labo/pages.css">
+<link rel="stylesheet" href="/assets/alphabette-pop.css">
+<script>(function(){var r=document.documentElement;r.dataset.univers=/(^|\.)alphabette\.eu$/i.test(location.hostname)||/[?&]labo(=|&|$)/.test(location.search)?'labo':'vitrine';try{if(localStorage.getItem('alphabette.calme')==='oui')r.dataset.calme='oui'}catch(e){}})();</script>
+<script src="/assets/alphabette-effets.js" defer></script>
 <style>
   .carte-cadeau { background: #fffdf7; color: #1c1917; border: 3px solid #0f766e; border-radius: 1.2rem; padding: 1.4rem; margin: 1rem 0; }
   .carte-cadeau * { color: #1c1917; }
@@ -76,6 +79,12 @@
     if (!r.ok) { titre('Presque !'); message((r.d.erreur || 'Vérification impossible.') + ' Votre paiement est enregistré chez Stripe : vous recevez aussi un e-mail.', 'err'); return; }
     var c = $('contenu'); c.textContent = '';
     var d = r.d;
+    // Paiement confirmé par Stripe : confettis (une fois par paiement, coupés en Mode Calme).
+    if (d.type !== 'choisir_app') {
+      var fete = { type: /licence/i.test(String(d.type || '') + String(d.offre || '')) ? 'pack_licences' : 'souscription', cle: sid.slice(-16) };
+      var lancer = function () { window.dispatchEvent(new CustomEvent('alphabette:celebrer', { detail: fete })); };
+      if (window.alphabetteEffets) lancer(); else window.addEventListener('alphabette:effets', lancer, { once: true });
+    }
     if (d.type === 'choisir_app') {
       titre('Quelle application ?'); message('Votre Pass « une application » est payé : choisissez-la (une seule fois).');
       var f = el('form', { class: 'carte' }); var s = el('select', { 'aria-label': 'Application du Pass' });

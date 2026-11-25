@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Page introuvable — Alphabette</title>
+<link rel="stylesheet" href="/assets/alphabette-pop.css">
+<style>
+  body { margin: 0; font: 18px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--pop-fond); color: #1c1917; }
+  :root[data-ab-theme='nuit'] body { color: #f1f5f9; }
+  main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; --acc: var(--pop-texte-acc); }
+  .pop-vide, .pop-vide__titre, .pop-vide__texte { color: inherit; }
+  .pop-vide__svg { color: inherit; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="introuvable" data-nom="Introuvable" data-sous-titre="Erreur 404"></script>
+<main id="contenu">
+  <div class="pop-vide" data-type="404" role="status">
+    <svg class="pop-vide__svg" viewBox="0 0 160 120" aria-hidden="true" focusable="false"><ellipse cx="80" cy="108" rx="54" ry="6" fill="currentColor" opacity=".08"/><text x="80" y="76" text-anchor="middle" font-size="46" font-weight="900" fill="none" stroke="var(--pop-2)" stroke-width="3" font-family="system-ui,sans-serif">404</text><path d="M30 92c20-10 80-10 100 0" stroke="var(--pop-1)" stroke-width="5" fill="none" stroke-linecap="round"/><circle class="pop-vide__etincelle" cx="124" cy="30" r="5" fill="var(--pop-3)"/></svg>
+    <p class="pop-vide__titre">Page introuvable</p>
+    <p class="pop-vide__texte">Cette adresse n’existe pas ou plus. Les applications sont toutes sur la page d’accueil.</p>
+    <a class="pop-vide__bouton ab-elastique" href="/">Retour à l’accueil</a>
+  </div>
+</main>
+</body>
+</html>

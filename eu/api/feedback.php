@@ -226,9 +226,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     foreach ($tous as $a) {
         if ($a['comment'] !== '' && in_array($a['status'], STATUTS_OUVERTS, true)) $file_attente++;
         $id = $a['app_id'];
-        if (!isset($apps[$id])) $apps[$id] = array('somme' => 0, 'nb_notes' => 0, 'nb_avis' => 0, 'ouverts' => array());
+        if (!isset($apps[$id])) $apps[$id] = array('somme' => 0, 'nb_notes' => 0, 'nb_avis' => 0, 'positifs' => 0, 'ouverts' => array());
         $apps[$id]['nb_avis']++;
-        if (isset($a['rating']) && is_int($a['rating'])) { $apps[$id]['somme'] += $a['rating']; $apps[$id]['nb_notes']++; }
+        if (isset($a['rating']) && is_int($a['rating'])) {
+            $apps[$id]['somme'] += $a['rating']; $apps[$id]['nb_notes']++;
+            // Avis positif (4 ou 5 étoiles) — jauge « Fiole de Labo » X/10 ; hors avis en revue de sécurité.
+            if ($a['rating'] >= 4 && empty($a['flag_security_review'])) $apps[$id]['positifs']++;
+        }
         if ($a['comment'] !== '' && in_array($a['status'], STATUTS_OUVERTS, true)) $apps[$id]['ouverts'][] = $a;
     }
     $resume = array();
@@ -246,6 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'moyenne' => $s['nb_notes'] ? round($s['somme'] / $s['nb_notes'], 1) : null,
             'nb_notes' => $s['nb_notes'],
             'nb_avis' => $s['nb_avis'],
+            'positifs' => $s['positifs'],
             'top' => $top,
         );
     }

@@ -4,7 +4,7 @@
   "app_id": "wikicom",
   "nom": "WIKICOM",
   "url": "https://alphabette.fr/wikicom/",
-  "audite_le": "2026-11-25T06:40:59.880Z",
+  "audite_le": "2026-11-25T06:56:18.369Z",
   "empreinte_page_sha256": "6c6ed18091e96fe40031af248d4fe0d20d81098ed75084c428b88af39fffd067",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
@@ -53,5 +53,5 @@
     "tiers_contactes": []
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "ac92d012f3d60880dae11daa0401a3659bdac738470ae16b2cb4594b3dc140bb"
+  "empreinte_certificat_sha256": "b70bf1ad2ee7fda42077b54caca1e9ef4e6b00548de0ed0844049ec7564636d3"
 }

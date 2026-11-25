@@ -1,6 +1,8 @@
 # Généré par scripts/build-static.mjs — ne pas modifier à la main.
 Options -Indexes -MultiViews
 DirectoryIndex index.html
+# Page 404 illustrée (Lot 4) : adresses de fichiers introuvables (apps/, labo/, api/…).
+ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
   <FilesMatch "\.(json|php)$">

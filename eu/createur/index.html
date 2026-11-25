@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <script src="/labo/capteur.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carte Collector — créateur du Collectif Alphabette</title>
+<meta name="description" content="La Carte Collector d'un créateur du Collectif Alphabette : ses applications testées sur alphabette.eu.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/labo/pages.css">
+<style>
+  .collector-applis { list-style: none; margin: .4rem 0 0; padding: 0; display: grid; gap: .45rem; }
+  .collector-applis a { display: flex; flex-direction: column; min-height: 44px; padding: .55rem .75rem; border: 1px solid var(--trait); border-radius: .8rem; text-decoration: none; color: var(--encre); }
+  .collector-applis a small { color: var(--doux); font-weight: 500; }
+  .collector-applis a:hover, .collector-applis a:focus-visible { border-color: var(--acc); }
+  .pop-collector__badges { display: flex; flex-wrap: wrap; gap: .35rem; min-height: 1.4rem; }
+</style>
+</head>
+<body>
+<script src="/assets/alphabette-barre.js" data-cle="createur" data-nom="Carte Collector" data-sous-titre="Créateurs du Collectif" data-accent="#7c3aed" data-categorie="Communauté"></script>
+<main id="contenu">
+  <a class="retour" href="/">← Le Laboratoire Alphabette</a>
+  <h1 id="titre">Carte Collector</h1>
+  <div id="zone" aria-live="polite">
+    <p class="cache" role="status">Chargement…</p>
+  </div>
+  <footer class="pied"><a href="/embarquement/">Proposer une application</a><a href="/charte-createurs">Charte des créateurs</a><a href="/#tableau-honneur">Tableau d'Honneur</a></footer>
+</main>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  // Même calcul que l'accueil : « Léa Dupont » → « lea-dupont ».
+  function handle(nom) { return String(nom || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40); }
+  var m = location.pathname.match(/\/createur\/([A-Za-z0-9_-]{1,40})\/?$/);
+  var cible = handle(m ? m[1] : new URLSearchParams(location.search).get('h') || '');
+  var BADGES = { pionnier: ['★', 'Pionnier'], eclair: ['⚡', 'Lancement Éclair'], projecteur: ['✦', 'Coup de projecteur'] };
+  function el(tag, cls, texte) { var n = document.createElement(tag); if (cls) n.className = cls; if (texte != null) n.textContent = texte; return n; }
+  function E() { return window.alphabetteEffets; }
+  function vide(type, options) {
+    var z = $('zone'); z.textContent = '';
+    if (E()) { z.appendChild(E().ecranVide(type, options)); return; }
+    var p = el('p', 'message err', options.texte || ''); z.appendChild(p);
+    if (options.reessayer) { var b = el('button', '', 'Réessayer'); b.type = 'button'; b.addEventListener('click', options.reessayer); z.appendChild(b); }
+  }
+  function charger() {
+    $('zone').textContent = '';
+    if (!cible) { vide('aucun-resultat', { titre: 'Aucun créateur', texte: 'Cette adresse ne désigne aucun créateur.', action: { libelle: 'Voir le Collectif', href: '/' } }); return; }
+    fetch('/api/apps', { headers: { Accept: 'application/json' } })
+      .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(function (d) {
+        var applis = (d.apps || []).filter(function (a) { return a.communaute && handle(a.createur) === cible; });
+        if (!applis.length) { vide('aucun-resultat', { titre: 'Aucune application', texte: 'Ce créateur n’a pas (encore) d’application validée sur le Laboratoire.', action: { libelle: 'Voir le Collectif', href: '/' } }); return; }
+        rendre(applis);
+      })
+      .catch(function () { vide('erreur-reseau', { reessayer: charger }); });
+  }
+  function rendre(applis) {
+    var nom = applis[0].createur;
+    document.title = nom + ' — Carte Collector Alphabette';
+    $('titre').textContent = 'Carte Collector';
+    var depuis = applis.map(function (a) { return a.createdAt; }).filter(Boolean).sort()[0];
+    var badges = {};
+    applis.forEach(function (a) { (a.badges || []).forEach(function (b) { if (BADGES[b]) badges[b] = true; }); });
+
+    var carte = el('article', 'pop-collector'); carte.setAttribute('data-ab-3d', ''); carte.setAttribute('aria-labelledby', 'c-nom');
+    var corps = el('div', 'pop-collector__corps');
+    corps.appendChild(el('p', 'pop-collector__numero', 'COLLECTIF ALPHABETTE · ' + cible.toUpperCase()));
+    var h = el('h2', 'pop-collector__nom', nom); h.id = 'c-nom'; corps.appendChild(h);
+    var zb = el('p', 'pop-collector__badges');
+    Object.keys(badges).forEach(function (b) {
+      var s = el('span', 'pop-badge pop-badge--' + b); var i = el('span', 'pop-badge__icone', BADGES[b][0]); i.setAttribute('aria-hidden', 'true');
+      s.appendChild(i); s.appendChild(document.createTextNode(BADGES[b][1])); zb.appendChild(s);
+    });
+    corps.appendChild(zb);
+    var stats = el('div', 'pop-collector__stats');
+    var s1 = el('div'); s1.appendChild(el('b', 'pop-odometre', String(applis.length))); s1.appendChild(el('span', '', applis.length > 1 ? 'applications' : 'application')); stats.appendChild(s1);
+    var s2 = el('div'); s2.appendChild(el('b', '', depuis ? new Date(depuis).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : '—')); s2.appendChild(el('span', '', 'membre depuis')); stats.appendChild(s2);
+    corps.appendChild(stats);
+    var ul = el('ul', 'collector-applis');
+    applis.forEach(function (a) {
+      var li = el('li'); var lien = el('a'); lien.href = a.url || '/';
+      if (!a.heberge) { lien.target = '_blank'; lien.rel = 'noopener noreferrer'; }
+      lien.appendChild(el('strong', '', a.name)); if (a.description) lien.appendChild(el('small', '', a.description));
+      li.appendChild(lien); ul.appendChild(li);
+    });
+    corps.appendChild(ul);
+    carte.appendChild(corps);
+    var z = $('zone'); z.textContent = ''; z.appendChild(carte);
+  }
+  charger();
+})();
+</script>
+</body>
+</html>
