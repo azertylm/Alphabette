@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="236" height="40" role="img" aria-label="Audit réseau conforme — INFOS PERSO — 2026-11-25">
-<title>Certificat d'Audit Réseau Alphabette — INFOS PERSO — conforme le 2026-11-25 — SHA-256 9637220f3361f1bf4545c9b65c248e8fbcc07bd582e09b1b30724c1387fc8e6e</title>
+<title>Certificat d'Audit Réseau Alphabette — INFOS PERSO — conforme le 2026-11-25 — SHA-256 308e09ae916001a191f18c2ad0413755c1af21a0f1bee249798bc9ce1e966aa9</title>
 <rect width="236" height="40" rx="6" fill="#14161c"/><rect x="118" width="118" height="40" rx="6" fill="#1f6f43"/><rect x="118" width="8" height="40" fill="#1f6f43"/>
 <g font-family="system-ui,sans-serif" font-size="12" fill="#fff"><text x="10" y="17" font-weight="700">🔒 Audit réseau</text><text x="10" y="32" font-size="10" fill="#c9ccd4">zéro connaissance</text>
-<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · 9637220f</text></g>
-<metadata>{"app_id":"infos-perso","conforme":true,"audite_le":"2026-11-25T12:40:05.632Z","empreinte_certificat_sha256":"9637220f3361f1bf4545c9b65c248e8fbcc07bd582e09b1b30724c1387fc8e6e"}</metadata></svg>
+<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-25 · 308e09ae</text></g>
+<metadata>{"app_id":"infos-perso","conforme":true,"audite_le":"2026-11-25T12:44:16.904Z","empreinte_certificat_sha256":"308e09ae916001a191f18c2ad0413755c1af21a0f1bee249798bc9ce1e966aa9"}</metadata></svg>
