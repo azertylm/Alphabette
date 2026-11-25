@@ -49,11 +49,13 @@ iframe{flex:1;width:100%;border:0;background:#fff}
   <a href="/" aria-label="Retour au Laboratoire Alphabette">←</a>
   <div class="titre"><strong><?= $h($a['name']) ?></strong><span>par <a href="/createur/<?= $h($a['handle']) ?>/" style="min-width:0;min-height:0;padding:0;display:inline;text-decoration:underline"><?= $h($a['handle']) ?></a> · Collectif Alphabette<?= (int) $a['isPioneer'] === 1 ? ' · Pionnier' : '' ?></span></div>
   <button type="button" id="ab-noter" aria-label="Noter cette application">★ Noter</button>
+  <a href="/creations/boutique/?cafe=<?= $h($id) ?>" aria-label="Offrir un café au créateur (3 €)">☕</a>
   <button type="button" id="ab-signaler" aria-label="Signaler un problème ou un abus">⚑</button>
 </header>
 <iframe title="<?= $h($a['name']) ?>" src="<?= $h($src) ?>" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
 <script>window.ALPHABETTE_VOTE={appId:<?= json_encode($id) ?>,api:"/api/createurs/"};</script>
 <script src="/assets/alphabette-votes.js" defer></script>
+<script src="/assets/alphabette-export.js" data-app="<?= $h($id) ?>" data-nom="<?= $h($a['name']) ?>" defer></script>
 <script>
 document.getElementById('ab-signaler').addEventListener('click',function(){
   if(window.alphabetteSignaler)window.alphabetteSignaler(<?= json_encode($id) ?>);
