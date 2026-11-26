@@ -30,6 +30,12 @@ await test('barre React (@alphabette/shell) : même lien, mêmes domaines', () =
   assert.match(src, /https:\/\/alphabette\.eu\/#idees/);
   assert.match(src, /ab-eco__labo/);
 });
+await test('Octet (icône) présent dans la barre HTML, la barre React et le cadre des applis de la communauté', () => {
+  assert.match(lire('public/assets/alphabette-barre.js'), /octet\/octet-icone\.webp/);
+  assert.match(lire('packages/shell/src/EcosystemBar.tsx'), /octet-icone\.webp/);
+  assert.match(lire('labo/createurs/cadre.html'), /octet-icone\.webp/);
+  assert.ok(readFileSync(path.join(racine, 'public/assets/octet/octet-icone.webp')).length > 500);
+});
 await test('la section d\'idées garde son ancre #idees et son service', () => {
   const src = lire('src/labo/BoiteIdees.tsx');
   assert.match(src, /id="idees"/);

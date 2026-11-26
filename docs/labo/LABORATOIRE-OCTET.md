@@ -36,3 +36,6 @@ Hors périmètre : prix, paiements, abonnements, partage des revenus (inchangés
 1. Définir le secret d'administration : variable `ALPHABETTE_LABO_ADMIN_TOKEN` (≥ 24 caractères) **ou**, sur OVH Perso, un fichier `admin-token.txt` (même contenu) dans `~/alphabette-labo-donnees/collectif/`.
 2. Aucune migration : les nouveaux fichiers (`lab-*.json`) se créent seuls, à côté de `idees.json`. Anciennes idées sans étape = « Nouvelle idée ».
 3. Déployer par le `build:static` habituel (publie `admin-idees.html`, `api/labo/conditions-location.json`, les images d'Octet).
+
+## Octet dans toutes les applications (présentes et futures)
+L'icône d'Octet (`public/assets/octet/octet-icone.webp`) est dans la barre commune : `alphabette-barre.js` (pages HTML, se met à jour toute seule au prochain déploiement du hub), `@alphabette/shell` (applications React : `bun run sync:shell <dépôt>` pour propager la nouvelle version, et toute nouvelle appli créée par `bun run new:app` l'a d'office) et `labo/createurs/cadre.html` (applications de la communauté). Ne jamais recoder cette icône dans une application : elle vient de la base commune.

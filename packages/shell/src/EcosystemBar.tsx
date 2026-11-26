@@ -44,6 +44,7 @@ interface EcosystemBarProps {
 export function EcosystemBar({ app, hubUrl, apps }: EcosystemBarProps) {
   const { t, favoris, nouveautesNonVues, openPanel, openPayment } = useShell();
   const membre = useMembre();
+  const [octetOk, setOctetOk] = useState(true);
   const favorisApps = favoris
     .map((cle) => apps.find((a) => a.key === cle))
     .filter((a): a is EcosystemApp => Boolean(a));
@@ -90,7 +91,11 @@ export function EcosystemBar({ app, hubUrl, apps }: EcosystemBarProps) {
         data-ab-tip={t('Laboratoire d’Octet : tester et proposer des idées')}
         aria-label={t('Laboratoire d’Octet : tester et proposer des idées')}
       >
-        <span aria-hidden="true">🐭</span>
+        {octetOk ? (
+          <img className="ab-eco__octet" src="https://alphabette.fr/assets/octet/octet-icone.webp" alt="" width={28} height={28} decoding="async" aria-hidden="true" onError={() => setOctetOk(false)} />
+        ) : (
+          <span aria-hidden="true">🐭</span>
+        )}
         <span className="ab-eco__labo-txt">{t('Laboratoire')}</span>
       </a>
 

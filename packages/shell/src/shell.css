@@ -906,6 +906,7 @@ html[data-ab-theme='nuit'] .ab-don-carte > .ab-etiquette {
 }
 .ab-eco__icone:hover { background: color-mix(in srgb, #fff 24%, transparent); }
 .ab-eco__labo { text-decoration: none; gap: 0.3rem; font-size: 0.9rem; font-weight: 700; padding: 0 0.6rem; }
+.ab-eco__octet { width: 1.75rem; height: 1.75rem; border-radius: 999px; background: #fffaf0; object-fit: cover; }
 .ab-eco__labo-txt { display: none; }
 @media (min-width: 760px) { .ab-eco__labo-txt { display: inline; } }
 .ab-eco__icone:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
