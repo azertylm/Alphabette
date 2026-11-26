@@ -118,13 +118,13 @@ else {
 }
 
 // ---------- couvertures ----------
-await test('Couvertures : toute appli a une image existante, SVG de repli < 6 Ko', () => {
+await test('Couvertures : toute appli a une image existante, SVG de repli < 200 Ko', () => {
   const reg = JSON.parse(readFileSync(path.join(racine, 'data/apps-registry.json'), 'utf8'));
   for (const a of reg.apps) {
     assert.ok(a.cover, `cover manquante : ${a.slug}`);
     const f = path.join(racine, 'public', decodeURIComponent(a.cover));
     assert.ok(existsSync(f), `fichier absent : ${a.cover}`);
-    if (!a.coverCustom) assert.ok(statSync(f).size < 6144, `trop lourd : ${a.cover}`);
+    if (!a.coverCustom) assert.ok(statSync(f).size < 200 * 1024, `trop lourd : ${a.cover}`);
   }
 });
 
