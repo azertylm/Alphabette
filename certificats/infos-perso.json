@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T20:02:36.031Z",
-  "empreinte_page_sha256": "588ca1d756b180501496af076fa2140824ef4280f1966c222963253db1480337",
+  "audite_le": "2026-11-26T20:17:12.736Z",
+  "empreinte_page_sha256": "32f376d8ab66d8553dffe46b37a254edcd1e580f641d0a4b071e6bde90929d35",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -61,8 +61,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 294,
-      "bloquees": 294,
+      "requetes": 435,
+      "bloquees": 435,
       "types": [
         "image",
         "fetch"
@@ -121,15 +121,6 @@
       "types": [
         "image"
       ]
-    },
-    {
-      "hote": "img.lemde.fr",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
     }
   ],
   "resultat": {
@@ -144,10 +135,9 @@
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "www.franceinfo.fr",
-      "img.lemde.fr"
+      "www.franceinfo.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "84b5fd37319268153bee564333de9d112e9e633fc9d0c07b25b70af13fe9b5d5"
+  "empreinte_certificat_sha256": "b904546d66f362768dc6f1efaeac17f1fb23b32752e03b7660df70ff3d0ba158"
 }
