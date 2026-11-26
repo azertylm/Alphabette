@@ -2,7 +2,7 @@
 
 - ⚠️ **Certificat HTTPS illisible : proxilien.eu** — ECONNREFUSED
   Vérifier dans l'espace OVH (Hébergement → Multisite) que le domaine est rattaché avec le SSL activé.
-- ⚠️ **Sauvegarde des avis arrêtée depuis 26 h** — dernier export : 2026-11-24T02:33:57Z
+- ⚠️ **Sauvegarde des avis arrêtée depuis 49 h** — dernier export : 2026-11-24T02:33:57Z
   Relancer le workflow « labo-avis » et vérifier que feedback.php répond.
 - ⚠️ **Crédit OpenRouter épuisé** — débats Premium offerts et Crash-Testeur Premium arrêtés ; le Mode Gratuit continue
   Ajouter du crédit sur https://openrouter.ai/settings/credits (10 $ suffisent pour lever la limite des modèles gratuits).
@@ -11,13 +11,13 @@
 
 | Domaine | Certificat (jours) | Nom de domaine (jours) |
 |---|---|---|
-| alphabette.eu | 83 | — (registre RDAP inconnu) |
-| alphabette.fr | 33 | 1039 |
-| atelier.alphabette.fr | 75 | — |
-| iadebat.alphabette.fr | 75 | — |
-| infosperso.alphabette.fr | 75 | — |
-| proxilien.alphabette.fr | 75 | — |
+| alphabette.eu | 82 | — (registre RDAP inconnu) |
+| alphabette.fr | 32 | 1038 |
+| atelier.alphabette.fr | 74 | — |
+| iadebat.alphabette.fr | 74 | — |
+| infosperso.alphabette.fr | 74 | — |
+| proxilien.alphabette.fr | 74 | — |
 | proxilien.eu | — | — (registre RDAP inconnu) |
-| proxilien.fr | 75 | 1039 |
+| proxilien.fr | 74 | 1038 |
 
 IA : 0 débat(s) gratuit(s), 0 Premium, 0 visiteur(s) aujourd'hui ; crédit : epuise.

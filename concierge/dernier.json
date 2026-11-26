@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-25T04:34:47.904Z",
+  "date": "2026-11-26T03:45:35.838Z",
   "points": [
     {
       "agent": "concierge",
@@ -11,7 +11,7 @@
     {
       "agent": "concierge",
       "gravite": "important",
-      "titre": "Sauvegarde des avis arrêtée depuis 26 h",
+      "titre": "Sauvegarde des avis arrêtée depuis 49 h",
       "detail": "dernier export : 2026-11-24T02:33:57Z",
       "correction": "Relancer le workflow « labo-avis » et vérifier que feedback.php répond."
     },
@@ -34,7 +34,7 @@
     {
       "hote": "alphabette.eu",
       "certificat_fin": "2027-02-16T12:49:33.000Z",
-      "certificat_jours": 83,
+      "certificat_jours": 82,
       "emetteur": "Let's Encrypt",
       "erreur": null,
       "domaine_fin": null,
@@ -44,37 +44,37 @@
     {
       "hote": "alphabette.fr",
       "certificat_fin": "2026-12-28T08:04:29.000Z",
-      "certificat_jours": 33,
+      "certificat_jours": 32,
       "emetteur": "Let's Encrypt",
       "erreur": null,
       "domaine_fin": "2029-09-29T08:41:42.851001Z",
-      "domaine_jours": 1039
+      "domaine_jours": 1038
     },
     {
       "hote": "atelier.alphabette.fr",
       "certificat_fin": "2027-02-08T12:49:06.000Z",
-      "certificat_jours": 75,
+      "certificat_jours": 74,
       "emetteur": "Let's Encrypt",
       "erreur": null
     },
     {
       "hote": "iadebat.alphabette.fr",
       "certificat_fin": "2027-02-08T12:49:05.000Z",
-      "certificat_jours": 75,
+      "certificat_jours": 74,
       "emetteur": "Let's Encrypt",
       "erreur": null
     },
     {
       "hote": "infosperso.alphabette.fr",
       "certificat_fin": "2027-02-08T12:49:06.000Z",
-      "certificat_jours": 75,
+      "certificat_jours": 74,
       "emetteur": "Let's Encrypt",
       "erreur": null
     },
     {
       "hote": "proxilien.alphabette.fr",
       "certificat_fin": "2027-02-08T12:49:19.000Z",
-      "certificat_jours": 75,
+      "certificat_jours": 74,
       "emetteur": "Let's Encrypt",
       "erreur": null
     },
@@ -90,22 +90,22 @@
     {
       "hote": "proxilien.fr",
       "certificat_fin": "2027-02-08T12:31:05.000Z",
-      "certificat_jours": 75,
+      "certificat_jours": 74,
       "emetteur": "Let's Encrypt",
       "erreur": null,
       "domaine_fin": "2029-09-29T08:41:53.921791Z",
-      "domaine_jours": 1039
+      "domaine_jours": 1038
     }
   ],
   "sauvegarde": {
     "derniere": "2026-11-24T02:33:57Z",
-    "heures": 26
+    "heures": 49
   },
   "econome": {
-    "date": "2026-11-25T04:34:47.903Z",
+    "date": "2026-11-26T03:45:35.838Z",
     "sante": {
       "actif": true,
-      "jour": "2026-11-25",
+      "jour": "2026-11-26",
       "visiteurs": 0,
       "debats_gratuits": 0,
       "debats_premium": 0,
@@ -114,7 +114,7 @@
       "credit": {
         "etat": "epuise",
         "compte_gratuit": true,
-        "verifie": "2026-11-25T04:34:47+00:00"
+        "verifie": "2026-11-26T03:45:35+00:00"
       }
     }
   }
