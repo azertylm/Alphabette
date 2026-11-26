@@ -24,6 +24,7 @@ import { preRendre } from './labo/seo.mjs';
 import { ficheValide, publierHebergees } from './labo/bac-a-sable.mjs';
 import { publierAtelier } from './labo/parrain.mjs';
 import { avecSentinelle } from './labo/meteo.mjs';
+import { referencerVitrine } from './labo/referencement-fr.mjs';
 
 const racine = process.cwd();
 const dist = path.join(racine, 'dist');
@@ -603,6 +604,9 @@ async function preparerLaboratoire() {
     await mkdir(path.join(sortie, page), { recursive: true });
     await cp(path.join(racine, 'pages-fr', `${page}.html`), path.join(sortie, page, 'index.html'));
   }
+
+  // 6 quinquies. Référencement de la vitrine alphabette.fr : robots.txt, sitemap, données structurées, contenu sans JavaScript.
+  await referencerVitrine({ sortie, vitrine, pagesFr: PAGES_FR });
 
   // 7. Règles .htaccess de la vitrine : adresses .fr des applications du laboratoire → .eu.
   const pagesHub = actives
