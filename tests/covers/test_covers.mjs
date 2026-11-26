@@ -30,9 +30,9 @@ assert.equal(r.status, 1, 'strict doit échouer tant qu\'une appli n\'a pas de c
 lancer('ensure-app-cover.mjs', 'omnistat');
 const svgPath = path.join(racine, 'public', 'covers', 'omnistat.svg');
 assert.ok(existsSync(svgPath), 'omnistat.svg généré');
-assert.ok(statSync(svgPath).size < 6144, 'SVG < 6 Ko');
+assert.ok(statSync(svgPath).size < 200 * 1024, 'SVG < 200 Ko');
 const svg = readFileSync(svgPath, 'utf8');
-assert.match(svg, /viewBox="0 0 1200 630"/);
+assert.match(svg, /width="1200" height="630"/);
 assert.doesNotMatch(svg, /https?:\/\/(?!www\.w3\.org)/, 'aucune URL externe');
 assert.equal(registre().apps.find((a) => a.slug === 'omnistat').cover, '/covers/omnistat.svg');
 

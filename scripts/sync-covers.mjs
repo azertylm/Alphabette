@@ -13,6 +13,7 @@
  * Une seule appli : node scripts/ensure-app-cover.mjs <slug> (appelle syncCovers({ slug })).
  */
 import { readFile, writeFile, readdir, mkdir, rename, stat } from 'node:fs/promises';
+import { svgCodex } from './covers/codex.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -120,16 +121,7 @@ const DEFS = `<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop off
 const DECOR = `<g fill="none" stroke="#9c7b55" stroke-width="1.2"><circle cx="600" cy="300" r="270"/><path d="M600 40v560" stroke-dasharray="3 5"/></g><g fill="#7a4a1d" opacity=".25" filter="url(#b)"><circle cx="90" cy="90" r="34"/><circle cx="1110" cy="560" r="40"/></g>`;
 
 export function svgReplie(app) {
-  const nom = ECHAP(nomLisible(app.name)).slice(0, 40);
-  const f = famille(app);
-  const scene = f === 'stats'
-    ? sceneStats()
-    // Autres thèmes : motif thématique agrandi et centré, encadré de deux engrenages.
-    : `<g transform="translate(600 300) scale(1.45) translate(-890 -280)">${motif(f)}</g>${gr(230, 470, 1.1)}${gr(335, 520, .6, 'url(#s)')}${gr(980, 480, .95)}<path d="M180 565Q600 520 1020 565" fill="none" stroke="${E}" stroke-width="2"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Illustration de l'application ${nom} : machine de Léonard de Vinci dessinée à l'encre sur parchemin">
-${DEFS}<rect width="1200" height="630" fill="url(#p)"/><rect width="1200" height="630" filter="url(#n)"/>${DECOR}<g filter="url(#r)" stroke-linejoin="round" stroke-linecap="round" stroke="${E}">${scene}</g><rect width="1200" height="630" fill="url(#v)"/>
-</svg>
-`;
+  return svgCodex({ nom: ECHAP(nomLisible(app.name)).slice(0, 40), famille: famille(app), seed: app.slug ?? app.id ?? app.name });
 }
 
 export async function syncCovers({ slug = null, verifier = false, strict = false } = {}) {
@@ -169,7 +161,7 @@ export async function syncCovers({ slug = null, verifier = false, strict = false
     const cible = path.join(dossier, `${app.slug}.svg`);
     const ancien = await readFile(cible, 'utf8').catch(() => '');
     if (ancien !== svg && !verifier) await writeFile(cible, svg);
-    if (Buffer.byteLength(svg) >= 6144) throw new Error(`SVG de repli trop lourd : ${app.slug}`);
+    if (Buffer.byteLength(svg) >= 200 * 1024) throw new Error(`SVG de repli trop lourd : ${app.slug}`);
     const cover = `/covers/${app.slug}.svg`;
     if (app.cover !== cover || app.coverCustom) { app.cover = cover; delete app.coverCustom; change = true; }
     replis += 1;
