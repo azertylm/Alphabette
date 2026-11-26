@@ -12,6 +12,7 @@ import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
 import { BadgeMetal, CarteSquelette, EcranVide, FioleLabo, NutriBadge, NutriFiche, celebrerSiNouveau, cleCategorie, resultatPour, useNutri } from '@alphabette/shell';
 import { SurprendsMoi } from './SurprendsMoi';
+import { CommentCaMarche } from './CommentCaMarche';
 
 /** Seuil du passage .eu → .fr : 10 avis positifs, ratio ≥ 75 % (CLAUDE.md). */
 const SEUIL_FR = 10;
@@ -183,11 +184,6 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             <h1 className="accueil__titre">
               Alphabette — <em>l'atelier collectif des applications utiles et indépendantes.</em>
             </h1>
-            <p className="accueil__phrase">
-              Publiez votre application, améliorez-la grâce aux retours de la communauté et profitez d'une visibilité
-              partagée. Les applications des créateurs vivent ici, sur alphabette.eu ; la vitrine{' '}
-              <a className="accueil__lien" href="https://alphabette.fr">alphabette.fr</a> est réservée à celles d'Alphabette.
-            </p>
             <div className="collectif-actions">
               <a className="labo__bouton labo__bouton--envoyer" href="/embarquement/">
                 ＋ Proposer une application
@@ -222,6 +218,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         </label>
         <SurprendsMoi apps={visibles} />
       </section>
+
+      <CommentCaMarche />
 
       <section id="nos-applications" className="accueil__applis" aria-label="Nos applications">
         <h2 className="accueil__rubrique">
@@ -399,8 +397,10 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
       {MODE_LABO && (
         <div className="accueil__applis communaute__zone">
-          <TableauHonneur noms={noms} />
-          <BoiteIdees />
+          <div className="communaute__duo">
+            <TableauHonneur noms={noms} />
+            <BoiteIdees />
+          </div>
         </div>
       )}
     </div>
