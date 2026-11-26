@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T16:12:45.266Z",
-  "empreinte_page_sha256": "4cf04068d81968327df1e6a201654ba52c9996e5a38324dc909c998ad906ad2b",
+  "audite_le": "2026-11-26T16:19:43.793Z",
+  "empreinte_page_sha256": "67cbcb602869dfbdd5c74dcbf3c4104f845342ce42d01e5b1f46748bf6840470",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 197,
-      "bloquees": 197,
+      "requetes": 939,
+      "bloquees": 939,
       "types": [
         "image",
         "fetch"
@@ -72,15 +72,6 @@
       "classe": "tierce",
       "requetes": 4,
       "bloquees": 4,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
       "types": [
         "image"
       ]
@@ -122,6 +113,15 @@
       ]
     },
     {
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
+    },
+    {
       "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 1,
@@ -132,30 +132,21 @@
     }
   ],
   "resultat": {
-    "conforme": false,
-    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
-    "fuites_tierces": [
-      {
-        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
-        "classe": "tierce",
-        "type": "image",
-        "methode": "GET",
-        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
-        "interceptee": true
-      }
-    ],
+    "conforme": true,
+    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
+    "fuites_tierces": [],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "7b070d92aa0970075eb184498631e50d8aec8c60b59c125b0ccd645202f0ddfc"
+  "empreinte_certificat_sha256": "e689909ed14986bc8c6bfa954a5003ba24b1b77bfeaafccef376a8f1e5c8c456"
 }
