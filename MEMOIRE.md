@@ -26,7 +26,7 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 
 ## Reste à faire
 - PC de Valentin : Remote Control à activer pour captures et vérifs en ligne (liste de dossiers vide le 26/11).
-- Vérifier que /bounties et /rejoindre-createurs n'annoncent aucun gain réel.
+- DÉCISION VALENTIN (Niveau 2) : corriger les pages labo/pages/{bounties,rejoindre-createurs,contribuer,idees}.html et labo/createurs/soumettre.html : ~10 phrases promettent des gains/jours gratuits alors que Stripe n'est pas branché ; aucune n'affiche « paiement en ligne pas encore ouvert ». Corrections proposées : « prévu, pas encore ouvert », bandeau, formulaire de prime désactivé.
 - Lancer `bun run build:static` en vrai pour valider le correctif SEO, puis déployer.
 - Fournir une vraie image 1200x630 (og.png).
 - Relire les kits avec `verificateur-honnetete`, vérifier les adresses, puis envoyer.

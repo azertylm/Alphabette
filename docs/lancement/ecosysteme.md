@@ -3,29 +3,29 @@
 Brouillon du 26/11/2026, à relire par `verificateur-honnetete` avant diffusion. Contact public : contact@alphabette.fr.
 
 ## Le principe (2 phrases)
-Alphabette est un ensemble d'applications utiles que chacun peut **tester, noter et améliorer**. Chaque avis est lu : des agents IA corrigent les applications, et chacun peut aussi **proposer une idée ou déposer sa propre application**.
+Alphabette est un ensemble d'applications utiles que chacun peut **tester, noter et améliorer**. Les avis sont lus par des agents IA, qui corrigent les applications du Laboratoire (alphabette.eu) ; chacun peut aussi **proposer une idée ou déposer sa propre application**.
 
-Parcours en 4 étapes : tester une appli sur alphabette.eu (1 clic) → noter, commenter ou soutenir (+1), voter dans la Ruche à idées → déposer sa propre appli (Salle d'embarquement ou /soumettre) → relecture, puis affichage après le « oui » de Valentin.
+Parcours en 4 étapes : tester une appli sur alphabette.eu (1 clic) → noter, commenter ou soutenir (+1), voter dans la Ruche à idées → déposer sa propre appli (Salle d'embarquement ou /soumettre) → relecture manuelle avant affichage sur alphabette.eu ; passage sur alphabette.fr uniquement sur décision de Valentin.
 
 ## Ce que l'on peut dire (vérifié dans le dépôt, pas en ligne)
-Tester, noter, commenter, +1 · proposer une idée · déposer une appli (validation manuelle) · le Laboratoire (alphabette.eu) corrige à partir des avis, et Valentin décide seul de ce qui passe sur alphabette.fr.
+Tester, noter, commenter, +1 · proposer une idée · déposer une appli (validation manuelle par défaut, réglage modifiable côté serveur) · le Laboratoire (alphabette.eu) corrige à partir des avis (agents IA ; les demandes les plus lourdes passent d'abord en bêta), et Valentin décide seul de ce qui passe sur alphabette.fr. Gratuité : vérifiée pour tester et donner son avis sur .eu ; sur alphabette.fr le tarif prévu est 15 € TTC/an par appli mais le paiement en ligne n'est pas ouvert : dire « gratuit aujourd'hui », jamais « gratuit pour toujours ».
 
 ## Ce que l'on ne dit pas (pas encore réel)
 Gains ou revenus pour les contributeurs ou créateurs (Stripe pas branché) · primes (bounties) payées par carte · modification du code des applis par des inconnus (chaque appli a son dépôt et son créateur garde la main) · « publication automatique » · chiffres de communauté (une seule appli communautaire, un test) · « société » ou « SASU ».
 
 ## Textes
 **Court (≤ 280 car.)**
-> Des applications utiles, à tester gratuitement : notez-les, dites ce qui manque, proposez vos idées ou déposez la vôtre. Chaque avis est lu et sert à les améliorer. https://alphabette.eu?src=court
+> Des applications utiles, à tester gratuitement aujourd'hui : notez-les, dites ce qui manque, proposez vos idées ou déposez la vôtre. Les avis sont lus par des agents IA et servent à les améliorer. https://alphabette.eu?src=court
 
 **Long (≈ 90 mots)**
-> Alphabette est un laboratoire d'applications utiles, accessibles gratuitement aujourd'hui. Vous testez une application en un clic, vous la notez, vous dites ce qui ne va pas ou ce qui manque, et vous soutenez les idées des autres. Les avis sont lus et des agents IA corrigent les applications ; le choix de ce qui passe sur alphabette.fr reste une décision humaine. Vous avez une idée ou une application à proposer ? Vous pouvez la déposer : elle est relue avant d'être affichée. Le projet démarre : vos retours comptent vraiment. https://alphabette.eu?src=long
+> Alphabette est un laboratoire d'applications utiles, accessibles gratuitement aujourd'hui. Vous testez une application en un clic, vous la notez, vous dites ce qui ne va pas ou ce qui manque, et vous soutenez les idées des autres. Les avis sont lus par des agents IA, qui corrigent les applications du Laboratoire ; le choix de ce qui passe sur alphabette.fr reste une décision humaine. Vous avez une idée ou une application à proposer ? Vous pouvez la déposer : elle est relue avant d'être affichée sur alphabette.eu. Le projet démarre : vos retours comptent vraiment. https://alphabette.eu?src=long
 
 ## Message type à une communauté (un message par communauté, jamais en rafale)
 **Objet :** Un projet français où la communauté améliore les applications : votre avis ?
 
 Bonjour,
 
-Je présente Alphabette, un ensemble d'applications utiles testables gratuitement sur alphabette.eu. Le principe est simple : chacun peut tester, noter, proposer des idées ou déposer sa propre application, et les avis servent à corriger les applis. Le projet démarre et je cherche des retours honnêtes, pas de la publicité.
+Je présente Alphabette, un ensemble d'applications utiles testables gratuitement sur alphabette.eu. Le principe est simple : chacun peut tester, noter, proposer des idées ou déposer sa propre application, et les avis sont lus par des agents IA qui corrigent les applis. Le projet démarre et je cherche des retours honnêtes, pas de la publicité.
 
 Seriez-vous d'accord pour que j'en parle dans votre espace, selon vos règles, ou préférez-vous que je vous envoie d'abord une présentation d'une page ?
 
@@ -59,6 +59,8 @@ contact@alphabette.fr · 06 19 83 19 85
 | 10 | France Tiers-Lieux | Annuaire et réseaux régionaux | https://www.data.gouv.fr/organizations/france-tiers-lieux |
 | 11 | La Mednum | Site lamednum.coop | https://www.banquedesterritoires.fr/le-monde-de-la-mediation-numerique-veut-gagner-en-lisibilite-aupres-des-territoires |
 | 12 | Uncode School | Discord (activité incertaine) | https://modernmakers.substack.com/p/une-confrence-no-code-cette-semaine |
+
+Non vérifié : le numéro de téléphone du bloc signature et le suivi `?src=` (non cherchés dans le dépôt). À rappeler : /soumettre et /rejoindre-createurs annoncent encore « 10 € par an et par abonnement » et /bounties une récompense payée : ne pas relayer.
 
 Écartés : Code for France (archivé). Règles d'auto-promotion : inconnues pour 11 sur 12, à lire avant tout message.
 
