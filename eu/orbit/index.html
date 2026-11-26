@@ -35,6 +35,17 @@
       });
       (function () {
         try {
+          // Laboratoire Alphabette (26/11/2026) : sur alphabette.eu, toutes les applis partagent la même origine.
+          // La page d'Orbit (et son code, qui vide les caches à l'ouverture et au « reset ») ne voit plus que
+          // les caches d'Orbit (noms commençant par « orbit ») : elle ne vide plus ceux des autres applis.
+          if (typeof CacheStorage !== 'undefined' && CacheStorage.prototype.keys) {
+            var clesDuSite = CacheStorage.prototype.keys;
+            CacheStorage.prototype.keys = function () {
+              return clesDuSite.call(this).then(function (cles) {
+                return cles.filter(function (cle) { return cle.indexOf('orbit') === 0; });
+              });
+            };
+          }
           if ('caches' in window) {
             caches.keys().then(function (keys) {
               keys.forEach(function (key) {
@@ -47,7 +58,7 @@
             window.addEventListener('load', function () {
               try {
                 navigator.serviceWorker
-                  .register('/sw.js', { updateViaCache: 'none' })
+                  .register('./sw.js', { updateViaCache: 'none' })
                   .catch(function () {});
               } catch (err) {}
             });
@@ -57,6 +68,11 @@
     </script>
     <script type="module" crossorigin src="./assets/index-B9YGEtio.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CpIR4CfB.css">
+    <style>
+      /* Laboratoire Alphabette (Agent Chaos, 26/11/2026) : sur petit téléphone, la rangée du haut
+         (logo, recherche, « Télécharger l'App », « Publier ») passe à la ligne au lieu de déborder. */
+      header > div.flex.items-center.gap-2.w-full { flex-wrap: wrap; row-gap: 0.375rem; }
+    </style>
   </head>
   <body style="background-color: #090A0F; color: #FFFFFF; margin: 0;">
     <div id="root"></div>
