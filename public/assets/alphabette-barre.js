@@ -150,7 +150,7 @@
     '.ab-eco__marque{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:var(--ab-accent);color:#fff;font-size:12px;font-weight:900;}',
     '.ab-eco__icone{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 6px;border:0;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font:inherit;font-size:17px;line-height:1;cursor:pointer;}',
     '.ab-eco__icone:hover{background:rgba(255,255,255,.25);}',
-    '.ab-eco__labo{text-decoration:none;gap:6px;font-size:14px;font-weight:700;padding:0 10px;}.ab-eco__octet{width:28px;height:28px;border-radius:999px;background:#fffaf0;object-fit:cover;}.ab-eco__labo-txt{display:none;}@media (min-width:760px){.ab-eco__labo-txt{display:inline;}}',
+    '.ab-eco__labo--txt .ab-eco__labo-txt{display:inline;}.ab-eco__labo{text-decoration:none;gap:6px;font-size:14px;font-weight:700;padding:0 10px;}.ab-eco__octet{width:28px;height:28px;border-radius:999px;background:#fffaf0;object-fit:cover;}.ab-eco__labo-txt{display:none;}@media (min-width:760px){.ab-eco__labo-txt{display:inline;}}',
     '.ab-eco__point{position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:999px;background:#ef4444;border:2px solid #0a1226;}',
     '.ab-eco__favoris{display:flex;align-items:center;gap:4px;min-width:0;}',
     '.ab-site{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;color:#cdd6ea;text-decoration:none;white-space:nowrap;font-size:13px;}',
@@ -525,11 +525,11 @@
   }
   /** Lien vers le Laboratoire d'Octet : jamais relatif depuis un autre domaine (on ne veut pas tomber sur une page inexistante de .fr). */
   function lienLabo() { return (/(^|\.)alphabette\.eu$/.test(location.hostname) || local) ? '/#idees' : 'https://alphabette.eu/#idees'; }
-  /** Octet (la petite souris) : vraie illustration, avec repli sur l'émoji si l'image ne charge pas. */
+  /** Octet (la petite souris) : vraie illustration, sans image de remplacement : si elle ne charge pas, le libellé « Laboratoire » reste affiché. */
   function iconeOctet() {
     var base = (script && script.src) ? script.src.replace(/alphabette-barre\.js(\?.*)?$/, '') : 'https://alphabette.fr/assets/';
     var img = el('img', { class: 'ab-eco__octet', src: base + 'octet/octet-icone.webp', alt: '', width: '28', height: '28', decoding: 'async', 'aria-hidden': 'true' });
-    img.onerror = function () { var e = el('span', { 'aria-hidden': 'true', text: '🐭' }); if (img.parentNode) img.parentNode.replaceChild(e, img); };
+    img.onerror = function () { var a = img.parentNode; if (a) { a.classList.add('ab-eco__labo--txt'); a.removeChild(img); } };
     return img;
   }
   function tip(b, mot) { b.dataset.abTip = mot; b.setAttribute('aria-label', mot); return b; }

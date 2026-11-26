@@ -510,3 +510,27 @@ html[data-ab-theme='nuit'] .octet__etoiles label { color: #fbbf24; }
   .octet__actions { flex-direction: column; align-items: stretch; width: 15rem; }
 }
 @media (prefers-reduced-motion: reduce) { .octet * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ───── Octet : message contextuel et aide (docs/octet-voice.md) ───── */
+.octet-msg { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; padding: 0.7rem 0.9rem; border: 1px solid var(--acc-trait); border-radius: 1rem; background: var(--acc-carte); max-width: 46rem; }
+.octet-msg__img { display: block; flex: 0 0 auto; width: 88px; max-width: 28%; height: auto; border-radius: 0.9rem; background: #fffaf0; }
+.octet-msg__corps { flex: 1 1 14rem; min-width: 0; display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; }
+.octet-msg__titre { margin: 0; font-weight: 800; color: var(--acc-encre); }
+.octet-msg__texte { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--acc-doux); overflow-wrap: anywhere; }
+.octet-msg__fermer { background: none; border: 0; padding: 0 0.3rem; min-height: 44px; font: inherit; color: var(--acc-doux); text-decoration: underline; cursor: pointer; }
+.octet-msg__fermer:focus-visible, .octet-aide__q summary:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+.octet-msg--tip, .octet-msg--help { background: transparent; border-style: dashed; }
+.octet-msg--success { border-color: #16a34a; }
+.octet-aide__bouton { width: auto; }
+.octet-aide__fond { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: flex-end; justify-content: center; background: rgb(15 23 42 / 0.55); padding: 0.5rem; }
+.octet-aide { box-sizing: border-box; width: min(40rem, 100%); max-height: min(85dvh, 100%); overflow-y: auto; padding: 1rem; border-radius: 1.2rem; background: var(--acc-carte, #fff); color: var(--acc-encre, #0f172a); border: 1px solid var(--acc-trait); }
+.octet-aide__titre { margin: 0 0 0.6rem; font-size: 1.25rem; }
+.octet-aide__titre:focus { outline: none; }
+.octet-aide__q { border-top: 1px solid var(--acc-trait); padding: 0.2rem 0; }
+.octet-aide__q summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+.octet-aide__q p { margin: 0.2rem 0 0.6rem; line-height: 1.5; color: var(--acc-doux); }
+.octet-aide__fermer { margin-top: 0.8rem; width: auto; }
+@media (min-width: 640px) { .octet-aide__fond { align-items: center; } }
+/* Pas d'animation du tout pour Octet : images fixes, transitions nulles. */
+.octet-msg, .octet-msg *, .octet-aide, .octet-aide * { animation: none !important; transition: none !important; }
+@media print { .octet-aide__fond, .octet-aide__bouton { display: none; } }

@@ -3,6 +3,9 @@ import {
   CATEGORIES_COLLECTIF, ETAPES, MOTIFS_CONTENU, chargerDetailIdee, chargerIdees, commenterIdee, ideesVotees, noterPrototype, proposerIdeeLabo,
   refusIdeeLabo, retirerSoutien, signalerContenu, soutenirIdee, type CommentaireIdee, type DetailIdee, type Etape, type Idee,
 } from './collectif';
+import { OctetMessage } from '../octet/OctetMessage';
+import { OctetHelp } from '../octet/OctetHelp';
+import { MESSAGES } from '../octet/messages';
 
 /**
  * @file BoiteIdees.tsx
@@ -118,6 +121,7 @@ const Discussion: React.FC<{ idee: Idee; onChange: (i: Partial<Idee>) => void }>
           <p><Etoiles moyenne={proto.moyenne} nb={proto.nb_avis} /></p>
           {proto.testable ? (
             <>
+              <OctetMessage message={MESSAGES.conseilPrototype} pose={null} contexte="prototype" />
               <p><a className="labo__bouton" href={`/apps/${encodeURIComponent(proto.app_id)}/`}>Tester le prototype</a></p>
               <p className="labo__petit">Ces notes portent sur un essai réel. Elles sont différentes des soutiens : soutenir une idée dit « j'en ai besoin », noter un prototype dit « j'ai essayé, voilà mon avis ».</p>
               <form className="octet__form-note" onSubmit={envoyerNote} noValidate>
@@ -160,6 +164,7 @@ const Discussion: React.FC<{ idee: Idee; onChange: (i: Partial<Idee>) => void }>
         {ferme ? <p className="accueil__message">La discussion de cette idée est fermée.</p> : (
           <form onSubmit={envoyer} noValidate className="octet__form-com">
             {reponse && <p className="labo__petit">Vous répondez à un message. <button type="button" className="octet__lien" onClick={() => setReponse(null)}>Annuler</button></p>}
+            <OctetMessage message={MESSAGES.conseilDiscussion} pose={null} contexte="discussion" />
             <label className="labo__champ"><span>Votre message <small>texte seul, 500 caractères, sans lien ni coordonnées</small></span>
               <textarea value={texte} onChange={(e) => setTexte(e.target.value)} maxLength={500} rows={3} /></label>
             <label className="labo__champ"><span>Pseudonyme (facultatif)</span>
@@ -187,6 +192,7 @@ export const BoiteIdees: React.FC = () => {
   const [toutes, setToutes] = useState(false);
   const [formOuvert, setFormOuvert] = useState(false);
   const [f, setF] = useState({ titre: '', probleme: '', phrase: '', public_cible: '', categorie: '', pseudo: '' });
+  const [decouverteMasquee, setDecouverteMasquee] = useState(false); // simple état de la page : rien n'est stocké
   const [piege, setPiege] = useState('');
   const [etat, setEtat] = useState<'' | 'envoi' | 'ok' | 'erreur'>('');
   const [message, setMessage] = useState('');
@@ -206,7 +212,8 @@ export const BoiteIdees: React.FC = () => {
     setEtat('envoi');
     const r = await proposerIdeeLabo(f, piege);
     setEtat(r.ok ? 'ok' : 'erreur');
-    setMessage(r.message);
+    // Le message de réussite n'est affiché que si le serveur a confirmé l'enregistrement ET renvoyé l'idée (visible tout de suite).
+    setMessage(r.ok && r.idee ? MESSAGES.succesPublie.texte : r.message);
     if (r.ok && r.idee) {
       const nouvelle = r.idee;
       setIdees((l) => [nouvelle, ...(Array.isArray(l) ? l : [])]);
@@ -235,6 +242,8 @@ export const BoiteIdees: React.FC = () => {
   }, [idees, recherche, etape, tri]);
   const visibles = toutes || recherche || etape !== 'toutes' ? liste : liste.slice(0, 10);
   const nbIdees = Array.isArray(idees) ? idees.length : 0;
+  // « À découvrir » : seulement un vrai prototype ouvert aux essais (donnée du serveur) ; sinon rien n'est affiché.
+  const decouverte = !decouverteMasquee && Array.isArray(idees) ? idees.find((i) => i.prototype?.testable) ?? null : null;
 
   const ouvrirForm = () => { setFormOuvert(true); setTimeout(() => formRef.current?.querySelector('input')?.focus(), 50); };
 
@@ -244,13 +253,12 @@ export const BoiteIdees: React.FC = () => {
         <div className="octet__vignette"><Octet nom="arrosoir" taille={132} /></div>
         <div>
           <h2 id="idees-titre" className="accueil__rubrique">Le Laboratoire d'Octet</h2>
-          <p className="octet__accroche">Faisons pousser la prochaine application utile.</p>
-          <p className="communaute__intro">
-            Proposez une idée, améliorez celles des autres, soutenez les projets à faire avancer et testez les prototypes de la communauté.
-          </p>
+          <p className="octet__accroche">{MESSAGES.accueil.titre}</p>
+          <p className="communaute__intro">{MESSAGES.accueil.texte}</p>
           <p className="octet__cta">
             <button type="button" className="labo__bouton labo__bouton--envoyer" onClick={ouvrirForm} aria-expanded={formOuvert} aria-controls="octet-form">Proposer une idée</button>
             <a className="labo__bouton" href="#octet-liste">Explorer les idées</a>
+            <OctetHelp />
           </p>
         </div>
       </header>
@@ -261,6 +269,7 @@ export const BoiteIdees: React.FC = () => {
           <li><strong>Soutenir une idée</strong> signifie « j'en ai besoin ». Les soutiens aident l'équipe à choisir quoi examiner en premier ; ils ne promettent pas de développement.</li>
           <li><strong>Noter un prototype</strong> (de 1 à 5 étoiles) ne se fait qu'après l'avoir réellement essayé. Une simple idée n'a pas de note.</li>
           <li>Le parcours : {ETAPES.slice(0, 7).map((e) => e.libelle).join(' → ')}. Une idée peut aussi être mise en pause, refusée ou archivée, avec une explication.</li>
+          <li>{MESSAGES.progression.texte}</li>
           <li><strong>Vers alphabette.fr :</strong> une application peut y être proposée après examen (qualité, sécurité, accessibilité, maintenance) et <strong>accord explicite de son créateur</strong>. Ce n'est jamais automatique, quel que soit le nombre de soutiens.</li>
           <li><strong>Sans compte, sans pub.</strong> Un identifiant aléatoire gardé sur votre appareil évite les doubles soutiens ; vider votre navigateur peut en permettre un nouveau, un plafond quotidien limite les abus. Aucune adresse IP n'est conservée.</li>
         </ul>
@@ -268,6 +277,7 @@ export const BoiteIdees: React.FC = () => {
 
       <form id="octet-form" ref={formRef} className="labo__form communaute__form" onSubmit={envoyer} noValidate hidden={!formOuvert}>
         <h3>Proposer une idée</h3>
+        <OctetMessage message={MESSAGES.conseilFormulaire} pose={null} contexte="formulaire" />
         <label className="labo__champ"><span>Titre de l'idée <small>5 à 80 caractères</small></span>
           <input value={f.titre} onChange={(e) => setF({ ...f, titre: e.target.value })} maxLength={80} placeholder="Ex. : Rappel des poubelles" autoComplete="off" aria-describedby="idee-aide" /></label>
         <label className="labo__champ"><span>Quel problème cette application aiderait-elle à résoudre ? <small>{f.probleme.length}/300</small></span>
@@ -303,10 +313,16 @@ export const BoiteIdees: React.FC = () => {
           </select></label>
       </div>
 
-      {idees === 'chargement' && <div className="octet__etat"><Octet nom="sablier" taille={84} /><p className="accueil__message" role="status">Chargement des idées…</p></div>}
+      {idees === 'chargement' && <OctetMessage message={MESSAGES.chargement} live contexte="liste" taille={72} />}
       {idees === null && <div className="octet__etat"><p className="accueil__message" role="alert">Les idées n'ont pas pu être chargées.</p><button type="button" className="labo__bouton" onClick={charger}>Réessayer</button></div>}
-      {Array.isArray(idees) && nbIdees === 0 && <div className="octet__etat"><Octet nom="fiole" taille={96} /><p className="communaute__vide">Aucune idée pour l'instant : la vôtre sera la première.</p></div>}
-      {Array.isArray(idees) && nbIdees > 0 && liste.length === 0 && <div className="octet__etat"><Octet nom="loupe" taille={96} /><p className="communaute__vide" role="status">Aucune idée ne correspond à cette recherche. Essayez d'autres mots ou une autre étape.</p></div>}
+      {Array.isArray(idees) && nbIdees === 0 && <OctetMessage message={MESSAGES.videAucune} contexte="liste-vide" />}
+      {Array.isArray(idees) && nbIdees > 0 && liste.length === 0 && <OctetMessage message={MESSAGES.videFiltre} live contexte="liste-filtre" />}
+      {decouverte && (
+        <OctetMessage variante="tip" pose={null} contexte="a-decouvrir" titre="À découvrir" onFermer={() => setDecouverteMasquee(true)}
+          texte={`Un prototype est ouvert aux essais : « ${decouverte.titre} ». Vous pouvez l'essayer, puis donner votre avis.`}>
+          <button type="button" className="labo__bouton" onClick={() => { setOuverte(decouverte.id); setTimeout(() => document.getElementById(`detail-${decouverte.id}`)?.scrollIntoView({ block: 'nearest' }), 50); }}>Voir ce prototype</button>
+        </OctetMessage>
+      )}
 
       {visibles.length > 0 && (
         <ol className="idees octet__liste" aria-label="Idées proposées">

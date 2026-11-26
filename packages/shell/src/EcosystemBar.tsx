@@ -86,15 +86,13 @@ export function EcosystemBar({ app, hubUrl, apps }: EcosystemBarProps) {
 
       {/* Laboratoire d'Octet : depuis alphabette.fr il mène à alphabette.eu (tester et proposer des idées) ; sur .eu il ouvre la section d'idées. */}
       <a
-        className="ab-eco__icone ab-eco__labo"
+        className={`ab-eco__icone ab-eco__labo${octetOk ? '' : ' ab-eco__labo--txt'}`}
         href={surLeLaboratoire() ? '/#idees' : 'https://alphabette.eu/#idees'}
         data-ab-tip={t('Laboratoire d’Octet : tester et proposer des idées')}
         aria-label={t('Laboratoire d’Octet : tester et proposer des idées')}
       >
-        {octetOk ? (
+        {octetOk && (
           <img className="ab-eco__octet" src="https://alphabette.fr/assets/octet/octet-icone.webp" alt="" width={28} height={28} decoding="async" aria-hidden="true" onError={() => setOctetOk(false)} />
-        ) : (
-          <span aria-hidden="true">🐭</span>
         )}
         <span className="ab-eco__labo-txt">{t('Laboratoire')}</span>
       </a>
