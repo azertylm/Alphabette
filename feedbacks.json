@@ -24,14 +24,14 @@
           "labo_erreurs_v1"
         ]
       },
-      "status": "pending",
+      "status": "implemented",
       "ai_analysis": {
-        "relevance_score": null,
-        "intervention_level": null,
-        "reasoning": null,
-        "proposed_fix": null
+        "relevance_score": 8,
+        "intervention_level": 1,
+        "reasoning": "Bug réel et vérifié : en BIG, la taille de base de la page passe à 150 % (html[data-ab-density='xlarge'], src/shell/shell.css), donc seuls les textes en rem grandissent. France Service compte 436 tailles en pixels fixes (text-[9px] à text-[11px]…, dont 47 dans Header.tsx) qui ne suivent jamais BIG. Cohérent avec l'avis (BIG 3, Android 406x816, dicté à la voix) et avec le relevé de l'Atelier qualité (104 textes sous 12 px). Pas d'erreur JS : c'est un défaut de réglage de taille, cas explicitement Niveau 1 (RULES section 2). Pousser sur main ne touche que alphabette.eu (vitrine.ref figée).",
+        "proposed_fix": "Dans le dépôt azertylm/Service-france (hors src/shell/, jamais modifié à la main), convertir les tailles text-[Npx] en rem équivalents (N/16, même rendu à taille normale) pour qu'elles suivent BIG. Commencer par src/components/Header.tsx. Contrôle qa-verifier : 360 px et 280 px en très grande taille, rien de coupé ni débordant, aucune erreur console."
       },
-      "changelog_public_message": null
+      "changelog_public_message": "Les petits textes de France Service grandissent maintenant avec le bouton BIG, et les rangées de sous-pages passent à la ligne en très grande taille"
     },
     {
       "id": "fb_1795459873_8825",
@@ -61,12 +61,12 @@
           "labo_pseudo"
         ]
       },
-      "status": "pending",
+      "status": "needs_human_review",
       "ai_analysis": {
-        "relevance_score": null,
-        "intervention_level": null,
-        "reasoning": null,
-        "proposed_fix": null
+        "relevance_score": 3,
+        "intervention_level": 2,
+        "reasoning": "Le lien de référence est masqué par le filtre de confidentialité : impossible de savoir à quoi Orbit doit ressembler, donc rien de précis à corriger. Demande de refonte = Niveau 2. Orbit est une appli en pause (sanctuaire, RULES section 6 : ne pas toucher). Le 25/11 Valentin a lui-même fusionné la PR #31 (ORBIT v4 restauré sur alphabette.eu/orbit), ce qui répond peut-être à l'avis, sans possibilité de le vérifier. Pas de spam. Aucune bêta lancée.",
+        "proposed_fix": "Aucun correctif tant que Valentin n'a pas confirmé : (1) si la PR #31 répond à la demande, clore l'avis ; (2) sinon, redonner le lien lisible et lever la pause d'Orbit s'il veut une refonte."
       },
       "changelog_public_message": null
     }
