@@ -437,3 +437,4 @@ html[data-ab-theme='nuit'] .sections-claires { filter: invert(1) hue-rotate(180d
 @keyframes surprise-fondu { from { opacity: 0.2; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 :is(:root[data-calme], :root[data-ab-calme='oui'], body.calm-mode) .accueil__surprise-defile { animation: none; }
 @media (prefers-reduced-motion: reduce) { .accueil__surprise-defile { animation: none; } }
+.accueil__encart { margin-top: 1rem; font-size: 1.0625rem; line-height: 1.5; color: var(--acc-encre); }
