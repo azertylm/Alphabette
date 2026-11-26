@@ -1,12 +1,12 @@
-# Fusion automatique (décision de Valentin du 20/11/2026) : une Pull Request du hub portant l'étiquette
-# « fusion-auto » est fusionnée toute seule si elle ne change QUE le Laboratoire alphabette.eu, les données des
-# agents ou la documentation (liste fermée : scripts/labo/fusion-auto.mjs) et si le site se construit.
-# Tout ce qui peut changer alphabette.fr — et ce fichier lui-même — attend toujours le « fusionne » de Valentin.
+# Fusion automatique (décisions de Valentin des 20 et 26/11/2026) : une Pull Request du hub portant l'étiquette
+# « fusion-auto » est fusionnée toute seule si elle ne touche à rien de la liste réservée (scripts/labo/fusion-auto.mjs :
+# automatisation, vitrine figée, argent, secrets) et si le site se construit (types + build).
+# La liste réservée — et ce fichier lui-même — attendent toujours le « fusionne » de Valentin.
 #
 # Sécurité : seules les branches de ce dépôt comptent (jamais une copie extérieure) ; la règle est lue dans la
 # version de main (une PR ne peut pas assouplir sa propre règle) ; le code de la PR est construit dans un job
 # sans aucun droit d'écriture ; le job qui fusionne ne lance aucun code de la PR.
-name: Fusion automatique (alphabette.eu seulement)
+name: Fusion automatique
 
 on:
   pull_request:
@@ -84,7 +84,7 @@ jobs:
           ATELIER: ${{ needs.verifier.outputs.atelier }}
         run: |
           if [ "$PERMISE" != "1" ]; then
-            gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMERO}/comments" -f body="⏸️ Fusion automatique refusée : cette Pull Request peut changer alphabette.fr (ou les robots). Elle attend le « fusionne » de Valentin. Détail : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null
+            gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMERO}/comments" -f body="⏸️ Fusion automatique refusée : cette Pull Request touche à la liste réservée (automatisation, vitrine figée, argent ou secrets) ou est trop grosse. Elle attend le « fusionne » de Valentin. Détail : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null
             exit 0
           fi
           # sha = la version contrôlée : si la branche a bougé entre-temps, GitHub refuse et un nouveau passage recommence.
