@@ -428,21 +428,43 @@
   }
 
   // ------------------------------------------------------------ Dons (virement, aucun paiement en ligne)
+  function copierTexte(texte, bouton, libelle) {
+    var avant = bouton.textContent;
+    var ok = function () { bouton.textContent = 'Copié ✓'; setTimeout(function () { bouton.textContent = avant; }, 2200); };
+    var secours = function () {
+      try { var t = el('textarea', { style: 'position:fixed;opacity:0' }); t.value = texte; document.body.appendChild(t); t.select(); var r = document.execCommand('copy'); t.remove(); if (r) return ok(); } catch (e) {}
+      bouton.textContent = 'Copie impossible : sélectionnez le texte';
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(texte).then(ok, secours); else secours();
+  }
+  function chargerConfig() {
+    if (configHub) return Promise.resolve(configHub);
+    return fetch(HUB + '/api/config.json').then(function (r) { return r.json(); }).then(function (c) { configHub = c; return c; }).catch(function () { return null; });
+  }
   function ouvrirDon() {
-    modale('♥ ' + T('Faire un don'), function (boite) {
-      var don = configHub && configHub.donation, actions = el('div', { class: 'ab-modale__actions' });
-      if (don && don.iban && !don.exemple) {
-        boite.appendChild(el('p', { text: 'Le don se fait par virement depuis votre banque. Aucun paiement n’a lieu sur ce site.' }));
-        var dl = el('dl'); [['Titulaire', don.titulaire], ['IBAN', don.iban], ['BIC', don.bic], ['Motif', don.objetVirement]].forEach(function (l) { if (l[1]) { dl.appendChild(el('dt', { text: l[0] })); dl.appendChild(el('dd', { text: l[1] })); } });
-        boite.appendChild(dl);
-        var copier = el('button', { type: 'button', class: 'ab-btn ab-btn--don', text: 'Copier l’IBAN' });
-        copier.addEventListener('click', function () { (navigator.clipboard ? navigator.clipboard.writeText(don.iban.replace(/\s/g, '')) : Promise.reject()).then(function () { copier.textContent = 'IBAN copié'; }, function () { copier.textContent = 'Copie impossible ici'; }); });
-        actions.appendChild(copier);
-      } else {
-        boite.appendChild(el('p', { text: 'Les coordonnées de don sont affichées sur alphabette.fr.' }));
-        actions.appendChild(el('a', { class: 'ab-btn ab-btn--don', href: HUB, text: 'Aller sur alphabette.fr' }));
-      }
-      boite.appendChild(actions);
+    chargerConfig().then(function () {
+      modale('♥ ' + T('Faire un don'), function (boite) {
+        var don = configHub && configHub.donation, actions = el('div', { class: 'ab-modale__actions' });
+        if (don && don.iban && !don.exemple) {
+          boite.appendChild(el('p', { text: 'Le don se fait par virement depuis votre banque (SEPA, 0 % de frais). Aucun paiement n’a lieu sur ce site.' }));
+          var dl = el('dl');
+          [['Titulaire', don.titulaire], ['Banque', don.banque], ['Code banque', don.codeBanque], ['Code guichet', don.codeGuichet], ['N° de compte', don.numeroCompte], ['Clé RIB', don.cleRib], ['IBAN', don.iban], ['BIC', don.bic], ['Motif du virement', don.objetVirement]].forEach(function (l) { if (l[1]) { dl.appendChild(el('dt', { text: l[0] })); dl.appendChild(el('dd', { text: l[1] })); } });
+          boite.appendChild(dl);
+          var tout = ['Don à l’écosystème alphabette', don.titulaire && 'Titulaire : ' + don.titulaire, don.banque && 'Banque : ' + don.banque, 'IBAN : ' + don.iban, don.bic && 'BIC : ' + don.bic, don.objetVirement && 'Motif : ' + don.objetVirement].filter(Boolean).join('\n');
+          var cIban = el('button', { type: 'button', class: 'ab-btn ab-btn--don', text: 'Copier l’IBAN' });
+          cIban.addEventListener('click', function () { copierTexte(don.iban.replace(/\s/g, ''), cIban, 'IBAN'); });
+          actions.appendChild(cIban);
+          if (don.bic) { var cBic = el('button', { type: 'button', class: 'ab-btn', text: 'Copier le BIC' }); cBic.addEventListener('click', function () { copierTexte(don.bic, cBic, 'BIC'); }); actions.appendChild(cBic); }
+          var cTout = el('button', { type: 'button', class: 'ab-btn', text: 'Copier tout le RIB' });
+          cTout.addEventListener('click', function () { copierTexte(tout, cTout, 'tout le RIB'); });
+          actions.appendChild(cTout);
+          if (don.contact) actions.appendChild(el('a', { class: 'ab-btn', href: 'mailto:' + don.contact + '?subject=' + encodeURIComponent('Don alphabette') + '&body=' + encodeURIComponent('Bonjour,\n\nJe viens de faire un don par virement SEPA (motif : ' + (don.objetVirement || 'DON ALPHABETTE') + ').\n'), text: 'J’ai fait mon virement' }));
+        } else {
+          boite.appendChild(el('p', { text: 'Les coordonnées de don n’ont pas pu être chargées. Elles sont affichées sur alphabette.fr.' }));
+          actions.appendChild(el('a', { class: 'ab-btn ab-btn--don', href: HUB, text: 'Aller sur alphabette.fr' }));
+        }
+        boite.appendChild(actions);
+      });
     });
   }
 
