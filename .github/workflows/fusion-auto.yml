@@ -78,6 +78,7 @@ jobs:
       - name: Fusionner, ou expliquer pourquoi pas
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           NUMERO: ${{ github.event.pull_request.number }}
           TETE: ${{ github.event.pull_request.head.sha }}
           PERMISE: ${{ needs.verifier.outputs.permise }}
