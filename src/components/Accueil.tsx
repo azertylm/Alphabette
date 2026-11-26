@@ -140,8 +140,6 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
     chargerDonneesLabo().then(setDonnees);
   }, []);
 
-  const gratuites = apps.filter((app) => app.gratuit).length;
-
   // Confettis sur de vrais événements seulement : une appli devient éligible au .fr (10e avis positif,
   // ratio ≥ 75 %) ou y est transférée. Le premier passage d'un visiteur note l'état sans fêter.
   useEffect(() => {
@@ -180,9 +178,9 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         {/* La Météo du Labo vit désormais dans la double barre (pastille, @alphabette/shell) : plus de bandeau séparé ici. */}
         {MODE_LABO ? (
           <>
-            <p className="labo-bandeau">🤝 Le Collectif Alphabette</p>
-            <h1 className="accueil__titre">
-              Alphabette — <em>l'atelier collectif des applications utiles et indépendantes.</em>
+            <h1 className="accueil__banniere">
+              <img src="/assets/alphabette-banniere.webp" width={1689} height={831} fetchPriority="high" decoding="async"
+                alt="Alphabette — L'atelier collectif des applications utiles et indépendantes." />
             </h1>
             <div className="collectif-actions">
               <a className="labo__bouton labo__bouton--envoyer" href="/embarquement/">
@@ -196,14 +194,11 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             </p>
           </>
         ) : (
-        <h1 className="accueil__titre">
-          Des applications simples, <em>pour mieux vivre au quotidien.</em>
+        <h1 className="accueil__banniere">
+          <img src="/assets/alphabette-banniere.webp" width={1689} height={831} fetchPriority="high" decoding="async"
+            alt="Alphabette — L'atelier collectif des applications utiles et indépendantes." />
         </h1>
         )}
-        <p className="accueil__phrase">
-          {apps.length ? apps.filter((app) => app.slug !== 'petits-jeux').length : appsCount} applications utiles. Sans publicité.
-          {gratuites > 0 && ` ${gratuites} sont gratuites, définitivement.`}
-        </p>
 
         <label className="accueil__recherche">
           <Search aria-hidden="true" />

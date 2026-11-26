@@ -30,6 +30,8 @@ html[data-ab-theme='nuit'] .accueil {
 .accueil__titre { font-size: 2.125rem; line-height: 1.12; font-weight: 900; letter-spacing: -0.02em; }
 .accueil__titre em { font-style: normal; color: var(--acc); }
 .accueil__phrase { font-size: 1.25rem; line-height: 1.45; margin-top: 0.75rem; color: var(--acc-doux); max-width: 46rem; }
+.accueil__banniere { margin: 0; line-height: 0; }
+.accueil__banniere img { display: block; width: 100%; max-width: 56rem; height: auto; border-radius: 14px; box-shadow: 0 2px 14px rgba(80, 50, 10, 0.18); }
 .accueil__recherche {
   margin-top: 1.25rem; display: flex; align-items: center; gap: 0.625rem; max-width: 42rem;
   background: var(--acc-carte); border: 2px solid var(--acc-encre); border-radius: 1rem; padding: 0 1rem;
