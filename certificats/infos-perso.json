@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T15:53:56.116Z",
-  "empreinte_page_sha256": "220ebaba9a696af8c6ca7fe4a6b8e423c001c407429684bd020c5413cbf65bd8",
+  "audite_le": "2026-11-26T16:02:51.160Z",
+  "empreinte_page_sha256": "7ed2f8405355cfb7980a01fa275f5b59ff06dcbfcc1edcf1215de86b4218a1d6",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 418,
-      "bloquees": 418,
+      "requetes": 336,
+      "bloquees": 336,
       "types": [
         "image",
         "fetch"
@@ -78,15 +78,6 @@
     },
     {
       "hote": "www.franceinfo.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -122,6 +113,15 @@
       ]
     },
     {
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
+    },
+    {
       "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 1,
@@ -140,13 +140,13 @@
       "images.unsplash.com",
       "i.f1g.fr",
       "www.franceinfo.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "9298796e1375177cc5dae71bf2359871314feb3a55696c709ead831a4695499d"
+  "empreinte_certificat_sha256": "a7c930293e10fc113625779c233d42077c67c5f51345401420b92339bbb1e4b6"
 }
