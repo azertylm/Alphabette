@@ -260,6 +260,9 @@ await writeFile(
 );
 const labo = await preparerLaboratoire();
 await writeFile(path.join(sortie, '.htaccess'), HTACCESS(labo));
+/** Applis du registre en pause : jamais listées dans le sitemap ni le noscript de .fr. */
+const APPLIS_EN_PAUSE = ['lidarsol', 'osolar', 'proxilien', 'orbit', 'infos perso', 'info perso'];
+
 await referencerVitrine();
 // Empreinte de la version publiée : la publication vérifie qu'OVH l'a bien mise en ligne.
 await writeFile(
@@ -273,9 +276,6 @@ console.log(`\nSite statique prêt : ${path.relative(racine, sortie)}/ (alphabet
 function echapperHtml(t) {
   return String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-/** Applis du registre en pause : jamais listées dans le sitemap ni le noscript de .fr. */
-const APPLIS_EN_PAUSE = ['lidarsol', 'osolar', 'proxilien', 'orbit', 'infos perso', 'info perso'];
 
 /** Référencement d'alphabette.fr : noscript lisible, robots.txt et sitemap.xml (applis actives uniquement). */
 async function referencerVitrine() {
