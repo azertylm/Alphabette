@@ -169,6 +169,12 @@ function inscrireAuRegistre(args: Args, subdomain: string) {
     });
     registre.updatedAt = now;
     fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(registre, null, 2)}\n`, 'utf8');
+    // Couverture « Codex de Vinci » immédiate (image personnelle si elle existe déjà, sinon SVG généré).
+    try {
+      execFileSync('node', [path.join(REPO_ROOT, 'scripts', 'ensure-app-cover.mjs'), args.slug], { cwd: REPO_ROOT, stdio: 'inherit' });
+    } catch {
+      console.warn('⚠️  Couverture non générée : le build la créera (scripts/sync-covers.mjs --strict).');
+    }
     return true;
   } catch (erreur) {
     console.warn(`⚠️  Inscription au registre impossible (« ${REGISTRY_PATH} ») : ${erreur instanceof Error ? erreur.message : erreur}`);
