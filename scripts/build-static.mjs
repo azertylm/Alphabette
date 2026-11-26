@@ -468,6 +468,8 @@ async function preparerLaboratoire() {
     await cp(path.join(racine, 'data', 'private', '.htaccess'), path.join(eu, 'data', 'private', '.htaccess'));
     await cp(path.join(racine, 'data', 'private', 'cartes-hashes.txt'), path.join(eu, 'data', 'private', 'cartes-hashes.txt')).catch(() => {});
     await cp(path.join(racine, 'labo', 'pages', 'admin-cartes.html'), path.join(eu, 'admin-cartes.html'));
+    // Laboratoire d'Octet : modération des idées (jeton serveur ALPHABETTE_LABO_ADMIN_TOKEN, noindex).
+    await cp(path.join(racine, 'labo', 'pages', 'admin-idees.html'), path.join(eu, 'admin-idees.html'));
   }
   // Lot 6 — Passeport (relais chiffré 120 s), Aidant, Ruche à Idées, Kits, Presse, santé du serveur (.eu seulement).
   {
@@ -528,7 +530,9 @@ async function preparerLaboratoire() {
   await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
   for (const nom of ['decisions', 'changelog_summary', 'maturity_index', 'beta', 'notes_version', 'tutos', 'eco_scores',
     // Météo du Labo (bouton Avant / Après, Tableau d'Honneur, modération de la boîte à idées) : docs/labo/METEO-HONNEUR-IDEES.md
-    'changelog-labo', 'tableau-honneur', 'idees-statuts']) {
+    'changelog-labo', 'tableau-honneur', 'idees-statuts',
+    // Laboratoire d'Octet : tant que « validees » est false, aucune idée ne peut devenir « Disponible sur alphabette.fr » (collectif.php).
+    'conditions-location']) {
     const src = path.join(racine, 'data', 'labo', `${nom}.json`);
     const contenu = await readFile(src, 'utf8').catch(() => '{"apps":{}}\n');
     await writeFile(path.join(eu, 'api', 'labo', `${nom}.json`), contenu);

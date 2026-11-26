@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratoire d'Octet — modération · Alphabette</title><meta name="robots" content="noindex, nofollow">
+<style>
+body{font:17px/1.5 system-ui,sans-serif;max-width:960px;margin:0 auto;padding:16px;color:#1c1917}
+input,select,textarea{font:inherit;padding:10px;box-sizing:border-box;max-width:100%;min-height:44px}
+button{font:inherit;font-weight:700;padding:10px 14px;margin:4px 6px 4px 0;min-height:44px;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #0f766e;outline-offset:2px}
+.carte{border:1px solid #d6d3d1;border-radius:14px;padding:12px 14px;margin:12px 0}
+.carte.masquee{opacity:.6;border-style:dashed}
+.petit{font-size:.9rem;color:#57534e}.ligne{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+#s{font-weight:700}.bloque{color:#b91c1c}
+</style></head>
+<body>
+<h1>Laboratoire d'Octet — modération</h1>
+<p class="petit">Réservé à l'équipe. Le jeton administrateur est le secret serveur <code>ALPHABETTE_LABO_ADMIN_TOKEN</code> ; il reste seulement dans cet onglet (jamais enregistré).</p>
+<label>Jeton administrateur <input id="jeton" type="password" autocomplete="off" style="width:100%"></label>
+<button id="voir">Charger les idées et les signalements</button>
+<p id="s" role="status" aria-live="polite"></p>
+<p id="cond" class="petit"></p>
+<h2>Signalements à traiter</h2><div id="sigs"></div>
+<h2>Idées</h2><div id="idees"></div>
+<h2>Derniers commentaires (masquer)</h2><div id="coms"></div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var ETAPES={nouvelle:'Nouvelle idée',discussion:'En discussion',a_explorer:'À explorer',prototype:'Prototype en cours',test_eu:'En test sur alphabette.eu',candidate_fr:'Candidate pour alphabette.fr',disponible_fr:'Disponible sur alphabette.fr',pause:'En pause',refusee:'Refusée',archivee:'Archivée'};
+function el(t,a,k){var e=document.createElement(t);for(var x in(a||{}))e.setAttribute(x,a[x]);(k||[]).forEach(function(c){e.appendChild(typeof c==='string'?document.createTextNode(c):c)});return e}
+function api(o){return fetch('/api/collectif.php',{method:'POST',headers:{'Content-Type':'application/json','X-Labo-Admin':$('jeton').value},body:JSON.stringify(o)}).then(function(r){return r.json().then(function(d){d._s=r.status;return d})})}
+function dire(d,ok){$('s').className=d._s>=400?'bloque':'';$('s').textContent=d._s>=400?(d.erreur||'Erreur'):(ok||'Fait.')}
+function agir(o,ok){return api(o).then(function(d){dire(d,ok);if(d._s<400)charger();return d})}
+function bouton(txt,fn){var b=el('button',{type:'button'},[txt]);b.onclick=fn;return b}
+function charger(){api({action:'admin_liste'}).then(function(d){
+  if(d._s>=400){dire(d);return}
+  $('s').className='';$('s').textContent=d.idees.length+' idée(s), '+d.signalements.length+' signalement(s) à traiter.';
+  $('cond').textContent=d.conditions_location_validees?'Conditions de location validées : la publication sur alphabette.fr est possible (si accord et revue).':'Conditions de location NON validées (data/labo/conditions-location.json) : « Disponible sur alphabette.fr » est bloqué.';
+  var S=$('sigs');S.textContent='';if(!d.signalements.length)S.appendChild(el('p',{class:'petit'},['Aucun signalement en attente.']));
+  d.signalements.forEach(function(x){var c=el('div',{class:'carte'},[el('p',{},[x.type+' '+x.cible+' — motif : '+x.motif+(x.details?' — '+x.details:'')])]);
+    c.appendChild(bouton('Masquer le contenu',function(){agir({action:'admin_masquer',type:x.type==='idee'?'idee':x.type,id:x.cible,masque:true},'Contenu masqué.')}));
+    c.appendChild(bouton('Marquer traité',function(){agir({action:'admin_signalement',id:x.id},'Signalement traité.')}));S.appendChild(c)});
+  var L=$('idees');L.textContent='';
+  d.idees.forEach(function(i){
+    var c=el('div',{class:'carte'+(i.masquee||i.fusion_vers?' masquee':'')});
+    c.appendChild(el('p',{},[el('strong',{},[i.titre]),' — '+i.votes+' soutien(s), '+(i.nb_commentaires||0)+' commentaire(s)'+(i.masquee?' — MASQUÉE':'')+(i.fusion_vers?' — fusionnée':'')+(i.ferme?' — discussion fermée':'')]));
+    c.appendChild(el('p',{class:'petit'},[i.id+' · étape : '+(ETAPES[i.etape]||i.etape)+' · accord du créateur : '+(i.accord_createur?'oui':'non')+' · revue : '+(i.revue_ok?'oui':'non')+(i.prototype?' · prototype : '+i.prototype.app_id+(i.prototype.testable?' (testable)':' (fermé)'):'')]));
+    var sel=el('select',{'aria-label':'Étape de '+i.titre});Object.keys(ETAPES).forEach(function(k){var o=el('option',{value:k},[ETAPES[k]]);if(k===i.etape)o.selected=true;sel.appendChild(o)});
+    var note=el('input',{placeholder:'Note publique (facultatif)',maxlength:'200','aria-label':'Note de décision'});
+    c.appendChild(el('div',{class:'ligne'},[sel,note,bouton('Appliquer l\'étape',function(){agir({action:'admin_statut',id:i.id,etape:sel.value,note:note.value},'Étape mise à jour.')})]));
+    var app=el('input',{placeholder:'id de l\'appli (registre)','aria-label':'Application prototype'});
+    c.appendChild(el('div',{class:'ligne'},[app,bouton('Prototype testable',function(){agir({action:'admin_prototype',id:i.id,app_id:app.value,testable:true},'Prototype ouvert aux essais.')}),bouton('Prototype fermé',function(){agir({action:'admin_prototype',id:i.id,app_id:app.value,testable:false},'Prototype fermé.')})]));
+    c.appendChild(el('div',{class:'ligne'},[
+      bouton(i.accord_createur?'Retirer l\'accord du créateur':'Enregistrer l\'accord explicite du créateur',function(){agir({action:'admin_accord',id:i.id,valeur:!i.accord_createur},'Accord mis à jour.')}),
+      bouton(i.revue_ok?'Retirer la revue':'Revue éditoriale et technique faite',function(){agir({action:'admin_revue',id:i.id,valeur:!i.revue_ok},'Revue mise à jour.')}),
+      bouton(i.masquee?'Réafficher':'Masquer',function(){agir({action:'admin_masquer',type:'idee',id:i.id,masque:!i.masquee},'Fait.')}),
+      bouton(i.ferme?'Rouvrir la discussion':'Fermer la discussion',function(){agir({action:'admin_fermer',id:i.id,ferme:!i.ferme},'Fait.')})]));
+    var vers=el('input',{placeholder:'idee_… (idée à conserver)','aria-label':'Fusionner dans'});
+    c.appendChild(el('div',{class:'ligne'},[vers,bouton('Fusionner ce doublon dans l\'idée indiquée',function(){if(confirm('Fusionner ?'))agir({action:'admin_fusionner',id:i.id,vers:vers.value},'Doublon fusionné.')})]));
+    L.appendChild(c)});
+  var C=$('coms');C.textContent='';
+  d.commentaires_masquables.forEach(function(m){var c=el('div',{class:'carte'+(m.masque?' masquee':'')},[el('p',{},[m.texte]),el('p',{class:'petit'},[m.id+' · '+m.idee])]);
+    c.appendChild(bouton(m.masque?'Réafficher':'Masquer',function(){agir({action:'admin_masquer',type:'commentaire',id:m.id,masque:!m.masque},'Fait.')}));C.appendChild(c)});
+})}
+$('voir').onclick=charger;
+</script></body></html>

@@ -459,9 +459,11 @@ export const CharteCreateurs: React.FC = () => (
       <a href="/embarquement/">Salle d'embarquement</a>, vous l'acceptez (dernière case du formulaire).
     </p>
     <p className="legal__encart">
-      <strong>alphabette.eu seulement.</strong> Les applications des créateurs sont hébergées, testées et présentées
-      uniquement sur alphabette.eu (le Laboratoire). Elles ne sont jamais transférées sur alphabette.fr, réservé aux
-      applications d'Alphabette. <strong>Zéro publicité, zéro revente de données.</strong>
+      <strong>D'abord alphabette.eu.</strong> Les applications des créateurs sont hébergées, testées et présentées sur
+      alphabette.eu (le Laboratoire). Une application ne peut être proposée sur alphabette.fr qu'après examen (qualité,
+      sécurité, accessibilité, maintenance) et avec l'accord explicite de son créateur ; ni un vote ni une note ne
+      suffisent, et les conditions détaillées sont définies avec lui avant toute publication.
+      <strong>Zéro publicité, zéro revente de données.</strong>
     </p>
 
     <h2>Deux façons de publier</h2>

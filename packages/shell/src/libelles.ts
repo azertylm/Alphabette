@@ -8,6 +8,8 @@ export type Langue = 'fr' | 'en';
 const EN: Record<string, string> = {
   'Aller sur alphabette.fr': 'Go to alphabette.fr',
   'Toutes les applis': 'All apps',
+  'Laboratoire': 'Lab',
+  'Laboratoire d’Octet : tester et proposer des idées': 'Octet’s Lab: test apps and suggest ideas',
   'Nouveautés': 'What’s new',
   'S’abonner': 'Subscribe',
   'Mon inscription': 'My membership',

@@ -83,6 +83,17 @@ export function EcosystemBar({ app, hubUrl, apps }: EcosystemBarProps) {
         {nouveautesNonVues > 0 && <span className="ab-eco__point" aria-hidden="true" />}
       </button>
 
+      {/* Laboratoire d'Octet : depuis alphabette.fr il mène à alphabette.eu (tester et proposer des idées) ; sur .eu il ouvre la section d'idées. */}
+      <a
+        className="ab-eco__icone ab-eco__labo"
+        href={surLeLaboratoire() ? '/#idees' : 'https://alphabette.eu/#idees'}
+        data-ab-tip={t('Laboratoire d’Octet : tester et proposer des idées')}
+        aria-label={t('Laboratoire d’Octet : tester et proposer des idées')}
+      >
+        <span aria-hidden="true">🐭</span>
+        <span className="ab-eco__labo-txt">{t('Laboratoire')}</span>
+      </a>
+
       <nav className="ab-eco__favoris" aria-label={t('Mes favoris')}>
         {favorisApps.map((fav) =>
           fav.key === app.key || !fav.url ? (

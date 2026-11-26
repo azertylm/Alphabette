@@ -397,10 +397,8 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
 
       {MODE_LABO && (
         <div className="accueil__applis communaute__zone">
-          <div className="communaute__duo">
-            <TableauHonneur noms={noms} />
-            <BoiteIdees />
-          </div>
+          <TableauHonneur noms={noms} />
+          <BoiteIdees />
         </div>
       )}
     </div>
