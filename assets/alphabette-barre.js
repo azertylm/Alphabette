@@ -93,7 +93,7 @@
 
   // ------------------------------------------------------------ Langue de la barre
   var EN = {
-    'Aller sur alphabette.fr': 'Go to alphabette.fr', 'Toutes les applis': 'All apps', 'Nouveautés': 'What’s new', 'S’abonner': 'Subscribe', 'Mon inscription': 'My membership', 'S’inscrire avec un code': 'Join with a code',
+    'Aller sur alphabette.fr': 'Go to alphabette.fr', 'Laboratoire': 'Lab', 'Laboratoire d’Octet : tester et proposer des idées': 'Octet’s Lab: test apps and suggest ideas', 'Toutes les applis': 'All apps', 'Nouveautés': 'What’s new', 'S’abonner': 'Subscribe', 'Mon inscription': 'My membership', 'S’inscrire avec un code': 'Join with a code',
     'Faire un don': 'Donate', 'Passer en mode nuit': 'Switch to night mode', 'Passer en mode jour': 'Switch to day mode',
     'Lire à voix haute': 'Read aloud', 'Arrêter la lecture': 'Stop reading', 'Plus d’options': 'More options', 'Taille du texte': 'Text size',
     'Normale': 'Normal', 'Grande': 'Large', 'Très grande': 'Extra large', 'Épingler cette appli': 'Pin this app', 'Retirer de mes favoris': 'Remove from favorites',
@@ -150,6 +150,7 @@
     '.ab-eco__marque{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:var(--ab-accent);color:#fff;font-size:12px;font-weight:900;}',
     '.ab-eco__icone{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 6px;border:0;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font:inherit;font-size:17px;line-height:1;cursor:pointer;}',
     '.ab-eco__icone:hover{background:rgba(255,255,255,.25);}',
+    '.ab-eco__labo{text-decoration:none;gap:6px;font-size:14px;font-weight:700;padding:0 10px;}.ab-eco__labo-txt{display:none;}@media (min-width:760px){.ab-eco__labo-txt{display:inline;}}',
     '.ab-eco__point{position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:999px;background:#ef4444;border:2px solid #0a1226;}',
     '.ab-eco__favoris{display:flex;align-items:center;gap:4px;min-width:0;}',
     '.ab-site{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;color:#cdd6ea;text-decoration:none;white-space:nowrap;font-size:13px;}',
@@ -522,6 +523,8 @@
       favorisZone.appendChild(cle === app.cle ? el('span', { class: 'ab-site ab-site--actif', text: '★ ' + lisible(a.name) }) : el('a', { class: 'ab-site', href: a.url, text: '★ ' + lisible(a.name) }));
     });
   }
+  /** Lien vers le Laboratoire d'Octet : jamais relatif depuis un autre domaine (on ne veut pas tomber sur une page inexistante de .fr). */
+  function lienLabo() { return (/(^|\.)alphabette\.eu$/.test(location.hostname) || local) ? '/#idees' : 'https://alphabette.eu/#idees'; }
   function tip(b, mot) { b.dataset.abTip = mot; b.setAttribute('aria-label', mot); return b; }
 
   function construire() {
@@ -531,6 +534,8 @@
       tip(el('a', { class: 'ab-eco__logo', href: 'https://www.alphabette.fr' }, [el('span', { class: 'ab-eco__marque', 'aria-hidden': 'true', text: 'α' }), el('span', { text: 'alphabette' })]), T('Aller sur alphabette.fr')),
       tip(el('button', { type: 'button', class: 'ab-eco__icone', text: '▦', onclick: panneauApps }), T('Toutes les applis')),
       tip(el('button', { type: 'button', class: 'ab-eco__icone', onclick: panneauNouveautes }, [el('span', { text: '🆕' }), point]), T('Nouveautés')),
+      // Laboratoire d'Octet : depuis alphabette.fr il mène à alphabette.eu (on y teste et on y contribue) ; sur .eu il ouvre la section d'idées.
+      tip(el('a', { class: 'ab-eco__icone ab-eco__labo', href: lienLabo(), 'data-ab-labo': '' }, [el('span', { 'aria-hidden': 'true', text: '🐭' }), el('span', { class: 'ab-eco__labo-txt', text: T('Laboratoire') })]), T('Laboratoire d’Octet : tester et proposer des idées')),
       favorisZone,
       el('div', { class: 'ab-eco__droite' }, [membre
         ? tip(el('button', { type: 'button', class: 'ab-abonner ab-abonner--membre', text: '👤 ' + membre.prenom, onclick: panneauMembre }), T('Mon inscription'))

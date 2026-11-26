@@ -1,0 +1,5 @@
+{
+  "_aide": "Conditions juridiques et commerciales d'une location sur alphabette.fr (licence, rémunération, durée, maintenance, retrait). TANT QUE « validees » vaut false, aucune idée ne peut passer à « Disponible sur alphabette.fr », quels que soient les soutiens ou les notes. Valentin ne passe à true qu'après avoir rédigé et fait valider ces conditions. Les prix et la répartition (15 €/an, 10 € créateur + 5 € Alphabette) restent ceux de data/apps-registry.json et ne sont pas modifiés ici.",
+  "validees": false,
+  "reference": null
+}
