@@ -69,6 +69,38 @@
         "proposed_fix": "Aucun correctif tant que Valentin n'a pas confirmé : (1) si la PR #31 répond à la demande, clore l'avis ; (2) sinon, redonner le lien lisible et lever la pause d'Orbit s'il veut une refonte."
       },
       "changelog_public_message": null
+    },
+    {
+      "id": "fb_1795683657_7422",
+      "app_id": "info",
+      "version_tested": "main",
+      "rating": null,
+      "category": "Idée",
+      "comment": "Les infos date de septembre il faut corriger ça",
+      "upvotes": 1,
+      "timestamp": "2026-11-26T09:00:57Z",
+      "source": "formulaire",
+      "declencheur": null,
+      "urgence": null,
+      "pseudo": "Tintoon",
+      "classement": null,
+      "incident_api": null,
+      "telemetry": {
+        "viewport": "686x1023 (dpr: 1.75)",
+        "platform": "Android / Chrome",
+        "console_errors": [],
+        "stockage_cles": [
+          "labo_erreurs_v1"
+        ]
+      },
+      "status": "pending",
+      "ai_analysis": {
+        "relevance_score": null,
+        "intervention_level": null,
+        "reasoning": null,
+        "proposed_fix": null
+      },
+      "changelog_public_message": null
     }
   ],
   "ab": [],
