@@ -260,6 +260,10 @@ await writeFile(
 );
 const labo = await preparerLaboratoire();
 await writeFile(path.join(sortie, '.htaccess'), HTACCESS(labo));
+/** Applis du registre en pause : jamais listées dans le sitemap ni le noscript de .fr. */
+const APPLIS_EN_PAUSE = ['lidarsol', 'osolar', 'proxilien', 'orbit', 'infos perso', 'info perso'];
+
+await referencerVitrine();
 // Empreinte de la version publiée : la publication vérifie qu'OVH l'a bien mise en ligne.
 await writeFile(
   path.join(sortie, 'version.json'),
@@ -271,6 +275,46 @@ console.log(`\nSite statique prêt : ${path.relative(racine, sortie)}/ (alphabet
 
 function echapperHtml(t) {
   return String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Référencement d'alphabette.fr : noscript lisible, robots.txt et sitemap.xml (applis actives uniquement). */
+async function referencerVitrine() {
+  const ORIGINE_FR = 'https://alphabette.fr';
+  const normaliser = (t) => String(t ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const { apps = [] } = JSON.parse(await readFile(path.join(racine, 'data', 'apps-registry.json'), 'utf8'));
+  const vus = new Set();
+  const actives = apps
+    .filter((a) => a.status === 'actif' && a.vitrine === true && a.name && !APPLIS_EN_PAUSE.includes(normaliser(a.name)))
+    .map((a) => { try { return { app: a, u: new URL(a.url) }; } catch { return null; } })
+    .filter((x) => x && x.u.protocol === 'https:' && /(^|\.)alphabette\.fr$/.test(x.u.hostname))
+    .map(({ app, u }) => ({ nom: app.name, desc: app.description || '', url: `${u.origin}${u.pathname}${u.search}` }))
+    .filter((l) => (vus.has(l.url) ? false : vus.add(l.url)));
+
+  const index = path.join(sortie, 'index.html');
+  let html = await readFile(index, 'utf8');
+  const description = (html.match(/<meta\s+name="description"\s+content="([^"]*)"/i) || [])[1] ?? '';
+  const noscript = `<noscript>
+      <h1>ALPHABETTE — Solutions logicielles et IA souveraines</h1>
+      <p>${description}</p>
+      <ul>
+${actives.map((l) => `        <li><a href="${echapperHtml(l.url)}">${echapperHtml(l.nom)}</a>${l.desc ? ` — ${echapperHtml(l.desc)}` : ''}</li>`).join('\n')}
+      </ul>
+    </noscript>`;
+  html = html.replace(/<noscript>[\s\S]*?<\/noscript>\s*/i, '');
+  html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
+  await writeFile(index, html);
+
+  await writeFile(path.join(sortie, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: ${ORIGINE_FR}/sitemap.xml\n`);
+  const jour = new Date().toISOString().slice(0, 10);
+  const urls = [`${ORIGINE_FR}/`, ...PAGES_FR.map((p) => `${ORIGINE_FR}/${p}/`), ...actives.map((l) => l.url)];
+  const uniques = [...new Set(urls)];
+  await writeFile(
+    path.join(sortie, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      uniques.map((u) => `  <url><loc>${echapperHtml(u)}</loc><lastmod>${jour}</lastmod></url>`).join('\n') +
+      `\n</urlset>\n`
+  );
+  console.log(`référencement .fr : noscript, robots.txt, sitemap (${uniques.length} adresses)`);
 }
 
 /** Référencement d'alphabette.eu : page d'accueil distincte de .fr, robots.txt et sitemap.xml. */
@@ -291,6 +335,8 @@ async function referencerLaboratoire(eu, appsEu) {
   meta('name', 'description', DESCRIPTION_EU);
   meta('property', 'og:title', TITRE_EU);
   meta('property', 'og:description', DESCRIPTION_EU);
+  meta('name', 'twitter:title', TITRE_EU);
+  meta('name', 'twitter:description', DESCRIPTION_EU);
   meta('property', 'og:url', `${ORIGINE_EU}/`);
   meta('property', 'og:site_name', 'Alphabette');
   html = html.replace(/<link\s+rel="canonical"[^>]*>\s*/i, '');
@@ -312,6 +358,8 @@ ${liens.map((l) => `        <li><a href="${echapperHtml(l.chemin)}">${echapperHt
     </noscript>`;
   html = html.replace(/<noscript>[\s\S]*?<\/noscript>\s*/i, '');
   html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
+  // Le JSON-LD d'index.html décrit alphabette.fr : il n'a pas sa place sur .eu.
+  html = html.replace(/\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
   await writeFile(index, html);
 
   await writeFile(path.join(eu, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /merci/\nDisallow: /kit-terrain/\nDisallow: /en-direct/\nDisallow: /transfert/\n\nSitemap: ${ORIGINE_EU}/sitemap.xml\n`);

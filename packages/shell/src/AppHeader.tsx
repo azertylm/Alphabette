@@ -162,7 +162,7 @@ export function AppHeader({ app, onToggleNav }: AppHeaderProps) {
             {entree('💬', t('Donner mon avis'), sh.donnerAvis)}
             {sh.noter && entree('★', t('Noter cette appli'), sh.noter)}
             {entree('🚩', t('Signaler un problème / abus'), () => sh.openPanel('signaler'))}
-            {entree('🛠️', t('Publier une appli (Gagnez 10 €/an)'), () => sh.openPanel('publier'))}
+            {entree('🛠️', t('Publier une appli'), () => sh.openPanel('publier'))}
             {entree('🎁', t('Inviter un ami'), () => sh.openPanel('inviter'))}
             {entree('🕊️', t('Mode Calme'), sh.basculerCalme, sh.calme)}
             {entree('🖨️', t('Imprimer'), sh.imprimer)}

@@ -120,7 +120,8 @@
       "ordre": 6,
       "vitrine": true,
       "cover": "/covers/France%20Service.jpg",
-      "coverCustom": true
+      "coverCustom": true,
+      "gratuit": true
     },
     {
       "id": "copro-transparence",
@@ -275,7 +276,8 @@
       "description": "Zéro gaspi : ce qu'il reste dans votre frigo devient des recettes, une liste de courses et des idées.",
       "ordre": 10,
       "cover": "/covers/Frigo-Placard.jpg",
-      "coverCustom": true
+      "coverCustom": true,
+      "gratuit": true
     },
     {
       "id": "bonplan",
