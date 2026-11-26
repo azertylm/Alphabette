@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T16:56:40.717Z",
-  "empreinte_page_sha256": "78ff375f33c0773a109b9144dd56b2a2889f77fe8d50274f313f0ca06d21d17c",
+  "audite_le": "2026-11-26T19:35:45.928Z",
+  "empreinte_page_sha256": "f3f1afa094bdf2c060a9f5229076f7278acae23a37387643bf8e92c9362f39e3",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 280,
-      "bloquees": 280,
+      "requetes": 492,
+      "bloquees": 492,
       "types": [
         "image",
         "fetch"
@@ -70,14 +70,23 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 4,
-      "bloquees": 4,
+      "requetes": 2,
+      "bloquees": 2,
       "types": [
         "image"
       ]
     },
     {
       "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 2,
+      "bloquees": 2,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -120,15 +129,6 @@
       "types": [
         "image"
       ]
-    },
-    {
-      "hote": "media.lesechos.com",
-      "classe": "tierce",
-      "requetes": 1,
-      "bloquees": 1,
-      "types": [
-        "image"
-      ]
     }
   ],
   "resultat": {
@@ -140,13 +140,13 @@
       "images.unsplash.com",
       "i.f1g.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "img.lemde.fr",
       "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com",
-      "media.lesechos.com"
+      "www.google.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "401c139f4e440c086623b1e0ba40b90b2e91414d4f565e548a42039cccf695fc"
+  "empreinte_certificat_sha256": "5b85558b1f6c7da9b49063d333e637d726e2733648a49a21a3569e87f1b5a707"
 }
