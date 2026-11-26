@@ -19,6 +19,9 @@
 - [Info Perso : l'actualité que vous choisissez](https://alphabette.fr/info-perso/)
 - [Créez, publiez, soyez payé·e : devenir créateur](https://alphabette.fr/devenir-createur/)
 - [Dossier de presse](https://alphabette.fr/dossier-de-presse/)
+- [Senior Bon Plan : bien vivre après 60 ans](https://alphabette.fr/bon-plan-senior/)
+- [Frigo-Placard : zéro gaspi](https://alphabette.fr/frigo-placard/)
+- [Prompt Magic : de l'idée au cahier des charges](https://alphabette.fr/prompt-magic/)
 
 ## Laboratoire
 
