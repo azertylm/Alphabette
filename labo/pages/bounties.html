@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bounties — défis récompensés · Alphabette</title>
-<meta name="description" content="Des défis payés pour améliorer les applis : la somme est mise sous séquestre, 90 % pour la personne qui réussit.">
+<meta name="description" content="Défis pour améliorer les applis. Les primes payées en ligne sont prévues, pas encore ouvertes.">
 
 <link rel="stylesheet" href="/labo/pages.css">
 <style>.cache{display:none!important}.message{min-height:1.5em;font-weight:700}.message.ok{color:var(--ok)}.message.err{color:var(--err)}</style>
@@ -15,7 +15,8 @@
 <main id="contenu">
   <a class="retour" href="/">← Le Laboratoire Alphabette</a>
   <h1>Bounties</h1>
-  <p class="chapeau">Un défi, une récompense. La somme (10 € minimum) est <strong>mise sous séquestre</strong> dès le dépôt ; la personne qui réussit reçoit <strong>90 %</strong>, Alphabette garde 10 %.</p>
+  <p class="bandeau-prevu" role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:.75rem 1rem;border-radius:8px;margin:1rem 0"><strong>Paiement en ligne pas encore ouvert.</strong> Les primes (bounties) sont prévues mais aucun paiement ni versement n'est possible aujourd'hui. Vous pouvez lire les défis ; le dépôt de prime est désactivé.</p>
+  <p class="chapeau">Un défi, une récompense <strong>prévue</strong> : la prime (10 € minimum, 90 % pour la personne qui réussit) n'est pas encore versée.</p>
   <div id="liste"><p>Chargement…</p></div>
   <h2>Proposer un défi</h2>
   <div id="cnx"></div>
@@ -27,7 +28,7 @@
     <fieldset class="radios"><legend>Payer avec</legend>
       <label><input type="radio" name="moyen" value="solde" checked> mon solde créateur</label>
       <label><input type="radio" name="moyen" value="carte"> ma carte</label></fieldset>
-    <button type="submit">Déposer la bounty</button>
+    <button type="submit" disabled aria-disabled="true">Dépôt de prime bientôt ouvert</button>
     <p class="message" id="m"></p>
   </form>
 </main>
