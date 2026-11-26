@@ -186,9 +186,9 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
             </h1>
             <div className="collectif-actions">
               <a className="labo__bouton labo__bouton--envoyer" href="/embarquement/">
-                ＋ Proposer une application
+                ＋ Proposer une appli
               </a>
-              <a className="labo__bouton" href="/rejoindre/">Rejoindre le réseau (badge)</a>
+              <a className="labo__bouton" href="/rejoindre/">Rejoindre le réseau</a>
             </div>
             <p className="collectif-raccourcis">
               <a href="#tableau-honneur">🏆 Tableau d'Honneur</a>
@@ -205,18 +205,20 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           {gratuites > 0 && ` ${gratuites} sont gratuites, définitivement.`}
         </p>
 
-        <label className="accueil__recherche">
-          <Search aria-hidden="true" />
-          <span className="accueil__cache">Chercher une application</span>
-          <input
-            type="search"
-            value={recherche}
-            onChange={(event) => setRecherche(event.target.value)}
-            placeholder="Que cherchez-vous ?"
-            autoComplete="off"
-          />
-        </label>
-        <SurprendsMoi apps={visibles} />
+        <div className="accueil__haut-outils">
+          <label className="accueil__recherche">
+            <Search aria-hidden="true" />
+            <span className="accueil__cache">Chercher une application</span>
+            <input
+              type="search"
+              value={recherche}
+              onChange={(event) => setRecherche(event.target.value)}
+              placeholder="Que cherchez-vous ?"
+              autoComplete="off"
+            />
+          </label>
+          <SurprendsMoi apps={visibles} />
+        </div>
       </section>
 
       <CommentCaMarche />
