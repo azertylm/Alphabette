@@ -4,6 +4,7 @@
  * alphabette.eu a déjà son robots.txt, son sitemap et son contenu lisible sans JavaScript
  * (referencerLaboratoire dans build-static.mjs). Cette fonction fait la même chose pour alphabette.fr :
  *  - robots.txt + sitemap.xml (adresses de alphabette.fr uniquement : un sitemap ne peut pas lister d'autres hôtes) ;
+ *  - llms.txt (résumé du site pour les assistants IA, format llmstxt.org) ;
  *  - dans l'accueil : données structurées Schema.org (Organization, WebSite, liste d'applications),
  *    image de partage si elle existe, et un contenu lisible sans JavaScript (<noscript>).
  *
@@ -48,6 +49,22 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
       urls.map((u) => `  <url><loc>${echapper(ORIGINE + u)}</loc><lastmod>${jour}</lastmod></url>`).join('\n') +
       `\n</urlset>\n`
+  );
+
+  // 1 bis. llms.txt : le même résumé, en Markdown, pour les assistants IA qui lisent le web.
+  const listeApps = vitrine.filter((a) => a.name && a.url);
+  const pagesTexte = [
+    ['manifeste', 'Le manifeste : zéro pub, zéro compte'],
+    ['kit-seniors', 'Kit Mairie & Résidence Senior'],
+    ['site-vitrine', 'Site vitrine clé en main'],
+  ].filter(([p]) => pagesFr.includes(p));
+  await writeFile(
+    path.join(sortie, 'llms.txt'),
+    `# Alphabette\n\n> Alphabette réunit des applications utiles en français : pas de publicité, pas de revente de données, pas de compte quand on peut s'en passer. Éditeur indépendant basé à La Grande-Motte (Hérault). Les nouveautés sont testées en public sur alphabette.eu avant d'arriver sur alphabette.fr.\n\n## Applications\n\n` +
+      listeApps.map((a) => `- [${nomLisible(a.name)}](${a.url})${a.description ? `: ${a.description}` : ''}`).join('\n') +
+      `\n\n## Pages\n\n` +
+      pagesTexte.map(([p, t]) => `- [${t}](${ORIGINE}/${p}/)`).join('\n') +
+      `\n\n## Laboratoire\n\n- [alphabette.eu](https://alphabette.eu/): applications à tester en avant-première et à noter.\n`
   );
 
   // 2. Accueil : données structurées + contenu lisible sans JavaScript
@@ -115,5 +132,5 @@ ${liensPages.map(([p, t]) => `        <li><a href="/${p}/">${echapper(t)}</a></l
   html = html.replace(/<noscript>[\s\S]*?<\/noscript>\s*/gi, '');
   html = html.replace(/<div id="root"><\/div>/i, (m) => `${m}\n    ${noscript}`);
   await writeFile(index, html);
-  console.log(`référencement .fr : robots.txt, sitemap (${urls.length} adresses), données structurées, contenu sans JavaScript (${apps.length} applis)`);
+  console.log(`référencement .fr : robots.txt, sitemap (${urls.length} adresses), llms.txt, données structurées, contenu sans JavaScript (${apps.length} applis)`);
 }
