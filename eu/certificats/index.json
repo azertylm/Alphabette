@@ -2,23 +2,23 @@
   "apps": {
     "iadebat": {
       "conforme": true,
-      "audite_le": "2026-11-25T20:47:59.911Z",
-      "empreinte": "ec37518a994b22434f372ffcc7007302ca1f8ed437f6aa2bea3d38f9b298d0d1"
+      "audite_le": "2026-11-25T20:57:13.298Z",
+      "empreinte": "64d216309b3e59c81c173b91720f9c96284380be47e5f50f5f78ac7265a42c08"
     },
     "infos-perso": {
-      "conforme": true,
-      "audite_le": "2026-11-25T20:48:28.378Z",
-      "empreinte": "03dd256de964df539c586c0d49b5227bf8a56991f1f299f6c20803b905e80571"
+      "conforme": false,
+      "audite_le": "2026-11-25T20:57:42.821Z",
+      "empreinte": "dcdc9a1160bb782173384a4654097aa75141e22bb0ab4224cfd1336e524bfac7"
     },
     "france-service": {
       "conforme": true,
-      "audite_le": "2026-11-25T20:48:48.108Z",
-      "empreinte": "c5c3c8ae21e2c3ae9227debb4c564a6fb1ca7d132f50e43bb4c7fda7de5b2d89"
+      "audite_le": "2026-11-25T20:58:03.255Z",
+      "empreinte": "b4a3eee74e1844b1fd9c2d4129b13201210ac09a5beea80a04e44bb757e6c212"
     },
     "wikicom": {
       "conforme": true,
-      "audite_le": "2026-11-25T20:49:15.012Z",
-      "empreinte": "276a3e8fffd89324792b97d238ded3b36fe67004f3400d3daa09589879eccc42"
+      "audite_le": "2026-11-25T20:58:29.646Z",
+      "empreinte": "35fd6328b25406539620cc4080f3633858a8d28a17e46a104f2af818abbdb35c"
     }
   }
 }
