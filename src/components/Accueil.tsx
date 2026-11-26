@@ -12,7 +12,6 @@ import { Signaler } from '../labo/Signaler';
 import { chargerSoutiens, dejaSoutenu, soutenir } from '../labo/collectif';
 import { BadgeMetal, CarteSquelette, EcranVide, FioleLabo, NutriBadge, NutriFiche, celebrerSiNouveau, cleCategorie, resultatPour, useNutri } from '@alphabette/shell';
 import { SurprendsMoi } from './SurprendsMoi';
-import { CommentCaMarche, EncartAtelierVitrine } from './CommentCaMarche';
 
 /** Seuil du passage .eu → .fr : 10 avis positifs, ratio ≥ 75 % (CLAUDE.md). */
 const SEUIL_FR = 10;
@@ -222,10 +221,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           />
         </label>
         <SurprendsMoi apps={visibles} />
-        <EncartAtelierVitrine />
       </section>
-
-      <CommentCaMarche />
 
       <section id="nos-applications" className="accueil__applis" aria-label="Nos applications">
         <h2 className="accueil__rubrique">
