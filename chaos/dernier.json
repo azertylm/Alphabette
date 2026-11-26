@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-11-25T10:24:46.041Z",
+  "genere_le": "2026-11-26T10:02:12.108Z",
   "base": "https://alphabette.eu",
   "agent": "Agent Chaos",
   "apps": [
@@ -82,10 +82,34 @@
       "anomalies": []
     },
     {
+      "app_id": "omnistat",
+      "nom": "OmniStats",
+      "url": "https://alphabette.eu/apps/omnistat/",
+      "anomalies": []
+    },
+    {
       "app_id": "orbit",
       "nom": "ORBIT",
       "url": "https://alphabette.eu/orbit/",
-      "anomalies": []
+      "anomalies": [
+        {
+          "type": "console_error",
+          "etape": "chargement",
+          "detail": "The script has an unsupported MIME type ('text/html').",
+          "ecran": "320x568",
+          "ticket": "[Agent Chaos] ORBIT — console error (chargement, 320x568) : The script has an unsupported MIME type ('text/html')."
+        },
+        {
+          "type": "debordement",
+          "etape": "chargement",
+          "detail": "Défilement horizontal de 3px à 320px de large",
+          "elements": [
+            "button.px-3.5 (323px)"
+          ],
+          "ecran": "320x568",
+          "ticket": "[Agent Chaos] ORBIT — debordement (chargement, 320x568) : Défilement horizontal de 3px à 320px de large"
+        }
+      ]
     },
     {
       "app_id": "ou-cest",
@@ -164,7 +188,13 @@
       "nom": "Le Crash-Testeur",
       "url": "https://alphabette.eu/crash-testeur/",
       "anomalies": []
+    },
+    {
+      "app_id": "c-tranche-vite",
+      "nom": "Tranche-Vite",
+      "url": "https://alphabette.eu/createurs/c-tranche-vite/",
+      "anomalies": []
     }
   ],
-  "total": 0
+  "total": 2
 }
