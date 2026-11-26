@@ -60,7 +60,6 @@ Modèle : accroche en 1 ligne + lien en bio + 5 hashtags. Une légende par vidé
 - Wikicom : « Les bons outils du web, libres et légaux, au même endroit » #outils #logiciellibre #astuces #web #gratuit
 - Orbit : « Tes vidéos sans algorithme, avec un minuteur doux » #sansalgorithme #bienêtrenumérique #YouTube #TikTok #focus
 - Goat Chèvre The King : « Classe tes légendes du foot en pyramide » #football #goat #classement #débatfoot #quiz
-(Corriger le hashtag #viepratique en #viepratique avant publication.)
 
 Conseils vidéo : 20 à 40 secondes, sous-titres incrustés (beaucoup regardent sans le son), premier plan = résultat, pas la présentation. Fin : « Lien dans ma bio ».
 
