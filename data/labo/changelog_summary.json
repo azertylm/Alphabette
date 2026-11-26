@@ -40,6 +40,12 @@
         "date": "2026-11-25T20:40:00Z",
         "message": "Les champs de saisie sont annoncés par les lecteurs d'écran, suite au contrôle qualité du Laboratoire"
       }
+    ],
+    "info": [
+      {
+        "date": "2026-11-26T20:30:00Z",
+        "message": "Les articles d'exemple n'affichent plus de fausse date de septembre, suite à vos retours"
+      }
     ]
   }
 }

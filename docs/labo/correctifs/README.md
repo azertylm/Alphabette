@@ -1,3 +1,9 @@
+# ⏳ En attente de l'ordre de Valentin
+
+| Date | Correctif | Ce qu'il fait |
+|---|---|---|
+| 26/11/2026 | `orbit-service-worker-et-barre-etroite.patch` (hub : `public/orbit/index.html`) | Orbit (en pause) : service worker en `./sw.js` (fin de l'erreur « unsupported MIME type ») et rangée du haut qui passe à la ligne (fin du débordement à 320 et 280 px). Testé à 280/320/360/390/1280 px, « OK pour publier » de qa-verifier. Appliquer : `git apply docs/labo/correctifs/orbit-service-worker-et-barre-etroite.patch`, commit, push sur `main` (alphabette.eu seulement). |
+
 # ✅ Appliqué le 25/11/2026 sur ordre de Valentin — ne pas réappliquer
 
 | Date | Correctif | Ce qu'il fait |

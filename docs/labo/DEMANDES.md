@@ -3,6 +3,43 @@
 Écrites par le cycle du laboratoire (`/cycle-labo`) : demandes de Niveau 2 et propositions de transfert vers
 alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… » ou « non pour fb_… (raison) ».
 
+## 26/11/2026 — Passage quotidien : 1 avis corrigé, Orbit attend ton ordre
+
+### ✅ Fait — ALPHABETTE INFO : plus de fausse date de septembre (avis fb_1795683657_7422, +1)
+- **Résumé** : « Les infos date de septembre il faut corriger ça ».
+- **Mon avis critique** : avis juste. Sans flux d'actualités choisi, la page montre des articles d'exemple inventés, datés
+  de septembre, sous la date du jour : on croit à des nouvelles périmées. Le bandeau « exemples inventés » ne suffisait pas.
+  Je n'ai pas chargé de vraies actualités d'office : il faudrait appeler un service extérieur à chaque ouverture, sans
+  que le visiteur l'ait demandé. Pour avoir de vraies nouvelles, il suffit d'appuyer sur « Ajouter mes sources d'actualités ».
+- **Ce que j'ai fait** : les exemples n'affichent plus aucune date (liste, lecture, copie, impression). Les vrais flux
+  gardent la leur. « OK pour publier » de qa-verifier ; en ligne sur [alphabette.eu/info.html](https://alphabette.eu/info.html)
+  avec ce passage. alphabette.fr n'est pas touché : son adresse renvoie vers .eu.
+
+### ⏳ Attend ton ordre — Orbit : 2 anomalies de l'Agent Chaos (nuit du 26/11)
+- **Résumé** : sur [alphabette.eu/orbit/](https://alphabette.eu/orbit/), une erreur « unsupported MIME type » à chaque
+  ouverture, et le bouton « Publier » qui sort de l'écran sur petit téléphone (320 px et moins).
+- **Mon avis critique** : même erreur que le 19/11 sur 3 applis. Orbit v4, restauré hier, a été construit pour la racine
+  d'un site, alors qu'il vit dans `/orbit/`. Son manifeste vise aussi la racine : installé depuis .eu, il ouvrirait la page
+  d'accueil du Labo au lieu d'Orbit. Le correctif ne règle pas ce point. Orbit est en pause, donc je n'y ai pas touché.
+- **Ce que j'ai fait** : correctif prêt et testé (plus d'erreur, aucun défilement de côté à 280, 320, 360, 390 et 1280 px),
+  « OK pour publier » de qa-verifier : [orbit-service-worker-et-barre-etroite.patch](https://github.com/azertylm/alphabette/blob/main/docs/labo/correctifs/orbit-service-worker-et-barre-etroite.patch).
+  Phrase à me dire : « Applique le correctif orbit-service-worker-et-barre-etroite du Laboratoire et publie-le. »
+
+### Pour information
+- 0 avis rejeté, 0 Niveau 2. Aucune appli éligible au passage vers .fr.
+- Alerte « sauvegarde des avis arrêtée depuis 49 h » du Concierge : fausse alerte, le relevé a tourné avec succès
+  aujourd'hui à 4 h 45 et 18 h 17 ([journal](https://github.com/azertylm/Alphabette/actions/workflows/labo-avis.yml)).
+- Concierge : certificat HTTPS illisible pour proxilien.eu (ProxiLien est en pause). Pour le réparer : dans l'espace OVH,
+  Hébergement → Multisite, vérifier que proxilien.eu est rattaché avec le SSL activé.
+- Crédit OpenRouter toujours épuisé (Économe) : le Mode Gratuit continue. Pour relancer les débats Premium :
+  [ajouter du crédit](https://openrouter.ai/settings/credits).
+- Atelier qualité : pas de nouvelle correction ce passage (petits boutons et petits textes relevés surtout dans la barre
+  commune, qui touche aussi alphabette.fr). Signalements, propositions et boîte à idées : non relus ce passage
+  (adresses illisibles depuis la tâche planifiée).
+- Nouvelles applis de `data/apps-sources.json` (Radar, Curioz, Omnistat…) : cette session n'a pas eu l'accès en écriture
+  à leurs dépôts. Omnistat, la seule contrôlée cette nuit par l'Agent Chaos, n'avait pas d'anomalie ; les autres ne sont
+  pas encore dans sa ronde.
+
 ## 25/11/2026 — Passage quotidien : 2 avis, 4 corrections, correctif Sentinelle appliqué sur ton ordre
 
 ### ✅ FAIT le 25/11 sur ton ordre — Sentinelle : faux retrait d'Info Perso sur alphabette.fr

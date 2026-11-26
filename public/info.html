@@ -566,7 +566,7 @@ async function saveImported(){
 }
 function allArticles(){
   // Les articles fournis sont des exemples inventés : ils disparaissent dès qu'un vrai flux est lu.
-  return state.imported.length ? state.imported : ARTICLES.map(a=>Object.assign({}, a, {source:"Exemple inventé"}));
+  return state.imported.length ? state.imported : ARTICLES.map(a=>Object.assign({}, a, {source:"Exemple inventé", exemple:true}));
 }
 
 /* ========================= RENDER: masthead / feed ========================= */
@@ -625,7 +625,7 @@ function renderFeed(){
     card.innerHTML = `
       <div class="num">${String(i+1).padStart(2,"0")}</div>
       <div class="article-body">
-        <div class="article-meta"><span class="tag">${escapeHtml(a.category)}</span><span class="dot">·</span><span class="source-name">${escapeHtml(a.source)}</span><span class="dot">·</span><span class="source-name">${formatDate(a.date)}</span></div>
+        <div class="article-meta"><span class="tag">${escapeHtml(a.category)}</span><span class="dot">·</span><span class="source-name">${escapeHtml(a.source)}</span>${dateAff(a) ? `<span class="dot">·</span><span class="source-name">${dateAff(a)}</span>` : ""}</div>
         <div class="article-title">${escapeHtml(a.title)}</div>
         <div class="article-snippet">${escapeHtml(a.snippet)}</div>
       </div>`;
@@ -634,6 +634,8 @@ function renderFeed(){
   });
 }
 
+// Un exemple inventé n'a pas de vraie date : on n'en affiche aucune.
+function dateAff(a){ return a.exemple ? "" : formatDate(a.date); }
 function formatDate(iso){
   const d = new Date(iso+"T00:00:00");
   return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
@@ -645,7 +647,7 @@ function openArticle(a){
   document.getElementById("rTag").textContent = a.category;
   document.getElementById("rSource").textContent = a.source;
   document.getElementById("rTitle").textContent = a.title;
-  document.getElementById("rSub").textContent = formatDate(a.date) + " · lecture ≈ " + Math.max(1,Math.round(a.body.join(" ").split(" ").length/200)) + " min";
+  document.getElementById("rSub").textContent = (dateAff(a) ? dateAff(a) + " · " : "") + "lecture ≈ " + Math.max(1,Math.round(a.body.join(" ").split(" ").length/200)) + " min";
   const lien = (a.link && /^https?:\/\//i.test(a.link)) ? a.link : "";
   document.getElementById("rText").innerHTML = a.body.filter(p=>!(lien && p.indexOf("Lire l'article original : ")===0)).map(p=>`<p>${escapeHtml(p)}</p>`).join("")
     + (lien ? `<p><a href="${escapeHtml(lien)}" target="_blank" rel="noopener">Lire l'article complet sur le site d'origine ↗</a></p>` : "");
@@ -1088,7 +1090,7 @@ exportModal.querySelectorAll("[data-export]").forEach(btn=>{
 });
 
 function buildPlainText(a){
-  let out = a.title.toUpperCase()+"\n"+a.source+" · "+formatDate(a.date)+" · "+a.category+"\n\n"+a.body.join("\n\n");
+  let out = a.title.toUpperCase()+"\n"+a.source+" · "+(dateAff(a) ? dateAff(a)+" · " : "")+a.category+"\n\n"+a.body.join("\n\n");
   TOOLS.forEach(t=>{
     const cached = state.toolCache[a.id+"_"+t.id];
     if(cached){ out += "\n\n--- "+t.name.toUpperCase()+" ---\n"+cached; }
@@ -1106,7 +1108,7 @@ function buildHtmlExport(a, dark){
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${escapeHtml(a.title)}</title>
 <style>body{background:${bg};color:${fg};font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.7;} h1{font-size:1.8rem;} .meta{color:${dark?'#A9ADB5':'#6B6153'};font-size:.85rem;margin-bottom:24px;font-family:sans-serif;} h3{margin-top:30px;font-family:sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;color:#A82F2A;}</style>
 </head><body>
-<div class="meta">${escapeHtml(a.category)} · ${escapeHtml(a.source)} · ${escapeHtml(formatDate(a.date))}</div>
+<div class="meta">${escapeHtml(a.category)} · ${escapeHtml(a.source)}${dateAff(a) ? " · " + escapeHtml(dateAff(a)) : ""}</div>
 <h1>${escapeHtml(a.title)}</h1>
 ${a.body.map(p=>`<p>${escapeHtml(p)}</p>`).join("\n")}
 ${extras}
