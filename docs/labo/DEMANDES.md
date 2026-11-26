@@ -15,7 +15,18 @@ alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… 
   gardent la leur. « OK pour publier » de qa-verifier ; en ligne sur [alphabette.eu/info.html](https://alphabette.eu/info.html)
   avec ce passage. alphabette.fr n'est pas touché : son adresse renvoie vers .eu.
 
-### ⏳ Attend ton ordre — Orbit : 2 anomalies de l'Agent Chaos (nuit du 26/11)
+### ✅ FAIT le 26/11 sur ton ordre — Orbit corrigé (« Je t'autorise fais-le »)
+- **Résumé** : correctif ci-dessous appliqué, plus deux compléments : 1) le manifeste vise `/orbit/` : l'appli installée
+  ouvre Orbit (et plus l'accueil du Labo), ses icônes sont trouvées, le partage vers Orbit arrive dans Orbit ;
+  2) veto de qa-verifier, justifié : une fois son service worker actif, Orbit aurait vidé les fichiers hors ligne de
+  TOUTES les applis d'alphabette.eu (même adresse pour toutes) ; il ne vide plus que les siens.
+- **Mon avis critique** : le code principal d'Orbit vide encore tous les caches à 2 endroits ; je l'ai neutralisé depuis la
+  page sans toucher ce gros fichier. Si Orbit est reconstruit un jour, corriger ces 2 endroits à la source. Ce fichier
+  contient aussi des adresses e-mail en clair, dont la tienne (azertylm@…) : visibles par tout le monde.
+- **Ce que j'ai fait** : testé (aucun défilement de côté de 280 à 1280 px, plus d'erreur, appli installable sans erreur,
+  cache des autres applis conservé), « OK pour publier » de qa-verifier, publié sur [alphabette.eu/orbit/](https://alphabette.eu/orbit/).
+
+### (Préparé ce soir, appliqué ensuite) — Orbit : 2 anomalies de l'Agent Chaos (nuit du 26/11)
 - **Résumé** : sur [alphabette.eu/orbit/](https://alphabette.eu/orbit/), une erreur « unsupported MIME type » à chaque
   ouverture, et le bouton « Publier » qui sort de l'écran sur petit téléphone (320 px et moins).
 - **Mon avis critique** : même erreur que le 19/11 sur 3 applis. Orbit v4, restauré hier, a été construit pour la racine

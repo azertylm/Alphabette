@@ -9,7 +9,8 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       try {
-        const keys = await caches.keys();
+        // Sur alphabette.eu, toutes les applis partagent la même origine : ne vider que les caches d'Orbit.
+        const keys = (await caches.keys()).filter((key) => key.startsWith("orbit"));
         await Promise.all(keys.map((key) => caches.delete(key)));
         await self.clients.claim();
 
@@ -57,15 +58,17 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const urlObj = new URL(event.request.url);
 
+  // Orbit vit sous /orbit/ sur alphabette.eu : on compare au dossier du service worker, pas à la racine du site.
+  const racine = new URL(self.registration.scope).pathname;
   if (
-    urlObj.pathname === "/" &&
+    urlObj.pathname === racine &&
     (urlObj.searchParams.has("url") || urlObj.searchParams.has("text"))
   ) {
     const sharedUrl =
       urlObj.searchParams.get("url") || urlObj.searchParams.get("text") || "";
     const sharedTitle = urlObj.searchParams.get("title") || "";
     const redirectTarget =
-      "/?shared_url=" +
+      racine + "?shared_url=" +
       encodeURIComponent(sharedUrl) +
       (sharedTitle ? "&shared_title=" + encodeURIComponent(sharedTitle) : "");
     event.respondWith(Response.redirect(redirectTarget, 303));
