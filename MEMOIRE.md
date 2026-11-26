@@ -17,7 +17,7 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 
 ## Décisions
 - Focus 26-28/11 : écosystème, pas une appli en particulier.
-- Ne pas promettre de gains, bounties payées par carte ni modification du code par des inconnus (Stripe non branché).
+- Ne pas promettre de gains, bounties payées par carte ni modification du code par des inconnus (Stripe non branché ; pages corrigées en ce sens le 26/11).
 - Contact public : contact@alphabette.fr (le téléphone n'est pas écrit : dépôt public).
 - Aucun agent supprimé à partir de maintenant (consigne Valentin).
 - Chef : Opus 5.5. Exécutants : Sonnet 5.5.
@@ -26,7 +26,8 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 
 ## Reste à faire
 - PC de Valentin : Remote Control à activer pour captures et vérifs en ligne (liste de dossiers vide le 26/11).
-- DÉCISION VALENTIN (Niveau 2) : corriger les pages labo/pages/{bounties,rejoindre-createurs,contribuer,idees}.html et labo/createurs/soumettre.html : ~10 phrases promettent des gains/jours gratuits alors que Stripe n'est pas branché ; aucune n'affiche « paiement en ligne pas encore ouvert ». Corrections proposées : « prévu, pas encore ouvert », bandeau, formulaire de prime désactivé.
+- FAIT 26/11 (commit 7274ff8) : décision de Valentin = OUI. Pages labo/pages/{bounties,rejoindre-createurs,contribuer,idees}.html et labo/createurs/soumettre.html corrigées : bandeau « Paiement en ligne pas encore ouvert », gains/primes/jours gratuits reformulés comme « prévus », dépôt de prime désactivé. Non testé en navigateur ni en build ; le JS de /bounties et /contribuer peut réafficher d'anciens textes : à vérifier en ligne.
+- Stripe : compte non créé (Valentin ne peut pas pour l'instant). Prérequis : SIRET (micro-entreprise), IBAN, pièce d'identité ; mode test d'abord ; clés jamais dans le dépôt (public). Garder les mentions « pas encore ouvert » tant qu'aucun paiement réel n'a fonctionné de bout en bout.
 - Lancer `bun run build:static` en vrai pour valider le correctif SEO, puis déployer.
 - Fournir une vraie image 1200x630 (og.png).
 - Relire les kits avec `verificateur-honnetete`, vérifier les adresses, puis envoyer.
