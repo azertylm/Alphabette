@@ -11,6 +11,8 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 - Applis à pousser d'abord : Senior Bon Plan, Service France, Frigo-Placard (chiffres officiels à recontrôler avant communication).
 - Canaux gratuits : 1) relais seniors (France Services, médiathèques, associations), 2) Product Hunt / Show HN / AlternativeTo, prudence Reddit et Facebook.
 
+- Kits Service France et Frigo-Placard écrits (`docs/lancement/`) ; agents retirés : chef-de-projet, createur-app, migrateur-statique, inventeur-idees, documentaliste (27 restent : Laboratoire d'amélioration des applis intégralement conservé).
+
 ## Décisions
 - Chef : Opus 5.5. Exécutants : Sonnet 5.5.
 - Gmail et Google Agenda écartés (inutiles pour cette mission).
@@ -20,4 +22,5 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 - Lancer `bun run build:static` en vrai pour valider le correctif SEO, puis déployer.
 - Fournir une vraie image 1200x630 (og.png).
 - Relire les kits avec `verificateur-honnetete`, vérifier les adresses, puis envoyer.
-- Kits Service France et Frigo-Placard ; retirer les agents inutiles après vérification des scripts du Laboratoire.
+- Valentin à trancher : Frigo-Placard gratuite ou 15 €/an ? Gratuité de Service France à confirmer.
+- Vérifier les adresses des 3 kits avant envoi ; produire les captures (`graphiste`).

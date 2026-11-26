@@ -148,9 +148,9 @@ Ce que fait une application :
 
 ## Équipe d'agents
 
-25 agents spécialisés vivent dans `.claude/agents/` (dont les 5 du Laboratoire) (chef de projet,
-développeur, testeur mobile, vérificateur d'honnêteté, publieur…).
+27 agents spécialisés vivent dans `.claude/agents/` (dont ceux du Laboratoire : développeur,
+testeur mobile, vérificateur d'honnêteté, publieur…).
 Liste et mode d'emploi : `docs/EQUIPE-AGENTS.md`. Pour une demande large,
-commencer par `chef-de-projet`.
+commencer par le skill `orchestrateur-alphabette`.
 
 server.ts + server/ :api/ + labo/serveur/ | Endpoints PHP légers compatibles hébergement OVH Perso
