@@ -14,6 +14,8 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 - Kits Service France et Frigo-Placard écrits (`docs/lancement/`) ; agents retirés : chef-de-projet, createur-app, migrateur-statique, inventeur-idees, documentaliste (27 restent : Laboratoire d'amélioration des applis intégralement conservé).
 
 ## Décisions
+- Contact public : contact@alphabette.fr (le téléphone n'est pas écrit : dépôt public).
+- Aucun agent supprimé à partir de maintenant (consigne Valentin).
 - Chef : Opus 5.5. Exécutants : Sonnet 5.5.
 - Gmail et Google Agenda écartés (inutiles pour cette mission).
 - Les 33 agents existants sont conservés tels quels ; 6 sont retenus pour la mission.
@@ -22,5 +24,6 @@ Faire connaître Alphabette à toute la France et aux francophones, gratuitement
 - Lancer `bun run build:static` en vrai pour valider le correctif SEO, puis déployer.
 - Fournir une vraie image 1200x630 (og.png).
 - Relire les kits avec `verificateur-honnetete`, vérifier les adresses, puis envoyer.
-- Valentin à trancher : Frigo-Placard gratuite ou 15 €/an ? Gratuité de Service France à confirmer.
+- Service France et Frigo-Placard : gratuites (décision Valentin 26/11). `gratuit: true` mis au registre ; à reporter dans `alphabette.app.ts` de chacun de leurs dépôts.
+- Frigo-Placard : vérifier si une clé IA est nécessaire avant de soumettre aux annuaires.
 - Vérifier les adresses des 3 kits avant envoi ; produire les captures (`graphiste`).

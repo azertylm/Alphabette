@@ -1,15 +1,15 @@
 # Kit de lancement : Frigo-Placard
 
-Clé du registre : `frigoplacard` · Adresse : https://frigoplacard.alphabette.fr · Statut : `actif` · Champ `gratuit` : **absent** (≠ `gratuit: true`) · Fiche du registre mise à jour le 12/11/2026.
+Clé du registre : `frigoplacard` · Adresse : https://frigoplacard.alphabette.fr · Statut : `actif` · Champ `gratuit` du registre : à passer à `true` (décision de Valentin : gratuite) · Fiche du registre mise à jour le 12/11/2026.
 Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avant toute diffusion.
 
 ## À savoir avant d'écrire (vrai aujourd'hui)
-- **Gratuité : NON établie.** La fiche n'a pas `gratuit: true`. Le tarif du hub est de 15 € TTC par an et par appli (`docs/etat-du-projet.md`, tarif unique), mais « paiement en ligne pas encore ouvert », sans compte Stripe. Les « 7 jours d'essai » ne figurent que dans de vieux documents (`BRIEFING-ALPHABETTE.md`) : non confirmés pour cette appli. Les textes ci-dessous **ne disent donc ni « gratuit » ni prix ni essai**. Décision de Valentin à prendre avant diffusion : gratuite ou à 15 €/an ? Si gratuite, mettre `gratuit: true` au registre puis ajouter « gratuit » aux textes.
+- **Gratuité : décidée par Valentin, l'appli est GRATUITE.** Les textes disent « gratuit » ; ne citer ni prix ni essai (les « 7 jours d'essai » de vieux documents ne concernent pas cette appli). À faire hors de ce fichier : mettre `gratuit: true` au registre.
 - **Clé IA : non vérifiée.** Le dépôt de l'appli (`azertylm/frigoplacard-alphabette.fr`) n'est pas dans l'atelier et le site est injoignable d'ici. Rien ne prouve que l'appli fonctionne sans clé, ni qu'elle en réclame une. À contrôler sur le site (et si une clé est demandée, le dire dans les textes : « avec votre propre clé »). Les recettes sont-elles générées par IA ? Inconnu : ne pas le dire.
 - Statut : `actif` au registre ; le dossier de communication (`public/promo/index.html`) la classe « version bêta », public « familles, étudiants, tous ceux qui cuisinent ». Dire « version bêta ».
 - Précaution inscrite dans la fiche : « Vérifiez toujours les dates et l'état des aliments. »
 - Aucun avis noté (`maturity_index` : 0 note) : ne citer aucune satisfaction. Dernier correctif connu : champs d'ajout étiquetés pour les lecteurs d'écran (25/11/2026) ; BIG intégré (base commune, 11/11).
-- Paiement en ligne et société pas ouverts : ne parler ni de « société » ni de « SASU ». Confidentialité : ne jamais dire où habite Valentin. Contact public : contact@alphabette.fr.
+- Confidentialité : ne jamais dire où habite Valentin. Contact public unique : contact@alphabette.fr (aucun numéro de téléphone).
 
 ## 1. Promesse
 **Pour les foyers, familles et étudiants qui veulent jeter moins : vous indiquez ce qu'il reste dans le frigo, l'appli propose des recettes, une liste de courses et des idées.**
@@ -21,13 +21,13 @@ Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avan
 Image de partage : `public/covers/Frigo-Placard.jpg` et `public/covers/frigoplacard.svg` existent déjà dans le hub.
 
 ## 2. Textes
-**Texte court** (231 caractères)
-> Frigo-Placard : indiquez ce qu'il reste dans votre frigo, obtenez des recettes, une liste de courses et des idées pour ne rien jeter. Pour foyers, familles et étudiants. Version bêta, en français. https://frigoplacard.alphabette.fr
+**Texte court** (240 caractères)
+> Frigo-Placard : indiquez ce qu'il reste dans votre frigo, obtenez des recettes, une liste de courses et des idées pour ne rien jeter. Gratuit, pour foyers, familles et étudiants. Version bêta, en français. https://frigoplacard.alphabette.fr
 
-**Texte long** (85 mots)
-> Que faire avec ce qui reste dans le frigo, au lieu de le jeter ? Frigo-Placard vous aide : vous indiquez les restes, l'application propose des recettes, une liste de courses et des idées. Elle s'adresse aux foyers, aux familles, aux étudiants et à tous ceux qui cuisinent. Elle s'ouvre dans le navigateur du téléphone ou de l'ordinateur et se règle en grands caractères. Elle est en version bêta : vos remarques nous aident à l'améliorer. Vérifiez toujours les dates et l'état des aliments. https://frigoplacard.alphabette.fr
+**Texte long** (88 mots)
+> Que faire avec ce qui reste dans le frigo, au lieu de le jeter ? Frigo-Placard vous aide : vous indiquez les restes, l'application propose des recettes, une liste de courses et des idées. Elle est gratuite et s'adresse aux foyers, aux familles, aux étudiants et à tous ceux qui cuisinent. Elle s'ouvre dans le navigateur du téléphone ou de l'ordinateur et se règle en grands caractères. Elle est en version bêta : vos remarques nous aident à l'améliorer. Vérifiez toujours les dates et l'état des aliments. https://frigoplacard.alphabette.fr
 
-(« dans le navigateur » et « grands caractères » : à confirmer sur le site ; BIG est dans la base commune. Ajouter le prix ou « gratuit » seulement après décision, voir plus haut.)
+(« dans le navigateur » et « grands caractères » : à confirmer sur le site ; BIG est dans la base commune.)
 
 ## 3. Courriel type aux relais
 Destinataires : épiceries solidaires, associations anti-gaspillage, associations et bureaux de vie étudiante, mairies (service déchets / développement durable), centres sociaux, France Services.
@@ -38,7 +38,7 @@ Bonjour,
 
 Je vous écris au nom d'Alphabette, qui propose des applications sobres. L'une d'elles, Frigo-Placard, aide à ne pas jeter : on indique ce qu'il reste dans le frigo et l'application propose des recettes, une liste de courses et des idées. Elle s'adresse aux foyers, aux familles et aux étudiants.
 
-Elle s'ouvre dans un navigateur, sans installation : https://frigoplacard.alphabette.fr?src=courriel
+Elle est gratuite et s'ouvre dans un navigateur, sans installation : https://frigoplacard.alphabette.fr?src=courriel
 
 Accepteriez-vous de la présenter lors d'un atelier cuisine ou anti-gaspillage, ou de la citer dans votre lettre d'information ? Je peux vous envoyer une fiche d'une page à imprimer et répondre à vos questions. L'application est en version bêta : vos retours seront précieux.
 
@@ -46,24 +46,25 @@ Cordialement,
 Valentin, Alphabette
 contact@alphabette.fr
 
-(Ajouter une phrase sur le prix seulement après décision de Valentin. Ne pas citer de ville ni de partenaire : il n'y en a pas. Une épicerie solidaire s'adresse à des personnes en difficulté : parler d'« outil pour cuisiner les restes », jamais de ses bénéficiaires.)
+(Ne pas citer de ville ni de partenaire : il n'y en a pas. Une épicerie solidaire s'adresse à des personnes en difficulté : parler d'« outil pour cuisiner les restes », jamais de ses bénéficiaires.)
 
 ## 4. Soumissions
-Règle commune : aucune demande de vote ni de commentaire, un seul compte (celui de Valentin), message honnête sur le statut bêta. **Ne pas soumettre tant que le prix / la gratuité et la clé IA ne sont pas tranchés** : AlternativeTo et Product Hunt demandent la licence ou le prix.
+Règle commune : aucune demande de vote ni de commentaire, un seul compte (celui de Valentin), message honnête sur le statut bêta. **Ne pas soumettre tant que la clé IA n'est pas vérifiée.** Licence / prix à renseigner partout : gratuit.
 
 **AlternativeTo** (https://alternativeto.net, « Suggest new application »)
-- Nom : Frigo-Placard. Plateformes : Web. Licence : à renseigner après décision (gratuit ou payant).
-- Description : French web app: list what is left in your fridge and get recipes, a shopping list and ideas to cut food waste. Beta, French only.
+- Nom : Frigo-Placard. Plateformes : Web. Licence / prix : gratuit.
+- Description : Free French web app: list what is left in your fridge and get recipes, a shopping list and ideas to cut food waste. Beta, French only.
 - Alternatives : n'en citer qu'après les avoir comparées (aucune comparaison faite ici).
 
 **Product Hunt** (https://www.producthunt.com)
 - Titre : « Frigo-Placard : cuisiner les restes du frigo ».
 - Slogan : « Vos restes deviennent des recettes et une liste de courses. »
-- Premier commentaire rédigé par Valentin : appli en bêta, en français, prix exact, demande de **remarques**, jamais de votes. Choisir « site web ».
+- Prix : gratuit. Premier commentaire rédigé par Valentin : appli gratuite, en bêta, en français, demande de **remarques**, jamais de votes. Choisir « site web ».
+- Contact : contact@alphabette.fr
 
 **Show HN** (https://news.ycombinator.com/showhn.html)
 - Titre : « Show HN: Frigo-Placard, turn fridge leftovers into recipes and a shopping list (French) ».
-- Essayable sans inscription : à contrôler. Si une clé IA est demandée, le dire en premier dans le commentaire. Pas de demande de vote ; n'attendre aucun volume.
+- Essayable sans inscription : à contrôler. Si une clé IA est demandée, le dire en premier dans le commentaire. Mentionner que l'appli est gratuite. Pas de demande de vote ; n'attendre aucun volume.
 
 **Reddit et Facebook** : seulement après accord écrit des modérateurs (groupes anti-gaspillage, zéro déchet, cuisine du quotidien, réseaux étudiants) ; lire la règle du groupe, ne rien poster sinon.
 
@@ -93,4 +94,4 @@ Ajouter `?src=<canal>` à chaque lien partagé, par exemple :
 Un canal par lien ; ne rien en conclure sans compteur réel côté site (non vérifié ici).
 
 ## Interdits (rappel)
-Pas de faux avis, pas de demande de votes, pas de comptes multiples, pas de chiffre sans source, pas de fonction promise qui n'existe pas (compte, synchronisation, paiement, partenariat), pas de « gratuit » tant que le registre ne le dit pas.
+Pas de faux avis, pas de demande de votes, pas de comptes multiples, pas de chiffre sans source, pas de fonction promise qui n'existe pas (compte, synchronisation, paiement, partenariat).

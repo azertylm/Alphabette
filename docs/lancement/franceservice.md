@@ -1,6 +1,6 @@
 # Kit de lancement gratuit : Service France
 
-Clé du registre : `franceservice` (fiche `france-service`, nom « SERVICE FRANCE ») · Adresse : https://franceservice.alphabette.fr · Statut : `actif` · Fiche du registre mise à jour le 12/11/2026 · Pas de champ `gratuit` dans la fiche.
+Clé du registre : `franceservice` (fiche `france-service`, nom « SERVICE FRANCE ») · Adresse : https://franceservice.alphabette.fr · Statut : `actif` · Fiche du registre mise à jour le 12/11/2026 · Gratuité confirmée par Valentin (l'appli est gratuite) ; le registre n'a pas de champ `gratuit`.
 Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avant toute diffusion.
 
 ## ATTENTION : aucun lien avec le réseau public « France Services »
@@ -12,15 +12,15 @@ Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avan
 
 ## À savoir avant d'écrire (vrai aujourd'hui)
 - Fiche du registre : « Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement. » Badge « Populaire », `vitrine: true`.
-- **Gratuité : à confirmer par Valentin.** Le registre n'a pas de champ `gratuit`. Dans `docs/etat-du-projet.md` : tuile « Gratuit : guides, modèles, numéros utiles » (12/11) ; tarif unique annoncé de 15 € TTC/an par appli, mais paiement en ligne pas ouvert et pas de compte Stripe. Dans ce kit : « utilisable sans payer aujourd'hui », jamais de prix ni d'abonnement cité. Ne parler ni de « société » ni de « SASU » (société pas encore créée).
+- **Gratuité : décision de Valentin, confirmée : l'application est gratuite.** Dire « gratuit » / « gratuite » là où c'est pertinent ; ne citer aucun prix ni abonnement. Ne parler ni de « société » ni de « SASU » (société pas encore créée).
 - Non relu à ce jour (etat-du-projet.md) : la bannière d'essai `AlphabetteTrialBanner`. L'ancienne promesse « 7 jours offerts, clé Mistral fournie par Alphabette » était fausse : ne pas la reprendre.
 - Mode nuit absent (bouton masqué) ; double barre et BIG présents depuis le 11/11.
 - **Chiffres officiels (barème de points de permis, montants d'amendes, délais de paiement, plafonds) : à recontrôler** sur service-public.gouv.fr avant toute communication. Ce kit n'en cite aucun. Ne pas écrire « à jour » ni « 2026 » tant que le contrôle n'est pas fait (contrôle mensuel encore à mettre en place : etat-du-projet.md, « Pistes »).
 - Non vérifié ici : le site, le dépôt `azertylm/Service-france` et les contenus exacts de l'appli n'ont pas été ouverts ; je ne cite que la fiche du registre et l'état du projet. Revérifier ce que l'appli propose réellement avant d'envoyer (guides, modèles, numéros).
-- Confidentialité : ne jamais dire où habite Valentin ni où les applis sont faites. Contact public : contact@alphabette.fr. La mention « Zero-Knowledge » de `index.html` n'est pas à reprendre sans preuve.
+- Confidentialité : ne jamais dire où habite Valentin ni où les applis sont faites. Contact public : contact@alphabette.fr (aucun numéro de téléphone). La mention « Zero-Knowledge » de `index.html` n'est pas à reprendre sans preuve.
 
 ## 1. Promesse
-**Pour toute personne qui doit comprendre ses papiers : points de permis, amendes et démarches administratives expliqués simplement, avec guides, modèles et numéros utiles. Application indépendante, sans lien avec le réseau public France Services.**
+**Pour toute personne qui doit comprendre ses papiers : points de permis, amendes et démarches administratives expliqués simplement, avec guides, modèles et numéros utiles. Application gratuite et indépendante, sans lien avec le réseau public France Services.**
 
 3 captures à 390 px à produire par `graphiste` (aucune n'existe encore ; chacune montre l'appli telle qu'elle est, sans faux chiffre, sans logo officiel) :
 1. Écran d'accueil avec les rubriques (permis, amendes, démarches).
@@ -29,13 +29,13 @@ Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avan
 Image de partage : `public/covers/France Service.jpg` existe dans le hub (déclarée dans le registre) ; à vérifier qu'elle ne ressemble pas à un visuel de l'administration.
 
 ## 2. Textes
-**Texte court** (263 caractères)
-> Service France : points de permis, amendes et démarches expliqués simplement, avec guides, modèles et numéros utiles. Application indépendante, sans lien avec le réseau public France Services. Utilisable sans payer aujourd'hui. https://franceservice.alphabette.fr
+**Texte court** (240 caractères)
+> Service France : points de permis, amendes et démarches expliqués simplement, avec guides, modèles et numéros utiles. Application gratuite et indépendante, sans lien avec le réseau public France Services. https://franceservice.alphabette.fr
 
-**Texte long** (77 mots)
-> Vous avez un doute sur vos points de permis, une amende ou une démarche ? Service France est un portail citoyen qui explique ces papiers simplement, avec des guides, des modèles et des numéros utiles. Elle s'ouvre sur téléphone, tablette ou ordinateur. Elle est utilisable sans payer aujourd'hui. Attention : c'est une application indépendante d'Alphabette, sans aucun lien avec le réseau public France Services ni avec l'administration. Elle informe, elle ne remplace pas les sites officiels. https://franceservice.alphabette.fr
+**Texte long** (72 mots)
+> Vous avez un doute sur vos points de permis, une amende ou une démarche ? Service France est un portail citoyen gratuit qui explique ces papiers simplement, avec des guides, des modèles et des numéros utiles. Elle s'ouvre sur téléphone, tablette ou ordinateur. Attention : c'est une application indépendante d'Alphabette, sans aucun lien avec le réseau public France Services ni avec l'administration. Elle informe, elle ne remplace pas les sites officiels. https://franceservice.alphabette.fr
 
-(« modèles », « numéros utiles » : repris de etat-du-projet.md, à confirmer sur le site. « sans payer aujourd'hui » : à confirmer par Valentin. Vouvoiement respecté.)
+(« modèles », « numéros utiles » : repris de etat-du-projet.md, à confirmer sur le site. Gratuité confirmée par Valentin. Vouvoiement respecté.)
 
 ## 3. Courriel type aux relais
 Destinataires : médiathèques, mairies et CCAS, centres sociaux, associations d'inclusion numérique, et espaces France Services (précision ci-dessous).
@@ -48,7 +48,7 @@ Je vous écris au nom d'Alphabette, qui propose des applications sobres. L'une d
 
 Précision importante : cette application est indépendante. Elle n'a aucun lien avec le réseau public France Services ni avec l'administration, et elle ne remplace ni vos conseillers ni les sites officiels. Les montants et règles officiels restent à vérifier sur service-public.gouv.fr.
 
-Elle est utilisable sans payer aujourd'hui et fonctionne sur téléphone, tablette ou ordinateur : https://franceservice.alphabette.fr
+Elle est gratuite et fonctionne sur téléphone, tablette ou ordinateur : https://franceservice.alphabette.fr
 
 Accepteriez-vous de la présenter lors d'un atelier numérique, ou de la citer dans votre lettre d'information ? Je peux vous envoyer une fiche d'une page à imprimer et répondre à vos questions.
 
@@ -56,24 +56,25 @@ Cordialement,
 Valentin, Alphabette
 contact@alphabette.fr
 
-(Pour un espace France Services : garder la précision, ne pas écrire « France Services » dans l'objet, ne rien suggérer de « partenaire ». Ne pas citer de ville ni de partenaire : il n'y en a pas. Retirer « sans payer » si Valentin ne confirme pas.)
+(Pour un espace France Services : garder la précision, ne pas écrire « France Services » dans l'objet, ne rien suggérer de « partenaire ». Ne pas citer de ville ni de partenaire : il n'y en a pas.)
 
 ## 4. Soumissions
 Règle commune : aucune demande de vote ni de commentaire, un seul compte (celui de Valentin), message honnête, rappel de l'indépendance vis-à-vis de France Services.
 
 **AlternativeTo** (https://alternativeto.net, « Suggest new application »)
-- Nom : Service France (pas « France Service(s) » seul). Licence : à indiquer d'après la décision de Valentin (gratuit seulement si confirmé). Plateformes : Web.
-- Description : French web app that explains driving-licence points, fines and administrative procedures in plain language, with guides, templates and useful phone numbers. Independent; not affiliated with the French public network "France Services". French only.
+- Nom : Service France (pas « France Service(s) » seul). Licence / prix : Gratuit. Plateformes : Web.
+- Description : Free French web app that explains driving-licence points, fines and administrative procedures in plain language, with guides, templates and useful phone numbers. Independent; not affiliated with the French public network "France Services". French only.
 - Alternatives : ne rien indiquer sans comparaison ; service-public.gouv.fr est un site officiel, pas un concurrent.
 
 **Product Hunt** (https://www.producthunt.com)
 - Titre (60 car. max) : « Service France : permis, amendes et démarches, simplement » (à compter avant dépôt).
-- Slogan : « Comprendre ses papiers, indépendant de l'administration. »
-- Premier commentaire rédigé par Valentin : présenter l'appli, dire qu'elle est indépendante de l'administration et de France Services, en français, et demander des **remarques**, jamais des votes. Choisir « site web ».
+- Slogan : « Comprendre ses papiers, gratuit et indépendant de l'administration. »
+- Prix : gratuit (Free).
+- Premier commentaire rédigé par Valentin : présenter l'appli gratuite, dire qu'elle est indépendante de l'administration et de France Services, en français, et demander des **remarques**, jamais des votes. Choisir « site web ».
 
 **Show HN** (https://news.ycombinator.com/showhn.html)
-- Titre : « Show HN: Service France, plain-language help with French licence points and fines » (à ajuster selon ce que l'appli fait vraiment).
-- Règle HN : essayable sans inscription (à contrôler). Pas de vote demandé, pas de lien de campagne. Commentaire de l'auteur : pourquoi, limites (information générale, chiffres officiels à vérifier à la source, non affilié à l'administration). Audience peu francophone : aucun volume attendu, ne pas relancer.
+- Titre : « Show HN: Service France, plain-language help with French licence points and fines (free) » (à ajuster selon ce que l'appli fait vraiment).
+- Règle HN : essayable sans inscription (à contrôler). Pas de vote demandé, pas de lien de campagne. Commentaire de l'auteur : pourquoi, gratuite, limites (information générale, chiffres officiels à vérifier à la source, non affilié à l'administration). Audience peu francophone : aucun volume attendu, ne pas relancer.
 
 **Reddit et Facebook** : seulement après accord écrit des modérateurs ; lire la règle du groupe, ne rien poster sinon.
 
