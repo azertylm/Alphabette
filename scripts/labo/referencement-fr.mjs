@@ -60,6 +60,8 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['ia-debat', 'IA Débat : six IA débattent en direct'],
     ['service-france', 'Service France : vos papiers expliqués'],
     ['info-perso', "Info Perso : l'actualité que vous choisissez"],
+    ['devenir-createur', 'Créez, publiez, soyez payé·e : devenir créateur'],
+    ['dossier-de-presse', 'Dossier de presse'],
   ].filter(([p]) => pagesFr.includes(p));
   await writeFile(
     path.join(sortie, 'llms.txt'),
@@ -125,6 +127,8 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['ia-debat', 'IA Débat : six IA débattent en direct'],
     ['service-france', 'Service France : vos papiers expliqués'],
     ['info-perso', "Info Perso : l'actualité que vous choisissez"],
+    ['devenir-createur', 'Créez, publiez, soyez payé·e : devenir créateur'],
+    ['dossier-de-presse', 'Dossier de presse'],
   ].filter(([p]) => pagesFr.includes(p));
   const noscript = `<noscript>
       <h1>Alphabette — applications utiles, sans publicité</h1>
