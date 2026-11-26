@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T11:54:55.782Z",
+  "updatedAt": "2026-11-26T06:25:13.000Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -828,6 +828,18 @@
       "description": "Cabinet de curiosités interactif : photographiez un objet ou explorez un mystère pour révéler son époque, son usage et sa vie secrète selon votre niveau de lecture.",
       "cover": "/covers/Curioz.jpg",
       "coverCustom": true
+    },
+    {
+      "id": "omnistat",
+      "name": "OmniStats",
+      "slug": "omnistat",
+      "icon": "BarChart3",
+      "status": "brouillon",
+      "url": "https://alphabette.eu/apps/omnistat/",
+      "subdomain": "omnistat",
+      "createdAt": "2026-11-26T06:25:13.000Z",
+      "updatedAt": "2026-11-26T06:25:13.000Z",
+      "description": "Classements et statistiques historiques multi-sports (F1, football, NBA, NHL) pour clubs et nations, mis à jour chaque nuit."
     }
   ]
 }
