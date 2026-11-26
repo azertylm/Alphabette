@@ -834,12 +834,13 @@
       "name": "OmniStats",
       "slug": "omnistat",
       "icon": "BarChart3",
-      "status": "brouillon",
-      "url": "https://alphabette.eu/apps/omnistat/",
+      "status": "actif",
+      "url": "https://omnistat.alphabette.fr",
       "subdomain": "omnistat",
       "createdAt": "2026-11-26T06:25:13.000Z",
       "updatedAt": "2026-11-26T06:25:13.000Z",
-      "description": "Classements et statistiques historiques multi-sports (F1, football, NBA, NHL) pour clubs et nations, mis à jour chaque nuit."
+      "description": "Classements et statistiques historiques multi-sports (F1, football, NBA, NHL) pour clubs et nations, mis à jour chaque nuit.",
+      "badge": "Nouveau"
     }
   ]
 }
