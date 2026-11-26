@@ -1,6 +1,6 @@
 # Kit publicité et prospection (26 novembre 2026)
 
-Complète `KIT-DIFFUSION.md`. Rien ici n'est dépensé ni envoyé sans l'accord explicite de Valentin : ce sont des textes et un plan prêts à lancer.
+Complète `KIT-DIFFUSION.md`. Rien ici n'est dépensé avant le 5 décembre, et jamais plus de 30 € Google + 30 € Meta. Les messages ne sont envoyés qu'avec l'accord de Valentin.
 
 Trois publics, trois messages :
 - **Utilisateurs** (seniors, grand public) : applis utiles, sans pub, en français.
@@ -17,41 +17,50 @@ Pages d'atterrissage (alphabette.fr) : `/` (hub), `/ia-debat/`, `/service-france
 - Annonce : `utm_source=google|meta&utm_medium=cpc&utm_campaign=<appli>`.
 - E-mail : `utm_source=email&utm_medium=prospection&utm_campaign=<cible>`.
 
-## 2. Google Ads (réseau de recherche, test)
+## 2. Budget réel et calendrier (décision de Valentin, 26/11/2026)
 
-À lancer seulement sur ordre de Valentin. Budget de test proposé : 5 €/jour pendant 14 jours (70 €), France, langue français, un groupe d'annonces par page d'atterrissage.
+**Règle : aucune dépense avant le 5 décembre.** Budgets : 30 € Google + 30 € Meta, le 5 décembre. Rien d'autre n'est dépensé, jamais, sans nouvel accord.
+
+Pourquoi ne pas tout lancer à l'aveugle : 30 € achètent environ 30 à 100 clics. Il faut les mettre là où ça a déjà prouvé que ça marche.
+
+- **27 novembre au 4 décembre (0 €)** : vidéos, posts, annuaires, affiches, prospection par e-mail. On mesure avec les UTM (section 1) quelle vidéo et quel canal ramènent des visiteurs.
+- **5 décembre, Meta 30 €** : on « booste » la vidéo qui a le mieux marché en organique, pas une annonce inventée. 5 € par jour pendant 6 jours, France, 45 ans et plus si c'est une appli senior (Service France, Senior Bon Plan), 25 à 45 ans si c'est le message créateur. Lien vers la page de l'appli sur alphabette.fr.
+- **5 décembre, Google 30 €** : une seule campagne de recherche, vers `/devenir-createur/` (les créateurs sont ceux qui font grandir le catalogue, et la recherche cible une intention). 5 € par jour pendant 6 jours, France, français, enchère manuelle au clic plafonnée à 0,60 €.
+- **11 décembre** : bilan chiffré (visites, créateurs inscrits, avis) et décision pour la suite. Si rien n'a été rentable, on arrête.
+
+Création des comptes publicitaires : la saisie de la carte bancaire doit être faite par Valentin lui-même, c'est la seule étape que je ne peux pas faire à sa place. Tout le reste (campagne, annonces, mots-clés, ciblage) est préparé ci-dessous.
+
+## 3. Google Ads, campagne unique (30 €)
+
+**Réseau** : recherche uniquement, pas de réseau display, pas de partenaires de recherche. **Lieu** : France. **Langue** : français. **Stratégie d'enchères** : CPC manuel, plafond 0,60 €. **Budget** : 5 €/jour, 6 jours.
+
+**Page de destination** : https://alphabette.fr/devenir-createur/?utm_source=google&utm_medium=cpc&utm_campaign=createurs
 
 **Annonce responsive de recherche (titres ≤ 30 caractères, vérifiés)**
-1. Applis utiles sans publicité
-2. Des applis en français
-3. Zéro pub, zéro compte
-4. 6 IA débattent en direct
-5. Vos papiers expliqués
-6. Actualités à votre goût
-7. Publiez et soyez payé·e
-8. Publiez votre appli en 60 s
-9. 10 € par abonné pour vous
-10. Prix clair, sans piège
-11. Fait à La Grande-Motte
+1. Publiez votre appli en 60 s
+2. 10 € par abonné pour vous
+3. Publiez et soyez payé·e
+4. Des applis en français
+5. Zéro pub, zéro compte
+6. Prix clair, sans piège
+7. Fait à La Grande-Motte
 
 **Descriptions (≤ 90 caractères, vérifiées)**
-1. Des applications utiles en français, sans publicité ni revente de données. Découvrez-les.
-2. Vous avez créé une appli ? Publiez-la en 60 secondes et touchez 10 € par abonné et par an.
-3. Débat entre six IA, démarches expliquées, actualités sans pub : essayez Alphabette.
+1. Vous avez créé une appli ? Publiez-la en 60 secondes et touchez 10 € par abonné et par an.
+2. Déposez un fichier HTML, un ZIP ou un dépôt GitHub. La communauté teste, vous êtes payé.
 
 **Mots-clés (expression exacte et expression)**
-- Utilisateurs : « actualités sans pub », « application sans publicité », « débat intelligence artificielle », « points permis suivi », « résilier un contrat simplement », « application pour seniors ».
-- Créateurs : « publier mon application web », « vendre mon application », « monétiser une appli », « plateforme pour créateurs d'applications ».
-- Mots-clés à exclure : gratuit crack, télécharger apk, jeu d'argent, emploi, avis forum.
+- « publier mon application web », « vendre mon application », « monétiser une application », « plateforme pour créateurs d'applications ».
+- À exclure : gratuit crack, télécharger apk, jeu d'argent, emploi, avis forum, tuto, formation.
 
-Groupes d'annonces : `/ia-debat/`, `/service-france/`, `/info-perso/`, `/devenir-createur/`. Ne pas promettre « gratuit » dans les annonces tant que le prix n'est pas confirmé par page.
+Ne pas promettre « gratuit » dans les annonces.
 
-## 3. Meta (Facebook et Instagram), test
+## 3 bis. Meta, boost d'une vidéo (30 €)
 
-À lancer seulement sur ordre de Valentin. 5 €/jour, 7 jours par audience.
-- **Audience A, seniors** : 60 ans et plus, France, centres d'intérêt actualités, démarches, bien-être. Visuel : affiche Service France ou Senior Bon Plan. Texte : « Vos papiers, expliqués simplement. Sans pub, en français. » Bouton : En savoir plus.
-- **Audience B, créateurs** : 25 à 45 ans, France et Belgique, centres d'intérêt entrepreneuriat, création d'applications, IA. Texte : « Votre appli dort dans un dossier ? Publiez-la en 60 secondes, touchez 10 € par abonné et par an. » Bouton : S'inscrire.
-- Pas de ciblage par données sensibles. Une seule modification à la fois pour comparer.
+Objectif « Lectures de vidéo » ou « Trafic » vers la page de l'appli. 5 €/jour, 6 jours, placements automatiques, France. Pas de ciblage par données sensibles. Une seule vidéo, celle qui aura le mieux fonctionné en organique entre le 27 novembre et le 4 décembre.
+
+Texte d'accompagnement type (seniors) : « Vos papiers, expliqués simplement. Sans pub, en français. »
+Texte d'accompagnement type (créateurs) : « Votre appli dort dans un dossier ? Publiez-la en 60 secondes, touchez 10 € par abonné et par an. »
 
 ## 4. Messages de prospection (honnêtes, signés, courts)
 
