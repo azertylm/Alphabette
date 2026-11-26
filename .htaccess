@@ -51,7 +51,7 @@ ErrorDocument 404 /404.html
   RewriteRule ^(info\.html|quiz-femmes|quiz-extraordinaires|dico-loufoque|juste-chiffre|memo-meninges|orbit|ou-cest|ou-cest-france|petits-jeux|podcasts|quiz-famille|quiz-musique)(/.*)?$ https://alphabette.eu/$1$2 [R=302,L]
 
   RewriteCond %{HTTP_HOST} ^(www\.)?alphabette\.fr$ [NC]
-  RewriteRule ^apps/(bonplan|goatchevretheking|revolution|promptmagic|ecobatisol|frigoplacard|bonplansenior|atelier|proxilien|radar|lecturemagique|memovoix|matchsoiree|parentsos|revisclash|negocoach|disstrackexpress|tribunaldespotes|balade|tribunaldeschoix|alphabettehub|unedelabsurde|curioz)(/.*)?$ https://alphabette.eu/apps/$1$2 [R=302,L]
+  RewriteRule ^apps/(bonplan|goatchevretheking|revolution|promptmagic|ecobatisol|frigoplacard|bonplansenior|atelier|proxilien|radar|lecturemagique|memovoix|matchsoiree|parentsos|revisclash|negocoach|disstrackexpress|tribunaldespotes|balade|tribunaldeschoix|alphabettehub|unedelabsurde|curioz|omnistat)(/.*)?$ https://alphabette.eu/apps/$1$2 [R=302,L]
 
   RewriteCond %{HTTP_HOST} ^(www\.)?atelier\.alphabette\.fr$ [NC]
   RewriteRule ^(.*)$ https://alphabette.eu/apps/atelier/$1 [R=302,L]

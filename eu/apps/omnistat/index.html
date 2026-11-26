@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <script src="/labo/capteur.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OmniStats — Classement Historique Multi-Sports (1950–2026)</title>
+    <meta
+      name="description"
+      content="Moteur analytique et classement historique dynamique multi-sports (1950-2026) pour clubs, franchises et nations."
+    />
+    <meta property="og:title" content="OmniStats — Classement Historique Multi-Sports" />
+    <meta
+      property="og:description"
+      content="Déterminez quel club, franchise ou pays a dominé le sport mondial sur n'importe quelle période de 1950 à 2026."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('omnistats_theme');
+          if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-CurbG8d6.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B9DbrBdK.css">
+  </head>
+  <body class="bg-[#F8FAFC] text-[#0F172A] dark:bg-[#090D16] dark:text-[#F8FAFC] antialiased selection:bg-cyan-500/30">
+    <div id="root"></div>
+  </body>
+</html>
