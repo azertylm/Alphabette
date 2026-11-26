@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "genere": "2026-11-26T19:44:25.144Z",
+  "genere": "2026-11-26T19:59:34.252Z",
   "methode": "analyse statique des fichiers publiés",
   "apps": {
     "accord": {
@@ -44,7 +44,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 1492.6,
+      "poidsKo": 1555.4,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -61,7 +61,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 398.5,
+      "poidsKo": 398.9,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -94,7 +94,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 413.4,
+      "poidsKo": 475.2,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -110,7 +110,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 3356.1,
+      "poidsKo": 3358.5,
       "fichiers": 7,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -126,7 +126,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 357,
+      "poidsKo": 359.4,
       "fichiers": 3,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -140,7 +140,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 355.8,
+      "poidsKo": 417.5,
       "fichiers": 8,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -154,7 +154,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 1416.6,
+      "poidsKo": 1478.8,
       "fichiers": 7,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -168,7 +168,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 458.5,
+      "poidsKo": 520.2,
       "fichiers": 13,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -184,7 +184,7 @@
       "voix": true,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 4378.9,
+      "poidsKo": 4441.6,
       "fichiers": 45,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -198,7 +198,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 1295.3,
+      "poidsKo": 1295.6,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -217,7 +217,7 @@
       "voix": false,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 3456.3,
+      "poidsKo": 3460.2,
       "fichiers": 34,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -234,7 +234,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 1120.5,
+      "poidsKo": 1120.8,
       "fichiers": 5,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -250,7 +250,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 409.3,
+      "poidsKo": 409.9,
       "fichiers": 3,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -266,7 +266,7 @@
       "voix": false,
       "horsLigne": true,
       "ia": "aucune",
-      "poidsKo": 5791.8,
+      "poidsKo": 5793.8,
       "fichiers": 19,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -282,7 +282,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 409.8,
+      "poidsKo": 411.8,
       "fichiers": 3,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -301,7 +301,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 501.1,
+      "poidsKo": 503,
       "fichiers": 3,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -317,7 +317,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 871.7,
+      "poidsKo": 874.1,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -331,7 +331,7 @@
       "voix": true,
       "horsLigne": false,
       "ia": "autre",
-      "poidsKo": 415.8,
+      "poidsKo": 477.6,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -364,7 +364,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 3745.6,
+      "poidsKo": 3746.5,
       "fichiers": 7,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -380,7 +380,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 753,
+      "poidsKo": 754.3,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -394,7 +394,7 @@
       "voix": true,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 1222,
+      "poidsKo": 1282.8,
       "fichiers": 13,
       "cookiesPub": false,
       "syntheseDirecte": false
@@ -410,7 +410,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 478.9,
+      "poidsKo": 479.3,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -426,7 +426,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 356.8,
+      "poidsKo": 358.2,
       "fichiers": 3,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -442,7 +442,7 @@
       "voix": false,
       "horsLigne": false,
       "ia": "aucune",
-      "poidsKo": 376.5,
+      "poidsKo": 377,
       "fichiers": 4,
       "cookiesPub": false,
       "syntheseDirecte": true

@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T19:39:59.465Z",
-  "empreinte_page_sha256": "eb1a5a7b180789f88f174dfeeed5fdf4c54caf521e8b41831aadb2710e7c3567",
+  "audite_le": "2026-11-26T19:47:22.525Z",
+  "empreinte_page_sha256": "b27d70a54ee82ab1176250113570a2581fdd00176932b724aeb632fa332e98cc",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -61,8 +61,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 1216,
-      "bloquees": 1216,
+      "requetes": 921,
+      "bloquees": 921,
       "types": [
         "image",
         "fetch"
@@ -79,15 +79,6 @@
     },
     {
       "hote": "www.franceinfo.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -130,6 +121,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -141,13 +141,13 @@
       "images.unsplash.com",
       "i.f1g.fr",
       "www.franceinfo.fr",
-      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "img.lemde.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "io-fsly-bfmtv.cdn.nextradiotv.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "9e211b1e3d383ec2cb18462438ce993adf5a1acc6a4342f42785093099d06381"
+  "empreinte_certificat_sha256": "8333f03996105ecea13990d568ae4ff54d5e13cb0812b3d1aab80dec39e002a8"
 }
