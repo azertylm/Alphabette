@@ -37,7 +37,7 @@ const EN: Record<string, string> = {
   'Fermer': 'Close',
   'Noter cette appli': 'Rate this app',
   'Signaler un problème / abus': 'Report a problem / abuse',
-  'Publier une appli (Gagnez 10 €/an)': 'Publish an app (Earn €10/year)',
+  'Publier une appli': 'Publish an app',
   'Inviter un ami': 'Invite a friend',
   'Mode Calme': 'Calm mode',
 };

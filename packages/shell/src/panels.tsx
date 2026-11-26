@@ -27,7 +27,7 @@ export const SHELL_PANELS: Record<ShellPanelId, { titre: string; sousTitre: stri
   langue: { titre: 'Langue', sousTitre: 'Français ou English', icone: '🌍' },
   installer: { titre: 'Installer sur mon téléphone', sousTitre: 'L’appli à portée de doigt, sans magasin d’applications', icone: '📲' },
   signaler: { titre: 'Signaler un problème ou un abus', sousTitre: 'Nous lisons chaque signalement sans délai', icone: '🚩' },
-  publier: { titre: 'Publier une appli', sousTitre: 'En 60 secondes · gagnez 10 € par an et par abonnement', icone: '🛠️' },
+  publier: { titre: 'Publier une appli', sousTitre: 'En 60 secondes · gratuit, partage des revenus prévu (paiement en ligne pas encore ouvert)', icone: '🛠️' },
   inviter: { titre: 'Inviter un ami', sousTitre: 'Un lien à partager, rien d’autre', icone: '🎁' },
 };
 
@@ -1040,7 +1040,7 @@ function PanneauPublier() {
         <p>Déposez un fichier .html, une archive .zip ou le lien d’un dépôt GitHub public. Nous lisons le titre et le README pour remplir la fiche à votre place.</p>
         <ul style={{ paddingLeft: '1.2rem', display: 'grid', gap: '0.4rem' }}>
           <li>Après validation, votre appli entre dans le Laboratoire, avec le badge « Pionnier » pour les 50 premières.</li>
-          <li>Avec 10 avis positifs et 75 % d’avis favorables, elle peut passer sur alphabette.fr : abonnement de 15 € par an, dont 10 € pour vous.</li>
+          <li>Avec 10 avis positifs et 75 % d’avis favorables, elle peut passer sur alphabette.fr : abonnement prévu de 15 € par an (10 € pour vous), mais le paiement en ligne n’est pas encore ouvert : rien n’est versé aujourd’hui.</li>
           <li>Votre appli s’exécute isolée du reste d’Alphabette ; elle évolue ensuite avec la communauté, la version d’origine restant archivée.</li>
         </ul>
         <div className="ab-actions-ligne">
