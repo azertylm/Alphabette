@@ -1,0 +1,23 @@
+# Alphabette
+
+> Alphabette réunit des applications utiles en français : pas de publicité, pas de revente de données, pas de compte quand on peut s'en passer. Éditeur indépendant basé à La Grande-Motte (Hérault). Les nouveautés sont testées en public sur alphabette.eu avant d'arriver sur alphabette.fr.
+
+## Applications
+
+- [Iadébat](https://iadebat.alphabette.fr): Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux.
+- [Infos perso](https://infosperso.alphabette.fr): Un portail d'actualités à votre goût, avec des résumés et des approfondissements.
+- [Service france](https://franceservice.alphabette.fr): Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement.
+- [Wikicom](https://alphabette.fr/wikicom/): L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux.
+
+## Pages
+
+- [Le manifeste : zéro pub, zéro compte](https://alphabette.fr/manifeste/)
+- [Kit Mairie & Résidence Senior](https://alphabette.fr/kit-seniors/)
+- [Site vitrine clé en main](https://alphabette.fr/site-vitrine/)
+- [IA Débat : six IA débattent en direct](https://alphabette.fr/ia-debat/)
+- [Service France : vos papiers expliqués](https://alphabette.fr/service-france/)
+- [Info Perso : l'actualité que vous choisissez](https://alphabette.fr/info-perso/)
+
+## Laboratoire
+
+- [alphabette.eu](https://alphabette.eu/): applications à tester en avant-première et à noter.
