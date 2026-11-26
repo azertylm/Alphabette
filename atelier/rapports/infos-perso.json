@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/infosperso/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:11:50.088Z",
+  "date": "2026-11-26T10:46:41.748Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
@@ -25,10 +25,10 @@
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "227 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "223 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button.p-1 « Trousseau API » (22×22 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 227 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 223 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button.p-1 « Trousseau API » (22×22 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -41,10 +41,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "312 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « Vos infos, à votre façon » (11 px) ; span « IA : votre clé API » (11 px) ; span.text-[10px] « Mobile » (10 px)",
+      "titre": "311 textes plus petits que 12 px",
+      "detail": "span « IA : votre clé API » (11 px) ; span.text-[10px] « Mobile » (10 px) ; span.text-[10px] « Point Mort » (10 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 312 textes plus petits que 12 px (span.ab-bar__sous « Vos infos, à votre façon » (11 px) ; span « IA : votre clé API » (11 px) ; span.text-[10px] « Mobile » (10 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 311 textes plus petits que 12 px (span « IA : votre clé API » (11 px) ; span.text-[10px] « Mobile » (10 px) ; span.text-[10px] « Point Mort » (10 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -57,10 +57,10 @@
     {
       "agent": "poids_plume",
       "gravite": "important",
-      "titre": "Page très lourde (2.6 Mo au chargement)",
+      "titre": "Page très lourde (2.7 Mo au chargement)",
       "detail": "",
       "correction": "Allège la page d'accueil : images compressées (WebP, 1 200 px de large au plus), bibliothèques inutiles retirées, chargement différé du reste.",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Page très lourde (2.6 Mo au chargement). Allège la page d'accueil : images compressées (WebP, 1 200 px de large au plus), bibliothèques inutiles retirées, chargement différé du reste. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Page très lourde (2.7 Mo au chargement). Allège la page d'accueil : images compressées (WebP, 1 200 px de large au plus), bibliothèques inutiles retirées, chargement différé du reste. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -73,10 +73,10 @@
     {
       "agent": "douanier",
       "gravite": "conseil",
-      "titre": "Appels vers 9 services tiers non déclarés",
-      "detail": "apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, media.lesechos.com, franceinfo.fr, images.unsplash.com, gen-lang-client-0692358943.firebaseapp.com",
+      "titre": "Appels vers 7 services tiers non déclarés",
+      "detail": "apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, franceinfo.fr, i.f1g.fr, gen-lang-client-0692358943.firebaseapp.com, googleapis.com",
       "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Appels vers 9 services tiers non déclarés (apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, media.lesechos.com, franceinfo.fr, images.unsplash.com, gen-lang-client-0692358943.firebaseapp.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : Appels vers 7 services tiers non déclarés (apis.google.com, io-fsly-bfmtv.cdn.nextradiotv.com, franceinfo.fr, i.f1g.fr, gen-lang-client-0692358943.firebaseapp.com, googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -106,9 +106,9 @@
       "agent": "poids_plume",
       "gravite": "conseil",
       "titre": "1 image de plus de 300 Ko",
-      "detail": "i.f1g.[masqué].JPG (821 Ko)",
+      "detail": "i.f1g.[masqué].jpg (860 Ko)",
       "correction": "Recompresse ces images (WebP ou AVIF, largeur adaptée à l'écran).",
-      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 1 image de plus de 300 Ko (i.f1g.[masqué].JPG (821 Ko)). Recompresse ces images (WebP ou AVIF, largeur adaptée à l'écran). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « INFOS PERSO » a ce problème, relevé par un contrôle automatique : 1 image de plus de 300 Ko (i.f1g.[masqué].jpg (860 Ko)). Recompresse ces images (WebP ou AVIF, largeur adaptée à l'écran). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "poids_plume",
@@ -160,22 +160,20 @@
     }
   ],
   "mesures": {
-    "poids_ko": 2700,
-    "js_ko": 827,
-    "requetes": 33,
+    "poids_ko": 2738,
+    "js_ko": 829,
+    "requetes": 32,
     "dom": 2082,
-    "ecoindex": 35.3,
-    "chargement_ms": 1372,
+    "ecoindex": 35.4,
+    "chargement_ms": 1368,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com",
       "apis.google.com",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
-      "media.lesechos.com",
       "franceinfo.fr",
-      "images.unsplash.com",
-      "gen-lang-client-0692358943.firebaseapp.com",
       "i.f1g.fr",
+      "gen-lang-client-0692358943.firebaseapp.com",
       "googleapis.com",
       "firestore.googleapis.com"
     ],
@@ -208,11 +206,11 @@
       "Abonnements Suite15€ / 40€",
       "Tarifs & soutienBientôt"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Info Perso VOS INFOS, À VOTRE FAÇON ♥ BIG ☀️ 🔊 ⋯ IA : votre clé API Info Perso Clé NAVIGATION Mon flux d'actualités Articles sauvegardés 0 Mon Compte & Synchro MOBILE Simulateur de rentabilité Point Mort L'Œil de l'Atelier Chantiers Abonnements Suite 15€ / 40€ Tarifs & soutien Bientôt Clé API Mistral Clé à ajouter CATÉGORIES IA Technologie Culture Local / Occitanie Design Économie Médias TAGS ACTIFS #Claude API #LLM #Occitanie #Startup #React #OpenAI #Benchmark #Design Actualiser le flux Découvrir toutes les applications sur alphabette.fr ↗ Réglages Score Récents Live (249) ≤5 Photo Standard RSS 🎭 HUMEUR DE PLUME (7 STYLES) : ✍️ Humain 😄 Humour 🌶️ Sarcastiqu"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Info Perso VOS INFOS, À VOTRE FAÇON ♥ BIG ☀️ 🔊 ⋯ IA : votre clé API Info Perso Clé NAVIGATION Mon flux d'actualités Articles sauvegardés 0 Mon Compte & Synchro MOBILE Simulateur de rentabilité Point Mort L'Œil de l'Atelier Chantiers Abonnements Suite 15€ / 40€ Tarifs & soutien Bientôt Clé API Mistral Clé à ajouter CATÉGORIES IA Technologie Culture Local / Occitanie Design Économie Médias TAGS ACTIFS #Claude API #LLM #Occitanie #Startup #React #OpenAI #Benchmark #Design Actualiser le flux Découvrir toutes les applications sur alphabette.fr ↗ Réglages Score Récents Live (248) ≤5 Photo Standard RSS 🎭 HUMEUR DE PLUME (7 STYLES) : ✍️ Humain 😄 Humour 🌶️ Sarcastiqu"
   },
   "temoin": {
     "capture": "captures/infos-perso.jpg",
-    "changement": 14,
+    "changement": 11,
     "blanc": false
   }
 }

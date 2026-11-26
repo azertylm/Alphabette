@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:13:05.244Z",
+  "date": "2026-11-26T10:48:06.148Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -25,18 +25,18 @@
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "25 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "21 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher (ex : uBlock, podcast, Linux… » (254×18 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 25 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 21 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher (ex : uBlock, podcast, Linux… » (254×18 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "12 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « L'annuaire des bons outils du web » (11 px) ; span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px)",
+      "titre": "11 textes plus petits que 12 px",
+      "detail": "span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px) ; span.cat-count-badge « 3 liens » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 12 textes plus petits que 12 px (span.ab-bar__sous « L'annuaire des bons outils du web » (11 px) ; span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 11 textes plus petits que 12 px (span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px) ; span.cat-count-badge « 3 liens » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 60,
-    "js_ko": 33,
+    "poids_ko": 62,
+    "js_ko": 35,
     "requetes": 9,
     "dom": 299,
     "ecoindex": 83.7,
-    "chargement_ms": 803,
+    "chargement_ms": 750,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 84
@@ -130,7 +130,7 @@
   },
   "temoin": {
     "capture": "captures/wikicom.jpg",
-    "changement": 0,
+    "changement": 1,
     "blanc": false
   }
 }

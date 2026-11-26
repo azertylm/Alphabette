@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/revolution/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:12:52.836Z",
+  "date": "2026-11-26T10:47:53.686Z",
   "scores": {
     "douanier": 92,
     "pouce": 62,
@@ -33,10 +33,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "48 textes plus petits que 12 px",
-      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 min · plusieurs fois » (11 px) ; span.inline-flex « 🧾 Impôts & budget public » (11 px)",
+      "titre": "46 textes plus petits que 12 px",
+      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 56 min · plusieurs foi » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 48 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 9 min · plusieurs fois » (11 px) ; span.inline-flex « 🧾 Impôts & budget public » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 46 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 56 min · plusieurs foi » (11 px) ; span.inline-flex « 🏥 Santé » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 531,
+    "poids_ko": 535,
     "js_ko": 457,
     "requetes": 18,
-    "dom": 335,
+    "dom": 334,
     "ecoindex": 78.5,
-    "chargement_ms": 904,
+    "chargement_ms": 849,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -135,15 +135,15 @@
       "National",
       "Déjà répondu (0)",
       "Lire l’article ↗",
-      "Beaucoup",
-      "Un peu",
-      "Pas du tout"
+      "Oui",
+      "Non",
+      "Sans avis"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 9 min · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🧾 IMPÔTS & BUDGET PUBLIC 🇫🇷 NATIONAL Subventions pour les secours, sport pour tous, budget… les grandes lignes du dernier conseil municipal à Cléon Actu.fr · il y a 13 min · Lire l’article ↗ Ce sujet compte-"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 56 min · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 🏥 SANTÉ 🇫🇷 NATIONAL « A l’hôpital, ils ne savaient pas si je passerais la nuit » : les grenades assourdissantes blessent toujours plus gravement les manifestants Le Monde.fr · il y a 1 h · Lire l’article ↗ "
   },
   "temoin": {
     "capture": "captures/revolution.jpg",
-    "changement": 5,
+    "changement": 4,
     "blanc": false
   }
 }

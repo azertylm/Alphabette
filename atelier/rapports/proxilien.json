@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/proxilien/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:12:41.409Z",
+  "date": "2026-11-26T10:47:42.367Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -25,10 +25,10 @@
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "59 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (126×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "55 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button#btn-device-pc.px-2 « PC » (48×19 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « PROXILIEN » a ce problème, relevé par un contrôle automatique : 59 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (126×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « PROXILIEN » a ce problème, relevé par un contrôle automatique : 55 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button#btn-device-pc.px-2 « PC » (48×19 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -41,10 +41,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "46 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « Entraide entre voisins » (11 px) ; span.bg-white/20 « Pilote » (10 px) ; span « PC » (11 px)",
+      "titre": "45 textes plus petits que 12 px",
+      "detail": "span.bg-white/20 « Pilote » (10 px) ; span « PC » (11 px) ; button#btn-device-auto.px-1.5 « Auto » (10 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « PROXILIEN » a ce problème, relevé par un contrôle automatique : 46 textes plus petits que 12 px (span.ab-bar__sous « Entraide entre voisins » (11 px) ; span.bg-white/20 « Pilote » (10 px) ; span « PC » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « PROXILIEN » a ce problème, relevé par un contrôle automatique : 45 textes plus petits que 12 px (span.bg-white/20 « Pilote » (10 px) ; span « PC » (11 px) ; button#btn-device-auto.px-1.5 « Auto » (10 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 360,
-    "js_ko": 261,
+    "poids_ko": 362,
+    "js_ko": 263,
     "requetes": 14,
     "dom": 859,
     "ecoindex": 61.2,
-    "chargement_ms": 890,
+    "chargement_ms": 863,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"

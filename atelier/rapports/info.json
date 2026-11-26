@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/info.html",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:11:18.437Z",
+  "date": "2026-11-26T10:46:10.302Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -25,18 +25,18 @@
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "19 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "15 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button#sourcesBtn.icon-btn « ⛭ » (34×34 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 19 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 15 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button#sourcesBtn.icon-btn « ⛭ » (34×34 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "65 textes plus petits que 12 px",
-      "detail": "span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mercredi 25 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)",
+      "titre": "64 textes plus petits que 12 px",
+      "detail": "div#editionDate.edition-date « jeudi 26 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 65 textes plus petits que 12 px (span.ab-bar__sous « Vos actualités, à creuser » (11 px) ; div#editionDate.edition-date « mercredi 25 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 64 textes plus petits que 12 px (div#editionDate.edition-date « jeudi 26 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -104,12 +104,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 235,
-    "js_ko": 33,
+    "poids_ko": 238,
+    "js_ko": 35,
     "requetes": 13,
     "dom": 336,
     "ecoindex": 80.7,
-    "chargement_ms": 962,
+    "chargement_ms": 859,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -142,11 +142,11 @@
       "Ajouter mes sources d'actualités",
       "Alphabette"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo mercredi 25 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèq"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo jeudi 26 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèques"
   },
   "temoin": {
     "capture": "captures/info.jpg",
-    "changement": 14,
+    "changement": 15,
     "blanc": false
   }
 }

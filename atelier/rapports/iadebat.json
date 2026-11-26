@@ -4,47 +4,39 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:11:45.984Z",
+  "date": "2026-11-26T10:46:37.659Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
-    "opticien": 90,
+    "opticien": 91,
     "poids_plume": 89,
     "phare": 83,
-    "parapluie": 81
+    "parapluie": 96
   },
-  "controle_technique": 76,
-  "note": 81,
+  "controle_technique": 77,
+  "note": 84,
   "apte": false,
   "compte": {
     "bloquant": 0,
-    "important": 2,
-    "conseil": 10
+    "important": 1,
+    "conseil": 9
   },
   "problemes": [
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "30 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "26 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button.flex « Clés API » (50×35 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : 30 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "parapluie",
-      "gravite": "important",
-      "titre": "Pas d'avertissement sur les réponses de l'IA",
-      "detail": "",
-      "correction": "Ajoute près des réponses : « Réponses générées par une IA : elles peuvent contenir des erreurs, vérifiez les informations importantes. »",
-      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : Pas d'avertissement sur les réponses de l'IA. Ajoute près des réponses : « Réponses générées par une IA : elles peuvent contenir des erreurs, vérifiez les informations importantes. » Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : 26 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; button.flex « Clés API » (50×35 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Clé publique à restreindre (clé Google)",
-      "detail": "index-CnXy4hBZ.js",
+      "detail": "index-BiG32v8Q.js",
       "correction": "Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer).",
-      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-CnXy4hBZ.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-BiG32v8Q.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -81,14 +73,6 @@
     {
       "agent": "opticien",
       "gravite": "conseil",
-      "titre": "1 texte plus petit que 12 px",
-      "detail": "span.ab-bar__sous « Débats en direct entre IA » (11 px)",
-      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : 1 texte plus petit que 12 px (span.ab-bar__sous « Débats en direct entre IA » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "opticien",
-      "gravite": "conseil",
       "titre": "1 champ de saisie sans étiquette",
       "detail": "input.flex-1 « Recentrez, posez une question piège… (En »",
       "correction": "Ajoute une étiquette <label> (ou aria-label) à chaque champ ; un texte gris dans le champ ne suffit pas.",
@@ -120,12 +104,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 477,
-    "js_ko": 448,
+    "poids_ko": 479,
+    "js_ko": 450,
     "requetes": 19,
-    "dom": 470,
+    "dom": 471,
     "ecoindex": 72.9,
-    "chargement_ms": 1018,
+    "chargement_ms": 983,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -164,7 +148,7 @@
   },
   "temoin": {
     "capture": "captures/iadebat.jpg",
-    "changement": 4,
+    "changement": 1,
     "blanc": false
   }
 }

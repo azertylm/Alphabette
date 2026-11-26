@@ -1,0 +1,139 @@
+{
+  "id": "omnistat",
+  "nom": "OmniStats",
+  "url": "https://alphabette.eu/apps/omnistat/",
+  "communaute": false,
+  "heberge": false,
+  "date": "2026-11-26T10:47:08.656Z",
+  "scores": {
+    "douanier": 100,
+    "pouce": 60,
+    "opticien": 90,
+    "poids_plume": 74,
+    "phare": 80,
+    "parapluie": 92
+  },
+  "controle_technique": 75,
+  "note": 83,
+  "apte": false,
+  "compte": {
+    "bloquant": 0,
+    "important": 2,
+    "conseil": 6
+  },
+  "problemes": [
+    {
+      "agent": "pouce",
+      "gravite": "important",
+      "titre": "217 zones à toucher trop petites (moins de 44 px)",
+      "detail": "a.inline-flex « Portail Alphabette.fr » (109×28 px) ; a.inline-flex « Laboratoire Alphabette.eu » (31×31 px) ; button.inline-flex « Toutes les applis de la suite Alphabette » (31×31 px) ; button.inline-flex « Nouveautés de la suite Alphabette » (31×31 px) ; button.inline-flex « Informations sur l'abonnement Alphabette » (113×32 px) ; button.inline-flex « Retour à l'accueil OmniStats » (131×19 px)",
+      "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : 217 zones à toucher trop petites (moins de 44 px) (a.inline-flex « Portail Alphabette.fr » (109×28 px) ; a.inline-flex « Laboratoire Alphabette.eu » (31×31 px) ; button.inline-flex « Toutes les applis de la suite Alphabette » (31×31 px) ; button.inline-flex « Nouveautés de la suite Alphabette » (31×31 px) ; button.inline-flex « Informations sur l'abonnement Alphabette » (113×32 px) ; button.inline-flex « Retour à l'accueil OmniStats » (131×19 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "opticien",
+      "gravite": "important",
+      "titre": "159 textes plus petits que 12 px",
+      "detail": "a.inline-flex « Laboratoire Alphabette.eu » (11.5 px) ; span.inline-flex « NEW » (8.5 px) ; span.font-bold « Abonnement » (11.5 px)",
+      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : 159 textes plus petits que 12 px (a.inline-flex « Laboratoire Alphabette.eu » (11.5 px) ; span.inline-flex « NEW » (8.5 px) ; span.font-bold « Abonnement » (11.5 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "pouce",
+      "gravite": "conseil",
+      "titre": "39 boutons trop serrés (moins de 8 px d'écart)",
+      "detail": "a.inline-flex « Portail Alphabette.fr » ↔ a.inline-flex « Laboratoire Alphabette.eu » ; a.inline-flex « Laboratoire Alphabette.eu » ↔ button.inline-flex « Toutes les applis de la suite Alphabette » ; button.inline-flex « Toutes les applis de la suite Alphabette » ↔ button.inline-flex « Nouveautés de la suite Alphabette »",
+      "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : 39 boutons trop serrés (moins de 8 px d'écart) (a.inline-flex « Portail Alphabette.fr » ↔ a.inline-flex « Laboratoire Alphabette.eu » ; a.inline-flex « Laboratoire Alphabette.eu » ↔ button.inline-flex « Toutes les applis de la suite Alphabette » ; button.inline-flex « Toutes les applis de la suite Alphabette » ↔ button.inline-flex « Nouveautés de la suite Alphabette »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "poids_plume",
+      "gravite": "conseil",
+      "titre": "Polices chargées depuis un service externe",
+      "detail": "fonts.googleapis.com, fonts.gstatic.com",
+      "correction": "Héberge les polices avec l'application (fichiers .woff2) : plus rapide, et aucune adresse IP envoyée à un tiers.",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : Polices chargées depuis un service externe (fonts.googleapis.com, fonts.gstatic.com). Héberge les polices avec l'application (fichiers .woff2) : plus rapide, et aucune adresse IP envoyée à un tiers. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Aperçu de partage incomplet",
+      "detail": "manque og:image",
+      "correction": "Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries.",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : Aperçu de partage incomplet (manque og:image). Ajoute les balises Open Graph (og:title, og:description, og:image de 1200×630) pour un bel aperçu sur les réseaux et messageries. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "phare",
+      "gravite": "conseil",
+      "titre": "Pas de grand titre (h1) visible",
+      "detail": "",
+      "correction": "Mets le nom ou l'action principale dans une balise <h1>.",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : Pas de grand titre (h1) visible. Mets le nom ou l'action principale dans une balise <h1>. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Google Fonts reçoit l'adresse IP des visiteurs",
+      "detail": "",
+      "correction": "Héberge la police avec ton application : les autorités européennes considèrent ce transfert comme une donnée personnelle.",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : Google Fonts reçoit l'adresse IP des visiteurs. Héberge la police avec ton application : les autorités européennes considèrent ce transfert comme une donnée personnelle. Fais le plus petit changement possible et ne modifie rien d'autre."
+    },
+    {
+      "agent": "parapluie",
+      "gravite": "conseil",
+      "titre": "Aucun lien vers les mentions légales ni la confidentialité",
+      "detail": "",
+      "correction": "Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont).",
+      "prompt": "Mon application web « OmniStats » a ce problème, relevé par un contrôle automatique : Aucun lien vers les mentions légales ni la confidentialité. Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont). Fais le plus petit changement possible et ne modifie rien d'autre."
+    }
+  ],
+  "mesures": {
+    "poids_ko": 195,
+    "js_ko": 125,
+    "requetes": 7,
+    "dom": 2745,
+    "ecoindex": 48.3,
+    "chargement_ms": 712,
+    "tiers": [
+      "fonts.googleapis.com",
+      "fonts.gstatic.com"
+    ],
+    "traceurs": [],
+    "contraste_ok_pct": 100
+  },
+  "plume": {
+    "titre": "OmniStats — Classement Historique Multi-Sports (1950–2026)",
+    "h1": "",
+    "h2": [
+      "Classement Maître · Clubs & Équipes"
+    ],
+    "boutons": [
+      "aalphabette",
+      ".eu",
+      "Toutes les applis",
+      "NEW",
+      "Abonnement",
+      "OmniStats",
+      "Soutenir Alphabette par un don",
+      "BIG",
+      "Passer en mode jour haute lisibilité",
+      "Lire la page à haute voix",
+      "Plus d'options",
+      "Base intégrée · 1358 entrées",
+      "Dernière saison",
+      "5 ans",
+      "10 ans",
+      "Années 2010",
+      "Années 2000",
+      "Depuis 1990",
+      "All-Time",
+      "Clubs & Équipes"
+    ],
+    "debut": "a alphabette .eu NEW Abonnement OmniStats STATS MULTI-SPORTS BIG Base intégrée · 1358 entrées 1995 — 2026 (32 ans) Dernière saison 5 ans 10 ans Années 2010 Années 2000 Depuis 1990 All-Time Clubs & Équipes Pays & Nations Favoris (3) 🌐 Tous les sports ⚽ Football 🏀 Basketball 🏎️ Formule 1 🏒 Hockey 🎾 Tennis 🏉 Rugby 🏅 Jeux Olympiques 🤾 Handball 🚴 Cyclisme Palmarès Domination Stats pures Coefficients Podium & Classement Évolution & Bar Race Comparateur Versus (2/4) Fiche Entité Hall of Records Sources & Sync Titres analysés 221 558 entrées · 1995–2026 Sport le plus disputé ⚽ Football 243 podiums recensés Entité dominante Scuderia Ferrari Score 1531 · Elo pic 1964 Plus forte progression Me"
+  },
+  "temoin": {
+    "capture": "captures/omnistat.jpg",
+    "changement": null,
+    "blanc": false
+  }
+}

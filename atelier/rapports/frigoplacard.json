@@ -4,21 +4,21 @@
   "url": "https://alphabette.eu/apps/frigoplacard/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:11:34.176Z",
+  "date": "2026-11-26T10:46:25.957Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
-    "opticien": 86,
+    "opticien": 95,
     "poids_plume": 96,
     "phare": 63,
     "parapluie": 92
   },
-  "controle_technique": 81,
-  "note": 83,
+  "controle_technique": 84,
+  "note": 84,
   "apte": false,
   "compte": {
     "bloquant": 0,
-    "important": 2,
+    "important": 1,
     "conseil": 7
   },
   "problemes": [
@@ -29,14 +29,6 @@
       "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (95×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Menu » (37×37 px) ; button.ab-pico « Faire un don » (37×37 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
       "prompt": "Mon application web « FRIGO-PLACARD » a ce problème, relevé par un contrôle automatique : 28 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (95×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Menu » (37×37 px) ; button.ab-pico « Faire un don » (37×37 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "opticien",
-      "gravite": "important",
-      "titre": "3 champs de saisie sans étiquette",
-      "detail": "input.fp-champ « Que veux-tu ajouter ? (ex. courgette) » ; input.fp-champ « Qté » ; input.fp-champ « g, unité… »",
-      "correction": "Ajoute une étiquette <label> (ou aria-label) à chaque champ ; un texte gris dans le champ ne suffit pas.",
-      "prompt": "Mon application web « FRIGO-PLACARD » a ce problème, relevé par un contrôle automatique : 3 champs de saisie sans étiquette (input.fp-champ « Que veux-tu ajouter ? (ex. courgette) » ; input.fp-champ « Qté » ; input.fp-champ « g, unité… »). Ajoute une étiquette <label> (ou aria-label) à chaque champ ; un texte gris dans le champ ne suffit pas. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -96,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 136,
+    "poids_ko": 137,
     "js_ko": 124,
     "requetes": 7,
     "dom": 150,
     "ecoindex": 88.8,
-    "chargement_ms": 892,
+    "chargement_ms": 843,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 90
@@ -134,7 +126,7 @@
       "🎓 Quiz anti-gaspi",
       "+ Ajouter"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Une épluchure de pomme de terre huilée au four donne des chips de récupération. 🔮 Traducteur de restes insolites Pain rassis Épluchures de légumes lav"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Range le plus urgent devant dans le frigo : ce qui est vu se cuisine, ce qui est caché se perd. 🔮 Traducteur de restes insolites Pain rassis Épluchure"
   },
   "temoin": {
     "capture": "captures/frigoplacard.jpg",

@@ -4,31 +4,31 @@
   "url": "https://alphabette.eu/quiz-musique/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-25T11:12:49.172Z",
+  "date": "2026-11-26T10:47:50.045Z",
   "scores": {
     "douanier": 100,
-    "pouce": 65,
-    "opticien": 92,
+    "pouce": 77,
+    "opticien": 93,
     "poids_plume": 96,
     "phare": 73,
     "parapluie": 96
   },
-  "controle_technique": 84,
-  "note": 87,
-  "apte": false,
+  "controle_technique": 89,
+  "note": 89,
+  "apte": true,
   "compte": {
     "bloquant": 0,
     "important": 1,
-    "conseil": 6
+    "conseil": 5
   },
   "problemes": [
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "9 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)",
+      "titre": "5 zones à toucher trop petites (moins de 44 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : 9 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (98×16 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (33×32 px) ; a.ab-abonner « ⭐ S’abonner » (124×32 px) ; button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : 5 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -45,14 +45,6 @@
       "detail": "span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (4.5:1)",
       "correction": "Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA).",
       "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : Textes peu contrastés (17 % des textes) (span « alphabette » (1.1:1) ; span « 🆕 » (1.1:1) ; span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (4.5:1)). Fonce le texte ou éclaircis le fond : au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres (règle WCAG AA). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "opticien",
-      "gravite": "conseil",
-      "titre": "1 texte plus petit que 12 px",
-      "detail": "span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (11 px)",
-      "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « QUIZ MUSIQUE » a ce problème, relevé par un contrôle automatique : 1 texte plus petit que 12 px (span.ab-bar__sous « Histoires d'artistes, 1960-1990 » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "phare",
@@ -80,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 55,
-    "js_ko": 33,
+    "poids_ko": 57,
+    "js_ko": 35,
     "requetes": 9,
     "dom": 97,
     "ecoindex": 90.6,
-    "chargement_ms": 719,
+    "chargement_ms": 680,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83
