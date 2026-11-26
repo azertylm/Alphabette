@@ -1,15 +1,15 @@
 # Kit de lancement : Frigo-Placard
 
-Clé du registre : `frigoplacard` · Adresse : https://frigoplacard.alphabette.fr · Statut : `actif` · Champ `gratuit` du registre : à passer à `true` (décision de Valentin : gratuite) · Fiche du registre mise à jour le 12/11/2026.
+Clé du registre : `frigoplacard` · Adresse : https://frigoplacard.alphabette.fr · Statut : `actif` · Champ `gratuit: true` au registre (décision de Valentin : gratuite) · Fiche du registre mise à jour le 12/11/2026.
 Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avant toute diffusion.
 
 ## À savoir avant d'écrire (vrai aujourd'hui)
-- **Gratuité : décidée par Valentin, l'appli est GRATUITE.** Les textes disent « gratuit » ; ne citer ni prix ni essai (les « 7 jours d'essai » de vieux documents ne concernent pas cette appli). À faire hors de ce fichier : mettre `gratuit: true` au registre.
+- **Gratuité : décidée par Valentin, l'appli est GRATUITE.** Les textes disent « gratuit » ; ne citer ni prix ni essai (les « 7 jours d'essai » de vieux documents ne concernent pas cette appli).
 - **Clé IA : non vérifiée.** Le dépôt de l'appli (`azertylm/frigoplacard-alphabette.fr`) n'est pas dans l'atelier et le site est injoignable d'ici. Rien ne prouve que l'appli fonctionne sans clé, ni qu'elle en réclame une. À contrôler sur le site (et si une clé est demandée, le dire dans les textes : « avec votre propre clé »). Les recettes sont-elles générées par IA ? Inconnu : ne pas le dire.
 - Statut : `actif` au registre ; le dossier de communication (`public/promo/index.html`) la classe « version bêta », public « familles, étudiants, tous ceux qui cuisinent ». Dire « version bêta ».
 - Précaution inscrite dans la fiche : « Vérifiez toujours les dates et l'état des aliments. »
-- Aucun avis noté (`maturity_index` : 0 note) : ne citer aucune satisfaction. Dernier correctif connu : champs d'ajout étiquetés pour les lecteurs d'écran (25/11/2026) ; BIG intégré (base commune, 11/11).
-- Confidentialité : ne jamais dire où habite Valentin. Contact public unique : contact@alphabette.fr (aucun numéro de téléphone).
+- Aucun avis noté (`data/labo/maturity_index.json` : `nb_notes` 0) : ne citer aucune satisfaction. Dernier correctif connu : champs d'ajout étiquetés pour les lecteurs d'écran (25/11/2026, `data/labo/changelog_summary.json`) ; BIG intégré (base commune, 11/11).
+- Confidentialité : ne jamais dire où habite Valentin. Contact public : contact@alphabette.fr ; le téléphone (06 19 83 19 85) ne figure que dans la signature du courriel aux relais.
 
 ## 1. Promesse
 **Pour les foyers, familles et étudiants qui veulent jeter moins : vous indiquez ce qu'il reste dans le frigo, l'appli propose des recettes, une liste de courses et des idées.**
@@ -44,7 +44,7 @@ Accepteriez-vous de la présenter lors d'un atelier cuisine ou anti-gaspillage, 
 
 Cordialement,
 Valentin, Alphabette
-contact@alphabette.fr
+contact@alphabette.fr · 06 19 83 19 85
 
 (Ne pas citer de ville ni de partenaire : il n'y en a pas. Une épicerie solidaire s'adresse à des personnes en difficulté : parler d'« outil pour cuisiner les restes », jamais de ses bénéficiaires.)
 

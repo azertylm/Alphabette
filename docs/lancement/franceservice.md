@@ -1,6 +1,6 @@
 # Kit de lancement gratuit : Service France
 
-Clé du registre : `franceservice` (fiche `france-service`, nom « SERVICE FRANCE ») · Adresse : https://franceservice.alphabette.fr · Statut : `actif` · Fiche du registre mise à jour le 12/11/2026 · Gratuité confirmée par Valentin (l'appli est gratuite) ; le registre n'a pas de champ `gratuit`.
+Clé du registre : `franceservice` (fiche `france-service`, nom « SERVICE FRANCE ») · Adresse : https://franceservice.alphabette.fr · Statut : `actif` · Fiche du registre mise à jour le 12/11/2026 · Gratuité confirmée par Valentin et inscrite au registre (`gratuit: true`).
 Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avant toute diffusion.
 
 ## ATTENTION : aucun lien avec le réseau public « France Services »
@@ -13,11 +13,11 @@ Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avan
 ## À savoir avant d'écrire (vrai aujourd'hui)
 - Fiche du registre : « Le portail citoyen de vos papiers : points de permis, amendes et démarches, expliqués simplement. » Badge « Populaire », `vitrine: true`.
 - **Gratuité : décision de Valentin, confirmée : l'application est gratuite.** Dire « gratuit » / « gratuite » là où c'est pertinent ; ne citer aucun prix ni abonnement. Ne parler ni de « société » ni de « SASU » (société pas encore créée).
-- Non relu à ce jour (etat-du-projet.md) : la bannière d'essai `AlphabetteTrialBanner`. L'ancienne promesse « 7 jours offerts, clé Mistral fournie par Alphabette » était fausse : ne pas la reprendre.
+- L'ancienne promesse « 7 jours offerts, clé Mistral fournie par Alphabette » était fausse ; la tuile a été remplacée le 12/11 par « Gratuit : guides, modèles, numéros utiles » (commit `661c8a6`, etat-du-projet.md). La bannière d'essai `AlphabetteTrialBanner` reste marquée « non relue » dans etat-du-projet.md : ne pas reprendre l'essai de 7 jours.
 - Mode nuit absent (bouton masqué) ; double barre et BIG présents depuis le 11/11.
 - **Chiffres officiels (barème de points de permis, montants d'amendes, délais de paiement, plafonds) : à recontrôler** sur service-public.gouv.fr avant toute communication. Ce kit n'en cite aucun. Ne pas écrire « à jour » ni « 2026 » tant que le contrôle n'est pas fait (contrôle mensuel encore à mettre en place : etat-du-projet.md, « Pistes »).
 - Non vérifié ici : le site, le dépôt `azertylm/Service-france` et les contenus exacts de l'appli n'ont pas été ouverts ; je ne cite que la fiche du registre et l'état du projet. Revérifier ce que l'appli propose réellement avant d'envoyer (guides, modèles, numéros).
-- Confidentialité : ne jamais dire où habite Valentin ni où les applis sont faites. Contact public : contact@alphabette.fr (aucun numéro de téléphone). La mention « Zero-Knowledge » de `index.html` n'est pas à reprendre sans preuve.
+- Confidentialité : ne jamais dire où habite Valentin ni où les applis sont faites. Contact public : contact@alphabette.fr ; le téléphone (06 19 83 19 85) ne figure que dans la signature du courriel aux relais. La mention « Zero-Knowledge » de `index.html` n'est pas à reprendre sans preuve.
 
 ## 1. Promesse
 **Pour toute personne qui doit comprendre ses papiers : points de permis, amendes et démarches administratives expliqués simplement, avec guides, modèles et numéros utiles. Application gratuite et indépendante, sans lien avec le réseau public France Services.**
@@ -54,7 +54,7 @@ Accepteriez-vous de la présenter lors d'un atelier numérique, ou de la citer d
 
 Cordialement,
 Valentin, Alphabette
-contact@alphabette.fr
+contact@alphabette.fr · 06 19 83 19 85
 
 (Pour un espace France Services : garder la précision, ne pas écrire « France Services » dans l'objet, ne rien suggérer de « partenaire ». Ne pas citer de ville ni de partenaire : il n'y en a pas.)
 

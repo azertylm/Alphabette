@@ -7,7 +7,7 @@ Kit préparé le 26/11/2026. Fichier à relire par `verificateur-honnetete` avan
 - L'appli est **gratuite** : aucun prix, aucun abonnement à citer. Le paiement en ligne n'est pas ouvert et la société n'est pas encore créée : ne parler ni de « société » ni de « SASU ».
 - Statut de la fiche : `actif` ; le dossier de communication la classe « version bêta ». Dire « version bêta » et public visé : plus de 60 ans, aidants, familles.
 - Ses conseils sont de l'information générale : pour la santé ou le droit, un professionnel reste nécessaire (précaution inscrite dans la fiche).
-- Non vérifié ici : le site et son dépôt étaient injoignables depuis l'atelier. Le chiffre « 150 conseils » et le mot « vérifiés » viennent de la fiche du registre ; à recompter sur le site avant diffusion. Les chiffres officiels (aides, plafonds) sont à recontrôler avant communication (MEMOIRE.md).
+- Non vérifié ici : le site et son dépôt étaient injoignables depuis l'atelier. Le chiffre « 150 conseils » et le mot « vérifiés » viennent de la fiche du registre, de `pages-fr/kit-seniors.html` et de `public/promo/index.html` (mêmes sources, aucune preuve indépendante) : **non vérifiés**, à recompter sur le site. Ce kit n'emploie pas « vérifiés » dans ses textes ; ne pas l'ajouter tant que les conseils n'ont pas été relus un par un. « Sans publicité » : seule source `pages-fr/kit-seniors.html` (« sans publicité ni revente de données ») ; **non vérifié** sur le site. Les chiffres officiels (aides, plafonds) sont à recontrôler avant communication (MEMOIRE.md).
 - Confidentialité : ne jamais dire où habite Valentin ni où les applis sont faites. Contact public : contact@alphabette.fr.
 
 ## 1. Promesse
@@ -37,15 +37,15 @@ Bonjour,
 
 Je vous écris au nom d'Alphabette, qui propose des applications gratuites et sobres. L'une d'elles, Senior Bon Plan, s'adresse aux personnes de plus de 60 ans, à leurs aidants et à leurs familles : 150 conseils sur la santé, les droits, les aides, les sorties et les arnaques, rangés par thème et écrits en gros caractères.
 
-Elle est gratuite, sans publicité à notre connaissance, et fonctionne sur téléphone, tablette ou ordinateur : https://bonplansenior.alphabette.fr
+Elle est gratuite et fonctionne sur téléphone, tablette ou ordinateur : https://bonplansenior.alphabette.fr
 
 Accepteriez-vous de la présenter lors d'un de vos ateliers numériques, ou de la citer dans votre lettre d'information ? Je peux vous envoyer une fiche d'une page à imprimer et répondre à vos questions. L'application est en version bêta : vos retours seront précieux.
 
 Cordialement,
 Valentin, Alphabette
-contact@alphabette.fr
+contact@alphabette.fr · 06 19 83 19 85
 
-(Retirer « sans publicité à notre connaissance » si le site n'a pas été relu sur ce point. Ne pas citer de ville ni de partenaire : il n'y en a pas.)
+(Ne pas ajouter « sans publicité » tant que le site n'a pas été relu sur ce point : affirmation non vérifiée. Ne pas citer de ville ni de partenaire : il n'y en a pas.)
 
 ## 4. Soumissions
 Règle commune : aucune demande de vote ni de commentaire, un seul compte (celui de Valentin), message honnête sur le statut bêta.
