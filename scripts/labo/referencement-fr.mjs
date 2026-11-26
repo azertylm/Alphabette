@@ -62,6 +62,9 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['info-perso', "Info Perso : l'actualité que vous choisissez"],
     ['devenir-createur', 'Créez, publiez, soyez payé·e : devenir créateur'],
     ['dossier-de-presse', 'Dossier de presse'],
+    ['bon-plan-senior', 'Senior Bon Plan : bien vivre après 60 ans'],
+    ['frigo-placard', 'Frigo-Placard : zéro gaspi'],
+    ['prompt-magic', "Prompt Magic : de l'idée au cahier des charges"],
   ].filter(([p]) => pagesFr.includes(p));
   await writeFile(
     path.join(sortie, 'llms.txt'),
@@ -129,6 +132,9 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['info-perso', "Info Perso : l'actualité que vous choisissez"],
     ['devenir-createur', 'Créez, publiez, soyez payé·e : devenir créateur'],
     ['dossier-de-presse', 'Dossier de presse'],
+    ['bon-plan-senior', 'Senior Bon Plan : bien vivre après 60 ans'],
+    ['frigo-placard', 'Frigo-Placard : zéro gaspi'],
+    ['prompt-magic', "Prompt Magic : de l'idée au cahier des charges"],
   ].filter(([p]) => pagesFr.includes(p));
   const noscript = `<noscript>
       <h1>Alphabette — applications utiles, sans publicité</h1>

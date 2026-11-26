@@ -153,7 +153,7 @@ ${REGLES_DOMAINES || '  # (aucun)'}
 `;
 
 /** Pages propres à la vitrine alphabette.fr (dossier pages-fr/) : jamais publiées sur .eu. */
-const PAGES_FR = ['kit-seniors', 'site-vitrine', 'manifeste', 'ia-debat', 'service-france', 'info-perso', 'devenir-createur', 'dossier-de-presse'];
+const PAGES_FR = ['kit-seniors', 'site-vitrine', 'manifeste', 'ia-debat', 'service-france', 'info-perso', 'devenir-createur', 'dossier-de-presse', 'bon-plan-senior', 'frigo-placard', 'prompt-magic'];
 
 /** .htaccess du Laboratoire (dossier eu/, servi pour alphabette.eu). */
 const HTACCESS_EU = `# Généré par scripts/build-static.mjs — ne pas modifier à la main.
