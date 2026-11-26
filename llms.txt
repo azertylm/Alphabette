@@ -17,6 +17,8 @@
 - [IA Débat : six IA débattent en direct](https://alphabette.fr/ia-debat/)
 - [Service France : vos papiers expliqués](https://alphabette.fr/service-france/)
 - [Info Perso : l'actualité que vous choisissez](https://alphabette.fr/info-perso/)
+- [Créez, publiez, soyez payé·e : devenir créateur](https://alphabette.fr/devenir-createur/)
+- [Dossier de presse](https://alphabette.fr/dossier-de-presse/)
 
 ## Laboratoire
 

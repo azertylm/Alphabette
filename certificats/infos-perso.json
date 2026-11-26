@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T16:36:02.126Z",
-  "empreinte_page_sha256": "9c8af54c05c5a31c450da1623390d48cd75ffc7a5753b4b29e3622ed3f905e4a",
+  "audite_le": "2026-11-26T16:49:52.550Z",
+  "empreinte_page_sha256": "452d78fc4cdcac2b53ae8a69062d5ed28be63cb1210648ade0f3313b9bd66cef",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 420,
-      "bloquees": 420,
+      "requetes": 892,
+      "bloquees": 892,
       "types": [
         "image",
         "fetch"
@@ -120,12 +120,30 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "media.lesechos.com",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
-    "conforme": true,
-    "verdict": "CONFORME — aucune donnée locale ni saisie envoyée à un tiers non autorisé",
-    "fuites_tierces": [],
+    "conforme": false,
+    "verdict": "NON CONFORME — données envoyées à un tiers non autorisé",
+    "fuites_tierces": [
+      {
+        "vers": "io-fsly-bfmtv.cdn.nextradiotv.com",
+        "classe": "tierce",
+        "type": "image",
+        "methode": "GET",
+        "donnee": "localStorage « infoperso_offline_articles_cache » (écrit par l'appli)",
+        "interceptee": true
+      }
+    ],
     "envois_autorises": [],
     "tiers_contactes": [
       "images.unsplash.com",
@@ -134,9 +152,10 @@
       "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "media.lesechos.com"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "2648ce96a4befd1852a58146ddf4ae2bd363182c4a9de5c5ce733d7311d666de"
+  "empreinte_certificat_sha256": "d3ff8ee516f7d1a1abbdf0bbe2fce836cda72440f14c71b2c6f648b8057ab072"
 }

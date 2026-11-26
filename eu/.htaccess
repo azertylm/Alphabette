@@ -36,7 +36,7 @@ ErrorDocument 404 /404.html
   RewriteRule ^api/ - [R=404,L]
 
   # Pages de la vitrine : elles n'existent que sur alphabette.fr
-  RewriteRule ^(kit-seniors|site-vitrine|manifeste|ia-debat|service-france|info-perso)(/.*)?$ https://alphabette.fr/$1/ [R=301,L]
+  RewriteRule ^(kit-seniors|site-vitrine|manifeste|ia-debat|service-france|info-perso|devenir-createur|dossier-de-presse)(/.*)?$ https://alphabette.fr/$1/ [R=301,L]
 
   # Applications, fichiers du laboratoire, applis hébergées des créateurs (bac à sable) et rapports de l'atelier : servis tels quels
   RewriteRule ^(apps|labo|createurs|atelier)/ - [L]
