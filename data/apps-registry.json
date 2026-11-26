@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-26T08:17:42.489Z",
+  "updatedAt": "2026-11-26T11:48:51.680Z",
   "apps": [
     {
       "id": "goat-chevre-the-king",
@@ -841,7 +841,8 @@
       "updatedAt": "2026-11-26T06:25:13.000Z",
       "description": "Classements et statistiques historiques multi-sports (F1, football, NBA, NHL) pour clubs et nations, mis à jour chaque nuit.",
       "badge": "Nouveau",
-      "cover": "/covers/omnistat.svg"
+      "cover": "/covers/OmniStats.jpg",
+      "coverCustom": true
     }
   ]
 }
