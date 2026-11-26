@@ -286,7 +286,18 @@
         "au moins 3 notes",
         "audit QA"
       ]
+    },
+    "omnistat": {
+      "score": null,
+      "satisfaction": null,
+      "stabilite": 30,
+      "audit": null,
+      "nb_notes": 0,
+      "manque": [
+        "au moins 3 notes",
+        "audit QA"
+      ]
     }
   },
-  "calcule_le": "2026-11-25T20:42:06.572Z"
+  "calcule_le": "2026-11-26T20:24:19.697Z"
 }

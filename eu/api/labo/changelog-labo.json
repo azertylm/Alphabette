@@ -76,6 +76,19 @@
           "avis": []
         }
       ]
+    },
+    "info": {
+      "passage": "2026-11-26T20:30:00Z",
+      "changements": [
+        {
+          "probleme": "Sans flux, les articles d'exemple affichaient des dates de septembre, comme de vraies actualités déjà anciennes.",
+          "amelioration": "Les articles d'exemple n'affichent plus de date (liste, lecture, copie, impression). Les dates des vrais flux importés restent affichées.",
+          "origine": "avis",
+          "avis": [
+            "fb_1795683657_7422"
+          ]
+        }
+      ]
     }
   }
 }
