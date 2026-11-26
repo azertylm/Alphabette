@@ -9,7 +9,7 @@
     "isActive": false,
     "badgeLabel": "Offre Lancement Écosystème",
     "discountPercent": 15,
-    "expiresAt": "2026-12-10T15:49:49.316Z",
+    "expiresAt": "2026-12-10T15:58:36.667Z",
     "description": "-15% immédiats sur l'Écosystème complet avec le code SOUVERAIN15",
     "couponCode": "SOUVERAIN15"
   },
@@ -23,7 +23,7 @@
     "zeroPublicTraining": true,
     "trialDaysIncluded": 7
   },
-  "updatedAt": "2026-11-26T15:49:49.316Z",
+  "updatedAt": "2026-11-26T15:58:36.667Z",
   "donation": {
     "version": 1,
     "updatedAt": "2026-11-11T00:00:00.000Z",
