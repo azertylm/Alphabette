@@ -57,6 +57,9 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['manifeste', 'Le manifeste : zéro pub, zéro compte'],
     ['kit-seniors', 'Kit Mairie & Résidence Senior'],
     ['site-vitrine', 'Site vitrine clé en main'],
+    ['ia-debat', 'IA Débat : six IA débattent en direct'],
+    ['service-france', 'Service France : vos papiers expliqués'],
+    ['info-perso', "Info Perso : l'actualité que vous choisissez"],
   ].filter(([p]) => pagesFr.includes(p));
   await writeFile(
     path.join(sortie, 'llms.txt'),
@@ -119,6 +122,9 @@ export async function referencerVitrine({ sortie, vitrine, pagesFr, jour = new D
     ['manifeste', 'Le manifeste : zéro pub, zéro compte'],
     ['kit-seniors', 'Kit Mairie & Résidence Senior'],
     ['site-vitrine', 'Site vitrine clé en main'],
+    ['ia-debat', 'IA Débat : six IA débattent en direct'],
+    ['service-france', 'Service France : vos papiers expliqués'],
+    ['info-perso', "Info Perso : l'actualité que vous choisissez"],
   ].filter(([p]) => pagesFr.includes(p));
   const noscript = `<noscript>
       <h1>Alphabette — applications utiles, sans publicité</h1>
