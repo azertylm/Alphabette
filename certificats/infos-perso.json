@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T19:47:22.525Z",
-  "empreinte_page_sha256": "b27d70a54ee82ab1176250113570a2581fdd00176932b724aeb632fa332e98cc",
+  "audite_le": "2026-11-26T20:02:36.031Z",
+  "empreinte_page_sha256": "588ca1d756b180501496af076fa2140824ef4280f1966c222963253db1480337",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -61,8 +61,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 921,
-      "bloquees": 921,
+      "requetes": 294,
+      "bloquees": 294,
       "types": [
         "image",
         "fetch"
@@ -71,23 +71,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "www.franceinfo.fr",
-      "classe": "tierce",
-      "requetes": 2,
-      "bloquees": 2,
-      "types": [
-        "image"
-      ]
-    },
-    {
-      "hote": "img.lemde.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -123,7 +114,16 @@
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "www.franceinfo.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
+    },
+    {
+      "hote": "img.lemde.fr",
       "classe": "tierce",
       "requetes": 1,
       "bloquees": 1,
@@ -140,14 +140,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "www.franceinfo.fr",
-      "img.lemde.fr",
+      "io-fsly-bfmtv.cdn.nextradiotv.com",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
       "www.google.com",
-      "io-fsly-bfmtv.cdn.nextradiotv.com"
+      "www.franceinfo.fr",
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "8333f03996105ecea13990d568ae4ff54d5e13cb0812b3d1aab80dec39e002a8"
+  "empreinte_certificat_sha256": "84b5fd37319268153bee564333de9d112e9e633fc9d0c07b25b70af13fe9b5d5"
 }
