@@ -4,8 +4,8 @@
   "app_id": "infos-perso",
   "nom": "INFOS PERSO",
   "url": "https://infosperso.alphabette.fr/",
-  "audite_le": "2026-11-26T01:02:55.449Z",
-  "empreinte_page_sha256": "c63981901fcdda30e472d8eb90fef5e41875f782c83da29ff81c0e782b4cfe5d",
+  "audite_le": "2026-11-26T06:29:27.240Z",
+  "empreinte_page_sha256": "4e396ce9da5694dd15e7c844e497f0907f126cd281778a63542b735886f5e224",
   "methode": {
     "environnement": "Chromium neuf, sans cookie ni extension, 390×844, service workers actifs",
     "canaris": {
@@ -60,8 +60,8 @@
     {
       "hote": "images.unsplash.com",
       "classe": "tierce",
-      "requetes": 289,
-      "bloquees": 289,
+      "requetes": 313,
+      "bloquees": 313,
       "types": [
         "image",
         "fetch"
@@ -70,14 +70,14 @@
     {
       "hote": "i.f1g.fr",
       "classe": "tierce",
-      "requetes": 3,
-      "bloquees": 3,
+      "requetes": 4,
+      "bloquees": 4,
       "types": [
         "image"
       ]
     },
     {
-      "hote": "img.lemde.fr",
+      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "hote": "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "hote": "www.franceinfo.fr",
       "classe": "tierce",
       "requetes": 2,
       "bloquees": 2,
@@ -120,6 +120,15 @@
       "types": [
         "image"
       ]
+    },
+    {
+      "hote": "img.lemde.fr",
+      "classe": "tierce",
+      "requetes": 1,
+      "bloquees": 1,
+      "types": [
+        "image"
+      ]
     }
   ],
   "resultat": {
@@ -130,13 +139,14 @@
     "tiers_contactes": [
       "images.unsplash.com",
       "i.f1g.fr",
-      "img.lemde.fr",
       "io-fsly-bfmtv.cdn.nextradiotv.com",
+      "www.franceinfo.fr",
       "fonts.googleapis.com",
       "firestore.googleapis.com",
-      "www.google.com"
+      "www.google.com",
+      "img.lemde.fr"
     ]
   },
   "verification": "Signé par GitHub (attestation Sigstore du dépôt azertylm/Alphabette) : gh attestation verify <fichier>.json --repo azertylm/Alphabette",
-  "empreinte_certificat_sha256": "e98f854a3b7b452b4a2f63ce84105f2a5c6c7aa81b77a872a4eb62ee95e1bd85"
+  "empreinte_certificat_sha256": "4f5605a308a56373ebd610a224518504f1033eb487fe9524785d3aee13eb1549"
 }
