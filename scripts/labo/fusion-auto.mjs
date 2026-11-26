@@ -2,7 +2,8 @@
 /**
  * scripts/labo/fusion-auto.mjs — une Pull Request peut-elle être fusionnée sans Valentin ?
  * Décision de Valentin (20/11/2026) : tout ce qui ne change qu'alphabette.eu se publie tout seul ; ce qui peut
- * changer alphabette.fr (ou les robots eux-mêmes) attend toujours son « fusionne » ou son clic.
+ * changer alphabette.fr (ou les robots eux-mêmes) attend toujours son « fusionne » ou son clic,
+ * sauf le référencement et les pages de présentation de la vitrine (26/11/2026, voir PERMIS).
  *
  *   node scripts/labo/fusion-auto.mjs <fichiers.txt> <dossier-base> <dossier-tete>
  *     fichiers.txt : un chemin modifié par ligne ; dossiers : copies du dépôt avant / après (pour les JSON du registre).
@@ -17,6 +18,9 @@ import path from 'node:path';
 const PERMIS = [
   /^data\/labo\/(?!(notes_version|releases|tutos|eco_scores|autorisations)\.json$)/, /^data\/apps-communaute\.json$/, /^docs\//, /^RULES_AND_MEMORY\.md$/, /^\.claude\/(agents|commands)\//,
   /^tests\//, /^labo\/(collectif|crash-testeur|createurs)\//, /^labo\/serveur\/(feedback|collectif|capteur)\.(php|js)$/,
+  // Référencement et pages de présentation de la vitrine (décision de Valentin, 26/11/2026) : pages statiques de pages-fr/,
+  // image de partage, kit de diffusion, référencement .fr. Jamais vitrine/, vitrine.ref, src/, packages/shell/ ni cette règle.
+  /^pages-fr\/[a-z0-9-]+\.html$/, /^public\/og-image\.png$/, /^scripts\/labo\/referencement-fr\.mjs$/,
 ];
 /** Registres partagés par les deux sites : permis seulement si aucune fiche « vitrine » ne change. */
 const REGISTRES = { 'data/apps-registry.json': (d) => d.apps ?? [], 'data/apps-sources.json': (d) => Object.entries(d.apps ?? {}).map(([cle, s]) => ({ id: cle, ...s })) };
