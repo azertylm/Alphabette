@@ -41,6 +41,7 @@ const famille = (a) => { const t = `${a.slug} ${a.name} ${a.groupe ?? ''}`; for 
 
 const E = '#4a2e1b', S = '#9e4736', L = '#b08d3c';
 const fin = `fill="none" stroke="${E}" stroke-width="2"`;
+const fa = (w) => `fill="none" stroke="${E}" stroke-width="${w}"`;
 const r1 = (n) => Math.round(n * 10) / 10;
 /** Engrenage à n dents (chemin fermé) + moyeu. */
 function engrenage(cx, cy, r, n = 10, teinte = E) {
@@ -80,16 +81,53 @@ function motif(f) {
   }
 }
 
+/** Engrenage réutilisable (<symbol> id="g", rayon 50) : dessiné une fois, placé par <use>. */
+const SYMBOLE_ENGRENAGE = (() => {
+  const pts = [];
+  for (let i = 0; i < 32; i += 1) {
+    const a = (Math.PI * 2 * i) / 32;
+    const rr = [0, 1].includes(i % 4) ? 50 : 40;
+    pts.push(`${r1(rr * Math.cos(a))} ${r1(rr * Math.sin(a))}`);
+  }
+  return `<g id="g"><path d="M${pts.join('L')}z"/><circle r="14" fill="none"/><path d="M0-40V-14M0 40V14M-40 0H-14M40 0H14" fill="none"/></g>`;
+})();
+const gr = (x, y, k, f = 'url(#w)') => `<use href="#g" transform="translate(${x} ${y}) scale(${k})" fill="${f}"/>`;
+
+/** Scène centrale « machine à classer » d'OmniStats / sport : podium, balance, poulies, engrenages, trophée. */
+function sceneStats() {
+  const hach = 'fill="url(#h)" stroke="none"';
+  return `<path d="M310 505V150M870 505V150M310 150H870M310 180 360 150M870 180 820 150" ${fa(3)}/><path d="M310 150V505H330V150z" ${hach}/>
+<path d="M600 150v18" ${fin}/><circle cx="600" cy="150" r="22" fill="url(#w)" stroke="${E}" stroke-width="2.5"/><circle cx="600" cy="150" r="5" fill="${E}"/>
+<path d="M578 150Q400 150 400 250M622 150Q800 150 800 290" fill="none" stroke="${E}" stroke-width="1.5"/><path d="M400 250 375 285H425zM800 290 775 325H825z" ${fa(1.2)}/>
+<ellipse cx="400" cy="290" rx="38" ry="9" fill="url(#w)" stroke="${E}" stroke-width="2"/><ellipse cx="800" cy="330" rx="38" ry="9" fill="url(#w)" stroke="${E}" stroke-width="2"/>
+<circle cx="400" cy="264" r="22" fill="#f4e8cf" stroke="${E}" stroke-width="2"/><path d="M400 252l11 8-4 13h-14l-4-13zM400 242v10M411 260l11-4M407 273l7 10M393 273l-7 10M389 260l-11-4" ${fa(1.3)}/>
+<circle cx="800" cy="304" r="22" fill="url(#s)" stroke="${E}" stroke-width="2"/><path d="M778 304h44M800 282v44M783 288Q800 304 783 320M817 288Q800 304 817 320" ${fa(1.3)}/>
+<path d="M350 150v150M840 150v150" ${fa(1.5)}/><path d="M336 300h28v34h-28z" fill="url(#h)" stroke="${E}" stroke-width="2"/>
+<path d="M440 505V400h110V505zM550 505V345h110V505zM660 505V430h110V505z" fill="#efe0c2" stroke="${E}" stroke-width="2.5"/><path d="M550 345h110v160H550z" fill="url(#h)" opacity=".7"/>
+<text font-family="Georgia,serif" font-style="italic" fill="${S}" text-anchor="middle" font-size="42"><tspan x="495" y="470">2</tspan><tspan x="605" y="452">1</tspan><tspan x="715" y="486">3</tspan></text>
+<circle cx="605" cy="285" r="58" fill="url(#l)"/><circle cx="605" cy="285" r="52" fill="none" stroke="${S}" stroke-width="1.5" stroke-dasharray="5 6"/>
+<path d="M578 280c0 40 12 52 27 52s27-12 27-52zM632 290q22-4 18 18-4 14-20 14M578 290q-22-4-18 18 4 14 20 14M605 332v14M586 346h38v-0" fill="url(#w)" stroke="${E}" stroke-width="2.5"/><path d="M580 300h50" ${fa(1.3)}/>
+<path d="M330 505v-0" ${fin}/>${gr(240, 450, 1.1)}${gr(960, 440, 1.25)}
+<path d="M960 440 900 360 775 410" ${fa(5)}/><circle cx="900" cy="360" r="9" fill="url(#w)" stroke="${E}" stroke-width="2"/><circle cx="775" cy="410" r="7" fill="${E}"/>
+<ellipse cx="180" cy="140" rx="26" ry="9" fill="url(#h)" stroke="${E}" stroke-width="2"/><path d="M154 140v10a26 9 0 0 0 52 0v-10" ${fin}/>
+<path d="M205 165Q320 330 395 238" fill="none" stroke="${S}" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#a)"/><path d="M880 330Q1000 380 1040 300" fill="none" stroke="${S}" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#a)"/>
+<path d="M1010 120 1000 255M1010 120 1075 250M1002 205h58" fill="none" stroke="${E}" stroke-width="3"/><circle cx="1010" cy="118" r="10" fill="url(#w)" stroke="${E}" stroke-width="2"/>
+${etoile(1090, 330)}`;
+}
+
+/** Fond de parchemin commun : texture, vieillissement, géométrie de construction (déco partagée par toutes les couvertures). */
+const DEFS = `<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6ebd3"/><stop offset="1" stop-color="#ecdcba"/></linearGradient><radialGradient id="v" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#8a5a2b" stop-opacity="0"/><stop offset="1" stop-color="#6b4220" stop-opacity=".38"/></radialGradient><radialGradient id="l" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f2a35c" stop-opacity=".85"/><stop offset="1" stop-color="#f2a35c" stop-opacity="0"/></radialGradient><linearGradient id="w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3c27e"/><stop offset="1" stop-color="#b08d3c"/></linearGradient><linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d98a72"/><stop offset="1" stop-color="#9e4736"/></linearGradient><pattern id="h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0 0v7" stroke="#4a2e1b" stroke-width="1.1" opacity=".55"/></pattern><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1 8 5 1 9" fill="none" stroke="#9e4736" stroke-width="1.6"/></marker><filter id="r" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence baseFrequency=".03" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .1 0 0 0 .35 0"/></filter><filter id="b"><feGaussianBlur stdDeviation="14"/></filter>${SYMBOLE_ENGRENAGE}</defs>`;
+const DECOR = `<g fill="none" stroke="#9c7b55" stroke-width="1.2"><circle cx="600" cy="300" r="270"/><path d="M600 40v560" stroke-dasharray="3 5"/></g><g fill="#7a4a1d" opacity=".25" filter="url(#b)"><circle cx="90" cy="90" r="34"/><circle cx="1110" cy="560" r="40"/></g>`;
+
 export function svgReplie(app) {
   const nom = ECHAP(nomLisible(app.name)).slice(0, 40);
-  const taille = nom.length > 22 ? 56 : 72;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Illustration de l'application ${nom}">
-<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4e8cf"/><stop offset="1" stop-color="#efe0c2"/></linearGradient></defs><rect width="1200" height="630" fill="url(#p)"/><rect x="24" y="24" width="1152" height="582" fill="none" stroke="#4a2e1b" stroke-width="2"/><rect x="34" y="34" width="1132" height="562" fill="none" stroke="#9c7b55" stroke-width="1"/>
-<g fill="none" stroke="#9e4736" stroke-width="1.5"><circle cx="890" cy="280" r="190"/><circle cx="890" cy="280" r="150" stroke="#b08d3c"/><path d="M700 280h380M890 90v380" stroke="#9c7b55"/></g>
-${motif(famille(app))}
-<text x="80" y="300" font-family="Georgia,'Times New Roman',serif" font-size="${taille}" font-weight="700" fill="#2c1a0e">${nom}</text>
-<path d="M80 330h300" stroke="#9e4736" stroke-width="3"/>
-<text x="80" y="390" font-family="Georgia,'Times New Roman',serif" font-size="30" font-style="italic" fill="#4a2e1b">Alphabette — le Laboratoire</text>
+  const f = famille(app);
+  const scene = f === 'stats'
+    ? sceneStats()
+    // Autres thèmes : motif thématique agrandi et centré, encadré de deux engrenages.
+    : `<g transform="translate(600 300) scale(1.45) translate(-890 -280)">${motif(f)}</g>${gr(230, 470, 1.1)}${gr(335, 520, .6, 'url(#s)')}${gr(980, 480, .95)}<path d="M180 565Q600 520 1020 565" fill="none" stroke="${E}" stroke-width="2"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Illustration de l'application ${nom} : machine de Léonard de Vinci dessinée à l'encre sur parchemin">
+${DEFS}<rect width="1200" height="630" fill="url(#p)"/><rect width="1200" height="630" filter="url(#n)"/>${DECOR}<g filter="url(#r)" stroke-linejoin="round" stroke-linecap="round" stroke="${E}">${scene}</g><rect width="1200" height="630" fill="url(#v)"/>
 </svg>
 `;
 }
