@@ -1,11 +1,27 @@
 {
  "poses": [
   "octet-arrosoir",
+  "octet-balance",
+  "octet-bouclier",
   "octet-boussole",
+  "octet-cadenas",
   "octet-carnet",
+  "octet-chute",
   "octet-cle",
+  "octet-course",
+  "octet-dossiers",
+  "octet-escalade",
   "octet-fiole",
+  "octet-glissade",
+  "octet-grand-saut",
+  "octet-lecture-carte",
   "octet-loupe",
-  "octet-sablier"
+  "octet-marche-planche",
+  "octet-pause-gouter",
+  "octet-port-engrenage",
+  "octet-sablier",
+  "octet-saut-joie",
+  "octet-saut-planche",
+  "octet-sieste"
  ]
 }

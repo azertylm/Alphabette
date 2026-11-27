@@ -9,6 +9,8 @@
    - Mode Laboratoire (alphabette.eu) : « éclaireuse » pour signaler un souci ou proposer une amélioration.
    - Sieste après 35 s d'inactivité, curiosité sur le texte surligné, sons de synthèse (coupés par défaut),
      confort de lecture (taille, contraste AAA, voix Alphabette), mini-jeu « Les engrenages perdus ».
+   - Humeurs d'une section : data-octet-mood="compass | wrench | flask | notebook | watering | loupe | hourglass |
+     lock | shield | files | scales" (boussole, clé, fiole, carnet, arrosoir, loupe, sablier, cadenas, bouclier, dossiers, balance).
    - Immobile en Mode Calme du site et si l'appareil demande moins d'animations. Aucune fenêtre au démarrage.
    ============================================================================ */
 (function () {
@@ -26,10 +28,17 @@
   const SIESTE_MS = 35000;
 
   const FICHIERS = {
+    // accessoires (data-octet-mood="…" sur une section)
     compass: "octet-boussole", wrench: "octet-cle", flask: "octet-fiole", notebook: "octet-carnet",
     hourglass: "octet-sablier", loupe: "octet-loupe", watering: "octet-arrosoir",
-    sleep: "octet-sieste", fall: "octet-chute"
+    lock: "octet-cadenas", shield: "octet-bouclier", files: "octet-dossiers", scales: "octet-balance",
+    // gestes
+    walk: "octet-course", jump: "octet-grand-saut", climb: "octet-escalade", fall: "octet-chute", slide: "octet-glissade",
+    sleep: "octet-sieste", joy: "octet-saut-joie", carry: "octet-port-engrenage", map: "octet-lecture-carte", snack: "octet-pause-gouter"
   };
+  // Accessoires que le dessin SVG de secours sait représenter ; les autres se replient sur l'un d'eux
+  const SVG_MOODS = ["compass", "wrench", "flask", "notebook", "hourglass", "loupe", "watering"];
+  const REPLI_SVG = { sleep: "hourglass", map: "compass", files: "notebook", lock: "wrench", shield: "wrench", scales: "compass" };
   const PLANCHE = "octet-walk-jump-sheet";
 
   const lireJSON = (cle, defaut) => {
@@ -116,7 +125,7 @@
         defaultMood: ctx.defaultMood || (this.site === "eu" ? "flask" : "compass"),
         selector: "auto",
         ignoreSelector: "[data-octet-ignore], header, nav, dialog, [role='dialog'], [aria-modal='true'], .ab-barre, .ab-shell-bar",
-        autoMoods: ["compass", "wrench", "notebook", "watering", "flask"],
+        autoMoods: ["compass", "wrench", "notebook", "watering", "flask", "scales", "files"],
         walkSpeed: 74,
         topSafeMargin: 112,
         bottomSafeMargin: 22,
@@ -136,7 +145,9 @@
 
       this.moodLabels = {
         compass: "Boussole", wrench: "Clé à molette", flask: "Fiole", notebook: "Carnet", hourglass: "Sablier",
-        loupe: "Loupe", watering: "Arrosoir", sleep: "Sieste", fall: "Oups !"
+        loupe: "Loupe", watering: "Arrosoir", lock: "Cadenas", shield: "Bouclier", files: "Dossiers", scales: "Balance",
+        walk: "En route", jump: "Hop !", climb: "Escalade", fall: "Oups !", slide: "Glissade", sleep: "Sieste",
+        joy: "Youpi !", carry: "Engrenage", map: "Carte", snack: "Goûter"
       };
 
       this.reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -209,11 +220,11 @@
     _getMetrics() {
       const vw = window.innerWidth;
       const isCompact = vw < 640;
-      return { size: isCompact ? 64 : 84, minPlatformWidth: isCompact ? 44 : 56, sidePadding: isCompact ? 14 : 24, isCompact, isBottomSheet: vw < 420 };
+      return { size: isCompact ? 70 : 92, minPlatformWidth: isCompact ? 44 : 56, sidePadding: isCompact ? 14 : 24, isCompact, isBottomSheet: vw < 420 };
     }
     _calme() { return this.reducedMotionQuery.matches || document.documentElement.dataset.calme === "oui"; }
     _enMission() { return this.state === "REPAIRING" || !!(this.jump && this.jump.onLand); }
-    _bloque() { return this._enMission() || this.prefs.hidden || this.state === "PAUSED" || this.state === "MENU_OPEN" || this.state === "REPAIRING"; }
+    _bloque() { return this.state === "CELEBRATING" || this._enMission() || this.prefs.hidden || this.state === "PAUSED" || this.state === "MENU_OPEN" || this.state === "REPAIRING"; }
 
     /* -------------------------------------------------------------------------
        Module A — préchargement réel des images (bascule SVG → WebP seulement si l'image charge)
@@ -248,8 +259,8 @@
       const style = document.createElement("style");
       style.id = OctetEngine.STYLE_ID;
       style.textContent = `
-        :root { --octet-size: 84px; }
-        @media (max-width: 639px) { :root { --octet-size: 64px; } }
+        :root { --octet-size: 92px; }
+        @media (max-width: 639px) { :root { --octet-size: 70px; } }
 
         #octet-debug-layer {
           position: fixed; inset: 0; pointer-events: none; z-index: 9985; display: none;
@@ -810,14 +821,23 @@
       `;
     }
 
+    _dispo(m) { return this.available.has(FICHIERS[m]); }
     _resolveMoodForState(state) {
+      const section = this.sectionMood || this.config.defaultMood;
       if (state === "PAUSED") return "hourglass";
-      if (state === "SLEEPING") return this.available.has(FICHIERS.sleep) ? "sleep" : "hourglass";
+      if (state === "SLEEPING") return this._dispo("sleep") ? "sleep" : "hourglass";
       if (state === "REPAIRING") return "wrench";
+      if (state === "CELEBRATING") return this._dispo(this.celebMood) ? this.celebMood : "wrench";
       if (state === "MENU_OPEN") return this.menuMoodOverride || "compass";
-      if (state === "JUMPING" && this.fallJump) return this.available.has(FICHIERS.fall) ? "fall" : (this.sectionMood || "wrench");
-      if (state === "JUMPING") return this.sectionMood || "wrench";
-      return this.sectionMood || this.config.defaultMood;
+      if (state === "JUMPING") {
+        const j = this.jump;
+        if (this.fallJump) return this._dispo("fall") ? "fall" : section;
+        if (j && j.startY - j.endY > 180 && this._dispo("climb")) return "climb";
+        return this._dispo("jump") ? "jump" : section;
+      }
+      if (state === "WALKING_ON_TEXT") return this._dispo("walk") ? "walk" : section;
+      if (state === "LANDING" && this.landedFromFall) return this._dispo("slide") ? "slide" : section;
+      return section;
     }
 
     _renderVisual(force = false) {
@@ -842,7 +862,7 @@
         return;
       }
 
-      const img = this._url(FICHIERS[mood]);
+      const img = this._url(FICHIERS[mood]) || (this.rigEl.dataset.mode === "img" && !SVG_MOODS.includes(mood) ? this._url(FICHIERS[REPLI_SVG[mood] || "wrench"]) : null);
       if (img) {
         if (this.rigEl.dataset.mode !== "img" || this.rigEl.dataset.src !== img) {
           this.rigEl.innerHTML = `<img class="octet-sprite-img" src="${img}" alt="" draggable="false">`;
@@ -851,7 +871,8 @@
         }
         return;
       }
-      const svgMood = mood === "sleep" ? "hourglass" : mood === "fall" ? "wrench" : mood;
+      const svgMood = SVG_MOODS.includes(mood) ? mood
+        : REPLI_SVG[mood] || (SVG_MOODS.includes(this.sectionMood) ? this.sectionMood : "wrench");
       if (this.rigEl.dataset.mode !== "svg" || this.rigEl.dataset.mood !== svgMood) {
         this.rigEl.innerHTML = this._buildOctetSVG(svgMood);
         this.rigEl.dataset.mode = "svg";
@@ -1184,6 +1205,13 @@
         case "SLEEPING":
         case "REPAIRING":
           return;
+        // CELEBRATING et WAKING sont gérés plus bas
+
+        case "CELEBRATING": {
+          this.stateTimer -= dt;
+          if (this.stateTimer <= 0) { this.stateTimer = 0.6; this._setState("IDLE"); }
+          return;
+        }
 
         case "WAKING": {
           this.stateTimer -= dt;
@@ -1213,8 +1241,9 @@
           const step = this.config.walkSpeed * dt;
           if (Math.abs(dx) <= step) {
             this.x = this.walkTargetX;
-            this.sectionMood = Math.random() < 0.3 ? "loupe" : (p.mood || this.config.defaultMood);
-            this.stateTimer = 0.8 + Math.random() * 1.4;
+            const r = Math.random();
+            this.sectionMood = r < 0.08 && this._dispo("snack") ? "snack" : r < 0.3 ? "loupe" : (p.mood || this.config.defaultMood);
+            this.stateTimer = this.sectionMood === "snack" ? 3 + Math.random() * 2 : 0.8 + Math.random() * 1.4;
             this._setState("IDLE");
           } else {
             this.facing = dx > 0 ? 1 : -1;
@@ -1244,9 +1273,10 @@
             this.lastPlatformId = this.currentPlatform ? this.currentPlatform.id : null;
             this.currentPlatform = j.targetPlatform;
             this.sectionMood = j.forceMood || j.targetPlatform.mood || this.config.defaultMood;
+            this.landedFromFall = this.fallJump;
             this.fallJump = false;
             this.scaleX = 1.18; this.scaleY = 0.80;
-            this.stateTimer = 0.13;
+            this.stateTimer = this.landedFromFall ? 0.75 : 0.13;
             this._spawnDust(this.x, this.y);
             this.sound.playLand();
             const onLand = j.onLand;
@@ -1260,6 +1290,7 @@
         case "LANDING": {
           this.stateTimer -= dt;
           if (this.stateTimer <= 0) {
+            if (this.landedFromFall) { this.landedFromFall = false; this._renderVisual(); }
             if (this.holdAfterLanding) { this.holdAfterLanding = false; this.stateTimer = 3 + Math.random() * 2; this._setState("IDLE"); }
             else if (Math.random() < 0.72) this._startWalkOnCurrentPlatform();
             else { this.stateTimer = 0.9 + Math.random() * 1.1; this._setState("IDLE"); }
@@ -1385,8 +1416,9 @@
       this.visiteEnCours = true;
       this._later(() => { this.visiteEnCours = false; }, 4000);
       this.holdAfterLanding = true;
-      this.jumpTo(this._plateformeDepuisRect(r, "compass", `carte-${id}`), {
-        forceMood: "compass",
+      const humeur = this._dispo("map") ? "map" : "compass";
+      this.jumpTo(this._plateformeDepuisRect(r, humeur, `carte-${id}`), {
+        forceMood: humeur,
         onLand: () => { this.visiteEnCours = false; this._montrerPastille(card); }
       });
     }
@@ -1463,8 +1495,9 @@
         this._later(() => btn.remove(), 380);
         const n = Math.min(TOTAL_ENGRENAGES, this.gears.ids.length);
         this._toast(n >= TOTAL_ENGRENAGES ? `⚙️ ${n}/${TOTAL_ENGRENAGES} : collection complète ! Ouvrez mon carnet.` : `⚙️ Engrenage ${n}/${TOTAL_ENGRENAGES} rangé dans la besace !`);
-        this.stateTimer = 1.2;
-        this._setState(etatAvant || "IDLE");
+        this.celebMood = n >= TOTAL_ENGRENAGES ? "joy" : "carry";
+        this.stateTimer = n >= TOTAL_ENGRENAGES ? 2.2 : 1.5;
+        this._setState(etatAvant || "CELEBRATING");
       }, 650);
     }
     _etincelles(x, y) {
@@ -1921,6 +1954,10 @@
 
       this.y += dy;
       if (this.jump) { this.jump.startY += dy; this.jump.endY += dy; }
+      // le texte sous ses pattes a bougé avec la page (sauf le « sol » virtuel, fixe à l'écran)
+      if (this.currentPlatform && this.currentPlatform.tag !== "FLOOR") this.currentPlatform.top += dy;
+      const cible = this.jump && this.jump.targetPlatform;
+      if (cible && cible !== this.currentPlatform && cible.tag !== "FLOOR") cible.top += dy;
       if (this.state === "MENU_OPEN") {
         this.y = Math.max(this.config.topSafeMargin, Math.min(window.innerHeight - 28, this.y));
         this._positionBubble();
