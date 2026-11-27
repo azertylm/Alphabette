@@ -1,16 +1,16 @@
 {
-  "date": "2026-11-26T10:46:10.302Z",
+  "date": "2026-11-27T10:46:07.997Z",
   "apps": {
     "info": {
       "note": 82,
-      "controle_technique": 77,
+      "controle_technique": 78,
       "compte": {
         "bloquant": 0,
         "important": 2,
         "conseil": 8
       },
       "apte": false,
-      "date": "2026-11-26T10:46:10.302Z"
+      "date": "2026-11-27T10:46:07.997Z"
     },
     "bonplan": {
       "note": 82,
@@ -21,18 +21,18 @@
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-26T10:46:14.306Z"
+      "date": "2026-11-27T10:46:12.521Z"
     },
     "ecobatisol": {
-      "note": 87,
+      "note": 88,
       "controle_technique": 82,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 3
+        "conseil": 2
       },
       "apte": false,
-      "date": "2026-11-26T10:46:18.356Z"
+      "date": "2026-11-27T10:46:16.901Z"
     },
     "quiz-femmes": {
       "note": 89,
@@ -43,18 +43,18 @@
         "conseil": 5
       },
       "apte": true,
-      "date": "2026-11-26T10:46:22.220Z"
+      "date": "2026-11-27T10:46:21.134Z"
     },
     "frigoplacard": {
-      "note": 84,
-      "controle_technique": 84,
+      "note": 85,
+      "controle_technique": 83,
       "compte": {
         "bloquant": 0,
         "important": 1,
         "conseil": 7
       },
       "apte": false,
-      "date": "2026-11-26T10:46:25.957Z"
+      "date": "2026-11-27T10:46:25.220Z"
     },
     "quiz-extraordinaires": {
       "note": 88,
@@ -65,18 +65,18 @@
         "conseil": 6
       },
       "apte": true,
-      "date": "2026-11-26T10:46:29.766Z"
+      "date": "2026-11-27T10:46:29.948Z"
     },
     "goat-chevre-the-king": {
-      "note": 82,
+      "note": 83,
       "controle_technique": 74,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 7
+        "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-26T10:46:33.414Z"
+      "date": "2026-11-27T10:46:33.979Z"
     },
     "iadebat": {
       "note": 84,
@@ -87,29 +87,29 @@
         "conseil": 9
       },
       "apte": false,
-      "date": "2026-11-26T10:46:37.659Z"
+      "date": "2026-11-27T10:46:39.238Z"
     },
     "infos-perso": {
       "note": 71,
       "controle_technique": 52,
       "compte": {
         "bloquant": 0,
-        "important": 5,
-        "conseil": 12
+        "important": 6,
+        "conseil": 11
       },
       "apte": false,
-      "date": "2026-11-26T10:46:41.748Z"
+      "date": "2026-11-27T10:46:44.010Z"
     },
     "oeil-atelier": {
       "note": 87,
-      "controle_technique": 81,
+      "controle_technique": 80,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 5
+        "conseil": 4
       },
       "apte": false,
-      "date": "2026-11-26T10:46:53.713Z"
+      "date": "2026-11-27T10:46:57.229Z"
     },
     "dico-loufoque": {
       "note": 90,
@@ -120,7 +120,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:46:57.736Z"
+      "date": "2026-11-27T10:47:01.638Z"
     },
     "juste-chiffre": {
       "note": 90,
@@ -131,7 +131,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:47:01.355Z"
+      "date": "2026-11-27T10:47:05.671Z"
     },
     "memo-meninges": {
       "note": 91,
@@ -142,7 +142,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:47:04.976Z"
+      "date": "2026-11-27T10:47:09.665Z"
     },
     "omnistat": {
       "note": 83,
@@ -153,7 +153,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-26T10:47:08.656Z"
+      "date": "2026-11-27T10:47:13.779Z"
     },
     "orbit": {
       "note": 75,
@@ -161,10 +161,10 @@
       "compte": {
         "bloquant": 0,
         "important": 4,
-        "conseil": 12
+        "conseil": 11
       },
       "apte": false,
-      "date": "2026-11-26T10:47:12.366Z"
+      "date": "2026-11-27T10:47:17.914Z"
     },
     "ou-cest": {
       "note": 91,
@@ -175,7 +175,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:47:23.421Z"
+      "date": "2026-11-27T10:47:29.096Z"
     },
     "ou-cest-france": {
       "note": 91,
@@ -186,7 +186,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:47:27.141Z"
+      "date": "2026-11-27T10:47:33.265Z"
     },
     "petits-jeux": {
       "note": 91,
@@ -197,7 +197,7 @@
         "conseil": 3
       },
       "apte": true,
-      "date": "2026-11-26T10:47:30.821Z"
+      "date": "2026-11-27T10:47:37.311Z"
     },
     "podcasts": {
       "note": 88,
@@ -208,18 +208,18 @@
         "conseil": 6
       },
       "apte": true,
-      "date": "2026-11-26T10:47:34.851Z"
+      "date": "2026-11-27T10:47:42.421Z"
     },
     "promptmagic": {
       "note": 86,
-      "controle_technique": 81,
+      "controle_technique": 80,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 4
+        "conseil": 3
       },
       "apte": false,
-      "date": "2026-11-26T10:47:38.523Z"
+      "date": "2026-11-27T10:47:46.638Z"
     },
     "proxilien": {
       "note": 79,
@@ -230,7 +230,7 @@
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-26T10:47:42.367Z"
+      "date": "2026-11-27T10:47:51.366Z"
     },
     "quiz-famille": {
       "note": 90,
@@ -241,7 +241,7 @@
         "conseil": 4
       },
       "apte": true,
-      "date": "2026-11-26T10:47:46.418Z"
+      "date": "2026-11-27T10:47:55.878Z"
     },
     "quiz-musique": {
       "note": 89,
@@ -252,40 +252,40 @@
         "conseil": 5
       },
       "apte": true,
-      "date": "2026-11-26T10:47:50.045Z"
+      "date": "2026-11-27T10:47:59.836Z"
     },
     "revolution": {
-      "note": 84,
+      "note": 85,
       "controle_technique": 79,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 7
-      },
-      "apte": false,
-      "date": "2026-11-26T10:47:53.686Z"
-    },
-    "bonplansenior": {
-      "note": 87,
-      "controle_technique": 83,
-      "compte": {
-        "bloquant": 0,
-        "important": 1,
-        "conseil": 7
-      },
-      "apte": false,
-      "date": "2026-11-26T10:47:58.109Z"
-    },
-    "france-service": {
-      "note": 78,
-      "controle_technique": 65,
-      "compte": {
-        "bloquant": 0,
-        "important": 3,
         "conseil": 6
       },
       "apte": false,
-      "date": "2026-11-26T10:48:01.930Z"
+      "date": "2026-11-27T10:48:03.845Z"
+    },
+    "bonplansenior": {
+      "note": 87,
+      "controle_technique": 81,
+      "compte": {
+        "bloquant": 0,
+        "important": 1,
+        "conseil": 6
+      },
+      "apte": false,
+      "date": "2026-11-27T10:48:09.230Z"
+    },
+    "france-service": {
+      "note": 80,
+      "controle_technique": 66,
+      "compte": {
+        "bloquant": 0,
+        "important": 3,
+        "conseil": 5
+      },
+      "apte": false,
+      "date": "2026-11-27T10:48:13.509Z"
     },
     "wikicom": {
       "note": 83,
@@ -296,7 +296,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-26T10:48:06.148Z"
+      "date": "2026-11-27T10:48:18.409Z"
     },
     "crash-testeur": {
       "note": 88,
@@ -307,7 +307,7 @@
         "conseil": 5
       },
       "apte": false,
-      "date": "2026-11-26T10:48:09.892Z"
+      "date": "2026-11-27T10:48:22.616Z"
     },
     "c-tranche-vite": {
       "note": 100,
@@ -318,23 +318,23 @@
         "conseil": 0
       },
       "apte": true,
-      "date": "2026-11-26T10:48:13.518Z"
+      "date": "2026-11-27T10:48:26.627Z"
     }
   },
   "jury": {
     "info": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 77,
+      "controle_technique": 78,
       "note": 82,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "bonplan": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 82,
@@ -343,52 +343,52 @@
     "ecobatisol": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 82,
-      "note": 87,
+      "note": 88,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-femmes": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 89,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "frigoplacard": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 84,
-      "note": 84,
+      "controle_technique": 83,
+      "note": 85,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-extraordinaires": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 88,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "goat-chevre-the-king": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 74,
-      "note": 82,
+      "note": 83,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "iadebat": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 77,
       "note": 84,
@@ -397,7 +397,7 @@
     "infos-perso": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 52,
       "note": 71,
@@ -406,43 +406,43 @@
     "oeil-atelier": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 81,
+      "controle_technique": 80,
       "note": 87,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "dico-loufoque": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "juste-chiffre": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "memo-meninges": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "orbit": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 64,
       "note": 75,
@@ -451,52 +451,52 @@
     "ou-cest": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "ou-cest-france": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "petits-jeux": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 90,
       "note": 91,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "podcasts": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 88,
       "note": 88,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "promptmagic": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 81,
+      "controle_technique": 80,
       "note": 86,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "proxilien": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 66,
       "note": 79,
@@ -505,52 +505,52 @@
     "quiz-famille": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "quiz-musique": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
-      "aptes_7j": 1,
+      "controles_7j": 7,
+      "aptes_7j": 2,
       "controle_technique": 89,
       "note": 89,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     },
     "revolution": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 79,
-      "note": 84,
+      "note": 85,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "bonplansenior": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 83,
+      "controle_technique": 81,
       "note": 87,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "france-service": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 65,
-      "note": 78,
+      "controle_technique": 66,
+      "note": 80,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "wikicom": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 83,
@@ -559,7 +559,7 @@
     "crash-testeur": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 6,
+      "controles_7j": 7,
       "aptes_7j": 0,
       "controle_technique": 86,
       "note": 88,
@@ -568,7 +568,7 @@
     "omnistat": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
+      "controles_7j": 2,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 83,
@@ -577,11 +577,11 @@
     "c-tranche-vite": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 1,
-      "aptes_7j": 1,
+      "controles_7j": 2,
+      "aptes_7j": 2,
       "controle_technique": 99,
       "note": 100,
-      "raison": "Encore 2 jour(s) de contrôle réussi"
+      "raison": "Encore 1 jour(s) de contrôle réussi"
     }
   }
 }

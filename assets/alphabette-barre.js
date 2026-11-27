@@ -66,6 +66,7 @@
     var m = null;
     try { var c = document.cookie.match(/(?:^|; )ab_membre=([^;]*)/); if (c) m = JSON.parse(decodeURIComponent(c[1])); } catch (e) { m = null; }
     if (!m) { try { m = JSON.parse(localStorage.getItem('alphabette.membre') || 'null'); } catch (e) { m = null; } }
+    if (m && m.jusquau && Date.parse(m.jusquau) < Date.now()) return null; // accès offert terminé
     return m && typeof m.prenom === 'string' && m.prenom.trim() ? m : null;
   }
   var membre = lireMembre();

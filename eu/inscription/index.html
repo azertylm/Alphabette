@@ -93,7 +93,11 @@
     { id: 'fondateur-1', role: 'fondateur', empreinte: '58064c11c97348d83aa3be4c60f191cfe7c96defa8367b51a9a78b5f91f04389' },
     { id: 'amis-1', role: 'ami', empreinte: '768cda4b76dbe34681f8c0d080f5f6aa1ba35d7363090698bd3607d975488062' },
     { id: 'fondateur-2', role: 'fondateur', empreinte: '4f1f13e306803980dd586ac7a971a946d4897177b47d6b86e21c9efcae833458' },
-    { id: 'amis-2', role: 'ami', empreinte: 'c150c1e1823dbc1082bd76605ac29b077a9ace1da948b3bd23da349600d67393' }
+    { id: 'amis-2', role: 'ami', empreinte: 'c150c1e1823dbc1082bd76605ac29b077a9ace1da948b3bd23da349600d67393' },
+    // Codes d'accès à durée limitée (27/11/2026) : « mois » = durée offerte à partir du jour où le code est entré.
+    { id: 'acces-1-mois', role: 'invite', mois: 1, empreinte: '22d0fa5617c591c69a33f6772ea81e613ef72b0737c74b3f1babd6efbb7a6be7' },
+    { id: 'acces-2-mois', role: 'invite', mois: 2, empreinte: '33c8de6094a1689122e538131c9e04bf28eb69c33e2220a41ba5f0f7710d6689' },
+    { id: 'acces-3-mois', role: 'invite', mois: 3, empreinte: '416e4aaa96d1628ad0381d5a8e65cd1e2f37bbed8a509eeadd85857af656bcd4' }
   ];
   var ROLES = { fondateur: 'Fondateur', ami: 'Ami(e) d’alphabette', invite: 'Invité(e)' };
   var COOKIE = 'ab_membre', CLE_LOCALE = 'alphabette.membre', DUREE = 400 * 24 * 3600;
@@ -104,8 +108,11 @@
     var m = null;
     try { var c = document.cookie.match(/(?:^|; )ab_membre=([^;]*)/); if (c) m = JSON.parse(decodeURIComponent(c[1])); } catch (e) { m = null; }
     if (!m) { try { m = JSON.parse(localStorage.getItem(CLE_LOCALE) || 'null'); } catch (e) { m = null; } }
+    if (m && m.jusquau && Date.parse(m.jusquau) < Date.now()) { expire = m; return null; }
     return m && typeof m.prenom === 'string' && m.prenom.trim() ? m : null;
   }
+  var expire = null;
+  function finAcces(mois) { var d = new Date(); d.setMonth(d.getMonth() + mois); return d.toISOString(); }
   function ecrire(m) {
     var json = JSON.stringify(m), dom = domaine();
     try { localStorage.setItem(CLE_LOCALE, json); } catch (e) {}
@@ -141,10 +148,14 @@
     var m = lire();
     $('formulaire').hidden = !!m;
     $('inscrit').hidden = !m;
-    if (!m) { setTimeout(function () { $('prenom').focus(); }, 50); return; }
+    if (!m) {
+      if (expire) { var e = $('erreur'); e.textContent = 'Votre accès offert est terminé. Un nouveau code vous permettra de le prolonger.'; e.hidden = false; }
+      setTimeout(function () { $('prenom').focus(); }, 50); return;
+    }
     $('bonjour').textContent = 'Bonjour ' + m.prenom + ', vous êtes inscrit(e) !';
     var depuis = ''; try { depuis = new Date(m.depuis).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {}
-    $('role').textContent = (ROLES[m.role] || 'Inscrit(e)') + (depuis ? ' · depuis le ' + depuis : '');
+    var fin = ''; if (m.jusquau) { try { fin = new Date(m.jusquau).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {} }
+    $('role').textContent = (ROLES[m.role] || 'Inscrit(e)') + (depuis ? ' · depuis le ' + depuis : '') + (fin ? ' · accès jusqu’au ' + fin : '');
     $('nouveauPrenom').value = m.prenom;
     var r = adresseRetour();
     $('retour').hidden = !r; if (r) $('retour').href = r;
@@ -162,7 +173,13 @@
       $('valider').disabled = false;
       var trouve = CODES.filter(function (c) { return c.empreinte === h; })[0];
       if (!trouve) { err.textContent = 'Ce code n’est pas reconnu. Vérifiez-le auprès de la personne qui vous l’a donné.'; err.hidden = false; $('code').focus(); return; }
-      ecrire({ prenom: prenom, role: trouve.role, depuis: new Date().toISOString(), code: trouve.id });
+      var m = { prenom: prenom, role: trouve.role, depuis: new Date().toISOString(), code: trouve.id };
+      if (trouve.mois) {
+        // un même code à durée limitée ne prolonge pas un accès déjà ouvert puis terminé sur cet appareil
+        if (expire && expire.code === trouve.id) { err.textContent = 'Ce code a déjà été utilisé sur cet appareil et son accès est terminé.'; err.hidden = false; return; }
+        m.jusquau = finAcces(trouve.mois);
+      }
+      ecrire(m);
       afficher();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, function () { $('valider').disabled = false; err.textContent = 'La vérification a échoué. Réessayez.'; err.hidden = false; });
