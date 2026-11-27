@@ -8,15 +8,15 @@
     <meta property="og:title" content="Le Laboratoire Alphabette — applications gratuites à tester et à noter" />
     <meta property="og:description" content="Testez en avant-première les applications d'Alphabette (IA Débat, Info Perso, France Service, jeux et outils du quotidien), donnez votre avis en un clic et aidez à les améliorer. Gratuit, sans inscription." />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#182334" />
+    <meta name="theme-color" content="#2c1a0e" />
     <!-- Design Pop / Néon : univers (.eu Labo / .fr Vitrine) et Mode Calme posés avant l'affichage (aucun flash). -->
     <script>
       (function () {
         var r = document.documentElement;
         r.dataset.univers = /(^|\.)alphabette\.eu$/i.test(location.hostname) || /[?&]labo(=|&|$)/.test(location.search) ? 'labo' : 'vitrine';
         try { if (localStorage.getItem('alphabette.calme') === 'oui') r.dataset.calme = 'oui'; } catch (e) {}
-        // Mode Codex (parchemin) : alphabette.eu seulement, activé par défaut, interrupteur dans « Mon compte ».
-        try { if (r.dataset.univers === 'labo' && localStorage.getItem('alphabette.codex') !== 'non') r.setAttribute('data-ab-codex', 'oui'); } catch (e) {}
+        // Mode Codex (parchemin) : mêmes couleurs sur alphabette.fr et alphabette.eu ; sur .eu, interrupteur dans « Mon compte ».
+        try { if (r.dataset.univers !== 'labo' || localStorage.getItem('alphabette.codex') !== 'non') r.setAttribute('data-ab-codex', 'oui'); } catch (e) { r.setAttribute('data-ab-codex', 'oui'); }
       })();
     </script>
     <meta property="og:type" content="website" />
@@ -29,8 +29,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-D_2BzrFj.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B5DDQ8qB.css">
+    <script type="module" crossorigin src="/assets/index-Bm63hg2v.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BD4h5_FK.css">
     <link rel="canonical" href="https://alphabette.eu/" />
   </head>
   <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white font-sans min-h-screen">
