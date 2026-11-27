@@ -111,6 +111,7 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
     assert.ok(manifeste.poses.includes(`octet-${m}`), m);
     assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/octet-${m}.webp`)), m);
   }
+  for (const g of ['course', 'grand-saut', 'escalade', 'chute', 'glissade', 'sieste', 'saut-joie', 'port-engrenage', 'lecture-carte', 'cadenas', 'bouclier', 'dossiers', 'balance']) assert.ok(manifeste.poses.includes(`octet-${g}`), `geste ${g}`);
   for (const p of manifeste.poses) assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/${p}.webp`)), `manifeste : ${p}`);
   const js = lire('public/shared/octet-widget.js');
   const code = js.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
@@ -128,7 +129,7 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
 
 test('pipeline des poses : script Python présent et images sources rangées', () => {
   assert.ok(existsSync(path.join(racine, 'scripts/process_octet_assets.py')));
-  assert.ok(existsSync(path.join(racine, 'assets/octet/raw/octet-fiole.jpg')));
+  assert.ok(existsSync(path.join(racine, 'assets/octet/raw/octet-fiole.png')));
   assert.ok(existsSync(path.join(racine, 'public/shared/octet-demo.html')));
 });
 

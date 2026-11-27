@@ -40,18 +40,39 @@ SAUT = 8             # surélévation de la frame de saut
 TRAVAIL = 640        # résolution de travail (rapide, largement suffisant pour 160 px)
 EXTS = (".png", ".jpg", ".jpeg")
 
-# nom source → (nom de sortie, retourner horizontalement pour regarder à droite)
+# nom source → (nom de sortie, retourner pour regarder à droite, groupe d'échelle)
+# Toutes les poses d'un même groupe gardent la même échelle : la souris a la même taille d'une pose à l'autre.
 POSES = {
-    "octet-cle": ("octet-cle", False),
-    "octet-fiole": ("octet-fiole", False),
-    "octet-boussole": ("octet-boussole", False),
-    "octet-carnet": ("octet-carnet", True),
-    "octet-sablier": ("octet-sablier", True),
-    "octet-loupe": ("octet-loupe", False),
-    "octet-arrosoir": ("octet-arrosoir", True),
-    "octet-sieste": ("octet-sieste", False),
-    "octet-chute": ("octet-chute", False),
+    # Accessoires (illustrations « debout »)
+    "octet-cle": ("octet-cle", False, "debout"),
+    "octet-fiole": ("octet-fiole", False, "debout"),
+    "octet-boussole": ("octet-boussole", False, "debout"),
+    "octet-carnet": ("octet-carnet", True, "debout"),
+    "octet-sablier": ("octet-sablier", True, "debout"),
+    "octet-loupe": ("octet-loupe", False, "debout"),
+    "octet-arrosoir": ("octet-arrosoir", True, "debout"),
+    "octet-cadenas": ("octet-cadenas", False, "debout"),
+    "octet-bouclier": ("octet-bouclier", False, "debout"),
+    "octet-dossiers": ("octet-dossiers", False, "debout"),
+    "octet-balance": ("octet-balance", False, "debout"),
+    # Mouvements
+    "octet-course": ("octet-course", False, "mouvement"),
+    "octet-marche-planche": ("octet-marche-planche", False, "mouvement"),
+    "octet-saut-planche": ("octet-saut-planche", False, "mouvement"),
+    "octet-grand-saut": ("octet-grand-saut", False, "mouvement"),
+    "octet-saut-joie": ("octet-saut-joie", False, "mouvement"),
+    "octet-chute": ("octet-chute", False, "mouvement"),
+    "octet-glissade": ("octet-glissade", False, "mouvement"),
+    "octet-escalade": ("octet-escalade", False, "mouvement"),
+    "octet-sieste": ("octet-sieste", False, "mouvement"),
+    "octet-port-engrenage": ("octet-port-engrenage", False, "mouvement"),
+    "octet-lecture-carte": ("octet-lecture-carte", False, "mouvement"),
+    "octet-pause-gouter": ("octet-pause-gouter", False, "mouvement"),
 }
+# Ajustement entre groupes : les deux séries n'ont pas été dessinées à la même échelle.
+# 0.88 aligne la taille de la tête et du corps des poses « debout » sur celle des poses « mouvement ».
+AJUSTEMENT_GROUPE = {"debout": 0.88, "mouvement": 1.0}
+
 # Zones à vider avant détourage (fractions largeur/hauteur de l'image source) : défauts connus d'une illustration
 ZONES_A_EFFACER = {
     "octet-loupe": [(0.0, 0.0, 0.43, 0.27)],  # silhouette fantôme floue en haut à gauche
@@ -65,6 +86,17 @@ def trouver(nom: str) -> Path | None:
         for p in (RAW / f"{nom}{ext}", RAW / f"{nom}{ext.upper()}"):
             if p.exists():
                 return p
+    return None
+
+
+def deja_detouree(p: Path) -> Image.Image | None:
+    """Image déjà détourée (PNG avec un vrai fond transparent) : on la garde telle quelle."""
+    im = Image.open(p)
+    if im.mode in ("RGBA", "LA", "P"):
+        im = im.convert("RGBA")
+        if im.getchannel("A").getextrema()[0] < 10:
+            im.thumbnail((TRAVAIL, TRAVAIL), Image.LANCZOS)
+            return im
     return None
 
 
@@ -198,17 +230,22 @@ def enregistrer(img: Image.Image, nom: str) -> Path:
     return p
 
 
-def traiter_pose(src: Path, nom: str, retourner: bool) -> Path:
-    rgb = charger(src).copy()
-    h, w, _ = rgb.shape
-    for x0, y0, x1, y1 in ZONES_A_EFFACER.get(src.stem, []):
-        rgb[int(y0 * h):int(y1 * h), int(x0 * w):int(x1 * w)] = 255
-    img = detourer(rgb)
+def preparer_pose(src: Path, retourner: bool) -> Image.Image:
+    img = deja_detouree(src)
+    if img is None:
+        rgb = charger(src).copy()
+        h, w, _ = rgb.shape
+        for x0, y0, x1, y1 in ZONES_A_EFFACER.get(src.stem, []):
+            rgb[int(y0 * h):int(y1 * h), int(x0 * w):int(x1 * w)] = 255
+        img = detourer(rgb)
     if retourner:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
+    return img
+
+
+def echelle_pour(img: Image.Image) -> float:
     x0, y0, x1, y1 = boite(img)
-    echelle = min(CADRE / (x1 - x0), CADRE / (y1 - y0))
-    return enregistrer(poser(img, echelle), nom)
+    return min(CADRE / (x1 - x0), CADRE / (y1 - y0))
 
 
 def traiter_planche(src: Path) -> Path:
@@ -234,13 +271,19 @@ def main() -> int:
         lignes.append((p.name, "480 × 160", p.stat().st_size))
     else:
         manquantes.append(PLANCHE)
-    for src_nom, (out_nom, retourner) in POSES.items():
+    groupes: dict[str, list[tuple[str, Image.Image]]] = {}
+    for src_nom, (out_nom, retourner, groupe) in POSES.items():
         src = trouver(src_nom)
         if not src:
             manquantes.append(src_nom)
             continue
-        p = traiter_pose(src, out_nom, retourner)
-        lignes.append((p.name, "160 × 160", p.stat().st_size))
+        groupes.setdefault(groupe, []).append((out_nom, preparer_pose(src, retourner)))
+    for groupe, poses in groupes.items():
+        # même échelle pour tout le groupe, à la même résolution de travail
+        echelle = min(echelle_pour(img) * img.width for _, img in poses) * AJUSTEMENT_GROUPE.get(groupe, 1.0)
+        for out_nom, img in poses:
+            p = enregistrer(poser(img, echelle / img.width), out_nom)
+            lignes.append((p.name, "160 × 160", p.stat().st_size))
     import json
     poses = sorted(p.stem for p in DIST.glob("octet-*.webp"))
     (DIST / "manifest.json").write_text(json.dumps({"poses": poses}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
