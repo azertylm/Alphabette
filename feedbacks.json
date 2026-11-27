@@ -93,14 +93,14 @@
           "labo_erreurs_v1"
         ]
       },
-      "status": "pending",
+      "status": "implemented",
       "ai_analysis": {
-        "relevance_score": null,
-        "intervention_level": null,
-        "reasoning": null,
-        "proposed_fix": null
+        "relevance_score": 7,
+        "intervention_level": 1,
+        "reasoning": "Défaut réel et vérifié dans public/info.html : sans flux, les 16 articles d exemple (tableau ARTICLES) portent des dates fixes du 7 au 14 septembre 2026 (formatDate(a.date) dans renderFeed, openArticle, copie texte l.1091 et impression l.1109) alors que la date du jour s affiche en haut : l exemple ressemble à de vraies actualités vieilles de 2 mois, ce qui est trompeur (règle d honnêteté). Le bandeau « exemples inventés » et la source « Exemple inventé » existent déjà mais le message de Tintoon (Android 686x1023, aucune erreur JS) montre qu ils ne suffisent pas. Corriger = ne plus afficher de date pour les exemples : une phrase, petit diff, aucun appel réseau, ne change ni le rôle ni les affirmations de l appli. Rejet écarté : l avis est fondé. Faire de vraies actualités fraîches par défaut serait Niveau 2 et contraire à la règle d or 4 (appel tiers à l ouverture sans action du visiteur) : non retenu. Page du hub non vitrine (302 .fr vers .eu) : ne touche que alphabette.eu. Les vraies dates des flux importés restent affichées.",
+        "proposed_fix": "Dans public/info.html, ne plus afficher de date pour les articles d exemple : dans allArticles(), ajouter exemple:true aux objets du mode démo (le tri sur a.date reste inchangé), ajouter une petite fonction dateAff(a) qui renvoie « Exemple » si a.exemple, sinon formatDate(a.date), et l utiliser aux 4 endroits d affichage (renderFeed l.628, openArticle rSub l.648, copie texte l.1091, impression l.1109). Ne pas toucher aux dates des flux importés (l.955-960). Contrôle qa-verifier : sans flux, plus aucune date de septembre visible (liste, lecture, copie, impression) ; avec un flux importé, dates réelles inchangées ; 360 px et 280 px en BIG très grande taille, aucune erreur console, aucun nouvel appel réseau."
       },
-      "changelog_public_message": null
+      "changelog_public_message": "Les articles d'exemple n'affichent plus de fausse date de septembre"
     }
   ],
   "ab": [],
