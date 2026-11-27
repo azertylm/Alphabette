@@ -38,7 +38,7 @@ CADRE = 152          # le personnage tient dans 152 × 152
 SOL = 156            # bas des pattes (4 px de marge)
 SAUT = 8             # surélévation de la frame de saut
 TRAVAIL = 640        # résolution de travail (rapide, largement suffisant pour 160 px)
-EXTS = (".png", ".jpg", ".jpeg")
+EXTS = (".png", ".webp", ".jpg", ".jpeg")
 
 # nom source → (nom de sortie, retourner pour regarder à droite, groupe d'échelle)
 # Toutes les poses d'un même groupe gardent la même échelle : la souris a la même taille d'une pose à l'autre.
@@ -68,6 +68,42 @@ POSES = {
     "octet-port-engrenage": ("octet-port-engrenage", False, "mouvement"),
     "octet-lecture-carte": ("octet-lecture-carte", False, "mouvement"),
     "octet-pause-gouter": ("octet-pause-gouter", False, "mouvement"),
+    "octet-idee": ("octet-idee", False, "mouvement"),
+    "octet-surprise": ("octet-surprise", False, "mouvement"),
+    "octet-curieux": ("octet-curieux", False, "mouvement"),
+    "octet-pousse-caisse": ("octet-pousse-caisse", False, "mouvement"),
+    "octet-tire-corde": ("octet-tire-corde", False, "mouvement"),
+    "octet-lanterne": ("octet-lanterne", False, "mouvement"),
+    "octet-longue-vue": ("octet-longue-vue", False, "mouvement"),
+    "octet-bonjour": ("octet-bonjour", False, "mouvement"),
+    "octet-pointe-pieds": ("octet-pointe-pieds", False, "mouvement"),
+    "octet-meditation": ("octet-meditation", False, "mouvement"),
+    "octet-etourdi": ("octet-etourdi", False, "mouvement"),
+    "octet-drapeau": ("octet-drapeau", False, "mouvement"),
+    "octet-marteau": ("octet-marteau", False, "mouvement"),
+    "octet-pinceau": ("octet-pinceau", False, "mouvement"),
+    "octet-scie": ("octet-scie", False, "mouvement"),
+    "octet-boite-outils": ("octet-boite-outils", False, "mouvement"),
+    "octet-bobine": ("octet-bobine", False, "mouvement"),
+    "octet-grande-cle": ("octet-grande-cle", False, "mouvement"),
+    "octet-clochette": ("octet-clochette", False, "mouvement"),
+    "octet-plan": ("octet-plan", False, "mouvement"),
+    "octet-bougie": ("octet-bougie", False, "mouvement"),
+    "octet-corde": ("octet-corde", False, "mouvement"),
+    "octet-parapluie": ("octet-parapluie", False, "mouvement"),
+    "octet-montre": ("octet-montre", False, "mouvement"),
+    "octet-the": ("octet-the", False, "mouvement"),
+    "octet-echarpe": ("octet-echarpe", False, "mouvement"),
+    "octet-direction": ("octet-direction", False, "mouvement"),
+    "octet-livre": ("octet-livre", False, "mouvement"),
+    "octet-avion": ("octet-avion", False, "mouvement"),
+    "octet-glands": ("octet-glands", False, "mouvement"),
+    "octet-pouce": ("octet-pouce", False, "mouvement"),
+    "octet-haussement": ("octet-haussement", False, "mouvement"),
+    "octet-flute": ("octet-flute", False, "mouvement"),
+    "octet-pissenlit": ("octet-pissenlit", False, "mouvement"),
+    "octet-etirement": ("octet-etirement", False, "mouvement"),
+    "octet-cadeau": ("octet-cadeau", False, "mouvement"),
 }
 # Ajustement entre groupes : les deux séries n'ont pas été dessinées à la même échelle.
 # 0.88 aligne la taille de la tête et du corps des poses « debout » sur celle des poses « mouvement ».

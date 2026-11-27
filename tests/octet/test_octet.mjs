@@ -112,6 +112,7 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
     assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/octet-${m}.webp`)), m);
   }
   for (const g of ['course', 'grand-saut', 'escalade', 'chute', 'glissade', 'sieste', 'saut-joie', 'port-engrenage', 'lecture-carte', 'cadenas', 'bouclier', 'dossiers', 'balance']) assert.ok(manifeste.poses.includes(`octet-${g}`), `geste ${g}`);
+  for (const g of ['bonjour', 'etourdi', 'surprise', 'pouce', 'parapluie', 'pissenlit', 'meditation', 'cadeau', 'clochette']) assert.ok(manifeste.poses.includes(`octet-${g}`), `réaction ${g}`);
   for (const p of manifeste.poses) assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/${p}.webp`)), `manifeste : ${p}`);
   const js = lire('public/shared/octet-widget.js');
   const code = js.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
@@ -123,6 +124,8 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
   assert.match(js, /dataset\.calme === "oui"/);
   assert.match(js, /prefers-reduced-motion/);
   assert.match(js, /sound: false/, 'sons coupés par défaut');
+  assert.match(js, /derniereReplique < 20000/, 'une réplique spontanée au plus toutes les 20 s');
+  assert.match(js, /_peutReagir\(\) \{[\s\S]{0,200}this\._calme\(\)/, 'aucune réaction en Mode Calme');
   assert.doesNotMatch(code, /document\.cookie|navigator\.sendBeacon/);
   assert.match(lire('src/components/Accueil.tsx'), /data-octet-card=""/);
 });
