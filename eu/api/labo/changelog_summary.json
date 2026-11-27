@@ -9,6 +9,10 @@
     ],
     "orbit": [
       {
+        "date": "2026-11-27T20:40:00Z",
+        "message": "Plus d'erreur à l'ouverture, plus de bouton qui sort de l'écran sur petit téléphone, et on peut de nouveau zoomer, suite aux contrôles du Laboratoire"
+      },
+      {
         "date": "2026-11-19T08:50:38Z",
         "message": "La recherche est de nouveau visible sur téléphone, suite au contrôle automatique de nuit"
       }
@@ -45,6 +49,12 @@
       {
         "date": "2026-11-26T20:30:00Z",
         "message": "Les articles d'exemple n'affichent plus de fausse date de septembre, suite à vos retours"
+      }
+    ],
+    "wikicom": [
+      {
+        "date": "2026-11-27T20:40:00Z",
+        "message": "Les champs de saisie sont annoncés par les lecteurs d'écran, suite au contrôle qualité du Laboratoire"
       }
     ]
   }

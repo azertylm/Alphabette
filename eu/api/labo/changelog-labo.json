@@ -13,12 +13,24 @@
       ]
     },
     "orbit": {
-      "passage": "2026-11-19T08:50:38Z",
+      "passage": "2026-11-27T20:40:00Z",
       "changements": [
         {
-          "probleme": "Sur téléphone, la barre de recherche n'était plus visible.",
-          "amelioration": "La recherche est de nouveau visible sur téléphone.",
-          "origine": "controle",
+          "probleme": "À l'ouverture, une erreur apparaissait (installation hors ligne impossible).",
+          "amelioration": "Orbit s'ouvre sans erreur et peut s'installer sur le téléphone.",
+          "origine": "chaos",
+          "avis": []
+        },
+        {
+          "probleme": "Sur les petits téléphones, le bouton « Publier » sortait de l'écran.",
+          "amelioration": "La rangée du haut passe à la ligne : tout tient sur l'écran.",
+          "origine": "chaos",
+          "avis": []
+        },
+        {
+          "probleme": "On ne pouvait pas zoomer avec deux doigts.",
+          "amelioration": "Le zoom est de nouveau possible, pour ceux qui voient mal.",
+          "origine": "atelier",
           "avis": []
         }
       ]
@@ -87,6 +99,17 @@
           "avis": [
             "fb_1795683657_7422"
           ]
+        }
+      ]
+    },
+    "wikicom": {
+      "passage": "2026-11-27T20:40:00Z",
+      "changements": [
+        {
+          "probleme": "La recherche et les champs du formulaire d'ajout n'étaient pas annoncés par les lecteurs d'écran.",
+          "amelioration": "Chaque champ est maintenant annoncé par son nom.",
+          "origine": "atelier",
+          "avis": []
         }
       ]
     }
