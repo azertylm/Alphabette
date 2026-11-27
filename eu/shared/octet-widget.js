@@ -27,6 +27,14 @@
   const CLE_SECRETS = "alphabette_octet_secrets";
   const CLE_BONJOUR = "alphabette_octet_bonjour";
   const TOTAL_ENGRENAGES = 5;
+  const CLE_SECRETS_UTILISES = "alphabette_octet_combinaisons";
+  /* Combinaisons secrètes d'accès offert. Gestes : U ↑, D ↓, L ←, R →, O = toucher Octet (ou touche « O »).
+     Au clavier : flèches + touche O. Au téléphone : glisser le doigt sur la page + toucher Octet. */
+  const COMBINAISONS = [
+    { id: "secret-1-mois", mois: 1, nom: "La boussole", gestes: ["U", "R", "D", "L", "U", "R", "D", "L", "O"] },
+    { id: "secret-2-mois", mois: 2, nom: "L'engrenage", gestes: ["L", "L", "R", "R", "U", "D", "U", "D", "O", "O"] },
+    { id: "secret-3-mois", mois: 3, nom: "Le grand atelier", gestes: ["O", "U", "U", "D", "D", "L", "R", "L", "R", "O", "O", "O"] }
+  ];
   // id → [nom une fois découvert, indice tant qu'il ne l'est pas]
   const DECOUVERTES = {
     bonjour: ["Le bonjour du jour", "Revenez un autre jour…"],
@@ -38,6 +46,9 @@
     reveil: ["Le réveil en sursaut", "Réveillez-la pendant sa sieste"],
     clicdroit: ["Le menu secret", "Un clic… de l'autre côté"],
     konami: ["Le code de l'atelier", "↑ ↑ ↓ ↓ …"],
+    "secret-1-mois": ["La boussole (1 mois offert)", "Une combinaison qui tourne comme une boussole"],
+    "secret-2-mois": ["L'engrenage (2 mois offerts)", "Une combinaison qui va et vient comme un engrenage"],
+    "secret-3-mois": ["Le grand atelier (3 mois offerts)", "La plus longue des combinaisons, qui commence et finit par Octet"],
     copie: ["Le pouce levé", "Copiez un passage"],
     idee: ["L'ampoule", "Cliquez dans un champ de texte"],
     bout: ["Le drapeau", "Allez tout en bas d'une longue page"],
@@ -266,7 +277,9 @@
         onCopy: this._onCopy.bind(this),
         onReseau: this._onReseau.bind(this),
         onVisibilite: this._onVisibilite.bind(this),
-        onFocusChamp: this._onFocusChamp.bind(this)
+        onFocusChamp: this._onFocusChamp.bind(this),
+        onToucheDebut: this._onToucheDebut.bind(this),
+        onToucheFin: this._onToucheFin.bind(this)
       };
 
       this._appliquerConfort();
@@ -1995,9 +2008,10 @@
       this.sound.playPaper();
       const api = this._createBubbleAPI();
       if (opts.view === "card") api.showCardView(opts.card);
+      else if (opts.view === "combinaison") this._vueCombinaison(opts.combinaison);
       else api.showMainActions();
       const premier = this.bubbleEl.querySelector("button, a[href], textarea, input");
-      if (premier && opts.view !== "feedback") premier.focus({ preventScroll: true });
+      if (premier && opts.view !== "feedback" && opts.view !== "combinaison") premier.focus({ preventScroll: true });
     }
 
     closeMenu(forceJump = false) {
@@ -2177,6 +2191,106 @@
     }
 
     /* Code secret ↑ ↑ ↓ ↓ ← → ← → B A */
+    /* -------------------------------------------------------------------------
+       Combinaisons secrètes : 1, 2 ou 3 mois d'accès offert à toutes les applications
+       ------------------------------------------------------------------------- */
+    _geste(g) {
+      const now = performance.now();
+      if (now - (this.dernierGeste || 0) > 4000) this.gestes = [];
+      this.dernierGeste = now;
+      this.gestes = (this.gestes || []).concat(g).slice(-14);
+      for (const c of COMBINAISONS) {
+        const n = c.gestes.length;
+        if (this.gestes.length >= n && this.gestes.slice(-n).join("") === c.gestes.join("")) {
+          this.gestes = [];
+          this._combinaisonTrouvee(c);
+          return true;
+        }
+      }
+      return false;
+    }
+    _onToucheDebut(e) {
+      if (e.touches.length !== 1) { this.glisse = null; return; }
+      const t = e.touches[0];
+      this.glisse = { x: t.clientX, y: t.clientY, t: performance.now(), surOctet: this.actorEl.contains(e.target) };
+    }
+    _onToucheFin(e) {
+      const d = this.glisse; this.glisse = null;
+      if (!d || d.surOctet || !e.changedTouches.length) return;
+      const t = e.changedTouches[0], dx = t.clientX - d.x, dy = t.clientY - d.y;
+      if (performance.now() - d.t > 700 || Math.max(Math.abs(dx), Math.abs(dy)) < 45) return;
+      this._geste(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "R" : "L") : (dy > 0 ? "D" : "U"));
+    }
+    _membreActuel() {
+      let m = null;
+      try { const c = document.cookie.match(/(?:^|; )ab_membre=([^;]*)/); if (c) m = JSON.parse(decodeURIComponent(c[1])); } catch { m = null; }
+      if (!m) { try { m = JSON.parse(localStorage.getItem("alphabette.membre") || "null"); } catch { m = null; } }
+      return m && typeof m.prenom === "string" ? m : null;
+    }
+    _ecrireMembre(m) {
+      const json = JSON.stringify(m);
+      try { localStorage.setItem("alphabette.membre", json); } catch { /* navigation privée */ }
+      const dom = (location.hostname.match(/(?:^|\.)(alphabette\.(?:fr|eu))$/) || [])[1];
+      document.cookie = `ab_membre=${encodeURIComponent(json)}; Path=/; Max-Age=${400 * 24 * 3600}; SameSite=Lax` +
+        (location.protocol === "https:" ? "; Secure" : "") + (dom ? `; Domain=.${dom}` : "");
+      window.dispatchEvent(new Event("alphabette:membre"));
+    }
+    _combinaisonTrouvee(c) {
+      if (this.prefs.hidden) { this.prefs.hidden = false; this._savePrefs(); this._syncControlButtons(); }
+      if (this.state === "MENU_OPEN") this.closeMenu(false);
+      this._decouvrir(c.id);
+      const utilises = lireJSON(CLE_SECRETS_UTILISES, { ids: [] });
+      const m = this._membreActuel();
+      const actif = m && (!m.jusquau || Date.parse(m.jusquau) > Date.now());
+      if (actif && !m.jusquau) {
+        this.reagir("thumb", 2.4, `« ${c.nom} » trouvée ! Vous êtes déjà membre : l'accès vous est déjà offert.`, { force: true });
+        return;
+      }
+      if (utilises.ids.includes(c.id)) {
+        this.reagir("shrug", 2.4, `« ${c.nom} » a déjà servi sur cet appareil. Essayez une autre combinaison…`, { force: true });
+        return;
+      }
+      this.sound.playBell();
+      this._confettis();
+      this.reagir("gift", 1.4, null, { force: true });
+      this._later(() => this.openMenu({ view: "combinaison", combinaison: c }), 900);
+    }
+    _vueCombinaison(c) {
+      const m = this._membreActuel();
+      this.menuMoodOverride = "gift";
+      this._renderVisual();
+      this.bubbleTitle.textContent = `Bravo : « ${c.nom} » !`;
+      this.bubbleSub.textContent = `${c.mois} mois d'accès offert à toutes les applications`;
+      this.bubbleBody.innerHTML = `<form class="bubble-panel" data-combi>
+          <p style="margin:0 0 8px">Vous avez trouvé une combinaison secrète de l'atelier. Indiquez votre prénom : toutes les applications alphabette vous reconnaîtront sur cet appareil.</p>
+          <label for="octet-combi-prenom">Votre prénom ou pseudo :</label>
+          <input type="text" id="octet-combi-prenom" maxlength="24" autocomplete="given-name" required value="${echapper((m && m.prenom) || "")}">
+          <div class="bubble-panel-footer"><span></span><button type="submit" class="bubble-mini-btn">Activer mon accès</button></div>
+          <div class="octet-status" data-combi-st role="status"></div>
+        </form>`;
+      const form = this.bubbleBody.querySelector("[data-combi]");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const prenom = form.querySelector("input").value.replace(/[<>"]/g, "").replace(/\s+/g, " ").trim().slice(0, 24);
+        const st = form.querySelector("[data-combi-st]");
+        if (prenom.length < 2) { st.textContent = "Indiquez un prénom (2 lettres au moins)."; return; }
+        const fin = new Date(); fin.setMonth(fin.getMonth() + c.mois);
+        const actuel = this._membreActuel();
+        // on ne raccourcit jamais un accès déjà ouvert plus long
+        const jusquau = actuel && actuel.jusquau && Date.parse(actuel.jusquau) > fin.getTime() ? actuel.jusquau : fin.toISOString();
+        this._ecrireMembre({ prenom, role: actuel && actuel.role && actuel.jusquau ? actuel.role : "invite", depuis: (actuel && actuel.depuis) || new Date().toISOString(), code: c.id, jusquau });
+        const utilises = lireJSON(CLE_SECRETS_UTILISES, { ids: [] });
+        utilises.ids.push(c.id);
+        ecrireJSON(CLE_SECRETS_UTILISES, utilises);
+        const date = new Date(jusquau).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+        this.bubbleBody.innerHTML = `<div class="bubble-panel"><p style="margin:0"><strong>C'est fait, ${echapper(prenom)} !</strong><br>
+          Accès offert jusqu'au ${echapper(date)}, sur cet appareil. Chut… gardez le secret (ou pas).</p></div>`;
+        this._positionBubble();
+      });
+      this._positionBubble();
+      form.querySelector("input").focus({ preventScroll: true });
+    }
+
     _konami(e) {
       const code = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
       const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
@@ -2365,7 +2479,11 @@
     }
     _onKeyDown(e) {
       this._onActivity(e);
-      if (!e.target.closest || !e.target.closest("input, textarea, [contenteditable='true']")) this._konami(e);
+      if (!e.target.closest || !e.target.closest("input, textarea, [contenteditable='true']")) {
+        const g = { ArrowUp: "U", ArrowDown: "D", ArrowLeft: "L", ArrowRight: "R", o: "O", O: "O" }[e.key];
+        if (g && this._geste(g)) return;
+        this._konami(e);
+      }
       if (e.key === "Escape" && this.state === "MENU_OPEN") { this.closeMenu(false); this.actorEl.focus(); }
     }
     _onReducedMotionChange(e) {
@@ -2382,6 +2500,7 @@
         if (this.ignorerClic) return;
         const dormait = this.state === "SLEEPING";
         this._onActivity(e);
+        if (this._geste("O")) return;
         if (this._compterClics()) return;
         if (dormait) {
           this._replique("Hein ? Je ne dormais pas, je réfléchissais !");
@@ -2432,6 +2551,8 @@
       document.addEventListener("selectionchange", this._bound.onSelection);
       this.reducedMotionQuery.addEventListener?.("change", this._bound.onReducedMotionChange);
       document.addEventListener("copy", this._bound.onCopy);
+      document.addEventListener("touchstart", this._bound.onToucheDebut, { passive: true });
+      document.addEventListener("touchend", this._bound.onToucheFin, { passive: true });
       document.addEventListener("visibilitychange", this._bound.onVisibilite);
       document.addEventListener("focusin", this._bound.onFocusChamp);
       window.addEventListener("online", this._bound.onReseau);
@@ -2481,6 +2602,8 @@
       document.removeEventListener("keydown", this._bound.onKeyDown);
       document.removeEventListener("selectionchange", this._bound.onSelection);
       document.removeEventListener("copy", this._bound.onCopy);
+      document.removeEventListener("touchstart", this._bound.onToucheDebut);
+      document.removeEventListener("touchend", this._bound.onToucheFin);
       document.removeEventListener("visibilitychange", this._bound.onVisibilite);
       document.removeEventListener("focusin", this._bound.onFocusChamp);
       window.removeEventListener("online", this._bound.onReseau);
