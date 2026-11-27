@@ -179,7 +179,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
         {MODE_LABO ? (
           <>
             <h1 className="accueil__banniere">
-              <img src="/assets/alphabette-banniere.webp" width={1689} height={831} fetchPriority="high" decoding="async"
+              <img src="/assets/alphabette-banniere.webp" width={1800} height={692} fetchPriority="high" decoding="async"
                 alt="Alphabette — L'atelier collectif des applications utiles et indépendantes." />
             </h1>
             <div className="collectif-actions">
@@ -195,7 +195,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
           </>
         ) : (
         <h1 className="accueil__banniere">
-          <img src="/assets/alphabette-banniere.webp" width={1689} height={831} fetchPriority="high" decoding="async"
+          <img src="/assets/alphabette-banniere.webp" width={1800} height={692} fetchPriority="high" decoding="async"
             alt="Alphabette — L'atelier collectif des applications utiles et indépendantes." />
         </h1>
         )}

@@ -8,15 +8,15 @@
     <meta property="og:title" content="ALPHABETTE — Solutions Logicielles & IA Souveraines" />
     <meta property="og:description" content="Écosystème officiel de solutions logicielles et d'IA souveraines édité par ALPHABETTE. Pôle solaire B2B, applications citoyennes et suite Service France en Zero-Knowledge." />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#182334" />
+    <meta name="theme-color" content="#2c1a0e" />
     <!-- Design Pop / Néon : univers (.eu Labo / .fr Vitrine) et Mode Calme posés avant l'affichage (aucun flash). -->
     <script>
       (function () {
         var r = document.documentElement;
         r.dataset.univers = /(^|\.)alphabette\.eu$/i.test(location.hostname) || /[?&]labo(=|&|$)/.test(location.search) ? 'labo' : 'vitrine';
         try { if (localStorage.getItem('alphabette.calme') === 'oui') r.dataset.calme = 'oui'; } catch (e) {}
-        // Mode Codex (parchemin) : alphabette.eu seulement, activé par défaut, interrupteur dans « Mon compte ».
-        try { if (r.dataset.univers === 'labo' && localStorage.getItem('alphabette.codex') !== 'non') r.setAttribute('data-ab-codex', 'oui'); } catch (e) {}
+        // Mode Codex (parchemin) : mêmes couleurs sur alphabette.fr et alphabette.eu ; sur .eu, interrupteur dans « Mon compte ».
+        try { if (r.dataset.univers !== 'labo' || localStorage.getItem('alphabette.codex') !== 'non') r.setAttribute('data-ab-codex', 'oui'); } catch (e) { r.setAttribute('data-ab-codex', 'oui'); }
       })();
     </script>
     <link rel="canonical" href="https://alphabette.fr/" />

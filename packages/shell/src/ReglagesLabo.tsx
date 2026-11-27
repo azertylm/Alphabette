@@ -9,7 +9,7 @@ import { collecterPasseport, deposerPasseport, DUREE_RELAIS_SECONDES, type Depot
 
 const CLE_CODEX = 'alphabette.codex';
 
-/** Mode Codex : activé par défaut sur alphabette.eu, jamais sur alphabette.fr. */
+/** Mode Codex : toujours actif sur alphabette.fr ; activé par défaut sur alphabette.eu, avec interrupteur. */
 export function codexActif(): boolean {
   if (!surLeLaboratoire()) return false;
   try { return localStorage.getItem(CLE_CODEX) !== 'non'; } catch { return true; }
