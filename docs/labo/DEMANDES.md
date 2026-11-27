@@ -3,6 +3,33 @@
 Écrites par le cycle du laboratoire (`/cycle-labo`) : demandes de Niveau 2 et propositions de transfert vers
 alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… » ou « non pour fb_… (raison) ».
 
+## 27/11/2026 (soir) — Passage quotidien : Orbit réparé en ligne, 2 corrections de l'Atelier qualité, rien n'attend ton ordre
+
+### ✅ Fait — Orbit : les 2 anomalies de l'Agent Chaos ont disparu en ligne
+- **Résumé** : le rapport de nuit montrait encore l'erreur « unsupported MIME type » et le bouton « Publier » qui sort de
+  l'écran à 320 px sur [alphabette.eu/orbit/](https://alphabette.eu/orbit/).
+- **Mon avis critique** : le correctif du 26/11 était juste, il n'était simplement pas encore en ligne : OVH bloquait la
+  publication. Le blocage est levé (publication confirmée à 19 h 22). Refaire le correctif aurait été inutile.
+- **Ce que j'ai fait** : relancé l'Agent Chaos sur le vrai site à 20 h 21 : **0 anomalie sur 29 applis**
+  ([journal](https://github.com/azertylm/Alphabette/actions/workflows/labo-chaos.yml)). Nouvelle règle dans
+  RULES_AND_MEMORY.md pour ne plus confondre « correctif raté » et « publication bloquée ».
+
+### ✅ Fait — Atelier qualité : 2 corrections (Niveau 1, « OK pour publier » de qa-verifier)
+- **Résumé** : Orbit empêchait de zoomer avec deux doigts ; dans Wikicom, la recherche et les champs du formulaire
+  d'ajout n'étaient pas annoncés par les lecteurs d'écran.
+- **Mon avis critique** : deux vrais freins pour les personnes qui voient mal, réglés sans rien changer à l'affichage.
+  Wikicom n'est corrigé que sur alphabette.eu : sa copie figée d'alphabette.fr n'est pas touchée.
+- **Ce que j'ai fait** : zoom autorisé sur [Orbit](https://alphabette.eu/orbit/) ; 12 champs nommés dans
+  [Wikicom](https://alphabette.eu/wikicom/). Contrôlé à 280 et 320 px : aucun défilement de côté.
+
+### Pour information
+- 0 avis nouveau à trier, 0 rejeté, 0 Niveau 2. Aucune appli éligible au passage vers .fr.
+- Les autres points « important » de l'Atelier viennent surtout de la barre commune (petits boutons « Faire un don »,
+  « BIG »…), qui sert aussi alphabette.fr : pas de retouche sans ton ordre. Info Perso (en pause) n'est pas touchée.
+- Toujours en attente de ton côté, sans urgence : crédit OpenRouter épuisé (le Mode Gratuit continue,
+  [ajouter du crédit](https://openrouter.ai/settings/credits)) ; certificat de proxilien.eu (ProxiLien en pause).
+- Signalements, propositions et boîte à idées : non relus ce passage (adresses illisibles depuis la tâche planifiée).
+
 ## 27/11/2026 — Sur ta demande : de vraies actualités dans ALPHABETTE INFO ; Orbit n'est plus en pause
 
 ### ✅ Fait — ALPHABETTE INFO montre les actualités du jour (avis fb_1795683657_7422, ta demande du 27/11)
