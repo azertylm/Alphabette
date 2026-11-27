@@ -20,6 +20,8 @@ export interface Membre {
   depuis: string;
   /** Identifiant du code utilisé (jamais le code lui-même). */
   code: string;
+  /** Fin de l'accès offert (ISO), pour les codes à durée limitée. Absent : sans limite. */
+  jusquau?: string;
 }
 
 const COOKIE = 'ab_membre';
@@ -43,6 +45,7 @@ function domaineCommun(): string | null {
 
 function valide(m: unknown): m is Membre {
   const x = m as Membre;
+  if (x && typeof x.jusquau === 'string' && Date.parse(x.jusquau) < Date.now()) return false; // accès terminé
   return Boolean(x && typeof x.prenom === 'string' && x.prenom.trim() && typeof x.role === 'string');
 }
 

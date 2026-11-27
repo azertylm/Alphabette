@@ -161,6 +161,7 @@ function PanneauCompte({ apps, ouvrir, basculer }: PanneauProps) {
           <p>
             <strong>{LIBELLE_ROLE[membre.role] ?? 'Inscrit(e)'}</strong>
             {membre.depuis ? <> · inscrit(e) le {dateLisible(membre.depuis)}</> : null}
+            {membre.jusquau ? <> · accès offert jusqu’au {dateLisible(membre.jusquau)}</> : null}
           </p>
           <p>
             Inscription gratuite, sur invitation : toutes les applications alphabette vous reconnaissent sur cet
