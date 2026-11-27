@@ -24,7 +24,32 @@
   const CLE_CONFORT = "alphabette_reading_comfort";
   const CLE_ENGRENAGES = "alphabette_octet_gears";
   const CLE_CARTES = "alphabette_octet_cartes_vues";
+  const CLE_SECRETS = "alphabette_octet_secrets";
+  const CLE_BONJOUR = "alphabette_octet_bonjour";
   const TOTAL_ENGRENAGES = 5;
+  // id → [nom une fois découvert, indice tant qu'il ne l'est pas]
+  const DECOUVERTES = {
+    bonjour: ["Le bonjour du jour", "Revenez un autre jour…"],
+    chatouilles: ["Les chatouilles", "Passez vite la souris au-dessus d'elle, plusieurs fois"],
+    tournis: ["Le tournis", "Et si on cliquait… beaucoup ?"],
+    attraper: ["Attraper Octet", "Elle se laisse peut-être porter"],
+    lancer: ["Le grand vol", "Lancez-la… fort"],
+    pissenlit: ["Le pissenlit", "Remontez la page très vite"],
+    reveil: ["Le réveil en sursaut", "Réveillez-la pendant sa sieste"],
+    clicdroit: ["Le menu secret", "Un clic… de l'autre côté"],
+    konami: ["Le code de l'atelier", "↑ ↑ ↓ ↓ …"],
+    copie: ["Le pouce levé", "Copiez un passage"],
+    idee: ["L'ampoule", "Cliquez dans un champ de texte"],
+    bout: ["Le drapeau", "Allez tout en bas d'une longue page"],
+    remonter: ["La corde", "Remontez d'un coup tout en haut"],
+    murs: ["Pousser les murs", "Changez la taille de la fenêtre"],
+    cachecache: ["Cache-cache", "Masquez-la, puis faites-la revenir"],
+    retour: ["Les retrouvailles", "Partez quelques minutes, puis revenez"],
+    reseau: ["L'averse", "Perdez le réseau un instant"],
+    avion: ["L'avion de papier", "Préparez un retour pour GitHub"],
+    montre: ["La montre à gousset", "Restez 10 minutes"],
+    engrenages: ["Les cinq engrenages", "Cherchez les engrenages perdus"]
+  };
   const SIESTE_MS = 35000;
 
   const FICHIERS = {
@@ -34,7 +59,16 @@
     lock: "octet-cadenas", shield: "octet-bouclier", files: "octet-dossiers", scales: "octet-balance",
     // gestes
     walk: "octet-course", jump: "octet-grand-saut", climb: "octet-escalade", fall: "octet-chute", slide: "octet-glissade",
-    sleep: "octet-sieste", joy: "octet-saut-joie", carry: "octet-port-engrenage", map: "octet-lecture-carte", snack: "octet-pause-gouter"
+    sleep: "octet-sieste", joy: "octet-saut-joie", carry: "octet-port-engrenage", map: "octet-lecture-carte", snack: "octet-pause-gouter",
+    // réactions et activités
+    hello: "octet-bonjour", idea: "octet-idee", surprise: "octet-surprise", peek: "octet-curieux", push: "octet-pousse-caisse",
+    rope: "octet-tire-corde", lantern: "octet-lanterne", spyglass: "octet-longue-vue", tiptoe: "octet-pointe-pieds",
+    zen: "octet-meditation", dizzy: "octet-etourdi", flag: "octet-drapeau", hammer: "octet-marteau", paint: "octet-pinceau",
+    saw: "octet-scie", toolbox: "octet-boite-outils", spool: "octet-bobine", bigkey: "octet-grande-cle", bell: "octet-clochette",
+    plan: "octet-plan", candle: "octet-bougie", coil: "octet-corde", umbrella: "octet-parapluie", watch: "octet-montre",
+    tea: "octet-the", scarf: "octet-echarpe", point: "octet-direction", book: "octet-livre", plane: "octet-avion",
+    acorns: "octet-glands", thumb: "octet-pouce", shrug: "octet-haussement", flute: "octet-flute", dandelion: "octet-pissenlit",
+    stretch: "octet-etirement", gift: "octet-cadeau"
   };
   // Accessoires que le dessin SVG de secours sait représenter ; les autres se replient sur l'un d'eux
   const SVG_MOODS = ["compass", "wrench", "flask", "notebook", "hourglass", "loupe", "watering"];
@@ -106,6 +140,24 @@
       src.connect(f); f.connect(this._enveloppe(0.004, 0.075));
       src.start(); src.stop(this.ctx.currentTime + 0.1);
     }
+    _note(freq, debut, duree, type = "triangle", volume = 0.8) {
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain(), t = this.ctx.currentTime + debut;
+      o.type = type; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(volume, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + duree);
+      o.connect(g); g.connect(this.master); o.start(t); o.stop(t + duree + 0.02);
+    }
+    playBell() {
+      if (!this._pret()) return;
+      this._note(1318.5, 0, 0.9, "sine", 0.9); this._note(2637, 0, 0.5, "sine", 0.3);
+      this._note(1318.5, 0.28, 0.9, "sine", 0.7);
+    }
+    playFlute() {
+      if (!this._pret()) return;
+      // petit air de cinq notes (do ré mi sol mi), doux
+      [[523.3, 0], [587.3, 0.22], [659.3, 0.44], [784, 0.66], [659.3, 0.95]].forEach(([f, d]) => this._note(f, d, 0.3, "triangle", 0.5));
+    }
     fermer() { try { this.ctx && this.ctx.close(); } catch { /* déjà fermé */ } this.ctx = null; }
   }
 
@@ -147,7 +199,13 @@
         compass: "Boussole", wrench: "Clé à molette", flask: "Fiole", notebook: "Carnet", hourglass: "Sablier",
         loupe: "Loupe", watering: "Arrosoir", lock: "Cadenas", shield: "Bouclier", files: "Dossiers", scales: "Balance",
         walk: "En route", jump: "Hop !", climb: "Escalade", fall: "Oups !", slide: "Glissade", sleep: "Sieste",
-        joy: "Youpi !", carry: "Engrenage", map: "Carte", snack: "Goûter"
+        joy: "Youpi !", carry: "Engrenage", map: "Carte", snack: "Goûter",
+        hello: "Bonjour", idea: "Idée", surprise: "Oh !", peek: "Coucou", push: "Pousse", rope: "Corde", lantern: "Lanterne",
+        spyglass: "Longue-vue", tiptoe: "Chut…", zen: "Zen", dizzy: "Tournis", flag: "Victoire", hammer: "Marteau",
+        paint: "Pinceau", saw: "Scie", toolbox: "Outils", spool: "Équilibre", bigkey: "Grande clé", bell: "Clochette",
+        plan: "Plans", candle: "Bougie", coil: "Corde", umbrella: "Parapluie", watch: "Montre", tea: "Thé", scarf: "Écharpe",
+        point: "Par ici", book: "Lecture", plane: "Envol", acorns: "Glands", thumb: "Bravo", shrug: "Bof", flute: "Flûte",
+        dandelion: "Pissenlit", stretch: "Bâillement", gift: "Cadeau"
       };
 
       this.reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -155,6 +213,13 @@
       this.gears = lireJSON(CLE_ENGRENAGES, { ids: [], inventorMode: false });
       this.confort = lireJSON(CLE_CONFORT, { taille: 100, contraste: false });
       this.sound = new OctetSoundEngine(false);
+      this.secrets = lireJSON(CLE_SECRETS, { ids: [] });
+      this.champsVus = new WeakSet();
+      this.caresse = []; this.caresseDir = 0;
+      this.derniereReplique = 0;
+      this.debutVisite = performance.now();
+      this.rappels = {};
+      this.largeurAvant = window.innerWidth;
 
       this.state = "IDLE";
       this.prevStateBeforeMenu = "IDLE";
@@ -194,7 +259,14 @@
         onPointerMove: this._onPointerMove.bind(this),
         onSelection: this._onSelection.bind(this),
         onCardEnter: this._onCardEnter.bind(this),
-        onCardLeave: this._onCardLeave.bind(this)
+        onCardLeave: this._onCardLeave.bind(this),
+        onActorDown: this._onActorPointerDown.bind(this),
+        onActorMove: this._onActorPointerMove.bind(this),
+        onActorUp: this._onActorPointerUp.bind(this),
+        onCopy: this._onCopy.bind(this),
+        onReseau: this._onReseau.bind(this),
+        onVisibilite: this._onVisibilite.bind(this),
+        onFocusChamp: this._onFocusChamp.bind(this)
       };
 
       this._appliquerConfort();
@@ -206,6 +278,7 @@
       this._scanGears();
       this._scanCards();
       this.preloadAssets();
+      if (!this.prefs.paused && !this.prefs.hidden && !this._calme()) this._bonjourDuJour();
     }
 
     /* -------------------------------------------------------------------------
@@ -552,6 +625,16 @@
           box-shadow: 0 6px 16px rgba(44, 26, 14, 0.18);
         }
         .octet-toast { pointer-events: none; animation: octetPopIn 0.18s ease-out; }
+        .octet-quip { font-family: Georgia, serif; font-style: italic; font-weight: 600; white-space: normal; max-width: min(300px, 80vw); text-align: center; border-radius: 14px; }
+        #octet-actor { touch-action: none; }
+        #octet-actor[data-state="DRAGGED"] { cursor: grabbing; }
+        .octet-confetti { position: fixed; top: -30px; width: 22px; height: 22px; pointer-events: none; z-index: 9994;
+          animation: octetConfetti var(--d, 3s) cubic-bezier(0.3, 0.6, 0.6, 1) forwards; }
+        @keyframes octetConfetti { to { transform: translateY(110vh) rotate(var(--r, 360deg)); } }
+        .octet-secrets { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+        .octet-secrets li { color: #75563e; font-style: italic; }
+        .octet-secrets li.ok { color: #2c1a0e; font-style: normal; font-weight: 700; }
+        .octet-secrets li span { display: inline-block; width: 1.2em; text-align: center; }
         .octet-pill { cursor: pointer; min-height: 32px; }
         .octet-pill:hover, .octet-pill:focus-visible { background: #efe5d1; outline: 2px solid #7d4a18; outline-offset: 2px; }
 
@@ -601,6 +684,7 @@
 
         @media (prefers-reduced-motion: reduce) {
           .octet-sprite-img, .octet-zzz span, .octet-spark, .octet-gear-btn { animation: none !important; transition: none !important; }
+          .octet-confetti { display: none !important; }
         }
         @media print { #octet-stage, #octet-controls, #octet-debug-layer, .octet-toast, .octet-pill, .octet-gear-btn { display: none !important; } }
       `;
@@ -824,18 +908,24 @@
     _dispo(m) { return this.available.has(FICHIERS[m]); }
     _resolveMoodForState(state) {
       const section = this.sectionMood || this.config.defaultMood;
-      if (state === "PAUSED") return "hourglass";
+      if (state === "PAUSED") return this._dispo("zen") ? "zen" : "hourglass";
+      if (state === "DRAGGED") return this._dispo("surprise") ? "surprise" : (this._dispo("fall") ? "fall" : section);
+      if (state === "WAKING" && this._dispo("stretch")) return "stretch";
       if (state === "SLEEPING") return this._dispo("sleep") ? "sleep" : "hourglass";
       if (state === "REPAIRING") return "wrench";
       if (state === "CELEBRATING") return this._dispo(this.celebMood) ? this.celebMood : "wrench";
       if (state === "MENU_OPEN") return this.menuMoodOverride || "compass";
       if (state === "JUMPING") {
         const j = this.jump;
-        if (this.fallJump) return this._dispo("fall") ? "fall" : section;
+        if (this.fallJump) return this._dispo(this.fallMood || "fall") ? (this.fallMood || "fall") : (this._dispo("fall") ? "fall" : section);
         if (j && j.startY - j.endY > 180 && this._dispo("climb")) return "climb";
         return this._dispo("jump") ? "jump" : section;
       }
-      if (state === "WALKING_ON_TEXT") return this._dispo("walk") ? "walk" : section;
+      if (state === "WALKING_ON_TEXT") {
+        // après 20 s sans activité, Octet marche sur la pointe des pieds pour ne pas déranger
+        if (performance.now() - this.lastActivity > 20000 && this._dispo("tiptoe")) return "tiptoe";
+        return this._dispo("walk") ? "walk" : section;
+      }
       if (state === "LANDING" && this.landedFromFall) return this._dispo("slide") ? "slide" : section;
       return section;
     }
@@ -1204,6 +1294,7 @@
         case "MENU_OPEN":
         case "SLEEPING":
         case "REPAIRING":
+        case "DRAGGED":
           return;
         // CELEBRATING et WAKING sont gérés plus bas
 
@@ -1242,8 +1333,10 @@
           if (Math.abs(dx) <= step) {
             this.x = this.walkTargetX;
             const r = Math.random();
-            this.sectionMood = r < 0.08 && this._dispo("snack") ? "snack" : r < 0.3 ? "loupe" : (p.mood || this.config.defaultMood);
-            this.stateTimer = this.sectionMood === "snack" ? 3 + Math.random() * 2 : 0.8 + Math.random() * 1.4;
+            const act = r < 0.2 ? this._activite(p) : null;
+            this.sectionMood = act || (r < 0.36 ? "loupe" : (p.mood || this.config.defaultMood));
+            this.stateTimer = act ? 2.6 + Math.random() * 1.8 : 0.8 + Math.random() * 1.4;
+            if (act === "flute") this.sound.playFlute();
             this._setState("IDLE");
           } else {
             this.facing = dx > 0 ? 1 : -1;
@@ -1273,8 +1366,9 @@
             this.lastPlatformId = this.currentPlatform ? this.currentPlatform.id : null;
             this.currentPlatform = j.targetPlatform;
             this.sectionMood = j.forceMood || j.targetPlatform.mood || this.config.defaultMood;
-            this.landedFromFall = this.fallJump;
+            this.landedFromFall = this.fallJump && this.fallMood !== "dandelion";
             this.fallJump = false;
+            this.fallMood = null;
             this.scaleX = 1.18; this.scaleY = 0.80;
             this.stateTimer = this.landedFromFall ? 0.75 : 0.13;
             this._spawnDust(this.x, this.y);
@@ -1332,7 +1426,7 @@
     }
     _wake() {
       this.scaleY = 1.22; this.scaleX = 0.9;
-      this.stateTimer = 0.8;
+      this.stateTimer = this._dispo("stretch") ? 1.3 : 0.8;
       this._setState("WAKING");
     }
 
@@ -1495,6 +1589,7 @@
         this._later(() => btn.remove(), 380);
         const n = Math.min(TOTAL_ENGRENAGES, this.gears.ids.length);
         this._toast(n >= TOTAL_ENGRENAGES ? `⚙️ ${n}/${TOTAL_ENGRENAGES} : collection complète ! Ouvrez mon carnet.` : `⚙️ Engrenage ${n}/${TOTAL_ENGRENAGES} rangé dans la besace !`);
+        if (n >= TOTAL_ENGRENAGES) this._decouvrir("engrenages");
         this.celebMood = n >= TOTAL_ENGRENAGES ? "joy" : "carry";
         this.stateTimer = n >= TOTAL_ENGRENAGES ? 2.2 : 1.5;
         this._setState(etatAvant || "CELEBRATING");
@@ -1643,6 +1738,7 @@
       const commun = [
         { icon: "👁️", label: "Confort de lecture & voix", run: (api) => api.showComfortView() },
         { icon: "💡", label: "Lire une astuce", run: (api) => api.showTipView() },
+        { icon: "🎩", label: "Mes petits secrets", run: () => this._vueDecouvertes() },
         { icon: "🐾", label: "Faire repartir Octet en balade", run: (api) => api.closeAndJumpNow() }
       ];
       if (this.site === "eu") {
@@ -1676,7 +1772,10 @@
         },
         goTo(selectors, fallbackUrl) {
           const el = selectors.map((q) => document.querySelector(q)).find(Boolean);
-          if (el && el.id) { api.scrollToAndPulse("#" + el.id); self.closeMenu(false); }
+          if (el && el.id) {
+            api.scrollToAndPulse("#" + el.id); self.closeMenu(false);
+            self.reagir("point", 1.3, "Par ici !", { force: true });
+          }
           else window.location.href = fallbackUrl;
         },
         showMainActions() {
@@ -1796,6 +1895,9 @@
               <div class="octet-status" data-st role="status"></div>
               <div class="bubble-panel-footer">${retour()}</div></div>`);
           lierRetour();
+          self.bubbleBody.querySelector("a[href*='issues/new'], a[target='_blank']").addEventListener("click", () => {
+            self._later(() => { self.closeMenu(false); self.reagir("plane", 2, "Votre message s'envole !", { force: true, id: "avion" }); }, 150);
+          });
           self.bubbleBody.querySelector("[data-copy]").addEventListener("click", async () => {
             const st = self.bubbleBody.querySelector("[data-st]");
             try { await navigator.clipboard.writeText(rapport); st.textContent = "Rapport copié ✔ — collez-le où vous voulez (courriel, message…)."; }
@@ -1881,6 +1983,7 @@
     openMenu(opts = {}) {
       if (this.state === "MENU_OPEN" && !opts.view) { this.closeMenu(false); return; }
       this._retirerPastille();
+      if (this.repliqueEl) { this.repliqueEl.remove(); if (this.toastEl === this.repliqueEl) this.toastEl = null; this.repliqueEl = null; }
       if (this.state !== "MENU_OPEN") this.prevStateBeforeMenu = this.state === "PAUSED" ? "PAUSED" : "IDLE";
       if (this.state === "JUMPING" || this.state === "ANTICIPATION") {
         const j = this.jump;
@@ -1929,6 +2032,267 @@
     }
 
     /* -------------------------------------------------------------------------
+       Module H — les petites folies d'Octet (réactions, secrets, saisons)
+       Tout reste discret : une réaction à la fois, une réplique au plus toutes les 20 s
+       (sauf quand c'est vous qui jouez avec elle), rien en Mode Calme ni en pause.
+       ------------------------------------------------------------------------- */
+    _peutReagir() {
+      return !this.destroyed && !this.prefs.hidden && !this._calme() && this.actorEl &&
+        !["PAUSED", "MENU_OPEN", "REPAIRING", "DRAGGED", "SLEEPING"].includes(this.state) && !this._enMission();
+    }
+    _decouvrir(id) {
+      if (!DECOUVERTES[id] || this.secrets.ids.includes(id)) return;
+      this.secrets.ids.push(id);
+      ecrireJSON(CLE_SECRETS, this.secrets);
+    }
+    /** Pose une réaction (pose + réplique) pendant `duree` secondes. `force` : déclenchée par l'utilisateur. */
+    reagir(mood, duree, replique, { force = false, id = null, son = null } = {}) {
+      if (!this._peutReagir() || !this._dispo(mood)) return false;
+      const now = performance.now();
+      if (!force && now - this.derniereReplique < 20000) return false;
+      if (this.jump && !this.jump.onLand) { this.x = this.jump.endX; this.y = this.jump.endY; this.currentPlatform = this.jump.targetPlatform; this.jump = null; }
+      this.celebMood = mood;
+      this.stateTimer = duree;
+      this._setState("CELEBRATING");
+      if (replique) { this._replique(replique); this.derniereReplique = now; }
+      if (id) this._decouvrir(id);
+      if (son && this.sound[son]) this.sound[son]();
+      return true;
+    }
+    _replique(texte) {
+      if (this.repliqueEl) this.repliqueEl.remove();
+      const b = document.createElement("div");
+      b.className = "octet-toast octet-quip";
+      b.setAttribute("data-octet-ignore", "");
+      b.setAttribute("aria-hidden", "true");
+      b.textContent = texte;
+      document.body.appendChild(b);
+      this.repliqueEl = b;
+      this.toastEl = b;
+      this._placerFlottant(b, this.pillEl ? 38 : 0);
+      this._later(() => { if (this.repliqueEl === b) { b.remove(); this.repliqueEl = null; if (this.toastEl === b) this.toastEl = null; } }, 2800);
+    }
+
+    /* Activités d'atelier quand Octet s'arrête sur un texte : selon l'heure, la saison, la page */
+    _activite(p) {
+      const h = new Date().getHours(), mois = new Date().getMonth() + 1, jour = new Date().getDate();
+      const sombre = document.documentElement.dataset.theme === "dark" || document.documentElement.classList.contains("dark") ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const pool = ["hammer", "paint", "saw", "toolbox", "bigkey", "coil", "plan", "spyglass", "idea", "snack"];
+      if (p && p.el && (p.el.textContent || "").length > 400) pool.push("book", "book");
+      if (p && p.width < 110) pool.push("spool", "spool", "spool");
+      if (this.prefs.sound) pool.push("flute");
+      if (h >= 22 || h < 6) pool.push("candle", "candle", "stretch");
+      else if (h < 10) pool.push("tea", "tea");
+      if (sombre) pool.push("lantern", "lantern");
+      if (mois >= 9 && mois <= 11) pool.push("acorns", "acorns");
+      if (mois === 12 || mois <= 2) pool.push("scarf", "scarf");
+      if (mois === 12 && jour >= 20) pool.push("gift");
+      const dispo = pool.filter((m) => this._dispo(m));
+      return dispo.length ? dispo[Math.floor(Math.random() * dispo.length)] : null;
+    }
+
+    /* Attraper Octet et le lancer */
+    _onActorPointerDown(e) {
+      if (e.button !== 0 || this.prefs.hidden || this.state === "MENU_OPEN") return;
+      this.prise = { id: e.pointerId, x0: e.clientX, y0: e.clientY, t: performance.now(), hist: [] };
+    }
+    _onActorPointerMove(e) {
+      const pr = this.prise;
+      if (!pr || pr.id !== e.pointerId) {
+        // caresse : aller-retour rapide de la souris au-dessus d'Octet
+        if (e.pointerType !== "mouse") return;
+        const now = performance.now();
+        const dir = Math.sign(e.movementX || 0);
+        if (!dir) return;
+        if (dir !== this.caresseDir) { this.caresse.push(now); this.caresseDir = dir; }
+        this.caresse = this.caresse.filter((t) => now - t < 1200);
+        if (this.caresse.length >= 6) {
+          this.caresse = [];
+          this.reagir("joy", 1.6, ["Hihi, ça chatouille !", "Encore ! Encore !", "Arrête, je suis chatouilleuse !"][Math.floor(Math.random() * 3)], { force: true, id: "chatouilles" });
+        }
+        return;
+      }
+      const now = performance.now();
+      pr.hist.push({ x: e.clientX, y: e.clientY, t: now });
+      while (pr.hist.length > 6) pr.hist.shift();
+      if (!this.traine && Math.hypot(e.clientX - pr.x0, e.clientY - pr.y0) > 8 && !this._calme() && this.state !== "PAUSED") {
+        this.traine = true;
+        try { this.actorEl.setPointerCapture(e.pointerId); } catch { /* ignoré */ }
+        this.jump = null;
+        this.celebMood = "surprise";
+        this._setState("DRAGGED");
+        this._retirerPastille();
+        this._decouvrir("attraper");
+      }
+      if (this.traine) {
+        const m = this._getMetrics();
+        this.x = e.clientX;
+        this.y = e.clientY + m.size * 0.45;
+        this.tiltDeg = Math.max(-18, Math.min(18, (e.movementX || 0) * 1.5));
+      }
+    }
+    _onActorPointerUp(e) {
+      const pr = this.prise;
+      this.prise = null;
+      if (!pr || !this.traine) return;
+      this.traine = false;
+      this.ignorerClic = true;
+      setTimeout(() => { this.ignorerClic = false; }, 50);
+      const h = pr.hist, a = h[0], b = h[h.length - 1];
+      const vitesse = a && b && b.t > a.t ? Math.hypot(b.x - a.x, b.y - a.y) / ((b.t - a.t) / 1000) : 0;
+      // texte le plus proche sous le point de lâcher
+      this.scanPlatforms();
+      const sous = this.platforms
+        .filter((p) => p.left - 10 <= this.x && this.x <= p.right + 10 && p.top >= this.y - 4)
+        .sort((p, q) => p.top - q.top)[0];
+      const cible = sous || this._pickNextPlatform();
+      this.fallJump = true;
+      this.fallMood = "fall";
+      this.jumpTo(cible, {
+        onLand: () => {
+          if (vitesse > 1400) this._later(() => this.reagir("dizzy", 1.8, "Quel vol… tout tourne !", { force: true, id: "lancer" }), 200);
+        }
+      });
+      if (this.jump) {
+        this.jump.arcHeight = Math.max(8, Math.min(60, vitesse / 40));
+        this.jump.endX = Math.max(cible.left + 10, Math.min(cible.right - 10, this.x + Math.max(-120, Math.min(120, (b && a ? (b.x - a.x) : 0)))));
+        this.jump.duration = Math.max(0.35, Math.min(0.9, Math.abs(cible.top - this.y) / 900 + 0.3));
+        this.stateTimer = 0.01;
+      }
+    }
+
+    /* Clics répétés : la tête lui tourne */
+    _compterClics() {
+      const now = performance.now();
+      this.clics = (this.clics || []).filter((t) => now - t < 1600);
+      this.clics.push(now);
+      if (this.clics.length >= 5) {
+        this.clics = [];
+        if (this.state === "MENU_OPEN") this.closeMenu(false);
+        this.reagir("dizzy", 2, "Ouh là… arrêtez de me cliquer, la tête me tourne !", { force: true, id: "tournis" });
+        return true;
+      }
+      return false;
+    }
+
+    /* Code secret ↑ ↑ ↓ ↓ ← → ← → B A */
+    _konami(e) {
+      const code = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      this.konamiPos = k === code[this.konamiPos || 0] ? (this.konamiPos || 0) + 1 : (k === code[0] ? 1 : 0);
+      if (this.konamiPos === code.length) {
+        this.konamiPos = 0;
+        if (this.state === "MENU_OPEN") this.closeMenu(false);
+        if (this.reagir("bell", 1.2, "Ding ! Le code secret de l'atelier !", { force: true, id: "konami", son: "playBell" })) {
+          this._later(() => { this.reagir("gift", 2.6, "Un cadeau pour vous : une pluie d'engrenages !", { force: true }); this._confettis(); }, 1250);
+        }
+      }
+    }
+    _confettis() {
+      if (this._calme()) return;
+      for (let i = 0; i < 36; i++) {
+        const c = document.createElement("div");
+        c.className = "octet-confetti";
+        c.setAttribute("aria-hidden", "true");
+        c.innerHTML = this._svgEngrenage();
+        c.style.left = `${Math.random() * 100}vw`;
+        c.style.setProperty("--d", `${2.2 + Math.random() * 2.2}s`);
+        c.style.setProperty("--r", `${(Math.random() < 0.5 ? -1 : 1) * (180 + Math.random() * 540)}deg`);
+        c.style.animationDelay = `${Math.random() * 0.8}s`;
+        this.stageEl.appendChild(c);
+        this._later(() => c.remove(), 5200);
+      }
+    }
+
+    /* Événements de la page qui font réagir Octet */
+    _onCopy(e) {
+      if (e.target && e.target.closest && e.target.closest("#octet-stage")) return;
+      this._later(() => this.reagir("thumb", 1.4, "Bien copié !", { id: "copie" }), 150);
+    }
+    _onReseau() {
+      if (navigator.onLine) this.reagir("thumb", 1.6, "Le réseau est revenu !", { force: true, id: "reseau" });
+      else this.reagir("umbrella", 3, "Plus de réseau… je m'abrite en attendant.", { force: true, id: "reseau" });
+    }
+    _onVisibilite() {
+      if (document.hidden) { this.partiA = performance.now(); return; }
+      if (this.partiA && performance.now() - this.partiA > 120000) {
+        this.lastActivity = performance.now();
+        if (this.state === "SLEEPING") this._wake();
+        this._later(() => this.reagir("hello", 1.8, "Re-bonjour ! Je vous ai gardé la place.", { force: true, id: "retour" }), 900);
+      }
+      this.partiA = 0;
+    }
+    _onFocusChamp(e) {
+      const c = e.target;
+      if (!c || !c.matches || !c.matches("input[type='search'], input[type='text'], input:not([type]), textarea") || c.closest("#octet-stage, [data-octet-ignore]")) return;
+      if (this.champsVus.has(c)) return;
+      this.champsVus.add(c);
+      this.reagir("idea", 1.6, "Une idée ? Je suis tout ouïe.", { id: "idee" });
+    }
+    _surveillerDefilement() {
+      const bas = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6;
+      if (bas && !this.basAtteint && document.documentElement.scrollHeight > window.innerHeight * 1.6) {
+        this.basAtteint = true;
+        this._later(() => this.reagir("flag", 2.2, "Bout de la page atteint, bravo l'explorateur !", { id: "bout" }), 700);
+      }
+      if (window.scrollY > Math.max(900, window.innerHeight * 1.2)) this.etaitLoin = true;
+      if (window.scrollY < 40 && this.etaitLoin) {
+        this.etaitLoin = false;
+        // après l'éventuelle descente en pissenlit
+        this._later(() => this.reagir("rope", 1.8, "Hop, je remonte tout ça !", { id: "remonter" }), 1800);
+      }
+    }
+    _onResizeFin() {
+      const w = window.innerWidth;
+      if (Math.abs(w - (this.largeurAvant || w)) > 80) this.reagir("push", 1.8, "Je pousse les murs, ne bougez pas !", { force: true, id: "murs" });
+      this.largeurAvant = w;
+    }
+    _horloge() {
+      const minutes = (performance.now() - this.debutVisite) / 60000;
+      if (minutes >= 10 && !this.rappels.dix) {
+        this.rappels.dix = true;
+        this.reagir("watch", 2.6, "Déjà 10 minutes ici. Une petite pause pour les yeux ?", { id: "montre" });
+      }
+      if (minutes >= 25 && !this.rappels.the) {
+        this.rappels.the = true;
+        this.reagir("tea", 2.6, "Et si on faisait une pause thé ?", { id: "the" });
+      }
+    }
+    _bonjourDuJour() {
+      const auj = new Date().toISOString().slice(0, 10);
+      const jour = new Date().getDate(), mois = new Date().getMonth() + 1;
+      let dernier = "";
+      try { dernier = localStorage.getItem(CLE_BONJOUR) || ""; } catch { /* ignoré */ }
+      if (dernier === auj) return;
+      try { localStorage.setItem(CLE_BONJOUR, auj); } catch { /* ignoré */ }
+      const h = new Date().getHours();
+      let texte = h < 12 ? "Bonjour ! Belle matinée à l'atelier." : h < 18 ? "Bonjour ! Bienvenue à l'atelier." : "Bonsoir ! L'atelier est encore ouvert.";
+      let mood = "hello";
+      if (mois === 1 && jour === 1) { texte = "Bonne année ! Que vos idées tournent rond."; mood = "flag"; }
+      else if (mois === 12 && jour >= 24 && jour <= 26) { texte = "Joyeuses fêtes ! J'ai un petit paquet pour vous."; mood = "gift"; }
+      else if (mois === 4 && jour === 1) texte = "Bonjour ! Vérifiez votre dos… (c'est le 1er avril)";
+      this._later(() => this.reagir(mood, 2.2, texte, { force: true, id: "bonjour" }), 1800);
+    }
+
+    _vueDecouvertes() {
+      const api = this._createBubbleAPI();
+      this.menuMoodOverride = "spyglass";
+      this._renderVisual();
+      const ids = Object.keys(DECOUVERTES);
+      const n = ids.filter((id) => this.secrets.ids.includes(id)).length;
+      this.bubbleTitle.textContent = "Mes petits secrets";
+      this.bubbleSub.textContent = `${n} découverte${n > 1 ? "s" : ""} sur ${ids.length}`;
+      this.bubbleBody.innerHTML = `<div class="bubble-panel"><ul class="octet-secrets">${ids.map((id) => {
+        const ok = this.secrets.ids.includes(id);
+        return `<li class="${ok ? "ok" : ""}"><span aria-hidden="true">${ok ? "✔" : "?"}</span> ${echapper(ok ? DECOUVERTES[id][0] : DECOUVERTES[id][1])}</li>`;
+      }).join("")}</ul>
+        <div class="bubble-panel-footer"><button type="button" class="bubble-mini-btn ghost" data-octet-back>← Menu</button></div></div>`;
+      this.bubbleBody.querySelector("[data-octet-back]").addEventListener("click", () => api.showMainActions());
+      this._positionBubble();
+    }
+
+    /* -------------------------------------------------------------------------
        Événements, contrôles, nettoyage
        ------------------------------------------------------------------------- */
     _syncControlButtons() {
@@ -1968,12 +2332,18 @@
           this.scrollRaf = null;
           this.scanPlatforms();
           this._scanGears();
+          this._surveillerDefilement();
           const mission = this.jump && (this.jump.onLand || this.jump.forceMood);
           if (!mission && !["MENU_OPEN", "PAUSED", "JUMPING", "REPAIRING"].includes(this.state) &&
               (this.y < this.config.topSafeMargin - 10 || this.y > window.innerHeight - 10)) {
             this.y = Math.max(this.config.topSafeMargin, Math.min(window.innerHeight - 20, this.y));
             this.fallJump = rapide && !this._calme();
+            const versLeHaut = this.scrollHistory.reduce((t, h) => t + h.dy, 0) > 0;
+            this.fallMood = this.fallJump && versLeHaut && this._dispo("dandelion") ? "dandelion" : "fall";
             this.jumpTo(this._pickNextPlatform());
+            if (this.fallMood === "dandelion" && this.jump) {
+              this.jump.duration = 1.5; this.jump.arcHeight = 20; this._decouvrir("pissenlit");
+            }
           }
         });
       }
@@ -1981,6 +2351,8 @@
 
     _onResize() {
       this._scheduleRescan(90);
+      clearTimeout(this.resizeFinTimer);
+      this.resizeFinTimer = setTimeout(() => { if (!this.destroyed) this._onResizeFin(); }, 450);
       this.x = Math.max(30, Math.min(window.innerWidth - 30, this.x));
       if (this.state === "MENU_OPEN") this._positionBubble();
     }
@@ -1993,6 +2365,7 @@
     }
     _onKeyDown(e) {
       this._onActivity(e);
+      if (!e.target.closest || !e.target.closest("input, textarea, [contenteditable='true']")) this._konami(e);
       if (e.key === "Escape" && this.state === "MENU_OPEN") { this.closeMenu(false); this.actorEl.focus(); }
     }
     _onReducedMotionChange(e) {
@@ -2004,7 +2377,28 @@
     }
 
     _bindEvents() {
-      this.actorEl.addEventListener("click", (e) => { e.stopPropagation(); this._onActivity(); this.openMenu(); });
+      this.actorEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (this.ignorerClic) return;
+        const dormait = this.state === "SLEEPING";
+        this._onActivity(e);
+        if (this._compterClics()) return;
+        if (dormait) {
+          this._replique("Hein ? Je ne dormais pas, je réfléchissais !");
+          this.derniereReplique = performance.now();
+          this._decouvrir("reveil");
+          return;
+        }
+        this.openMenu();
+      });
+      this.actorEl.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        this.reagir("shrug", 2.2, "Pas de menu secret ici… quoique : ↑ ↑ ↓ ↓ ← → ← → B A", { force: true, id: "clicdroit" });
+      });
+      this.actorEl.addEventListener("pointerdown", this._bound.onActorDown);
+      this.actorEl.addEventListener("pointermove", this._bound.onActorMove);
+      this.actorEl.addEventListener("pointerup", this._bound.onActorUp);
+      this.actorEl.addEventListener("pointercancel", this._bound.onActorUp);
       this.btnClose.addEventListener("click", () => { this.closeMenu(false); this.actorEl.focus(); });
       this.btnPause.addEventListener("click", () => {
         if (this.state === "MENU_OPEN") this.closeMenu(false);
@@ -2018,6 +2412,7 @@
         if (this.prefs.hidden && this.state === "MENU_OPEN") this.closeMenu(false);
         if (this.prefs.hidden) this._retirerPastille();
         this._savePrefs(); this._syncControlButtons();
+        if (!this.prefs.hidden) this._later(() => this.reagir("peek", 1.8, "Coucou, c'est re-moi !", { force: true, id: "cachecache" }), 100);
       });
       this.btnSound.addEventListener("click", () => {
         this.prefs.sound = !this.prefs.sound;
@@ -2036,6 +2431,12 @@
       document.addEventListener("keydown", this._bound.onKeyDown);
       document.addEventListener("selectionchange", this._bound.onSelection);
       this.reducedMotionQuery.addEventListener?.("change", this._bound.onReducedMotionChange);
+      document.addEventListener("copy", this._bound.onCopy);
+      document.addEventListener("visibilitychange", this._bound.onVisibilite);
+      document.addEventListener("focusin", this._bound.onFocusChamp);
+      window.addEventListener("online", this._bound.onReseau);
+      window.addEventListener("offline", this._bound.onReseau);
+      this.horlogeId = setInterval(() => this._horloge(), 30000);
 
       this.mutationObserver = new MutationObserver((muts) => {
         if (muts.every((m) => this.stageEl.contains(m.target) || this.controlsEl.contains(m.target) || this.debugLayer.contains(m.target) ||
@@ -2079,6 +2480,14 @@
       document.removeEventListener("click", this._bound.onDocClick);
       document.removeEventListener("keydown", this._bound.onKeyDown);
       document.removeEventListener("selectionchange", this._bound.onSelection);
+      document.removeEventListener("copy", this._bound.onCopy);
+      document.removeEventListener("visibilitychange", this._bound.onVisibilite);
+      document.removeEventListener("focusin", this._bound.onFocusChamp);
+      window.removeEventListener("online", this._bound.onReseau);
+      window.removeEventListener("offline", this._bound.onReseau);
+      clearInterval(this.horlogeId);
+      clearTimeout(this.resizeFinTimer);
+      this.repliqueEl?.remove();
       this.reducedMotionQuery.removeEventListener?.("change", this._bound.onReducedMotionChange);
       this.mutationObserver?.disconnect();
       this.resizeObserver?.disconnect();
