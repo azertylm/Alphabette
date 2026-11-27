@@ -104,4 +104,14 @@ test('documentation de voix présente et liée au composant', () => {
   assert.match(d, /OctetMessage/); assert.match(d, /OctetHelp/); assert.match(d, /Aucun stockage/);
 });
 
+test('Octet en balade : script chargé par le hub, 7 poses transparentes, pas de fausse boîte à idées, mode Calme respecté', () => {
+  assert.match(lire('index.html'), /<script src="\/assets\/octet-balade\.js" defer><\/script>/);
+  for (const m of ['compass', 'wrench', 'flask', 'notebook', 'watering', 'loupe', 'hourglass']) assert.ok(existsSync(path.join(racine, `public/assets/octet/balade/octet-${m}.webp`)), m);
+  const js = lire('public/assets/octet-balade.js');
+  assert.doesNotMatch(js, /Bien noté dans mon carnet|onIdeaSubmit/);
+  assert.match(js, /dataset\.calme === "oui"/);
+  assert.match(js, /prefers-reduced-motion/);
+  assert.match(js, /alphabette\.eu\/#idees/);
+});
+
 console.log(`\n${ok} tests Octet réussis`);
