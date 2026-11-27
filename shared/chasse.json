@@ -1,0 +1,18 @@
+{
+  "_aide": "Chasse au trésor d'Octet en cours. Pour une nouvelle saison : changer saison, dates, indices et récompense, puis publier (voir LISEZMOI-SECRETS.md). « adresse » = page où le fragment apparaît (sans https://), « exacte »: true pour cette page seulement, sinon toute l'appli.",
+  "saison": "hiver-2026",
+  "titre": "La chasse de l'hiver",
+  "debut": "2026-11-27",
+  "fin": "2027-03-20",
+  "indices": [
+    { "id": "hiver-2026-1", "app": "Alphabette", "adresse": "alphabette.fr/", "exacte": true, "ou": "Sur la page d'accueil d'alphabette.fr", "fragment": "Quand la neige tombe," },
+    { "id": "hiver-2026-2", "app": "Senior Bon Plan", "adresse": "bonplansenior.alphabette.fr/", "ou": "Dans l'appli des bons plans pour les seniors", "fragment": "Octet lève d'abord les yeux," },
+    { "id": "hiver-2026-3", "app": "Frigo-Placard", "adresse": "frigoplacard.alphabette.fr/", "ou": "Dans l'appli qui cuisine avec ce qu'il reste", "fragment": "puis regarde ses bottes," },
+    { "id": "hiver-2026-4", "app": "Service France", "adresse": "franceservice.alphabette.fr/", "ou": "Dans l'appli des démarches administratives", "fragment": "fait le tour de l'atelier" },
+    { "id": "hiver-2026-5", "app": "IA Débat", "adresse": "iadebat.alphabette.fr/", "ou": "Dans l'arène où les IA débattent", "fragment": "et frappe à la porte." }
+  ],
+  "recompense": {
+    "titre": "La phrase de l'hiver",
+    "texte": "Vous avez reconstitué la phrase de la saison. Lisez-la bien : elle décrit, geste par geste, une combinaison secrète de l'atelier. Faites-la, puis touchez Octet."
+  }
+}

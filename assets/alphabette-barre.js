@@ -627,4 +627,11 @@
   // ------------------------------------------------------------ Données du hub
   fetch(HUB + '/api/apps').then(function (r) { return r.json(); }).then(function (data) { appsHub = (data && data.apps) || []; dessinerFavoris(); majPoint(); }).catch(function () {});
   fetch(HUB + '/api/config.json').then(function (r) { return r.json(); }).then(function (cfg) { configHub = cfg; }).catch(function () {});
+
+  // ------------------------------------------------------------ Chasse au trésor d'Octet
+  // Fragments d'indice répartis dans les applis (décrits dans /shared/chasse.json) : rien à modifier dans les applis.
+  if ((local || /(^|\.)alphabette\.fr$/i.test(location.hostname)) && !document.getElementById('octet-chasse-js')) {
+    var sc = document.createElement('script'); sc.id = 'octet-chasse-js'; sc.src = HUB + '/shared/octet-chasse.js'; sc.async = true;
+    (document.head || document.documentElement).appendChild(sc);
+  }
 })();

@@ -27,14 +27,23 @@
   const CLE_SECRETS = "alphabette_octet_secrets";
   const CLE_BONJOUR = "alphabette_octet_bonjour";
   const TOTAL_ENGRENAGES = 5;
-  const CLE_SECRETS_UTILISES = "alphabette_octet_combinaisons";
-  /* Combinaisons secrètes d'accès offert. Gestes : U ↑, D ↓, L ←, R →, O = toucher Octet (ou touche « O »).
-     Au clavier : flèches + touche O. Au téléphone : glisser le doigt sur la page + toucher Octet. */
-  const COMBINAISONS = [
-    { id: "secret-1-mois", mois: 1, nom: "La boussole", gestes: ["U", "R", "D", "L", "U", "R", "D", "L", "O"] },
-    { id: "secret-2-mois", mois: 2, nom: "L'engrenage", gestes: ["L", "L", "R", "R", "U", "D", "U", "D", "O", "O"] },
-    { id: "secret-3-mois", mois: 3, nom: "Le grand atelier", gestes: ["O", "U", "U", "D", "D", "L", "R", "L", "R", "O", "O", "O"] }
-  ];
+  /* Combinaisons secrètes d'accès offert (1, 2 ou 3 mois). Gestes : U ↑, D ↓, L ←, R →, O = toucher Octet (ou touche « O »).
+     Au clavier : flèches + touche O. Au téléphone : glisser le doigt sur la page (lentement, c'est permis) + toucher Octet.
+     La liste des combinaisons n'est JAMAIS dans ce fichier : elle vit sur le serveur (api/secrets.php), qui change à chaque
+     saison. Le navigateur envoie seulement les derniers gestes ; le serveur répond oui ou non et donne la date de fin.
+     Sans réseau, rien n'est validé ici : Octet ouvre son parapluie et la demande attend le retour du réseau. */
+  const CLE_APPAREIL = "alphabette_appareil";             // identifiant d'appareil tiré au hasard, jamais lié à une personne
+  const CLE_EN_ATTENTE = "alphabette_octet_en_attente";   // combinaison saisie hors réseau, envoyée au retour du réseau
+  const GESTES_MAX = 16;
+  const PAUSE_GESTES_MS = 12000;   // on peut prendre son temps entre deux gestes
+  const DELAI_VERIF_MS = 2600;     // après le dernier « toucher Octet », on laisse le temps d'en faire un deuxième, un troisième
+  const SECRETS_API = (() => {
+    const ctx = window.OCTET_APP_CONTEXT || {};
+    if (ctx.secretsEndpoint) return ctx.secretsEndpoint;
+    const attr = ATTR("data-secrets", "");
+    if (attr) return attr;
+    return /(^|\.)alphabette\.eu$/i.test(location.hostname) ? "/api/secrets.php" : "https://alphabette.eu/api/secrets.php";
+  })();
   // id → [nom une fois découvert, indice tant qu'il ne l'est pas]
   const DECOUVERTES = {
     bonjour: ["Le bonjour du jour", "Revenez un autre jour…"],
@@ -46,9 +55,9 @@
     reveil: ["Le réveil en sursaut", "Réveillez-la pendant sa sieste"],
     clicdroit: ["Le menu secret", "Un clic… de l'autre côté"],
     konami: ["Le code de l'atelier", "↑ ↑ ↓ ↓ …"],
-    "secret-1-mois": ["La boussole (1 mois offert)", "Une combinaison qui tourne comme une boussole"],
-    "secret-2-mois": ["L'engrenage (2 mois offerts)", "Une combinaison qui va et vient comme un engrenage"],
-    "secret-3-mois": ["Le grand atelier (3 mois offerts)", "La plus longue des combinaisons, qui commence et finit par Octet"],
+    "secret-1-mois": ["Une combinaison secrète (1 mois offert)", "Des flèches, puis toucher Octet… (l'indice change à chaque saison)"],
+    "secret-2-mois": ["Une combinaison secrète (2 mois offerts)", "Plus longue, et Octet aime qu'on le touche deux fois"],
+    "secret-3-mois": ["Une combinaison secrète (3 mois offerts)", "La plus longue de la saison : la chasse au trésor vous la souffle"],
     copie: ["Le pouce levé", "Copiez un passage"],
     idee: ["L'ampoule", "Cliquez dans un champ de texte"],
     bout: ["Le drapeau", "Allez tout en bas d'une longue page"],
@@ -59,7 +68,8 @@
     reseau: ["L'averse", "Perdez le réseau un instant"],
     avion: ["L'avion de papier", "Préparez un retour pour GitHub"],
     montre: ["La montre à gousset", "Restez 10 minutes"],
-    engrenages: ["Les cinq engrenages", "Cherchez les engrenages perdus"]
+    engrenages: ["Les cinq engrenages", "Cherchez les engrenages perdus"],
+    chasse: ["La chasse au trésor", "Des fragments d'indice se cachent dans les applis"]
   };
   const SIESTE_MS = 35000;
 
@@ -2196,18 +2206,71 @@
        ------------------------------------------------------------------------- */
     _geste(g) {
       const now = performance.now();
-      if (now - (this.dernierGeste || 0) > 4000) this.gestes = [];
+      if (now - (this.dernierGeste || 0) > PAUSE_GESTES_MS) this.gestes = [];
       this.dernierGeste = now;
-      this.gestes = (this.gestes || []).concat(g).slice(-14);
-      for (const c of COMBINAISONS) {
-        const n = c.gestes.length;
-        if (this.gestes.length >= n && this.gestes.slice(-n).join("") === c.gestes.join("")) {
-          this.gestes = [];
-          this._combinaisonTrouvee(c);
-          return true;
-        }
+      this.gestes = (this.gestes || []).concat(g).slice(-GESTES_MAX);
+      clearTimeout(this.verifTimer);
+      const fleches = this.gestes.filter((x) => x !== "O").length;
+      // Une combinaison se termine toujours en touchant Octet : on demande alors au serveur (une seule fois par saisie).
+      if (g === "O" && fleches >= 4) {
+        const saisie = this.gestes.join("");
+        this.verifTimer = setTimeout(() => this._verifierGestes(saisie), DELAI_VERIF_MS);
+        return true; // pendant une combinaison, toucher Octet n'ouvre pas son carnet
       }
       return false;
+    }
+    _appareil() {
+      let id = null;
+      try { id = JSON.parse(localStorage.getItem(CLE_APPAREIL) || "null"); } catch { id = null; }
+      if (typeof id !== "string" || !/^[a-f0-9]{32}$/.test(id)) {
+        const o = new Uint8Array(16);
+        crypto.getRandomValues(o);
+        id = Array.from(o, (b) => b.toString(16).padStart(2, "0")).join("");
+        try { localStorage.setItem(CLE_APPAREIL, JSON.stringify(id)); } catch { /* navigation privée */ }
+      }
+      return id;
+    }
+    /* Demande au serveur si les derniers gestes forment une combinaison en service. Jamais de validation locale. */
+    async _verifierGestes(saisie, { reprise = false } = {}) {
+      if (this.destroyed || this.verifEnCours === saisie) return;
+      const m = this._membreActuel();
+      if (m && !m.jusquau && !reprise) return; // déjà membre : l'accès est déjà ouvert, rien à demander
+      this.verifEnCours = saisie;
+      const ctrl = new AbortController();
+      const minuteur = setTimeout(() => ctrl.abort(), 9000);
+      let rep = null, statut = 0;
+      try {
+        const r = await fetch(SECRETS_API, {
+          method: "POST", headers: { "Content-Type": "application/json" }, cache: "no-store", credentials: "omit", signal: ctrl.signal,
+          body: JSON.stringify({ action: "essayer", appareil: this._appareil(), gestes: saisie })
+        });
+        statut = r.status;
+        if (r.ok) rep = await r.json();
+      } catch { statut = 0; }
+      clearTimeout(minuteur);
+      this.verifEnCours = null;
+      if (this.destroyed) return;
+      if (statut === 0 || statut >= 500) {
+        // Réseau coupé ou serveur absent : parapluie, et on garde la saisie au sec pour plus tard.
+        ecrireJSON(CLE_EN_ATTENTE, { gestes: saisie, le: Date.now() });
+        this.reagir("umbrella", 3.4, "Le réseau fait des siennes… Je garde votre combinaison au sec et je la vérifie dès qu'il revient.", { force: true });
+        return;
+      }
+      try { localStorage.removeItem(CLE_EN_ATTENTE); } catch { /* rien */ }
+      if (statut === 429) { this.reagir("tea", 2.6, "Doucement… Je reprends mon souffle, réessayez dans quelques minutes.", { force: true }); return; }
+      if (!rep || !rep.ok) { if (reprise) this.reagir("shrug", 2.2, "J'ai vérifié votre combinaison mise à l'abri : ce n'était pas la bonne.", { force: true }); return; }
+      this.gestes = [];
+      const niveau = Math.max(1, Math.min(3, Number(rep.niveau) || 1));
+      this._combinaisonTrouvee({ id: `secret-${niveau}-mois`, mois: niveau, nom: String(rep.nom || "Combinaison secrète"), jusquau: rep.jusquau || null, deja: !!rep.deja });
+    }
+    /* Au chargement et au retour du réseau : une combinaison saisie hors ligne (moins de 7 jours) est enfin vérifiée. */
+    _reprendreEnAttente() {
+      if (!navigator.onLine) return;
+      let a = null;
+      try { a = JSON.parse(localStorage.getItem(CLE_EN_ATTENTE) || "null"); } catch { a = null; }
+      if (!a || typeof a.gestes !== "string") return;
+      if (!(Date.now() - Number(a.le) < 7 * 86400000)) { try { localStorage.removeItem(CLE_EN_ATTENTE); } catch { /* rien */ } return; }
+      this._verifierGestes(a.gestes, { reprise: true });
     }
     _onToucheDebut(e) {
       if (e.touches.length !== 1) { this.glisse = null; return; }
@@ -2218,7 +2281,7 @@
       const d = this.glisse; this.glisse = null;
       if (!d || d.surOctet || !e.changedTouches.length) return;
       const t = e.changedTouches[0], dx = t.clientX - d.x, dy = t.clientY - d.y;
-      if (performance.now() - d.t > 700 || Math.max(Math.abs(dx), Math.abs(dy)) < 45) return;
+      if (performance.now() - d.t > 1500 || Math.max(Math.abs(dx), Math.abs(dy)) < 45) return;
       this._geste(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "R" : "L") : (dy > 0 ? "D" : "U"));
     }
     _membreActuel() {
@@ -2239,14 +2302,12 @@
       if (this.prefs.hidden) { this.prefs.hidden = false; this._savePrefs(); this._syncControlButtons(); }
       if (this.state === "MENU_OPEN") this.closeMenu(false);
       this._decouvrir(c.id);
-      const utilises = lireJSON(CLE_SECRETS_UTILISES, { ids: [] });
       const m = this._membreActuel();
-      const actif = m && (!m.jusquau || Date.parse(m.jusquau) > Date.now());
-      if (actif && !m.jusquau) {
+      if (m && !m.jusquau) {
         this.reagir("thumb", 2.4, `« ${c.nom} » trouvée ! Vous êtes déjà membre : l'accès vous est déjà offert.`, { force: true });
         return;
       }
-      if (utilises.ids.includes(c.id)) {
+      if (c.deja || !c.jusquau) {
         this.reagir("shrug", 2.4, `« ${c.nom} » a déjà servi sur cet appareil. Essayez une autre combinaison…`, { force: true });
         return;
       }
@@ -2274,14 +2335,11 @@
         const prenom = form.querySelector("input").value.replace(/[<>"]/g, "").replace(/\s+/g, " ").trim().slice(0, 24);
         const st = form.querySelector("[data-combi-st]");
         if (prenom.length < 2) { st.textContent = "Indiquez un prénom (2 lettres au moins)."; return; }
-        const fin = new Date(); fin.setMonth(fin.getMonth() + c.mois);
+        const fin = new Date(c.jusquau); // date de fin donnée par le serveur, jamais calculée ici
         const actuel = this._membreActuel();
         // on ne raccourcit jamais un accès déjà ouvert plus long
         const jusquau = actuel && actuel.jusquau && Date.parse(actuel.jusquau) > fin.getTime() ? actuel.jusquau : fin.toISOString();
         this._ecrireMembre({ prenom, role: actuel && actuel.role && actuel.jusquau ? actuel.role : "invite", depuis: (actuel && actuel.depuis) || new Date().toISOString(), code: c.id, jusquau });
-        const utilises = lireJSON(CLE_SECRETS_UTILISES, { ids: [] });
-        utilises.ids.push(c.id);
-        ecrireJSON(CLE_SECRETS_UTILISES, utilises);
         const date = new Date(jusquau).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
         this.bubbleBody.innerHTML = `<div class="bubble-panel"><p style="margin:0"><strong>C'est fait, ${echapper(prenom)} !</strong><br>
           Accès offert jusqu'au ${echapper(date)}, sur cet appareil. Chut… gardez le secret (ou pas).</p></div>`;
@@ -2325,7 +2383,7 @@
       this._later(() => this.reagir("thumb", 1.4, "Bien copié !", { id: "copie" }), 150);
     }
     _onReseau() {
-      if (navigator.onLine) this.reagir("thumb", 1.6, "Le réseau est revenu !", { force: true, id: "reseau" });
+      if (navigator.onLine) { this.reagir("thumb", 1.6, "Le réseau est revenu !", { force: true, id: "reseau" }); this._later(() => this._reprendreEnAttente(), 2500); }
       else this.reagir("umbrella", 3, "Plus de réseau… je m'abrite en attendant.", { force: true, id: "reseau" });
     }
     _onVisibilite() {
@@ -2399,10 +2457,64 @@
       this.bubbleSub.textContent = `${n} découverte${n > 1 ? "s" : ""} sur ${ids.length}`;
       this.bubbleBody.innerHTML = `<div class="bubble-panel"><ul class="octet-secrets">${ids.map((id) => {
         const ok = this.secrets.ids.includes(id);
-        return `<li class="${ok ? "ok" : ""}"><span aria-hidden="true">${ok ? "✔" : "?"}</span> ${echapper(ok ? DECOUVERTES[id][0] : DECOUVERTES[id][1])}</li>`;
+        return `<li class="${ok ? "ok" : ""}" data-secret="${id}"><span aria-hidden="true">${ok ? "✔" : "?"}</span> <em>${echapper(ok ? DECOUVERTES[id][0] : DECOUVERTES[id][1])}</em></li>`;
       }).join("")}</ul>
+        <p class="octet-transparence" data-octet-transparence style="margin:8px 0 0;font-size:.92em"></p>
+        <div data-octet-chasse></div>
         <div class="bubble-panel-footer"><button type="button" class="bubble-mini-btn ghost" data-octet-back>← Menu</button></div></div>`;
       this.bubbleBody.querySelector("[data-octet-back]").addEventListener("click", () => api.showMainActions());
+      this._positionBubble();
+      this._carnetCombinaisons();
+      this._carnetChasse();
+    }
+    /* Indices de la saison donnés par le serveur (jamais les gestes) + mention du nombre de combinaisons en jeu. */
+    async _carnetCombinaisons() {
+      const zone = this.bubbleBody.querySelector("[data-octet-transparence]");
+      if (!zone) return;
+      let infos = null;
+      try { const r = await fetch(`${SECRETS_API}?infos`, { credentials: "omit" }); if (r.ok) infos = await r.json(); } catch { infos = null; }
+      if (!infos || !zone.isConnected) return;
+      for (const c of infos.combinaisons || []) {
+        const li = this.bubbleBody.querySelector(`[data-secret="secret-${Number(c.niveau)}-mois"]:not(.ok) em`);
+        if (li && c.indice) li.textContent = c.indice;
+      }
+      const nb = Number(infos.nombre) || 0;
+      zone.textContent = nb
+        ? `Cette saison, ${nb} combinaison${nb > 1 ? "s" : ""} secrète${nb > 1 ? "s" : ""} offre${nb > 1 ? "nt" : ""} 1 à 3 mois d'accès. Chacune ne sert qu'une fois par appareil. C'est un cadeau du créateur, sans achat ni tirage au sort.`
+        : "Aucune combinaison secrète en jeu pour le moment : patience, la prochaine saison arrive.";
+      this._positionBubble();
+    }
+    /* Chasse au trésor entre les applis : fragments trouvés (stockage local, voir /shared/octet-chasse.js). */
+    _chargerChasse() {
+      if (window.OctetChasse) return Promise.resolve(window.OctetChasse);
+      if (!this.chassePromesse) this.chassePromesse = new Promise((ok) => {
+        const sc = document.createElement("script");
+        sc.id = "octet-chasse-js";
+        sc.src = new URL("octet-chasse.js", (SCRIPT && SCRIPT.src) || `${location.origin}/shared/octet-widget.js`).href;
+        sc.async = true;
+        sc.onload = () => ok(window.OctetChasse || null);
+        sc.onerror = () => ok(null);
+        document.head.appendChild(sc);
+        setTimeout(() => ok(window.OctetChasse || null), 5000);
+      });
+      return this.chassePromesse;
+    }
+    async _carnetChasse() {
+      const zone = this.bubbleBody.querySelector("[data-octet-chasse]");
+      const outil = await this._chargerChasse();
+      if (!outil || !zone || !zone.isConnected) return;
+      const { chasse, trouves } = await outil.etat();
+      if (!chasse || !zone.isConnected) return;
+      const total = chasse.indices.length, n = trouves.length, tout = n >= total;
+      const phrase = chasse.indices.map((i) => (trouves.includes(i.id) ? i.fragment : "…")).join(" ");
+      zone.innerHTML = `<h3 style="margin:12px 0 4px;font-size:1.05em">🗺️ ${echapper(chasse.titre || "La chasse au trésor")} : ${n} fragment${n > 1 ? "s" : ""} sur ${total}</h3>
+        <ul class="octet-secrets">${chasse.indices.map((i) => {
+          const ok = trouves.includes(i.id);
+          return `<li class="${ok ? "ok" : ""}"><span aria-hidden="true">${ok ? "📜" : "?"}</span> ${ok ? `« ${echapper(i.fragment)} » <small>(${echapper(i.app || "")})</small>` : echapper(i.ou || "Quelque part dans une appli…")}</li>`;
+        }).join("")}</ul>
+        <p style="margin:6px 0 0"><strong>La phrase :</strong> <em>${echapper(phrase)}</em></p>
+        ${tout && chasse.recompense ? `<p style="margin:6px 0 0"><strong>${echapper(chasse.recompense.titre || "Bravo !")}</strong> — ${echapper(chasse.recompense.texte || "")}</p>` : ""}`;
+      if (tout) this._decouvrir("chasse");
       this._positionBubble();
     }
 
@@ -2557,6 +2669,7 @@
       document.addEventListener("focusin", this._bound.onFocusChamp);
       window.addEventListener("online", this._bound.onReseau);
       window.addEventListener("offline", this._bound.onReseau);
+      this._later(() => this._reprendreEnAttente(), 5000);
       this.horlogeId = setInterval(() => this._horloge(), 30000);
 
       this.mutationObserver = new MutationObserver((muts) => {
@@ -2590,7 +2703,7 @@
       this.destroyed = true;
       cancelAnimationFrame(this.rafId);
       cancelAnimationFrame(this.scrollRaf);
-      clearTimeout(this.rescanTimer); clearTimeout(this.selectionTimer); clearTimeout(this.structTimer);
+      clearTimeout(this.rescanTimer); clearTimeout(this.selectionTimer); clearTimeout(this.structTimer); clearTimeout(this.verifTimer);
       if (this.idleId && window.cancelIdleCallback) window.cancelIdleCallback(this.idleId);
       this.timers.forEach((t) => clearTimeout(t)); this.timers.clear();
       window.removeEventListener("scroll", this._bound.onScroll);

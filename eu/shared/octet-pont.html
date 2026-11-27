@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Coffre d'Octet</title>
+</head>
+<body>
+<!-- Coffre d'Octet : page invisible ouverte en cadre par /shared/octet-chasse.js sur les applis <appli>.alphabette.fr.
+     Elle garde dans le stockage local d'alphabette.fr les fragments trouvés et l'identifiant d'appareil,
+     pour que toutes les applis les partagent. Aucun cookie, aucun envoi : seules quelques clés sont permises,
+     et seulement pour les pages de l'écosystème alphabette.fr. -->
+<script>
+(function () {
+  "use strict";
+  var PERMISES = { alphabette_octet_chasse: 1, alphabette_appareil: 1 };
+  var ORIGINES = /^https:\/\/([a-z0-9-]+\.)*alphabette\.fr$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+  window.addEventListener("message", function (e) {
+    var d = e.data;
+    if (!ORIGINES.test(e.origin) || !d || d.octet !== 1 || typeof d.id !== "number") return;
+    var repondre = function (v) { e.source.postMessage({ octet: 1, id: d.id, valeur: v }, e.origin); };
+    if (d.op === "chasse") {
+      fetch("/shared/chasse.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; })
+        .then(repondre, function () { repondre(null); });
+      return;
+    }
+    if (!PERMISES[d.cle]) return repondre(null);
+    try {
+      if (d.op === "ecrire") { localStorage.setItem(d.cle, JSON.stringify(d.valeur)); return repondre(d.valeur); }
+      if (d.op === "lire") return repondre(JSON.parse(localStorage.getItem(d.cle) || "null"));
+    } catch (x) { /* navigation privée */ }
+    repondre(null);
+  });
+})();
+</script>
+</body>
+</html>
