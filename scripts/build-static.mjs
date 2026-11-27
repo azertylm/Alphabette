@@ -475,6 +475,9 @@ async function preparerLaboratoire() {
   // Lot 6 — Passeport (relais chiffré 120 s), Aidant, Ruche à Idées, Kits, Presse, santé du serveur (.eu seulement).
   {
     for (const nom of ['lot6-commun.php', 'relay.php', 'ideas.php', 'health.php']) await cp(path.join(racine, 'serveur', 'php', nom), path.join(eu, 'api', nom));
+    // Combinaisons secrètes d'Octet : validation serveur (api/secrets.php) + page d'administration (LISEZMOI-SECRETS.md).
+    await cp(path.join(racine, 'serveur', 'php', 'secrets.php'), path.join(eu, 'api', 'secrets.php'));
+    await cp(path.join(racine, 'labo', 'pages', 'admin-secrets.html'), path.join(eu, 'admin-secrets.html'));
     await cp(path.join(racine, 'data', 'kits.json'), path.join(eu, 'api', 'kits.json'));
     await mkdir(path.join(eu, 'api', 'labo'), { recursive: true });
     await cp(path.join(racine, 'data', 'labo', 'idees-statuts.json'), path.join(eu, 'api', 'labo', 'idees-statuts.json')).catch(() => {});
