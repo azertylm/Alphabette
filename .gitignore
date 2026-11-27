@@ -24,3 +24,6 @@ coverage/
 /atelier/
 /veilleur/
 /concierge/
+
+# Poses d’Octet générées par scripts/process_octet_assets.py : à publier
+!public/assets/octet/dist/

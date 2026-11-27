@@ -104,14 +104,32 @@ test('documentation de voix présente et liée au composant', () => {
   assert.match(d, /OctetMessage/); assert.match(d, /OctetHelp/); assert.match(d, /Aucun stockage/);
 });
 
-test('Octet en balade : script chargé par le hub, 7 poses transparentes, pas de fausse boîte à idées, mode Calme respecté', () => {
-  assert.match(lire('index.html'), /<script src="\/assets\/octet-balade\.js" defer><\/script>/);
-  for (const m of ['compass', 'wrench', 'flask', 'notebook', 'watering', 'loupe', 'hourglass']) assert.ok(existsSync(path.join(racine, `public/assets/octet/balade/octet-${m}.webp`)), m);
-  const js = lire('public/assets/octet-balade.js');
+test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune fausse confirmation, voix unique, Mode Calme', () => {
+  assert.match(lire('index.html'), /<script src="\/shared\/octet-widget\.js" data-app="alphabette" data-site="auto" data-assets="\/assets\/octet\/dist" defer><\/script>/);
+  const manifeste = JSON.parse(lire('public/assets/octet/dist/manifest.json'));
+  for (const m of ['boussole', 'cle', 'fiole', 'carnet', 'sablier', 'loupe', 'arrosoir']) {
+    assert.ok(manifeste.poses.includes(`octet-${m}`), m);
+    assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/octet-${m}.webp`)), m);
+  }
+  for (const p of manifeste.poses) assert.ok(existsSync(path.join(racine, `public/assets/octet/dist/${p}.webp`)), `manifeste : ${p}`);
+  const js = lire('public/shared/octet-widget.js');
+  const code = js.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.doesNotMatch(code, /speechSynthesis/, 'voix unique : alphabetteAudio');
+  assert.match(code, /alphabetteAudio/);
   assert.doesNotMatch(js, /Bien noté dans mon carnet|onIdeaSubmit/);
+  assert.match(js, /if \(!rep\.ok\) throw/, 'merci affiché seulement si le serveur répond OK');
+  assert.match(js, /Rien n'a encore été envoyé/);
   assert.match(js, /dataset\.calme === "oui"/);
   assert.match(js, /prefers-reduced-motion/);
-  assert.match(js, /alphabette\.eu\/#idees/);
+  assert.match(js, /sound: false/, 'sons coupés par défaut');
+  assert.doesNotMatch(code, /document\.cookie|navigator\.sendBeacon/);
+  assert.match(lire('src/components/Accueil.tsx'), /data-octet-card=""/);
+});
+
+test('pipeline des poses : script Python présent et images sources rangées', () => {
+  assert.ok(existsSync(path.join(racine, 'scripts/process_octet_assets.py')));
+  assert.ok(existsSync(path.join(racine, 'assets/octet/raw/octet-fiole.jpg')));
+  assert.ok(existsSync(path.join(racine, 'public/shared/octet-demo.html')));
 });
 
 console.log(`\n${ok} tests Octet réussis`);

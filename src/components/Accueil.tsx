@@ -254,6 +254,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
               <a key={app.id} className="accueil__tuile pop-carte" href={app.url || '#'}
                 {...(!MODE_LABO ? { 'data-ab-3d': '' } : {})}
                 data-ab-categorie={cleCategorie(app.categorie) ?? undefined} data-ab-vt={app.slug || app.id} data-ab-prefetch=""
+                data-octet-card="" data-octet-summary={app.description || undefined} data-octet-url={app.url || undefined}
                 {...(app.communaute && !app.heberge ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                 <span className={app.cover ? 'pop-carte__vignette pop-carte__vignette--cover' : 'pop-carte__vignette'} data-ab-vt-cible="" {...(app.cover ? {} : { 'aria-hidden': true })}>
                   {app.cover ? (
@@ -266,7 +267,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                   )}
                 </span>
                 <span className="pop-carte__tete">
-                  <strong>{nomLisible(app.name)}</strong>
+                  <strong data-octet-title="">{nomLisible(app.name)}</strong>
                   {app.badges?.map((b) => <BadgeMetal key={b} type={b} />)}
                   <NutriBadge resultat={resultatPour(nutri, cleNutri(app))} />
                 </span>
