@@ -128,7 +128,10 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
   assert.match(js, /a déjà servi sur cet appareil/, 'une combinaison ne sert qu\'une fois par appareil');
   assert.match(js, /derniereReplique < 20000/, 'une réplique spontanée au plus toutes les 20 s');
   assert.match(js, /_peutReagir\(\) \{[\s\S]{0,200}this\._calme\(\)/, 'aucune réaction en Mode Calme');
-  assert.doesNotMatch(code, /document\.cookie|navigator\.sendBeacon/);
+  assert.doesNotMatch(code, /navigator\.sendBeacon/);
+  // seul cookie autorisé : l'inscription Alphabette (ab_membre), écrite par les combinaisons secrètes ; aucun traceur
+  const cookies = code.split('\n').filter((l) => /document\.cookie/.test(l));
+  for (const l of cookies) assert.match(l, /ab_membre/, `cookie inattendu : ${l.trim()}`);
   assert.match(lire('src/components/Accueil.tsx'), /data-octet-card=""/);
 });
 
