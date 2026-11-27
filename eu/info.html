@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alphabette Info — vos actualités, à creuser</title>
-<meta name="description" content="Lisez vos flux d'actualités et creusez chaque article avec dix outils d'analyse. Vos sources et votre clé restent sur votre appareil.">
+<meta name="description" content="Les actualités du jour des grands médias français, mises à jour toutes les 3 heures, dans une page calme, avec dix outils pour creuser chaque article. Vos sources et votre clé restent sur votre appareil.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -49,7 +49,7 @@ input,select,textarea{font-family:inherit; color:inherit;}
   position:sticky; top:0; z-index:40; background:var(--bg);
 }
 .masthead-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
-.brand{display:flex; align-items:baseline; gap:10px;}
+.brand{display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; min-width:0;}
 .brand-mark{
   font-family:var(--serif); font-weight:700; font-size:1.55rem; letter-spacing:-.01em;
 }
@@ -68,7 +68,7 @@ input,select,textarea{font-family:inherit; color:inherit;}
   border-bottom:1px solid var(--line); padding-bottom:10px;
 }
 .search-wrap input{
-  flex:1; background:none; border:none; outline:none; font-size:.92rem; color:var(--text);
+  flex:1; min-width:0; width:100%; background:none; border:none; outline:none; font-size:.92rem; color:var(--text);
   font-family:var(--sans);
 }
 .search-wrap input::placeholder{color:var(--text-dim);}
@@ -97,7 +97,7 @@ input,select,textarea{font-family:inherit; color:inherit;}
   font-family:var(--mono); font-size:.68rem; color:var(--text-dim); padding-top:4px; width:22px; flex:none;
 }
 .article-body{flex:1; min-width:0;}
-.article-meta{display:flex; gap:8px; align-items:center; margin-bottom:6px; font-size:.68rem;}
+.article-meta{display:flex; flex-wrap:wrap; gap:2px 8px; align-items:center; margin-bottom:6px; font-size:.68rem;}
 .tag{
   color:var(--steel); font-weight:600; letter-spacing:.03em;
 }
@@ -260,6 +260,8 @@ input,select,textarea{font-family:inherit; color:inherit;}
 
 .hidden{display:none !important;}
 .demo-notice{border:1px solid var(--signal); border-radius:6px; padding:12px 14px; margin:0 0 18px; font-size:.86rem; line-height:1.5; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;}
+.live-status{margin:0 0 14px; font-size:.78rem; line-height:1.5; color:var(--text-dim);}
+.notice-actions{display:flex; flex-wrap:wrap; gap:8px;}
 .site-foot{margin:28px 0 8px; font-size:.75rem; color:var(--text-dim); text-align:center;}
 .site-foot a{color:inherit;}
 .suggest-row{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 4px;}
@@ -297,9 +299,10 @@ input,select,textarea{font-family:inherit; color:inherit;}
 <nav class="cat-strip" id="catStrip"></nav>
 
 <main class="feed-wrap">
-  <div class="demo-notice" id="demoNotice">
-    <span><strong>Ces articles sont des exemples inventés</strong>, pour vous montrer l'outil. Ce ne sont pas de vraies actualités.</span>
-    <button class="btn primary" id="demoAddBtn" type="button">Ajouter mes sources d'actualités</button>
+  <p class="live-status" id="liveStatus" aria-live="polite">Chargement des actualités du jour…</p>
+  <div class="demo-notice hidden" id="liveError" role="status">
+    <span>Les actualités du jour n'ont pas pu être chargées. Vérifiez votre connexion, puis réessayez.</span>
+    <span class="notice-actions"><button class="btn" id="retryBtn" type="button">Réessayer</button><button class="btn primary" id="demoAddBtn" type="button">Ajouter mes sources</button></span>
   </div>
   <div class="feed" id="feed"></div>
   <p class="site-foot">Une application de l'écosystème <a href="https://alphabette.fr">Alphabette</a>. Vos sources, vos favoris et votre clé restent sur cet appareil.</p>
@@ -358,7 +361,7 @@ input,select,textarea{font-family:inherit; color:inherit;}
   <div class="modal" style="position:relative;">
     <button class="modal-close icon-btn" id="closeSources">✕</button>
     <div class="modal-title">Mes sources d'actualités</div>
-    <div class="modal-sub">Ajoutez l'adresse d'un flux RSS, choisissez une suggestion, ou importez un fichier OPML. Quand un site bloque la lecture directe, le flux passe par le service public allorigins.win.</div>
+    <div class="modal-sub">Les actualités du jour sont déjà là. Pour suivre aussi vos propres sites, ajoutez l'adresse d'un flux RSS, choisissez une suggestion, ou importez un fichier OPML. Quand un site bloque la lecture directe, le flux passe par le service public allorigins.win.</div>
     <div class="suggest-row" id="suggestRow"></div>
     <div class="field-row">
       <input type="url" id="newFeedUrl" placeholder="https://exemple.com/rss.xml">
@@ -408,74 +411,9 @@ input,select,textarea{font-family:inherit; color:inherit;}
 (function(){
 
 /* ========================= DATA ========================= */
-const BASE_CATEGORIES = ["Toutes","Technologie","Économie","International","Science","Société"];
-
-const ARTICLES = [
- {id:1,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-14",
-  title:"Un consortium européen dévoile une puce d'inférence sobre en énergie",
-  snippet:"Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués.",
-  body:["Un consortium réunissant sept laboratoires de recherche européens a présenté hier les premiers résultats d'un processeur spécialisé dans l'inférence de modèles de langage, conçu pour réduire drastiquement la consommation énergétique des applications embarquées.","Selon les données communiquées, la puce atteindrait une efficacité trois fois supérieure aux solutions commerciales actuelles pour un coût de fabrication comparable. Les premiers prototypes seront testés dans des objets connectés grand public dès le printemps prochain.","Les industriels du secteur restent prudents quant au calendrier de commercialisation, évoquant des défis persistants sur la chaîne d'approvisionnement en semi-conducteurs avancés. Plusieurs voix appellent néanmoins à accélérer les investissements publics pour ne pas prendre de retard face aux acteurs asiatiques et nord-américains.","Le consortium annonce une phase de tests élargie d'ici la fin de l'année, avec un objectif de production en petite série en 2027."]},
- {id:2,category:"Économie",source:"Cahiers Économiques",date:"2026-09-13",
-  title:"La désindexation partielle des loyers commerciaux relance le débat sur l'inflation",
-  snippet:"Une proposition parlementaire vise à plafonner la révision annuelle des baux commerciaux pour les petites enseignes.",
-  body:["Une proposition de loi déposée cette semaine entend plafonner la révision annuelle des loyers commerciaux pour les commerces de proximité, dans un contexte où plusieurs fédérations professionnelles alertent sur la fragilité financière des petites enseignes.","Les partisans du texte estiment que l'indexation actuelle, calquée sur un indice composite, pénalise disproportionnellement les commerces de centre-ville face aux grandes surfaces périphériques. Les représentants des bailleurs jugent au contraire que la mesure fragiliserait l'investissement immobilier commercial.","Les économistes consultés restent divisés sur l'effet net attendu, certains pointant un risque de raréfaction de l'offre locative, d'autres saluant un frein bienvenu à la désertification commerciale des centres-villes moyens.","Le texte doit être examiné en commission dans les prochaines semaines."]},
- {id:3,category:"International",source:"Dépêches du Monde",date:"2026-09-13",
-  title:"Sommet régional sur la gestion partagée des ressources en eau douce",
-  snippet:"Six pays riverains d'un même bassin fluvial ont entamé des négociations sur un mécanisme d'allocation conjointe.",
-  body:["Six États partageant un même bassin fluvial transfrontalier ont ouvert cette semaine des négociations en vue d'un mécanisme conjoint de répartition des ressources en eau douce, dans un contexte de tensions croissantes liées aux sécheresses répétées.","Le projet de mécanisme prévoit un comité technique permanent chargé d'arbitrer les prélèvements agricoles et industriels selon les niveaux hydrologiques mesurés en temps réel. Plusieurs organisations non gouvernementales saluent une avancée, tout en réclamant des garanties contraignantes plutôt qu'un simple cadre déclaratif.","Les délégations doivent se retrouver à nouveau dans deux mois pour tenter de finaliser un texte, alors que certains États riverains expriment des réserves sur la gouvernance du futur comité.","Les observateurs notent que ce type d'accord reste rare à l'échelle régionale et pourrait servir de modèle pour d'autres bassins sous tension."]},
- {id:4,category:"Science",source:"Revue des Sciences",date:"2026-09-12",
-  title:"Des chercheurs affinent la datation d'une lignée végétale disparue",
-  snippet:"Une nouvelle méthode combinant analyse isotopique et modélisation permet de resserrer l'estimation de plusieurs millions d'années.",
-  body:["Une équipe de paléobotanistes a publié une révision de la datation d'une lignée végétale éteinte depuis plusieurs dizaines de millions d'années, en combinant analyse isotopique fine et modélisation statistique des sédiments environnants.","La nouvelle fourchette de datation, plus resserrée que les estimations précédentes, permettrait de mieux situer cette lignée par rapport aux grands épisodes climatiques connus de la période. Les auteurs soulignent toutefois que l'échantillon reste limité géographiquement.","D'autres équipes de recherche saluent la rigueur méthodologique tout en appelant à répliquer l'analyse sur des sites distincts avant d'en tirer des conclusions générales sur l'évolution du climat régional.","La publication complète est attendue dans une revue à comité de lecture d'ici la fin du trimestre."]},
- {id:5,category:"Société",source:"Chroniques Locales",date:"2026-09-12",
-  title:"Des communes rurales expérimentent la mutualisation des services de garde d'enfants",
-  snippet:"Sept communes voisines testent un dispositif commun pour pallier le manque de places en crèche.",
-  body:["Sept communes rurales voisines ont lancé un dispositif expérimental de mutualisation de leurs services de garde d'enfants, face à une pénurie persistante de places en crèche dans les territoires peu denses.","Le mécanisme repose sur une plateforme commune de réservation et un pool partagé d'assistantes maternelles itinérantes, financé conjointement par les budgets communaux et une subvention régionale. Les premiers retours des familles participantes sont globalement positifs, malgré des critiques sur les temps de trajet.","Les élus porteurs du projet espèrent en tirer un modèle reproductible pour d'autres bassins de vie ruraux confrontés aux mêmes difficultés démographiques et budgétaires.","Une évaluation à mi-parcours est prévue dans six mois."]},
- {id:6,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-11",
-  title:"Un standard ouvert pour l'interopérabilité des assistants domestiques gagne du terrain",
-  snippet:"Plusieurs fabricants annoncent leur ralliement à un protocole commun de communication entre appareils connectés.",
-  body:["Plusieurs fabricants d'appareils domestiques connectés ont annoncé leur ralliement à un protocole de communication ouvert destiné à améliorer l'interopérabilité entre marques concurrentes, un chantier réclamé de longue date par les associations de consommateurs.","Le standard, développé par une fondation à but non lucratif, promet une intégration simplifiée des objets connectés sans dépendance à un écosystème propriétaire unique. Les premiers appareils compatibles sont attendus en rayon d'ici la fin de l'année.","Certains acteurs historiques du secteur restent en retrait, évoquant des préoccupations sur la sécurité du protocole et la gouvernance à long terme de la fondation.","Les analystes du secteur estiment que l'adoption massive dépendra largement de la position des plus grands fabricants, encore indécise à ce stade."]},
- {id:7,category:"Économie",source:"Cahiers Économiques",date:"2026-09-10",
-  title:"La filière du réemploi textile cherche un modèle économique stable",
-  snippet:"Entre subventions publiques et volatilité des prix de la matière recyclée, les acteurs du secteur peinent à se structurer.",
-  body:["La filière du réemploi et du recyclage textile peine à trouver un modèle économique stable, tiraillée entre la volatilité des prix des matières recyclées à l'export et une dépendance persistante aux subventions publiques.","Plusieurs coopératives du secteur alertent sur un risque de fragilisation si les aides actuelles venaient à être révisées à la baisse, tandis que les pouvoirs publics défendent une logique de soutien dégressif destinée à encourager l'autonomie financière des acteurs.","Des initiatives locales de vente directe et de réparation tentent de diversifier les sources de revenus, avec des résultats encore inégaux selon les territoires.","Un rapport parlementaire sur le financement de la filière est attendu avant la fin de l'année."]},
- {id:8,category:"International",source:"Dépêches du Monde",date:"2026-09-09",
-  title:"Une médiation régionale relance le dialogue autour d'un différend frontalier ancien",
-  snippet:"Deux pays voisins ont accepté la reprise de pourparlers sous l'égide d'une organisation régionale.",
-  body:["Deux pays voisins ont accepté la reprise de pourparlers autour d'un différend frontalier vieux de plusieurs décennies, sous l'égide d'une organisation régionale mandatée comme médiatrice.","Les discussions doivent porter dans un premier temps sur des mesures de confiance limitées, avant d'aborder les questions territoriales les plus sensibles. Les analystes restent prudents sur les chances d'aboutissement rapide, rappelant l'échec de plusieurs tentatives précédentes.","La société civile des deux pays a globalement salué la reprise du dialogue, tout en appelant à davantage de transparence sur le contenu des négociations.","Un nouveau cycle de discussions est programmé dans les prochaines semaines."]},
- {id:9,category:"Science",source:"Revue des Sciences",date:"2026-09-08",
-  title:"Le suivi longitudinal d'une colonie d'oiseaux marins éclaire l'adaptation aux vagues de chaleur",
-  snippet:"Quinze années de données révèlent des ajustements comportementaux inattendus dans les stratégies de nidification.",
-  body:["Une étude longitudinale portant sur quinze années de suivi d'une colonie d'oiseaux marins met en évidence des ajustements comportementaux notables face à la multiplication des vagues de chaleur marines.","Les chercheurs observent un décalage progressif des périodes de nidification ainsi qu'une modification des stratégies d'alimentation des adultes, qui semblent privilégier des zones de pêche plus éloignées mais plus stables thermiquement.","Ces résultats interrogent la capacité d'adaptation d'autres espèces marines moins mobiles, et alimentent le débat scientifique sur les seuils de résilience des écosystèmes côtiers face au changement climatique.","L'équipe de recherche prévoit d'étendre le suivi à deux colonies supplémentaires dès la saison prochaine."]},
- {id:10,category:"Société",source:"Chroniques Locales",date:"2026-09-07",
-  title:"Le bénévolat de compétences séduit une nouvelle génération de retraités actifs",
-  snippet:"Des plateformes dédiées mettent en relation associations et professionnels expérimentés souhaitant transmettre leur savoir-faire.",
-  body:["Un nombre croissant de retraités récents choisit de s'engager dans des missions de bénévolat de compétences, mettant à profit leur expérience professionnelle au service d'associations locales confrontées à des besoins pointus en gestion, comptabilité ou numérique.","Plusieurs plateformes spécialisées facilitent désormais la mise en relation entre ces profils expérimentés et les structures associatives, avec des missions généralement courtes et ciblées sur un besoin précis.","Les associations bénéficiaires soulignent la valeur de cet apport, tout en reconnaissant des difficultés à fidéliser ces bénévoles sur des engagements plus longs.","Les acteurs du secteur y voient une tendance appelée à se renforcer avec l'arrivée à la retraite de générations plus nombreuses et globalement en meilleure santé."]},
- {id:11,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-14",
-  title:"Des bibliothèques municipales testent des ateliers de vérification de l'information",
-  snippet:"Une vingtaine de médiathèques proposent désormais des sessions d'initiation à l'esprit critique face aux contenus générés par IA.",
-  body:["Une vingtaine de médiathèques municipales ont mis en place des ateliers d'initiation à la vérification de l'information, spécifiquement centrés sur la détection de contenus textuels et visuels générés par intelligence artificielle.","Les animateurs constatent un intérêt croissant du public, notamment chez les adolescents et les retraités, deux populations identifiées comme particulièrement exposées à la désinformation en ligne selon plusieurs études récentes.","Le réseau des médiathèques participantes envisage de mutualiser ses supports pédagogiques et de les rendre disponibles en licence libre d'ici la fin de l'année.","Des sessions de formation à destination des bibliothécaires eux-mêmes sont également prévues."]},
- {id:12,category:"Économie",source:"Cahiers Économiques",date:"2026-09-11",
-  title:"Les coopératives agricoles s'organisent face à la volatilité des prix de l'énergie",
-  snippet:"Plusieurs groupements investissent dans des unités de production solaire mutualisées pour sécuriser leurs coûts.",
-  body:["Face à la volatilité persistante des prix de l'énergie, plusieurs coopératives agricoles régionales ont lancé des projets d'unités de production solaire mutualisées, destinées à couvrir une partie de leurs besoins en électricité.","Le financement repose sur un montage associant fonds propres des coopératives, prêts bancaires dédiés à la transition énergétique et subventions régionales. Les porteurs de projet évoquent un retour sur investissement estimé entre huit et douze ans selon les sites.","Les exploitants concernés espèrent ainsi limiter leur exposition aux fluctuations du marché de l'énergie, un poste de dépense devenu particulièrement pesant ces dernières années.","D'autres coopératives du secteur observent l'expérience avec intérêt avant de se positionner à leur tour."]},
- {id:13,category:"International",source:"Dépêches du Monde",date:"2026-09-10",
-  title:"Une alliance de villes portuaires coordonne ses plans d'adaptation côtière",
-  snippet:"Douze ports de quatre continents mutualisent leurs études sur la montée du niveau de la mer.",
-  body:["Douze villes portuaires réparties sur quatre continents ont formalisé une alliance destinée à mutualiser leurs études techniques sur l'adaptation aux risques côtiers liés à la montée du niveau de la mer.","L'accord prévoit un partage de données hydrologiques et de retours d'expérience sur les infrastructures de protection déjà expérimentées, qu'il s'agisse de digues mobiles, de restauration de zones humides tampons ou de relocalisation partielle d'activités portuaires.","Les experts saluent une initiative pragmatique, tout en soulignant que les besoins de financement restent très largement supérieurs aux engagements actuellement mobilisés à l'échelle internationale.","Un premier bilan des travaux de l'alliance est attendu lors d'une conférence prévue l'an prochain."]},
- {id:14,category:"Science",source:"Revue des Sciences",date:"2026-09-09",
-  title:"Une modélisation affine les projections de recharge des nappes phréatiques karstiques",
-  snippet:"Le nouveau modèle intègre pour la première fois la variabilité fine des sols calcaires sur un vaste bassin versant.",
-  body:["Une équipe d'hydrogéologues a publié un modèle affiné de recharge des nappes phréatiques karstiques, intégrant pour la première fois la variabilité fine de la structure des sols calcaires sur un vaste bassin versant.","Les simulations obtenues suggèrent des temps de recharge plus hétérogènes que ne le supposaient les modèles précédents, avec des zones à recharge rapide côtoyant des poches à recharge très lente selon la structure géologique locale.","Ces résultats intéressent directement les gestionnaires de ressources en eau, qui pourraient affiner leurs politiques de prélèvement saisonnier en tenant compte de cette hétérogénéité plutôt que d'une moyenne globale du bassin.","L'équipe prévoit d'appliquer sa méthode à deux autres bassins karstiques dans les prochains mois pour tester sa généralisabilité."]},
- {id:15,category:"Société",source:"Chroniques Locales",date:"2026-09-08",
-  title:"Le covoiturage courte distance progresse dans les bassins d'emploi périurbains",
-  snippet:"Des plateformes locales, souvent adossées aux intercommunalités, misent sur la régularité des trajets domicile-travail.",
-  body:["Le covoiturage courte distance progresse dans plusieurs bassins d'emploi périurbains, porté par des plateformes locales souvent adossées aux intercommunalités plutôt que par les grands acteurs nationaux du secteur.","Ces dispositifs misent sur la régularité des trajets domicile-travail pour constituer des communautés stables de covoitureurs, avec des incitations financières modestes mais récurrentes plutôt que des primes ponctuelles.","Les premiers bilans font état d'une adoption progressive mais réelle, notamment sur des axes mal desservis par les transports en commun classiques.","Les collectivités porteuses espèrent que ces dispositifs contribueront à désengorger certains axes routiers saturés aux heures de pointe."]},
- {id:16,category:"Technologie",source:"Le Flux Numérique",date:"2026-09-08",
-  title:"Le débat sur la portabilité des données personnelles entre plateformes relancé",
-  snippet:"Une association de consommateurs réclame un droit d'export renforcé, au-delà du cadre réglementaire actuel.",
-  body:["Une association de défense des consommateurs a publié un rapport réclamant un droit à la portabilité des données personnelles renforcé, jugeant le cadre réglementaire actuel insuffisant face à la réalité technique des principales plateformes.","Le rapport pointe notamment des formats d'export jugés peu exploitables et des délais de traitement des demandes qui resteraient, selon l'association, largement supérieurs aux standards annoncés par les entreprises concernées.","Plusieurs plateformes visées contestent ce constat, affirmant avoir investi ces derniers mois dans l'amélioration de leurs outils d'export de données.","Les autorités de régulation compétentes n'ont pas encore réagi publiquement au rapport."]},
-];
+// Rubriques des actualités du jour, dans cet ordre (scripts/info-actualites.mjs donne la rubrique de chaque flux).
+const RUBRIQUES = ["Actualité","International","Économie","Science","Technologie","Culture","Sport"];
+const ACTUALITES_URL = "api/info/actualites.json";
 
 const TOOLS = [
  {id:"deepen", icon:"01", name:"Creuser le sujet",
@@ -515,7 +453,8 @@ let state = {
   theme:"dark", category:"Toutes", query:"", readingMode:"standard",
   currentArticle:null, sources:[], toolCache:{}, speaking:false,
   fontScale:1, fontFamily:"serif", ttsRate:1,
-  bookmarks:[], imported:[]
+  bookmarks:[], imported:[],
+  live:[], liveInfo:null, liveError:false, liveLoading:true, saved:[]
 };
 const FONT_SCALES = [0.9,1,1.1,1.25,1.4];
 const TTS_RATES = [0.75,1,1.25,1.5];
@@ -552,6 +491,10 @@ async function loadPrefs(){
     const r = await store.get("alphabette-info:imported");
     if(r && r.value) state.imported = JSON.parse(r.value);
   }catch(e){}
+  try{
+    const r = await store.get("alphabette-info:enregistres");
+    if(r && r.value) state.saved = JSON.parse(r.value);
+  }catch(e){}
 }
 async function savePrefs(){
   try{ await store.set("alphabette-info:prefs", JSON.stringify({theme:state.theme, fontScale:state.fontScale, fontFamily:state.fontFamily, ttsRate:state.ttsRate})); }catch(e){}
@@ -565,9 +508,59 @@ async function saveBookmarks(){
 async function saveImported(){
   try{ await store.set("alphabette-info:imported", JSON.stringify(state.imported)); }catch(e){}
 }
+async function saveSaved(){
+  try{ await store.set("alphabette-info:enregistres", JSON.stringify(state.saved)); }catch(e){}
+}
+// Actualités du jour (titres et résumés publiés par les médias, lus à chaque publication du site, toutes les 3 h)
+// + vos propres flux + vos articles enregistrés (gardés même quand ils sortent des actualités du jour).
 function allArticles(){
-  // Les articles fournis sont des exemples inventés : ils disparaissent dès qu'un vrai flux est lu.
-  return state.imported.length ? state.imported : ARTICLES.map(a=>Object.assign({}, a, {source:"Exemple inventé", exemple:true}));
+  const vus = new Set(), out = [];
+  [state.live, state.imported, state.saved].forEach(liste=> liste.forEach(a=>{ if(a && !vus.has(a.id)){ vus.add(a.id); out.push(a); } }));
+  return out;
+}
+
+/* ========================= ACTUALITÉS DU JOUR ========================= */
+function versArticle(x, i){
+  const resume = String(x.resume||"").trim();
+  const lien = /^https:\/\//i.test(x.lien||"") ? x.lien : "";
+  return {
+    id:String(x.id), category:String(x.categorie||"Actualité"), source:String(x.source||""), date:String(x.date||""),
+    title:String(x.titre||""), snippet:resume, link:lien, rang:i, une:true,
+    body:[resume || "Ce média ne publie pas de résumé pour cet article : ouvrez-le sur son site pour le lire en entier."]
+  };
+}
+async function loadLive(){
+  state.liveLoading = true; state.liveError = false; renderFeed();
+  try{
+    const res = await fetch(ACTUALITES_URL, {cache:"no-cache"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json();
+    const liste = Array.isArray(data.articles) ? data.articles : [];
+    state.live = liste.filter(x=>x && x.id && x.titre && x.date).map(versArticle);
+    state.liveInfo = { genere: data.genere_le || "", medias: new Set((data.sources||[]).filter(x=>x.ok).map(x=>x.nom)).size };
+    if(!state.live.length) state.liveError = true;
+  }catch(e){
+    state.live = []; state.liveError = true;
+  }
+  state.liveLoading = false;
+  renderCategories(); renderFeed();
+}
+function renderLiveStatus(){
+  const el = document.getElementById("liveStatus");
+  const err = document.getElementById("liveError");
+  if(!el || !err) return;
+  err.classList.toggle("hidden", !(state.liveError && !state.liveLoading));
+  if(state.liveLoading){ el.textContent = "Chargement des actualités du jour…"; return; }
+  if(state.liveError){ el.textContent = ""; return; }
+  const info = state.liveInfo || {};
+  const t = Date.parse(info.genere);
+  let quand = "";
+  if(!isNaN(t)){
+    const d = new Date(t);
+    const heure = d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":"," h ");
+    quand = (new Date().toDateString()===d.toDateString()) ? "mises à jour à "+heure : "mises à jour le "+d.toLocaleDateString("fr-FR",{day:"numeric",month:"long"})+" à "+heure;
+  }
+  el.textContent = "Actualités du jour" + (quand ? " · "+quand : "") + (info.medias ? " · "+info.medias+" médias" : "") + " · titres et résumés publiés par les médias, article complet sur leur site.";
 }
 
 /* ========================= RENDER: masthead / feed ========================= */
@@ -578,9 +571,11 @@ function renderEditionDate(){
 }
 
 function currentCategories(){
-  const cats = BASE_CATEGORIES.slice();
-  if(state.imported.length) return ["Toutes","Mes flux"].concat(state.bookmarks.length ? ["Enregistrés"] : []);
+  const presentes = new Set(state.live.map(a=>a.category));
+  const cats = ["Toutes"].concat(RUBRIQUES.filter(c=>presentes.has(c)));
+  if(state.imported.length) cats.push("Mes flux");
   if(state.bookmarks.length) cats.push("Enregistrés");
+  if(cats.indexOf(state.category)===-1) state.category = "Toutes";
   return cats;
 }
 
@@ -606,7 +601,13 @@ function filteredArticles(){
     const q = state.query.trim().toLowerCase();
     const okQ = !q || a.title.toLowerCase().includes(q) || a.snippet.toLowerCase().includes(q) || a.source.toLowerCase().includes(q) || a.category.toLowerCase().includes(q);
     return okCat && okQ;
-  }).sort((x,y)=> y.date.localeCompare(x.date));
+  }).sort((x,y)=>{
+    // Actualités du jour : ordre « À la une » (le plus récent d'abord, médias variés en tête) ; vos flux ensuite, par date.
+    const rx = typeof x.rang==="number", ry = typeof y.rang==="number";
+    if(rx && ry) return x.rang - y.rang;
+    if(rx !== ry) return rx ? -1 : 1;
+    return String(y.date).localeCompare(String(x.date));
+  });
 }
 
 function renderFeed(){
@@ -614,10 +615,10 @@ function renderFeed(){
   feed.className = "feed " + (state.readingMode==="grand" ? "grand":"");
   const list = filteredArticles();
   feed.innerHTML = "";
-  const notice = document.getElementById("demoNotice");
-  if(notice) notice.classList.toggle("hidden", state.imported.length>0);
+  renderLiveStatus();
   if(list.length===0){
-    feed.innerHTML = `<div class="empty-state">Aucun article ne correspond à votre recherche.</div>`;
+    if(state.liveLoading) return;
+    if(state.query || state.category!=="Toutes") feed.innerHTML = `<div class="empty-state">Aucun article ne correspond à votre recherche.</div>`;
     return;
   }
   list.forEach((a,i)=>{
@@ -628,18 +629,38 @@ function renderFeed(){
       <div class="article-body">
         <div class="article-meta"><span class="tag">${escapeHtml(a.category)}</span><span class="dot">·</span><span class="source-name">${escapeHtml(a.source)}</span>${dateAff(a) ? `<span class="dot">·</span><span class="source-name">${dateAff(a)}</span>` : ""}</div>
         <div class="article-title">${escapeHtml(a.title)}</div>
-        <div class="article-snippet">${escapeHtml(a.snippet)}</div>
+        ${a.snippet ? `<div class="article-snippet">${escapeHtml(a.snippet)}</div>` : ""}
       </div>`;
     card.onclick = ()=> openArticle(a);
     feed.appendChild(card);
   });
 }
 
-// Un exemple inventé n'a pas de vraie date : on n'en affiche aucune.
-function dateAff(a){ return a.exemple ? "" : formatDate(a.date); }
-function formatDate(iso){
-  const d = new Date(iso+"T00:00:00");
+// Heure de publication : « il y a 25 min », « il y a 3 h », « hier », puis la date.
+function tempsDe(a){
+  const iso = String(a.date||"");
+  const t = Date.parse(iso.length<=10 ? iso+"T12:00:00" : iso);
+  return isNaN(t) ? null : {t, jourSeul: iso.length<=10};
+}
+function dateAff(a){
+  const x = tempsDe(a); if(!x) return "";
+  const d = new Date(x.t);
+  if(!x.jourSeul){
+    const min = Math.round((Date.now()-x.t)/60000);
+    if(min < 2) return "à l'instant";
+    if(min < 60) return "il y a "+min+" min";
+    if(min < 24*60) return "il y a "+Math.floor(min/60)+" h";
+    const hier = new Date(); hier.setDate(hier.getDate()-1);
+    if(d.toDateString()===hier.toDateString()) return "hier";
+  }
   return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
+}
+// Date complète pour les exports (un fichier gardé ne doit pas dire « il y a 2 h »).
+function dateAbs(a){
+  const x = tempsDe(a); if(!x) return "";
+  const d = new Date(x.t);
+  return x.jourSeul ? d.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})
+    : d.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})+" à "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":"," h ");
 }
 
 /* ========================= READER ========================= */
@@ -648,7 +669,7 @@ function openArticle(a){
   document.getElementById("rTag").textContent = a.category;
   document.getElementById("rSource").textContent = a.source;
   document.getElementById("rTitle").textContent = a.title;
-  document.getElementById("rSub").textContent = (dateAff(a) ? dateAff(a) + " · " : "") + "lecture ≈ " + Math.max(1,Math.round(a.body.join(" ").split(" ").length/200)) + " min";
+  document.getElementById("rSub").textContent = (dateAff(a) ? dateAff(a) + " · " : "") + (a.une ? "résumé publié par " + a.source : "lecture ≈ " + Math.max(1,Math.round(a.body.join(" ").split(" ").length/200)) + " min");
   const lien = (a.link && /^https?:\/\//i.test(a.link)) ? a.link : "";
   document.getElementById("rText").innerHTML = a.body.filter(p=>!(lien && p.indexOf("Lire l'article original : ")===0)).map(p=>`<p>${escapeHtml(p)}</p>`).join("")
     + (lien ? `<p><a href="${escapeHtml(lien)}" target="_blank" rel="noopener">Lire l'article complet sur le site d'origine ↗</a></p>` : "");
@@ -725,9 +746,10 @@ function updateBookmarkBtn(){
 document.getElementById("bookmarkBtn").onclick = ()=>{
   const a = state.currentArticle; if(!a) return;
   const idx = state.bookmarks.indexOf(a.id);
-  if(idx===-1){ state.bookmarks.push(a.id); showToast("Article enregistré."); }
-  else { state.bookmarks.splice(idx,1); showToast("Retiré des articles enregistrés."); }
-  updateBookmarkBtn(); saveBookmarks(); renderCategories();
+  // Une actualité du jour enregistrée est gardée en entier : elle reste lisible quand elle sort du fil.
+  if(idx===-1){ state.bookmarks.push(a.id); if(a.une && !state.saved.some(x=>x.id===a.id)) state.saved.push(Object.assign({}, a, {rang:undefined})); showToast("Article enregistré."); }
+  else { state.bookmarks.splice(idx,1); state.saved = state.saved.filter(x=>x.id!==a.id); showToast("Retiré des articles enregistrés."); }
+  updateBookmarkBtn(); saveBookmarks(); saveSaved(); renderCategories();
 };
 
 /* ---- TTS rate ---- */
@@ -957,7 +979,7 @@ function parseFeedXml(xml, sourceTitle, sourceUrl){
     const pub = textOf(n,"pubDate") || textOf(n,"published") || textOf(n,"updated");
     let dateIso = new Date().toISOString().slice(0,10);
     const d = pub ? new Date(pub) : null;
-    if(d && !isNaN(d)) dateIso = d.toISOString().slice(0,10);
+    if(d && !isNaN(d)) dateIso = d.toISOString();
     items.push({
       id: "imp_"+slug(sourceUrl)+"_"+i+"_"+slug(title).slice(0,24),
       category:"Mes flux", source: sourceTitle || sourceUrl, date: dateIso,
@@ -1091,7 +1113,7 @@ exportModal.querySelectorAll("[data-export]").forEach(btn=>{
 });
 
 function buildPlainText(a){
-  let out = a.title.toUpperCase()+"\n"+a.source+" · "+(dateAff(a) ? dateAff(a)+" · " : "")+a.category+"\n\n"+a.body.join("\n\n");
+  let out = a.title.toUpperCase()+"\n"+a.source+" · "+(dateAbs(a) ? dateAbs(a)+" · " : "")+a.category+"\n\n"+a.body.join("\n\n")+(a.une && a.link ? "\n\nArticle complet : "+a.link : "");
   TOOLS.forEach(t=>{
     const cached = state.toolCache[a.id+"_"+t.id];
     if(cached){ out += "\n\n--- "+t.name.toUpperCase()+" ---\n"+cached; }
@@ -1109,9 +1131,10 @@ function buildHtmlExport(a, dark){
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${escapeHtml(a.title)}</title>
 <style>body{background:${bg};color:${fg};font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.7;} h1{font-size:1.8rem;} .meta{color:${dark?'#A9ADB5':'#6B6153'};font-size:.85rem;margin-bottom:24px;font-family:sans-serif;} h3{margin-top:30px;font-family:sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;color:#A82F2A;}</style>
 </head><body>
-<div class="meta">${escapeHtml(a.category)} · ${escapeHtml(a.source)}${dateAff(a) ? " · " + escapeHtml(dateAff(a)) : ""}</div>
+<div class="meta">${escapeHtml(a.category)} · ${escapeHtml(a.source)}${dateAbs(a) ? " · " + escapeHtml(dateAbs(a)) : ""}</div>
 <h1>${escapeHtml(a.title)}</h1>
 ${a.body.map(p=>`<p>${escapeHtml(p)}</p>`).join("\n")}
+${a.une && a.link ? `<p><a href="${escapeHtml(a.link)}">Article complet sur le site de ${escapeHtml(a.source)}</a></p>` : ""}
 ${extras}
 <hr style="margin-top:40px;opacity:.3;"><p style="font-size:.75rem;color:${dark?'#A9ADB5':'#6B6153'};">Exporté depuis Alphabette Info.</p>
 </body></html>`;
@@ -1129,7 +1152,7 @@ function downloadFile(filename, content, mime){
 /* ========================= SHARE ========================= */
 async function shareArticle(){
   const a = state.currentArticle; if(!a) return;
-  const text = a.title+"\n\n"+a.snippet;
+  const text = a.title+(a.snippet ? "\n\n"+a.snippet : "")+(a.link ? "\n\n"+a.link : "");
   if(navigator.share){
     try{ await navigator.share({title:a.title, text}); return; }catch(e){}
   }
@@ -1181,7 +1204,9 @@ async function init(){
   renderEditionDate();
   renderCategories();
   renderFeed();
+  loadLive();
 }
+document.getElementById("retryBtn").onclick = ()=> loadLive();
 init();
 
 })();
