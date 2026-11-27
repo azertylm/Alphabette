@@ -124,6 +124,8 @@ test('Octet v3 : une balise sur le hub, poses transparentes + manifeste, aucune 
   assert.match(js, /dataset\.calme === "oui"/);
   assert.match(js, /prefers-reduced-motion/);
   assert.match(js, /sound: false/, 'sons coupés par défaut');
+  for (const m of [1, 2, 3]) assert.match(js, new RegExp(`id: "secret-${m}-mois", mois: ${m}`), `combinaison ${m} mois`);
+  assert.match(js, /a déjà servi sur cet appareil/, 'une combinaison ne sert qu\'une fois par appareil');
   assert.match(js, /derniereReplique < 20000/, 'une réplique spontanée au plus toutes les 20 s');
   assert.match(js, /_peutReagir\(\) \{[\s\S]{0,200}this\._calme\(\)/, 'aucune réaction en Mode Calme');
   assert.doesNotMatch(code, /document\.cookie|navigator\.sendBeacon/);
