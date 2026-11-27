@@ -19,16 +19,18 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-/** Flux lus à chaque publication : grands médias français, flux publics, sans abonnement. */
+/**
+ * Flux lus à chaque publication : grands médias français, flux publics, sans abonnement.
+ * Retirés le 27/11/2026 après la première publication : Les Échos (HTTP 403 aux robots), Le Parisien (aucun article lisible).
+ */
 export const FLUX = [
   { source: 'franceinfo', categorie: 'Actualité', url: 'https://www.francetvinfo.fr/titres.rss' },
   { source: 'Le Monde', categorie: 'Actualité', url: 'https://www.lemonde.fr/rss/une.xml' },
   { source: 'Le Figaro', categorie: 'Actualité', url: 'https://www.lefigaro.fr/rss/figaro_flash-actu.xml' },
-  { source: 'Le Parisien', categorie: 'Actualité', url: 'https://feeds.leparisien.fr/leparisien/rss' },
   { source: 'BFM TV', categorie: 'Actualité', url: 'https://www.bfmtv.com/rss/news-24-7/' },
   { source: 'France 24', categorie: 'International', url: 'https://www.france24.com/fr/rss' },
   { source: 'Le Monde', categorie: 'International', url: 'https://www.lemonde.fr/international/rss_full.xml' },
-  { source: 'Les Échos', categorie: 'Économie', url: 'https://services.lesechos.fr/rss/les-echos-economie.xml' },
+  { source: 'Le Monde', categorie: 'Économie', url: 'https://www.lemonde.fr/economie/rss_full.xml' },
   { source: 'franceinfo', categorie: 'Économie', url: 'https://www.francetvinfo.fr/economie.rss' },
   { source: 'Futura', categorie: 'Science', url: 'https://www.futura-sciences.com/rss/actualites.xml' },
   { source: 'Le Monde', categorie: 'Science', url: 'https://www.lemonde.fr/sciences/rss_full.xml' },

@@ -3,6 +3,33 @@
 Écrites par le cycle du laboratoire (`/cycle-labo`) : demandes de Niveau 2 et propositions de transfert vers
 alphabette.fr. Réponse dans n'importe quelle conversation : « oui pour fb_… » ou « non pour fb_… (raison) ».
 
+## 27/11/2026 — Sur ta demande : de vraies actualités dans ALPHABETTE INFO ; Orbit n'est plus en pause
+
+### ✅ Fait — ALPHABETTE INFO montre les actualités du jour (avis fb_1795683657_7422, ta demande du 27/11)
+- **Résumé** : « les articles sont inventés, je veux vraiment de l'actualité, inspire-toi d'Info Perso […] surtout pour
+  les mécanismes ».
+- **Mon avis critique** : tu avais raison, retirer les fausses dates ne suffisait pas : la page restait vide de vraie
+  information. J'ai repris le mécanisme d'Info Perso, le plus sûr : les flux des médias sont lus au moment de la
+  publication du site (toutes les 3 heures), pas par le téléphone du visiteur. Rien n'est envoyé à un site tiers à
+  l'ouverture, et la page reste rapide. Limite : les nouvelles ont au plus 3 heures de retard. On ne montre que le
+  titre et le court résumé publiés par le média, avec le lien vers l'article complet chez lui.
+- **Ce que j'ai fait** : 15 flux de grands médias (franceinfo, Le Monde, Le Figaro, BFM TV, France 24, Futura,
+  Numerama), en 7 rubriques (Actualité, International, Économie, Science, Technologie, Culture,
+  Sport). Doublons retirés (le même sujet chez deux médias n'apparaît qu'une fois) et médias variés en tête. Les 16
+  articles inventés sont supprimés. Chaque article a son heure (« il y a 25 min ») ; un article enregistré reste lisible
+  quand il sort du fil ; tes propres flux restent dans « Mes flux ». « OK pour publier » de qa-verifier, 9 tests
+  automatiques. [Commit f91c1b8](https://github.com/azertylm/alphabette/commit/f91c1b853a1f693f2ee5e15b8e6fd7efecc64773).
+  Première lecture sur GitHub le 27/11 à 11 h 37 : 120 actualités, 14 flux sur 16 ; Les Échos (refus d'accès) et Le Parisien
+  (rien de lisible) remplacés par Le Monde Économie.
+
+### ✅ Fait — Orbit n'est plus en pause (ta décision du 27/11)
+- Ses défauts sur alphabette.eu se corrigeront désormais comme ceux des autres applis, sans attendre ton ordre
+  (CLAUDE.md, RULES_AND_MEMORY.md et les agents sont à jour).
+
+### ⚠️ À savoir — mise en ligne bloquée chez OVH depuis le 26/11 à 21 h 27
+- Les corrections d'Orbit et les vraies actualités sont prêtes sur GitHub, mais elles n'arriveront sur alphabette.eu
+  qu'après le déblocage d'OVH (ticket CS17244990, ouvert le 27/11 à 9 h 59). Rien à faire de ton côté en dehors du ticket.
+
 ## 26/11/2026 — Passage quotidien : 1 avis corrigé, Orbit attend ton ordre
 
 ### ✅ Fait — ALPHABETTE INFO : plus de fausse date de septembre (avis fb_1795683657_7422, +1)
