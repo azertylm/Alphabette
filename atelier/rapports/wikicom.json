@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:48:06.148Z",
+  "date": "2026-11-27T10:48:18.409Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 62,
-    "js_ko": 35,
-    "requetes": 9,
-    "dom": 299,
-    "ecoindex": 83.7,
-    "chargement_ms": 750,
+    "poids_ko": 66,
+    "js_ko": 36,
+    "requetes": 10,
+    "dom": 302,
+    "ecoindex": 83.4,
+    "chargement_ms": 1100,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 84
@@ -108,6 +108,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -123,8 +124,7 @@
       "✕ Quitter",
       "Annuler",
       "Ajouter",
-      "Enregistrer",
-      "Alphabette"
+      "Enregistrer"
     ],
     "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Wikicom L'ANNUAIRE DES BONS OUTILS DU WEB ♥ BIG ☀️ 🔊 ⋯ W wikicom Bienvenue sur wikicom L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux. 🎲 Pépite Aléatoire 📦 Créateur de Pack ＋ Ajouter un lien ⭐ Incontournables Open Source Gratuit Android Local Parcourir les catégories 11 catégories ☰ ⊞ Blocage de pub / Vie privée Bloqueurs de publicités, anti-traçage, DNS, VPN et navigateurs pour protéger votre vie privée. Bloqueurs de publicités Outils anti-traçage & Vie privée Navigateurs axés confidentialité 10 liens → Intelligence artificielle Assistants IA, LLM locaux, génération d'images/audio et outils de productivité. Assistants"
   },

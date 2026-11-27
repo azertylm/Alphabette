@@ -4,31 +4,31 @@
   "url": "https://alphabette.eu/apps/goatchevretheking/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:46:33.414Z",
+  "date": "2026-11-27T10:46:33.979Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
     "opticien": 89,
     "poids_plume": 74,
     "phare": 83,
-    "parapluie": 88
+    "parapluie": 92
   },
   "controle_technique": 74,
-  "note": 82,
+  "note": 83,
   "apte": false,
   "compte": {
     "bloquant": 0,
     "important": 2,
-    "conseil": 7
+    "conseil": 6
   },
   "problemes": [
     {
       "agent": "pouce",
       "gravite": "important",
-      "titre": "133 zones à toucher trop petites (moins de 44 px)",
-      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)",
+      "titre": "138 zones à toucher trop petites (moins de 44 px)",
+      "detail": "a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; a.ab-eco__icone « Laboratoire d’Octet : tester et proposer » (32×32 px) ; button.ab-meteo__pastille « Météo du Labo : Évolutions » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « Goat Chèvre The King » a ce problème, relevé par un contrôle automatique : 133 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px) ; button.ab-pico « Faire un don » (37×37 px) ; button.ab-pico « BIG, Taille du texte : Normale » (62×37 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « Goat Chèvre The King » a ce problème, relevé par un contrôle automatique : 138 zones à toucher trop petites (moins de 44 px) (a.ab-eco__logo « Aller sur alphabette.fr » (95×17 px) ; button.ab-eco__icone « Toutes les applis » (32×32 px) ; button.ab-eco__icone « Nouveautés » (32×32 px) ; a.ab-eco__icone « Laboratoire d’Octet : tester et proposer » (32×32 px) ; button.ab-meteo__pastille « Météo du Labo : Évolutions » (32×32 px) ; button.ab-abonner « ⭐ S’abonner » (123×32 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -41,10 +41,10 @@
     {
       "agent": "pouce",
       "gravite": "conseil",
-      "titre": "60 boutons trop serrés (moins de 8 px d'écart)",
-      "detail": "button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour » ; button.ab-pico « Passer en mode jour » ↔ button.ab-pico « Lire à voix haute »",
+      "titre": "61 boutons trop serrés (moins de 8 px d'écart)",
+      "detail": "button.ab-meteo__pastille « Météo du Labo : Évolutions » ↔ button.ab-abonner « ⭐ S’abonner » ; button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour »",
       "correction": "Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais.",
-      "prompt": "Mon application web « Goat Chèvre The King » a ce problème, relevé par un contrôle automatique : 60 boutons trop serrés (moins de 8 px d'écart) (button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour » ; button.ab-pico « Passer en mode jour » ↔ button.ab-pico « Lire à voix haute »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « Goat Chèvre The King » a ce problème, relevé par un contrôle automatique : 61 boutons trop serrés (moins de 8 px d'écart) (button.ab-meteo__pastille « Météo du Labo : Évolutions » ↔ button.ab-abonner « ⭐ S’abonner » ; button.ab-pico « Faire un don » ↔ button.ab-pico « BIG, Taille du texte : Normale » ; button.ab-pico « BIG, Taille du texte : Normale » ↔ button.ab-pico « Passer en mode jour »). Ajoute au moins 8 px d'espace entre ces boutons pour éviter de toucher le mauvais. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "poids_plume",
@@ -81,14 +81,6 @@
     {
       "agent": "parapluie",
       "gravite": "conseil",
-      "titre": "Aucun lien vers les mentions légales ni la confidentialité",
-      "detail": "",
-      "correction": "Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont).",
-      "prompt": "Mon application web « Goat Chèvre The King » a ce problème, relevé par un contrôle automatique : Aucun lien vers les mentions légales ni la confidentialité. Ajoute en bas de page un lien « Mentions légales » (qui édite l'application, comment te contacter) et « Confidentialité » (quelles données, où elles vont). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "parapluie",
-      "gravite": "conseil",
       "titre": "Pas d'avertissement sur les réponses de l'IA",
       "detail": "",
       "correction": "Ajoute près des réponses : « Réponses générées par une IA : elles peuvent contenir des erreurs, vérifiez les informations importantes. »",
@@ -96,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 239,
-    "js_ko": 186,
-    "requetes": 29,
-    "dom": 1656,
-    "ecoindex": 48.2,
-    "chargement_ms": 908,
+    "poids_ko": 261,
+    "js_ko": 198,
+    "requetes": 31,
+    "dom": 1673,
+    "ecoindex": 47.6,
+    "chargement_ms": 1171,
     "tiers": [
       "fonts.googleapis.com"
     ],
@@ -122,6 +114,8 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
+      "⛅Évolutions",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -136,15 +130,13 @@
       "Jeux",
       "Sons",
       "⚽Football500 joueurs",
-      "🏀Basket0 joueurs",
-      "🎾TennisÀ découvrir",
-      "🏊NatationÀ découvrir"
+      "🏀Basket0 joueurs"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Goat Chèvre The King ♥ BIG 🌙 ⋯ LE CLASSEMENT ULTIME Goat Chèvre The King Football, basket, tennis, natation, rugby… 30 disciplines et des milliers de légendes : construis ta pyramide des plus grands athlètes de tous les temps, du GOAT ultime jusqu'à l'étage des 8. Gratuit, sans compte pour jouer un compte pour publier ta pyramide 🐐 🪙 0 🧀 Communauté Bêê 30 disciplines ⚽ Football 500 joueurs 🏀 Basket 0 joueurs 🎾 Tennis À découvrir 🏊 Natation À découvrir 🏓 Ping-pong À découvrir 🏉 Rugby À découvrir 🤾 Handball À découvrir 🏃 Athlé À découvrir 🚴 Cyclisme À découvrir 🥋 Judo À découvrir 🥊 Boxe À découvrir 🏎️ F1 À découvrir 🏐 Volley À découvrir ⛳ Golf À dé"
+    "debut": "α alphabette ▦ 🆕 ⛅ Évolutions ⭐ S’abonner Goat Chèvre The King ♥ BIG 🌙 ⋯ LE CLASSEMENT ULTIME Goat Chèvre The King Football, basket, tennis, natation, rugby… 30 disciplines et des milliers de légendes : construis ta pyramide des plus grands athlètes de tous les temps, du GOAT ultime jusqu'à l'étage des 8. Gratuit, sans compte pour jouer un compte pour publier ta pyramide 🐐 🪙 0 🧀 Communauté Bêê 30 disciplines ⚽ Football 500 joueurs 🏀 Basket 0 joueurs 🎾 Tennis À découvrir 🏊 Natation À découvrir 🏓 Ping-pong À découvrir 🏉 Rugby À découvrir 🤾 Handball À découvrir 🏃 Athlé À découvrir 🚴 Cyclisme À découvrir 🥋 Judo À découvrir 🥊 Boxe À découvrir 🏎️ F1 À découvrir 🏐 Volley À découvri"
   },
   "temoin": {
     "capture": "captures/goat-chevre-the-king.jpg",
-    "changement": 0,
+    "changement": 1,
     "blanc": false
   }
 }

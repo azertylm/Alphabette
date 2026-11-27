@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/orbit/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:12.366Z",
+  "date": "2026-11-27T10:47:17.914Z",
   "scores": {
     "douanier": 92,
     "pouce": 45,
@@ -19,7 +19,7 @@
   "compte": {
     "bloquant": 0,
     "important": 4,
-    "conseil": 12
+    "conseil": 11
   },
   "problemes": [
     {
@@ -53,14 +53,6 @@
       "detail": "button.p-1 ; button.p-1 ; button.p-1",
       "correction": "Donne un nom à chaque bouton-icône (aria-label=\"…\") : un lecteur d'écran doit pouvoir l'annoncer.",
       "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : 3 boutons sans nom lisible (button.p-1 ; button.p-1 ; button.p-1). Donne un nom à chaque bouton-icône (aria-label=\"…\") : un lecteur d'écran doit pouvoir l'annoncer. Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "temoin",
-      "gravite": "conseil",
-      "titre": "L'écran d'accueil a beaucoup changé depuis le dernier contrôle",
-      "detail": "89 % de l'image différente",
-      "correction": "Si ce changement n'est pas voulu, reviens à la version précédente de la page d'accueil.",
-      "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : L'écran d'accueil a beaucoup changé depuis le dernier contrôle (89 % de l'image différente). Si ce changement n'est pas voulu, reviens à la version précédente de la page d'accueil. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -157,7 +149,7 @@
     "requetes": 27,
     "dom": 748,
     "ecoindex": 58.9,
-    "chargement_ms": 1036,
+    "chargement_ms": 1192,
     "tiers": [
       "fonts.googleapis.com",
       "gstatic.com",
@@ -202,7 +194,7 @@
   },
   "temoin": {
     "capture": "captures/orbit.jpg",
-    "changement": 89,
+    "changement": 0,
     "blanc": false
   }
 }

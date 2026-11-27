@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/proxilien/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:42.367Z",
+  "date": "2026-11-27T10:47:51.366Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 362,
+    "poids_ko": 366,
     "js_ko": 263,
-    "requetes": 14,
-    "dom": 859,
-    "ecoindex": 61.2,
-    "chargement_ms": 863,
+    "requetes": 15,
+    "dom": 862,
+    "ecoindex": 61,
+    "chargement_ms": 1110,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -123,6 +123,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -138,8 +139,7 @@
       "Tarifs & Bouquet AlphabetteTarifs",
       "Synchro P2PP2P",
       "+ Autre ville",
-      "Style Or",
-      "Basculer mode clair ou sombre"
+      "Style Or"
     ],
     "debut": "α alphabette ▦ 🆕 ⭐ S’abonner ProxiLien ENTRAIDE ENTRE VOISINS ♥ BIG ☀️ 🔊 ⋯ PILOTE La Grande-Motte (34280) PC Auto 1 an Offert Mistral AI Tarifs P2P + Autre ville ProxiLien SOS Aîné Jeune TV OFFRE DE LANCEMENT ALPHABETTE · 1ÈRE ANNÉE GRATUITE GÉOLOCALISATION OBLIGATOIRE Pour tous les habitants, aînés, commerces et associations de La Grande-Motte : validez votre géolocalisation pour activer votre Pass 1ère année 100 % gratuite (offerte par Alphabette). Valider ma position GPS Simuler LGM Détails ALERTE CITOYENNE CHIFFRÉE Exemple · Vigilance Canicule & Hydratation des Aînés Synchro P2P / Alertes (3) Accueil Viens ! Chaleur SOS 🚨 SECOURS IMMÉDIATS 🚨 SOS URGENCE Alerte en 1 clic vos 3 voisins"
   },

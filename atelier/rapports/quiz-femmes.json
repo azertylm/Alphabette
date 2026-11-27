@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-femmes/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:46:22.220Z",
+  "date": "2026-11-27T10:46:21.134Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -72,12 +72,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 80,
-    "js_ko": 66,
-    "requetes": 10,
-    "dom": 103,
-    "ecoindex": 90.2,
-    "chargement_ms": 771,
+    "poids_ko": 84,
+    "js_ko": 67,
+    "requetes": 11,
+    "dom": 106,
+    "ecoindex": 89.9,
+    "chargement_ms": 1032,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83
@@ -90,6 +90,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -103,7 +104,7 @@
   },
   "temoin": {
     "capture": "captures/quiz-femmes.jpg",
-    "changement": 1,
+    "changement": 18,
     "blanc": false
   }
 }

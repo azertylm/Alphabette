@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-famille/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:46.418Z",
+  "date": "2026-11-27T10:47:55.878Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -64,12 +64,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 52,
-    "js_ko": 35,
-    "requetes": 9,
-    "dom": 91,
-    "ecoindex": 90.8,
-    "chargement_ms": 683,
+    "poids_ko": 56,
+    "js_ko": 36,
+    "requetes": 10,
+    "dom": 94,
+    "ecoindex": 90.6,
+    "chargement_ms": 908,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 82
@@ -82,6 +82,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",

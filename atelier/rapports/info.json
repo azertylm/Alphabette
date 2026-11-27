@@ -4,16 +4,16 @@
   "url": "https://alphabette.eu/info.html",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:46:10.302Z",
+  "date": "2026-11-27T10:46:07.997Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
     "opticien": 85,
-    "poids_plume": 87,
+    "poids_plume": 88,
     "phare": 70,
     "parapluie": 88
   },
-  "controle_technique": 77,
+  "controle_technique": 78,
   "note": 82,
   "apte": false,
   "compte": {
@@ -33,10 +33,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "64 textes plus petits que 12 px",
-      "detail": "div#editionDate.edition-date « jeudi 26 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)",
+      "titre": "48 textes plus petits que 12 px",
+      "detail": "div#editionDate.edition-date « vendredi 27 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 64 textes plus petits que 12 px (div#editionDate.edition-date « jeudi 26 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ALPHABETTE INFO » a ce problème, relevé par un contrôle automatique : 48 textes plus petits que 12 px (div#editionDate.edition-date « vendredi 27 novembre 2026 » (11.52 px) ; span.tag « Technologie » (10.88 px) ; span.source-name « Exemple inventé » (10.88 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -104,18 +104,18 @@
     }
   ],
   "mesures": {
-    "poids_ko": 238,
-    "js_ko": 35,
-    "requetes": 13,
-    "dom": 336,
-    "ecoindex": 80.7,
-    "chargement_ms": 859,
+    "poids_ko": 242,
+    "js_ko": 36,
+    "requetes": 14,
+    "dom": 307,
+    "ecoindex": 81.8,
+    "chargement_ms": 1185,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
     ],
     "traceurs": [],
-    "contraste_ok_pct": 97
+    "contraste_ok_pct": 96
   },
   "plume": {
     "titre": "Alphabette Info — vos actualités, à creuser",
@@ -125,6 +125,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -142,7 +143,7 @@
       "Ajouter mes sources d'actualités",
       "Alphabette"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo jeudi 26 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé · 14 sept. Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé · 14 sept. Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèques"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Alphabette Info VOS ACTUALITÉS, À CREUSER ♥ BIG ☀️ 🔊 ⋯ AlphabetteInfo vendredi 27 novembre 2026 ⛭ ◑ ⌕ Toutes Technologie Économie International Science Société Ces articles sont des exemples inventés, pour vous montrer l'outil. Ce ne sont pas de vraies actualités. Ajouter mes sources d'actualités Technologie · Exemple inventé Un consortium européen dévoile une puce d'inférence sobre en énergie Le projet, porté par sept laboratoires, promet de diviser par trois la consommation des modèles embarqués. 02 Technologie · Exemple inventé Des bibliothèques municipales testent des ateliers de vérification de l'information Une vingtaine de médiathèques proposent désormai"
   },
   "temoin": {
     "capture": "captures/info.jpg",

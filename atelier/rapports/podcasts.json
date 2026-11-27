@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/podcasts/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:34.851Z",
+  "date": "2026-11-27T10:47:42.421Z",
   "scores": {
     "douanier": 96,
     "pouce": 77,
@@ -80,12 +80,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 236,
-    "js_ko": 35,
-    "requetes": 13,
-    "dom": 516,
-    "ecoindex": 73.2,
-    "chargement_ms": 746,
+    "poids_ko": 240,
+    "js_ko": 36,
+    "requetes": 14,
+    "dom": 519,
+    "ecoindex": 72.9,
+    "chargement_ms": 1001,
     "tiers": [
       "is1-ssl.mzstatic.com"
     ],
@@ -106,6 +106,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -124,7 +125,7 @@
   },
   "temoin": {
     "capture": "captures/podcasts.jpg",
-    "changement": 0,
+    "changement": 23,
     "blanc": false
   }
 }

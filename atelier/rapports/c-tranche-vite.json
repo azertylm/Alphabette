@@ -5,7 +5,7 @@
   "communaute": true,
   "heberge": true,
   "ref": "73274d8278bd008c063d08c9ada099331f0160bf",
-  "date": "2026-11-26T10:48:13.518Z",
+  "date": "2026-11-27T10:48:26.627Z",
   "scores": {
     "douanier": 100,
     "pouce": 100,
@@ -29,7 +29,7 @@
     "requetes": 1,
     "dom": 79,
     "ecoindex": 93.2,
-    "chargement_ms": 272,
+    "chargement_ms": 364,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 100
@@ -68,7 +68,7 @@
   },
   "temoin": {
     "capture": "captures/c-tranche-vite.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }

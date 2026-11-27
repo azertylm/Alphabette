@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/crash-testeur/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:48:09.892Z",
+  "date": "2026-11-27T10:48:22.616Z",
   "scores": {
     "douanier": 100,
     "pouce": 68,
@@ -80,12 +80,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 57,
-    "js_ko": 35,
-    "requetes": 10,
-    "dom": 174,
-    "ecoindex": 88.1,
-    "chargement_ms": 674,
+    "poids_ko": 61,
+    "js_ko": 36,
+    "requetes": 11,
+    "dom": 177,
+    "ecoindex": 87.9,
+    "chargement_ms": 947,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -102,6 +102,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",

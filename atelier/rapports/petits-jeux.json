@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/petits-jeux/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:30.821Z",
+  "date": "2026-11-27T10:47:37.311Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -56,12 +56,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 63,
-    "js_ko": 35,
-    "requetes": 10,
-    "dom": 107,
-    "ecoindex": 90.2,
-    "chargement_ms": 766,
+    "poids_ko": 67,
+    "js_ko": 36,
+    "requetes": 11,
+    "dom": 110,
+    "ecoindex": 89.9,
+    "chargement_ms": 1074,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 94
@@ -74,6 +74,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -89,14 +90,13 @@
       "🌍Où C'Est ?Un lieu étonnant, une carte du monde :",
       "🗺️Où C'Est En France ?Dix lieux de France, célèbr",
       "🎬Quiz En FamilleUn quiz loufoque à plusieurs sur ",
-      "🎵Quiz MusiqueAnnées 60 à 90 : Amérique, France, m",
-      "Alphabette"
+      "🎵Quiz MusiqueAnnées 60 à 90 : Amérique, France, m"
     ],
     "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Petits Jeux S'AMUSER ET APPRENDRE ♥ BIG ☀️ 🔊 ⋯ Des petits jeux, pour s'amuser et apprendre. Quelques minutes suffisent. Choisissez un jeu : 👩 Femmes Extraordinaires Plus de 300 questions sur les femmes qui ont changé le monde : science, arts, droits, résistance, sport. À plusieurs sur un seul écran. Jouer → 🌟 Gens Extraordinaires Quiz à plusieurs : de Gaulle, Mitterrand, Martin Luther King, Bourvil, de Funès… 239 anecdotes vraies que presque personne ne connaît. Jouer → ⚽ Goat Chèvre The King Élisez vos légendes du football, classez-les en pyramide et comparez avec les autres. Jouer → 📖 Le Dico Loufoque Un mot rare, quatre définitions dont trois inventées po"
   },
   "temoin": {
     "capture": "captures/petits-jeux.jpg",
-    "changement": 0,
+    "changement": 19,
     "blanc": false
   }
 }

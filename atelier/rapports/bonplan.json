@@ -4,12 +4,12 @@
   "url": "https://alphabette.eu/apps/bonplan/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:46:14.306Z",
+  "date": "2026-11-27T10:46:12.521Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
     "opticien": 81,
-    "poids_plume": 84,
+    "poids_plume": 83,
     "phare": 80,
     "parapluie": 88
   },
@@ -96,12 +96,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 188,
-    "js_ko": 35,
-    "requetes": 12,
-    "dom": 574,
-    "ecoindex": 71.3,
-    "chargement_ms": 835,
+    "poids_ko": 191,
+    "js_ko": 36,
+    "requetes": 13,
+    "dom": 577,
+    "ecoindex": 71,
+    "chargement_ms": 1054,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -117,6 +117,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -132,8 +133,7 @@
       "📤 Exporter mes données (JSON)",
       "📥 Importer un fichier JSON",
       "🗑️ Réinitialiser toutes les données",
-      "Fermer",
-      "Créer la catégorie ✓"
+      "Fermer"
     ],
     "debut": "α alphabette ▦ 🆕 ⭐ S’abonner BonPlan LES MEILLEURS CONSEILS DU QUOTIDIEN ♥ BIG ☀️ 🔊 ⋯ BonPlan 👤 Mon Compte ⚙️ Réglages GRATUIT · SANS PUB Les meilleurs conseils du quotidien Des trouvailles utiles sélectionnées par l'équipe BON PLAN. Votez pour celles qui vous servent, ajoutez les vôtres : vos votes et vos conseils restent sur cet appareil. 🔍 💡 268 CONSEILS 🔥 0 VOTES POSITIFS 📂 40 CATÉGORIES TOUTES LES CATÉGORIES 🛒 7 Alimentation 🍳 7 Cuisine & Recettes 🏠 7 Maison & Déco 🧹 6 Entretien & Ménage 👗 7 Mode 💆 7 Beauté ❤️ 7 Santé 🏃 7 Sport 📱 7 High-Tech ⚡ 6 Électroménager 🌿 6 Écologie 👶 6 Enfants 🐶 6 Animaux 📚 6 Culture 🎮 6 Jeux 🚗 6 Auto ✈️ 6 Voyage 💰 6 Bons Plans 🍽️ 6 Restau"
   },

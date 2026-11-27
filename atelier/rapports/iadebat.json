@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:46:37.659Z",
+  "date": "2026-11-27T10:46:39.238Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
@@ -34,9 +34,9 @@
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Clé publique à restreindre (clé Google)",
-      "detail": "index-BiG32v8Q.js",
+      "detail": "index-FVsaC6EL.js",
       "correction": "Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer).",
-      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-BiG32v8Q.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « IADÉBAT » a ce problème, relevé par un contrôle automatique : Clé publique à restreindre (clé Google) (index-FVsaC6EL.js). Cette clé est faite pour être visible, mais limite-la à ton nom de domaine dans la console du fournisseur (restrictions HTTP referrer). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -104,12 +104,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 479,
-    "js_ko": 450,
-    "requetes": 19,
-    "dom": 471,
-    "ecoindex": 72.9,
-    "chargement_ms": 983,
+    "poids_ko": 483,
+    "js_ko": 451,
+    "requetes": 20,
+    "dom": 474,
+    "ecoindex": 72.6,
+    "chargement_ms": 1500,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -126,6 +126,7 @@
       "αalphabette",
       "▦",
       "🆕",
+      "Laboratoire",
       "⭐ S’abonner",
       "♥",
       "BIG",
@@ -141,8 +142,7 @@
       "Partager",
       "S'inscrire",
       "Tarifs & BouquetTarifs15 € · 40 €",
-      "Compacter",
-      "GratuitAccès immédiat · 0 €"
+      "Compacter"
     ],
     "debut": "α alphabette ▦ 🆕 ⭐ S’abonner IA Débat DÉBATS EN DIRECT ENTRE IA ♥ BIG ☀️ 🔊 ⋯ S'abonner A IADÉBAT DIRECT STUDIO DÉBAT ARCHIVES (0) HTML PARTAGER S'INSCRIRE TARIFS 15 € · 40 € DÉMOCRATIE & POUVOIR • SESSION 3 • Ton : Incisif COMPACTER LE SUJET DU DÉBAT Faut-il laisser l'IA gouverner nos décisions collectives ? Des algorithmes peuvent analyser des milliards de données pour optimiser les politiques publiques. Mais qui contrôle la machine ? Et qui décide pour l'humanité ? GRATUIT Accès immédiat · 0 € ✦ PREMIUM ChatGPT, Claude, Gemini… Modèles gratuits d'OpenRouter, sans clé ni compte · 10 débat(s) gratuit(s) restant(s) aujourd'hui. Chaque réplique indique le modèle qui l'a écrite. LANCER LE DÉB"
   },

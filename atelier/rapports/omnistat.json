@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/omnistat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-26T10:47:08.656Z",
+  "date": "2026-11-27T10:47:13.779Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -93,7 +93,7 @@
     "requetes": 7,
     "dom": 2745,
     "ecoindex": 48.3,
-    "chargement_ms": 712,
+    "chargement_ms": 884,
     "tiers": [
       "fonts.googleapis.com",
       "fonts.gstatic.com"
@@ -133,7 +133,7 @@
   },
   "temoin": {
     "capture": "captures/omnistat.jpg",
-    "changement": null,
+    "changement": 0,
     "blanc": false
   }
 }
