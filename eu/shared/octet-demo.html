@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Recette d'Octet v3 — Alphabette</title>
+  <style>
+    :root { --encre: #2c1a0e; --encre-2: #4e3422; --laiton: #7d4a18; --carte: #fdf9f0; --trait: #d3be9e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Georgia, "Palatino Linotype", serif; background: #f7f1e3; color: var(--encre); line-height: 1.65; }
+    .banc { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px;
+      background: #182334; color: #fff; font: 600 0.9rem system-ui, sans-serif; }
+    .banc button { min-height: 40px; padding: 6px 12px; border-radius: 8px; border: 1.5px solid #fff; background: transparent; color: #fff; font: inherit; cursor: pointer; }
+    .banc button[aria-pressed="true"] { background: #fff; color: #182334; }
+    .banc output { margin-left: auto; opacity: 0.9; }
+    header.site { max-width: 1000px; margin: 0 auto; padding: 22px 20px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--trait); }
+    header.site strong { font-size: 1.4rem; }
+    main { max-width: 1000px; margin: 0 auto; padding: 36px 20px 140px; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.7rem); line-height: 1.2; margin: 0 0 14px; }
+    h2 { font-size: clamp(1.35rem, 2.6vw, 1.8rem); margin: 0 0 12px; }
+    p { color: var(--encre-2); margin: 0 0 14px; font-size: 1.04rem; }
+    section { margin-bottom: 60px; }
+    .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 18px; }
+    .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; padding: 20px; }
+    .carte h3 { margin: 0 0 6px; font-size: 1.12rem; }
+    .carte a { color: var(--laiton); font: 700 0.92rem system-ui, sans-serif; }
+    blockquote { margin: 40px 0; padding: 18px 24px; background: #efe5d1; border-left: 4px solid #a86829; border-radius: 0 14px 14px 0; font-style: italic; }
+    .mode-test { font: 0.9rem system-ui, sans-serif; background: #fffdf8; border: 1px solid var(--trait); border-radius: 10px; padding: 12px 14px; }
+    .mode-test li { margin-bottom: 4px; }
+    footer { max-width: 1000px; margin: 0 auto; padding: 24px 20px 90px; border-top: 1px dashed var(--trait); font: 0.9rem system-ui, sans-serif; color: var(--encre-2); }
+  </style>
+</head>
+<body>
+  <div class="banc" data-octet-ignore role="region" aria-label="Banc de test d'Octet">
+    <span>Banc d'essai :</span>
+    <button type="button" data-site="fr" aria-pressed="true">Mode Vitrine (.fr)</button>
+    <button type="button" data-site="eu" aria-pressed="false">Mode Labo (.eu)</button>
+    <button type="button" id="detruire">destroy()</button>
+    <button type="button" id="remonter">remount()</button>
+    <button type="button" id="reset">Réinitialiser les données Octet</button>
+    <output id="etat" aria-live="polite"></output>
+  </div>
+
+  <header class="site">
+    <strong>Alphabette <span data-octet-gear="gear-1"></span></strong>
+    <span>Atelier d'applications utiles</span>
+  </header>
+
+  <main id="contenu">
+    <section data-octet-mood="compass">
+      <h1>Recette d'Octet, la souris mécanicienne</h1>
+      <p>Cette page sert à tout essayer en une minute. Octet se pose sur les titres et les paragraphes, change d'objet selon la section et ouvre son carnet quand on clique sur elle.</p>
+      <ul class="mode-test">
+        <li><strong>Vitrine :</strong> laissez la souris ou le doigt 6 secondes sur une carte d'application : Octet vient s'y poser et propose « Voir en 10 s ».</li>
+        <li><strong>Labo :</strong> ouvrez le carnet : la première action sert à signaler un souci ou proposer une amélioration.</li>
+        <li><strong>Surlignage :</strong> sélectionnez une phrase : Octet arrive avec sa loupe ; cliquez sur elle pour copier l'extrait.</li>
+        <li><strong>Sieste :</strong> ne touchez à rien pendant 35 secondes.</li>
+        <li><strong>Engrenages :</strong> cinq petits engrenages sont cachés dans la page. Retrouvez-les tous pour débloquer le diplôme.</li>
+      </ul>
+    </section>
+
+    <section id="applications" data-octet-mood="wrench">
+      <h2>Applications de l'atelier</h2>
+      <p>Quand Octet arrive ici, elle sort sa clé à molette pour vérifier les rouages.</p>
+      <div class="grille">
+        <article class="carte" data-octet-card data-octet-summary="Un portail d'actualités à votre goût, avec des résumés et des approfondissements." data-octet-url="https://infosperso.alphabette.fr">
+          <h3>Infos Perso</h3>
+          <p>Vos actualités, choisies par vous, avec un résumé et de quoi creuser.</p>
+          <a href="https://infosperso.alphabette.fr">Ouvrir Infos Perso</a>
+        </article>
+        <article class="carte" data-octet-card data-octet-summary="Six intelligences artificielles débattent en direct d'un sujet de société, sous vos yeux." data-octet-url="https://iadebat.alphabette.fr">
+          <h3>IADébat <span data-octet-gear="gear-2"></span></h3>
+          <p>Plusieurs IA confrontent leurs arguments sur un sujet de société.</p>
+          <a href="https://iadebat.alphabette.fr">Lancer un débat</a>
+        </article>
+        <article class="carte" data-octet-card data-octet-summary="L'annuaire des bons outils du web : des sites et des logiciels utiles, libres et légaux." data-octet-url="https://alphabette.fr/wikicom/">
+          <h3>Wikicom</h3>
+          <p>Des sites et des logiciels utiles, libres et légaux, triés pour vous.</p>
+          <a href="https://alphabette.fr/wikicom/">Explorer Wikicom</a>
+        </article>
+      </div>
+    </section>
+
+    <blockquote data-octet-mood="notebook">
+      « Un bon outil numérique doit s'effacer derrière votre idée : rapide, accessible, et jamais envahissant. » <span data-octet-gear="gear-3"></span>
+    </blockquote>
+
+    <section id="labo" data-octet-mood="flask">
+      <h2>Le laboratoire communautaire <span data-octet-gear="gear-4"></span></h2>
+      <p>Ici, Octet sort sa fiole. Les prototypes s'essaient librement et chacun peut donner son avis pour les faire mûrir.</p>
+      <div class="grille">
+        <article class="carte" data-octet-card data-octet-summary="Entraide et lien entre seniors et jeunes à La Grande-Motte, sur téléphone, ordinateur ou télévision." data-octet-url="https://proxilien.fr">
+          <h3>ProxiLien</h3>
+          <p>Entraide de voisinage entre générations, à La Grande-Motte.</p>
+          <a href="https://proxilien.fr">Découvrir ProxiLien</a>
+        </article>
+        <article class="carte" data-octet-card data-octet-summary="Des outils d'IA pour artistes et galeries : curation, organisation de vernissages, estimation de marché." data-octet-url="https://atelier.alphabette.fr">
+          <h3>L'Œil de l'Atelier</h3>
+          <p>Un compagnon pour artistes et galeries : textes d'exposition, vernissages, repères de marché.</p>
+          <a href="https://atelier.alphabette.fr">Explorer l'outil</a>
+        </article>
+      </div>
+    </section>
+
+    <section data-octet-mood="watering">
+      <h2>Faire pousser des outils durables</h2>
+      <p>Réduisez la fenêtre en largeur téléphone : Octet rapetisse et son carnet s'ouvre en panneau en bas de l'écran. Ses réglages (Pause, Masquer, sons) restent gardés sur cet appareil.</p>
+      <p>Le carnet propose aussi « Confort de lecture & voix » : texte plus grand, contraste renforcé et lecture de la section avec la voix Alphabette.</p>
+    </section>
+  </main>
+
+  <footer>
+    Page de recette interne d'Octet — aucune donnée n'est envoyée. <span data-octet-gear="gear-5"></span>
+  </footer>
+
+  <script src="/shared/octet-widget.js" data-app="recette-octet" data-site="fr" data-assets="/assets/octet/dist" defer></script>
+  <script>
+    (function () {
+      var etat = document.getElementById("etat");
+      var site = "fr";
+      function dire(t) { etat.textContent = t; }
+      function monter() { if (!window.octet) { window.octet = new window.OctetEngine({ site: site }); dire("Octet monté (" + site + ")."); } }
+      function demonter() { if (window.octet) { window.octet.destroy(); dire("Octet détruit : " + (document.getElementById("octet-stage") ? "reste du DOM !" : "aucun reste dans la page.")); } }
+      document.querySelectorAll(".banc [data-site]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          site = b.getAttribute("data-site");
+          document.querySelectorAll(".banc [data-site]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+          demonter(); monter();
+        });
+      });
+      document.getElementById("detruire").addEventListener("click", demonter);
+      document.getElementById("remonter").addEventListener("click", monter);
+      document.getElementById("reset").addEventListener("click", function () {
+        ["alphabette_octet_pref", "alphabette_reading_comfort", "alphabette_octet_gears"].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+        try { sessionStorage.removeItem("alphabette_octet_cartes_vues"); } catch (e) {}
+        document.documentElement.classList.remove("octet-high-contrast", "octet-inventor-mode");
+        document.documentElement.style.fontSize = "";
+        demonter(); monter(); dire("Données d'Octet effacées, Octet remonté.");
+      });
+    })();
+  </script>
+</body>
+</html>
