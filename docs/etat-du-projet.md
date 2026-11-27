@@ -205,3 +205,7 @@ Demande de Valentin : « pas assez personnalisable ». Ajouts dans `public/podca
 - **Gens extraordinaires** : 200 questions ajoutées (239 au total, rubriques Histoire/politique 68, Engagés 55, Spectacle 53, Sciences 63), dans `public/quiz-extraordinaires/plus.js`.
 - **Écrit de mémoire, sans accès à des sources en ligne : à faire relire avant toute promotion** (dates, chiffres, citations). Aucun doublon de question, quatre réponses distinctes à chacune (vérifié par script).
 - Décision de Valentin : on laisse de côté les « applications utiles » pour l'instant.
+
+## 27/11 : Octet se balade sur alphabette.fr et alphabette.eu
+- `public/assets/octet-balade.js` (chargé par `index.html`) + 7 poses transparentes `public/assets/octet/balade/`. Menu : applications, Laboratoire, boîte à idées (#idees), astuces. Pause/Masquer mémorisés, immobile en Mode Calme / mouvement réduit. Test dans `tests/octet/test_octet.mjs`.
+- Mise en ligne bloquée côté OVH : tâche `website/vcs/deploy` « En erreur » depuis le 26/11 21 h 27 (« child processes … do not release container »). Ticket OVH CS17244990 ouvert le 27/11 à 9 h 59. Dès déblocage : relancer `deploy-ovh.yml` et vérifier `version.json`.
