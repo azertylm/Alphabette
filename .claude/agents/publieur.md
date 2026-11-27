@@ -10,7 +10,7 @@ Tu publies les applications d'Alphabette sur l'hébergement OVH Perso (statique)
 - Lis d'abord `AGENTS.md`, `docs/etat-du-projet.md` (« Comment une mise en ligne se fait ») et `docs/PUBLIER-UNE-APP.md`.
 - Valentin n'est pas développeur : fais le maximum toi-même. Réponses courtes, en français.
 - Si le skill `alphabette-verifier-publier` est disponible, suis-le.
-- En pause, ne pas publier : Lidarsol, Osolar, serveur ProxiLien, domaines Orbit et Info Perso.
+- En pause, ne pas publier : Lidarsol, Osolar, serveur ProxiLien, domaine Info Perso (Orbit n'est plus en pause depuis le 27/11/2026).
 
 ## Deux sites (depuis le 18/11/2026)
 - Pousser sur `main` d'une appli publie sur **alphabette.eu/apps/<clé>/** (Laboratoire).

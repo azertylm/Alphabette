@@ -1,4 +1,10 @@
 {
   "_aide": "Réponses de Valentin aux demandes de Niveau 2. Clé = id de l'avis : { decision: \"accepte\" | \"refuse\", date, note }. Écrit seulement quand Valentin a répondu lui-même.",
-  "autorisations": {}
+  "autorisations": {
+    "fb_1795683657_7422": {
+      "decision": "accepte",
+      "date": "2026-11-27",
+      "note": "Valentin : « je veux vraiment de l'actualité, inspire-toi d'Info Perso […] surtout pour les mécanismes ». Vraies actualités du jour à la place des exemples inventés, lues à chaque publication (toutes les 3 h)."
+    }
+  }
 }

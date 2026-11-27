@@ -7,7 +7,7 @@
   - **Double Barre & Shell** : `@alphabette/shell` (`packages/shell/`). Préserver impérativement `data-masquer="defilement"`, le mode zoom **BIG** (`var(--ab-zoom, 1)`), la compatibilité mobile 280px/360px et l'absence totale de pop-up/visite guidée au démarrage (`RULES_AND_MEMORY.md` Règle d'or 1).
   - **Voix unique** : `alphabetteAudio` (`packages/shell/src/audio/` — Piper « Siwis » / Gemini « Kore »). **Interdiction** d'utiliser `speechSynthesis` en direct.
 - **Sanctuaires protégés (NE PAS TOUCHER)** :
-  - Applis en pause : `Lidarsol`, `Osolar`, `ProxiLien`, `Orbit`, `Info Perso`.
+  - Applis en pause : `Lidarsol`, `Osolar`, `ProxiLien`, `Info Perso`. (Orbit n'est plus en pause depuis le 27/11/2026 : ses défauts sur alphabette.eu se corrigent comme ceux des autres applis, décision de Valentin.)
   - Vitrine `.fr` figée (`vitrine.ref` dans `data/apps-sources.json` et `vitrine/`) : ne jamais modifier sans ordre explicite de Valentin.
 
 ## Règles Métier Non Négociables

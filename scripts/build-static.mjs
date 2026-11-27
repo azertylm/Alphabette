@@ -25,6 +25,7 @@ import { ficheValide, publierHebergees } from './labo/bac-a-sable.mjs';
 import { publierAtelier } from './labo/parrain.mjs';
 import { avecSentinelle } from './labo/meteo.mjs';
 import { referencerVitrine } from './labo/referencement-fr.mjs';
+import { publierActualites } from './info-actualites.mjs';
 
 const racine = process.cwd();
 const dist = path.join(racine, 'dist');
@@ -543,6 +544,9 @@ async function preparerLaboratoire() {
     const statut = avecSentinelle(await lireLabo('status-labo', {}), (await lireLabo('incidents', { incidents: [] })).incidents);
     await writeFile(path.join(eu, 'api', 'labo', 'status-labo.json'), JSON.stringify(statut, null, 2) + '\n');
   }
+  // ALPHABETTE INFO (info.html) : vraies actualités lues à chaque publication (toutes les 3 h), comme le flux d'Info Perso.
+  // Une panne des flux ne bloque jamais la publication (la page affiche alors un message clair).
+  try { await publierActualites(eu); } catch (e) { console.warn(`! ALPHABETTE INFO : actualités non publiées (${e.message})`); }
   await writeFile(path.join(eu, '.htaccess'), HTACCESS_EU);
   // Notes de version « citoyennes » : aussi pour la vitrine .fr.
   await mkdir(path.join(sortie, 'api', 'labo'), { recursive: true });
