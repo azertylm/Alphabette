@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "genere": "2026-11-28T15:02:24.088Z",
+  "genere": "2026-11-28T17:57:12.178Z",
   "methode": "analyse statique des fichiers publiés",
   "apps": {
     "accord": {
@@ -217,7 +217,7 @@
       "voix": false,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 3463.3,
+      "poidsKo": 3469.3,
       "fichiers": 34,
       "cookiesPub": false,
       "syntheseDirecte": true
@@ -394,7 +394,7 @@
       "voix": true,
       "horsLigne": true,
       "ia": "autre",
-      "poidsKo": 1262.3,
+      "poidsKo": 1274.3,
       "fichiers": 13,
       "cookiesPub": false,
       "syntheseDirecte": false
