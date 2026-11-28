@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BoutonModeCalme, useShell } from '@alphabette/shell';
+import { BoutonModeCalme, GRATUIT_JUSQU_AU, useShell } from '@alphabette/shell';
 import { MODE_LABO } from '../labo/labo';
 import { dateLongue, decouverteDejaOuverte, decouverteTerminee, etatOffres, lancerDecouverte, passActif, tempsRestant } from '../labo/pass';
 
@@ -19,7 +19,7 @@ interface BasAccueilProps {
 }
 
 export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
-  const { config, openPanel } = useShell();
+  const { openPanel } = useShell();
   // Laboratoire (.eu) : Pass Découverte 48 h, sans carte bancaire.
   const [pass, setPass] = useState(() => (MODE_LABO ? passActif() : null));
   const [finie, setFinie] = useState(() => MODE_LABO && decouverteTerminee());
@@ -53,17 +53,10 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
             </div>
           )}
           <div className="accueil__carte">
-            <strong>{config.perAppPerYear} € par an</strong>
-            <span>Par application, dont 10 € pour son créateur.</span>
+            <strong>Tout est gratuit jusqu'au {GRATUIT_JUSQU_AU.libelle}</strong>
+            <span>Rien à payer d'ici là, aucun Pass à prendre.</span>
           </div>
         </div>
-        {MODE_LABO && gratuitJusquAu && (
-          <div className="accueil__carte accueil__carte--vedette accueil__decouverte" role="status">
-            <p>
-              🎉 <strong>Tout est gratuit jusqu'au {dateLongue(gratuitJusquAu)}</strong> : rien à payer, aucun Pass à prendre d'ici là.
-            </p>
-          </div>
-        )}
         {MODE_LABO && (
           <div className="accueil__carte accueil__decouverte">
             {pass ? (
@@ -76,8 +69,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
               <p role="status">Vos 48 h de découverte sont terminées. Le débat Premium offert revient chaque jour, et tout reste gratuit jusqu'au {dateLongue(gratuitJusquAu)}.</p>
             ) : finie ? (
               <p role="status">
-                Vos 48 h de découverte sont terminées. Pour continuer : {config.perAppPerYear} € par an et par appli —{' '}
-                <strong>12 mois, aucun renouvellement automatique.</strong>
+                Vos 48 h de découverte sont terminées. Tout reste gratuit jusqu'au {GRATUIT_JUSQU_AU.libelle}.
               </p>
             ) : (
               <>
@@ -95,12 +87,7 @@ export const BasAccueil: React.FC<BasAccueilProps> = ({ gratuites }) => {
           </div>
         )}
         <p className="accueil__note">
-          Prix TTC, avec {config.trialDays} jours d'essai.{' '}
-          {MODE_LABO
-            ? gratuitJusquAu
-              ? `Offre de lancement : gratuit jusqu'au ${dateLongue(gratuitJusquAu)} inclus. Ensuite : 12 mois, aucun renouvellement automatique.`
-              : `12 mois, aucun renouvellement automatique.${/^https:\/\/buy\.stripe\.com\//.test(config.paymentLinks.perApp) ? '' : ' Le paiement en ligne ouvre bientôt : en attendant, les applications s\'utilisent librement.'}`
-            : 'Le paiement en ligne n\'est pas encore ouvert : aujourd\'hui, les applications s\'utilisent librement.'}
+          Offre de lancement : gratuit jusqu'au {GRATUIT_JUSQU_AU.libelle} inclus. Les tarifs seront annoncés avant la fin de l'offre.
         </p>
         <p className="accueil__note">
           🎟️ Vous avez un code d'invitation ?{' '}

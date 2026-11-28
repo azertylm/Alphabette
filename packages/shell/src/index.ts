@@ -50,6 +50,7 @@ export {
   loadShellConfig,
   resolveHubUrl,
   resolveAppsHubUrl,
+  GRATUIT_JUSQU_AU,
   isLocalDev,
   hasEnvHubUrl,
   type ShellConfig,

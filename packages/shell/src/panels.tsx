@@ -8,6 +8,7 @@ import type { EcosystemApp } from './apps';
 import type { AlphaAppConfig, ShellStatus } from './config';
 import { IconCheck, IconCopy, IconExternal, IconHeart, IconShield, IconSparkles, IconStar } from './icons';
 import type { ShellConfig, ShellDonation } from './pricing';
+import { GRATUIT_JUSQU_AU } from './pricing';
 
 /**
  * Les cinq panneaux que la base sait ouvrir par-dessus le contenu.
@@ -298,13 +299,10 @@ function PanneauGratuit({ app, config, apps, hubUrl, ouvrir, basculer }: Panneau
           {gratuites > 0 && (
             <>
               <strong>{gratuites}</strong> application{gratuites > 1 ? 's' : ''} de l’écosystème{' '}
-              {gratuites > 1 ? 'sont gratuites' : 'est gratuite'} — tu peux les ouvrir sans rien payer. Les autres se
-              débloquent avec le Pass :{' '}
+              {gratuites > 1 ? 'sont gratuites' : 'est gratuite'} — tu peux les ouvrir sans rien payer.{' '}
             </>
           )}
-          {gratuites === 0 && <>Les autres applications se débloquent avec le Pass : </>}
-          <strong>{euros(config.perAppPerYear)} / an</strong> par application, dont 10 € pour son créateur. C’est ce qui
-          finance, entre autres, les applications gratuites comme celle-ci.
+          Tout est gratuit jusqu’au {GRATUIT_JUSQU_AU.libelle}.
         </p>
         <p className="ab-note">
           Les prix viennent du hub (<code>/api/config.json</code>) et les applications gratuites du registre
@@ -358,11 +356,11 @@ function PanneauPass(props: PanneauProps) {
         </div>
       )}
       {!ouvert && (
-        <div className="ab-panneau">
-          <h4>Le paiement en ligne n’est pas encore ouvert</h4>
+        <div className="ab-panneau" role="status">
+          <h4>🎉 Tout est gratuit jusqu’au {GRATUIT_JUSQU_AU.libelle}</h4>
           <p>
-            Aujourd’hui, les applications s’utilisent librement. Voici le tarif prévu pour l’abonnement. D’ici là, tu
-            peux soutenir le projet par un don.
+            Rien à payer d’ici là : les applications s’utilisent librement. Si tu le souhaites, tu peux soutenir le
+            projet par un don.
           </p>
         </div>
       )}
@@ -377,31 +375,23 @@ function PanneauPass(props: PanneauProps) {
         </div>
       )}
 
-      <div className="ab-offres">
-        <div className="ab-offre">
-          <span className="ab-etiquette">Une application</span>
-          <span className="ab-offre__prix">
-            {euros(config.perAppPerYear)} <small>/ an</small>
-          </span>
-          <ul>
-            <li>L’application de ton choix</li>
-            <li>{config.trialDays} jours d’essai avant de payer</li>
-          </ul>
-          {ouvert && (
+      {ouvert && (
+        <div className="ab-offres">
+          <div className="ab-offre">
+            <span className="ab-etiquette">Une application</span>
+            <span className="ab-offre__prix">
+              {euros(config.perAppPerYear)} <small>/ an</small>
+            </span>
+            <ul>
+              <li>L’application de ton choix</li>
+              <li>{config.trialDays} jours d’essai avant de payer</li>
+            </ul>
             <button type="button" className="ab-btn ab-btn--ghost ab-btn--lg" onClick={() => ouvrir(config.paymentLinks.perApp)}>
               Abonnement {euros(config.perAppPerYear)}/an
             </button>
-          )}
+          </div>
         </div>
-      </div>
-
-      <div className="ab-panneau">
-        <h4>Ce que finance l’abonnement</h4>
-        <p className="ab-note">
-          Les applications, leur hébergement et leurs évolutions, y compris celles qui restent gratuites. Pas de
-          publicité, pas de revente de données.
-        </p>
-      </div>
+      )}
 
       <div className="ab-actions-ligne">
         {!ouvert && (

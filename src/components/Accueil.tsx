@@ -305,7 +305,7 @@ export const Accueil: React.FC<AccueilProps> = ({ appsCount }) => {
                   {MODE_LABO ? (
                     <FioleLabo valeur={resume?.positifs ?? 0} max={SEUIL_FR} libelle="avis positifs avant alphabette.fr" />
                   ) : (
-                    <span className="pop-prix">{app.gratuit ? 'Gratuit' : '15 €/an'}</span>
+                    <span className="pop-prix">Gratuit</span>
                   )}
                   <span className="pop-carte__bouton" aria-hidden="true">Ouvrir →</span>
                 </span>

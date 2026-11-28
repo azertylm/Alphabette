@@ -18,6 +18,12 @@ export const PRICING = {
   trialDays: 7,
 } as const;
 
+/**
+ * Offre de lancement : tout est gratuit jusqu'à cette date incluse.
+ * D'ici là, aucun prix n'est affiché au public (une petite mention suffit).
+ */
+export const GRATUIT_JUSQU_AU = { iso: '2027-05-07', libelle: '7 mai 2027' } as const;
+
 /** Liens de paiement par défaut (remplacés par ceux du hub si disponibles). */
 export const DEFAULT_PAYMENT_LINKS: { perApp: string } = {
   // Vides tant que le hub ne publie pas de vrais liens : la base affiche alors
