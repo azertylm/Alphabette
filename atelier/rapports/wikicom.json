@@ -4,21 +4,21 @@
   "url": "https://alphabette.eu/wikicom/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:48:18.409Z",
+  "date": "2026-11-28T10:17:21.549Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
-    "opticien": 73,
+    "opticien": 83,
     "poids_plume": 93,
     "phare": 80,
     "parapluie": 92
   },
-  "controle_technique": 75,
-  "note": 83,
+  "controle_technique": 79,
+  "note": 85,
   "apte": false,
   "compte": {
     "bloquant": 0,
-    "important": 3,
+    "important": 2,
     "conseil": 5
   },
   "problemes": [
@@ -26,9 +26,9 @@
       "agent": "pouce",
       "gravite": "important",
       "titre": "21 zones à toucher trop petites (moins de 44 px)",
-      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher (ex : uBlock, podcast, Linux… » (254×18 px)",
+      "detail": "button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher une ressource » (254×18 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
-      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 21 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher (ex : uBlock, podcast, Linux… » (254×18 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 21 zones à toucher trop petites (moins de 44 px) (button.ab-pico « Faire un don » (36×36 px) ; button#ab-big.ab-pico « BIG, Taille du texte : Normale » (64×36 px) ; button#ab-theme.ab-pico « Passer en mode nuit » (38×36 px) ; button#ab-lire.ab-pico « Lire à voix haute » (38×36 px) ; button.ab-pico « Plus d’options » (36×36 px) ; input#q « Rechercher une ressource » (254×18 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -37,14 +37,6 @@
       "detail": "span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px) ; span.cat-count-badge « 3 liens » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
       "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 11 textes plus petits que 12 px (span.cat-count-badge « 10 liens » (11 px) ; span.cat-count-badge « 8 liens » (11 px) ; span.cat-count-badge « 3 liens » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "opticien",
-      "gravite": "important",
-      "titre": "7 champs de saisie sans étiquette",
-      "detail": "input#q « Rechercher (ex : uBlock, podcast, Linux… » ; input#n-nom « Ex: Mon super outil » ; input#n-url « https://... » ; select#n-cat ; input#n-note « Ex: Un outil formidable pour... »",
-      "correction": "Ajoute une étiquette <label> (ou aria-label) à chaque champ ; un texte gris dans le champ ne suffit pas.",
-      "prompt": "Mon application web « WIKICOM » a ce problème, relevé par un contrôle automatique : 7 champs de saisie sans étiquette (input#q « Rechercher (ex : uBlock, podcast, Linux… » ; input#n-nom « Ex: Mon super outil » ; input#n-url « https://... » ; select#n-cat ; input#n-note « Ex: Un outil formidable pour... »). Ajoute une étiquette <label> (ou aria-label) à chaque champ ; un texte gris dans le champ ne suffit pas. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -93,7 +85,7 @@
     "requetes": 10,
     "dom": 302,
     "ecoindex": 83.4,
-    "chargement_ms": 1100,
+    "chargement_ms": 812,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 84
@@ -130,7 +122,7 @@
   },
   "temoin": {
     "capture": "captures/wikicom.jpg",
-    "changement": 1,
+    "changement": 0,
     "blanc": false
   }
 }

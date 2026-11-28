@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/frigoplacard/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:46:25.220Z",
+  "date": "2026-11-28T10:15:37.088Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -93,7 +93,7 @@
     "requetes": 9,
     "dom": 167,
     "ecoindex": 87.9,
-    "chargement_ms": 1227,
+    "chargement_ms": 929,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 89
@@ -126,11 +126,11 @@
       "📖 Historique",
       "🥘 Batch cooking"
     ],
-    "debut": "α alphabette ▦ 🆕 ⛅ Évolutions ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Congèle les blancs d’œufs restants : un glaçon = un blanc, prêt pour une mousse. 🔮 Traducteur de restes insolites Pain rassis Épluchures "
+    "debut": "α alphabette ▦ 🆕 ⛅ Évolutions ⭐ S’abonner ☰ Frigo-Placard ♥ BIG ☀️ ⋯ 🧺 Mon frigo ⏱️ Anti-gaspi chrono 🍳 Recettes 📚 Catalogue + 🤖 Chef IA 🛒 Courses 📖 Historique 🥘 Batch cooking 🎓 Quiz anti-gaspi 🧺 Mon frigo-mon placard 0 plats cuisinés 0 kg sauvés 0 € économisés + Ajouter 📥 Import rapide par vrac 🎉 Restes de fêtes Ton garde-manger est vide. Ajoute un premier produit, ou passe un coup d’œil aux recettes du placard pour t’inspirer. 🌾 De saison ce mois-ci pomme + poire + mandarine + chou + poireau + carotte + courge + 👨‍🍳 Astuce du chef du jour Les fanes de radis ou de carottes font des potages étonnants. Lave, congèle, réutilise. 🔮 Traducteur de restes insolites Pain rassis Éplu"
   },
   "temoin": {
     "capture": "captures/frigoplacard.jpg",
-    "changement": 2,
+    "changement": 0,
     "blanc": false
   }
 }

@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest-france/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:33.265Z",
+  "date": "2026-11-28T10:16:40.330Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -64,12 +64,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 87,
+    "poids_ko": 88,
     "js_ko": 36,
     "requetes": 10,
     "dom": 83,
     "ecoindex": 90.7,
-    "chargement_ms": 1019,
+    "chargement_ms": 825,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 84
@@ -95,11 +95,11 @@
       "← Tous les petits jeux",
       "Version monde"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une station de surf au Pays basque, avec ses grandes vagues et son phare. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est en France ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est en France ? Dix lieux de France, célèbres ou savoureux. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Une grande ville portuaire avec une bonne mère qui veille sur la ville, tout en haut. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version monde"
   },
   "temoin": {
     "capture": "captures/ou-cest-france.jpg",
-    "changement": 3,
+    "changement": 21,
     "blanc": false
   }
 }

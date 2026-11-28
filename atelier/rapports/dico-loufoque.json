@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/dico-loufoque/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:01.638Z",
+  "date": "2026-11-28T10:16:10.422Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -69,7 +69,7 @@
     "requetes": 10,
     "dom": 81,
     "ecoindex": 91,
-    "chargement_ms": 951,
+    "chargement_ms": 739,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 81
@@ -97,7 +97,7 @@
   },
   "temoin": {
     "capture": "captures/dico-loufoque.jpg",
-    "changement": 1,
+    "changement": 0,
     "blanc": false
   }
 }

@@ -5,7 +5,7 @@
   "communaute": true,
   "heberge": true,
   "ref": "73274d8278bd008c063d08c9ada099331f0160bf",
-  "date": "2026-11-27T10:48:26.627Z",
+  "date": "2026-11-28T10:17:29.114Z",
   "scores": {
     "douanier": 100,
     "pouce": 100,
@@ -29,7 +29,7 @@
     "requetes": 1,
     "dom": 79,
     "ecoindex": 93.2,
-    "chargement_ms": 364,
+    "chargement_ms": 352,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 100

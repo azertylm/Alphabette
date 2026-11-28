@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/atelier/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:46:57.229Z",
+  "date": "2026-11-28T10:16:06.300Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -77,7 +77,7 @@
     "requetes": 8,
     "dom": 202,
     "ecoindex": 86.2,
-    "chargement_ms": 1257,
+    "chargement_ms": 1015,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 81
@@ -115,7 +115,7 @@
   },
   "temoin": {
     "capture": "captures/oeil-atelier.jpg",
-    "changement": 1,
+    "changement": 0,
     "blanc": false
   }
 }

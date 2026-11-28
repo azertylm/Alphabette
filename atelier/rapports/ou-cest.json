@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/ou-cest/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:29.096Z",
+  "date": "2026-11-28T10:16:36.514Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -69,7 +69,7 @@
     "requetes": 10,
     "dom": 82,
     "ecoindex": 90.8,
-    "chargement_ms": 1082,
+    "chargement_ms": 822,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 84
@@ -95,11 +95,11 @@
       "← Tous les petits jeux",
       "Version France"
     ],
-    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point La capitale d'un pays souverain la plus au nord du monde. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
+    "debut": "α alphabette ▦ 🆕 ⭐ S’abonner Où c'est ? PLACEZ-LE SUR LA CARTE ♥ BIG ☀️ 🔊 ⋯ Où c'est ? Posez le doigt sur la carte. Dix lieux étonnants, un peu loufoques. Touchez l'endroit où vous pensez qu'ils se trouvent. Les fautes de géographie sont pardonnées. Lieu 1 sur 10 0 point Le toit du monde. Pas de téléphérique, désolé. + − Astuce : glissez pour déplacer la carte, « + » pour viser plus précisément. Posez d’abord votre repère ← Tous les petits jeux · Fonds de carte : Natural Earth (domaine public). Version France"
   },
   "temoin": {
     "capture": "captures/ou-cest.jpg",
-    "changement": 3,
+    "changement": 10,
     "blanc": false
   }
 }

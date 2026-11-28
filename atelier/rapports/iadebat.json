@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/iadebat/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:46:39.238Z",
+  "date": "2026-11-28T10:15:49.917Z",
   "scores": {
     "douanier": 92,
     "pouce": 50,
@@ -104,12 +104,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 483,
+    "poids_ko": 484,
     "js_ko": 451,
     "requetes": 20,
     "dom": 474,
     "ecoindex": 72.6,
-    "chargement_ms": 1500,
+    "chargement_ms": 1069,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -148,7 +148,7 @@
   },
   "temoin": {
     "capture": "captures/iadebat.jpg",
-    "changement": 1,
+    "changement": 0,
     "blanc": false
   }
 }

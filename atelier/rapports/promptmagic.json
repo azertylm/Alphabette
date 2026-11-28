@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/promptmagic/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:46.638Z",
+  "date": "2026-11-28T10:16:52.432Z",
   "scores": {
     "douanier": 100,
     "pouce": 60,
@@ -69,7 +69,7 @@
     "requetes": 9,
     "dom": 391,
     "ecoindex": 79.3,
-    "chargement_ms": 1142,
+    "chargement_ms": 915,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 98
@@ -106,7 +106,7 @@
   },
   "temoin": {
     "capture": "captures/promptmagic.jpg",
-    "changement": 2,
+    "changement": 0,
     "blanc": false
   }
 }

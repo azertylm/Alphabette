@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/quiz-femmes/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:46:21.134Z",
+  "date": "2026-11-28T10:15:33.295Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -77,7 +77,7 @@
     "requetes": 11,
     "dom": 106,
     "ecoindex": 89.9,
-    "chargement_ms": 1032,
+    "chargement_ms": 817,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 83
@@ -104,7 +104,7 @@
   },
   "temoin": {
     "capture": "captures/quiz-femmes.jpg",
-    "changement": 18,
+    "changement": 0,
     "blanc": false
   }
 }

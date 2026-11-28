@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-27T10:46:07.997Z",
+  "date": "2026-11-28T10:15:21.081Z",
   "base": "https://alphabette.eu",
   "apps": {
     "info": {
@@ -8,22 +8,22 @@
       "url": "https://alphabette.eu/info.html",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:07.997Z",
-      "note": 82,
-      "controle_technique": 78,
+      "date": "2026-11-28T10:15:21.081Z",
+      "note": 78,
+      "controle_technique": 72,
       "scores": {
         "douanier": 100,
         "pouce": 60,
-        "opticien": 85,
-        "poids_plume": 88,
-        "phare": 70,
+        "opticien": 87,
+        "poids_plume": 70,
+        "phare": 63,
         "parapluie": 88
       },
       "apte": false,
       "compte": {
         "bloquant": 0,
         "important": 2,
-        "conseil": 8
+        "conseil": 10
       },
       "bloquants": []
     },
@@ -33,7 +33,7 @@
       "url": "https://alphabette.eu/apps/bonplan/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:12.521Z",
+      "date": "2026-11-28T10:15:25.159Z",
       "note": 82,
       "controle_technique": 75,
       "scores": {
@@ -58,7 +58,7 @@
       "url": "https://alphabette.eu/apps/ecobatisol/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:16.901Z",
+      "date": "2026-11-28T10:15:29.326Z",
       "note": 88,
       "controle_technique": 82,
       "scores": {
@@ -83,7 +83,7 @@
       "url": "https://alphabette.eu/quiz-femmes/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:21.134Z",
+      "date": "2026-11-28T10:15:33.295Z",
       "note": 89,
       "controle_technique": 89,
       "scores": {
@@ -108,7 +108,7 @@
       "url": "https://alphabette.eu/apps/frigoplacard/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:25.220Z",
+      "date": "2026-11-28T10:15:37.088Z",
       "note": 85,
       "controle_technique": 83,
       "scores": {
@@ -133,7 +133,7 @@
       "url": "https://alphabette.eu/quiz-extraordinaires/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:29.948Z",
+      "date": "2026-11-28T10:15:41.409Z",
       "note": 88,
       "controle_technique": 89,
       "scores": {
@@ -158,7 +158,7 @@
       "url": "https://alphabette.eu/apps/goatchevretheking/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:33.979Z",
+      "date": "2026-11-28T10:15:45.115Z",
       "note": 83,
       "controle_technique": 74,
       "scores": {
@@ -183,7 +183,7 @@
       "url": "https://alphabette.eu/apps/iadebat/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:39.238Z",
+      "date": "2026-11-28T10:15:49.917Z",
       "note": 84,
       "controle_technique": 77,
       "scores": {
@@ -208,22 +208,22 @@
       "url": "https://alphabette.eu/apps/infosperso/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:44.010Z",
+      "date": "2026-11-28T10:15:54.173Z",
       "note": 71,
       "controle_technique": 52,
       "scores": {
         "douanier": 92,
         "pouce": 50,
-        "opticien": 74,
-        "poids_plume": 33,
+        "opticien": 73,
+        "poids_plume": 34,
         "phare": 90,
         "parapluie": 88
       },
       "apte": false,
       "compte": {
         "bloquant": 0,
-        "important": 6,
-        "conseil": 11
+        "important": 5,
+        "conseil": 12
       },
       "bloquants": []
     },
@@ -233,7 +233,7 @@
       "url": "https://alphabette.eu/apps/atelier/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:46:57.229Z",
+      "date": "2026-11-28T10:16:06.300Z",
       "note": 87,
       "controle_technique": 80,
       "scores": {
@@ -258,7 +258,7 @@
       "url": "https://alphabette.eu/dico-loufoque/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:01.638Z",
+      "date": "2026-11-28T10:16:10.422Z",
       "note": 90,
       "controle_technique": 89,
       "scores": {
@@ -283,7 +283,7 @@
       "url": "https://alphabette.eu/juste-chiffre/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:05.671Z",
+      "date": "2026-11-28T10:16:14.138Z",
       "note": 90,
       "controle_technique": 89,
       "scores": {
@@ -308,7 +308,7 @@
       "url": "https://alphabette.eu/memo-meninges/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:09.665Z",
+      "date": "2026-11-28T10:16:17.833Z",
       "note": 91,
       "controle_technique": 89,
       "scores": {
@@ -333,7 +333,7 @@
       "url": "https://alphabette.eu/apps/omnistat/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:13.779Z",
+      "date": "2026-11-28T10:16:21.615Z",
       "note": 83,
       "controle_technique": 75,
       "scores": {
@@ -358,12 +358,12 @@
       "url": "https://alphabette.eu/orbit/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:17.914Z",
-      "note": 75,
-      "controle_technique": 64,
+      "date": "2026-11-28T10:16:25.466Z",
+      "note": 78,
+      "controle_technique": 69,
       "scores": {
         "douanier": 92,
-        "pouce": 45,
+        "pouce": 60,
         "opticien": 73,
         "poids_plume": 74,
         "phare": 80,
@@ -372,7 +372,7 @@
       "apte": false,
       "compte": {
         "bloquant": 0,
-        "important": 4,
+        "important": 3,
         "conseil": 11
       },
       "bloquants": []
@@ -383,7 +383,7 @@
       "url": "https://alphabette.eu/ou-cest/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:29.096Z",
+      "date": "2026-11-28T10:16:36.514Z",
       "note": 91,
       "controle_technique": 89,
       "scores": {
@@ -408,7 +408,7 @@
       "url": "https://alphabette.eu/ou-cest-france/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:33.265Z",
+      "date": "2026-11-28T10:16:40.330Z",
       "note": 91,
       "controle_technique": 89,
       "scores": {
@@ -433,7 +433,7 @@
       "url": "https://alphabette.eu/petits-jeux/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:37.311Z",
+      "date": "2026-11-28T10:16:44.117Z",
       "note": 91,
       "controle_technique": 90,
       "scores": {
@@ -458,7 +458,7 @@
       "url": "https://alphabette.eu/podcasts/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:42.421Z",
+      "date": "2026-11-28T10:16:48.636Z",
       "note": 88,
       "controle_technique": 88,
       "scores": {
@@ -483,7 +483,7 @@
       "url": "https://alphabette.eu/apps/promptmagic/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:46.638Z",
+      "date": "2026-11-28T10:16:52.432Z",
       "note": 86,
       "controle_technique": 80,
       "scores": {
@@ -508,7 +508,7 @@
       "url": "https://alphabette.eu/apps/proxilien/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:51.366Z",
+      "date": "2026-11-28T10:16:56.756Z",
       "note": 79,
       "controle_technique": 66,
       "scores": {
@@ -533,7 +533,7 @@
       "url": "https://alphabette.eu/quiz-famille/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:55.878Z",
+      "date": "2026-11-28T10:17:00.953Z",
       "note": 90,
       "controle_technique": 89,
       "scores": {
@@ -558,7 +558,7 @@
       "url": "https://alphabette.eu/quiz-musique/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:47:59.836Z",
+      "date": "2026-11-28T10:17:04.664Z",
       "note": 89,
       "controle_technique": 89,
       "scores": {
@@ -583,7 +583,7 @@
       "url": "https://alphabette.eu/apps/revolution/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:48:03.845Z",
+      "date": "2026-11-28T10:17:08.364Z",
       "note": 85,
       "controle_technique": 79,
       "scores": {
@@ -608,7 +608,7 @@
       "url": "https://alphabette.eu/apps/bonplansenior/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:48:09.230Z",
+      "date": "2026-11-28T10:17:13.015Z",
       "note": 87,
       "controle_technique": 81,
       "scores": {
@@ -633,7 +633,7 @@
       "url": "https://alphabette.eu/apps/franceservice/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:48:13.509Z",
+      "date": "2026-11-28T10:17:16.960Z",
       "note": 80,
       "controle_technique": 66,
       "scores": {
@@ -658,13 +658,13 @@
       "url": "https://alphabette.eu/wikicom/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:48:18.409Z",
-      "note": 83,
-      "controle_technique": 75,
+      "date": "2026-11-28T10:17:21.549Z",
+      "note": 85,
+      "controle_technique": 79,
       "scores": {
         "douanier": 100,
         "pouce": 60,
-        "opticien": 73,
+        "opticien": 83,
         "poids_plume": 93,
         "phare": 80,
         "parapluie": 92
@@ -672,7 +672,7 @@
       "apte": false,
       "compte": {
         "bloquant": 0,
-        "important": 3,
+        "important": 2,
         "conseil": 5
       },
       "bloquants": []
@@ -683,7 +683,7 @@
       "url": "https://alphabette.eu/crash-testeur/",
       "communaute": false,
       "heberge": false,
-      "date": "2026-11-27T10:48:22.616Z",
+      "date": "2026-11-28T10:17:25.386Z",
       "note": 88,
       "controle_technique": 86,
       "scores": {
@@ -709,7 +709,7 @@
       "communaute": true,
       "heberge": true,
       "ref": "73274d8278bd008c063d08c9ada099331f0160bf",
-      "date": "2026-11-27T10:48:26.627Z",
+      "date": "2026-11-28T10:17:29.114Z",
       "note": 100,
       "controle_technique": 99,
       "scores": {

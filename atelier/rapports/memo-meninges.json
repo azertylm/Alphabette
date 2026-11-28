@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/memo-meninges/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:09.665Z",
+  "date": "2026-11-28T10:16:17.833Z",
   "scores": {
     "douanier": 100,
     "pouce": 77,
@@ -69,7 +69,7 @@
     "requetes": 10,
     "dom": 119,
     "ecoindex": 89.9,
-    "chargement_ms": 1033,
+    "chargement_ms": 820,
     "tiers": [],
     "traceurs": [],
     "contraste_ok_pct": 88
@@ -100,7 +100,7 @@
   },
   "temoin": {
     "capture": "captures/memo-meninges.jpg",
-    "changement": 35,
+    "changement": 0,
     "blanc": false
   }
 }

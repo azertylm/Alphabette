@@ -4,7 +4,7 @@
   "url": "https://alphabette.eu/apps/revolution/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:48:03.845Z",
+  "date": "2026-11-28T10:17:08.364Z",
   "scores": {
     "douanier": 92,
     "pouce": 60,
@@ -33,10 +33,10 @@
     {
       "agent": "opticien",
       "gravite": "important",
-      "titre": "46 textes plus petits que 12 px",
-      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 14 h · plusieurs fois  » (11 px) ; span.inline-flex « 💶 Pouvoir d'achat & prix » (11 px)",
+      "titre": "45 textes plus petits que 12 px",
+      "detail": "span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 10 h · plusieurs fois  » (11 px) ; span.inline-flex « 💶 Pouvoir d'achat & prix » (11 px)",
       "correction": "Passe ces textes à 14 px au moins (16 px pour le texte courant).",
-      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 46 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 14 h · plusieurs fois  » (11 px) ; span.inline-flex « 💶 Pouvoir d'achat & prix » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « RÉVOLUTION » a ce problème, relevé par un contrôle automatique : 45 textes plus petits que 12 px (span « alphabette » (11.52 px) ; span.text-[11px] « mis à jour il y a 10 h · plusieurs fois  » (11 px) ; span.inline-flex « 💶 Pouvoir d'achat & prix » (11 px)). Passe ces textes à 14 px au moins (16 px pour le texte courant). Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "douanier",
@@ -88,12 +88,12 @@
     }
   ],
   "mesures": {
-    "poids_ko": 572,
+    "poids_ko": 551,
     "js_ko": 469,
     "requetes": 20,
-    "dom": 350,
-    "ecoindex": 77.3,
-    "chargement_ms": 1412,
+    "dom": 351,
+    "ecoindex": 77.4,
+    "chargement_ms": 1038,
     "tiers": [
       "apis.google.com",
       "gen-lang-client-0692358943.firebaseapp.com",
@@ -131,11 +131,11 @@
       "Lire l’article ↗",
       "Beaucoup"
     ],
-    "debut": "α alphabette ▦ 🆕 ⛅ Évolutions ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 14 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 💶 POUVOIR D'ACHAT & PRIX 📍 NORMANDIE Des lycéens de Cherbourg dans la peau des jurés du prix Goncourt : « Nous avons la vie d’un auteur entre nos mains » Actu.fr · il y a 15 h · Lire l’article ↗ C"
+    "debut": "α alphabette ▦ 🆕 ⛅ Évolutions ⭐ S’abonner Révolution ♥ BIG 🌙 ⋯ RÉVOLUTION L’actualité, ton avis, celui des autres. Comment ça marche ? RÉVOLUTION REPART DE ZÉRO. Ici, pas de faux votes : chaque question vient de l’actualité du jour ou d’une organisation qui veut connaître ton avis. Tu réponds en un geste, les résultats s’affichent ensuite. CHOISIR MA RÉGION ET MES SUJETS PLUS TARD CE MATIN, L’ACTUALITÉ mis à jour il y a 10 h · plusieurs fois par jour Pour toi Ma région National Déjà répondu (0) 💶 POUVOIR D'ACHAT & PRIX 🌱 ENVIRONNEMENT & CLIMAT 🇫🇷 NATIONAL Le bateau naufragé au large d'Ibiza sera remorqué vers le port espagnol de Carthagène Le carburant est, pour l'heure, contenu et le "
   },
   "temoin": {
     "capture": "captures/revolution.jpg",
-    "changement": 5,
+    "changement": 4,
     "blanc": false
   }
 }

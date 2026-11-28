@@ -4,21 +4,21 @@
   "url": "https://alphabette.eu/orbit/",
   "communaute": false,
   "heberge": false,
-  "date": "2026-11-27T10:47:17.914Z",
+  "date": "2026-11-28T10:16:25.466Z",
   "scores": {
     "douanier": 92,
-    "pouce": 45,
+    "pouce": 60,
     "opticien": 73,
     "poids_plume": 74,
     "phare": 80,
     "parapluie": 88
   },
-  "controle_technique": 64,
-  "note": 75,
+  "controle_technique": 69,
+  "note": 78,
   "apte": false,
   "compte": {
     "bloquant": 0,
-    "important": 4,
+    "important": 3,
     "conseil": 11
   },
   "problemes": [
@@ -29,14 +29,6 @@
       "detail": "button.w-6 « Rechercher » (24×24 px) ; input.w-full « Rechercher vidéo, artiste, thème... » (62×30 px) ; button.px-2.5 « Télécharger l'App » (141×31 px) ; button.px-3.5 « Publier » (94×30 px) ; button.w-full « S'enregistrer / Créer un compteGratuit · » (336×35 px) ; button.px-2 « Reels » (62×31 px)",
       "correction": "Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure).",
       "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : 63 zones à toucher trop petites (moins de 44 px) (button.w-6 « Rechercher » (24×24 px) ; input.w-full « Rechercher vidéo, artiste, thème... » (62×30 px) ; button.px-2.5 « Télécharger l'App » (141×31 px) ; button.px-3.5 « Publier » (94×30 px) ; button.w-full « S'enregistrer / Créer un compteGratuit · » (336×35 px) ; button.px-2 « Reels » (62×31 px)). Agrandis ces boutons et liens à au moins 44 × 44 px (min-height et min-width: 44px, ou plus de marge intérieure). Fais le plus petit changement possible et ne modifie rien d'autre."
-    },
-    {
-      "agent": "pouce",
-      "gravite": "important",
-      "titre": "Le zoom est bloqué",
-      "detail": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
-      "correction": "Dans la balise <meta name=\"viewport\">, retire « user-scalable=no » et « maximum-scale » : les personnes qui voient mal doivent pouvoir zoomer.",
-      "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : Le zoom est bloqué (width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no). Dans la balise <meta name=\"viewport\">, retire « user-scalable=no » et « maximum-scale » : les personnes qui voient mal doivent pouvoir zoomer. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "opticien",
@@ -66,9 +58,9 @@
       "agent": "douanier",
       "gravite": "conseil",
       "titre": "Appels vers 7 services tiers non déclarés",
-      "detail": "gstatic.com, accounts.google.com, i.ytimg.com, apis.google.com, gen-lang-client-0151337684.firebaseapp.com, googleapis.com",
+      "detail": "gstatic.com, accounts.google.com, i.ytimg.com, apis.google.com, gen-lang-client-0151337684.firebaseapp.com, firestore.googleapis.com",
       "correction": "Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle.",
-      "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : Appels vers 7 services tiers non déclarés (gstatic.com, accounts.google.com, i.ytimg.com, apis.google.com, gen-lang-client-0151337684.firebaseapp.com, googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
+      "prompt": "Mon application web « ORBIT » a ce problème, relevé par un contrôle automatique : Appels vers 7 services tiers non déclarés (gstatic.com, accounts.google.com, i.ytimg.com, apis.google.com, gen-lang-client-0151337684.firebaseapp.com, firestore.googleapis.com). Déclare ces services (à quoi ils servent) ou retire-les : un visiteur doit savoir à qui son navigateur parle. Fais le plus petit changement possible et ne modifie rien d'autre."
     },
     {
       "agent": "pouce",
@@ -147,9 +139,9 @@
     "poids_ko": 940,
     "js_ko": 790,
     "requetes": 27,
-    "dom": 748,
+    "dom": 749,
     "ecoindex": 58.9,
-    "chargement_ms": 1192,
+    "chargement_ms": 1080,
     "tiers": [
       "fonts.googleapis.com",
       "gstatic.com",
@@ -158,8 +150,8 @@
       "fonts.gstatic.com",
       "apis.google.com",
       "gen-lang-client-0151337684.firebaseapp.com",
-      "googleapis.com",
-      "firestore.googleapis.com"
+      "firestore.googleapis.com",
+      "googleapis.com"
     ],
     "traceurs": [],
     "contraste_ok_pct": 100

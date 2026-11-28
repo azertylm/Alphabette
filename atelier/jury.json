@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-27T10:48:29.962Z",
+  "date": "2026-11-28T10:17:32.502Z",
   "regle": "Dernier contrôle sans point bloquant ni point important de sécurité ou légal, contrôle technique ≥ 85/100 (Pouce, Opticien et Poids Plume ≥ 75), aucune erreur JavaScript, et au moins 3 jours de contrôle réussi sur les 7 derniers.",
   "apps": {
     "info": {
@@ -7,8 +7,8 @@
       "date": null,
       "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 78,
-      "note": 82,
+      "controle_technique": 72,
+      "note": 78,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "bonplan": {
@@ -30,13 +30,13 @@
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-femmes": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 89,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "frigoplacard": {
       "teste_au_labo": false,
@@ -48,13 +48,13 @@
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-extraordinaires": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 88,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "goat-chevre-the-king": {
       "teste_au_labo": false,
@@ -93,76 +93,76 @@
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "dico-loufoque": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "juste-chiffre": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "memo-meninges": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "orbit": {
       "teste_au_labo": false,
       "date": null,
       "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 64,
-      "note": 75,
+      "controle_technique": 69,
+      "note": 78,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "ou-cest": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "ou-cest-france": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 91,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "petits-jeux": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 90,
       "note": 91,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "podcasts": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 88,
       "note": 88,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "promptmagic": {
       "teste_au_labo": false,
@@ -183,22 +183,22 @@
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "quiz-famille": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 90,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "quiz-musique": {
-      "teste_au_labo": false,
-      "date": null,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
       "controles_7j": 7,
-      "aptes_7j": 2,
+      "aptes_7j": 3,
       "controle_technique": 89,
       "note": 89,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     },
     "revolution": {
       "teste_au_labo": false,
@@ -232,8 +232,8 @@
       "date": null,
       "controles_7j": 7,
       "aptes_7j": 0,
-      "controle_technique": 75,
-      "note": 83,
+      "controle_technique": 79,
+      "note": 85,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "crash-testeur": {
@@ -248,20 +248,20 @@
     "omnistat": {
       "teste_au_labo": false,
       "date": null,
-      "controles_7j": 2,
+      "controles_7j": 3,
       "aptes_7j": 0,
       "controle_technique": 75,
       "note": 83,
       "raison": "Le dernier contrôle a relevé des points à corriger"
     },
     "c-tranche-vite": {
-      "teste_au_labo": false,
-      "date": null,
-      "controles_7j": 2,
-      "aptes_7j": 2,
+      "teste_au_labo": true,
+      "date": "2026-11-28",
+      "controles_7j": 3,
+      "aptes_7j": 3,
       "controle_technique": 99,
       "note": 100,
-      "raison": "Encore 1 jour(s) de contrôle réussi"
+      "raison": "Contrôles réussis au moins 3 jours sur les 7 derniers"
     }
   }
 }
