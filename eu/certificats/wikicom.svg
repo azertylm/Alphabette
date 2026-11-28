@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="236" height="40" role="img" aria-label="Audit réseau conforme — WIKICOM — 2026-11-27">
-<title>Certificat d'Audit Réseau Alphabette — WIKICOM — conforme le 2026-11-27 — SHA-256 fb287f85ee666be2295a1e01648710b508c3c5d8248c32a1f817050a81131eb4</title>
+<title>Certificat d'Audit Réseau Alphabette — WIKICOM — conforme le 2026-11-27 — SHA-256 d5c52f7caa0cf2d8c04c5b5b2e0c28da264c106c24df13ebcccf174384e5575f</title>
 <rect width="236" height="40" rx="6" fill="#14161c"/><rect x="118" width="118" height="40" rx="6" fill="#1f6f43"/><rect x="118" width="8" height="40" fill="#1f6f43"/>
 <g font-family="system-ui,sans-serif" font-size="12" fill="#fff"><text x="10" y="17" font-weight="700">🔒 Audit réseau</text><text x="10" y="32" font-size="10" fill="#c9ccd4">zéro connaissance</text>
-<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-27 · fb287f85</text></g>
-<metadata>{"app_id":"wikicom","conforme":true,"audite_le":"2026-11-27T17:46:19.737Z","empreinte_certificat_sha256":"fb287f85ee666be2295a1e01648710b508c3c5d8248c32a1f817050a81131eb4"}</metadata></svg>
+<text x="128" y="17" font-weight="700">Conforme</text><text x="128" y="32" font-size="10">2026-11-27 · d5c52f7c</text></g>
+<metadata>{"app_id":"wikicom","conforme":true,"audite_le":"2026-11-27T20:39:21.729Z","empreinte_certificat_sha256":"d5c52f7caa0cf2d8c04c5b5b2e0c28da264c106c24df13ebcccf174384e5575f"}</metadata></svg>
