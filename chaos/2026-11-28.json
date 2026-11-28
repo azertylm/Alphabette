@@ -1,0 +1,182 @@
+{
+  "genere_le": "2026-11-28T09:24:10.206Z",
+  "base": "https://alphabette.eu",
+  "agent": "Agent Chaos",
+  "apps": [
+    {
+      "app_id": "info",
+      "nom": "ALPHABETTE INFO",
+      "url": "https://alphabette.eu/info.html",
+      "anomalies": []
+    },
+    {
+      "app_id": "bonplan",
+      "nom": "BON PLAN",
+      "url": "https://alphabette.eu/apps/bonplan/",
+      "anomalies": []
+    },
+    {
+      "app_id": "ecobatisol",
+      "nom": "ÉCOBÂTISOL",
+      "url": "https://alphabette.eu/apps/ecobatisol/",
+      "anomalies": []
+    },
+    {
+      "app_id": "quiz-femmes",
+      "nom": "FEMMES EXTRAORDINAIRES",
+      "url": "https://alphabette.eu/quiz-femmes/",
+      "anomalies": []
+    },
+    {
+      "app_id": "frigoplacard",
+      "nom": "FRIGO-PLACARD",
+      "url": "https://alphabette.eu/apps/frigoplacard/",
+      "anomalies": []
+    },
+    {
+      "app_id": "quiz-extraordinaires",
+      "nom": "GENS EXTRAORDINAIRES",
+      "url": "https://alphabette.eu/quiz-extraordinaires/",
+      "anomalies": []
+    },
+    {
+      "app_id": "goat-chevre-the-king",
+      "nom": "Goat Chèvre The King",
+      "url": "https://alphabette.eu/apps/goatchevretheking/",
+      "anomalies": []
+    },
+    {
+      "app_id": "iadebat",
+      "nom": "IADÉBAT",
+      "url": "https://alphabette.eu/apps/iadebat/",
+      "anomalies": []
+    },
+    {
+      "app_id": "infos-perso",
+      "nom": "INFOS PERSO",
+      "url": "https://alphabette.eu/apps/infosperso/",
+      "anomalies": []
+    },
+    {
+      "app_id": "oeil-atelier",
+      "nom": "L'ŒIL DE L'ATELIER",
+      "url": "https://alphabette.eu/apps/atelier/",
+      "anomalies": []
+    },
+    {
+      "app_id": "dico-loufoque",
+      "nom": "LE DICO LOUFOQUE",
+      "url": "https://alphabette.eu/dico-loufoque/",
+      "anomalies": []
+    },
+    {
+      "app_id": "juste-chiffre",
+      "nom": "LE JUSTE CHIFFRE",
+      "url": "https://alphabette.eu/juste-chiffre/",
+      "anomalies": []
+    },
+    {
+      "app_id": "memo-meninges",
+      "nom": "MÉMO-MÉNINGES",
+      "url": "https://alphabette.eu/memo-meninges/",
+      "anomalies": []
+    },
+    {
+      "app_id": "omnistat",
+      "nom": "OmniStats",
+      "url": "https://alphabette.eu/apps/omnistat/",
+      "anomalies": []
+    },
+    {
+      "app_id": "orbit",
+      "nom": "ORBIT",
+      "url": "https://alphabette.eu/orbit/",
+      "anomalies": []
+    },
+    {
+      "app_id": "ou-cest",
+      "nom": "OÙ C'EST ?",
+      "url": "https://alphabette.eu/ou-cest/",
+      "anomalies": []
+    },
+    {
+      "app_id": "ou-cest-france",
+      "nom": "OÙ C'EST EN FRANCE ?",
+      "url": "https://alphabette.eu/ou-cest-france/",
+      "anomalies": []
+    },
+    {
+      "app_id": "petits-jeux",
+      "nom": "PETITS JEUX",
+      "url": "https://alphabette.eu/petits-jeux/",
+      "anomalies": []
+    },
+    {
+      "app_id": "podcasts",
+      "nom": "PODCASTS",
+      "url": "https://alphabette.eu/podcasts/",
+      "anomalies": []
+    },
+    {
+      "app_id": "promptmagic",
+      "nom": "PROMPT MAGIC",
+      "url": "https://alphabette.eu/apps/promptmagic/",
+      "anomalies": []
+    },
+    {
+      "app_id": "proxilien",
+      "nom": "PROXILIEN",
+      "url": "https://alphabette.eu/apps/proxilien/",
+      "anomalies": []
+    },
+    {
+      "app_id": "quiz-famille",
+      "nom": "QUIZ EN FAMILLE",
+      "url": "https://alphabette.eu/quiz-famille/",
+      "anomalies": []
+    },
+    {
+      "app_id": "quiz-musique",
+      "nom": "QUIZ MUSIQUE",
+      "url": "https://alphabette.eu/quiz-musique/",
+      "anomalies": []
+    },
+    {
+      "app_id": "revolution",
+      "nom": "RÉVOLUTION",
+      "url": "https://alphabette.eu/apps/revolution/",
+      "anomalies": []
+    },
+    {
+      "app_id": "bonplansenior",
+      "nom": "SENIOR BON PLAN",
+      "url": "https://alphabette.eu/apps/bonplansenior/",
+      "anomalies": []
+    },
+    {
+      "app_id": "france-service",
+      "nom": "SERVICE FRANCE",
+      "url": "https://alphabette.eu/apps/franceservice/",
+      "anomalies": []
+    },
+    {
+      "app_id": "wikicom",
+      "nom": "WIKICOM",
+      "url": "https://alphabette.eu/wikicom/",
+      "anomalies": []
+    },
+    {
+      "app_id": "crash-testeur",
+      "nom": "Le Crash-Testeur",
+      "url": "https://alphabette.eu/crash-testeur/",
+      "anomalies": []
+    },
+    {
+      "app_id": "c-tranche-vite",
+      "nom": "Tranche-Vite",
+      "url": "https://alphabette.eu/createurs/c-tranche-vite/",
+      "anomalies": []
+    }
+  ],
+  "total": 0
+}
